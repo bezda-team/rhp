@@ -35,6 +35,7 @@ const PlotState = observable<{
     markup: object, 
     orientation: number, 
     vars: Vars,
+    order: number[],
 }>({
     data: [], 
     dataMax: 0, 
@@ -46,6 +47,7 @@ const PlotState = observable<{
     markup: DEFAULT_MARKUP, 
     orientation: 0, 
     vars: {}, 
+    order: [],
 });
 
 export default PlotState;

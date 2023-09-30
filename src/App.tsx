@@ -2,7 +2,7 @@ import BarPlot from './components/BarPlot';
 import BarElementType from './components/types/BarElementType';
 import BarContentContainerElementType from './components/types/BarContentContainerElementType';
 import FullBarElementType from './components/types/FullBarElementType';
-import PlotState from './PlotStore';
+import PlotState from './PlotState';
 import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import { useEffect } from 'react';

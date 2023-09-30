@@ -3,10 +3,13 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled';
 // import { useEffect } from 'react';
 import FullBar from './FullBar';
-import PlotState from '../PlotStore';
+import PlotState from '../PlotState';
 import { useEffect } from 'react';
 import { For, useObservable, useSelector } from "@legendapp/state/react"
 import FullBarElementType from './types/FullBarElementType';
+import Vars from './types/Vars';
+import PlotCSS from './types/PlotCSS';
+import FullBarWrapped from '../FullBarWrapped';
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
@@ -26,19 +29,26 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
-type TrackedData = {
+type BarData = {
     id: string,
     index: number,
-    barConfig: FullBarElementType[],
-    width: string,
-    data: number[],
+    data: number[], 
+    dataMax: number, 
+    theme: object, 
+    barConfig: FullBarElementType[], 
+    width: string,  
+    CSS: PlotCSS, 
+    markup: object, 
+    orientation: number, 
+    vars: Vars,
+    order: number,
 }
 
 const Div = styled.div``;
 
 const BarPlot = () => {
 
-    const {data, barConfig, width, height, CSS,  orientation} = useObservable(PlotState);
+    const {data, dataMax, theme, barConfig, width, height, CSS, markup, orientation, vars, order} = useObservable(PlotState);
 
     const {barHeight, barWidth} = useSelector(() => {
       const plot = document.getElementById("bar_plot");
@@ -60,14 +70,21 @@ const BarPlot = () => {
 
     const newData = useSelector(() => {
       const untrackedData = data.peek();
-      const newData: TrackedData[] = [];
+      const newData: BarData[] = [];
       untrackedData.forEach((value, i) => {
         newData.push({
                       id: "full_bar_" + i, 
                       index: i, 
+                      data: typeof value === "number"? [value] as number[] : value as number[],
+                      dataMax: dataMax.peek(),
+                      theme: theme.peek(),
                       barConfig: barConfig.peek(), 
                       width: orientation.peek()===0? barHeight : barWidth, 
-                      data: typeof value === "number"? [value] as number[] : value as number[]
+                      CSS: CSS.peek(),
+                      markup: markup.peek(),
+                      orientation: orientation.peek(),
+                      vars: vars.peek(),
+                      order: order.peek()[i],
                     });
       });
       return newData;
@@ -82,8 +99,6 @@ const BarPlot = () => {
         }
     }, []);
 
-
-
     console.log("width: " + barWidth + ", height: " + barHeight);
   
     return (
@@ -92,21 +107,7 @@ const BarPlot = () => {
         className="bar-plot" 
         style={orientation.get()===0? {display: "flex", flexDirection: "column", alignItems: "center", width: width.get(), height: height.get(), overflow: "hidden"} : {display: "flex", flexDirection: "row", alignItems: "center", height: width.get(), width: height.get(), overflow: "hidden"}} 
         css={css`${CSS.get()["bar-plot"]}`}> 
-          <For each={trackedData}>
-                { item => (
-                  <FullBar 
-                    key={item.get()?.id}
-                    id={item.get()?.id}
-                    index={item.get()?.index??0}
-                    elements={item.get()?.barConfig??[]}
-                    data={item.get()?.data??[]}
-                    order={item.get()?.index??0}
-                    width={item.get()?.width??"10%"}
-                    decorationWidth={item.get()?.width??"10%"}
-                    CSS={DEFAULT_CSS["full-bar"]}
-                  />
-                )}
-          </For>
+          <For each={trackedData} item={FullBarWrapped} />
       </Div>
     );
   }
