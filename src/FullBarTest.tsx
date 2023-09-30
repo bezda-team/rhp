@@ -117,6 +117,7 @@ const App = observer(() => {
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
                         <FullBar
                             index={index}
+                            data={plotData[index.get()]}
                             elements={fullBarElements}
                             width="200px"
                             decorationWidth="10%"

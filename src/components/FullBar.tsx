@@ -19,14 +19,15 @@ const Div = styled.div``;
 
 //============================================================= FULL BAR =================================================================
 
-const FullBar = ({index, order, width, decorationWidth, elements, id=undefined, CSS="", onClickHandler=undefined}: {index: Observable<number>, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id?: string, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement> }) => {
+const FullBar = ({index, data, order, width, decorationWidth, elements, id=undefined, CSS="", onClickHandler=undefined}: {index: Observable<number>, data: Observable<number[]>, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id?: string, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement> }) => {
     const {plotData, dataMax, orientation, theme, vars} = useContext(PlotContext);
 
     const trackedIndex = index.use()
+    const trackedData = data.use()
     
-    // const observedIndex = useObservable(index);
+    const observedIndex = useObservable(index);
     const observedOrder = useObservable(order);
-    const observedData = plotData[trackedIndex];
+    // const observedData = plotData[trackedIndex];
     const observedWidth = useObservable(width);
     const observedDecorationWidth = useObservable(decorationWidth);
 
@@ -69,7 +70,7 @@ const FullBar = ({index, order, width, decorationWidth, elements, id=undefined, 
     const trackedFullBarDecsList = useObservable(newFullBarDecs);
 
     return (
-        <BarContext.Provider value={{index: index, order: observedOrder, data: observedData, width: observedWidth, decorationWidth: observedDecorationWidth}}>
+        <BarContext.Provider value={{index: index, order: observedOrder, data: data, width: observedWidth, decorationWidth: observedDecorationWidth}}>
             <Div 
                 key={"full_bar_" + index.get()}
                 id={id??"full_bar_" + index.get()}
