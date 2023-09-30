@@ -92,7 +92,7 @@ const BarPlot = () => {
         className="bar-plot" 
         style={orientation.get()===0? {display: "flex", flexDirection: "column", alignItems: "center", width: width.get(), height: height.get(), overflow: "hidden"} : {display: "flex", flexDirection: "row", alignItems: "center", height: width.get(), width: height.get(), overflow: "hidden"}} 
         css={css`${CSS.get()["bar-plot"]}`}> 
-          <For each={trackedData}>
+          {/* <For each={trackedData}>
                 { item => (
                   <FullBar 
                     key={item.get()?.id}
@@ -106,7 +106,7 @@ const BarPlot = () => {
                     CSS={DEFAULT_CSS["full-bar"]}
                   />
                 )}
-          </For>
+          </For> */}
       </Div>
     );
   }

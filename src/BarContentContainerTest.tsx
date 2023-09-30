@@ -4,6 +4,7 @@ import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberI
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import BarContentContainer from './components/BarContentContainer';
 import BarContext from './components/BarContext';
+import PlotContext from './components/PlotContext';
 import { useContext } from 'react';
 
 const theme = extendBaseTheme({
@@ -14,7 +15,8 @@ const theme = extendBaseTheme({
 
 const App = () => {
 
-    const {index, data, dataMax, theme, orientation, vars, width, decorationWidth} = useContext(BarContext);
+    const {index, order, data, width, decorationWidth} = useContext(BarContext);
+    const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
     if (data.peek().length === 0){
         data.set([5]);
         dataMax.set(10);
@@ -70,39 +72,41 @@ const App = () => {
 
     return (
         <ChakraProvider >
-            <BarContext.Provider value={{index: index, data: data, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars, width: width, decorationWidth: decorationWidth}}>
-            <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-                <NumberInput defaultValue={5} min={1} max={20} onChange={(value) => data.set([parseInt(value)])}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-                <NumberInput defaultValue={1} min={1} max={25} onChange={(value) => index.set(parseInt(value))}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-                <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
-                    <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
+            <PlotContext.Provider value={{plotData: plotData, dataMax: dataMax, theme: theme, orientation: orientation, vars: vars}}>
+                <BarContext.Provider value={{index: index, order: order, data: data, width: width, decorationWidth: decorationWidth}}>
+                    <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
+                        <NumberInput defaultValue={5} min={1} max={20} onChange={(value) => data.set([parseInt(value)])}>
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        <NumberInput defaultValue={1} min={1} max={25} onChange={(value) => index.set(parseInt(value))}>
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
+                            <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
 
-                        {/* Props changed to work with legend For loop component */}
+                                {/* Props changed to work with legend For loop component */}
 
-                        {/* <BarContentContainer
-                            elements={contentElements}
-                            CSS="padding-right: 1rem;" 
-                            decorationWidth="100%" 
-                        /> */}
+                                {/* <BarContentContainer
+                                    elements={contentElements}
+                                    CSS="padding-right: 1rem;" 
+                                    decorationWidth="100%" 
+                                /> */}
+                            </div>
+                            {`Data: ` + data.get()?.length??`None`}
+                            {`\nDataMax: ` + dataMax.get()??`None`}
+                            {`\nVars: ` + vars.get()?.length??`None`}
+                        </div>
                     </div>
-                    {`Data: ` + data.get()?.length??`None`}
-                    {`\nDataMax: ` + dataMax.get()??`None`}
-                    {`\nVars: ` + vars.get()?.length??`None`}
-                </div>
-            </div>
-            </BarContext.Provider>
+                </BarContext.Provider>
+            </PlotContext.Provider>
         </ChakraProvider>
     )
 };

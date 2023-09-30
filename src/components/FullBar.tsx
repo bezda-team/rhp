@@ -5,10 +5,12 @@ import BarDecoration from './BarDecoration';
 import BarContentContainer from './BarContentContainer';
 import FullBarElementType from './types/FullBarElementType';
 import BarContext from './BarContext';
+import PlotContext from './PlotContext';
 import { useContext, useEffect } from 'react';
 import BarContentContainerElementType from './types/BarContentContainerElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import { For, useObservable, useSelector } from '@legendapp/state/react';
+import { For, useObservable, useSelector, useComputed } from '@legendapp/state/react';
+import { Observable } from '@legendapp/state';
 // import { Observable } from '@legendapp/state';
 
 enableReactUse();
@@ -17,11 +19,14 @@ const Div = styled.div``;
 
 //============================================================= FULL BAR =================================================================
 
-const FullBar = ({index, data, order, width, decorationWidth, elements, id=undefined, CSS="", onClickHandler=undefined}: {index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id?: string, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement> }) => {
-    const {dataMax, orientation, theme, vars} = useContext(BarContext);
+const FullBar = ({index, order, width, decorationWidth, elements, id=undefined, CSS="", onClickHandler=undefined}: {index: Observable<number>, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id?: string, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement> }) => {
+    const {plotData, dataMax, orientation, theme, vars} = useContext(PlotContext);
 
-    const observedIndex = useObservable(index);
-    const observedData = useObservable(data);
+    const trackedIndex = index.use()
+    
+    // const observedIndex = useObservable(index);
+    const observedOrder = useObservable(order);
+    const observedData = useObservable(plotData.get()[trackedIndex]);
     const observedWidth = useObservable(width);
     const observedDecorationWidth = useObservable(decorationWidth);
 
@@ -64,7 +69,7 @@ const FullBar = ({index, data, order, width, decorationWidth, elements, id=undef
     const trackedFullBarDecsList = useObservable(newFullBarDecs);
 
     return (
-        
+        <BarContext.Provider value={{index: index, order: observedOrder, data: observedData, width: observedWidth, decorationWidth: observedDecorationWidth}}>
             <Div 
                 key={"full_bar_" + index}
                 id={id??"full_bar_" + index}
@@ -76,6 +81,7 @@ const FullBar = ({index, data, order, width, decorationWidth, elements, id=undef
                 <For each={trackedContContainersList} item={BarContentContainer} />
                 <For each={trackedFullBarDecsList} item={BarDecoration} />
             </Div>
+        </BarContext.Provider>
     );
   }
 

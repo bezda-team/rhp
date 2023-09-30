@@ -4,22 +4,18 @@ import { Observable, observable } from '@legendapp/state';
 
 export type PlotContextType = {
     theme: Observable<object>,
-    data: Observable<Array<number[]>>,
+    plotData: Observable<Array<number[]>>,
     dataMax: Observable<number>,
     vars: Observable<Vars>,
-    width: Observable<string>,
-    decorationWidth: Observable<string>,
     orientation: Observable<number>,
 }
 
 const PlotContext = React.createContext<PlotContextType>(
     {
         theme: observable({}),
-        data: observable([]),
+        plotData: observable([]),
         dataMax: observable(0),
         vars: observable({} as Vars),
-        width: observable(""),
-        decorationWidth: observable(""),
         orientation: observable(0),
     }
 );
