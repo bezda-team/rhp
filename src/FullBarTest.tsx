@@ -113,11 +113,11 @@ const App = () => {
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
                         <FullBar
                             index={0}
-                            data={[7]}
+                            data={[2]}
                             elements={fullBarElements}
                             width="200px"
                             decorationWidth="10%"
-                            order={1}
+                            order={0}
                             CSS=""
                         />
                     </div>
