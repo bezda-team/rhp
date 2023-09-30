@@ -26,7 +26,7 @@ const FullBar = ({index, order, width, decorationWidth, elements, id=undefined, 
     
     // const observedIndex = useObservable(index);
     const observedOrder = useObservable(order);
-    const observedData = useObservable(plotData.get()[trackedIndex]);
+    const observedData = plotData[trackedIndex];
     const observedWidth = useObservable(width);
     const observedDecorationWidth = useObservable(decorationWidth);
 
@@ -71,8 +71,8 @@ const FullBar = ({index, order, width, decorationWidth, elements, id=undefined, 
     return (
         <BarContext.Provider value={{index: index, order: observedOrder, data: observedData, width: observedWidth, decorationWidth: observedDecorationWidth}}>
             <Div 
-                key={"full_bar_" + index}
-                id={id??"full_bar_" + index}
+                key={"full_bar_" + index.get()}
+                id={id??"full_bar_" + index.get()}
                 className={"full-bar" + (orientation.get()===0?" horizontal":" vertical")}
                 style={orientation.get()===0? {display: "flex", flexDirection: "row-reverse", alignItems: "center", width: "100%", height: width, overflow: "hidden", order: order} : {display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: width, overflow: "hidden", order: order}} 
                 css={css`${CSS}`} 

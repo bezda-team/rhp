@@ -37,9 +37,7 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
             Object.keys(vars).forEach((key) => {
                 length = vars[key].length;
                 const value = vars[key][trackedIndex < length? trackedIndex : trackedIndex%length];
-                console.log(value)
-                console.log(key)
-                // newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
+                newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
             });
         }
         const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");

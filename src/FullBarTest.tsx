@@ -106,7 +106,7 @@ const App = observer(() => {
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <NumberInput defaultValue={0} min={0} max={25} onChange={(value) => index.set(parseInt(value))}>
+                <NumberInput defaultValue={0} min={0} max={plotData.get().length-1} onChange={(value) => index.set(parseInt(value))}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -125,6 +125,7 @@ const App = observer(() => {
                         />
                     </div>
                     {`Index: ` + index.get()}
+                    {`PlotData: ` + plotData.get()}
                     {`\nDataMax: ` + dataMax.get()??`None`}
                 </div>
             </div>

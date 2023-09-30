@@ -14,12 +14,12 @@ enableReactUse();
 const Div = styled.div``;
 
 const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}>}) => {
+    const {index, data} = useContext(BarContext);
+    const {dataMax, theme, orientation, vars} = useContext(PlotContext);
 
     const renderCount = ++useRef(0).current;
     console.log("Bar render count: " + renderCount);
 
-    const {index, data} = useContext(BarContext);
-    const {dataMax, theme, orientation, vars} = useContext(PlotContext);
 
     const orientationValue = orientation.use()
     const id = item.id.use()
@@ -39,16 +39,12 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
 
     const sanitizedMarkup = useSelector(() => {
         console.log(trackedIndex)
-        const untrackedVars = vars.peek();
         let newMarkup = item.markup.get();
         if (item.markup.get() !== undefined){
             Object.keys(vars).forEach((key) => {
                 length = vars[key].length;
-                const value = vars.get()[key]
-                // const value = vars.get()[key][trackedIndex < length? trackedIndex : trackedIndex%length];
-                console.log(key)
-                console.log(value)
-                // newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
+                const value = vars.get()[key][trackedIndex < length? trackedIndex : trackedIndex%length];
+                newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
             });
         }
         const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");
