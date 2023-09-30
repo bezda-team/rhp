@@ -33,7 +33,7 @@ const App = () => {
         {
           type: "bar",
           order: 1,
-          css: "background-color: red; height: auto;",
+          css: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
           markup: "<div style='background-color: {{color}};height:100%'></div>",
         },
         {
@@ -47,13 +47,20 @@ const App = () => {
     return (
         <ChakraProvider >
             <BarContext.Provider value={{index: index, data: data, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars, width: width, decorationWidth: decorationWidth}}>
-            <div id="bar_plot" style={{width: "100%", height: "100%"}}>
-                <NumberInput defaultValue={7} min={5} max={20} onChange={(value) => data.set([parseInt(value)])}>
-                <NumberInputField />
-                <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                </NumberInputStepper>
+            <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
+                <NumberInput defaultValue={5} min={1} max={20} onChange={(value) => data.set([parseInt(value)])}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+                <NumberInput defaultValue={1} min={1} max={25} onChange={(value) => index.set(parseInt(value))}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                    </NumberInputStepper>
                 </NumberInput>
                 <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>

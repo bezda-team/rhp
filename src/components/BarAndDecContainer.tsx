@@ -7,7 +7,7 @@ import { Observable, observable } from '@legendapp/state';
 // import BarDecoration from './BarDecoration';
 import BarElementType from './types/BarElementType';
 import BarContext from './BarContext';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { observer, useSelector } from "@legendapp/state/react"
 import { For, useObservable, useObserve } from '@legendapp/state/react';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
@@ -18,6 +18,9 @@ const Div = styled.div``;
 
 const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}>}) => {
 
+    const renderCount = ++useRef(0).current;
+    console.log("Bar render count: " + renderCount);
+
     const {index, data, dataMax, theme, orientation, vars} = useContext(BarContext);
 
     const orientationValue = orientation.use()
@@ -26,17 +29,21 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     const CSS = item.CSS.use()
 
     const trackedData = useSelector(() => {
-       return orientation.get()===0? {width: data.get()[item.barIndex.get()]*100/dataMax.get() + "%", order: item.order.get(), height: "inherit"} : {height: data.get()[item.barIndex.get()]*100/dataMax.get() + "%", order: item.order.get(), width: "inherit"};
+       return orientation.get()===0? {flex: "0 0 " + data.get()[item.barIndex.get()]*100/dataMax.get() + "%", order: item.order.get(), height: "inherit"} : {flex: "0 0 " +  data.get()[item.barIndex.get()]*100/dataMax.get() + "%", order: item.order.get(), width: "inherit"};
     })
 
+    const trackedIndex = index.use()
+
     const sanitizedMarkup = useSelector(() => {
-        if (item.markup !== undefined){
-        Object.keys(vars).forEach((key) => {
-            const value = vars[key][index.get()??item.barIndex];
-            item.markup.set(item.markup.get()?.replace(`{{${key}}}`, value.toString()));
-        });
+        console.log(trackedIndex)
+        let newMarkup = item.markup.get();
+        if (item.markup.get() !== undefined){
+            Object.keys(vars).forEach((key) => {
+                const value = vars[key][trackedIndex??item.barIndex];
+                newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
+            });
         }
-        const sanitizedMarkup = DOMPurify.sanitize(item.markup.get()??"");
+        const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");
         return sanitizedMarkup;
     });
 
@@ -53,20 +60,31 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
 }
 
 const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string | undefined, order: number | undefined, width: string, CSS: string | undefined, markup: string | undefined}>}) => {
-
+    const renderCount = ++useRef(0).current;
+    console.log("BarDecoration render count: " + renderCount);
     const {index, theme, orientation, vars} = useContext(BarContext); 
 
-    Object.keys(vars).forEach((key) => {
-        const value = vars[key][index.get()??item.decIndex];
-        item.markup.set((item.markup.get()??"").replace(`{{${key}}}`, value.toString()));
+    const trackedIndex = index.use()
+
+    const sanitizedMarkup = useSelector(() => {
+        console.log(trackedIndex)
+        let newMarkup = item.markup.get();
+        if (item.markup.get() !== undefined){
+            Object.keys(vars).forEach((key) => {
+                const value = vars[key][trackedIndex??item.decIndex];
+                newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
+            });
+        }
+        const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");
+        return sanitizedMarkup;
     });
-    const sanitizedMarkup = DOMPurify.sanitize(item.markup.get()??"");
+
     return (
         <Div 
             id={"bar-dec-" + item.decIndex.get()} 
             className={"bar-decoration" + (orientation.get()===0?" horizontal":" vertical")}  
             dangerouslySetInnerHTML={{__html: sanitizedMarkup }} 
-            style={orientation.get()===0? (item.width.get()?{order: item.order.get(), width: item.width.get()}:{order: item.order.get()}):(item.width.get()?{order: item.order.get(), height: item.width.get()}:{order: item.order.get()})} 
+            style={orientation.get()===0? (item.width.get()?{order: item.order.get(), flex: "0 0 " + item.width.get()}:{order: item.order.get()}):(item.width.get()?{order: item.order.get(), flex: "0 0 " + item.width.get()}:{order: item.order.get()})} 
             css={css`${item.CSS.get()}`} 
             // onClick={onClickHandler??undefined}
         />
@@ -74,6 +92,8 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
 }
 
 const BarAndDecContainer = ({barIndex, elements, CSS="", decorationWidth="10%", order=1, index=undefined, onClickHandler=undefined}: {barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, index?: number, onClickHandler?: React.MouseEventHandler<HTMLDivElement> }) => {
+    const renderCount = ++useRef(0).current;
+    console.log("BarAndDecContainer render count: " + renderCount);
     const {data, dataMax, theme, orientation} = useContext(BarContext);
 
     // if (data.peek().length === 0){
@@ -133,7 +153,7 @@ const BarAndDecContainer = ({barIndex, elements, CSS="", decorationWidth="10%", 
           key={"bar_dec_cont-" + barIndex}
           id={"bar_dec_cont-" + barIndex} 
           className="bar-dec-cont" 
-          style={orientation.get()===0? {display: "flex", flexDirection: "row", width: "100%", order: order, height: "inherit", alignItems: "center"} : {display: "flex", flexDirection: "column-reverse", height: "100%", order: order, width: "inherit", alignItems: "center"}} 
+          style={orientation.get()===0? {display: "flex", flexDirection: "row", width: "100%", order: order, height: "inherit", alignItems: "center", overflowX : "visible"} : {display: "flex", flexDirection: "column-reverse", height: "100%", order: order, width: "inherit", alignItems: "center", overflowY : "visible"}} 
           css={css`${CSS}`} 
           // onClick={onClickHandler??undefined}
           >
