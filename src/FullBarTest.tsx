@@ -1,10 +1,12 @@
 import BarElementType from './components/types/BarElementType';
-import PlotState from './PlotStore';
+import BarContentContainerElementType from './components/types/BarContentContainerElementType';
 import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
-import BarAndDecContainer from './components/BarAndDecContainer';
+import FullBar from './components/FullBar';
 import BarContext from './components/BarContext';
 import { useContext } from 'react';
+import { useSelector } from '@legendapp/state/react';
+import FullBarElementType from './components/types/FullBarElementType';
 
 const theme = extendBaseTheme({
   components: {
@@ -15,10 +17,15 @@ const theme = extendBaseTheme({
 const App = () => {
 
     const {index, data, dataMax, theme, orientation, vars, width, decorationWidth} = useContext(BarContext);
+
+
     if (data.peek().length === 0){
         data.set([5]);
         dataMax.set(10);
     }
+
+    // const trackedData = useSelector(data);
+
 
     if ((vars.peek().keys?.length??0) === 0){
         console.log("undefined vars")
@@ -44,6 +51,46 @@ const App = () => {
         }
       ];
 
+      const contentElements: BarContentContainerElementType[] = [
+        {
+          type: "bar-dec-container",
+          elements: elements,
+          CSS: "background: none;",
+          decorationWidth: "10%",
+          order: 1,
+        }, 
+        // {
+        //   type: "decoration",
+        //   order: 0,
+        //   css: "background-color: slategray; color: white; div {text-align: left;}",
+        //   markup: "<div style='width: fit-content;'>My text decoration</div>",
+        //   onClickHandler: () => console.log("decoration clicked")
+        // },
+        // {
+        //   type: "decoration",
+        //   order: 2,
+        //   css: "background-color: slategray; color: white; div {text-align: left;}",
+        //   markup: "<div style='width: fit-content;'>My text decoration</div>",
+        //   onClickHandler: () => console.log("decoration clicked")
+        // }
+      ];
+
+      const fullBarElements: FullBarElementType[] = [
+        {
+          type: "bar-content-container",
+          elements: contentElements,
+          decorationWidth: "10%",
+          order: 1,
+          CSS:"padding-right: 1rem;"
+        }, 
+        {
+          type: "decoration",
+          order: 0,
+          css: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 0.5rem; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
+          markup: "<div style='width: fit-content;'>{{bar-label}}</div>",
+        },
+      ];
+
     return (
         <ChakraProvider >
             <BarContext.Provider value={{index: index, data: data, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars, width: width, decorationWidth: decorationWidth}}>
@@ -55,7 +102,7 @@ const App = () => {
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <NumberInput defaultValue={1} min={0} max={25} onChange={(value) => index.set(parseInt(value))}>
+                <NumberInput defaultValue={1} min={1} max={25} onChange={(value) => index.set(parseInt(value))}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -64,17 +111,15 @@ const App = () => {
                 </NumberInput>
                 <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
-
-                        {/* Following eeds to change to work with new BarAndDecContainer */}
-
-                        {/* <BarAndDecContainer
-                            barIndex={0}
+                        <FullBar
                             index={0}
-                            elements={elements}
+                            data={[7]}
+                            elements={fullBarElements}
+                            width="200px"
                             decorationWidth="10%"
                             order={1}
                             CSS=""
-                        /> */}
+                        />
                     </div>
                     {`Data: ` + data.get()?.length??`None`}
                     {`\nDataMax: ` + dataMax.get()??`None`}

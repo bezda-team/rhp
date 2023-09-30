@@ -1,8 +1,8 @@
 import BarElementType from './components/types/BarElementType';
-import PlotState from './PlotStore';
+import BarContentContainerElementType from './components/types/BarContentContainerElementType';
 import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
-import BarAndDecContainer from './components/BarAndDecContainer';
+import BarContentContainer from './components/BarContentContainer';
 import BarContext from './components/BarContext';
 import { useContext } from 'react';
 
@@ -44,6 +44,30 @@ const App = () => {
         }
       ];
 
+      const contentElements: BarContentContainerElementType[] = [
+        {
+          type: "bar-dec-container",
+          elements: elements,
+          CSS: "background: none;",
+          decorationWidth: "10%",
+          order: 1,
+        }, 
+        // {
+        //   type: "decoration",
+        //   order: 0,
+        //   css: "background-color: slategray; color: white; div {text-align: left;}",
+        //   markup: "<div style='width: fit-content;'>My text decoration</div>",
+        //   onClickHandler: () => console.log("decoration clicked")
+        // },
+        // {
+        //   type: "decoration",
+        //   order: 2,
+        //   css: "background-color: slategray; color: white; div {text-align: left;}",
+        //   markup: "<div style='width: fit-content;'>My text decoration</div>",
+        //   onClickHandler: () => console.log("decoration clicked")
+        // }
+      ];
+
     return (
         <ChakraProvider >
             <BarContext.Provider value={{index: index, data: data, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars, width: width, decorationWidth: decorationWidth}}>
@@ -55,7 +79,7 @@ const App = () => {
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <NumberInput defaultValue={1} min={0} max={25} onChange={(value) => index.set(parseInt(value))}>
+                <NumberInput defaultValue={1} min={1} max={25} onChange={(value) => index.set(parseInt(value))}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -64,17 +88,11 @@ const App = () => {
                 </NumberInput>
                 <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
-
-                        {/* Following eeds to change to work with new BarAndDecContainer */}
-
-                        {/* <BarAndDecContainer
-                            barIndex={0}
-                            index={0}
-                            elements={elements}
-                            decorationWidth="10%"
-                            order={1}
-                            CSS=""
-                        /> */}
+                        <BarContentContainer
+                            elements={contentElements}
+                            CSS="padding-right: 1rem;" 
+                            decorationWidth="100%" 
+                        />
                     </div>
                     {`Data: ` + data.get()?.length??`None`}
                     {`\nDataMax: ` + dataMax.get()??`None`}
