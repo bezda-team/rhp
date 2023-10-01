@@ -6,7 +6,7 @@ import { Observable } from '@legendapp/state';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
 import { useContext, useRef } from 'react';
-import { useSelector } from "@legendapp/state/react"
+import { useSelector, useObserve } from "@legendapp/state/react"
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 
 enableReactUse();
@@ -22,6 +22,7 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
     const trackedIndex = index.use()
     const CSS = item.CSS.use()
     const decIndex = item.decIndex.use()
+
 
     const trackedStyle = useSelector(() => {
         const tempOrder = item.order.get();
@@ -42,6 +43,26 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
         }
         const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");
         return sanitizedMarkup;
+    });
+
+    useObserve(() => {
+      console.log("index changed!:" + index.get())
+    });
+
+    useObserve(() => {
+      console.log("CSS changed!:" + item.CSS.get())
+    });
+
+    useObserve(() => {
+      console.log("decIndex changed!:" + item.decIndex.get())
+    });
+
+    useObserve(() => {
+      console.log("trackedStyle changed!:" + trackedStyle)
+    });
+
+    useObserve(() => {
+      console.log("sanitizedMarkup changed!:" + sanitizedMarkup)
     });
 
     return (

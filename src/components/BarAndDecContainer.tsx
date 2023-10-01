@@ -19,6 +19,7 @@ const Div = styled.div``;
 const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
     const renderCount = ++useRef(0).current;
     console.log("BarAndDecContainer render count: " + renderCount);
+    
     const {dataMax, theme, orientation} = useContext(PlotContext);
     const {data} = useContext(BarContext);
 

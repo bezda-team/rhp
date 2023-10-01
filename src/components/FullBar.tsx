@@ -6,10 +6,10 @@ import BarContentContainer from './BarContentContainer';
 import FullBarElementType from './types/FullBarElementType';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import BarContentContainerElementType from './types/BarContentContainerElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import { For, useObservable, useSelector, useComputed } from '@legendapp/state/react';
+import { For, useObservable, useSelector, useComputed, observer } from '@legendapp/state/react';
 import { Observable } from '@legendapp/state';
 // import { Observable } from '@legendapp/state';
 
@@ -22,8 +22,8 @@ const Div = styled.div``;
 const FullBar = ({index, data, order, width, decorationWidth, elements, id=undefined, CSS="", onClickHandler=undefined}: {index: Observable<number>, data: Observable<number[]>, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id?: string, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement> }) => {
     const {plotData, dataMax, orientation, theme, vars} = useContext(PlotContext);
 
-    const trackedIndex = index.use()
-    const trackedData = data.use()
+    const renderCount = ++useRef(0).current;
+    console.log("FullBar render count: " + renderCount);
     
     const observedIndex = useObservable(index);
     const observedOrder = useObservable(order);

@@ -4,7 +4,7 @@ import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberI
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import FullBar from './components/FullBar';
 import PlotContext from './components/PlotContext';
-import { useContext } from 'react';
+import { useContext, useMemo, useRef } from 'react';
 import { useObservable, useSelector, observer } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
@@ -17,28 +17,25 @@ const theme = extendBaseTheme({
   },
 })
 
-const App = observer(() => {
+const App = () => {
 
-    const {plotData, dataMax, theme, orientation, vars,} = useContext(PlotContext);
+    const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
 
     const index = useObservable(0);
 
-    if (plotData.peek().length === 0){
-        plotData.set([[2], [2], [3], [1], [5], [9], [7]]);
-        dataMax.set(10);
-    }
-
     // const trackedData = useSelector(data);
+    const renderCount = ++useRef(0).current;
+    console.log("Test APP: " + renderCount);
 
-
-    if ((vars.peek().keys?.length??0) === 0){
-        console.log("undefined vars")
+    useMemo(() => {
+        plotData.set([[1], [2], [6], [2], [5], [9], [7]]);
+        dataMax.set(10);
         vars.set({
         "color": ["orange", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "gray", "black"],
         "bar-label": ["label 1", "label 2", "label 3", "label 4", "label 5", "label 6", "label 7", "label 8", "label 9", "label 10"],
         "bar-val": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       });
-    }
+    }, []);
 
     const elements: BarElementType[] = [
         {
@@ -99,7 +96,7 @@ const App = observer(() => {
         <ChakraProvider >
             <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
             <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-                <NumberInput defaultValue={5} min={1} max={20} onChange={(value) => plotData.set([[parseInt(value)],  [2], [3], [1], [5], [9], [7]])}>
+                <NumberInput defaultValue={plotData[index.get()].get()[0]} min={1} max={20} onChange={(value) => plotData[index.get()].set([parseInt(value)])}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -126,13 +123,13 @@ const App = observer(() => {
                         />
                     </div>
                     {`Index: ` + index.get()}
-                    {`PlotData: ` + plotData.get()}
+                    {`PlotData: ` + plotData[index.get()].get()}
                     {`\nDataMax: ` + dataMax.get()??`None`}
                 </div>
             </div>
             </PlotContext.Provider>
         </ChakraProvider>
     )
-})
+}
 
 export default App;

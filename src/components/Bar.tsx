@@ -27,12 +27,13 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     const CSS = item.CSS.use()
 
     const trackedData = useSelector(() => {
-        const tempDataMax = dataMax.get();
-        const tempData = data.get();
-        const tempBarIndex = item.barIndex.get();
-        const tempOrder = item.order.get();
+      const tempDataMax = dataMax.get();
+      console.log("data: " + data.get())
+      const tempData = data.get();
+      const tempBarIndex = item.barIndex.get();
+      const tempOrder = item.order.get();
 
-        return orientation.get()===0? {flex: "0 0 " + (tempData[tempBarIndex] > tempDataMax? tempDataMax: tempData[tempBarIndex])*100/tempDataMax + "%", order: tempOrder, height: "inherit"} : {flex: "0 0 " +  (tempData[tempBarIndex] > tempDataMax? tempDataMax: tempData[tempBarIndex])*100/tempDataMax + "%", order: tempOrder, width: "inherit"};
+      return orientation.get()===0? {flex: "0 0 " + (tempData[tempBarIndex] > tempDataMax? tempDataMax: tempData[tempBarIndex])*100/tempDataMax + "%", order: tempOrder, height: "inherit"} : {flex: "0 0 " +  (tempData[tempBarIndex] > tempDataMax? tempDataMax: tempData[tempBarIndex])*100/tempDataMax + "%", order: tempOrder, width: "inherit"};
     })
 
     const trackedIndex = index.use()

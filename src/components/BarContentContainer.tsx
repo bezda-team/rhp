@@ -19,8 +19,10 @@ const Div = styled.div``;
 const BarContentContainer = ({item}:{item: Observable<{id: string, elements: BarContentContainerElementType[], order?: number, decorationWidth?: string, CSS?: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
   const {orientation} = useContext(PlotContext);
 
+  const renderCount = ++useRef(0).current;
+    console.log("BarContentContainer render count: " + renderCount);
+
   const orientationValue = orientation.use()
-  const trackedOrder = item.order.use();
   const trackedCSS = item.CSS.use();
   const elements = item.elements.use();
   const decorationWidth = item.decorationWidth.use();
