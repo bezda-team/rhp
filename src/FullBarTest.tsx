@@ -33,7 +33,7 @@ const App = () => {
         vars.set({
         "color": ["orange", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "gray", "black"],
         "bar-label": ["label 1", "label 2", "label 3", "label 4", "label 5", "label 6", "label 7", "label 8", "label 9", "label 10"],
-        "bar-val": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "bar-val": plotData.get().flat(),
       });
     }, []);
 
@@ -92,18 +92,31 @@ const App = () => {
         },
       ];
 
+
+      const newBarObservable = useObservable({
+                                            id: "full_bar_a_1",
+                                            index: 0,
+                                            data: plotData[0].get(),
+                                            order: 0,
+                                            width: "100%",
+                                            decorationWidth: "10%",
+                                            elements: fullBarElements,
+                                            CSS: "",
+                                        });
+
+
     return (
         <ChakraProvider >
             <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
             <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-                <NumberInput defaultValue={plotData[index.get()].get()[0]} min={1} max={20} onChange={(value) => plotData[index.get()].set([parseInt(value)])}>
+                <NumberInput defaultValue={newBarObservable.data.get()[0]} min={1} max={20} onChange={(value) => newBarObservable.data.set([parseInt(value)])}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <NumberInput defaultValue={0} min={0} max={plotData.get().length-1} onChange={(value) => index.set(parseInt(value))}>
+                <NumberInput defaultValue={0} min={0} max={20} onChange={(value) => newBarObservable.index.set(parseInt(value))}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -112,15 +125,7 @@ const App = () => {
                 </NumberInput>
                 <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
-                        <FullBar
-                            index={index}
-                            data={plotData[index.get()]}
-                            elements={fullBarElements}
-                            width="200px"
-                            decorationWidth="10%"
-                            order={1}
-                            CSS=""
-                        />
+                        <FullBar item={newBarObservable} />
                     </div>
                     {`Index: ` + index.get()}
                     {`PlotData: ` + plotData[index.get()].get()}

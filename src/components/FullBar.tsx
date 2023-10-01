@@ -19,28 +19,28 @@ const Div = styled.div``;
 
 //============================================================= FULL BAR =================================================================
 
-const FullBar = ({index, data, order, width, decorationWidth, elements, id=undefined, CSS="", onClickHandler=undefined}: {index: Observable<number>, data: Observable<number[]>, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id?: string, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement> }) => {
-    const {plotData, dataMax, orientation, theme, vars} = useContext(PlotContext);
+const FullBar = ({item} : {item: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}>}) => {
+    
+    const {orientation} = useContext(PlotContext);
+
+    const trackCSS = item.CSS.use();
+    const trackOrientation = orientation.use();
+    const trackWidth = item.width.use();
+    const trackOrder = item.order.use();
+    const trackId = item.id.use();
 
     const renderCount = ++useRef(0).current;
     console.log("FullBar render count: " + renderCount);
-    
-    const observedIndex = useObservable(index);
-    const observedOrder = useObservable(order);
-    // const observedData = plotData[trackedIndex];
-    const observedWidth = useObservable(width);
-    const observedDecorationWidth = useObservable(decorationWidth);
 
     useEffect(() => {
-        console.log("---->Fullbar " + index + " mounted");
+        console.log("---->Fullbar " + item.index.peek() + " mounted");
         return () => {
-            console.log("---->Fullbar " + index + " unmounted");
+            console.log("---->Fullbar " + item.index.peek() + " unmounted");
         }
     }, []);
 
-
     const {newContContainers, newFullBarDecs} = useSelector(() => {
-        const untrackedElements = elements;
+        const untrackedElements = item.elements.peek();
         const newContContainers : {id: string, elements: BarContentContainerElementType[], order?: number, decorationWidth?: string, CSS?: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement> }[] = [];
         const newFullBarDecs : {decIndex: number, id: string | undefined, order: number | undefined, width: string, CSS: string | undefined, markup: string | undefined}[] = []; 
         untrackedElements.forEach((element, i) => {
@@ -57,7 +57,7 @@ const FullBar = ({index, data, order, width, decorationWidth, elements, id=undef
                                 id: element.id,
                                 decIndex: i, 
                                 order: element.order,
-                                width: decorationWidth,
+                                width: item.decorationWidth.peek(),
                                 CSS: element.css, 
                                 markup: element.markup
                               });
@@ -70,13 +70,13 @@ const FullBar = ({index, data, order, width, decorationWidth, elements, id=undef
     const trackedFullBarDecsList = useObservable(newFullBarDecs);
 
     return (
-        <BarContext.Provider value={{index: index, order: observedOrder, data: data, width: observedWidth, decorationWidth: observedDecorationWidth}}>
+        <BarContext.Provider value={{index: item.index, order: item.order, data: item.data, width: item.width, decorationWidth: item.decorationWidth}}>
             <Div 
-                key={"full_bar_" + index.get()}
-                id={id??"full_bar_" + index.get()}
+                key={"full_bar_" + item.index.peek()}
+                id={trackId??"full_bar_" + item.index.peek()}
                 className={"full-bar" + (orientation.get()===0?" horizontal":" vertical")}
-                style={orientation.get()===0? {display: "flex", flexDirection: "row-reverse", alignItems: "center", width: "100%", height: width, overflow: "hidden", order: order} : {display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: width, overflow: "hidden", order: order}} 
-                css={css`${CSS}`} 
+                style={orientation.get()===0? {display: "flex", flexDirection: "row-reverse", alignItems: "center", width: "100%", height: trackWidth, overflow: "hidden", order: trackOrder} : {display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: trackWidth, overflow: "hidden", order: trackOrder}} 
+                css={css`${trackCSS}`}
                 // onClick={onClickHandler??undefined}
             >
                 <For each={trackedContContainersList} item={BarContentContainer} />
