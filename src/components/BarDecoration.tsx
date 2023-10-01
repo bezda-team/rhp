@@ -32,7 +32,7 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
     })
 
     const sanitizedMarkup = useSelector(() => {
-        console.log(trackedIndex)
+        // console.log(trackedIndex)
         let newMarkup = item.markup.get();
         if (item.markup.get() !== undefined){
             Object.keys(vars).forEach((key) => {
@@ -45,25 +45,25 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
         return sanitizedMarkup;
     });
 
-    useObserve(() => {
-      console.log("index changed!:" + index.get())
-    });
+    // useObserve(() => {
+    //   console.log("index changed!:" + index.get())
+    // });
 
-    useObserve(() => {
-      console.log("CSS changed!:" + item.CSS.get())
-    });
+    // useObserve(() => {
+    //   console.log("CSS changed!:" + item.CSS.get())
+    // });
 
-    useObserve(() => {
-      console.log("decIndex changed!:" + item.decIndex.get())
-    });
+    // useObserve(() => {
+    //   console.log("decIndex changed!:" + item.decIndex.get())
+    // });
 
-    useObserve(() => {
-      console.log("trackedStyle changed!:" + trackedStyle)
-    });
+    // useObserve(() => {
+    //   console.log("trackedStyle changed!:" + trackedStyle)
+    // });
 
-    useObserve(() => {
-      console.log("sanitizedMarkup changed!:" + sanitizedMarkup)
-    });
+    // useObserve(() => {
+    //   console.log("sanitizedMarkup changed!:" + sanitizedMarkup)
+    // });
 
     return (
         <Div 

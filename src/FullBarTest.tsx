@@ -100,7 +100,7 @@ const App = () => {
                                             order: 0,
                                             width: "100%",
                                             decorationWidth: "10%",
-                                            elements: fullBarElements,
+                                            barElements: fullBarElements,
                                             CSS: "",
                                         });
 

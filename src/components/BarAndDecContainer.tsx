@@ -19,7 +19,7 @@ const Div = styled.div``;
 const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
     const renderCount = ++useRef(0).current;
     console.log("BarAndDecContainer render count: " + renderCount);
-    
+
     const {dataMax, theme, orientation} = useContext(PlotContext);
     const {data} = useContext(BarContext);
 
@@ -29,7 +29,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
     const order = item.order.use()
     const CSS = item.CSS.use()
 
-    const newData = useSelector(() => {
+    const trackedData = useObservable(() => {
         const untrackedData = data.peek();
         const newData : {id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}[] = [];
         untrackedData.forEach((value, i) => {
@@ -55,7 +55,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
         return newData;
     });
 
-      const trackedData = useObservable(newData);
+    //   const trackedData = useObservable(newData);
 
       const decorationsList = useSelector(() => {
           const untrackedElements = elements;

@@ -19,7 +19,7 @@ const Div = styled.div``;
 
 //============================================================= FULL BAR =================================================================
 
-const FullBar = ({item} : {item: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}>}) => {
+const FullBar = ({item} : {item: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, barElements: FullBarElementType[], id: string, CSS:string}>}) => {
     
     const {orientation} = useContext(PlotContext);
 
@@ -40,7 +40,7 @@ const FullBar = ({item} : {item: Observable<{index: number, data: number[], orde
     }, []);
 
     const {newContContainers, newFullBarDecs} = useSelector(() => {
-        const untrackedElements = item.elements.peek();
+        const untrackedElements = item.barElements.peek();
         const newContContainers : {id: string, elements: BarContentContainerElementType[], order?: number, decorationWidth?: string, CSS?: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement> }[] = [];
         const newFullBarDecs : {decIndex: number, id: string | undefined, order: number | undefined, width: string, CSS: string | undefined, markup: string | undefined}[] = []; 
         untrackedElements.forEach((element, i) => {

@@ -28,7 +28,7 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
 
     const trackedData = useSelector(() => {
       const tempDataMax = dataMax.get();
-      console.log("data: " + data.get())
+      // console.log("data: " + data.get())
       const tempData = data.get();
       const tempBarIndex = item.barIndex.get();
       const tempOrder = item.order.get();
@@ -39,7 +39,7 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     const trackedIndex = index.use()
 
     const sanitizedMarkup = useSelector(() => {
-        console.log(trackedIndex)
+        // console.log(trackedIndex)
         let newMarkup = item.markup.get();
         if (item.markup.get() !== undefined){
             Object.keys(vars).forEach((key) => {
