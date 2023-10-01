@@ -136,7 +136,7 @@ const BarPlot = () => {
                                 order: i,
                                 width: "12%",
                                 decorationWidth: "10%",
-                                barElements: opaqueObject(fullBarElements),
+                                barElements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
                                 CSS: "margin-top: 0.5rem; margin-bottom: 0.5rem;",
                               });
       });
