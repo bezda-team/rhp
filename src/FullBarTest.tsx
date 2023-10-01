@@ -3,10 +3,13 @@ import BarContentContainerElementType from './components/types/BarContentContain
 import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import FullBar from './components/FullBar';
-import BarContext from './components/BarContext';
-import { useContext } from 'react';
-import { useSelector } from '@legendapp/state/react';
+import PlotContext from './components/PlotContext';
+import { useContext, useMemo, useRef } from 'react';
+import { useObservable, useSelector, observer } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
+import { enableReactUse } from '@legendapp/state/config/enableReactUse';
+
+enableReactUse();
 
 const theme = extendBaseTheme({
   components: {
@@ -16,25 +19,23 @@ const theme = extendBaseTheme({
 
 const App = () => {
 
-    const {index, data, dataMax, theme, orientation, vars, width, decorationWidth} = useContext(BarContext);
+    const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
 
-
-    if (data.peek().length === 0){
-        data.set([5]);
-        dataMax.set(10);
-    }
+    const index = useObservable(0);
 
     // const trackedData = useSelector(data);
+    const renderCount = ++useRef(0).current;
+    console.log("Test APP: " + renderCount);
 
-
-    if ((vars.peek().keys?.length??0) === 0){
-        console.log("undefined vars")
+    useMemo(() => {
+        plotData.set([[1], [2], [6], [2], [5], [9], [7]]);
+        dataMax.set(10);
         vars.set({
         "color": ["orange", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "gray", "black"],
         "bar-label": ["label 1", "label 2", "label 3", "label 4", "label 5", "label 6", "label 7", "label 8", "label 9", "label 10"],
-        "bar-val": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "bar-val": plotData.get().flat(),
       });
-    }
+    }, []);
 
     const elements: BarElementType[] = [
         {
@@ -91,18 +92,31 @@ const App = () => {
         },
       ];
 
+
+      const newBarObservable = useObservable({
+                                            id: "full_bar_a_1",
+                                            index: 0,
+                                            data: plotData[0].get(),
+                                            order: 0,
+                                            width: "100%",
+                                            decorationWidth: "10%",
+                                            barElements: fullBarElements,
+                                            CSS: "",
+                                        });
+
+
     return (
         <ChakraProvider >
-            <BarContext.Provider value={{index: index, data: data, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars, width: width, decorationWidth: decorationWidth}}>
+            <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
             <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-                <NumberInput defaultValue={5} min={1} max={20} onChange={(value) => data.set([parseInt(value)])}>
+                <NumberInput defaultValue={newBarObservable.data.get()[0]} min={1} max={20} onChange={(value) => newBarObservable.data.set([parseInt(value)])}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <NumberInput defaultValue={1} min={1} max={25} onChange={(value) => index.set(parseInt(value))}>
+                <NumberInput defaultValue={0} min={0} max={20} onChange={(value) => newBarObservable.index.set(parseInt(value))}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -111,24 +125,16 @@ const App = () => {
                 </NumberInput>
                 <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
-                        <FullBar
-                            index={0}
-                            data={[7]}
-                            elements={fullBarElements}
-                            width="200px"
-                            decorationWidth="10%"
-                            order={1}
-                            CSS=""
-                        />
+                        <FullBar item={newBarObservable} />
                     </div>
-                    {`Data: ` + data.get()?.length??`None`}
+                    {`Index: ` + index.get()}
+                    {`PlotData: ` + plotData[index.get()].get()}
                     {`\nDataMax: ` + dataMax.get()??`None`}
-                    {`\nVars: ` + vars.get()?.length??`None`}
                 </div>
             </div>
-            </BarContext.Provider>
+            </PlotContext.Provider>
         </ChakraProvider>
     )
-};
+}
 
 export default App;
