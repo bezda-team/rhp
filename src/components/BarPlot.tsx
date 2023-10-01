@@ -112,18 +112,6 @@ const BarPlot = () => {
                 },
               ];
 
-    //// Single bar props observable
-    // const newBarObservable = useObservable({
-    //                                       id: "full_bar_a_1",
-    //                                       index: 0,
-    //                                       data: plotData[0].get(),
-    //                                       order: 0,
-    //                                       width: "100%",
-    //                                       decorationWidth: "10%",
-    //                                       elements: fullBarElements,
-    //                                       CSS: "",
-    //                                   });
-
     const trackedBarsData = useObservable(() => {
       const untrackedData = plotData.peek();
       const newBarsDataTemp : {index: number, data: number[], order: number, width: string, decorationWidth: string, barElements: FullBarElementType[], id: string, CSS:string}[] = [];
@@ -137,7 +125,7 @@ const BarPlot = () => {
                                 width: "12%",
                                 decorationWidth: "10%",
                                 barElements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
-                                CSS: "margin-top: 0.5rem; margin-bottom: 0.5rem;",
+                                CSS: "padding-top: 0.5rem; padding-bottom: 0.5rem; transition: all 0.5s ease-in-out;",
                               });
       });
       return newBarsDataTemp;
@@ -147,6 +135,7 @@ const BarPlot = () => {
       <ChakraProvider >
           <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
             <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
+              {`Select Bar:`}
               <NumberInput defaultValue={index.get()} min={0} max={trackedBarsData.get().length} onChange={(value) => index.set(parseInt(value))}>
                 <NumberInputField />
                 <NumberInputStepper>
@@ -154,6 +143,7 @@ const BarPlot = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
+              {`Change Bar Value:`}
               <NumberInput defaultValue={trackedBarsData[index.get()].data.get()[0]} min={1} max={20} onChange={(value) => trackedBarsData[index.get()].data.set([parseInt(value)])}>
                 <NumberInputField />
                 <NumberInputStepper>
@@ -161,6 +151,7 @@ const BarPlot = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
+              {`Change Bar Parameter Selection Index:`}
               <NumberInput defaultValue={0} min={0} max={20} onChange={(value) => trackedBarsData[index.get()].index.set(parseInt(value))}>
                 <NumberInputField />
                 <NumberInputStepper>
@@ -168,8 +159,17 @@ const BarPlot = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
+              {`Change Bar Order:`}
+              <NumberInput defaultValue={trackedBarsData[index.get()].order.get()} min={0} max={20} onChange={(value) => trackedBarsData[index.get()].order.set(parseInt(value))}>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
-                <div id={"full_bar_plot-1"} style={{width: "100%", height: "600px"}}>
+                {/* <div id={"full_bar_plot-1"} style={{width: "100%", height: "600px", display: "flex", flexDirection: "column"}}> */}
+                <div id={"full_bar_plot-1"} style={{width: "100%", height: "600px", position: "relative"}}>
                   <For each={trackedBarsData} item={FullBar} />
                 </div>
                   {`Index: ` + index.get()}

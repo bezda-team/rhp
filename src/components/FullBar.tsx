@@ -75,8 +75,8 @@ const FullBar = ({item} : {item: Observable<{index: number, data: number[], orde
                 key={"full_bar_" + item.index.peek()}
                 id={trackId??"full_bar_" + item.index.peek()}
                 className={"full-bar" + (orientation.get()===0?" horizontal":" vertical")}
-                style={orientation.get()===0? {display: "flex", flexDirection: "row-reverse", alignItems: "center", width: "100%", height: trackWidth, overflow: "hidden", order: trackOrder} : {display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: trackWidth, overflow: "hidden", order: trackOrder}} 
-                css={css`${trackCSS}`}
+                style={orientation.get()===0? {display: "flex", flexDirection: "row-reverse", alignItems: "center", width: "100%", height: trackWidth, overflow: "hidden", order: trackOrder, position: "absolute", left: "0", top: "calc(" + trackWidth + "*" + trackOrder + ")" } : {display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: trackWidth, overflow: "hidden", order: trackOrder, position: "absolute", bottom: "0", left: "calc(" + trackWidth + "*" + trackOrder + ")"}} 
+                css={css`${trackCSS}`} // Consider moving the props in the above style starting from 'position' to this css prop to allow for overriding
                 // onClick={onClickHandler??undefined}
             >
                 <For each={trackedContContainersList} item={BarContentContainer} />
