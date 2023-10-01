@@ -17,6 +17,7 @@ const theme = extendBaseTheme({
   },
 })
 
+
 export const DEFAULT_CSS = {
     "bar-plot": "",
     "full-bar": "&.horizontal { padding-top: 0.5rem; padding-bottom: 0.5rem;} &.vertical {padding-left: 0.5rem; padding-right: 0.5rem;}",
@@ -35,12 +36,19 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
-type TrackedData = {
+type BarData = {
     id: string,
     index: number,
-    barConfig: FullBarElementType[],
-    width: string,
-    data: number[],
+    data: number[], 
+    dataMax: number, 
+    theme: object, 
+    barConfig: FullBarElementType[], 
+    width: string,  
+    CSS: PlotCSS, 
+    markup: object, 
+    orientation: number, 
+    vars: Vars,
+    order: number,
 }
 
 const Div = styled.div``;
@@ -52,7 +60,6 @@ const BarPlot = () => {
   console.log("Test APP: " + renderCount);
 
   const index = useObservable(0);
-  
 
   useMemo(() => {
       plotData.set([[1], [2], [6], [2], [5], [9], [7]]);
@@ -127,6 +134,7 @@ const BarPlot = () => {
                                 barElements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
                                 CSS: "padding-top: 0.5rem; padding-bottom: 0.5rem; transition: all 0.5s ease-in-out;",
                               });
+
       });
       return newBarsDataTemp;
   });
@@ -227,8 +235,6 @@ const BarPlot = () => {
 //             console.log("-->BarPlot unmounted");
 //         }
 //     }, []);
-
-
 
 //     console.log("width: " + barWidth + ", height: " + barHeight);
   
