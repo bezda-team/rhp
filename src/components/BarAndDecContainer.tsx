@@ -5,6 +5,7 @@ import Bar from './Bar';
 import BarDecoration from './BarDecoration';
 import BarElementType from './types/BarElementType';
 import BarContext from './BarContext';
+import PlotContext from './PlotContext';
 import { useContext, useRef } from 'react';
 import { Observable } from '@legendapp/state';
 import { useSelector } from "@legendapp/state/react"
@@ -15,19 +16,20 @@ enableReactUse();
 
 const Div = styled.div``;
 
-const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, index?: number, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
+const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
     const renderCount = ++useRef(0).current;
     console.log("BarAndDecContainer render count: " + renderCount);
-    const {data, dataMax, theme, orientation} = useContext(BarContext);
+
+    const {dataMax, theme, orientation} = useContext(PlotContext);
+    const {data} = useContext(BarContext);
 
     const barIndex = item.barIndex.use()
     const elements = item.elements.use()
     const decorationWidth = item.decorationWidth.use()
     const order = item.order.use()
     const CSS = item.CSS.use()
-    const index = item.index.use()
 
-    const newData = useSelector(() => {
+    const trackedData = useObservable(() => {
         const untrackedData = data.peek();
         const newData : {id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}[] = [];
         untrackedData.forEach((value, i) => {
@@ -53,7 +55,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
         return newData;
     });
 
-      const trackedData = useObservable(newData);
+    //   const trackedData = useObservable(newData);
 
       const decorationsList = useSelector(() => {
           const untrackedElements = elements;
