@@ -85,8 +85,8 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
           css={css`${CSS}`} 
           // onClick={onClickHandler??undefined}
           >
-            <For each={trackedData} item={Bar} />
-            <For each={trackedDecorationsList} item={BarDecoration} />
+            <For each={trackedData} item={Bar} optimized/>
+            <For each={trackedDecorationsList} item={BarDecoration} optimized/>
         </Div>
     )
 }

@@ -125,7 +125,7 @@ const App = () => {
                 </NumberInput>
                 <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
-                        <FullBar item={newBarObservable} />
+                        {/* <FullBar item={newBarObservable} /> */}
                     </div>
                     {`Index: ` + index.get()}
                     {`PlotData: ` + plotData[index.get()].get()}
