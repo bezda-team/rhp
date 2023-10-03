@@ -118,7 +118,7 @@ const App = () => {
                                 width: "calc(100%/" + (untrackedData.length) + ")",
                                 decorationWidth: "10%",
                                 elements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
-                                CSS: "padding-top: 0.5rem; padding-bottom: 0.5rem; transition: all 0.5s ease-in-out;",
+                                CSS: "padding-top: 0.5rem; padding-bottom: 0.5rem; transition: all 0.3s ease-in-out;",
                               });
       });
       return newBarsDataTemp;
