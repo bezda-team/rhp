@@ -2,14 +2,12 @@ import styled from '@emotion/styled';
 import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './components/PlotContext';
-import { useContext, useEffect, useMemo, useRef } from 'react';
-import { useObservable, For, useSelector } from '@legendapp/state/react';
+import { useContext, useMemo, useRef } from 'react';
+import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { opaqueObject } from '@legendapp/state';
 import BarPlot, { changeOrder, changeOrderBasedOnMagnitude } from './components/BarPlot';
-
-enableReactUse();
 
 const theme = extendBaseTheme({
   components: {
@@ -127,6 +125,47 @@ const App = () => {
       return newBarsDataTemp;
   });
 
+  // The following code recalculates the order of the bars (starting from their current order)
+  // based on new data values. The new order should result in the bars being re-arranged 
+  // so that bars with greater data value sit above (or to the left of) bars with lower data value.
+  // NOTE: A key requirement here is making sure that the returned new orders are arranged according 
+  // to the position of the corresponding bar in the trackedBarsData array without messing with sorting
+  // stability.
+  // ADDITIONAL NOTE: `useComputed` re-executes when inner tracked observables change. 
+  // `trackedBarsData[i].data.get()` is the tracked observable in this `useComputed`.
+  const trackedOrder = useComputed(() => {
+    const data: number[][] = [];
+    const indexSortedByValue : number[] = []
+    const tempBarData = trackedBarsData.peek();
+    tempBarData.map((value, i) => {
+      data.push([trackedBarsData[i].data.get()[0], tempBarData[i].order, i]); 
+    });
+
+    // the following line sorts the data array according to the current order of the bars
+    // (ie how they are currently displayed) 
+    data.sort((a, b) => a[1] - b[1]);  //ascending order
+
+    // the data is then sorted by current value which should reflect recent changes to the data
+    data.sort((a, b) => b[0] - a[0]);  //descending value
+
+
+    // The new order is the index of the new indexSortedByValue array 
+    // and the value of this new array is the index of the original bar data array
+    // where this new order must be placed
+    data.forEach((value, i) => {
+      indexSortedByValue.push(value[2]);                        
+    });
+
+    // Again, the new orders are in the index of indexSortedByValue. They need to be pulled out 
+    // and sorted by the index of the bar they go with. So, the order is the index and the value
+    // is the bar index to be sorted by.
+    const finalOrder = indexSortedByValue.map((value, i) => i).sort((a, b) => indexSortedByValue[a] - indexSortedByValue[b]); 
+    return finalOrder;
+  });
+
+  // changes order of bars when trackedOrder changes
+  useObserve(trackedOrder, () => { changeOrder(trackedOrder.peek(), trackedBarsData);});
+
   return (
     <ChakraProvider >
           <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
@@ -171,12 +210,14 @@ const App = () => {
               </NumberInputStepper>
             </NumberInput>
             <ButtonGroup gap='4'>
-              <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,6,2,4,3,5,1], trackedBarsData)} >Re-Order</Button>
+              <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Re-Order</Button>
               <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Arrange</Button>
             </ButtonGroup>
-            <div id={"plot_container"} style={{width: "100%", height: "500px", padding: "2rem"}}>
               <BarPlot 
                 id='bar_plot_1'
+                width='100%'
+                height='600px'
+                style={{padding: "4rem"}}
                 barsData={trackedBarsData} 
                 plotData={plotData}
                 dataMax={dataMax}
@@ -184,7 +225,6 @@ const App = () => {
                 theme={theme}
                 vars={vars}
               />
-            </div>
               {`Index: ` + index.get()}
               {`PlotData: ` + plotData[index.get()].get()}
               {`\nDataMax: ` + dataMax.get()??`None`}

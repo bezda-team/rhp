@@ -13,7 +13,7 @@ import { For, useObservable, useSelector, useComputed, observer } from '@legenda
 import { Observable } from '@legendapp/state';
 // import { Observable } from '@legendapp/state';
 
-enableReactUse();
+enableReactUse();    // Adds use function to observables. Ex: observable.use();
 
 const Div = styled.div``;
 
