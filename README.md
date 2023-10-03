@@ -11,7 +11,7 @@ The main goal of this component library is to be able to build extremely customi
  to have more changes occur in less time.
  - Allow elements to respond to changes with CSS transitions and animations.
  - Core components should have self-contained state handling and context
-    - Components nested inside Core components should respond to changes in parent Core component state variables that impact itself and ignore all others.
+    - Components nested inside Core components should respond to changes in only the variables (of its parent Core component state) that impact itself and ignore all others.
 
 ## Developer notes:
 This project is currently in development. Core components and utilities are in flux.
