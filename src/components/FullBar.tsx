@@ -9,17 +9,17 @@ import PlotContext from './PlotContext';
 import { useContext, useEffect, useRef } from 'react';
 import BarContentContainerElementType from './types/BarContentContainerElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import { For, useObservable, useSelector, useComputed, observer } from '@legendapp/state/react';
+import { For, useObservable, useSelector } from '@legendapp/state/react';
 import { Observable } from '@legendapp/state';
 // import { Observable } from '@legendapp/state';
 
-enableReactUse();
+enableReactUse();    // Adds use function to observables. Ex: observable.use();
 
 const Div = styled.div``;
 
 //============================================================= FULL BAR =================================================================
 
-const FullBar = ({item} : {item: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, barElements: FullBarElementType[], id: string, CSS:string}>}) => {
+const FullBar = ({item} : {item: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}>}) => {
     
     const {orientation} = useContext(PlotContext);
 
@@ -40,7 +40,7 @@ const FullBar = ({item} : {item: Observable<{index: number, data: number[], orde
     }, []);
 
     const {newContContainers, newFullBarDecs} = useSelector(() => {
-        const untrackedElements = item.barElements.peek();
+        const untrackedElements = item.elements.peek();
         const newContContainers : {id: string, elements: BarContentContainerElementType[], order?: number, decorationWidth?: string, CSS?: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement> }[] = [];
         const newFullBarDecs : {decIndex: number, id: string | undefined, order: number | undefined, width: string, CSS: string | undefined, markup: string | undefined}[] = []; 
         untrackedElements.forEach((element, i) => {
@@ -75,12 +75,12 @@ const FullBar = ({item} : {item: Observable<{index: number, data: number[], orde
                 key={"full_bar_" + item.index.peek()}
                 id={trackId??"full_bar_" + item.index.peek()}
                 className={"full-bar" + (orientation.get()===0?" horizontal":" vertical")}
-                style={orientation.get()===0? {display: "flex", flexDirection: "row-reverse", alignItems: "center", width: "100%", height: trackWidth, overflow: "hidden", order: trackOrder, position: "absolute", left: "0", top: "calc(" + trackWidth + "*" + trackOrder + ")" } : {display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: trackWidth, overflow: "hidden", order: trackOrder, position: "absolute", bottom: "0", left: "calc(" + trackWidth + "*" + trackOrder + ")"}} 
+                style={orientation.get()===0? {display: "flex", flexDirection: "row-reverse", alignItems: "center", width: "100%", height: trackWidth, overflow: "hidden", order: trackOrder, position: "absolute", left: "0", top: "calc(" + trackWidth + "*" + trackOrder + ")"} : {display: "flex", flexDirection: "column", alignItems: "center", height: "100%", width: trackWidth, overflow: "hidden", order: trackOrder, position: "absolute", bottom: "0", left: "calc(" + trackWidth + "*" + trackOrder + ")"}} 
                 css={css`${trackCSS}`} // Consider moving the props in the above style starting from 'position' to this css prop to allow for overriding
                 // onClick={onClickHandler??undefined}
             >
-                <For each={trackedContContainersList} item={BarContentContainer} />
-                <For each={trackedFullBarDecsList} item={BarDecoration} />
+                <For each={trackedContContainersList} item={BarContentContainer} optimized/>
+                <For each={trackedFullBarDecsList} item={BarDecoration} optimized/>
             </Div>
         </BarContext.Provider>
     );

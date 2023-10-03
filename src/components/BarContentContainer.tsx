@@ -74,8 +74,8 @@ const BarContentContainer = ({item}:{item: Observable<{id: string, elements: Bar
         css={css`${trackedCSS}`} 
         // onClick={onClickHandler??undefined}
       >
-          <For each={trackedBarAndDecsList} item={BarAndDecContainer} />
-          <For each={trackedContDecsList} item={BarDecoration} />
+          <For each={trackedBarAndDecsList} item={BarAndDecContainer} optimized/>
+          <For each={trackedContDecsList} item={BarDecoration} optimized/>
       </Div>
   );
 }

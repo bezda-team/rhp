@@ -1,22 +1,20 @@
 import styled from '@emotion/styled';
 import FullBar from './FullBar';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
+import { ChakraProvider, extendBaseTheme } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './PlotContext';
-import { useContext, useMemo, useRef } from 'react';
-import { useObservable, For } from '@legendapp/state/react';
+import { useMemo, useRef } from 'react';
+import { For } from '@legendapp/state/react';
 import FullBarElementType from './types/FullBarElementType';
+import Vars from './types/Vars';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import { opaqueObject } from '@legendapp/state';
-
-enableReactUse();
+import { Observable } from '@legendapp/state';
 
 const theme = extendBaseTheme({
   components: {
     NumberIn,
   },
 })
-
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
@@ -36,231 +34,84 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
-type BarData = {
-    id: string,
-    index: number,
+export type DataObservable = Observable<{
+    index: number, 
     data: number[], 
-    dataMax: number, 
-    theme: object, 
-    barConfig: FullBarElementType[], 
-    width: string,  
-    CSS: PlotCSS, 
-    markup: object, 
-    orientation: number, 
-    vars: Vars,
-    order: number,
+    order: number, 
+    width: string, 
+    decorationWidth: string,
+    elements: FullBarElementType[], 
+    id: string, 
+    CSS: string
+  }[]>
+
+// TODO: Set all z-index of bars based on order BEFORE changing order so that bars going up always lie on top of bars going down
+export const changeOrder = (newOrder: number[], trackedBarsData: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string}[]>) => {
+  if (newOrder.length !== trackedBarsData.length) {
+    console.log("newOrder.length !== trackedBarsData.length");
+    return;
+  }
+  else {
+    newOrder.forEach((value, i) => {
+      trackedBarsData[i].order.set(value);
+    });
+  }
+}
+
+// The following code recalculates the order of the bars (starting from their current order)
+// based on new data values. The new order should result in the bars being re-arranged 
+// so that bars with greater data value sit above (or to the left of) bars with lower data value.
+// NOTE: A key requirement here is making sure that the returned new orders are arranged according 
+// to the position of the corresponding bar in the trackedBarsData array without messing with sorting
+// stability.
+export const changeOrderBasedOnMagnitude = ( trackedBarsData: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string}[]>) => {
+  const order: number[] = [];
+  const data: number[][] = [];
+  const indexSortedByValue : number[] = []
+  const tempBarData = trackedBarsData.peek();
+  tempBarData.map((value, i) => {
+    order.push( value.order);
+    data.push([trackedBarsData[i].data.get()[0], value.order, i]);
+  });
+
+  // the following line sorts the data array according to the current order of the bars
+  // (ie how they are currently displayed) 
+  data.sort((a, b) => a[1] - b[1]);  //ascending order
+
+  // the data is then sorted by current value which should reflect recent changes to the data
+  data.sort((a, b) => b[0] - a[0]);  //descending value
+
+  // The new order is the index of the new indexSortedByValue array 
+  // and the value of this new array is the index of the original bar data array
+  // where this new order must be placed
+  data.forEach((value, i) => {
+    indexSortedByValue.push(value[2]);                        
+  });
+
+  // Again, the new orders are in the index of indexSortedByValue. They need to be pulled out 
+  // and sorted by the index of the bar they go with. So, the order is the index and the value
+  // is the bar index to be sorted by.
+  const finalOrder = indexSortedByValue.map((value, i) => i).sort((a, b) => indexSortedByValue[a] - indexSortedByValue[b]); 
+  if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeOrder(finalOrder, trackedBarsData);
 }
 
 const Div = styled.div``;
 
-const BarPlot = () => {
-  
-  const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
+const BarPlot = ({width, height, barsData, plotData, dataMax, orientation, vars, theme, id, style, CSS}:{width: string, height: string, barsData: DataObservable, dataMax: Observable<number>, plotData: Observable<number[][]>, orientation: Observable<number>, vars: Observable<Vars>, theme: Observable<object>, id?: string, style?: React.CSSProperties, CSS?: string}) => {
   const renderCount = ++useRef(0).current;
-  console.log("Test APP: " + renderCount);
-
-  const index = useObservable(0);
-
-  useMemo(() => {
-      plotData.set([[1], [2], [6], [2], [5], [9], [7]]);
-      dataMax.set(10);
-      vars.set({
-      "color": ["orange", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "gray", "black"],
-      "bar-label": ["label 1", "label 2", "label 3", "label 4", "label 5", "label 6", "label 7", "label 8", "label 9", "label 10"],
-      "bar-val": plotData.get().flat(),
-    });
-  }, []);
-
-    const fullBarElements: FullBarElementType[] = [
-      {
-        type: "bar-content-container",
-        elements: [{
-                      type: "bar-dec-container",
-                      elements: [{
-                                    type: "bar",
-                                    order: 1,
-                                    css: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
-                                    markup: "<div style='background-color: {{color}};height:100%'></div>",
-                                  },
-                                  {
-                                    type: "decoration",
-                                    order: 2,
-                                    css: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
-                                    markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{bar-val}}</div>",
-                                  }],
-                      CSS: "background: none;",
-                      decorationWidth: "10%",
-                      order: 1,
-                    }, 
-                    // {
-                    //   type: "decoration",
-                    //   order: 0,
-                    //   css: "background-color: slategray; color: white; div {text-align: left;}",
-                    //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-                    //   onClickHandler: () => console.log("decoration clicked")
-                    // },
-                    // {
-                    //   type: "decoration",
-                    //   order: 2,
-                    //   css: "background-color: slategray; color: white; div {text-align: left;}",
-                    //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-                    //   onClickHandler: () => console.log("decoration clicked")
-                    // }
-                  ],
-                  decorationWidth: "10%",
-                  order: 1,
-                  CSS:"padding-right: 1rem;"
-                }, 
-                {
-                  type: "decoration",
-                  order: 0,
-                  css: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 0.5rem; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
-                  markup: "<div style='width: fit-content;'>{{bar-label}}</div>",
-                },
-              ];
-
-    const trackedBarsData = useObservable(() => {
-      const untrackedData = plotData.peek();
-      const newBarsDataTemp : {index: number, data: number[], order: number, width: string, decorationWidth: string, barElements: FullBarElementType[], id: string, CSS:string}[] = [];
-      untrackedData.forEach((value, i) => {
-          newBarsDataTemp.push({
-                                id: "full_bar_a_" + i,
-                                index: i,
-                                data: value,
-                                // data: plotData[i].get(),
-                                order: i,
-                                width: "12%",
-                                decorationWidth: "10%",
-                                barElements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
-                                CSS: "padding-top: 0.5rem; padding-bottom: 0.5rem; transition: all 0.5s ease-in-out;",
-                              });
-
-      });
-      return newBarsDataTemp;
-  });
+  console.log("BarPlot rendered: " + renderCount);
 
   return (
-      <ChakraProvider >
-          <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
-            <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-              {`Select Bar:`}
-              <NumberInput defaultValue={index.get()} min={0} max={trackedBarsData.get().length} onChange={(value) => index.set(parseInt(value))}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              {`Change Bar Value:`}
-              <NumberInput defaultValue={trackedBarsData[index.get()].data.get()[0]} min={1} max={20} onChange={(value) => trackedBarsData[index.get()].data.set([parseInt(value)])}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              {`Change Bar Parameter Selection Index:`}
-              <NumberInput defaultValue={0} min={0} max={20} onChange={(value) => trackedBarsData[index.get()].index.set(parseInt(value))}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              {`Change Bar Order:`}
-              <NumberInput defaultValue={trackedBarsData[index.get()].order.get()} min={0} max={20} onChange={(value) => trackedBarsData[index.get()].order.set(parseInt(value))}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
-                {/* <div id={"full_bar_plot-1"} style={{width: "100%", height: "600px", display: "flex", flexDirection: "column"}}> */}
-                <div id={"full_bar_plot-1"} style={{width: "100%", height: "600px", position: "relative"}}>
-                  <For each={trackedBarsData} item={FullBar} />
-                </div>
-                  {`Index: ` + index.get()}
-                  {`PlotData: ` + plotData[index.get()].get()}
-                  {`\nDataMax: ` + dataMax.get()??`None`}
+    <ChakraProvider >
+        <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
+          <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
+              <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
+                <For each={barsData} item={FullBar} optimized/>
               </div>
-            </div>
-          </PlotContext.Provider>
-      </ChakraProvider>
+          </div>
+        </PlotContext.Provider>
+    </ChakraProvider>
   )
 }
-
-// const BarPlot = () => {
-
-//     const {data, barConfig, width, height, CSS,  orientation} = useObservable(PlotState);
-
-//     const {barHeight, barWidth} = useSelector(() => {
-//       const plot = document.getElementById("bar_plot");
-//       const plotWidth = plot?.clientWidth;
-//       const plotHeight = plot?.clientHeight;
-//       const newWidth = plotWidth? (plotWidth/data.length) : parseInt(width.get(), 10)/data.length;
-//       const newHeight = plotHeight? (plotHeight/data.length) : parseInt(height.get(), 10)/data.length;
-    
-//       let widthEnding = width.get().replace(parseInt(width.get(), 10).toString(), "").trim();
-//       widthEnding = plotWidth? "px" : (widthEnding.length > 1? widthEnding.slice(-2): widthEnding);
-    
-//       let heightEnding = height.get().replace(parseInt(height.get(), 10).toString(), "").trim();
-//       heightEnding = plotHeight? "px" : (heightEnding.length > 1? heightEnding.slice(-2): heightEnding);
-    
-//       const barHeight = newHeight + heightEnding;
-//       const barWidth = newWidth + widthEnding;
-//       return {barHeight, barWidth};
-//     });
-
-//     const newData = useSelector(() => {
-//       const untrackedData = data.peek();
-//       const newData: TrackedData[] = [];
-//       untrackedData.forEach((value, i) => {
-//         newData.push({
-//                       id: "full_bar_" + i, 
-//                       index: i, 
-//                       barConfig: barConfig.peek(), 
-//                       width: orientation.peek()===0? barHeight : barWidth, 
-//                       data: typeof value === "number"? [value] as number[] : value as number[]
-//                     });
-//       });
-//       return newData;
-//     });
-
-//     const trackedData = useObservable(newData);
-
-//     useEffect(() => {
-//         console.log("-->BarPlot mounted");
-//         return () => {
-//             console.log("-->BarPlot unmounted");
-//         }
-//     }, []);
-
-//     console.log("width: " + barWidth + ", height: " + barHeight);
-  
-//     return (
-//       <Div 
-//         id="bar_plot"
-//         className="bar-plot" 
-//         style={orientation.get()===0? {display: "flex", flexDirection: "column", alignItems: "center", width: width.get(), height: height.get(), overflow: "hidden"} : {display: "flex", flexDirection: "row", alignItems: "center", height: width.get(), width: height.get(), overflow: "hidden"}} 
-//         css={css`${CSS.get()["bar-plot"]}`}> 
-//           {/* <For each={trackedData}>
-//                 { item => (
-//                   <FullBar 
-//                     key={item.get()?.id}
-//                     id={item.get()?.id}
-//                     index={item.get()?.index??0}
-//                     elements={item.get()?.barConfig??[]}
-//                     data={item.get()?.data??[]}
-//                     order={item.get()?.index??0}
-//                     width={item.get()?.width??"10%"}
-//                     decorationWidth={item.get()?.width??"10%"}
-//                     CSS={DEFAULT_CSS["full-bar"]}
-//                   />
-//                 )}
-//           </For> */}
-//       </Div>
-//     );
-//   }
 
 export default BarPlot;

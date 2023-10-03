@@ -1,7 +1,8 @@
 {
-  "name": "chakraui-barplot-react-app",
+  "name": "react-html-plots",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://bouzidanas.github.io/react-html-plots",
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
@@ -17,6 +18,7 @@
     "@types/react-dom": "^18.2.8",
     "dompurify": "^3.0.6",
     "framer-motion": "^6.5.1",
+    "gh-pages": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^3.11.0",
@@ -25,7 +27,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start":  "GENERATE_SOURCEMAP=false react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

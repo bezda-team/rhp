@@ -8,6 +8,7 @@ import { useContext, useMemo, useRef } from 'react';
 import { useObservable, useSelector, observer } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
+import { Observable, opaqueObject } from '@legendapp/state';
 
 enableReactUse();
 
@@ -94,34 +95,37 @@ const App = () => {
 
 
       const newBarObservable = useObservable({
-                                            id: "full_bar_a_1",
-                                            index: 0,
-                                            data: plotData[0].get(),
-                                            order: 0,
-                                            width: "100%",
-                                            decorationWidth: "10%",
-                                            barElements: fullBarElements,
-                                            CSS: "",
-                                        });
+                                              id: "full_bar_a_" + 0,
+                                              index: 0,
+                                              data: [18],
+                                              // data: plotData[i].get(),
+                                              order: 0,
+                                              width: "100%",
+                                              decorationWidth: "6%",
+                                              elements: fullBarElements,  // Avoid strange unexplainable circular reference errors for each element of this array on first render
+                                              CSS: "",
+                                            });
 
 
     return (
         <ChakraProvider >
             <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
             <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-                <NumberInput defaultValue={newBarObservable.data.get()[0]} min={1} max={20} onChange={(value) => newBarObservable.data.set([parseInt(value)])}>
+                {`Select Bar:`}
+                <NumberInput defaultValue={0} min={1} max={50} onChange={(value) => newBarObservable.data.set([parseInt(value)])}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <NumberInput defaultValue={0} min={0} max={20} onChange={(value) => newBarObservable.index.set(parseInt(value))}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
+                {`Change Data Max:`}
+                <NumberInput defaultValue={dataMax.get()} min={1} max={50} onChange={(value) => dataMax.set(parseInt(value))}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
                 </NumberInput>
                 <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
                     <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
