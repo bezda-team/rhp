@@ -15,6 +15,7 @@ The main goal of this component library is to be able to build extremely customi
 
 ## Demo
 
+### 1. Bar plot
 [![react-html-bar-plot-demo](https://github.com/bouzidanas/react-html-plots/assets/25779130/9e16e3f9-e88a-4d39-b65f-182a97a1d72a)](https://bouzidanas.github.io/react-html-plots/)
 
 [Try it out!](https://bouzidanas.github.io/react-html-plots/)
