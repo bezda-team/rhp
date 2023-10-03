@@ -13,6 +13,12 @@ The main goal of this component library is to be able to build extremely customi
  - Core components should have self-contained state handling and context
     - Components nested inside Core components should respond to changes in only the variables (of its parent Core component state) that impact itself and ignore all others.
 
+## Demo
+
+[![react-html-bar-plot-demo](https://github.com/bouzidanas/react-html-plots/assets/25779130/9e16e3f9-e88a-4d39-b65f-182a97a1d72a)](https://bouzidanas.github.io/react-html-plots/)
+
+[Try it out!](https://bouzidanas.github.io/react-html-plots/)
+
 ## Developer notes:
 This project is currently in development. Core components and utilities are in flux.
 
