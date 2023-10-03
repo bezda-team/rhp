@@ -39,9 +39,7 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     const trackedIndex = index.use()
 
     const sanitizedMarkup = useSelector(() => {
-
         // console.log(trackedIndex)
-
         let newMarkup = item.markup.get();
         if (item.markup.get() !== undefined){
             Object.keys(vars).forEach((key) => {
