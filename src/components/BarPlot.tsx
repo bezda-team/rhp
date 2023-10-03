@@ -104,7 +104,7 @@ const BarPlot = ({width, height, barsData, plotData, dataMax, orientation, vars,
   return (
     <ChakraProvider >
         <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
-          <div id={id} className='bar-plot' style={{...style, width: width, height: height}}>
+          <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
               <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
                 <For each={barsData} item={FullBar} optimized/>
               </div>

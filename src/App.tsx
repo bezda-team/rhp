@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup } from "@chakra-ui/react"
+import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef } from 'react';
@@ -16,12 +16,13 @@ const theme = extendBaseTheme({
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
-    "full-bar": "&.horizontal { padding-top: 0.5rem; padding-bottom: 0.5rem;} &.vertical {padding-left: 0.5rem; padding-right: 0.5rem;}",
+    "full-bar":"padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;",
     "bar-label": "display: flex; flex-direction: row-reverse;background-color: slategray; color: white; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
     "bar-content-container": "background-color: green;",
     "bar-dec-container": "",
     "bar": "background-color: blue;",
     "bar-decoration": "background-color: blue;",
+    "desaturate-bar": "padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}"
 }
   
 export const DEFAULT_MARKUP = {
@@ -32,8 +33,6 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
-const Div = styled.div``;
-
 const App = () => {
   
   const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
@@ -41,14 +40,18 @@ const App = () => {
   console.log("Test APP: " + renderCount);
 
   const index = useObservable(0);
+  const cssObservable = useObservable("padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;");
+  cssObservable.use();
+  // const cssObservable = useObservable("padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}");
 
   useMemo(() => {
-    plotData.set([[1], [2], [6], [2], [5], [9], [7]]);
-    dataMax.set(10);
+    plotData.set([[1], [2], [18], [3], [25], [13], [20]]);
+    dataMax.set(30);
     vars.set({
-      "color": ["orange", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "gray", "black"],
-      "bar-label": ["label 1", "label 2", "label 3", "label 4", "label 5", "label 6", "label 7", "label 8", "label 9", "label 10"],
-      "bar-val": plotData.get().flat(),
+      "color": ["#577590","#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#ce4257", "pink", "brown", "gray", "black"],
+      "bar-label": ["Fruit A", "Fruit B", "Fruit C", "Fruit D", "Fruit E", "Fruit F", "Fruit G"],
+      "bar-val": ["grape", "watermelon", "pear", "banana", "orange","peach", "strawberry"],
+      "fruit-svgs":['<img src="./grape.svg" alt="grape" />', '<img src="./watermelon.svg" alt="watermelon" />' , '<img src="./pear.svg" alt="pear" />', '<img src="./banana.svg" alt="banana" />', '<img src="./orange.svg" alt="orange" />', '<img src="./peach.svg" alt="peach" />', '<img src="./strawberry.svg" alt="strawberry" />'],
     });
   }, []);
 
@@ -65,16 +68,16 @@ const App = () => {
                     elements: [{
                                   type: "bar",
                                   order: 1,
-                                  css: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
-                                  markup: "<div style='background-color: {{color}};height:100%'></div>",
+                                  css: "box-sizing: border-box;border-radius: 0 1rem 1rem 0;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;&:hover {border: 4px solid black;}& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
+                                  markup: "<div style='background-color: {{color}};height:100%;'>{{fruit-svgs}}</div>",
                                 },
                                 {
                                   type: "decoration",
                                   order: 2,
-                                  css: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
+                                  css: "color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
                                   markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{bar-val}}</div>",
                                 }],
-                    CSS: "background: none;",
+                    CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;}",
                     decorationWidth: "10%",
                     order: 1,
                   }, 
@@ -95,13 +98,13 @@ const App = () => {
                 ],
                 decorationWidth: "10%",
                 order: 1,
-                CSS:"padding-right: 1rem;"
+                CSS:"padding-right: 5.1rem;"
               }, 
               {
                 type: "decoration",
                 order: 0,
-                css: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 0.5rem; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
-                markup: "<div style='width: fit-content;'>{{bar-label}}</div>",
+                css: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 1rem; div {text-align: center;}",
+                markup: "<div style='width: fit-content;font-weight: 600;color: #555555;'>{{bar-label}}</div>",
               },
     ];
 
@@ -116,9 +119,9 @@ const App = () => {
                                 // data: plotData[i].get(),
                                 order: orderList.get()[i],
                                 width: "calc(100%/" + (untrackedData.length) + ")",
-                                decorationWidth: "10%",
+                                decorationWidth: "6%",
                                 elements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
-                                CSS: "padding-top: 0.5rem; padding-bottom: 0.5rem; transition: all 0.3s ease-in-out;",
+                                CSS: DEFAULT_CSS["full-bar"],
                               });
       });
       return newBarsDataTemp;
@@ -136,9 +139,7 @@ const App = () => {
     const data: number[][] = [];
     const indexSortedByValue : number[] = []
     const tempBarData = trackedBarsData.peek();
-    tempBarData.map((value, i) => {
-      data.push([trackedBarsData[i].data.get()[0], tempBarData[i].order, i]); 
-    });
+    tempBarData.map((value, i) => data.push([trackedBarsData[i].data.get()[0], tempBarData[i].order, i]));
 
     // the following line sorts the data array according to the current order of the bars
     // (ie how they are currently displayed) 
@@ -165,6 +166,12 @@ const App = () => {
   // changes order of bars when trackedOrder changes
   useObserve(trackedOrder, () => { changeOrder(trackedOrder.peek(), trackedBarsData);});
 
+  const changeCSS = (css: string) => {
+    trackedBarsData.forEach((value, i) => {
+      value.CSS.set(css);
+    });
+  }
+
   return (
     <ChakraProvider >
           <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
@@ -177,7 +184,7 @@ const App = () => {
               </NumberInputStepper>
             </NumberInput>
             {`Change Bar Value:`}
-            <NumberInput defaultValue={trackedBarsData[index.get()].data.get()[0]} min={1} max={20} onChange={(value) => trackedBarsData[index.get()].data.set([parseInt(value)])}>
+            <NumberInput defaultValue={trackedBarsData[index.get()].data.get()[0]} min={0} max={50} onChange={(value) => trackedBarsData[index.get()].data.set([parseInt(value)])}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -208,15 +215,19 @@ const App = () => {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            <ButtonGroup gap='4'>
-              <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Re-Order</Button>
-              <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Arrange</Button>
-            </ButtonGroup>
+            <Stack direction='row' spacing={4} align='center' margin={6}>
+              <ButtonGroup gap='4'>
+                <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Re-Order</Button>
+                <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Arrange</Button>
+                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["desaturate-bar"])}>Dim</Button>
+                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["full-bar"])}>Brighten</Button>
+              </ButtonGroup>
+            </Stack>
               <BarPlot 
                 id='bar_plot_1'
                 width='100%'
                 height='600px'
-                style={{padding: "4rem"}}
+                style={{padding: "4rem", borderRadius: "1rem", backgroundColor: "white", border: "3px solid #999999", marginTop: "2rem", marginBottom: "2rem"}}
                 barsData={trackedBarsData} 
                 plotData={plotData}
                 dataMax={dataMax}
@@ -224,9 +235,7 @@ const App = () => {
                 theme={theme}
                 vars={vars}
               />
-              {`Index: ` + index.get()}
-              {`PlotData: ` + plotData[index.get()].get()}
-              {`\nDataMax: ` + dataMax.get()??`None`}
+              <a href="https://www.freevector.com/flat-colorful-fruits-26803#">FreeVector.com</a>
           </div>
     </ChakraProvider>
   )
