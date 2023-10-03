@@ -5,7 +5,6 @@ import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef } from 'react';
 import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
-import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { opaqueObject } from '@legendapp/state';
 import BarPlot, { changeOrder, changeOrderBasedOnMagnitude } from './components/BarPlot';
 

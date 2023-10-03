@@ -6,7 +6,7 @@ import { Observable } from '@legendapp/state';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
 import { useContext, useRef } from 'react';
-import { useSelector, useObserve } from "@legendapp/state/react"
+import { useSelector} from "@legendapp/state/react"
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 
 enableReactUse();
@@ -36,7 +36,7 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
         let newMarkup = item.markup.get();
         if (item.markup.get() !== undefined){
             Object.keys(vars).forEach((key) => {
-                length = vars[key].length;
+                const length = vars[key].length;
                 const value = vars[key][trackedIndex < length? trackedIndex : trackedIndex%length];
                 newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
             });

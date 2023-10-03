@@ -9,7 +9,7 @@ import PlotContext from './PlotContext';
 import { useContext, useEffect, useRef } from 'react';
 import BarContentContainerElementType from './types/BarContentContainerElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import { For, useObservable, useSelector, useComputed, observer } from '@legendapp/state/react';
+import { For, useObservable, useSelector } from '@legendapp/state/react';
 import { Observable } from '@legendapp/state';
 // import { Observable } from '@legendapp/state';
 
