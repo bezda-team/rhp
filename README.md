@@ -14,7 +14,7 @@ The main goal of this component library is to be able to build extremely customi
     - Components nested inside Core components should respond to changes in parent Core component state variables that impact itself and ignore all others.
 
 ## Developer notes:
-This project is currently in developement. Core components and utilities are in flux.
+This project is currently in development. Core components and utilities are in flux.
 
 ### State management system and impact on component design.
 ![Legend-State](https://github.com/LegendApp/legend-state) was chosen for this library to handle state management for most components. React context is used in conjunction with Legend-State to minimize prop drilling and localize states to different levels of component trees. These choices have significantly impacted component function signatures and the types of the props that components require/accept. More specifically, Legend-State requires the use of "observables" to contain, track, and manipulate state. Currently, it has been more convenient to pass these around (through contexts, imports, and/or props) instead of raw data.
