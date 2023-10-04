@@ -2,8 +2,11 @@ type DecorationType =
 {
   id?: string;
   type: "decoration";
+  dataIndex?: number;
+  useData?: boolean;
+  useDataMax?: boolean;
   order?: number;
-  css?: string;
+  CSS?: string;
   markup?: string;
   onClickHandler?: React.MouseEventHandler<HTMLDivElement>;
 }

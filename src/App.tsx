@@ -7,12 +7,30 @@ import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
 import { opaqueObject } from '@legendapp/state';
 import BarPlot, { changeOrder, changeOrderBasedOnMagnitude } from './components/BarPlot';
+import Scale from './components/Scale';
 
 const theme = extendBaseTheme({
   components: {
     NumberIn,
   },
 })
+
+const Div = styled.div`
+@media (max-width: 600px) {
+  padding: 1.5rem;
+  margin: 0;
+  width: 470px;
+}
+@media (min-width: 601px) and (min-width: 900px){
+    padding: 3rem;
+    margin: 0;
+    width: 100%;
+}
+@media (min-width: 801px){
+    padding: 6rem;
+    margin: 0;
+    width: 100%;
+}`;
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
@@ -68,14 +86,15 @@ const App = () => {
                     elements: [{
                                   type: "bar",
                                   order: 1,
-                                  css: "box-sizing: border-box;border-radius: 0 1rem 1rem 0;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;&:hover {border: 4px solid black;}& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
+                                  CSS: "box-sizing: border-box;border-radius: 0 1rem 1rem 0;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;&:hover {border: 4px solid black;}& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
                                   markup: "<div style='background-color: {{color}};height:100%;'>{{fruit-svgs}}</div>",
                                 },
                                 {
                                   type: "decoration",
                                   order: 2,
-                                  css: "color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
-                                  markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{bar-val}}</div>",
+                                  useData: true,
+                                  CSS: "color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
+                                  markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{$dataValue}}</div>",
                                 }],
                     CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;}",
                     decorationWidth: "10%",
@@ -88,23 +107,16 @@ const App = () => {
                   //   markup: "<div style='width: fit-content;'>My text decoration</div>",
                   //   onClickHandler: () => console.log("decoration clicked")
                   // },
-                  // {
-                  //   type: "decoration",
-                  //   order: 2,
-                  //   css: "background-color: slategray; color: white; div {text-align: left;}",
-                  //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-                  //   onClickHandler: () => console.log("decoration clicked")
-                  // }
                 ],
                 decorationWidth: "10%",
                 order: 1,
-                CSS:"padding-right: 5.1rem;"
+                CSS:"padding-right: 2rem;"
               }, 
               {
                 type: "decoration",
                 order: 0,
-                css: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 1rem; div {text-align: center;}",
-                markup: "<div style='width: fit-content;font-weight: 600;color: #555555;'>{{bar-label}}</div>",
+                CSS: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 1rem; div {text-align: center;}",
+                markup: "<div style='width: fit-content;font-weight: 600;color: #555555;'>{{bar-val}}</div>",
               },
     ];
 
@@ -116,10 +128,9 @@ const App = () => {
                                 id: "full_bar_a_" + i,
                                 index: i,
                                 data: value,
-                                // data: plotData[i].get(),
                                 order: orderList.get()[i],
                                 width: "calc(100%/" + (untrackedData.length) + ")",
-                                decorationWidth: "6%",
+                                decorationWidth: "6rem",
                                 elements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
                                 CSS: DEFAULT_CSS["full-bar"],
                               });
@@ -166,6 +177,17 @@ const App = () => {
   // changes order of bars when trackedOrder changes
   useObserve(trackedOrder, () => { changeOrder(trackedOrder.peek(), trackedBarsData);});
 
+  const newDataMax = useComputed(() => {
+    let maxValue = 0;
+    trackedBarsData.forEach((value, i) => {
+      maxValue = Math.max(...value.data.get()) > maxValue? Math.max(...value.data.get()) : maxValue;
+    });
+    const currDataMax = dataMax.peek();
+    return maxValue > currDataMax? maxValue : currDataMax;
+  })
+
+  useObserve(newDataMax, () => {dataMax.set(newDataMax.peek());});
+
   const changeCSS = (css: string) => {
     trackedBarsData.forEach((value, i) => {
       value.CSS.set(css);
@@ -174,7 +196,7 @@ const App = () => {
 
   return (
     <ChakraProvider >
-          <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
+          <Div id="bar_plot" >
             {`Select Bar:`}
             <NumberInput defaultValue={index.get()} min={0} max={trackedBarsData.get().length} onChange={(value) => index.set(parseInt(value))}>
               <NumberInputField />
@@ -184,7 +206,7 @@ const App = () => {
               </NumberInputStepper>
             </NumberInput>
             {`Change Bar Value:`}
-            <NumberInput defaultValue={trackedBarsData[index.get()].data.get()[0]} min={0} max={50} onChange={(value) => trackedBarsData[index.get()].data.set([parseInt(value)])}>
+            <NumberInput defaultValue={trackedBarsData[index.get()].data.get()[0]} min={0} max={100} onChange={(value) => trackedBarsData[index.get()].data.set([parseInt(value)])}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -208,35 +230,44 @@ const App = () => {
               </NumberInputStepper>
             </NumberInput>
             {`Change Data Max:`}
-            <NumberInput defaultValue={dataMax.get()} min={1} max={50} onChange={(value) => dataMax.set(parseInt(value))}>
+            <NumberInput defaultValue={dataMax.get()} min={1} max={100} onChange={(value) => dataMax.set(parseInt(value))}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            <Stack direction='row' spacing={4} align='center' margin={6}>
-              <ButtonGroup gap='4'>
-                <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Re-Order</Button>
-                <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Arrange</Button>
-                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["desaturate-bar"])}>Dim</Button>
-                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["full-bar"])}>Brighten</Button>
+            <Stack direction='row' spacing={3} align='center' margin={5} marginTop={4} marginBottom={4}>
+              <ButtonGroup gap='1'>
+                <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Initial</Button>
+                <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Rank</Button>
+              </ButtonGroup>
+              <ButtonGroup gap='1'>
+                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["desaturate-bar"])}>Desaturate</Button>
+                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["full-bar"])}>Saturate</Button>
               </ButtonGroup>
             </Stack>
-              <BarPlot 
-                id='bar_plot_1'
-                width='100%'
-                height='600px'
-                style={{padding: "4rem", borderRadius: "1rem", backgroundColor: "white", border: "3px solid #999999", marginTop: "2rem", marginBottom: "2rem"}}
-                barsData={trackedBarsData} 
-                plotData={plotData}
-                dataMax={dataMax}
-                orientation={orientation}
-                theme={theme}
-                vars={vars}
-              />
+            <Scale
+              id='scale_1'
+              width='100%'
+              height='18px'
+              spacing={10}
+              dataMaxLimit={100} 
+            />
+            <BarPlot 
+              id='bar_plot_1'
+              width='100%'
+              height='600px'
+              style={{paddingBottom: "4rem", backgroundColor: "white", marginBottom: "2rem", marginTop: "0.5rem"}}
+              barsData={trackedBarsData} 
+              plotData={plotData}
+              dataMax={dataMax}
+              orientation={orientation}
+              theme={theme}
+              vars={vars}
+            />
               <a href="https://www.freevector.com/flat-colorful-fruits-26803#">FreeVector.com</a>
-          </div>
+          </Div>
     </ChakraProvider>
   )
 }

@@ -1,5 +1,5 @@
 type Vars = {
-    [name: string]: string[] | number[],
+    [name: string]: number[] | string[] | number[][] | string[][],
 }
 
 export default Vars;

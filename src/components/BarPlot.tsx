@@ -16,6 +16,17 @@ const theme = extendBaseTheme({
   },
 })
 
+export type DataObservable = Observable<{
+  index: number, 
+  data: number[], 
+  order: number, 
+  width: string, 
+  decorationWidth: string,
+  elements: FullBarElementType[], 
+  id: string, 
+  CSS: string
+}[]>
+
 export const DEFAULT_CSS = {
     "bar-plot": "",
     "full-bar": "&.horizontal { padding-top: 0.5rem; padding-bottom: 0.5rem;} &.vertical {padding-left: 0.5rem; padding-right: 0.5rem;}",
@@ -33,17 +44,6 @@ export const DEFAULT_MARKUP = {
     "bar": "",
     "bar-decoration": "",
 }
-
-export type DataObservable = Observable<{
-    index: number, 
-    data: number[], 
-    order: number, 
-    width: string, 
-    decorationWidth: string,
-    elements: FullBarElementType[], 
-    id: string, 
-    CSS: string
-  }[]>
 
 // TODO: Set all z-index of bars based on order BEFORE changing order so that bars going up always lie on top of bars going down
 export const changeOrder = (newOrder: number[], trackedBarsData: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string}[]>) => {

@@ -58,7 +58,7 @@ const FullBar = ({item} : {item: Observable<{index: number, data: number[], orde
                                 decIndex: i, 
                                 order: element.order,
                                 width: item.decorationWidth.peek(),
-                                CSS: element.css, 
+                                CSS: element.CSS, 
                                 markup: element.markup
                               });
             }

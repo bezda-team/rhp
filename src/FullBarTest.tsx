@@ -5,7 +5,7 @@ import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import FullBar from './components/FullBar';
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef } from 'react';
-import { useObservable, useSelector, observer } from '@legendapp/state/react';
+import { useObservable, useSelector, observer, useObserve, useComputed } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { Observable, opaqueObject } from '@legendapp/state';
@@ -23,6 +23,8 @@ const App = () => {
     const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
 
     const index = useObservable(0);
+    const spacing = useObservable(10);
+    const dataMaxLimit = useObservable(100);
 
     // const trackedData = useSelector(data);
     const renderCount = ++useRef(0).current;
@@ -34,70 +36,59 @@ const App = () => {
         vars.set({
         "color": ["orange", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "gray", "black"],
         "bar-label": ["label 1", "label 2", "label 3", "label 4", "label 5", "label 6", "label 7", "label 8", "label 9", "label 10"],
-        "bar-val": plotData.get().flat(),
+        "bar-val": [0],
       });
     }, []);
 
     const elements: BarElementType[] = [
-        {
-          type: "bar",
-          order: 1,
-          css: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
-          markup: "<div style='background-color: {{color}};height:100%'></div>",
-        },
-        {
-          type: "decoration",
-          order: 2,
-          css: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
-          markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{bar-val}}</div>",
-        }
-      ];
+      {
+        type: "bar",
+        order: 1,
+        isDefault: true,
+        CSS: "background-color: none; height: auto; transition: all 0.1s linear;border-left: 4px solid black;border-bottom: 4px solid black;",
+        markup: "<div style='font-weight: bold;font-size: small;height:100%;display: flex; justify-content: flex-start;padding-left: 2px;'><span>{{bar-val}}</div>",
+      },
+      {
+        type: "decoration",
+        order: 20,
+        useDataMax: true,
+        CSS: "position:absolute;left: calc(100% - 2rem);width: 3rem;height: 100%;color: black; div {font-size: small; text-align: left;border-left: 4px solid black;}", //We subtract 2rem from `left` to account for padding that impacts where the bars stop
+        markup: "<div style='font-weight: bold;height: 100%;background-color: white;padding-left: 2px;'>{{$dataMaxValue}}</div>",
+      }
+    ];
 
-      const contentElements: BarContentContainerElementType[] = [
-        {
-          type: "bar-dec-container",
-          elements: elements,
-          CSS: "background: none;",
-          decorationWidth: "10%",
-          order: 1,
-        }, 
-        // {
-        //   type: "decoration",
-        //   order: 0,
-        //   css: "background-color: slategray; color: white; div {text-align: left;}",
-        //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-        //   onClickHandler: () => console.log("decoration clicked")
-        // },
-        // {
-        //   type: "decoration",
-        //   order: 2,
-        //   css: "background-color: slategray; color: white; div {text-align: left;}",
-        //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-        //   onClickHandler: () => console.log("decoration clicked")
-        // }
-      ];
+    const contentElements: BarContentContainerElementType[] = [
+      {
+        type: "bar-dec-container",
+        elements: elements,
+        CSS: "background: none;",
+        decorationWidth: "10%",
+        order: 1,
+      }, 
+      // {
+      //   type: "decoration",
+      //   order: 0,
+      //   css: "background-color: slategray; color: white; div {text-align: left;}",
+      //   markup: "<div style='width: fit-content;'>My text decoration</div>",
+      //   onClickHandler: () => console.log("decoration clicked")
+      // },
+    ];
 
-      const fullBarElements: FullBarElementType[] = [
-        {
-          type: "bar-content-container",
-          elements: contentElements,
-          decorationWidth: "10%",
-          order: 1,
-          CSS:"padding-right: 1rem;"
-        }, 
-        {
-          type: "decoration",
-          order: 0,
-          css: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 0.5rem; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
-          markup: "<div style='width: fit-content;'>{{bar-label}}</div>",
-        },
-      ];
+    const fullBarElements: FullBarElementType[] = [
+      {
+        type: "bar-content-container",
+        elements: contentElements,
+        decorationWidth: "10%",
+        order: 1,
+        CSS:"padding-right: 2rem;"
+      }, 
+    ];
 
 
-      const newBarObservable = useObservable({
+    const newBarObservable = useObservable({
                                               id: "full_bar_a_" + 0,
                                               index: 0,
-                                              data: [18],
+                                              data: Array(Math.floor(dataMaxLimit.get()/spacing.get())).fill(spacing.get()),
                                               // data: plotData[i].get(),
                                               order: 0,
                                               width: "100%",
@@ -106,13 +97,22 @@ const App = () => {
                                               CSS: "",
                                             });
 
+    const scaleLabels = useComputed(() => { 
+      const spacingWidth : number = spacing.get();
+      const labelNumbers = Array(Math.floor(dataMaxLimit.get()/spacingWidth)).fill(0).map((_, i) => i*spacingWidth);
+      return labelNumbers;
+    })
+
+    useObserve(scaleLabels, ({value}) => {
+      vars?.set({...vars.get(), "bar-val": [value??[0]]})
+    })
 
     return (
         <ChakraProvider >
             <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
             <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-                {`Select Bar:`}
-                <NumberInput defaultValue={0} min={1} max={50} onChange={(value) => newBarObservable.data.set([parseInt(value)])}>
+                {`Mark every:`}
+                <NumberInput defaultValue={10} min={1} max={50} onChange={(value) => newBarObservable.data.set([parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value), parseInt(value)])}>
                     <NumberInputField />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -120,20 +120,17 @@ const App = () => {
                     </NumberInputStepper>
                 </NumberInput>
                 {`Change Data Max:`}
-                <NumberInput defaultValue={dataMax.get()} min={1} max={50} onChange={(value) => dataMax.set(parseInt(value))}>
+                <NumberInput defaultValue={dataMax.get()} min={1} max={dataMaxLimit.get()} onChange={(value) => dataMax.set(parseInt(value))}>
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
-                <div id={"Bar-and-dec-test"} style={{width: "100%", height: "100%"}}>
-                    <div id={"full_bar_plot-1"} style={{width: "100%", height: "200px"}}>
-                        <FullBar item={newBarObservable} />
-                    </div>
-                    {`Index: ` + index.get()}
-                    {`PlotData: ` + plotData[index.get()].get()}
-                    {`\nDataMax: ` + dataMax.get()??`None`}
+                <div id='bar_plot_1' className='bar-plot' style={{padding: "4rem", borderRadius: "1rem", backgroundColor: "white", border: "3px solid #999999", marginTop: "2rem", marginBottom: "2rem", width: '100%', height: '156px', overflow: "hidden"}}>
+                  <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
+                    <FullBar item={newBarObservable} />
+                  </div>
                 </div>
             </div>
             </PlotContext.Provider>
