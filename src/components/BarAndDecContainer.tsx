@@ -39,7 +39,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
                         id: element.id,
                         barIndex: i,
                         order: element.order,
-                        CSS: element.css,
+                        CSS: element.CSS,
                         markup: element.markup,
                       });
             } else{
@@ -69,7 +69,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
                                 dataIndex: element.dataIndex as number | undefined,
                                 useData: element.useData,
                                 useDataMax: element.useDataMax,
-                                CSS: element.css,
+                                CSS: element.CSS,
                                 markup: element.markup,
                             });
             

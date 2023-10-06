@@ -1,13 +1,16 @@
 import styled from '@emotion/styled';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup, Stack } from "@chakra-ui/react"
+import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup, Stack, Box, Slider, SliderMark, SliderTrack, SliderFilledTrack, SliderThumb, Select, RadioGroup, Radio, Center } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './components/PlotContext';
-import { useContext, useMemo, useRef } from 'react';
-import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
+import { useContext, useMemo, useRef, useState } from 'react';
+import { useObservable, useObserve, useComputed, useSelector } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
-import { opaqueObject } from '@legendapp/state';
+import BarContentContainerType from './components/types/BarContentContainerType';
+import { opaqueObject, Observable } from '@legendapp/state';
 import BarPlot, { changeOrder, changeOrderBasedOnMagnitude } from './components/BarPlot';
 import Scale from './components/Scale';
+import { enableReactUse } from '@legendapp/state/config/enableReactUse';
+import BarAndDecContainerType from './components/types/BarAndDecContainerType';
 
 const theme = extendBaseTheme({
   components: {
@@ -15,11 +18,17 @@ const theme = extendBaseTheme({
   },
 })
 
+enableReactUse();
+
 const Div = styled.div`
 @media (max-width: 600px) {
   padding: 1.5rem;
   margin: 0;
   width: 470px;
+  #plot {
+    margin-left: -1.1rem;
+    width: 456px;
+  }
 }
 @media (min-width: 601px) and (min-width: 900px){
     padding: 3rem;
@@ -34,13 +43,13 @@ const Div = styled.div`
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
-    "full-bar":"padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;",
+    "full-bar":"padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}",
     "bar-label": "display: flex; flex-direction: row-reverse;background-color: slategray; color: white; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
     "bar-content-container": "background-color: green;",
     "bar-dec-container": "",
     "bar": "background-color: blue;",
     "bar-decoration": "background-color: blue;",
-    "desaturate-bar": "padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}"
+    "desaturate-bar": "padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}"
 }
   
 export const DEFAULT_MARKUP = {
@@ -51,6 +60,64 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
+const ScaleBehaviorRadio = ({value}:{value: Observable<string>}) => {
+  const currValue = value.use();
+  return (
+    <RadioGroup onChange={value.set} value={currValue}>
+      <Stack direction='row'>
+        <Radio value='1'>Fit</Radio>
+        <Radio value='2'>Extend</Radio>
+        <Radio value='3'>Fixed</Radio>
+      </Stack>
+    </RadioGroup>
+  )
+}
+
+const DataValueSlider = ({defaultValue=0, value=0, min=0, max=1, step=1, onChange=undefined}:{defaultValue?: number, value?: number, min?: number, max?: number, step?: number, onChange?: (value:number)=>{}}) => {
+  const [sliderValue, setSliderValue] = useState(defaultValue)
+
+  useMemo(() => {
+    setSliderValue(value);
+  }, [value]);
+
+  const labelStyles = {
+    mt: '2',
+    ml: '-2.5',
+    fontSize: 'sm',
+  }
+
+  return (
+    <Box pt={6} pb={2}>
+      <Slider aria-label='slider-ex-6' defaultValue={defaultValue} value={sliderValue} min={min} max={max} step={step} onChange={(val) => {setSliderValue(val); if(onChange)onChange(val);}}>
+        <SliderMark value={1} {...labelStyles}>
+          0
+        </SliderMark>
+        <SliderMark value={50} {...labelStyles}>
+          50
+        </SliderMark>
+        <SliderMark value={99} {...labelStyles}>
+          100
+        </SliderMark>
+        <SliderMark
+          value={sliderValue}
+          textAlign='center'
+          bg='blue.500'
+          color='white'
+          mt='-10'
+          ml='-5'
+          w='12'
+        >
+          {sliderValue}
+        </SliderMark>
+        <SliderTrack>
+          <SliderFilledTrack />
+        </SliderTrack>
+        <SliderThumb />
+      </Slider>
+    </Box>
+  )
+}
+
 const App = () => {
   
   const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
@@ -58,7 +125,10 @@ const App = () => {
   console.log("Test APP: " + renderCount);
 
   const index = useObservable(0);
+  const scaleBehavior = useObservable("1");
+  // const trackedDataMax = useSelector(dataMax);
   const cssObservable = useObservable("padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;");
+  index.use();
   cssObservable.use();
   // const cssObservable = useObservable("padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}");
 
@@ -163,9 +233,7 @@ const App = () => {
     // The new order is the index of the new indexSortedByValue array 
     // and the value of this new array is the index of the original bar data array
     // where this new order must be placed
-    data.forEach((value, i) => {
-      indexSortedByValue.push(value[2]);                        
-    });
+    data.forEach((value, i) => indexSortedByValue.push(value[2]));
 
     // Again, the new orders are in the index of indexSortedByValue. They need to be pulled out 
     // and sorted by the index of the bar they go with. So, the order is the index and the value
@@ -182,90 +250,95 @@ const App = () => {
     trackedBarsData.forEach((value, i) => {
       maxValue = Math.max(...value.data.get()) > maxValue? Math.max(...value.data.get()) : maxValue;
     });
+
+    const scaleBehave = scaleBehavior.get();
+
     const currDataMax = dataMax.peek();
-    return maxValue > currDataMax? maxValue : currDataMax;
+    if (scaleBehave === "1"){
+      return maxValue;
+    }
+    else if (scaleBehave === "2"){
+      return maxValue > currDataMax? maxValue : currDataMax;
+    }
+    else {
+      return currDataMax;
+    }
   })
 
   useObserve(newDataMax, () => {dataMax.set(newDataMax.peek());});
 
-  const changeCSS = (css: string) => {
-    trackedBarsData.forEach((value, i) => {
-      value.CSS.set(css);
-    });
+  const changeCSS = (css?: string, add?: string, replace?: [string, string]) => {
+    if (css) trackedBarsData.forEach((value, i) => value.CSS.set(css));
+    else if (add) trackedBarsData.forEach((value, i) => value.CSS.set(value.CSS.get() + add));
+    else if (replace) trackedBarsData.forEach((value, i) => value.CSS.set(value.peek().CSS.replace(replace[0], replace[1])));
   }
 
   return (
     <ChakraProvider >
           <Div id="bar_plot" >
-            {`Select Bar:`}
-            <NumberInput defaultValue={index.get()} min={0} max={trackedBarsData.get().length} onChange={(value) => index.set(parseInt(value))}>
+            <Center marginBottom={"1rem"}>
+              <ScaleBehaviorRadio value={scaleBehavior} />
+            </Center>
+            <Box marginBottom={"2rem"}>
+              <DataValueSlider value={dataMax.get()} min={1} max={100} onChange={(value) => dataMax.set(value)} />
+            </Box>
+            <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
+              <div id='plot' className='plot'>
+                <Scale
+                  id='scale_1'
+                  width='100%'
+                  height='18px'
+                  spacing={10}
+                  dataMaxLimit={100} 
+                  style={{marginTop: "1.5rem"}}
+                />
+                <BarPlot 
+                  id='bar_plot_1'
+                  width='100%'
+                  height='600px'
+                  style={{paddingBottom: "0.5rem", backgroundColor: "white", marginTop: "0.5rem"}}
+                  barsData={trackedBarsData} 
+                />
+              </div>
+            </PlotContext.Provider>
+              <Stack direction='row' spacing={3} align='center' justifyContent="center" margin={5} marginTop={4} marginBottom={1.5}>
+                <ButtonGroup gap='1'>
+                  <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Initial</Button>
+                  <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Rank</Button>
+                  <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["desaturate-bar"])}>Desaturate</Button>
+                  <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["full-bar"])}>Saturate</Button>
+                  {/* <Button colorScheme='blackAlpha' onClick={() => changeCSS( undefined, undefined, ["transition-timing-function: ease-in-out", "transition-timing-function: linear"])}>Linear</Button>
+                  <Button colorScheme='blackAlpha' onClick={() => changeCSS(undefined, undefined, ["transition-timing-function: linear", "transition-timing-function: ease-in-out"])}>Ease-in-out</Button> */}
+                </ButtonGroup>
+              </Stack>
+            <Select defaultValue={index.get()} variant='flushed' placeholder='Select fruit' onChange={(event) => index.set(parseInt(event.target.value))}>
+              <option value={0}>grape</option>
+              <option value={1}>watermelon</option>
+              <option value={2}>pear</option>
+              <option value={3}>banana</option>
+              <option value={4}>orange</option>
+              <option value={5}>peach</option>
+              <option value={6}>strawberry</option>
+            </Select>
+            <Box pt={5} pb={5}>
+              <DataValueSlider value={trackedBarsData[index.get()].data.get()[0]} min={0} max={100} step={1} onChange={(value) => trackedBarsData[index.peek()].data.set([value])}/>
+            </Box>
+            {`Bar Parameter Selection Index:`}
+            <NumberInput defaultValue={0} min={0} max={20} step={1} onChange={(value) => trackedBarsData[index.peek()].index.set(parseInt(value))}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            {`Change Bar Value:`}
-            <NumberInput defaultValue={trackedBarsData[index.get()].data.get()[0]} min={0} max={100} onChange={(value) => trackedBarsData[index.get()].data.set([parseInt(value)])}>
+            {`Bar Order:`}
+            <NumberInput defaultValue={trackedBarsData[index.get()].order.get()} min={0} max={20} onChange={(value) => trackedBarsData[index.peek()].order.set(parseInt(value))}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            {`Change Bar Parameter Selection Index:`}
-            <NumberInput defaultValue={0} min={0} max={20} onChange={(value) => trackedBarsData[index.get()].index.set(parseInt(value))}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            {`Change Bar Order:`}
-            <NumberInput defaultValue={trackedBarsData[index.get()].order.get()} min={0} max={20} onChange={(value) => trackedBarsData[index.get()].order.set(parseInt(value))}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            {`Change Data Max:`}
-            <NumberInput defaultValue={dataMax.get()} min={1} max={100} onChange={(value) => dataMax.set(parseInt(value))}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            <Stack direction='row' spacing={3} align='center' margin={5} marginTop={4} marginBottom={4}>
-              <ButtonGroup gap='1'>
-                <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Initial</Button>
-                <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Rank</Button>
-              </ButtonGroup>
-              <ButtonGroup gap='1'>
-                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["desaturate-bar"])}>Desaturate</Button>
-                <Button colorScheme='blackAlpha' onClick={() => changeCSS(DEFAULT_CSS["full-bar"])}>Saturate</Button>
-              </ButtonGroup>
-            </Stack>
-            <Scale
-              id='scale_1'
-              width='100%'
-              height='18px'
-              spacing={10}
-              dataMaxLimit={100} 
-            />
-            <BarPlot 
-              id='bar_plot_1'
-              width='100%'
-              height='600px'
-              style={{paddingBottom: "4rem", backgroundColor: "white", marginBottom: "2rem", marginTop: "0.5rem"}}
-              barsData={trackedBarsData} 
-              plotData={plotData}
-              dataMax={dataMax}
-              orientation={orientation}
-              theme={theme}
-              vars={vars}
-            />
               <a href="https://www.freevector.com/flat-colorful-fruits-26803#">FreeVector.com</a>
           </Div>
     </ChakraProvider>

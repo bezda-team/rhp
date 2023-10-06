@@ -31,8 +31,13 @@ All containers and components should be able to respond to mouse/touch events. H
  - [ ] add mouse event listeners
  - [ ] add ability to customize listeners is some useful way via properties in template.
 
+## Doing things the react way
+
+This project was inspired by a non-react svg plotting library and as a result, extra effort is required to restructure the pieces into react components that people will find intuitive to use and follow common design configurations. Currently, the plan is to provide BOTH black-box react components (where you dont have to worry/care about whats inside after you have created/chosen the templates) and your typical react components where you can set things up so that all inner elements are accessable at the top level.
+
 ## Cleanup
 
  - [ ] add interface props for all components
  - [ ] differentiate `BarType` and `DecorationType` and use `BarType | DecorationType` in type requirements in components that mix both
  - [ ] change `BarPlot` component name to `BarPlotArea`
+ - [ ] move `PlotContext,provider` (context provider) from BarPlotArea and Scale components to the parent full plot component.

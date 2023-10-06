@@ -30,13 +30,13 @@ const elements: BarElementType[] = [
     {
       type: "bar",
       order: 1,
-      css: "background-color: red; height: auto;",
+      CSS: "background-color: red; height: auto;",
       markup: "<div style='background-color: {{color}};height:100%'></div>",
     },
     {
       type: "decoration",
       order: 2,
-      css: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
+      CSS: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
       markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{bar-val}}</div>",
     }
   ];
@@ -75,7 +75,7 @@ const elements: BarElementType[] = [
     {
       type: "decoration",
       order: 0,
-      css: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 0.5rem; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
+      CSS: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 0.5rem; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
       markup: "<div style='width: fit-content;'>{{bar-label}}</div>",
     },
   ];

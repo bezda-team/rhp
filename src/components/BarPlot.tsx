@@ -84,9 +84,7 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsData: Observable<{index:
   // The new order is the index of the new indexSortedByValue array 
   // and the value of this new array is the index of the original bar data array
   // where this new order must be placed
-  data.forEach((value, i) => {
-    indexSortedByValue.push(value[2]);                        
-  });
+  data.forEach((value, i) => indexSortedByValue.push(value[2]));
 
   // Again, the new orders are in the index of indexSortedByValue. They need to be pulled out 
   // and sorted by the index of the bar they go with. So, the order is the index and the value
@@ -97,19 +95,17 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsData: Observable<{index:
 
 const Div = styled.div``;
 
-const BarPlot = ({width, height, barsData, plotData, dataMax, orientation, vars, theme, id, style, CSS}:{width: string, height: string, barsData: DataObservable, dataMax: Observable<number>, plotData: Observable<number[][]>, orientation: Observable<number>, vars: Observable<Vars>, theme: Observable<object>, id?: string, style?: React.CSSProperties, CSS?: string}) => {
+const BarPlot = ({width, height, barsData, id, style, CSS}:{width: string, height: string, barsData: DataObservable, id?: string, style?: React.CSSProperties, CSS?: string}) => {
   const renderCount = ++useRef(0).current;
   console.log("BarPlot rendered: " + renderCount);
 
   return (
     <ChakraProvider >
-        <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
           <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
               <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
                 <For each={barsData} item={FullBar} optimized/>
               </div>
           </div>
-        </PlotContext.Provider>
     </ChakraProvider>
   )
 }

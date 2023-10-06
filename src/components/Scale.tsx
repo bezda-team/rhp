@@ -77,7 +77,7 @@ const Scale = ({width, height, spacing, dataMaxLimit, scaleData, id, style, deco
     const renderCount = ++useRef(0).current;
     console.log("Test APP: " + renderCount);
 
-    const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
+    const { vars } = useContext(PlotContext);
 
     const spacingObservable = useObservable(spacing);
     const dataMaxLimitObservable = useObservable(dataMaxLimit);
@@ -107,13 +107,11 @@ const Scale = ({width, height, spacing, dataMaxLimit, scaleData, id, style, deco
     })
 
     return (
-        <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
             <div id={id} className='scale' style={{...style, width: width, height: height, overflow: "hidden"}}>
                 <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
                     <FullBar item={newScaleData} />
                 </div>
             </div>
-        </PlotContext.Provider>
     )
 }
 
