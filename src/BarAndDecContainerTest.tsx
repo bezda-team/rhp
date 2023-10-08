@@ -34,13 +34,13 @@ const App = () => {
         {
           type: "bar",
           order: 1,
-          css: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
+          CSS: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
           markup: "<div style='background-color: {{color}};height:100%'></div>",
         },
         {
           type: "decoration",
           order: 2,
-          css: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
+          CSS: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
           markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{bar-val}}</div>",
         }
       ];

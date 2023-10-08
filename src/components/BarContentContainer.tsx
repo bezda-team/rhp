@@ -48,7 +48,7 @@ const BarContentContainer = ({item}:{item: Observable<{id: string, elements: Bar
                               decIndex: i, 
                               order: element.order,
                               width: decorationWidth,
-                              CSS: element.css, 
+                              CSS: element.CSS, 
                               markup: element.markup
                             });
           }

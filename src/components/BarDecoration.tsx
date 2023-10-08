@@ -13,16 +13,32 @@ enableReactUse();
 
 const Div = styled.div``;
 
-const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string | undefined, order: number | undefined, width: string, CSS: string | undefined, markup: string | undefined}>}) => {
+const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}>}) => {
     const renderCount = ++useRef(0).current;
     console.log("BarDecoration render count: " + renderCount);
-    const {index} = useContext(BarContext); 
-    const {theme, orientation, vars} = useContext(PlotContext);
+   
+    const {index, data} = useContext(BarContext); 
+    const {theme, orientation, vars, dataMax} = useContext(PlotContext);
 
     const trackedIndex = index.use()
     const CSS = item.CSS.use()
     const decIndex = item.decIndex.use()
+    
+    const trackedData = useSelector(() => {
+        if (item.useData?.get()){
+            return data.get()
+        } else {
+            return data.peek()
+        }
+    })
 
+    const trackedDataMax = useSelector(() => {
+        if (item.useDataMax?.get()){
+            return dataMax.get()
+        } else {
+            return dataMax.peek()
+        }
+    })
 
     const trackedStyle = useSelector(() => {
         const tempOrder = item.order.get();
@@ -38,32 +54,23 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
             Object.keys(vars).forEach((key) => {
                 const length = vars[key].length;
                 const value = vars[key][trackedIndex < length? trackedIndex : trackedIndex%length];
-                newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
+                if (Array.isArray(value)){
+                    newMarkup = newMarkup?.replace(`{{${key}}}`, value[decIndex]?.toString());
+                } else {
+                    newMarkup = newMarkup?.replace(`{{${key}}}`, value?.toString());
+                }
             });
+            if (item.useData?.get()){
+                const dIndex = item.dataIndex.peek();
+                if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replace(`{{$dataValue}}`, trackedData[dIndex && dIndex < data.length ? dIndex : 0]?.toString());
+            }
+            if (item.useDataMax?.get()){
+                if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replace(`{{$dataMaxValue}}`, trackedDataMax?.toString());
+            }
         }
         const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");
         return sanitizedMarkup;
     });
-
-    // useObserve(() => {
-    //   console.log("index changed!:" + index.get())
-    // });
-
-    // useObserve(() => {
-    //   console.log("CSS changed!:" + item.CSS.get())
-    // });
-
-    // useObserve(() => {
-    //   console.log("decIndex changed!:" + item.decIndex.get())
-    // });
-
-    // useObserve(() => {
-    //   console.log("trackedStyle changed!:" + trackedStyle)
-    // });
-
-    // useObserve(() => {
-    //   console.log("sanitizedMarkup changed!:" + sanitizedMarkup)
-    // });
 
     return (
         <Div 

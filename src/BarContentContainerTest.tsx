@@ -35,13 +35,13 @@ const App = () => {
         {
           type: "bar",
           order: 1,
-          css: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
+          CSS: "background-color: red; height: auto; transition: all 0.5s ease-in-out;",
           markup: "<div style='background-color: {{color}};height:100%'></div>",
         },
         {
           type: "decoration",
           order: 2,
-          css: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
+          CSS: "color: white; div {font-size: small; text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
           markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{bar-val}}</div>",
         }
       ];
@@ -57,14 +57,14 @@ const App = () => {
         // {
         //   type: "decoration",
         //   order: 0,
-        //   css: "background-color: slategray; color: white; div {text-align: left;}",
+        //   CSS: "background-color: slategray; color: white; div {text-align: left;}",
         //   markup: "<div style='width: fit-content;'>My text decoration</div>",
         //   onClickHandler: () => console.log("decoration clicked")
         // },
         // {
         //   type: "decoration",
         //   order: 2,
-        //   css: "background-color: slategray; color: white; div {text-align: left;}",
+        //   CSS: "background-color: slategray; color: white; div {text-align: left;}",
         //   markup: "<div style='width: fit-content;'>My text decoration</div>",
         //   onClickHandler: () => console.log("decoration clicked")
         // }

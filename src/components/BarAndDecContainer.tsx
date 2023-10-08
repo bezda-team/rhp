@@ -33,13 +33,13 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
         const untrackedData = data.peek();
         const newData : {id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}[] = [];
         untrackedData.forEach((value, i) => {
-            const element = elements.find(element => element.type === "bar" && (element.dataIndex??0) === i)
+            const element = elements.find(element => element.type === "bar" && (element.isDefault??(element.dataIndex??[0]).includes(i)))
             if (element !== undefined){ 
                 newData.push({
                         id: element.id,
                         barIndex: i,
                         order: element.order,
-                        CSS: element.css,
+                        CSS: element.CSS,
                         markup: element.markup,
                       });
             } else{
@@ -47,7 +47,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
                         id: "bar_" + i,
                         barIndex: i,
                         order: 1,
-                        CSS: "background-color: blue;",
+                        CSS: "background-color: blue;",        // needs to be changed - need blank and colorless bar as default
                         markup: "",
                   });
             }
@@ -59,14 +59,17 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
 
       const decorationsList = useSelector(() => {
           const untrackedElements = elements;
-          const newDecorationsList : {decIndex: number, id: string | undefined, order: number | undefined,width: string, CSS: string | undefined, markup: string | undefined}[] = []; 
-          untrackedElements.filter(element => element.type === "decoration").forEach((element, i) => { 
+          const newDecorationsList : {decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}[] = []; 
+          untrackedElements.filter(element => element.type === "decoration").forEach((element, i) => { //typeof should be used instead of element.type
               newDecorationsList.push({
                                 id: element.id,
                                 decIndex: i,
                                 order: element.order,
                                 width: decorationWidth,
-                                CSS: element.css,
+                                dataIndex: element.dataIndex as number | undefined,
+                                useData: element.useData,
+                                useDataMax: element.useDataMax,
+                                CSS: element.CSS,
                                 markup: element.markup,
                             });
             

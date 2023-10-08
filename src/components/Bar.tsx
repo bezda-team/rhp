@@ -45,8 +45,13 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
             Object.keys(vars).forEach((key) => {
                 const length = vars[key].length;
                 const value = vars.get()[key][trackedIndex < length? trackedIndex : trackedIndex%length];
-                newMarkup = newMarkup?.replace(`{{${key}}}`, value.toString());
+                if (Array.isArray(value)){
+                    newMarkup = newMarkup?.replace(`{{${key}}}`, value[barIndex]?.toString());
+                } else {
+                    newMarkup = newMarkup?.replace(`{{${key}}}`, value?.toString());
+                }
             });
+            if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replace(`{{$dataValue}}`, data[barIndex].get()?.toString());
         }
         const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");
         return sanitizedMarkup;
