@@ -20,7 +20,6 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     const renderCount = ++useRef(0).current;
     console.log("Bar render count: " + renderCount);
 
-
     const orientationValue = orientation.use()
     const id = item.id.use()
     const barIndex = item.barIndex.use()
@@ -42,16 +41,18 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
         // console.log(trackedIndex)
         let newMarkup = item.markup.get();
         if (item.markup.get() !== undefined){
-            Object.keys(vars).forEach((key) => {
-                const length = vars[key].length;
-                const value = vars.get()[key][trackedIndex < length? trackedIndex : trackedIndex%length];
-                if (Array.isArray(value)){
-                    newMarkup = newMarkup?.replace(`{{${key}}}`, value[barIndex]?.toString());
-                } else {
-                    newMarkup = newMarkup?.replace(`{{${key}}}`, value?.toString());
+            Object.keys(vars.peek()).forEach((key) => {
+                if (newMarkup?.includes(`{{${key}}}`)){               // This makes sure that only changes in the `vars` properties that are used in the markup cause rerender.
+                    const length = vars[key].length;
+                    const value = vars[key].get()[trackedIndex < length? trackedIndex : trackedIndex%length];
+                    if (Array.isArray(value)){
+                        newMarkup = newMarkup?.replaceAll(`{{${key}}}`, value[barIndex]?.toString());
+                    } else {
+                        newMarkup = newMarkup?.replaceAll(`{{${key}}}`, value?.toString());
+                    }
                 }
             });
-            if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replace(`{{$dataValue}}`, data[barIndex].get()?.toString());
+            if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replaceAll(`{{$dataValue}}`, data[barIndex].get()?.toString());
         }
         const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");
         return sanitizedMarkup;

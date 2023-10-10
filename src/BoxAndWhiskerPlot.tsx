@@ -122,6 +122,7 @@ const App = () => {
   console.log("Test APP: " + renderCount);
 
   const index = useObservable(0);
+  const nonformatedData = useObservable([[1, 3, 9, 10], [2, 3, 15, 20], [5, 9, 16, 18], [3, 4, 7, 9], [10, 18, 22, 25], [13, 15, 18, 22], [15, 20, 26, 27]]);
   const spacingOption = useObservable("5")
   const spacing = useObservable(parseInt(spacingOption.get()));
   const scaleBehavior = useObservable("1");
@@ -131,8 +132,19 @@ const App = () => {
   cssObservable.use();
   // const cssObservable = useObservable("padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}");
 
+  const processData = (data: number[][]) => {
+
+    const formattedData: number[][] = [];
+    data.forEach((value, i) => {
+      formattedData.push([value[0], value[1] - value[0], value[2] - value[1], value[3] - value[2]]);
+    });
+
+    return formattedData;
+  }
+
+
   useMemo(() => {
-    plotData.set([[1], [2], [18], [3], [25], [13], [20]]);
+    plotData.set(processData([[1, 3, 9, 10], [2, 3, 15, 20], [5, 9, 16, 18], [3, 4, 7, 9], [10, 18, 22, 25], [13, 15, 18, 22], [15, 20, 26, 27]]));
     dataMax.set(30);
     vars.set({
       "color": ["pink","#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#ce4257", "#577590", "brown", "gray", "black"],
@@ -153,19 +165,41 @@ const App = () => {
       elements: [{
                     type: "bar-dec-container",
                     elements: [{
-                                  type: "bar",
-                                  order: 1,
-                                  CSS: "box-sizing: border-box;border-radius: 0 1rem 1rem 0;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;&:hover {border: 4px solid black;}& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
-                                  markup: "<div style='background-color: {{color}};height:100%;'>{{fruit-svgs}}</div>",
+                                    type: "bar",
+                                    order: 1,
+                                    dataIndex: [2],
+                                    CSS: "box-sizing: border-box;border-radius: 1rem;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
+                                    markup: "<div style='background-color: {{color}};height:100%;'>{{fruit-svgs}}</div>",
                                 },
                                 {
-                                  type: "decoration",
-                                  order: 2,
-                                  useData: true,
-                                  CSS: "color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
-                                  markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{$dataValue}}</div>",
+                                    type: "bar",
+                                    order: 1,
+                                    dataIndex: [0],
+                                    CSS: "background: none;border: none!important;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;& div {display:flex;align-items: center;}",
+                                    markup: "",
+                                },
+                                {
+                                    type: "bar",
+                                    order: 1,
+                                    dataIndex: [1],
+                                    CSS: "border: none!important;display: flex;align-items: center;overflow: hidden;height: auto; transition-property: flex;transition-duration: 0.4s;transition-timing-function: ease-in-out;",
+                                    markup: "<div class='whisker' style='transition: border 0.4s ease-in-out;border-left: 4px solid {{color}};height:30%;width: 0%;'></div><div class='whisker' style='transition: border 0.4s ease-in-out;border: 3px solid {{color}};height:0%;width: 100%;'></div>",
+                                },
+                                {
+                                    type: "bar",
+                                    order: 1,
+                                    dataIndex: [3],
+                                    CSS: "border: none!important;display: flex;align-items: center;height: auto; transition-property: flex;transition-duration: 0.4s;transition-timing-function: ease-in-out;",
+                                    markup: "<div class='whisker' style='transition: border 0.4s ease-in-out;border: 3px solid {{color}};height:0%;width: 100%;'></div><div class='whisker' style='transition: border 0.4s ease-in-out;border-right: 4px solid {{color}};height:30%;width: 0%;margin-right: -4px;'></div>",
+                                },
+                                {
+                                    type: "decoration",
+                                    order: 2,
+                                    useData: true,
+                                    CSS: "display: inline-flex;align-items: center;margin-bottom: 2px;color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
+                                    markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{$dataValue}}</div>",
                                 }],
-                    CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;}",
+                    CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;} &:hover div.bar {border: 4px solid #555555;} &:hover div div.whisker {border: 3px solid #555555!important;}",
                     decorationWidth: "10%",
                     order: 1,
                   }, 
@@ -219,7 +253,7 @@ const App = () => {
     const data: number[][] = [];
     const indexSortedByValue : number[] = []
     const tempBarData = trackedBarsData.peek();
-    tempBarData.map((value, i) => data.push([trackedBarsData[i].data.get()[0], tempBarData[i].order, i]));
+    tempBarData.map((value, i) => data.push([trackedBarsData[i].data.get().reduce((a, b) => a + b, 0), tempBarData[i].order, i]));
 
     // the following line sorts the data array according to the current order of the bars
     // (ie how they are currently displayed) 
@@ -247,7 +281,7 @@ const App = () => {
   const newDataMax = useComputed(() => {
     let maxValue = 0;
     trackedBarsData.forEach((value, i) => {
-      maxValue = Math.max(...value.data.get()) > maxValue? Math.max(...value.data.get()) : maxValue;
+      maxValue = value.data.get().reduce((a, b) => a + b, 0) > maxValue? value.data.get().reduce((a, b) => a + b, 0) : maxValue;
     });
 
     const scaleBehave = scaleBehavior.get();

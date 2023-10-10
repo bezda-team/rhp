@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import FullBar from './FullBar';
 import { ChakraProvider, extendBaseTheme } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
-import { useRef } from 'react';
+import { FC, useRef } from 'react';
 import { For } from '@legendapp/state/react';
 import FullBarElementType from './types/FullBarElementType';
 import { Observable } from '@legendapp/state';
@@ -92,7 +92,20 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsData: Observable<{index:
 
 const Div = styled.div``;
 
-const BarPlot = ({width, height, barsData, id, style, CSS}:{width: string, height: string, barsData: DataObservable, id?: string, style?: React.CSSProperties, CSS?: string}) => {
+type PlotChildrenProps = FC<{
+    item: Observable<{
+        index: number;
+        data: number[];
+        order: number;
+        width: string;
+        decorationWidth: string;
+        elements: FullBarElementType[];
+        id: string;
+        CSS: string;
+    }>;
+}>
+
+const Plot = ({width, height, childrenData, children, id, style, CSS}:{width: string, height: string, childrenData: DataObservable, children: FC<PlotChildrenProps>, id?: string, style?: React.CSSProperties, CSS?: string}) => {
   const renderCount = ++useRef(0).current;
   console.log("BarPlot rendered: " + renderCount);
 
@@ -100,11 +113,11 @@ const BarPlot = ({width, height, barsData, id, style, CSS}:{width: string, heigh
     <ChakraProvider >
           <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
               <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
-                <For each={barsData} item={FullBar} optimized/>
+                <For each={childrenData} item={children} optimized/>
               </div>
           </div>
     </ChakraProvider>
   )
 }
 
-export default BarPlot;
+export default Plot;
