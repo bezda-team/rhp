@@ -29,7 +29,7 @@ const BarContentContainer = ({item}:{item: Observable<{id: string, elements: Bar
   const order = item.order.use();
 
   const {newBarAndDecs, newContDecs} = useSelector(() => {
-      const untrackedElements = item.elements.peek();
+      const untrackedElements = item.elements.peek();      //The `peek` here might be ineffective because `.use()` is called on the elements and so rerender is triggered anyway.
       const newBarAndDecs : {id: string, barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, index?: number, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}[] = [];
       const newContDecs : {decIndex: number, id: string | undefined, order: number | undefined, width: string, CSS: string | undefined, markup: string | undefined}[] = []; 
       untrackedElements.forEach((element, i) => {
@@ -70,7 +70,7 @@ const BarContentContainer = ({item}:{item: Observable<{id: string, elements: Bar
   return (
       <Div 
         className="bar-content-container" 
-        style={orientation.get()===0? {display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", height: "100%", overflow: "hidden", order: order??1} : {display: "flex", flexDirection: "row", height: "100%", width: "100%", overflow: "hidden", order: order??1}} 
+        style={orientationValue===0? {display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", height: "100%", overflow: "hidden", order: order??1} : {display: "flex", flexDirection: "row", height: "100%", width: "100%", overflow: "hidden", order: order??1}} 
         css={css`${trackedCSS}`} 
         // onClick={onClickHandler??undefined}
       >

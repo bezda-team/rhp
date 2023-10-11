@@ -27,12 +27,11 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
 
     const trackedData = useSelector(() => {
       const tempDataMax = dataMax.get();
-      // console.log("data: " + data.get())
-      const tempData = data.get();
       const tempBarIndex = item.barIndex.get();
       const tempOrder = item.order.get();
+      const tempData = data[tempBarIndex].get();    // Only changes in the data array ELEMENT that is used here causes rerender 
 
-      return orientation.get()===0? {flex: "0 0 " + (tempData[tempBarIndex] > tempDataMax? tempDataMax: tempData[tempBarIndex])*100/tempDataMax + "%", order: tempOrder, height: "inherit"} : {flex: "0 0 " +  (tempData[tempBarIndex] > tempDataMax? tempDataMax: tempData[tempBarIndex])*100/tempDataMax + "%", order: tempOrder, width: "inherit"};
+      return orientation.get()===0? {flex: "0 0 " + (tempData > tempDataMax? tempDataMax: tempData)*100/tempDataMax + "%", order: tempOrder, height: "inherit"} : {flex: "0 0 " +  (tempData > tempDataMax? tempDataMax: tempData)*100/tempDataMax + "%", order: tempOrder, width: "inherit"};
     })
 
     const trackedIndex = index.use()

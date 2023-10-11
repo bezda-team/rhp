@@ -109,10 +109,10 @@ const Scale = ({width, height, spacing, dataMaxLimit, scaleData, id, style, deco
           console.log("data: " + Array((value??[0]).length).fill(spacing?.get()))
           vars["$scaleLabel"]?.set([value??[0]])
           // vars?.set({...vars?.get()??{}, "$scaleLabel": [value??[0]]})
-        }, 400);
+        }, 340);
         setTimeout(() => {
           defaultScaleData.CSS?.set("& .bar {opacity: 1;}")
-       }, 900);
+       }, 840);
     })
 
     return (

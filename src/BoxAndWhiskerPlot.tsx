@@ -150,6 +150,7 @@ const App = () => {
       "color": ["pink","#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#ce4257", "#577590", "brown", "gray", "black"],
       "bar-label": ["Fruit A", "Fruit B", "Fruit C", "Fruit D", "Fruit E", "Fruit F", "Fruit G"],
       "bar-val": ["grape", "watermelon", "pear", "banana", "orange","peach", "strawberry"],
+      "last-whisker-pos": [23, 40, 48, 23, 75, 68, 88],
       "fruit-svgs":['<img src="./grape.svg" alt="grape" />', '<img src="./watermelon.svg" alt="watermelon" />' , '<img src="./pear.svg" alt="pear" />', '<img src="./banana.svg" alt="banana" />', '<img src="./orange.svg" alt="orange" />', '<img src="./peach.svg" alt="peach" />', '<img src="./strawberry.svg" alt="strawberry" />'],
     });
   }, []);
@@ -197,7 +198,7 @@ const App = () => {
                                     order: 2,
                                     useData: true,
                                     CSS: "display: inline-flex;align-items: center;margin-bottom: 2px;color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
-                                    markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{$dataValue}}</div>",
+                                    markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{last-whisker-pos}}</div>",
                                 }],
                     CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;} &:hover div.bar {border: 4px solid #555555;} &:hover div div.whisker {border: 3px solid #555555!important;}",
                     decorationWidth: "10%",
@@ -301,6 +302,16 @@ const App = () => {
   useObserve(newDataMax, () => {dataMax.set(newDataMax.peek());});
   useObserve(spacingOption, () => {spacing.set(parseInt(spacingOption.peek()));});
 
+  useObserve(() => {
+    const untrackedBarsData = trackedBarsData.peek();
+    untrackedBarsData.forEach((value, i) => {
+      const dataArray = trackedBarsData[i].data.get();
+      const dataArrayTotal = dataArray.reduce((a, b) => a + b, 0);
+      const labels = vars["last-whisker-pos"].peek();
+      if (labels[i] !== dataArrayTotal) vars["last-whisker-pos"][i].set(dataArrayTotal);
+    });
+  });
+
   const changeCSS = (css?: string, add?: string, replace?: [string, string]) => {
     if (css) trackedBarsData.forEach((value, i) => value.CSS.set(css));
     else if (add) trackedBarsData.forEach((value, i) => value.CSS.set(value.CSS.get() + add));
@@ -336,7 +347,7 @@ const App = () => {
                 <Scale
                   id='scale_1'
                   width='100%'
-                  height='600px'
+                  height='33px'
                   spacing={spacing}
                   dataMaxLimit={100} 
                   style={{marginTop: "1.5rem", position: "absolute", paddingBottom: "1.2rem"}}
@@ -370,7 +381,7 @@ const App = () => {
               <option value={6}>strawberry</option>
             </Select>
             <Box pt={5} pb={5}>
-              <DataValueSlider value={trackedBarsData[index.get()].data.get()[0]} min={0} max={100} step={1} onChange={(value) => trackedBarsData[index.peek()].data.set([value])}/>
+              <DataValueSlider value={trackedBarsData[index.get()].data.get()[0]} min={0} max={100} step={1} onChange={(value) => trackedBarsData[index.peek()].data[0].set(value)}/>
             </Box>
             {`Bar Parameter Selection Index:`}
             <NumberInput defaultValue={0} min={0} max={20} step={1} onChange={(value) => trackedBarsData[index.peek()].index.set(parseInt(value))}>
