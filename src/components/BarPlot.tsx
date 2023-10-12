@@ -6,23 +6,13 @@ import { useRef } from 'react';
 import { For } from '@legendapp/state/react';
 import FullBarElementType from './types/FullBarElementType';
 import { Observable } from '@legendapp/state';
+import DataObservable from './types/DataObservable';
 
 const theme = extendBaseTheme({
   components: {
     NumberIn,
   },
 })
-
-export type DataObservable = Observable<{
-  index: number, 
-  data: number[], 
-  order: number, 
-  width: string, 
-  decorationWidth: string,
-  elements: FullBarElementType[], 
-  id: string, 
-  CSS: string
-}[]>
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
@@ -43,7 +33,7 @@ export const DEFAULT_MARKUP = {
 }
 
 // TODO: Set all z-index of bars based on order BEFORE changing order so that bars going up always lie on top of bars going down
-export const changeOrder = (newOrder: number[], trackedBarsData: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string}[]>) => {
+export const changeOrder = (newOrder: number[], trackedBarsData: DataObservable) => {
   if (newOrder.length !== trackedBarsData.length) {
     console.log("newOrder.length !== trackedBarsData.length");
     return;
@@ -61,7 +51,7 @@ export const changeOrder = (newOrder: number[], trackedBarsData: Observable<{ind
 // NOTE: A key requirement here is making sure that the returned new orders are arranged according 
 // to the position of the corresponding bar in the trackedBarsData array without messing with sorting
 // stability.
-export const changeOrderBasedOnMagnitude = ( trackedBarsData: Observable<{index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string}[]>) => {
+export const changeOrderBasedOnMagnitude = ( trackedBarsData: DataObservable) => {
   const order: number[] = [];
   const data: number[][] = [];
   const indexSortedByValue : number[] = []
@@ -97,13 +87,11 @@ const BarPlot = ({width, height, barsData, id, style, CSS}:{width: string, heigh
   console.log("BarPlot rendered: " + renderCount);
 
   return (
-    <ChakraProvider >
-          <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
-              <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
-                <For each={barsData} item={FullBar} optimized/>
-              </div>
-          </div>
-    </ChakraProvider>
+    <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
+        <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
+          <For each={barsData} item={FullBar} optimized/>
+        </div>
+    </div>
   )
 }
 
