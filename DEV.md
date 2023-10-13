@@ -10,7 +10,7 @@
             - for example: function adjusting the data range upper limit of the Scale component to match the data value of the largest FullBar component should be implemented in the full plot component (BarPlot component)
 
 ### Structure
-Traditionally, with bar graphs (and many other types of graphs/plots), the plot area is dealt with seperately from the axis and labels and connected information outside the plot area. In other words, the bar labels, icons, and text outside the plot area is constructed separately or detached from the associated bar inside the plot area. 
+Traditionally, with bar graphs (and many other types of graphs), the plot area is dealt with seperately from the axis and labels and connected information outside the plot area. In other words, the bar labels, icons, and text outside the plot area is constructed separately or detached from the associated bar inside the plot area. 
 
 The pattern that inspired component-ization of plot elements/segments is a little bit outside the box. The pattern can be most easily seen in bar plots (bar group plots and stacked bar plots as well), candlestick/box and whisker plots, and rectangular heatmap plots. For example, if you look at bar chart infographic templates offered on sites like [Smart Draw](https://www.smartdraw.com/bar-graph/examples/) or [Slide Members](https://www.slidemembers.com/en_US/view/Diagram/various-types-of-bar-chart-infographic-diagram-11342), you will easily see this pattern. 
 
