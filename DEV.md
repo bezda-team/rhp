@@ -2,13 +2,6 @@
 
 ## General concepts to be reminded of
 
- - The component library provides react components that should make it easier to build full plots components with desired features in appearance and behavior
-    - These full plot components (that are built) should only need the data values, the template dictionaries for the main sections of the plot, and additional parameters to construct the plot out of the components of this library.
-    - These full plot components should decide the level of customization that is offered to users (what users can configure/change and what is fixed) and should implement all possible behaviors
-        - behavior involving an instance of a core component and its inner elements should be implemented inside the core component and/or its in its inner elements
-        - behavior involving multiple instances of the same or different core components should be implemented in the full plot component.
-            - for example: function adjusting the data range upper limit of the Scale component to match the data value of the largest FullBar component should be implemented in the full plot component (BarPlot component)
-
 ### Structure
 Traditionally, with bar graphs (and many other types of graphs), the plot area is dealt with seperately from the axis and labels and connected information outside the plot area. In other words, the bar labels, icons, and text outside the plot area is constructed separately or detached from the associated bar inside the plot area. 
 
@@ -22,7 +15,16 @@ Each of these can be divided into stacked elements with the same structure where
 
 ![stacked_info_segment_pattern](https://github.com/bouzidanas/react-html-plots/assets/25779130/71f4951d-8c64-453b-9c46-38940b3cd07e)
 
-This pattern lead to main overarching concept which is that given a template for just one of the stacked elements and all the information/data needed to fill in/configure the template for each element, we should be able to construct the plot. So we build a component that takes a template and builds itself according to the template. The template itself should indicate where the data or information will be inserted if its not obvious or consistent. Each component should have access to the data/information and will watch for changes in the parts of the data that matter to it and will update itself automatically when changes occur.
+This pattern lead to the main overarching concept which is that given a template for just one of the stacked elements and all the information/data needed to fill in/configure the template for each element, we should be able to construct the plot. So we build a component that takes a template and builds itself according to the template. The template itself should indicate where the data or information will be inserted if its not obvious or consistent. Each component should have access to the data/information and will watch for changes in the parts of the data that matter to it and will update itself automatically when changes occur.
+
+### What needs to be added or implemented
+
+ - The component library provides react components that should make it easier to build full plots components with desired features in appearance and behavior
+    - These full plot components (that are built) should only need the data values, the template dictionaries for the main sections of the plot, and additional parameters to construct the plot out of the components of this library.
+    - These full plot components should decide the level of customization that is offered to users (what users can configure/change and what is fixed) and should implement all possible behaviors
+        - behavior involving an instance of a core component and its inner elements should be implemented inside the core component and/or its in its inner elements
+        - behavior involving multiple instances of the same or different core components should be implemented in the full plot component.
+            - for example: function adjusting the data range upper limit of the Scale component to match the data value of the largest FullBar component should be implemented in the full plot component (BarPlot component)
 
 ## CSS
 
