@@ -9,6 +9,21 @@
         - behavior involving multiple instances of the same or different core components should be implemented in the full plot component.
             - for example: function adjusting the data range upper limit of the Scale component to match the data value of the largest FullBar component should be implemented in the full plot component (BarPlot component)
 
+### Structure
+Traditionally, with bar graphs (and all the other mentioned types of graphs/plots), the plot area is dealt with seperately from the axis and labels and connected information outside the plot area. In other words, the bar labels, icons, and text outside the plot area is constructed separately or detached from the associated bar inside the plot area. 
+
+The pattern that inspired component-ization of plot elements/segments is a little bit outside the box. The pattern can be most easily seen in bar plots (bar group plots and stacked bar plots as well), candlestick/box and whisker plots, and rectangular heatmap plots. For example, if you look at bar chart infographic templates offered on sites like [Smart Draw](https://www.smartdraw.com/bar-graph/examples/) or [Slide Members](https://www.slidemembers.com/en_US/view/Diagram/various-types-of-bar-chart-infographic-diagram-11342), you will easily see this pattern. 
+
+Lets look at the following template graphics from Slide Members:
+
+![Screenshot 2023-10-13 034651](https://github.com/bouzidanas/react-html-plots/assets/25779130/d29fe3f6-ed84-492d-8704-2d90c2291cad)
+
+Each of these can be divided into stacked elements with the same structure where the only differences are due to differences in the data each stacked element is representing and conveying:
+
+![stacked_info_segment_pattern](https://github.com/bouzidanas/react-html-plots/assets/25779130/71f4951d-8c64-453b-9c46-38940b3cd07e)
+
+This pattern lead to main overarching concept which is that given a template for just one of the stacked elements and all the information/data needed to fill in/configure the template for each element, we should be able to construct the plot. So we build a component that takes a template and builds itself according to the template. The template itself should indicate where the data or information will be inserted if its not obvious or consistent. Each component should have access to the data/information and will watch for changes in the parts of the data that matter to it and will update itself automatically when changes occur.
+
 ## CSS
 
 All components should be stylable with CSS as many ways as possible. Currently, every inner component and container of the core FullBar component can be styled by CSS that is provided in the FullBar template object. However, users should also be able to style all components with a global style sheet. To achieve the same effect as the template, apply one CSS string to the same components across FullBar elements, classes need to be added to each container and inner component. The benefit of doing this is that it should be simpler and easier to change classes to make changes in appearance than to change entire CSS applied to the component/container. However, the reason for the CSS attribute in the templates in the first place is to be able to inject variable values and have the CSS change according to data. This could be achieved with a global stylesheet and classes but would require much more repetitive CSS and many more classes and thus could prove more difficult to manage.

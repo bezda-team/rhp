@@ -41,13 +41,13 @@ const Div = styled.div`
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
-    "full-bar":"padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}",
+    "full-bar":"padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;&:hover .decoration>.image img {transform: scale(1.5)!important;}&:hover .decoration>.image {border: 5px solid #555555!important;}&:hover .decoration>div {color: black!important;} &:hover div div.box {border: 5px solid #555555!important;color: #555555!important; font-weight: 500} &:hover div div.whisker {border: 3px solid #555555!important;} & div.bar-content-container div.bar {transition-timing-function: ease-in-out;}",
     "bar-label": "display: flex; flex-direction: row-reverse;background-color: slategray; color: white; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
     "bar-content-container": "background-color: green;",
     "bar-dec-container": "",
     "bar": "background-color: blue;",
     "bar-decoration": "background-color: blue;",
-    "desaturate-bar": "padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}"
+    "desaturate-bar": "padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(10%); transition: all 0.3s ease-in-out;&:hover .decoration>img {border: 5px solid #555555!important;}&:hover .decoration>div {color: black!important;} &:hover div div.box {border: 5px solid #555555!important;color: #555555!important; font-weight: 500} &:hover div div.whisker {border: 3px solid #555555!important;}&:hover {filter: saturate(110%);}& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}"
 }
   
 export const DEFAULT_MARKUP = {
@@ -135,11 +135,10 @@ const App = () => {
     plotData.set(processData(nonformatedData.peek()));
     dataMax.set(30);
     vars.set({
-      "color": ["#9fa2a4","#dfe9ea", "#a5aeb5", "#e6eef1", "#dae6ec", "#c2d6e0", "#c9ced3", "#577590", "brown", "gray", "black"],
-      "bar-label": ["Fruit A", "Fruit B", "Fruit C", "Fruit D", "Fruit E", "Fruit F", "Fruit G"],
-      "bar-val": ["grape", "watermelon", "pear", "banana", "orange","peach", "strawberry"],
+      "color": ["#9fa2a4","#cbdddf", "#a5aeb5", "#dbe7eb", "#dae6ec", "#c2d6e0", "#c9ced3", "#577590", "brown", "gray", "black"],
+      "cloud-img-src": ['./react-html-plots/stratocumulus.jpg','./react-html-plots/cumulonimbus.jpg', './react-html-plots/altocumulus.jpg', './react-html-plots/cirrus.jpg', './react-html-plots/nimbostratus.jpg', './react-html-plots/cumulus1.jpg', './react-html-plots/cirrocumulus.jpg'],
       "last-whisker-pos": [23, 40, 48, 23, 75, 68, 88],
-      "clouds":['stratocumulus', '<img src="./watermelon.svg" alt="watermelon" />' , '<img src="./pear.svg" alt="pear" />', '<img src="./banana.svg" alt="banana" />', '<img src="./orange.svg" alt="orange" />', '<img src="./peach.svg" alt="peach" />', '<img src="./strawberry.svg" alt="strawberry" />'],
+      "clouds":['stratocumulus', 'cumulonimbus' , 'altocumulus', 'cirrus', 'nimbostratus', 'cumulus', 'cirrocumulus'],
     });
   }, []);
 
@@ -232,21 +231,22 @@ const App = () => {
               <DataValueSlider value={dataMax.get()} min={1} max={100} onChange={(value) => dataMax.set(value)} />
             </Box>
             <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
-              <div id='plot' className='plot' style={{position: "relative"}}>
+              <div id='plot' className='plot' style={{position: "relative", marginTop: "1rem", paddingBottom: "1.8rem",borderRadius: "1rem", backgroundColor: "white", boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"}}>
                 <Scale
                   id='scale_1'
                   width='100%'
-                  height='33px'
+                  height='600px'
                   spacing={spacing}
                   dataMaxLimit={100} 
-                  style={{marginTop: "1.5rem", position: "absolute", paddingBottom: "1.2rem"}}
+                  decorationWidth='6rem'
+                  style={{marginTop: "1.5rem", position: "absolute", paddingBottom: "1.2rem", paddingRight: "0.3rem"}}
                 />
                 <BoxWhiskerPlot 
                   id='bw_plot_1'
                   width='100%'
                   height='600px'
                   dataIndexForOrdering={dataOrderIndex}
-                  style={{paddingBottom: "0.5rem", paddingTop: "2.5rem", backgroundColor: "white", marginTop: "0.5rem"}}
+                  style={{paddingBottom: "0.5rem", paddingTop: "2.5rem", marginTop: "0.5rem", paddingRight: "0.3rem"}}
                   boxWhiskerConfig={trackedBoxWhiskersConfig} 
                 />
               </div>
@@ -261,14 +261,14 @@ const App = () => {
                   <Button colorScheme='blackAlpha' onClick={() => changeCSS(undefined, undefined, ["transition-timing-function: linear", "transition-timing-function: ease-in-out"])}>Ease-in-out</Button> */}
                 </ButtonGroup>
               </Stack>
-            <Select defaultValue={index.get()} variant='flushed' placeholder='Select fruit' onChange={(event) => index.set(parseInt(event.target.value))}>
-              <option value={0}>grape</option>
-              <option value={1}>watermelon</option>
-              <option value={2}>pear</option>
-              <option value={3}>banana</option>
-              <option value={4}>orange</option>
-              <option value={5}>peach</option>
-              <option value={6}>strawberry</option>
+            <Select defaultValue={index.get()} variant='flushed' placeholder='Select cloud type' onChange={(event) => index.set(parseInt(event.target.value))}>
+              <option value={0}>stratocumulus</option>
+              <option value={1}>cumulonimbus</option>
+              <option value={2}>altocumulus</option>
+              <option value={3}>cirrus</option>
+              <option value={4}>nimbostratus</option>
+              <option value={5}>cumulus</option>
+              <option value={6}>cirrocumulus</option>
             </Select>
             <Box pt={5} pb={5}>
               <DataValueSlider value={plotData[index.get()].get()[0]} min={0} max={100} step={1} onChange={(value) => plotData[index.peek()][0].set(value)}/>

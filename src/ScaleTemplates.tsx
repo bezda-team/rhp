@@ -52,7 +52,7 @@ const finalTickDecoration: DecorationType =
   order: 20,  // Order shouldnt matter because this decoration is expected to be lifted from the flex flow and placed at the end of the scale
   useDataMax: true,
   CSS: "position:absolute;left: calc(100% - 2rem);width: 3rem;height: 100%;color: #555555; div {font-size: small; text-align: left;border-left: 4px solid #555555;}", //We subtract 2rem from `left` to account for padding that impacts where the bars stop
-  markup: "<div style='display: flex;font-weight: bold;height: 150%;background-color: white;padding-left: 4px;'><span style='margin-top: -4px;width: 100%;'>{{$dataMaxValue}}</span></div>",
+  markup: "<div style='display: flex;font-weight: bold;height: 150%;padding-left: 4px;'><span style='margin-top: -4px;width: 100%;'>{{$dataMaxValue}}</span></div>",
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //+++++++++++++++++++++++++++++++++++++++ INNER BAR AND DEC CONTAINER TEMPLATES ++++++++++++++++++++++++++++++++++++++++//

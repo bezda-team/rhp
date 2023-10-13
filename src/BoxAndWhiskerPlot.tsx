@@ -36,7 +36,7 @@ export const DEFAULT_BOX_WHISKER_TEMPLATE: FullBarElementType[] = [
                                   order: 1,
                                   dataIndex: [2],
                                   CSS: "box-sizing: border-box;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;& div {display:flex;align-items: center;justify-content: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
-                                  markup: "<div class='box' style='transition: border 0.4s ease-in-out;border: 4px solid {{color}};color: {{color}};height:100%;'>{{clouds}}</div>",
+                                  markup: "<div class='box' style='transition: border 0.4s ease-in-out, color 0.4s ease-in-out;border: 4px solid {{color}};color: {{color}};height:100%;'>{{clouds}}</div>",
                               },
                               {
                                   type: "bar",
@@ -66,7 +66,7 @@ export const DEFAULT_BOX_WHISKER_TEMPLATE: FullBarElementType[] = [
                                   CSS: "display: inline-flex;align-items: center;margin-bottom: 2px;color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
                                   markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{last-whisker-pos}}</div>",
                               }],
-                  CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;} &:hover div div.box {border: 5px solid #555555!important;} &:hover div div.whisker {border: 3px solid #555555!important;}",
+                  CSS: "background: none;",
                   decorationWidth: "10%",
                   order: 1,
                 }, 
@@ -85,8 +85,8 @@ export const DEFAULT_BOX_WHISKER_TEMPLATE: FullBarElementType[] = [
   {
     type: "decoration",
     order: 0,
-    CSS: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 1rem; div {text-align: center;}",
-    markup: "<div style='width: fit-content;font-weight: 600;color: #555555;'>{{bar-val}}</div>",
+    CSS: "display: flex; flex-direction: row-reverse;justify-content: center;height: 100%;background: none; color: black; div {text-align: center;}",
+    markup: "<div class='image' style='height: 100%;aspect-ratio: 1/1;border-radius: 50%;transition: border 0.4s ease-in-out;border: 4px solid #00000011;overflow: hidden;' ><img style= 'height: 100%; width: 100%;object-fit: cover;transition: transform 0.4s ease-in-out;transform: scale(5);' src='{{cloud-img-src}}'  alt='{{clouds}}'></img></div>",
   },
 ];
 

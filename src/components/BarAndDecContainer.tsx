@@ -92,7 +92,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
           key={"bar_dec_cont-" + barIndex}
           id={"bar_dec_cont-" + barIndex} 
           className="bar-dec-cont" 
-          style={orientation.get()===0? {display: "flex", flexDirection: "row", width: "100%", order: order, height: "inherit", alignItems: "center", overflowX : "visible"} : {display: "flex", flexDirection: "column-reverse", height: "100%", order: order, width: "inherit", alignItems: "center", overflowY : "visible"}} 
+          style={orientation.get()===0? {display: "flex", flexDirection: "row", width: "100%", order: order, height: "inherit", alignItems: "center", overflowX : "hidden"} : {display: "flex", flexDirection: "column-reverse", height: "100%", order: order, width: "inherit", alignItems: "center", overflowY : "hidden"}} 
           css={css`${CSS}`} 
           // onClick={onClickHandler??undefined}
           >
