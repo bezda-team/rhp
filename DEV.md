@@ -1,4 +1,4 @@
-# Future changes and enhancements
+# Developer notes and plans (ideas, issues, TODOs)
 
 ## General concepts to be reminded of
 
