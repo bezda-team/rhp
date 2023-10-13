@@ -3,7 +3,7 @@
 ## General concepts to be reminded of
 
  - The component library provides react components that should make it easier to build full plots components with desired features in appearance and behavior
-    - These full plot components (that are built) should only need the plot data values, the template dictionaries for the main sections of the plot, and additional parameters to construct the plot out of the components of this library.
+    - These full plot components (that are built) should only need the data values, the template dictionaries for the main sections of the plot, and additional parameters to construct the plot out of the components of this library.
     - These full plot components should decide the level of customization that is offered to users (what users can configure/change and what is fixed) and should implement all possible behaviors
         - behavior involving an instance of a core component and its inner elements should be implemented inside the core component and/or its in its inner elements
         - behavior involving multiple instances of the same or different core components should be implemented in the full plot component.
