@@ -66,7 +66,7 @@ export const DEFAULT_BOX_WHISKER_TEMPLATE: FullBarElementType[] = [
                                   CSS: "display: inline-flex;align-items: center;margin-bottom: 2px;color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
                                   markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{last-whisker-pos}}</div>",
                               }],
-                  CSS: "background: none;",
+                  CSS: "background: none;", 
                   decorationWidth: "10%",
                   order: 1,
                 }, 

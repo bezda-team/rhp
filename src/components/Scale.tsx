@@ -39,7 +39,7 @@ const contentElements: BarContentContainerElementType[] = [
   {
     type: "bar-dec-container",
     elements: elements,
-    CSS: "background: none;align-items: flex-start!important;",
+    CSS: "background: none;align-items: flex-start!important;overflow-x: hidden!important;",
     decorationWidth: "10%",
     order: 1,
   }, 
