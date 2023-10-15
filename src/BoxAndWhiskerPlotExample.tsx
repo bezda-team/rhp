@@ -3,20 +3,20 @@ import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberI
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useState } from 'react';
-import { useObservable, useObserve, useComputed, useSelector } from '@legendapp/state/react';
+import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
 import FullBarElementType from './components/types/FullBarElementType';
 import { opaqueObject, Observable } from '@legendapp/state';
 import Scale from './components/Scale';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import BoxWhiskerPlot, { processData, changeBWOrder, changeOrderBasedOnPosition, DEFAULT_BOX_WHISKER_TEMPLATE } from './BoxAndWhiskerPlot';
 
+enableReactUse();
+
 const theme = extendBaseTheme({
   components: {
     NumberIn,
   },
 })
-
-enableReactUse();
 
 const Div = styled.div`
 @media (max-width: 600px) {
@@ -136,7 +136,7 @@ const App = () => {
     dataMax.set(30);
     vars.set({
       "color": ["#9fa2a4","#cbdddf", "#a5aeb5", "#dbe7eb", "#dae6ec", "#c2d6e0", "#c9ced3", "#577590", "brown", "gray", "black"],
-      "cloud-img-src": ['./react-html-plots/stratocumulus.jpg','./react-html-plots/cumulonimbus.jpg', './react-html-plots/altocumulus.jpg', './react-html-plots/cirrus.jpg', './react-html-plots/nimbostratus.jpg', './react-html-plots/cumulus1.jpg', './react-html-plots/cirrocumulus.jpg'],
+      "cloud-img-src": ['/react-html-plots/stratocumulus.jpg','/react-html-plots/cumulonimbus.jpg', '/react-html-plots/altocumulus.jpg', '/react-html-plots/cirrus.jpg', '/react-html-plots/nimbostratus.jpg', '/react-html-plots/cumulus1.jpg', '/react-html-plots/cirrocumulus.jpg'],
       "last-whisker-pos": [23, 40, 48, 23, 75, 68, 88],
       "clouds":['stratocumulus', 'cumulonimbus' , 'altocumulus', 'cirrus', 'nimbostratus', 'cumulus', 'cirrocumulus'],
     });

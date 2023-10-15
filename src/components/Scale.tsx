@@ -4,7 +4,7 @@ import { extendBaseTheme } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import FullBar from './FullBar';
 import PlotContext from './PlotContext';
-import { useContext, useRef } from 'react';
+import { useContext} from 'react';
 import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
 import FullBarElementType from './types/FullBarElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
@@ -72,9 +72,9 @@ export type ScaleDataObservable = Observable<{
     CSS: string
   }>
 
-const Scale = ({width, height, spacing, dataMaxLimit, scaleData, id, style, decorationWidth, decouple=false}:{width: string, height: string, spacing: Observable<number>, dataMaxLimit: number, scaleData?: ScaleDataObservable, id?: string, style?: React.CSSProperties, decorationWidth?: string, decouple?: boolean}) => {
-    const renderCount = ++useRef(0).current;
-    console.log("Test APP: " + renderCount);
+const Scale = ({width, height, spacing, dataMaxLimit, scaleData, scaleTemplate, id, style, decorationWidth, decouple=false}:{width: string, height: string, spacing: Observable<number>, dataMaxLimit: number, scaleData?: ScaleDataObservable, scaleTemplate?: FullBarElementType[], id?: string, style?: React.CSSProperties, decorationWidth?: string, decouple?: boolean}) => {
+    // const renderCount = ++useRef(0).current;
+    // console.log("Test APP: " + renderCount);
 
     const { vars } = useContext(PlotContext);
 
@@ -87,7 +87,7 @@ const Scale = ({width, height, spacing, dataMaxLimit, scaleData, id, style, deco
         order: 0,
         width: "100%",
         decorationWidth: decorationWidth??"6rem",
-        elements: fullBarElements, 
+        elements: scaleTemplate??fullBarElements, 
         CSS: "",
     });
 
@@ -103,11 +103,10 @@ const Scale = ({width, height, spacing, dataMaxLimit, scaleData, id, style, deco
     useObserve(scaleLabels, ({value}) => {
         defaultScaleData.CSS?.set("& .bar {opacity: 0;}")
         setTimeout(() => {
-          console.log("scaleLabels: " + value??[0])
+          // console.log("scaleLabels: " + value??[0])
           defaultScaleData.data?.set(Array((value??[0]).length).fill(spacing?.get()))
-          console.log("data: " + Array((value??[0]).length).fill(spacing?.get()))
+          // console.log("data: " + Array((value??[0]).length).fill(spacing?.get()))
           vars["$scaleLabel"]?.set([value??[0]])
-          // vars?.set({...vars?.get()??{}, "$scaleLabel": [value??[0]]})
         }, 340);
         setTimeout(() => {
           defaultScaleData.CSS?.set("& .bar {opacity: 1;}")
