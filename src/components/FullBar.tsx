@@ -3,11 +3,11 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled';
 import BarDecoration from './BarDecoration';
 import BarContentContainer from './BarContentContainer';
-import FullBarElementType from './types/FullBarElementType';
+import type { FullBarElementType } from './types/FullBarElementType';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
 import { useContext, useEffect, useRef } from 'react';
-import BarContentContainerElementType from './types/BarContentContainerElementType';
+import type { BarContentContainerElementType } from './types/BarContentContainerElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { For, useObservable, useSelector } from '@legendapp/state/react';
 import { Observable } from '@legendapp/state';

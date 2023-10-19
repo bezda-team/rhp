@@ -1,12 +1,12 @@
-import BarElementType from './types/BarElementType';
-import BarContentContainerElementType from './types/BarContentContainerElementType';
+import type { BarElementType } from './types/BarElementType';
+import type { BarContentContainerElementType } from './types/BarContentContainerElementType';
 import { extendBaseTheme } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import FullBar from './FullBar';
 import PlotContext from './PlotContext';
 import { useContext} from 'react';
 import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
-import FullBarElementType from './types/FullBarElementType';
+import type { FullBarElementType } from './types/FullBarElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { Observable } from '@legendapp/state';
 

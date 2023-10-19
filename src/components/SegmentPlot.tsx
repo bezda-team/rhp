@@ -1,23 +1,15 @@
 import styled from '@emotion/styled';
-import FullBar from './FullBar';
-import { extendBaseTheme } from "@chakra-ui/react"
-import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
+import PlotSegment from './PlotSegment';
 import { useContext } from 'react';
 import { For, useObservable } from '@legendapp/state/react';
 import type { FullBarElementType } from './types/FullBarElementType';
-import { opaqueObject } from '@legendapp/state';
-import type { DataObservable } from './types/DataObservable';
+import { Observable, opaqueObject } from '@legendapp/state';
+import type { ConfigObservable } from './types/ConfigObservable';
 import PlotContext from './PlotContext';
-
-const theme = extendBaseTheme({
-  components: {
-    NumberIn,
-  },
-})
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
-    "full-bar": "&.horizontal { padding-top: 0.5rem; padding-bottom: 0.5rem;} &.vertical {padding-left: 0.5rem; padding-right: 0.5rem;}",
+    "full-bar": "&.horizontal { padding-bottom: 1rem;} &.vertical {padding-left: 0.5rem; padding-right: 0.5rem;}",
     "bar-label": "display: flex; flex-direction: row-reverse;background-color: slategray; color: white; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
     "bar-content-container": "background-color: green;",
     "bar-dec-container": "",
@@ -33,7 +25,7 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
-export const DEFAULT_BAR_TEMPLATE: FullBarElementType[] = [
+export const DEFAULT_SEGMENT_TEMPLATE: FullBarElementType[] = [
 {
   type: "bar-content-container",
   elements: [{
@@ -76,7 +68,7 @@ export const DEFAULT_BAR_TEMPLATE: FullBarElementType[] = [
 ];
 
 // TODO: Set all z-index of bars based on order BEFORE changing order so that bars going up always lie on top of bars going down
-export const changeOrder = (newOrder: number[], trackedBarsConfig: DataObservable) => {
+export const changeSegmentOrder = (newOrder: number[], trackedBarsConfig: ConfigObservable) => {
   if (newOrder.length !== trackedBarsConfig.length) {
     console.log("newOrder.length !== trackedBarsConfig.length");
     return;
@@ -94,14 +86,14 @@ export const changeOrder = (newOrder: number[], trackedBarsConfig: DataObservabl
 // NOTE: A key requirement here is making sure that the returned new orders are arranged according 
 // to the position of the corresponding bar in the trackedBarsConfig array without messing with sorting
 // stability.
-export const changeOrderBasedOnMagnitude = ( trackedBarsConfig: DataObservable) => {
+export const changeSegmentOrderBasedOnMagnitude = ( plotData: Observable<number[][]>, trackedBarsConfig: ConfigObservable) => {
   const order: number[] = [];
   const data: number[][] = [];
   const indexSortedByValue : number[] = []
   const tempBarData = trackedBarsConfig.peek();
   tempBarData.map((value, i) => {
     order.push( value.order);
-    data.push([trackedBarsConfig[i].data.get()[0], value.order, i]);
+    data.push([plotData[i].get()[0], value.order, i]);
   });
 
   // the following line sorts the data array according to the current order of the bars
@@ -120,44 +112,47 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsConfig: DataObservable) 
   // and sorted by the index of the bar they go with. So, the order is the index and the value
   // is the bar index to be sorted by.
   const finalOrder = indexSortedByValue.map((value, i) => i).sort((a, b) => indexSortedByValue[a] - indexSortedByValue[b]); 
-  if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeOrder(finalOrder, trackedBarsConfig);
+  if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeSegmentOrder(finalOrder, trackedBarsConfig);
 }
 
 const Div = styled.div``;
 
-const BarPlot = ({width, height, barsConfig, barTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, barsConfig?: DataObservable, barTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string}) => {
+const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmentTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, segmentConfig?: ConfigObservable, segmentTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string}) => {
   
   const {plotData} = useContext(PlotContext);
   // const renderCount = ++useRef(0).current;
-  // console.log("BarPlot rendered: " + renderCount);
+  // console.log("SegmentPlot rendered: " + renderCount);
 
-  const defaultBarsConfig = useObservable(() => {
+  const defaultDataOrderIndex = useObservable(2); // Default to ordering by the second data value
+  const dataOrderIndex = dataIndexForOrdering??defaultDataOrderIndex;
+
+  const defaultSegmentConfig = useObservable(() => {
     const untrackedData = plotData.peek();
-    const newBarsConfigTemp : {index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = [];
+    const newSegmentConfigTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = []
     untrackedData.forEach((value, i) => {
-        newBarsConfigTemp.push({
-                              id: "full_bar_a_" + i,
-                              index: i,
-                              data: value,
+        newSegmentConfigTemp.push({
+                              id: "full_segment_" + i,
+                              dataIndex: i,
+                              varIndex: i,
                               order: i,
                               width: "calc(100%/" + (untrackedData.length) + ")",
                               decorationWidth: decorationWidth??"6rem",
-                              elements: opaqueObject(barTemplate??DEFAULT_BAR_TEMPLATE),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
+                              elements: opaqueObject(segmentTemplate??DEFAULT_SEGMENT_TEMPLATE),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
                               CSS: DEFAULT_CSS["full-bar"],
                             });
     });
-    return newBarsConfigTemp;
+    return newSegmentConfigTemp;
   });
 
-  const trackedBarsConfig = barsConfig??defaultBarsConfig;
+  const trackedSegmentConfig = segmentConfig??defaultSegmentConfig;
 
   return (
     <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
         <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
-          <For each={trackedBarsConfig} item={FullBar} optimized/>
+          <For each={trackedSegmentConfig} item={PlotSegment} optimized/>
         </div>
     </div>
   )
 }
 
-export default BarPlot;
+export default SegmentPlot;

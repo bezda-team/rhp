@@ -3,11 +3,11 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled';
 import BarDecoration from './BarDecoration';
 import BarContentContainer from './BarContentContainer';
-import PlotSegmentElementType from './types/FullBarElementType';
+import type { FullBarElementType as PlotSegmentElementType } from './types/FullBarElementType';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
 import { useContext, useEffect, useRef } from 'react';
-import BarContentContainerElementType from './types/BarContentContainerElementType';
+import type { BarContentContainerElementType } from './types/BarContentContainerElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { For, useObservable, useSelector } from '@legendapp/state/react';
 import { Observable } from '@legendapp/state';
@@ -20,6 +20,8 @@ const Div = styled.div``;
 //============================================================= FULL BAR =================================================================
 
 const PlotSegment = ({item} : {item: Observable<{dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: PlotSegmentElementType[], id: string, CSS:string}>}) => {
+    // const renderCount = ++useRef(0).current;
+    // console.log("PlotSegment render count: " + renderCount);
     
     const {orientation, plotData} = useContext(PlotContext);
 
@@ -29,15 +31,6 @@ const PlotSegment = ({item} : {item: Observable<{dataIndex: number, varIndex: nu
     const trackOrder = item.order.use();
     const trackId = item.id.use();
 
-    const renderCount = ++useRef(0).current;
-    console.log("PlotSegment render count: " + renderCount);
-
-    useEffect(() => {
-        console.log("---->PlotSegment " + item.dataIndex.peek() + " mounted");
-        return () => {
-            console.log("---->PlotSegment " + item.dataIndex.peek() + " unmounted");
-        }
-    }, []);
 
     const {newContContainers, newPlotSegmentDecs} = useSelector(() => {
         const untrackedElements = item.elements.peek();

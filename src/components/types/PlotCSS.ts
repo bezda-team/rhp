@@ -3,4 +3,4 @@ type PlotCSS = {
     [key: string]: string;
 }
 
-export default PlotCSS;
+export type { PlotCSS };

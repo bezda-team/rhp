@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled';
 import Bar from './Bar';
 import BarDecoration from './BarDecoration';
-import BarElementType from './types/BarElementType';
+import type { BarElementType } from './types/BarElementType';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
 import { useContext, useRef } from 'react';
@@ -17,8 +17,8 @@ enableReactUse();
 const Div = styled.div``;
 
 const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
-    const renderCount = ++useRef(0).current;
-    console.log("BarAndDecContainer render count: " + renderCount);
+    // const renderCount = ++useRef(0).current;
+    // console.log("BarAndDecContainer render count: " + renderCount);
 
     const {dataMax, theme, orientation} = useContext(PlotContext);
     const {data} = useContext(BarContext);
@@ -38,7 +38,6 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
     // new array which can then be used to update the `trackedData` observable. 
     const trackedData = useObservable(() => {
         const untrackedData = data.peek();
-        console.log("bardec data: " + untrackedData)
         const newData : {id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}[] = [];
         untrackedData.forEach((value, i) => {
             const element = elements.find(element => element.type === "bar" && (element.isDefault??(element.dataIndex??[0]).includes(i)))

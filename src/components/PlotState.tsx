@@ -1,10 +1,10 @@
 import { enableLegendStateReact } from "@legendapp/state/react"
 import { observable } from '@legendapp/state';
-import Vars from './components/types/Vars';
-import FullBarElementType from './components/types/FullBarElementType';
-import PlotCSS from './components/types/PlotCSS';
-import BarElementType from "./components/types/BarElementType";
-import BarContentContainerElementType from "./components/types/BarContentContainerElementType";
+import type { Vars } from './types/Vars';
+import type { FullBarElementType } from './types/FullBarElementType';
+import type { PlotCSS } from './types/PlotCSS';
+import type { BarElementType } from "./types/BarElementType";
+import type { BarContentContainerElementType } from "./types/BarContentContainerElementType";
 
 enableLegendStateReact();
 

@@ -5,7 +5,7 @@ import DOMPurify from "dompurify";
 import { Observable } from '@legendapp/state';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { useSelector} from "@legendapp/state/react"
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 
@@ -14,8 +14,8 @@ enableReactUse();
 const Div = styled.div``;
 
 const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}>}) => {
-    const renderCount = ++useRef(0).current;
-    console.log("BarDecoration render count: " + renderCount);
+    // const renderCount = ++useRef(0).current;
+    // console.log("BarDecoration render count: " + renderCount);
    
     const {index, data} = useContext(BarContext); 
     const {theme, orientation, vars, dataMax} = useContext(PlotContext);
@@ -54,7 +54,7 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
             Object.keys(vars.peek()).forEach((key) => {
                 if (newMarkup?.includes(`{{${key}}}`)){                    // This makes sure that only changes in the `vars` properties that are used in the markup cause rerender.
                     const length = vars[key].length;
-                    const value = vars[key][trackedIndex < length? trackedIndex : trackedIndex%length];
+                    const value = vars[key].get()[trackedIndex < length? trackedIndex : trackedIndex%length];
                     if (Array.isArray(value)){
                         newMarkup = newMarkup?.replaceAll(`{{${key}}}`, value[decIndex]?.toString());
                     } else {

@@ -4,7 +4,7 @@ import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useState } from 'react';
 import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
-import FullBarElementType from './components/types/FullBarElementType';
+import type { FullBarElementType } from './components/types/FullBarElementType';
 import { opaqueObject, Observable } from '@legendapp/state';
 import BarPlot, { changeOrder, changeOrderBasedOnMagnitude, DEFAULT_BAR_TEMPLATE } from './components/BarPlot';
 import Scale from './components/Scale';

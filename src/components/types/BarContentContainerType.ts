@@ -1,4 +1,4 @@
-import BarContentContainerElementType from "./BarContentContainerElementType";
+import type { BarContentContainerElementType } from "./BarContentContainerElementType";
 
 type BarContentContainerType =
 {
@@ -10,4 +10,4 @@ type BarContentContainerType =
   onClickHandler?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export default BarContentContainerType;
+export type { BarContentContainerType };

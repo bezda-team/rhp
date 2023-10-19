@@ -4,11 +4,11 @@ import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useState } from 'react';
 import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
-import FullBarElementType from './components/types/FullBarElementType';
+import type { FullBarElementType } from './components/types/FullBarElementType';
 import { opaqueObject, Observable } from '@legendapp/state';
 import Scale from './components/Scale';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import BoxWhiskerPlot, { processData, changeBWOrder, changeOrderBasedOnPosition, DEFAULT_BOX_WHISKER_TEMPLATE } from './BoxAndWhiskerPlot';
+import BoxWhiskerPlot, { processData, changeBWOrder, changeOrderBasedOnPosition, DEFAULT_BOX_WHISKER_TEMPLATE } from './components/BoxAndWhiskerPlot';
 
 enableReactUse();
 

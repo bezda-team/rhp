@@ -1,4 +1,4 @@
-import FullBarElementType from './FullBarElementType';
+import type { FullBarElementType } from './FullBarElementType';
 import { Observable } from '@legendapp/state';
 
 type DataObservable = Observable<
@@ -13,4 +13,4 @@ type DataObservable = Observable<
     CSS: string
 }[]>
 
-export default DataObservable;
+export type { DataObservable };

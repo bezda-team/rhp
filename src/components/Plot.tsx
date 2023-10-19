@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-import FullBar from './FullBar';
 import { ChakraProvider, extendBaseTheme } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import { FC, useRef } from 'react';
 import { For } from '@legendapp/state/react';
-import FullBarElementType from './types/FullBarElementType';
+import type { FullBarElementType } from './types/FullBarElementType';
 import { Observable } from '@legendapp/state';
 
 const theme = extendBaseTheme({

@@ -19,8 +19,8 @@ const Div = styled.div``;
 const BarContentContainer = ({item}:{item: Observable<{id: string, elements: BarContentContainerElementType[], order?: number, decorationWidth?: string, CSS?: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
   const {orientation} = useContext(PlotContext);
 
-  const renderCount = ++useRef(0).current;
-    console.log("BarContentContainer render count: " + renderCount);
+  // const renderCount = ++useRef(0).current;
+  //   console.log("BarContentContainer render count: " + renderCount);
 
   const orientationValue = orientation.use()
   const trackedCSS = item.CSS.use();
@@ -58,14 +58,6 @@ const BarContentContainer = ({item}:{item: Observable<{id: string, elements: Bar
 
   const trackedBarAndDecsList = useObservable(newBarAndDecs);
   const trackedContDecsList = useObservable(newContDecs);
-
-
-  useEffect(() => {
-      console.log("---->BarContentContainer mounted");
-      return () => {
-          console.log("---->BarContentContainer unmounted");
-      }
-  }, []);
 
   return (
       <Div 

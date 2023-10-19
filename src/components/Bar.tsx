@@ -17,8 +17,8 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     const {index, data} = useContext(BarContext);
     const {dataMax, theme, orientation, vars} = useContext(PlotContext);
 
-    const renderCount = ++useRef(0).current;
-    console.log("Bar render count: " + renderCount);
+    // const renderCount = ++useRef(0).current;
+    // console.log("Bar render count: " + renderCount);
 
     const orientationValue = orientation.use()
     const id = item.id.use()

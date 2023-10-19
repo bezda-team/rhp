@@ -1,10 +1,10 @@
-import BarElementType from "./components/types/BarElementType";
-import BarContentContainerElementType from "./components/types/BarContentContainerElementType";
-import FullBarElementType from "./components/types/FullBarElementType";
-import DecorationType from "./components/types/DecorationType";
-import BarContentContainerType from "./components/types/BarContentContainerType";
-import BarType from "./components/types/BarType";
-import BarAndDecContainerType from "./components/types/BarAndDecContainerType";
+import type { BarElementType } from "./components/types/BarElementType";
+import type { BarContentContainerElementType } from "./components/types/BarContentContainerElementType";
+import type { FullBarElementType } from "./components/types/FullBarElementType";
+import type { DecorationType } from "./components/types/DecorationType";
+import type { BarContentContainerType } from "./components/types/BarContentContainerType";
+import type { BarType } from "./components/types/BarType";
+import type { BarAndDecContainerType } from "./components/types/BarAndDecContainerType";
 
 //-------------------------------------- Bars --------------------------------------------//
 const solidLineLeftAndBottomBorderScaleBars: BarType =

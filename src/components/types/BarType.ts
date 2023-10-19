@@ -12,4 +12,4 @@ type BarType =
   onClickHandler?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export default BarType;
+export type { BarType };

@@ -1,10 +1,10 @@
-import PlotContext from './components/PlotContext';
+import PlotContext from './PlotContext';
 import { useContext, useRef} from 'react';
 import { useObservable, useObserve, useComputed, For } from '@legendapp/state/react';
-import FullBarElementType from './components/types/FullBarElementType';
+import type { FullBarElementType } from './types/FullBarElementType';
 import { Observable, opaqueObject } from '@legendapp/state';
-import ConfigObservable from './components/types/ConfigObservable';
-import PlotSegment from './components/PlotSegment';
+import type { ConfigObservable } from './types/ConfigObservable';
+import PlotSegment from './PlotSegment';
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
@@ -117,8 +117,10 @@ export const changeOrderBasedOnPosition = ( plotData: Observable<number[][]>, bo
   const data: number[][] = [];
   const indexSortedByValue : number[] = []
   const tempBarData = boxWhiskerConfig.peek();
-  tempBarData.map((value, i) => data.push([index === 0? plotData[i].get()[0] : plotData[i].get().slice(0, index + 1).reduce((a, b) => a + b, 0), tempBarData[i].order, i]));
-
+  tempBarData.map((value, i) => {
+    order.push( value.order);
+    data.push([index === 0? plotData[i].get()[0] : plotData[i].get().slice(0, index + 1).reduce((a, b) => a + b, 0), tempBarData[i].order, i]);
+  });
   // the following line sorts the data array according to the current order of the bars
   // (ie how they are currently displayed) 
   data.sort((a, b) => a[1] - b[1]);  //ascending order
@@ -138,7 +140,7 @@ export const changeOrderBasedOnPosition = ( plotData: Observable<number[][]>, bo
   if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeBWOrder(finalOrder, boxWhiskerConfig);
 }
 
-const BoxWhiskerPlot = ({width, height, dataIndexForOrdering, boxWhiskerConfig, boxWhiskerTemplate, id, style, CSS}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, boxWhiskerConfig?: ConfigObservable, boxWhiskerTemplate?: FullBarElementType[], id?: string, style?: React.CSSProperties, CSS?: string}) => {
+const BoxWhiskerPlot = ({width, height, dataIndexForOrdering, boxWhiskerConfig, boxWhiskerTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, boxWhiskerConfig?: ConfigObservable, boxWhiskerTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string}) => {
   
   const {plotData, vars} = useContext(PlotContext);
   const renderCount = ++useRef(0).current;
@@ -153,12 +155,12 @@ const BoxWhiskerPlot = ({width, height, dataIndexForOrdering, boxWhiskerConfig, 
     const newBarsDataTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = [];
     untrackedData.forEach((value, i) => {
         newBarsDataTemp.push({
-                              id: "full_bar_a_" + i,
+                              id: "full_box_and_whisker_" + i,
                               dataIndex: i,
                               varIndex: i,
                               order: i,
                               width: "calc(100%/" + (untrackedData.length) + ")",
-                              decorationWidth: "6rem",
+                              decorationWidth: decorationWidth??"6rem",
                               elements: opaqueObject(boxWhiskerTemplate??DEFAULT_BOX_WHISKER_TEMPLATE),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
                               CSS: DEFAULT_CSS["full-bar"],
                             });

@@ -1,4 +1,4 @@
-import FullBarElementType from './FullBarElementType';
+import type { FullBarElementType } from './FullBarElementType';
 import { Observable } from '@legendapp/state';
 
 type ConfigObservable = Observable<
@@ -13,4 +13,4 @@ type ConfigObservable = Observable<
     CSS: string
 }[]>
 
-export default ConfigObservable;
+export type { ConfigObservable };

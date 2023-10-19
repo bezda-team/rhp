@@ -11,4 +11,4 @@ type DecorationType =
   onClickHandler?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export default DecorationType;
+export type { DecorationType };
