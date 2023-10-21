@@ -7,6 +7,7 @@ import { opaqueObject } from '@legendapp/state';
 import type { Observable } from '@legendapp/state';
 import type { ConfigObservable } from './types/ConfigObservable';
 import PlotContext from './PlotContext';
+import {SegmentTemplate, PlotAreaTemplate, BarsAndDecsTemplate, BarTemplate, DecTemplate} from './SegmentTemplate';
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
@@ -118,7 +119,7 @@ export const changeSegmentOrderBasedOnMagnitude = ( plotData: Observable<number[
 
 const Div = styled.div``;
 
-const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmentTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, segmentConfig?: ConfigObservable, segmentTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string}) => {
+const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmentTemplate, decorationWidth, id, style, CSS, children}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, segmentConfig?: ConfigObservable, segmentTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string, children?: React.ReactElement<any>}) => {
   
   const {plotData} = useContext(PlotContext);
   // const renderCount = ++useRef(0).current;
@@ -147,12 +148,28 @@ const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmen
 
   const trackedSegmentConfig = segmentConfig??defaultSegmentConfig;
 
+  if (Array.isArray(children)){
+    console.log(children.length)
+  }
+  else {
+    console.log(children?.props)
+    if(children?.type === SegmentTemplate){
+      const newChildren = children?.props?.children;
+      if(Array.isArray(newChildren)){
+        newChildren.forEach((child, i) => {
+          if (child.type === PlotAreaTemplate){
+            const newChildren2 = child.props.children;
+            console.log(newChildren2)
+          }
+        });
+      }
+    }
+    console.log(children?.type === PlotSegment)
+  }
+
   return (
-    <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
-        <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
-          <For each={trackedSegmentConfig} item={PlotSegment} optimized/>
-        </div>
-    </div>
+    <>
+    </>
   )
 }
 

@@ -5,7 +5,7 @@ import DOMPurify from "isomorphic-dompurify";
 import type { Observable } from '@legendapp/state';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { useSelector } from "@legendapp/state/react"
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 
@@ -13,7 +13,7 @@ enableReactUse();
 
 const Div = styled.div``;
 
-const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}>}) => {
+const Bar = ({ item, CSS, markup }:{item: Observable<{id: string | undefined, barIndex: number, order: number | undefined}>, CSS: string | undefined, markup: string | undefined}) => {
     const {index, data} = useContext(BarContext);
     const {dataMax, theme, orientation, vars} = useContext(PlotContext);
 
@@ -23,7 +23,6 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     const orientationValue = orientation.use()
     const id = item.id.use()
     const barIndex = item.barIndex.use()
-    const CSS = item.CSS.use()
 
     const trackedData = useSelector(() => {
       const tempDataMax = dataMax.get();
@@ -38,8 +37,8 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
 
     const sanitizedMarkup = useSelector(() => {
         // console.log(trackedIndex)
-        let newMarkup = item.markup.get();
-        if (item.markup.get() !== undefined){
+        let newMarkup = markup;
+        if (markup !== undefined){
             Object.keys(vars.peek()).forEach((key) => {
                 if (newMarkup?.includes(`{{${key}}}`)){               // This makes sure that only changes in the `vars` properties that are used in the markup cause rerender.
                     const length = vars[key].length;
