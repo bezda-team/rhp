@@ -40,7 +40,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
         const untrackedData = data.peek();
         const newData : {id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}[] = [];
         untrackedData.forEach((value, i) => {
-            const element = elements.find(element => element.type === "bar" && (element.dataIndex??[i]).includes(i))
+            const element = elements.find(element => element.type === "bar" && (element.isDefault??(element.dataIndex??[0]).includes(i)))
             if (element !== undefined){ 
                 newData.push({
                         id: element.id??"bar_" + i,
