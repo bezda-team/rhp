@@ -1,12 +1,18 @@
 import styled from '@emotion/styled';
 import PlotSegment from './PlotSegment';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { For, useObservable } from '@legendapp/state/react';
 import type { FullBarElementType } from './types/FullBarElementType';
 import { opaqueObject } from '@legendapp/state';
 import type { Observable } from '@legendapp/state';
 import type { ConfigObservable } from './types/ConfigObservable';
 import PlotContext from './PlotContext';
+import {SegmentTemplate, PlotAreaTemplate, BarsAndDecsTemplate, BarTemplate, DecTemplate} from './SegmentTemplate';
+import { BarContentContainerElementType } from './types/BarContentContainerElementType';
+import { BarAndDecContainerType } from './types/BarAndDecContainerType';
+import { BarType } from './types/BarType';
+import { DecorationType } from './types/DecorationType';
+import { BarElementType } from './types/BarElementType';
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
@@ -26,36 +32,40 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
+const DEFAULT_SEGMENT_BARSANDDECS_ELEMENTS_TEMPLATE : BarElementType[] = [{
+  type: "bar",
+  order: 1,
+  CSS: "box-sizing: border-box;border-radius: 0 1rem 1rem 0;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;&:hover {border: 4px solid black;}& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
+  markup: "<div style='background-color: {{color}};height:100%;'>{{fruit-svgs}}</div>",
+},
+{
+  type: "decoration",
+  order: 2,
+  useData: true,
+  CSS: "color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
+  markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{$dataValue}}</div>",
+}]
+
+const DEFAULT_SEGMENT_PLOTAREA_TEMPLATE: BarContentContainerElementType[] = [{
+  type: "bar-dec-container",
+  elements: DEFAULT_SEGMENT_BARSANDDECS_ELEMENTS_TEMPLATE ,
+  CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;}",
+  decorationWidth: "10%",
+  order: 1,
+}, 
+// {
+//   type: "decoration",
+//   order: 0,
+//   css: "background-color: slategray; color: white; div {text-align: left;}",
+//   markup: "<div style='width: fit-content;'>My text decoration</div>",
+//   onClickHandler: () => console.log("decoration clicked")
+// },
+]
+
 export const DEFAULT_SEGMENT_TEMPLATE: FullBarElementType[] = [
 {
   type: "bar-content-container",
-  elements: [{
-                type: "bar-dec-container",
-                elements: [{
-                              type: "bar",
-                              order: 1,
-                              CSS: "box-sizing: border-box;border-radius: 0 1rem 1rem 0;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;&:hover {border: 4px solid black;}& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
-                              markup: "<div style='background-color: {{color}};height:100%;'>{{fruit-svgs}}</div>",
-                            },
-                            {
-                              type: "decoration",
-                              order: 2,
-                              useData: true,
-                              CSS: "color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
-                              markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{$dataValue}}</div>",
-                            }],
-                CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;}",
-                decorationWidth: "10%",
-                order: 1,
-              }, 
-              // {
-              //   type: "decoration",
-              //   order: 0,
-              //   css: "background-color: slategray; color: white; div {text-align: left;}",
-              //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-              //   onClickHandler: () => console.log("decoration clicked")
-              // },
-            ],
+  elements: DEFAULT_SEGMENT_PLOTAREA_TEMPLATE,
   decorationWidth: "10%",
   order: 1,
   CSS:"padding-right: 2rem;"
@@ -116,13 +126,53 @@ export const changeSegmentOrderBasedOnMagnitude = ( plotData: Observable<number[
   if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeSegmentOrder(finalOrder, trackedBarsConfig);
 }
 
+// - Using React.Children allows you to manipulate and transform the JSX you received as the children prop.
+// It is considered Legacy API and is not recommended for use in new code. Furthermore, it can lead to fragile code.
+// - Although we map through the children in the following function, we are not manipulating the JSX. We are simply
+// reading the props from the children and using them to create new objects. The new objects are used to put together a template.
+// - It is also important to remember that all the Template components are just dummy components that are used to provide users with 
+// a react-component-tree visual pattern that the user may be more comfortable with. These dummy components are not rendered in the DOM.
+// - The default template is used as a fall back in the cases where the user does not provide important elements of the template.
+const generateTemplate = (nestedChildren: React.ReactElement<any>[]) : (DecorationType | BarContentContainerElementType | FullBarElementType | BarAndDecContainerType | BarType)[]=> {
+  return (Array.isArray(nestedChildren)?nestedChildren:([nestedChildren] as React.ReactElement<any>[])).map((child, i) => {
+    const {children,...props} = child.props;
+    // switch statement version
+    switch (child.type){
+      case DecTemplate:
+        return {
+          type: "decoration",
+          ...props,
+        } as DecorationType
+      case PlotAreaTemplate:
+        return {
+          type: "bar-content-container",
+          ...props,
+          elements: child.props.children ? generateTemplate(child.props.children) : [] as BarContentContainerElementType[],
+        } as BarContentContainerElementType
+      case BarsAndDecsTemplate:
+        return {
+          type: "bar-dec-container",
+          ...props,
+          elements: child.props.children ? generateTemplate(child.props.children) : [] as BarElementType[],
+        } as BarAndDecContainerType
+      case BarTemplate:
+        return {
+          type: "bar",
+          ...props,
+        } as BarType
+      default:
+        return {} as FullBarElementType;
+    }
+  });
+}
+
 const Div = styled.div``;
 
-const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmentTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, segmentConfig?: ConfigObservable, segmentTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string}) => {
+const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmentTemplate, decorationWidth, id, style, CSS, children}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, segmentConfig?: ConfigObservable, segmentTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string, children?: React.ReactElement<any> | never[]}) => {
   
   const {plotData} = useContext(PlotContext);
-  // const renderCount = ++useRef(0).current;
-  // console.log("SegmentPlot rendered: " + renderCount);
+  const renderCount = ++useRef(0).current;
+  console.log("SegmentPlot rendered: " + renderCount);
 
   const defaultDataOrderIndex = useObservable(2); // Default to ordering by the second data value
   const dataOrderIndex = dataIndexForOrdering??defaultDataOrderIndex;
@@ -147,7 +197,51 @@ const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmen
 
   const trackedSegmentConfig = segmentConfig??defaultSegmentConfig;
 
-  return (
+  if (Array.isArray(children)){
+    console.warn("No template component provided. Perhaps you mean to close the SegmentPlot tag with /> instead?")
+  }
+  else if(children?.type === SegmentTemplate && children?.props){
+      
+    const props = children.props;
+    if(props.order && props.order.length === trackedSegmentConfig.length){
+      (props.order as number[]).forEach((value, i) => {
+        trackedSegmentConfig[i].order.set(value);
+      });
+    }
+    trackedSegmentConfig.peek().forEach((value, i) => {
+      const trackedRow = trackedSegmentConfig[i];
+      // TODO: Check if setting the properties wholesale is slower than setting them individually
+      if(props.width){
+        trackedRow.width.set(props.width as string);
+      }
+      if(props.decorationWidth){
+        trackedRow.decorationWidth.set(props.decorationWidth as string);
+      }
+      if(props.CSS){
+        trackedRow.CSS.set(props.CSS as string);
+      }
+    });
+
+    if((props.children && Array.isArray(props.children) && props.children.length)){
+      const newTemplate : FullBarElementType[] = generateTemplate(props.children as React.ReactElement<any>[]) as FullBarElementType[];
+      if(newTemplate.length){
+        trackedSegmentConfig.peek().forEach((value, i) => {
+          trackedSegmentConfig[i].elements.set(opaqueObject(newTemplate));
+        });
+      }
+      // console.log(typeof newTemplate);
+      // console.log(newTemplate);
+    } else if ((props.children && !Array.isArray(props.children) && (props.children.type === PlotAreaTemplate || props.children.type === DecTemplate))){
+      const newTemplate: FullBarElementType[] = generateTemplate([props.children] as React.ReactElement<any>[]) as FullBarElementType[];
+      if(newTemplate.length){
+        trackedSegmentConfig.peek().forEach((value, i) => {
+          trackedSegmentConfig[i].elements.set(opaqueObject(newTemplate));
+        });
+      }
+    }
+  }
+
+  return ( 
     <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
         <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
           <For each={trackedSegmentConfig} item={PlotSegment} optimized/>

@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-import PlotContext from './template/PlotContext';
+import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useEffect } from 'react';
-import type { FullBarElementType } from './template/types/FullBarElementType';
-import SegmentPlot from './template/SegmentPlot';
-import { processData } from './components/BoxAndWhiskerPlot';
-import {SegmentTemplate, PlotAreaTemplate, BarsAndDecsTemplate, BarTemplate, DecTemplate} from './template/SegmentTemplate';
+import type { FullBarElementType } from './components/types/FullBarElementType';
+import SegmentPlot from './components/SegmentPlot';
+import {SegmentTemplate, PlotAreaTemplate, BarsAndDecsTemplate, BarTemplate, DecTemplate} from './components/SegmentTemplate';
 
 
 const Div = styled.div`
