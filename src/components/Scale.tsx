@@ -34,7 +34,7 @@ const contentElements: BarContentContainerElementType[] = [
   }, 
 ];
 
-const fullBarElements: FullBarElementType[] = [
+export const fullBarElements: FullBarElementType[] = [
   {
     type: "bar-content-container",
     elements: contentElements,

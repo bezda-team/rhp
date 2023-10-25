@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
-import PlotContext from './PlotContext';
+import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useEffect } from 'react';
-import type { FullBarElementType } from './types/FullBarElementType';
-import SegmentPlot from './SegmentPlot';
+import type { FullBarElementType } from './components/types/FullBarElementType';
+import SegmentPlot from './components/SegmentPlot';
+import {SegmentTemplate, PlotAreaTemplate, BarsAndDecsTemplate, BarTemplate, DecTemplate} from './components/SegmentTemplate';
+
 
 const Div = styled.div`
 @media (max-width: 600px) {
@@ -223,13 +225,13 @@ const barTemplate: FullBarElementType[] = [
                               {
                                 type: "decoration",
                                 order: 3,
-                                CSS: "border-radius: 50%;border-radius: 50%;color: white;height: 100%;",
+                                CSS: "border-radius: 50%;color: white;height: 100%;",
                                 markup: "<div style='background-color: {{color}};height: 100%;'></div>",
                               },
                               {
                                 type: "decoration",
                                 order: 3,
-                                CSS: "border-radius: 50%;border-radius: 50%;color: white;height: 100%;",
+                                CSS: "border-radius: 50%;color: white;height: 100%;",
                                 markup: "<div style='background-color: {{color}};height: 100%;'></div>",
                               },
                               {
@@ -558,14 +560,47 @@ const App = () => {
   return (
     <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
         <div id='plot' className='plot' style={{margin: "auto",width: "70%", minWidth: "660px", maxWidth: "1260px", display: "grid", justifyContent: "center", overflow: "hidden"}} onMouseEnter={stopAnimation} onMouseLeave={newInterval}>
-        <SegmentPlot
-            id='bar_plot_1'
-            width='2442px'
-            height='660px'
-            decorationWidth="2.9rem"
-            style={{paddingBottom: "1rem", paddingTop: "1rem", backgroundColor: "white", margin: "auto"}}
-            segmentTemplate={barTemplate}
-        />
+        <SegmentPlot id='bar_plot_1' width='2442px' height='660px' decorationWidth="2.9rem" style={{paddingBottom: "1rem", paddingTop: "1rem", backgroundColor: "white", margin: "auto"}} segmentTemplate={barTemplate}>
+            <SegmentTemplate CSS="overflow: visible!important;transition: all 0.3s ease-in-out;& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}">
+                <PlotAreaTemplate order={1} decorationWidth= "10%" CSS="overflow: visible!important;">
+                    <BarsAndDecsTemplate decorationWidth='52px' CSS="padding-top: 4px;padding-bottom: 4px;gap: 8px;background: none;& .decoration:hover>div {box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; filter: brightness(1.2)} & .decoration>div {border-radius: 50%; box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;">
+                        <BarTemplate order={0} CSS="box-sizing: border-box;border-radius: 26px;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 1s;transition-timing-function: ease-in-out;& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}" markup="<div style='background-color: {{color}};height:100%;'></div>"/>
+                        <BarTemplate order={4} dataIndex={[1]} CSS="box-sizing: border-box;border-radius: 26px;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 1s;transition-timing-function: ease-in-out;" markup="<div style='background-color: {{color}};height:100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={1}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={2}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                        <DecTemplate order={3}  CSS='border-radius: 50%;color: white;height: 100%;' markup="<div style='background-color: {{color}};height: 100%;'></div>"/>
+                    </BarsAndDecsTemplate>
+                </PlotAreaTemplate>
+                <DecTemplate order={0} CSS='' markup=''/>
+            </SegmentTemplate>
+        </SegmentPlot>
         </div>
     </PlotContext.Provider>     
   )
