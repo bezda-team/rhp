@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import styled from '@emotion/styled';
-import DOMPurify from "dompurify";
-import { Observable } from '@legendapp/state';
+import DOMPurify from "isomorphic-dompurify";
+import type { Observable } from '@legendapp/state';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { useSelector} from "@legendapp/state/react"
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 
@@ -14,8 +14,8 @@ enableReactUse();
 const Div = styled.div``;
 
 const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}>}) => {
-    const renderCount = ++useRef(0).current;
-    console.log("BarDecoration render count: " + renderCount);
+    // const renderCount = ++useRef(0).current;
+    // console.log("BarDecoration render count: " + renderCount);
    
     const {index, data} = useContext(BarContext); 
     const {theme, orientation, vars, dataMax} = useContext(PlotContext);
@@ -51,21 +51,23 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
         // console.log(trackedIndex)
         let newMarkup = item.markup.get();
         if (item.markup.get() !== undefined){
-            Object.keys(vars).forEach((key) => {
-                const length = vars[key].length;
-                const value = vars[key][trackedIndex < length? trackedIndex : trackedIndex%length];
-                if (Array.isArray(value)){
-                    newMarkup = newMarkup?.replace(`{{${key}}}`, value[decIndex]?.toString());
-                } else {
-                    newMarkup = newMarkup?.replace(`{{${key}}}`, value?.toString());
+            Object.keys(vars.peek()).forEach((key) => {
+                if (newMarkup?.includes(`{{${key}}}`)){                    // This makes sure that only changes in the `vars` properties that are used in the markup cause rerender.
+                    const length = vars[key].length;
+                    const value = vars[key].get()[trackedIndex < length? trackedIndex : trackedIndex%length];
+                    if (Array.isArray(value)){
+                        newMarkup = newMarkup?.replaceAll(`{{${key}}}`, value[decIndex]?.toString());
+                    } else {
+                        newMarkup = newMarkup?.replaceAll(`{{${key}}}`, value?.toString());
+                    }
                 }
             });
             if (item.useData?.get()){
                 const dIndex = item.dataIndex.peek();
-                if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replace(`{{$dataValue}}`, trackedData[dIndex && dIndex < data.length ? dIndex : 0]?.toString());
+                if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replaceAll(`{{$dataValue}}`, trackedData[dIndex && dIndex < data.length ? dIndex : 0]?.toString());
             }
             if (item.useDataMax?.get()){
-                if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replace(`{{$dataMaxValue}}`, trackedDataMax?.toString());
+                if(newMarkup??"".includes("{{$dataValue}}")) newMarkup = newMarkup?.replaceAll(`{{$dataMaxValue}}`, trackedDataMax?.toString());
             }
         }
         const sanitizedMarkup = DOMPurify.sanitize(newMarkup??"");

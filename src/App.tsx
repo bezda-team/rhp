@@ -3,14 +3,14 @@ import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberI
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useState } from 'react';
-import { useObservable, useObserve, useComputed, useSelector } from '@legendapp/state/react';
-import FullBarElementType from './components/types/FullBarElementType';
-import BarContentContainerType from './components/types/BarContentContainerType';
+import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
+import type { FullBarElementType } from './components/types/FullBarElementType';
 import { opaqueObject, Observable } from '@legendapp/state';
-import BarPlot, { changeOrder, changeOrderBasedOnMagnitude } from './components/BarPlot';
+import BarPlot, { changeOrder, changeOrderBasedOnMagnitude, DEFAULT_BAR_TEMPLATE } from './components/BarPlot';
 import Scale from './components/Scale';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import BarAndDecContainerType from './components/types/BarAndDecContainerType';
+
+enableReactUse();
 
 const theme = extendBaseTheme({
   components: {
@@ -18,11 +18,9 @@ const theme = extendBaseTheme({
   },
 })
 
-enableReactUse();
-
 const Div = styled.div`
 @media (max-width: 600px) {
-  padding: 1.5rem;
+  padding: 0.5rem 1.5rem;
   margin: 0;
   width: 470px;
   #plot {
@@ -31,12 +29,12 @@ const Div = styled.div`
   }
 }
 @media (min-width: 601px) and (min-width: 900px){
-    padding: 3rem;
+    padding: 1rem 3rem;
     margin: 0;
     width: 100%;
 }
 @media (min-width: 801px){
-    padding: 6rem;
+    padding: 3rem 6rem;
     margin: 0;
     width: 100%;
 }`;
@@ -60,15 +58,54 @@ export const DEFAULT_MARKUP = {
     "bar-decoration": "",
 }
 
-const ScaleBehaviorRadio = ({value}:{value: Observable<string>}) => {
+// custom scale template
+const scaleTemplate: FullBarElementType[] = [
+  {
+    type: "bar-content-container",
+    elements: 
+      [
+        {
+          type: "bar-dec-container",
+          elements: 
+            [
+              {
+                type: "bar",
+                order: 1,
+                isDefault: true,
+                CSS: "background-color: none; transition: all 0.4s ease-in-out;border-left: 4px dashed #00000011;",
+                markup: "<div style='font-weight: bold;font-size: small;height:100%;display: flex; justify-content: flex-start;padding-left: 4px;color: #555555'><span style='margin-top: -4px;'>{{$scaleLabel}}</span></div>",
+              },
+              {
+                type: "decoration",
+                order: 20,
+                useDataMax: true,
+                CSS: "position:absolute;left: calc(100% - 2rem);width: 3rem;height: 100%;color: #555555; div {font-size: small; text-align: left;border-left: 4px solid #555555;}", //We subtract 2rem from `left` to account for padding that impacts where the bars stop
+                markup: "<div style='display: flex;font-weight: bold;height: 150%;padding-left: 4px;'><span style='margin-top: -4px;width: 100%;'>{{$dataMaxValue}}</span></div>",
+              }
+            ],
+          CSS: "background: none;align-items: flex-start!important;overflow-x: hidden!important;",
+          decorationWidth: "10%",
+          order: 1,
+        }, 
+      ]
+    ,
+    decorationWidth: "10%",
+    order: 1,
+    CSS:"padding-right: 2rem;& .bar-dec-cont > .bar:first-of-type {border-left: none;} "  // This element hides content that overflows the bar and so we add 2rem to the right to stop the bars and allow space for decoration to be visible.
+  }, 
+  {
+    type: "decoration",
+    order: 0,
+    CSS: "height: inherit;border-right: 4px solid #555555;",
+    markup: "",
+  }
+];
+
+const ScaleRadio = ({value, children}:{value: Observable<string>, children: React.ReactNode}) => {
   const currValue = value.use();
   return (
     <RadioGroup onChange={value.set} value={currValue}>
-      <Stack direction='row'>
-        <Radio value='1'>Fit</Radio>
-        <Radio value='2'>Extend</Radio>
-        <Radio value='3'>Fixed</Radio>
-      </Stack>
+      {children}
     </RadioGroup>
   )
 }
@@ -125,6 +162,8 @@ const App = () => {
   console.log("Test APP: " + renderCount);
 
   const index = useObservable(0);
+  const spacingOption = useObservable("5")
+  const spacing = useObservable(parseInt(spacingOption.get()));
   const scaleBehavior = useObservable("1");
   // const trackedDataMax = useSelector(dataMax);
   const cssObservable = useObservable("padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;");
@@ -136,10 +175,10 @@ const App = () => {
     plotData.set([[1], [2], [18], [3], [25], [13], [20]]);
     dataMax.set(30);
     vars.set({
-      "color": ["#577590","#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#ce4257", "pink", "brown", "gray", "black"],
+      "color": ["pink","#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#ce4257", "#577590", "brown", "gray", "black"],
       "bar-label": ["Fruit A", "Fruit B", "Fruit C", "Fruit D", "Fruit E", "Fruit F", "Fruit G"],
       "bar-val": ["grape", "watermelon", "pear", "banana", "orange","peach", "strawberry"],
-      "fruit-svgs":['<img src="./grape.svg" alt="grape" />', '<img src="./watermelon.svg" alt="watermelon" />' , '<img src="./pear.svg" alt="pear" />', '<img src="./banana.svg" alt="banana" />', '<img src="./orange.svg" alt="orange" />', '<img src="./peach.svg" alt="peach" />', '<img src="./strawberry.svg" alt="strawberry" />'],
+      "fruit-svgs":['<img src="/grape.svg" alt="grape" />', '<img src="/watermelon.svg" alt="watermelon" />' , '<img src="/pear.svg" alt="pear" />', '<img src="/banana.svg" alt="banana" />', '<img src="/orange.svg" alt="orange" />', '<img src="/peach.svg" alt="peach" />', '<img src="/strawberry.svg" alt="strawberry" />'],
     });
   }, []);
 
@@ -148,64 +187,22 @@ const App = () => {
     return Array.from(Array(length).keys());
   });
 
-  const fullBarElements: FullBarElementType[] = [
-    {
-      type: "bar-content-container",
-      elements: [{
-                    type: "bar-dec-container",
-                    elements: [{
-                                  type: "bar",
-                                  order: 1,
-                                  CSS: "box-sizing: border-box;border-radius: 0 1rem 1rem 0;overflow: hidden;height: auto; transition-property: flex, border;transition-duration: 0.4s;transition-timing-function: ease-in-out;&:hover {border: 4px solid black;}& div {display:flex;align-items: center;}& img {flex-grow: 1; max-width: 300px;min-width: 50px;}",
-                                  markup: "<div style='background-color: {{color}};height:100%;'>{{fruit-svgs}}</div>",
-                                },
-                                {
-                                  type: "decoration",
-                                  order: 2,
-                                  useData: true,
-                                  CSS: "color: white; div {font-size: small; text-align: left; margin-left: 0.5rem;}",
-                                  markup: "<div style='font-weight: bold;color: {{color}};height: fit-content;'>{{$dataValue}}</div>",
-                                }],
-                    CSS: "background: none;&>.bar:hover + .decoration>div {color: black!important;}",
-                    decorationWidth: "10%",
-                    order: 1,
-                  }, 
-                  // {
-                  //   type: "decoration",
-                  //   order: 0,
-                  //   css: "background-color: slategray; color: white; div {text-align: left;}",
-                  //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-                  //   onClickHandler: () => console.log("decoration clicked")
-                  // },
-                ],
-                decorationWidth: "10%",
-                order: 1,
-                CSS:"padding-right: 2rem;"
-              }, 
-              {
-                type: "decoration",
-                order: 0,
-                CSS: "display: flex; flex-direction: row-reverse;background: none; color: black; margin-right: 1rem; div {text-align: center;}",
-                markup: "<div style='width: fit-content;font-weight: 600;color: #555555;'>{{bar-val}}</div>",
-              },
-    ];
-
-    const trackedBarsData = useObservable(() => {
-      const untrackedData = plotData.peek();
-      const newBarsDataTemp : {index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = [];
-      untrackedData.forEach((value, i) => {
-          newBarsDataTemp.push({
-                                id: "full_bar_a_" + i,
-                                index: i,
-                                data: value,
-                                order: orderList.get()[i],
-                                width: "calc(100%/" + (untrackedData.length) + ")",
-                                decorationWidth: "6rem",
-                                elements: opaqueObject(fullBarElements),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
-                                CSS: DEFAULT_CSS["full-bar"],
-                              });
-      });
-      return newBarsDataTemp;
+  const trackedBarsData = useObservable(() => {
+    const untrackedData = plotData.peek();
+    const newBarsDataTemp : {index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = [];
+    untrackedData.forEach((value, i) => {
+        newBarsDataTemp.push({
+                              id: "full_bar_a_" + i,
+                              index: i,
+                              data: value,
+                              order: orderList.get()[i],
+                              width: "calc(100%/" + (untrackedData.length) + ")",
+                              decorationWidth: "7rem",
+                              elements: opaqueObject(DEFAULT_BAR_TEMPLATE),  // Avoid strange unexplainable circular reference errors for each element of this array on first render
+                              CSS: DEFAULT_CSS["full-bar"],
+                            });
+    });
+    return newBarsDataTemp;
   });
 
   // The following code recalculates the order of the bars (starting from their current order)
@@ -266,6 +263,7 @@ const App = () => {
   })
 
   useObserve(newDataMax, () => {dataMax.set(newDataMax.peek());});
+  useObserve(spacingOption, () => {spacing.set(parseInt(spacingOption.peek()));});
 
   const changeCSS = (css?: string, add?: string, replace?: [string, string]) => {
     if (css) trackedBarsData.forEach((value, i) => value.CSS.set(css));
@@ -277,31 +275,48 @@ const App = () => {
     <ChakraProvider >
           <Div id="bar_plot" >
             <Center marginBottom={"1rem"}>
-              <ScaleBehaviorRadio value={scaleBehavior} />
+              <ScaleRadio value={scaleBehavior}>
+                <Stack direction='row'>
+                  <Radio value='1'>Fit</Radio>
+                  <Radio value='2'>Extend</Radio>
+                  <Radio value='3'>Fixed</Radio>
+                </Stack>
+              </ScaleRadio>
             </Center>
-            <Box marginBottom={"2rem"}>
+            <Center marginBottom={"1rem"}>
+              <ScaleRadio value={spacingOption}>
+                <Stack direction='row'>
+                  <Radio value='5'>5</Radio>
+                  <Radio value='10'>10</Radio>
+                  <Radio value='25'>25</Radio>
+                </Stack>
+              </ScaleRadio>
+            </Center>
+            <Box>
               <DataValueSlider value={dataMax.get()} min={1} max={100} onChange={(value) => dataMax.set(value)} />
             </Box>
             <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
-              <div id='plot' className='plot'>
+              <div id='plot' className='plot' style={{position: "relative"}}>
                 <Scale
                   id='scale_1'
                   width='100%'
-                  height='18px'
-                  spacing={10}
+                  height='600px'
+                  spacing={spacing}
                   dataMaxLimit={100} 
-                  style={{marginTop: "1.5rem"}}
+                  scaleTemplate={scaleTemplate}
+                  decorationWidth='7rem'
+                  style={{marginTop: "1.5rem", position: "absolute", paddingBottom: "1.2rem"}}
                 />
                 <BarPlot 
                   id='bar_plot_1'
                   width='100%'
                   height='600px'
-                  style={{paddingBottom: "0.5rem", backgroundColor: "white", marginTop: "0.5rem"}}
-                  barsData={trackedBarsData} 
+                  style={{paddingBottom: "0.5rem", paddingTop: "2.5rem", backgroundColor: "white", marginTop: "0.5rem"}}
+                  barsConfig={trackedBarsData} 
                 />
               </div>
             </PlotContext.Provider>
-              <Stack direction='row' spacing={3} align='center' justifyContent="center" margin={5} marginTop={4} marginBottom={1.5}>
+              <Stack direction='row' spacing={3} align='center' justifyContent="center" margin={5} marginTop={6} marginBottom={1.5}>
                 <ButtonGroup gap='1'>
                   <Button colorScheme='blackAlpha' onClick={() => changeOrder([0,1,2,4,3,5,6], trackedBarsData)} >Initial</Button>
                   <Button colorScheme='blackAlpha' onClick={() => changeOrderBasedOnMagnitude(trackedBarsData)}>Rank</Button>

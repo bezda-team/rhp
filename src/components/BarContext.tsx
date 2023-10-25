@@ -1,6 +1,6 @@
 import React from 'react';
-import Vars from './types/Vars';
-import { Observable, observable } from '@legendapp/state';
+import type { Observable } from '@legendapp/state';
+import {  observable } from '@legendapp/state';
 
 export type BarContextType = {
     index: Observable<number>,

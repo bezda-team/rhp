@@ -1,8 +1,11 @@
 import { ColorModeScript } from "@chakra-ui/react"
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
-import App from "./App"
+// import App from "./App"
+// import App from "./components/RhpDotAnimation"
+// import App from "./BoxAndWhiskerPlotExample"
 // import App from "./FullBarTest"
+import App from "./TemplateTest"
 import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import Vars from './types/Vars';
-import { Observable, observable } from '@legendapp/state';
+import type { Vars } from './types/Vars';
+import { observable } from '@legendapp/state';
+import type { Observable } from '@legendapp/state';
 
 export type PlotContextType = {
     theme: Observable<object>,
