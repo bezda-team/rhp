@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "declarationDir": "dist/types",
+    "declarationDir": "types",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -20,12 +20,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "outDir": "dist",
-    "sourceMap": true,
     "emitDeclarationOnly": true,
     "jsx": "react-jsx",
     "types": ["node", "@emotion/react/types/css-prop"]
   },
-  "include": [
-    "src"
-  ]
 }

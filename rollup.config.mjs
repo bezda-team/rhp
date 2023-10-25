@@ -7,7 +7,7 @@ import packageJson from "./package.json" assert { type: "json" };
 
 export default [
     {
-        input: 'src/components/index.ts',
+        input: 'src/index.ts',
         output: [
             {
                 file: packageJson.main,
@@ -21,7 +21,10 @@ export default [
             },
         ],
         plugins: [
-            resolve(),
+            resolve({
+                browser: true,
+                preferBuiltins: false,
+            }),
             commonjs(),
             json(),
             typescript({
@@ -29,12 +32,12 @@ export default [
                 exclude:["src/*.tsx", "src/*.ts"]
             }),
         ],
-        // external: ['react', 'react-dom'],
+        external: ['react', 'react-dom'],
     },
     {
         input: 'dist/esm/types/index.d.ts',
         output: [{ file: "dist/index.d.ts", format: 'esm' }],
         plugins: [dts()],
-        // external: ['react', 'react-dom'],
+        external: ['react', 'react-dom'],
     }
 ];

@@ -1,6 +1,6 @@
 {
   "name": "react-html-plots",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "A React component library for creating HTML plots",
   "author": {
     "name": "Bouzid Anas",
@@ -9,37 +9,24 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://bouzidanas.github.io/react-html-plots"
+    "url": "https://github.com/bouzidanas/react-html-plots"
   },
-  "private": true,
   "homepage": "https://bouzidanas.github.io/react-html-plots",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
-  "types": "dist/esm/index.d.ts",
+  "types": "dist/index.d.ts",
   "dependencies": {
-    "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@legendapp/state": "^1.11.1",
-    "@rollup/plugin-json": "^6.0.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.5.1",
-    "@types/jest": "^28.1.8",
     "@types/node": "^12.20.55",
-    "@types/react": "^18.2.23",
-    "@types/react-dom": "^18.2.8",
-    "framer-motion": "^6.5.1",
-    "gh-pages": "^6.0.0",
+    "@babel/plugin-transform-private-property-in-object": "^7.22.11",
     "isomorphic-dompurify": "^1.9.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-icons": "^3.11.0",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -65,12 +52,32 @@
       "last 1 safari version"
     ]
   },
+  "peerDependencies": {
+    "@chakra-ui/react": "^2.8.1",
+    "@types/react": "^18.2.23",
+    "@types/react-dom": "^18.2.8",
+    "framer-motion": "^6.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.22.11",
+    "@chakra-ui/react": "^2.8.1",
+    "@rollup/plugin-json": "^6.0.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/jest": "^28.1.8",
+    "@types/react": "^18.2.23",
+    "@types/react-dom": "^18.2.8",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.5",
+    "framer-motion": "^6.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "gh-pages": "^6.0.0",
+    "web-vitals": "^2.1.4",
     "react-scripts": "^5.0.1",
     "rollup": "^4.1.4",
     "rollup-plugin-dts": "^6.1.0",
