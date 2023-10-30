@@ -16,7 +16,7 @@ import { BarElementType } from './types/BarElementType';
 
 export const DEFAULT_CSS = {
     "bar-plot": "",
-    "full-bar": "&.horizontal { padding-bottom: 1rem;} &.vertical {padding-left: 0.5rem; padding-right: 0.5rem;}",
+    "full-bar": "overflow: visible!important; &.vertical {padding-left: 0.5rem; padding-right: 0.5rem;}",
     "bar-label": "display: flex; flex-direction: row-reverse;background-color: slategray; color: white; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
     "bar-content-container": "background-color: green;",
     "bar-dec-container": "",

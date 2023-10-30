@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import styled from '@emotion/styled';
-import BarDecoration from './BarDecoration';
+import Decoration from './Decoration';
 import BarContentContainer from './BarContentContainer';
 import type { FullBarElementType as PlotSegmentElementType } from './types/FullBarElementType';
 import BarContext from './BarContext';
@@ -72,7 +72,7 @@ const PlotSegment = ({item} : {item: Observable<{dataIndex: number, varIndex: nu
                 // onClick={onClickHandler??undefined}
             >
                 <For each={trackedContContainersList} item={BarContentContainer} optimized/>
-                <For each={trackedPlotSegmentDecsList} item={BarDecoration} optimized/>
+                <For each={trackedPlotSegmentDecsList} item={Decoration} optimized/>
             </Div>
         </BarContext.Provider>
     );

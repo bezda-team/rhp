@@ -1,5 +1,5 @@
 export { default as Bar } from './Bar';
-export { default as BarDecoration } from './BarDecoration';
+export { default as Decoration } from './Decoration';
 export { default as BarAndDecContainer } from './BarAndDecContainer';
 export { default as BarContentContainer } from './BarContentContainer';
 export { default as BarContext} from './BarContext';

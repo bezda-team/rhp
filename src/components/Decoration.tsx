@@ -13,9 +13,9 @@ enableReactUse();
 
 const Div = styled.div``;
 
-const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}>}) => {
+const Decoration = ({item} : {item: Observable<{decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}>}) => {
     // const renderCount = ++useRef(0).current;
-    // console.log("BarDecoration render count: " + renderCount);
+    // console.log("Decoration render count: " + renderCount);
    
     const {index, data} = useContext(BarContext); 
     const {theme, orientation, vars, dataMax} = useContext(PlotContext);
@@ -86,4 +86,4 @@ const BarDecoration = ({item} : {item: Observable<{decIndex: number, id: string 
     );
 }
 
-export default BarDecoration;
+export default Decoration;

@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled';
 import Bar from './Bar';
-import BarDecoration from './BarDecoration';
+import Decoration from './Decoration';
 import type { BarElementType } from './types/BarElementType';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
@@ -96,7 +96,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
           // onClick={onClickHandler??undefined}
           >
             <For each={trackedData} item={Bar} optimized/>
-            <For each={trackedDecorationsList} item={BarDecoration} optimized/>
+            <For each={trackedDecorationsList} item={Decoration} optimized/>
         </Div>
     )
 }

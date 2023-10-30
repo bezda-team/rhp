@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import styled from '@emotion/styled';
-import BarDecoration from './BarDecoration';
+import Decoration from './Decoration';
 import BarContentContainer from './BarContentContainer';
 import type { FullBarElementType } from './types/FullBarElementType';
 import BarContext from './BarContext';
@@ -79,7 +79,7 @@ const FullBar = ({item} : {item: Observable<{index: number, data: number[], orde
                 // onClick={onClickHandler??undefined}
             >
                 <For each={trackedContContainersList} item={BarContentContainer} optimized/>
-                <For each={trackedFullBarDecsList} item={BarDecoration} optimized/>
+                <For each={trackedFullBarDecsList} item={Decoration} optimized/>
             </Div>
         </BarContext.Provider>
     );

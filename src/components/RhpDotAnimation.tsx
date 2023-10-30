@@ -269,18 +269,18 @@ const barTemplate: FullBarElementType[] = [
   }
   ];
 
-const App = () => {
-  // const renderCount = ++useRef(0).current;
+  const App = ({className, style, widthPreset=0, scale=1, animationDelay=5000}:{className?: string, style?: React.CSSProperties, widthPreset?: number, scale?: number, animationDelay?: number}) => {
+    // const renderCount = ++useRef(0).current;
   // console.log("Test APP: " + renderCount);
   
   const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
   const intervalRef = useRef<NodeJS.Timeout>();
 
   useMemo(() => {
-    plotData.set([[4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9]]);
+    plotData.set([[4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9]]);
     dataMax.set(40);
     vars.set({
-      "color": ["#3D405B", 
+      "color": [
                 "#3D405B",
                 [
                   "#3D405B",
@@ -507,7 +507,6 @@ const App = () => {
                   "#3D405B"
                 ], 
                   "#3D405B", 
-                  "#3D405B"
               ],
       "z-index": ["10"],
       "second-color": ["#444444"],
@@ -521,49 +520,49 @@ const App = () => {
 
   const stopAnimation = () => {
     clearInterval(intervalRef.current);
+    plotData[1][0].set(4);
     plotData[2][0].set(4);
     plotData[3][0].set(4);
     plotData[4][0].set(4);
     plotData[5][0].set(4);
     plotData[6][0].set(4);
     plotData[7][0].set(4);
-    plotData[8][0].set(4);
   }
 
   const newInterval = () => {
     const interval = setInterval(() => {
       const currOne = plotData.peek();
-      if (JSON.stringify(currOne) !== JSON.stringify([[4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9]])) {
+      if (JSON.stringify(currOne) !== JSON.stringify([[4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9]])) {
+        plotData[1][0].set(4);
         plotData[2][0].set(4);
         plotData[3][0].set(4);
         plotData[4][0].set(4);
         plotData[5][0].set(4);
         plotData[6][0].set(4);
         plotData[7][0].set(4);
-        plotData[8][0].set(4);
       }
       else {
+        plotData[1][0].set(Math.floor(Math.random() * 10));
         plotData[2][0].set(Math.floor(Math.random() * 10));
         plotData[3][0].set(Math.floor(Math.random() * 10));
         plotData[4][0].set(Math.floor(Math.random() * 10));
         plotData[5][0].set(Math.floor(Math.random() * 10));
         plotData[6][0].set(Math.floor(Math.random() * 10));
         plotData[7][0].set(Math.floor(Math.random() * 10));
-        plotData[8][0].set(Math.floor(Math.random() * 10));
       }
-    }, 6000);
+    }, animationDelay);
     intervalRef.current = interval;
   }
 
   return (
     <PlotContext.Provider value={{ plotData: plotData, dataMax: dataMax, orientation: orientation, theme: theme, vars: vars}}>
-        <div id='plot' className='plot' style={{margin: "auto",width: "70%", minWidth: "660px", maxWidth: "1260px", display: "grid", justifyContent: "center", overflow: "hidden"}} onMouseEnter={stopAnimation} onMouseLeave={newInterval}>
+      <div id='plot' className={'plot ' + className} style={{margin: "auto", width: (660 + widthPreset*120) +  "px", minWidth: "660px", maxWidth: "1260px", display: "grid", justifyContent: "center", overflow: "hidden", transform: "scale("+ scale + ")", ...style}} onMouseEnter={stopAnimation} onMouseLeave={newInterval}> 
         <SegmentPlot
             id='bar_plot_1'
             width='2442px'
-            height='660px'
+            height='540px'
             decorationWidth="2.9rem"
-            style={{paddingBottom: "1rem", paddingTop: "1rem", backgroundColor: "white", margin: "auto"}}
+            style={{ margin: "auto", paddingBottom: "4px"}}
             segmentTemplate={barTemplate}
         />
         </div>
