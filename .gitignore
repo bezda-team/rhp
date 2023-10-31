@@ -22,3 +22,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# rhp-rollup-config.mjs
+# rhp-core-rollup-config.mjs
+# rhp-base-rollup-config.mjs
+
+# rhp-package.json
+# rhp-core-package.json
+# rhp-base-package.json
+
+# update-pkg-meta.sh
+# update-rollup-config.sh

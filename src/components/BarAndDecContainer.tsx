@@ -49,14 +49,6 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
                         CSS: element.CSS,
                         markup: element.markup,
                       });
-            } else{
-                newData.push({
-                        id: "bar_" + i,
-                        barIndex: i,
-                        order: 1,
-                        CSS: "background-color: blue;",        // needs to be changed - need blank and colorless bar as default
-                        markup: "",
-                  });
             }
         });
         return newData;

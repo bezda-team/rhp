@@ -1,7 +1,6 @@
 import type { BarElementType } from './components/types/BarElementType';
 import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
-import BarAndDecContainer from './components/BarAndDecContainer';
 import BarContext from './components/BarContext';
 import PlotContext from './components/PlotContext';
 import { useContext } from 'react';
