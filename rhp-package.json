@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "A React component library for creating HTML plots",
   "author": {
     "name": "Bouzid Anas",

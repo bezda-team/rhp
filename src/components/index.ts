@@ -4,7 +4,6 @@ export { default as BarAndDecContainer } from './BarAndDecContainer';
 export { default as BarContentContainer } from './BarContentContainer';
 export { default as BarContext} from './BarContext';
 export { default as PlotContext } from './PlotContext';
-export { default as PlotState } from './PlotState';
 export * from './SegmentTemplate';
 export { default as FullBar } from './FullBar';
 export { default as PlotSegment } from './PlotSegment';

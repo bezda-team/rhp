@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { CSSObject, css } from '@emotion/react'
 import styled from '@emotion/styled';
 import Bar from './Bar';
 import Decoration from './Decoration';
@@ -10,24 +10,21 @@ import { useContext } from 'react';
 import type { Observable } from '@legendapp/state';
 import { useSelector } from "@legendapp/state/react"
 import { For, useObservable } from '@legendapp/state/react';
-import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-
-enableReactUse();
 
 const Div = styled.div``;
 
-const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
+const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elements: BarElementType[], decorationWidth?: string, order?: number, CSS: string | CSSObject, onClickHandler?: React.MouseEventHandler<HTMLDivElement>}>}) => {
     // const renderCount = ++useRef(0).current;
     // console.log("BarAndDecContainer render count: " + renderCount);
 
-    const {dataMax, theme, orientation} = useContext(PlotContext);
+    const {theme, orientation} = useContext(PlotContext);
     const {data} = useContext(BarContext);
 
-    const barIndex = item.barIndex.use()
-    const elements = item.elements.use()
-    const decorationWidth = item.decorationWidth.use()
-    const order = item.order.use()
-    const CSS = item.CSS.use()
+    const barIndex = useSelector(item.barIndex);
+    const elements = useSelector<BarElementType[]>(item.elements);
+    const decorationWidth = useSelector(item.decorationWidth);
+    const order = useSelector(item.order);
+    const CSS = useSelector(item.CSS);
 
     // The following does not result in rerender when data changes.
     // This means that elements added or removed from the array will not result in bars or decorations being added or removed.
@@ -38,7 +35,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
     // new array which can then be used to update the `trackedData` observable. 
     const trackedData = useObservable(() => {
         const untrackedData = data.peek();
-        const newData : {id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}[] = [];
+        const newData : {id: string | undefined, barIndex: number, order: number | undefined, CSS: string | CSSObject | undefined, markup: string | undefined}[] = [];
         untrackedData.forEach((value, i) => {
             const element = elements.find(element => element.type === "bar" && (element.isDefault??(element.dataIndex??[0]).includes(i)))
             if (element !== undefined){ 
@@ -58,7 +55,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
 
     const decorationsList = useSelector(() => {
         const untrackedElements = elements;
-        const newDecorationsList : {decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}[] = []; 
+        const newDecorationsList : {decIndex: number, id: string | undefined, order: number | undefined, dataIndex: number | undefined, width: string, CSS: string | CSSObject | undefined, markup: string | undefined, useData: boolean | undefined, useDataMax: boolean | undefined}[] = []; 
         untrackedElements.filter(element => element.type === "decoration").forEach((element, i) => { //typeof should be used instead of element.type
             newDecorationsList.push({
                             id: element.id,
@@ -84,7 +81,7 @@ const BarAndDecContainer = ({item} : {item: Observable<{barIndex: number, elemen
           id={"bar_dec_cont-" + barIndex} 
           className="bar-dec-cont" 
           style={orientation.get()===0? {display: "flex", flexDirection: "row", width: "100%", order: order, height: "inherit", alignItems: "center", overflowX : "visible"} : {display: "flex", flexDirection: "column-reverse", height: "100%", order: order, width: "inherit", alignItems: "center", overflowY : "visible"}} 
-          css={css`${CSS}`} 
+          css={css(CSS)} 
           // onClick={onClickHandler??undefined}
           >
             <For each={trackedData} item={Bar} optimized/>

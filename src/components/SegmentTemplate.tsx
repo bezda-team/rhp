@@ -1,8 +1,11 @@
+/** @jsxImportSource @emotion/react */
+import { CSSObject } from "@emotion/react"
 
 // TODO: Create global function to check if children are compatible with the template.
 //       Consider using React.FC type for the type of the elements in the array of acceptible children
 
-export const BarTemplate = ({children, dataIndex, order, markup, isDefault, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], dataIndex?: number[], order?: number, markup?: string, isDefault?: boolean, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
+
+export const BarTemplate = ({children, dataIndex, order, markup, isDefault, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], dataIndex?: number[], order?: number, markup?: string, isDefault?: boolean, CSS?: string | CSSObject, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
 
     return (
         <>
@@ -11,7 +14,7 @@ export const BarTemplate = ({children, dataIndex, order, markup, isDefault, CSS,
     )
 }
 
-export const DecTemplate = ({children, dataIndex, useData, useDataMax, order, markup, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], dataIndex?: number[], useData?: boolean, useDataMax?: boolean, order?: number, markup?: string, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
+export const DecTemplate = ({children, dataIndex, useData, useDataMax, order, markup, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], dataIndex?: number[], useData?: boolean, useDataMax?: boolean, order?: number, markup?: string, CSS?: string | CSSObject, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
 
     return (
         <>
@@ -20,7 +23,7 @@ export const DecTemplate = ({children, dataIndex, useData, useDataMax, order, ma
     )
 }
 
-export const BarsAndDecsTemplate = ({children, decorationWidth, order, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], decorationWidth?: string, order?: number, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
+export const BarsAndDecsTemplate = ({children, decorationWidth, order, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], decorationWidth?: string, order?: number, CSS?: string | CSSObject, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
 
     const checkChildren = () => {
         if (Array.isArray(children)){
@@ -62,7 +65,7 @@ export const BarsAndDecsTemplate = ({children, decorationWidth, order, CSS, onCl
     }
 }
 
-export const PlotAreaTemplate = ({children, decorationWidth, order, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], decorationWidth?: string, order?: number, CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
+export const PlotAreaTemplate = ({children, decorationWidth, order, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], decorationWidth?: string, order?: number, CSS?: string | CSSObject, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
 
     const checkChildren = () => {
         if (Array.isArray(children)){
@@ -105,7 +108,7 @@ export const PlotAreaTemplate = ({children, decorationWidth, order, CSS, onClick
 }
 
 
-export const SegmentTemplate = ({children, width, decorationWidth, order, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], width?: string, decorationWidth?: string, order?: number[], CSS?: string, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
+export const SegmentTemplate = ({children, width, decorationWidth, order, CSS, onClickHandler}:{children?:React.ReactElement<any> | React.ReactElement<any>[] | never[], width?: string, decorationWidth?: string, order?: number[], CSS?: string | CSSObject, onClickHandler?:  React.MouseEventHandler<HTMLDivElement>}) => {
 
     const checkChildren = () => {
         if (Array.isArray(children)){

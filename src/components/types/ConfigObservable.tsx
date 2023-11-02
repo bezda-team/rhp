@@ -1,3 +1,4 @@
+import { CSSObject } from '@emotion/react';
 import type { FullBarElementType } from './FullBarElementType';
 import { Observable } from '@legendapp/state';
 
@@ -10,7 +11,7 @@ type ConfigObservable = Observable<
     decorationWidth: string,
     elements: FullBarElementType[], 
     id: string, 
-    CSS: string
+    CSS: string | CSSObject
 }[]>
 
 export type { ConfigObservable };

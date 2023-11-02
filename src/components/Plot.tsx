@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
-import { useRef } from 'react';
+/** @jsxImportSource @emotion/react */
+import { CSSObject, css } from '@emotion/react';
+// import { useRef } from 'react';
 import type { FC } from 'react';
 import { For } from '@legendapp/state/react';
 import type { FullBarElementType } from './types/FullBarElementType';
@@ -58,7 +59,7 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsData: Observable<{index:
   const data: number[][] = [];
   const indexSortedByValue : number[] = []
   const tempBarData = trackedBarsData.peek();
-  tempBarData.map((value, i) => {
+  tempBarData.forEach((value, i) => {
     order.push( value.order);
     data.push([trackedBarsData[i].data.get()[0], value.order, i]);
   });
@@ -82,8 +83,6 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsData: Observable<{index:
   if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeOrder(finalOrder, trackedBarsData);
 }
 
-const Div = styled.div``;
-
 type PlotChildrenProps = FC<{
     item: Observable<{
         index: number;
@@ -97,12 +96,12 @@ type PlotChildrenProps = FC<{
     }>;
 }>
 
-const Plot = ({width, height, childrenData, children, id, style, CSS}:{width: string, height: string, childrenData: DataObservable, children: FC<PlotChildrenProps>, id?: string, style?: React.CSSProperties, CSS?: string}) => {
-  const renderCount = ++useRef(0).current;
-  console.log("BarPlot rendered: " + renderCount);
+const Plot = ({width, height, childrenData, children, id, style, CSS}:{width: string, height: string, childrenData: DataObservable, children: FC<PlotChildrenProps>, id?: string, style?: React.CSSProperties, CSS?: string | CSSObject}) => {
+  // const renderCount = ++useRef(0).current;
+  // console.log("BarPlot rendered: " + renderCount);
 
   return (
-    <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
+    <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}} css={css(CSS)}>
         <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
           <For each={childrenData} item={children} optimized/>
         </div>

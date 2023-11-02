@@ -1,3 +1,5 @@
+import { CSSObject } from "@emotion/react";
+
 type DecorationType = 
 {
   id?: string;
@@ -6,7 +8,7 @@ type DecorationType =
   useData?: boolean;
   useDataMax?: boolean;
   order?: number;
-  CSS?: string;
+  CSS?: string | CSSObject;
   markup?: string;
   onClickHandler?: React.MouseEventHandler<HTMLDivElement>;
 }

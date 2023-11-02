@@ -1,29 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
-import styled from '@emotion/styled';
+import { CSSObject, css } from '@emotion/react'
 import DOMPurify from "isomorphic-dompurify";
 import type { Observable } from '@legendapp/state';
 import BarContext from './BarContext';
 import PlotContext from './PlotContext';
-import { useContext, useRef } from 'react';
-import { useSelector } from "@legendapp/state/react"
-import { enableReactUse } from '@legendapp/state/config/enableReactUse';
+import { useContext } from 'react';
+import { useSelector } from "@legendapp/state/react";
 
-enableReactUse();
-
-const Div = styled.div``;
-
-const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: number, order: number | undefined, CSS: string | undefined, markup: string | undefined}>}) => {
+const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: number, order: number | undefined, CSS: string | CSSObject | undefined, markup: string | undefined}>}) => {
     const {index, data} = useContext(BarContext);
-    const {dataMax, theme, orientation, vars} = useContext(PlotContext);
+    const {dataMax, orientation, vars} = useContext(PlotContext);
 
     // const renderCount = ++useRef(0).current;
     // console.log("Bar render count: " + renderCount);
 
-    const orientationValue = orientation.use()
-    const id = item.id.use()
-    const barIndex = item.barIndex.use()
-    const CSS = item.CSS.use()
+    const orientationValue = useSelector(orientation);
+    const id = useSelector(item.id);
+    const barIndex = useSelector(item.barIndex);
+    const CSS = useSelector(item.CSS);
 
     const trackedData = useSelector(() => {
       const tempDataMax = dataMax.get();
@@ -34,7 +28,7 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
       return orientation.get()===0? {flex: "0 0 " + (tempData > tempDataMax? tempDataMax: tempData)*100/tempDataMax + "%", order: tempOrder, height: "inherit"} : {flex: "0 0 " +  (tempData > tempDataMax? tempDataMax: tempData)*100/tempDataMax + "%", order: tempOrder, width: "inherit"};
     })
 
-    const trackedIndex = index.use()
+    const trackedIndex = useSelector(index);
 
     const sanitizedMarkup = useSelector(() => {
         // console.log(trackedIndex)
@@ -58,12 +52,12 @@ const Bar = ({ item }:{item: Observable<{id: string | undefined, barIndex: numbe
     });
 
     return (
-        <Div 
+        <div 
           id={id? id : "bar-" + trackedIndex + "-" + barIndex} 
           className={"bar" + (orientationValue === 0?" horizontal":" vertical")} 
           dangerouslySetInnerHTML={{__html: sanitizedMarkup }} 
           style={trackedData} 
-          css={css`${CSS}`} 
+          css={css(CSS)} 
           // onClick={onClickHandler??undefined}
         />
     );

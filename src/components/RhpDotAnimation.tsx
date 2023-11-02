@@ -1,29 +1,7 @@
-import styled from '@emotion/styled';
 import PlotContext from './PlotContext';
 import { useContext, useMemo, useRef, useEffect } from 'react';
 import type { FullBarElementType } from './types/FullBarElementType';
 import SegmentPlot from './SegmentPlot';
-
-const Div = styled.div`
-@media (max-width: 600px) {
-  padding: 0.5rem 1.5rem;
-  margin: 0;
-  width: 470px;
-  #plot {
-    margin-left: -1.1rem;
-    width: 456px;
-  }
-}
-@media (min-width: 601px) and (min-width: 900px){
-    padding: 1rem 3rem;
-    margin: 0;
-    width: 100%;
-}
-@media (min-width: 801px){
-    padding: 3rem 6rem;
-    margin: 0;
-    width: 100%;
-}`;
 
 export const DEFAULT_CSS = {
     "bar-plot": "",

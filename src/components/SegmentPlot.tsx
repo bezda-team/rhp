@@ -1,4 +1,5 @@
-import styled from '@emotion/styled';
+/** @jsxImportSource @emotion/react */
+import { CSSObject, css } from '@emotion/react';
 import PlotSegment from './PlotSegment';
 import { useContext, useRef } from 'react';
 import { For, useObservable } from '@legendapp/state/react';
@@ -166,9 +167,7 @@ const generateTemplate = (nestedChildren: React.ReactElement<any>[]) : (Decorati
   });
 }
 
-const Div = styled.div``;
-
-const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmentTemplate, decorationWidth, id, style, CSS, children}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, segmentConfig?: ConfigObservable, segmentTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string, children?: React.ReactElement<any> | never[]}) => {
+const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmentTemplate, decorationWidth, id, style, CSS, children}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, segmentConfig?: ConfigObservable, segmentTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string | CSSObject, children?: React.ReactElement<any> | never[]}) => {
   
   const {plotData} = useContext(PlotContext);
   const renderCount = ++useRef(0).current;
@@ -179,7 +178,7 @@ const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmen
 
   const defaultSegmentConfig = useObservable(() => {
     const untrackedData = plotData.peek();
-    const newSegmentConfigTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = []
+    const newSegmentConfigTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string | CSSObject}[] = []
     untrackedData.forEach((value, i) => {
         newSegmentConfigTemp.push({
                               id: "full_segment_" + i,
@@ -218,7 +217,7 @@ const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmen
         trackedRow.decorationWidth.set(props.decorationWidth as string);
       }
       if(props.CSS){
-        trackedRow.CSS.set(props.CSS as string);
+        trackedRow.CSS.set(props.CSS as string | CSSObject);
       }
     });
 
@@ -242,7 +241,7 @@ const SegmentPlot = ({width, height, dataIndexForOrdering, segmentConfig, segmen
   }
 
   return ( 
-    <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
+    <div id={id} className='segment-plot' style={{...style, width: width, height: height, overflow: "hidden"}} css={css(CSS)} >
         <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
           <For each={trackedSegmentConfig} item={PlotSegment} optimized/>
         </div>

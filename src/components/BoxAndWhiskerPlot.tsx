@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { CSSObject, css } from '@emotion/react'
 import PlotContext from './PlotContext';
 import { useContext, useRef} from 'react';
 import { useObservable, useObserve, useComputed, For } from '@legendapp/state/react';
@@ -118,7 +120,7 @@ export const changeOrderBasedOnPosition = ( plotData: Observable<number[][]>, bo
   const data: number[][] = [];
   const indexSortedByValue : number[] = []
   const tempBarData = boxWhiskerConfig.peek();
-  tempBarData.map((value, i) => {
+  tempBarData.forEach((value, i) => {
     order.push( value.order);
     data.push([index === 0? plotData[i].get()[0] : plotData[i].get().slice(0, index + 1).reduce((a, b) => a + b, 0), tempBarData[i].order, i]);
   });
@@ -141,7 +143,7 @@ export const changeOrderBasedOnPosition = ( plotData: Observable<number[][]>, bo
   if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeBWOrder(finalOrder, boxWhiskerConfig);
 }
 
-const BoxWhiskerPlot = ({width, height, dataIndexForOrdering, boxWhiskerConfig, boxWhiskerTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, boxWhiskerConfig?: ConfigObservable, boxWhiskerTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string}) => {
+const BoxWhiskerPlot = ({width, height, dataIndexForOrdering, boxWhiskerConfig, boxWhiskerTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, dataIndexForOrdering?: Observable<number>, boxWhiskerConfig?: ConfigObservable, boxWhiskerTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string | CSSObject}) => {
   
   const {plotData, vars} = useContext(PlotContext);
   const renderCount = ++useRef(0).current;
@@ -153,7 +155,7 @@ const BoxWhiskerPlot = ({width, height, dataIndexForOrdering, boxWhiskerConfig, 
   // Generate array observable containing the props for each full bar element
   const defaultBoxWhiskerConfig = useObservable(() => {
     const untrackedData = plotData.peek();
-    const newBarsDataTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = [];
+    const newBarsDataTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string | CSSObject}[] = [];
     untrackedData.forEach((value, i) => {
         newBarsDataTemp.push({
                               id: "full_box_and_whisker_" + i,
@@ -221,7 +223,7 @@ const BoxWhiskerPlot = ({width, height, dataIndexForOrdering, boxWhiskerConfig, 
   });
 
   return (
-    <div id={id} className='box-whisker-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
+    <div id={id} className='box-whisker-plot' style={{...style, width: width, height: height, overflow: "hidden"}}  css={css(CSS)} >
         <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
           <For each={boxWhiskerConfig} item={PlotSegment} optimized/>
         </div>

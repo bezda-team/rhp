@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { CSSObject, css } from '@emotion/react';
 import type { BarElementType } from './types/BarElementType';
 import type { BarContentContainerElementType } from './types/BarContentContainerElementType';
 import FullBar from './FullBar';
@@ -58,10 +60,10 @@ export type ScaleDataObservable = Observable<{
     decorationWidth: string,
     elements: FullBarElementType[], 
     id: string, 
-    CSS: string
+    CSS: string | CSSObject
   }>
 
-const Scale = ({width, height, spacing, dataMaxLimit, scaleData, scaleTemplate, id, style, decorationWidth, decouple=false}:{width: string, height: string, spacing: Observable<number>, dataMaxLimit: number, scaleData?: ScaleDataObservable, scaleTemplate?: FullBarElementType[], id?: string, style?: React.CSSProperties, decorationWidth?: string, decouple?: boolean}) => {
+const Scale = ({width, height, spacing, dataMaxLimit, scaleData, scaleTemplate, id, style, decorationWidth, decouple=false, CSS}:{width: string, height: string, spacing: Observable<number>, dataMaxLimit: number, scaleData?: ScaleDataObservable, scaleTemplate?: FullBarElementType[], id?: string, style?: React.CSSProperties, decorationWidth?: string, decouple?: boolean, CSS?: string | CSSObject}) => {
     // const renderCount = ++useRef(0).current;
     // console.log("Test APP: " + renderCount);
 
@@ -69,7 +71,16 @@ const Scale = ({width, height, spacing, dataMaxLimit, scaleData, scaleTemplate, 
 
     const dataMaxLimitObservable = useObservable(dataMaxLimit);
 
-    const defaultScaleData = useObservable({
+    const defaultScaleData = useObservable<{
+      index: number, 
+      data: number[], 
+      order: number, 
+      width: string, 
+      decorationWidth: string,
+      elements: FullBarElementType[], 
+      id: string, 
+      CSS: string | CSSObject
+    }>({
         id: "full_bar_scale",
         index: 0,
         data: Array(Math.floor(dataMaxLimitObservable.get()/spacing.get())).fill(spacing.get()),
@@ -103,7 +114,7 @@ const Scale = ({width, height, spacing, dataMaxLimit, scaleData, scaleTemplate, 
     })
 
     return (
-            <div id={id} className='scale' style={{...style, width: width, height: height, overflow: "hidden"}}>
+            <div id={id} className='scale' style={{...style, width: width, height: height, overflow: "hidden"}}  css={css(CSS)}>
                 <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
                     <FullBar item={newScaleData} />
                 </div>

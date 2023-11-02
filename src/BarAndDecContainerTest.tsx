@@ -5,12 +5,6 @@ import BarContext from './components/BarContext';
 import PlotContext from './components/PlotContext';
 import { useContext } from 'react';
 
-const theme = extendBaseTheme({
-  components: {
-    NumberIn,
-  },
-})
-
 const App = () => {
 
     const {index, order, data, width, decorationWidth} = useContext(BarContext);

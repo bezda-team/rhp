@@ -1,4 +1,5 @@
-import styled from '@emotion/styled';
+/** @jsxImportSource @emotion/react */
+import { CSSObject, css } from '@emotion/react'
 import FullBar from './FullBar';
 import { useContext } from 'react';
 import { For, useObservable } from '@legendapp/state/react';
@@ -91,7 +92,7 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsConfig: DataObservable) 
   const data: number[][] = [];
   const indexSortedByValue : number[] = []
   const tempBarData = trackedBarsConfig.peek();
-  tempBarData.map((value, i) => {
+  tempBarData.forEach((value, i) => {
     order.push( value.order);
     data.push([trackedBarsConfig[i].data.get()[0], value.order, i]);
   });
@@ -115,9 +116,7 @@ export const changeOrderBasedOnMagnitude = ( trackedBarsConfig: DataObservable) 
   if (JSON.stringify(finalOrder) !== JSON.stringify(order)) changeOrder(finalOrder, trackedBarsConfig);
 }
 
-const Div = styled.div``;
-
-const BarPlot = ({width, height, barsConfig, barTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, barsConfig?: DataObservable, barTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string}) => {
+const BarPlot = ({width, height, barsConfig, barTemplate, decorationWidth, id, style, CSS}:{width: string, height: string, barsConfig?: DataObservable, barTemplate?: FullBarElementType[], decorationWidth?: string, id?: string, style?: React.CSSProperties, CSS?: string | CSSObject}) => {
   
   const {plotData} = useContext(PlotContext);
   // const renderCount = ++useRef(0).current;
@@ -144,7 +143,7 @@ const BarPlot = ({width, height, barsConfig, barTemplate, decorationWidth, id, s
   const trackedBarsConfig = barsConfig??defaultBarsConfig;
 
   return (
-    <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}}>
+    <div id={id} className='bar-plot' style={{...style, width: width, height: height, overflow: "hidden"}} css={css(CSS)} >
         <div className='plot-area' style={{width: "100%", height: "100%", position: "relative"}}>
           <For each={trackedBarsConfig} item={FullBar} optimized/>
         </div>
