@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { CSSObject, css } from '@emotion/react'
+import { css } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import styled from '@emotion/styled';
 import DOMPurify from "isomorphic-dompurify";
 import type { Observable } from '@legendapp/state';

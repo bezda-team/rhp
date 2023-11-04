@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { CSSObject, css } from '@emotion/react'
+import { css } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import PlotContext from './PlotContext';
 import { useContext, useRef} from 'react';
 import { useObservable, useObserve, useComputed, For } from '@legendapp/state/react';

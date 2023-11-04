@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { CSSObject, css } from '@emotion/react'
+import { css } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import styled from '@emotion/styled';
 import Bar from './Bar';
 import Decoration from './Decoration';

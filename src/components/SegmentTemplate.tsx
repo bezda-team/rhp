@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { CSSObject } from "@emotion/react"
+import type { CSSObject } from "@emotion/react";
 
 // TODO: Create global function to check if children are compatible with the template.
 //       Consider using React.FC type for the type of the elements in the array of acceptible children

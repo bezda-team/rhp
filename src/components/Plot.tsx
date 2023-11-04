@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { CSSObject, css } from '@emotion/react';
+import { css } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 // import { useRef } from 'react';
 import type { FC } from 'react';
 import { For } from '@legendapp/state/react';

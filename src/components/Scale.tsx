@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { CSSObject, css } from '@emotion/react';
+import { css } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import type { BarElementType } from './types/BarElementType';
 import type { BarContentContainerElementType } from './types/BarContentContainerElementType';
 import FullBar from './FullBar';

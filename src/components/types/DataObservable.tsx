@@ -1,4 +1,4 @@
-import { CSSObject } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import type { FullBarElementType } from './FullBarElementType';
 import { Observable } from '@legendapp/state';
 

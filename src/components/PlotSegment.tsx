@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { css, CSSObject } from '@emotion/react'
+import { css } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import Decoration from './Decoration';
 import BarContentContainer from './BarContentContainer';
 import type { FullBarElementType as PlotSegmentElementType } from './types/FullBarElementType';
