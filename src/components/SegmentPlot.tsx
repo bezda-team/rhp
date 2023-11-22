@@ -76,7 +76,7 @@ export const DEFAULT_SEGMENT_TEMPLATE: FullBarElementType[] = [
   type: "decoration",
   order: 0,
   CSS: "display: flex; flex-direction: row-reverse;justify-content: center;background: none; color: black; div {text-align: center;}",
-  markup: "<div style='width: fit-content;font-weight: 600;color: #555555;'>{{bar-val}}</div>",
+  markup: "<div style='width: fit-content;font-weight: 600;color: #555555;'>{{bar-label}}</div>",
 },
 ];
 
