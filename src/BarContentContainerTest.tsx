@@ -1,16 +1,9 @@
 import type { BarElementType } from './components/types/BarElementType';
 import type { BarContentContainerElementType } from './components/types/BarContentContainerElementType';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
-import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
+import { ChakraProvider, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import BarContext from './components/BarContext';
 import PlotContext from './components/PlotContext';
 import { useContext } from 'react';
-
-const theme = extendBaseTheme({
-  components: {
-    NumberIn,
-  },
-})
 
 const App = () => {
 
@@ -99,9 +92,9 @@ const App = () => {
                                     decorationWidth="100%" 
                                 /> */}
                             </div>
-                            {`Data: ` + data.get()?.length??`None`}
-                            {`\nDataMax: ` + dataMax.get()??`None`}
-                            {`\nVars: ` + vars.get()?.length??`None`}
+                            {`Data: ` + (data.get()?.length ?? `None`)}
+                            {`\nDataMax: ` + dataMax.get()}
+                            {`\nVars: ` + vars.get()?.length}
                         </div>
                     </div>
                 </BarContext.Provider>

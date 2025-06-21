@@ -276,7 +276,7 @@ const App = () => {
   // console.log("Test APP: " + renderCount);
   
   const {plotData, dataMax, theme, orientation, vars} = useContext(PlotContext);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useMemo(() => {
     plotData.set([[4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9], [4, 9]]);
@@ -518,11 +518,17 @@ const App = () => {
 
   useEffect(() => {
     newInterval();
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
 
   const stopAnimation = () => {
-    clearInterval(intervalRef.current);
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+    }
     plotData[2][0].set(4);
     plotData[3][0].set(4);
     plotData[4][0].set(4);

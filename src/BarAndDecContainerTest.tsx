@@ -1,6 +1,5 @@
 import type { BarElementType } from './components/types/BarElementType';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
-import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
+import { ChakraProvider, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import BarContext from './components/BarContext';
 import PlotContext from './components/PlotContext';
 import { useContext } from 'react';
@@ -71,9 +70,9 @@ const App = () => {
                                     CSS=""
                                 /> */}
                             </div>
-                            {`Data: ` + data.get()?.length??`None`}
-                            {`\nDataMax: ` + dataMax.get()??`None`}
-                            {`\nVars: ` + vars.get()?.length??`None`}
+                            {`Data: ` + (data.get()?.length || `None`)}
+                            {`\nDataMax: ` + (dataMax.get() !== undefined && dataMax.get() !== null ? dataMax.get() : 'None')}
+                            {`\nVars: ` + (vars.get() ? vars.get().length : 'None')}
                         </div>
                     </div>
                 </BarContext.Provider>

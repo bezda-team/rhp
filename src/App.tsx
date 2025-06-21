@@ -1,6 +1,6 @@
+import type { CSSObject } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup, Stack, Box, Slider, SliderMark, SliderTrack, SliderFilledTrack, SliderThumb, Select, RadioGroup, Radio, Center } from "@chakra-ui/react"
-import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
+import { ChakraProvider, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup, Stack, Box, Slider, SliderMark, SliderTrack, SliderFilledTrack, SliderThumb, Select, RadioGroup, Radio, Center } from '@chakra-ui/react';
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useState } from 'react';
 import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
@@ -11,12 +11,6 @@ import Scale from './components/Scale';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 
 enableReactUse();
-
-const theme = extendBaseTheme({
-  components: {
-    NumberIn,
-  },
-})
 
 const Div = styled.div`
 @media (max-width: 600px) {
@@ -125,7 +119,7 @@ const DataValueSlider = ({defaultValue=0, value=0, min=0, max=1, step=1, onChang
 
   return (
     <Box pt={6} pb={2}>
-      <Slider aria-label='slider-ex-6' defaultValue={defaultValue} value={sliderValue} min={min} max={max} step={step} onChange={(val) => {setSliderValue(val); if(onChange)onChange(val);}}>
+      <Slider aria-label='slider-ex-6' defaultValue={defaultValue} value={sliderValue} min={min} max={max} step={step} onChange={(val: number) => {setSliderValue(val); if(onChange) onChange(val);}}>
         <SliderMark value={1} {...labelStyles}>
           0
         </SliderMark>
@@ -189,7 +183,9 @@ const App = () => {
 
   const trackedBarsData = useObservable(() => {
     const untrackedData = plotData.peek();
-    const newBarsDataTemp : {index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = [];
+    // Import CSSObject from @emotion/react at the top of your file:
+    // import type { CSSObject } from '@emotion/react';
+    const newBarsDataTemp : {index: number, data: number[], order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string | CSSObject}[] = [];
     untrackedData.forEach((value, i) => {
         newBarsDataTemp.push({
                               id: "full_bar_a_" + i,
@@ -268,7 +264,12 @@ const App = () => {
   const changeCSS = (css?: string, add?: string, replace?: [string, string]) => {
     if (css) trackedBarsData.forEach((value, i) => value.CSS.set(css));
     else if (add) trackedBarsData.forEach((value, i) => value.CSS.set(value.CSS.get() + add));
-    else if (replace) trackedBarsData.forEach((value, i) => value.CSS.set(value.peek().CSS.replace(replace[0], replace[1])));
+    else if (replace) trackedBarsData.forEach((value, i) => {
+      const cssValue = value.peek().CSS;
+      if (typeof cssValue === 'string') {
+        value.CSS.set(cssValue.replace(replace[0], replace[1]));
+      }
+    });
   }
 
   return (
@@ -326,7 +327,7 @@ const App = () => {
                   <Button colorScheme='blackAlpha' onClick={() => changeCSS(undefined, undefined, ["transition-timing-function: linear", "transition-timing-function: ease-in-out"])}>Ease-in-out</Button> */}
                 </ButtonGroup>
               </Stack>
-            <Select defaultValue={index.get()} variant='flushed' placeholder='Select fruit' onChange={(event) => index.set(parseInt(event.target.value))}>
+            <Select defaultValue={index.get()} variant='flushed' placeholder='Select fruit' onChange={(event: { target: { value: string; }; }) => index.set(parseInt(event.target.value))}>
               <option value={0}>grape</option>
               <option value={1}>watermelon</option>
               <option value={2}>pear</option>
@@ -339,7 +340,7 @@ const App = () => {
               <DataValueSlider value={trackedBarsData[index.get()].data.get()[0]} min={0} max={100} step={1} onChange={(value) => trackedBarsData[index.peek()].data.set([value])}/>
             </Box>
             {`Bar Parameter Selection Index:`}
-            <NumberInput defaultValue={0} min={0} max={20} step={1} onChange={(value) => trackedBarsData[index.peek()].index.set(parseInt(value))}>
+            <NumberInput defaultValue={0} min={0} max={20} step={1} onChange={(value: string) => trackedBarsData[index.peek()].index.set(parseInt(value))}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -347,7 +348,7 @@ const App = () => {
               </NumberInputStepper>
             </NumberInput>
             {`Bar Order:`}
-            <NumberInput defaultValue={trackedBarsData[index.get()].order.get()} min={0} max={20} onChange={(value) => trackedBarsData[index.peek()].order.set(parseInt(value))}>
+            <NumberInput defaultValue={trackedBarsData[index.get()].order.get()} min={0} max={20} onChange={(value: string) => trackedBarsData[index.peek()].order.set(parseInt(value))}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />

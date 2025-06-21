@@ -1,22 +1,15 @@
 import styled from '@emotion/styled';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup, Stack, Box, Slider, SliderMark, SliderTrack, SliderFilledTrack, SliderThumb, Select, RadioGroup, Radio, Center } from "@chakra-ui/react"
-import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
+import { ChakraProvider, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, ButtonGroup, Stack, Box, Slider, SliderMark, SliderTrack, SliderFilledTrack, SliderThumb, Select, RadioGroup, Radio, Center } from "@chakra-ui/react"
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef, useState } from 'react';
 import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
 import type { FullBarElementType } from './components/types/FullBarElementType';
-import { opaqueObject, Observable } from '@legendapp/state';
+import { opaqueObject, type Observable } from '@legendapp/state';
 import Scale from './components/Scale';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import BoxWhiskerPlot, { processData, changeBWOrder, changeOrderBasedOnPosition, DEFAULT_BOX_WHISKER_TEMPLATE } from './components/BoxAndWhiskerPlot';
 
 enableReactUse();
-
-const theme = extendBaseTheme({
-  components: {
-    NumberIn,
-  },
-})
 
 const Div = styled.div`
 @media (max-width: 600px) {
@@ -136,7 +129,7 @@ const App = () => {
     dataMax.set(30);
     vars.set({
       "color": ["#9fa2a4","#cbdddf", "#a5aeb5", "#dbe7eb", "#dae6ec", "#c2d6e0", "#c9ced3", "#577590", "brown", "gray", "black"],
-      "cloud-img-src": ['/react-html-plots/stratocumulus.jpg','/react-html-plots/cumulonimbus.jpg', '/react-html-plots/altocumulus.jpg', '/react-html-plots/cirrus.jpg', '/react-html-plots/nimbostratus.jpg', '/react-html-plots/cumulus1.jpg', '/react-html-plots/cirrocumulus.jpg'],
+      "cloud-img-src": ['/stratocumulus.jpg','/cumulonimbus.jpg', '/altocumulus.jpg', '/cirrus.jpg', '/nimbostratus.jpg', '/cumulus1.jpg', '/cirrocumulus.jpg'],
       "last-whisker-pos": [23, 40, 48, 23, 75, 68, 88],
       "clouds":['stratocumulus', 'cumulonimbus' , 'altocumulus', 'cirrus', 'nimbostratus', 'cumulus', 'cirrocumulus'],
     });
@@ -145,7 +138,7 @@ const App = () => {
     // Generate array observable containing the props for each full bar element
     const trackedBoxWhiskersConfig = useObservable(() => {
         const untrackedData = plotData.peek();
-        const newBarsDataTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS:string}[] = [];
+        const newBarsDataTemp : {dataIndex: number, varIndex: number, order: number, width: string, decorationWidth: string, elements: FullBarElementType[], id: string, CSS: string | Record<string, any>}[] = [];
         untrackedData.forEach((value, i) => {
             newBarsDataTemp.push({
                                   id: "full_bar_a_" + i,

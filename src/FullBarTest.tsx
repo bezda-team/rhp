@@ -1,22 +1,14 @@
 import type { BarElementType } from './components/types/BarElementType';
 import type { BarContentContainerElementType } from './components/types/BarContentContainerElementType';
-import { ChakraProvider, extendBaseTheme, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
-import { NumberInput as NumberIn } from "@chakra-ui/theme/components"
+import { ChakraProvider, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import FullBar from './components/FullBar';
 import PlotContext from './components/PlotContext';
 import { useContext, useMemo, useRef } from 'react';
-import { useObservable, useSelector, observer, useObserve, useComputed } from '@legendapp/state/react';
+import { useObservable, useObserve, useComputed } from '@legendapp/state/react';
 import type { FullBarElementType } from './components/types/FullBarElementType';
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-import { Observable, opaqueObject } from '@legendapp/state';
 
 enableReactUse();
-
-const theme = extendBaseTheme({
-  components: {
-    NumberIn,
-  },
-})
 
 const App = () => {
 
@@ -94,7 +86,7 @@ const App = () => {
                                               width: "100%",
                                               decorationWidth: "6%",
                                               elements: fullBarElements,  // Avoid strange unexplainable circular reference errors for each element of this array on first render
-                                              CSS: "",
+                                              CSS: {}, // Changed from "" to {} to match string | CSSObject
                                             });
 
     const scaleLabels = useComputed(() => { 
