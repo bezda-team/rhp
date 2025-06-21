@@ -73,9 +73,9 @@
     "core": "bash update-pkg-meta.sh core && bash update-rollup-config.sh core",
     "base": "bash update-pkg-meta.sh base && bash update-rollup-config.sh base",
     "full": "bash update-pkg-meta.sh && bash update-rollup-config.sh",
-    "update:core": "npm run core && npm run reinstall && npm run rollup",
-    "update:base": "npm run base && npm run reinstall && npm run rollup",
-    "update:full": "npm run full && npm run reinstall && npm run rollup"
+    "update:core": "npm run core && npm run reinstall && npm run build",
+    "update:base": "npm run base && npm run reinstall && npm run build",
+    "update:full": "npm run full && npm run reinstall && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
