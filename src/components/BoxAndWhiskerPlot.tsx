@@ -11,22 +11,22 @@ import type { ConfigObservable } from './types/ConfigObservable';
 import PlotSegment from './PlotSegment';
 
 export const DEFAULT_CSS = {
-    "bar-plot": "",
-    "full-bar":"padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}",
-    "bar-label": "display: flex; flex-direction: row-reverse;background-color: slategray; color: white; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
-    "bar-content-container": "background-color: green;",
-    "bar-dec-container": "",
-    "bar": "background-color: blue;",
-    "bar-decoration": "background-color: blue;",
-    "desaturate-bar": "padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(40%); transition: all 0.3s ease-in-out;&:hover {filter: saturate(110%);}& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}"
+  "bar-plot": "",
+  "full-bar":"padding-top: 0.5rem; padding-bottom: 0.5rem;transition: all 0.3s ease-in-out;&:hover .decoration>.image img {transform: scale(1.5)!important;}&:hover .decoration>.image {border: 5px solid #555555!important;}&:hover .decoration>div {color: black!important;} &:hover div div.box {border: 5px solid #555555!important;color: #555555!important; font-weight: 500} &:hover div div.whisker {border: 3px solid #555555!important;} & div.bar-content-container div.bar {transition-timing-function: ease-in-out;}",
+  "bar-label": "display: flex; flex-direction: row-reverse;background-color: slategray; color: white; div {text-align: center; text-orientation: sideways-right;writing-mode: vertical-rl;}",
+  "bar-content-container": "background-color: green;",
+  "bar-dec-container": "",
+  "bar": "background-color: blue;",
+  "bar-decoration": "background-color: blue;",
+  "desaturate-bar": "padding-top: 0.5rem; padding-bottom: 0.5rem;filter: saturate(10%); transition: all 0.3s ease-in-out;&:hover .decoration>img {border: 5px solid #555555!important;}&:hover .decoration>div {color: black!important;} &:hover div div.box {border: 5px solid #555555!important;color: #555555!important; font-weight: 500} &:hover div div.whisker {border: 3px solid #555555!important;}&:hover {filter: saturate(110%);}& div.bar-content-container div.bar {transition-timing-function: ease-in-out;}"
 }
-  
+
 export const DEFAULT_MARKUP = {
-    "bar-label": "<div style='width: fit-content;'>Bar label</div>",
-    "bar-content-container": "",
-    "bar-dec-container": "",
-    "bar": "",
-    "bar-decoration": "",
+  "bar-label": "<div style='width: fit-content;'>Bar label</div>",
+  "bar-content-container": "",
+  "bar-dec-container": "",
+  "bar": "",
+  "bar-decoration": "",
 }
 
 // Box and Whisker Default Template
@@ -74,13 +74,6 @@ export const DEFAULT_BOX_WHISKER_TEMPLATE: FullBarElementType[] = [
                   decorationWidth: "10%",
                   order: 1,
                 }, 
-                // {
-                //   type: "decoration",
-                //   order: 0,
-                //   css: "background-color: slategray; color: white; div {text-align: left;}",
-                //   markup: "<div style='width: fit-content;'>My text decoration</div>",
-                //   onClickHandler: () => console.log("decoration clicked")
-                // },
               ],
     decorationWidth: "10%",
     order: 1,
