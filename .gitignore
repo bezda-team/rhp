@@ -1,0 +1,37 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# rhp-rollup-config.mjs
+# rhp-core-rollup-config.mjs
+# rhp-base-rollup-config.mjs
+
+# rhp-package.json
+# rhp-core-package.json
+# rhp-base-package.json
+
+# update-pkg-meta.sh
+# update-rollup-config.sh
+
+.env
