@@ -33,3 +33,5 @@ yarn-error.log*
 
 # update-pkg-meta.sh
 # update-rollup-config.sh
+
+.env
