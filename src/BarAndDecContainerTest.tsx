@@ -42,14 +42,14 @@ const App = () => {
             <PlotContext.Provider value={{plotData: plotData, dataMax: dataMax, theme: theme, orientation: orientation, vars: vars}}>
                 <BarContext.Provider value={{index: index, order: order, data: data, width: width, decorationWidth: decorationWidth}}>
                     <div id="bar_plot" style={{width: "100%", height: "100%", padding: "6rem"}}>
-                        <NumberInput defaultValue={5} min={1} max={20} onChange={(value) => data.set([parseInt(value)])}>
+                        <NumberInput defaultValue={5} min={1} max={20} onChange={(value: string) => data.set([parseInt(value)])}>
                             <NumberInputField />
                             <NumberInputStepper>
                                 <NumberIncrementStepper />
                                 <NumberDecrementStepper />
                             </NumberInputStepper>
                         </NumberInput>
-                        <NumberInput defaultValue={1} min={0} max={25} onChange={(value) => index.set(parseInt(value))}>
+                        <NumberInput defaultValue={1} min={0} max={25} onChange={(value: string) => index.set(parseInt(value))}>
                             <NumberInputField />
                             <NumberInputStepper>
                                 <NumberIncrementStepper />

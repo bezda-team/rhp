@@ -7,14 +7,14 @@ echo "updating rollup..."
 echo "switching rollup configuration to build rhp $type"
 
 if [ "$type" == "core" ]; then
-    # Replace contents of rollup.config.mjs with rhp-core-rollup-config.mjs
-    cp rhp-core-rollup-config.mjs rollup.config.mjs
+    # Replace contents of vite.config.ts with vite.config.core.ts
+    cp vite.config.core.ts vite.config.ts
 elif [ "$type" == "base" ]; then
-    # Replace contents of rollup.config.mjs with rhp-base-rollup-config.mjs
-    cp rhp-base-rollup-config.mjs rollup.config.mjs
+    # Replace contents of vite.config.ts with vite.config.base.ts
+    cp vite.config.base.ts vite.config.ts
 elif ["$type" == ""]; then
-    # Replace contents of rollup.config.mjs with rhp-rollup-config.mjs
-    cp rhp-rollup-config.mjs rollup.config.mjs
+    # Replace contents of vite.config.ts with vite.config.rhp.ts
+    cp vite.config.rhp.ts vite.config.ts
 else
     echo "Invalid command parameter. Must be 'core' or 'base'"
     exit 1

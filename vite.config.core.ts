@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import json from '@rollup/plugin-json';
 import svgr from "vite-plugin-svgr";
 import dts from 'vite-plugin-dts';
-import { analyzer } from 'vite-bundle-analyzer'
 
 export default defineConfig({
     publicDir: false,
@@ -14,17 +13,16 @@ export default defineConfig({
         dts({
             outDir: 'dist/types',
         }),
-        analyzer()
     ],
     build: {
         lib: {
             entry: 'src/index.ts',
-            name: 'RHP',
+            name: 'RHPCore',
             formats: ['es', 'cjs'],
             fileName: (format) => `index.${format}.js`,
         },
         rollupOptions: {
-            external: ['react', 'react-dom'],
+            external: ['react', 'react-dom', 'isomorphic-dompurify', '@legendapp/state'],
         },
-    },
+    }
 });
