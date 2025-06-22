@@ -1,9 +1,9 @@
+import { useContext } from 'react';
 import type { BarElementType } from './components/types/BarElementType';
 import type { BarContentContainerElementType } from './components/types/BarContentContainerElementType';
 import { ChakraProvider, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import BarContext from './components/BarContext';
 import PlotContext from './components/PlotContext';
-import { useContext } from 'react';
 
 const App = () => {
 

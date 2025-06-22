@@ -75,7 +75,7 @@ const DataValueSlider = ({defaultValue=0, value=0, min=0, max=1, step=1, onChang
 
   return (
     <Box pt={6} pb={2}>
-      <Slider aria-label='slider-ex-6' defaultValue={defaultValue} value={sliderValue} min={min} max={max} step={step} onChange={(val) => {setSliderValue(val); if(onChange)onChange(val);}}>
+      <Slider aria-label='slider-ex-6' defaultValue={defaultValue} value={sliderValue} min={min} max={max} step={step} onChange={(val: number) => {setSliderValue(val); if(onChange)onChange(val);}}>
         <SliderMark value={1} {...labelStyles}>
           0
         </SliderMark>
@@ -254,7 +254,7 @@ const App = () => {
                   <Button colorScheme='blackAlpha' onClick={() => changeCSS(undefined, undefined, ["transition-timing-function: linear", "transition-timing-function: ease-in-out"])}>Ease-in-out</Button> */}
                 </ButtonGroup>
               </Stack>
-            <Select defaultValue={index.get()} variant='flushed' placeholder='Select cloud type' onChange={(event) => index.set(parseInt(event.target.value))}>
+            <Select defaultValue={index.get()} variant='flushed' placeholder='Select cloud type' onChange={(event: { target: { value: string; }; }) => index.set(parseInt(event.target.value))}>
               <option value={0}>stratocumulus</option>
               <option value={1}>cumulonimbus</option>
               <option value={2}>altocumulus</option>
@@ -267,7 +267,7 @@ const App = () => {
               <DataValueSlider value={plotData[index.get()].get()[0]} min={0} max={100} step={1} onChange={(value) => plotData[index.peek()][0].set(value)}/>
             </Box>
             {`Bar Parameter Selection Index:`}
-            <NumberInput defaultValue={0} min={0} max={20} step={1} onChange={(value) => trackedBoxWhiskersConfig[index.peek()].varIndex.set(parseInt(value))}>
+            <NumberInput defaultValue={0} min={0} max={20} step={1} onChange={(value: string) => trackedBoxWhiskersConfig[index.peek()].varIndex.set(parseInt(value))}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -275,7 +275,7 @@ const App = () => {
               </NumberInputStepper>
             </NumberInput>
             {`Bar Order:`}
-            <NumberInput defaultValue={trackedBoxWhiskersConfig[index.get()].order.get()} min={0} max={20} onChange={(value) => trackedBoxWhiskersConfig[index.peek()].order.set(parseInt(value))}>
+            <NumberInput defaultValue={trackedBoxWhiskersConfig[index.get()].order.get()} min={0} max={20} onChange={(value: string) => trackedBoxWhiskersConfig[index.peek()].order.set(parseInt(value))}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />

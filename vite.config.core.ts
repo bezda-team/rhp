@@ -12,6 +12,8 @@ export default defineConfig({
         svgr(),
         dts({
             outDir: 'dist/types',
+            entryRoot: 'src', // Ensure the entry point for type generation is correct
+            include: ['src/**/*.ts', 'src/**/*.tsx'], // Include all TypeScript files
         }),
     ],
     build: {

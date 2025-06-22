@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "A React component library for creating HTML plots",
   "author": {
     "name": "Bouzid Anas",
@@ -12,18 +12,18 @@
     "url": "https://github.com/bouzidanas/react-html-plots"
   },
   "homepage": "https://bouzidanas.github.io/react-html-plots",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/types/index.d.ts",
   "files": [
-    "dist"
+    "dist/"
   ],
-  "types": "dist/index.d.ts",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@types/node": "^24.0.3",
     "@legendapp/state": "^1.11.1",
-    "isomorphic-dompurify": "^1.9.0"
+    "isomorphic-dompurify": "^2.25.0"
   },
   "peerDependencies": {
     "@types/react": "^19.1.8",
@@ -48,7 +48,7 @@
     "@vitejs/plugin-react": "^4.5.2",
     "framer-motion": "^12.18.1",
     "gh-pages": "^6.0.0",
-    "isomorphic-dompurify": "^1.9.0",
+    "isomorphic-dompurify": "^2.25.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^3.11.0",
