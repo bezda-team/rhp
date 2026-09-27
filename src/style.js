@@ -260,6 +260,10 @@ export function useSlatCss(fn) {
   useCore();
   sheets.set(fn.scope, add(slatSheet(fn)));
 }
+// --rhp-radius sets every corner of a Bar to one length. Several (as in border-radius) would make them all invalid.
+const manyRadii = (css) => [...css.matchAll(/--rhp-radius\s*:([^;{}]*)/g)]
+  .some(([, v]) => { let t = v, u; while ((u = t.replace(/\([^()]*\)/g, "")) !== t) t = u; return t.trim().split(/\s+/).filter((x) => x && x !== "!important").length > 1; });
+const checkRadii = (css) => manyRadii(css) && console.warn("rhp: --rhp-radius takes one length. For different corners, use --rhp-start-radius and --rhp-end-radius, or border-radius.");
 function slatSheet(fn) {
   // The core hides the ::before and ::after of plots and slat roots (display: none, cheaper to style than content: none).
   // A slat whose CSS draws some gets them back inside its own slats; its own rules still win.
@@ -276,6 +280,7 @@ function slatSheet(fn) {
  */
 export function restyle(fn, css) {
   if (!fn?.scope) throw new Error("rhp: restyle takes a slat type made by slat() with css");
+  checkRadii(css);
   fn.css = css;
   const entry = sheets.get(fn.scope);
   if (entry) update(entry, slatSheet(fn));
@@ -296,6 +301,7 @@ export function slat(def, fn) {
   fn.layout = def;
   fn.css = def.css;
   if (def.css != null) { // the scope is its CSS's hash, numbered when another type has the same CSS, so each type has its own
+    checkRadii(def.css);
     const h = hash(def.css), n = (made.get(h) ?? 0) + 1;
     made.set(h, n);
     fn.scope = "rhp-s" + h + (n > 1 ? "-" + n : "");

@@ -821,10 +821,10 @@ const noteName = (m) => ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"
 const KeySlat = slat({
   room: { horizontal: { after: 50 }, vertical: { before: 60 } },
   css: `
-    .key { --rhp-radius: 0 0 3px 3px; background: #efe6d2; }
+    .key { border-radius: 0 0 3px 3px; background: #efe6d2; } /* a key's four corners: border-radius (--rhp-radius takes one length) */
     .black .key { background: #1b1916; box-shadow: inset 0 0 0 1px #3a342b; }
     .key:horizontal { top: calc(100% + 6px); height: 24px; translate: none; clip-path: inset(0 .5px); }
-    .key:vertical { left: auto; right: calc(100% + 6px); width: 24px; translate: none; clip-path: inset(.5px 0); --rhp-radius: 3px 0 0 3px; }
+    .key:vertical { left: auto; right: calc(100% + 6px); width: 24px; translate: none; clip-path: inset(.5px 0); border-radius: 3px 0 0 3px; }
     .c { font-size: 10px; font-weight: 700; color: var(--rhp-muted); padding: 0; }
     .c:horizontal { top: calc(100% + 34px); translate: -2px 0; }
     .c:vertical { left: auto; right: calc(100% + 34px); translate: 0 50%; }

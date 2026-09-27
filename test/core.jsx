@@ -32,6 +32,13 @@ const Turned = slat({ css: `
 ` }, (d) => <div class="o"><span class="inner">x</span><Bar class="b" from={d.from} to={d.to} /><Label class="l" at={d.to}>v</Label></div>);
 // 13. static: rows drawn once, drawn again when the Plot's data changes
 const [still, setStill] = createSignal([5, 9]);
+// 14. what a slat or a page may rely on: classList with class on a block, a format that returns elements,
+// --rhp-p and --rhp-lo in slat CSS, and a warning for --rhp-radius with several lengths
+const [lit, setLit] = createSignal(true);
+const Placed = slat({ css: `
+.pin { position: absolute; left: calc(var(--rhp-p) * 100%); }
+.from { position: absolute; left: calc(var(--rhp-lo) * 100%); }
+` }, (d) => <div><Bar from={2} to={d.v} class="kb" classList={{ lit: lit() }} /><Dot at={d.v} size="4px"><i class="pin" /></Dot><Bar from={2} to={d.v}><i class="from" /></Bar></div>);
 // 12. when writes land: a change from a timer, and one made in the app's own frame
 const [paced, setPaced] = createSignal(1);
 render(() => (
@@ -55,7 +62,8 @@ render(() => (
         {(d) => <div class="sr" data-n={d.name}><Bar to={d.v} /><Label at={d.v}>{d.v}</Label><Plot overlap part={[1, 2]}>{(q) => <Dot at={q.part} class="sd" />}</Plot></div>}
       </Plot>
     </Chart>
+    <Chart class="kept" scale={[0, 10]} ticks={[0, 5, 10]} format={(v) => <b class="fmt">{v}</b>}><Plot v={[8]}>{Placed}</Plot></Chart>
     <Chart class="paced" scale={[0, 100]}><Plot v={[paced()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
   </div>
 ), document.body);
-Object.assign(T, { setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red });
+Object.assign(T, { setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red });

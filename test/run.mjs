@@ -83,6 +83,23 @@ const open = async (url, opts = {}) => {
     return c === ".or-h" ? [Math.round(a.left - plot.left), Math.round(plot.right - b.right)] : [Math.round(plot.bottom - a.bottom), Math.round(b.top - plot.top)];
   })), [3, 3, 3, 3]);
   check("--rhp-label-gap spaces a label from its value", await p.evaluate(() => [getComputedStyle(document.querySelector(".or-h .l")).paddingLeft, getComputedStyle(document.querySelector(".or-v .l")).paddingBottom]), ["11px", "11px"]);
+  check("a block's classList and class together", await p.evaluate(async () => {
+    const b = document.querySelector(".kept .kb"), a = b.className;
+    T.setLit(false); await new Promise((r) => setTimeout(r, 20));
+    return [a, b.className];
+  }), ["rhp-bar kb lit", "rhp-bar kb"]);
+  check("an axis format can return elements", await p.evaluate(() => [...document.querySelectorAll(".kept .rhp-gridline .fmt")].map((e) => e.textContent).join(" ")), "0 5 10");
+  check("slat CSS can place things by --rhp-p and --rhp-lo", await p.evaluate(() => {
+    const dot = document.querySelector(".kept .rhp-dot"), pin = dot.querySelector(".pin"), from = document.querySelector(".kept .from"), bar = from.parentElement;
+    const at = (e, box) => { const a = e.getBoundingClientRect(), b = box.getBoundingClientRect(); return Math.round(((a.left - b.left) / b.width) * 100) / 100; };
+    return [at(pin, dot), at(from, bar)];
+  }), [0.8, 0.2]);
+  check("--rhp-radius with several lengths gets a warning", await p.evaluate(() => {
+    const seen = []; const warn = console.warn; console.warn = (m) => seen.push(m);
+    const R = T.slat({ css: ".x { --rhp-radius: 0 0 3px 3px; }" }, () => document.createElement("div"));
+    T.restyle(R, ".x { --rhp-radius: 0 0 3px 3px; }"); T.restyle(R, ".x { --rhp-radius: calc(2px + 1px); }");
+    console.warn = warn; return seen.length;
+  }), 2);
   const still = () => p.evaluate(() => [...document.querySelectorAll(".st .sr")].map((e) => e.dataset.n + e.querySelector(".rhp-label").textContent + "@" + e.style.getPropertyValue("--rhp-position") + ":" + e.querySelectorAll(".sd").length).join(" "));
   check("static: rows are drawn sorted, nested Plots included", await still(), "a5@1:2 b9@0:2");
   await p.evaluate(() => T.setStill([12, 3])); await p.waitForTimeout(50);

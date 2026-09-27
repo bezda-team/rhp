@@ -90,7 +90,7 @@ Two additions cover what changes with the orientation:
 
 | Knob | What it sets |
 |---|---|
-| `--rhp-radius` | a Bar's corners (default 2px) |
+| `--rhp-radius` | a Bar's corners, one length (default 2px); for different corners, the next two or `border-radius` |
 | `--rhp-start-radius`, `--rhp-end-radius` | the corners at one end: `--rhp-start-radius: 0` squares the base |
 | `--rhp-gap` | empty space at a Bar's start: the gap between stacked segments or units |
 | `--rhp-label-gap` | the space between a Label and its value, or the plot for an `edge` label |

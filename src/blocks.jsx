@@ -21,11 +21,13 @@ export const tok = (c) => {
 const length = (v) => (typeof v === "number" ? v * 100 + "%" : v); // 0.6 → "60%"; "2px" stays
 
 // An effect that writes an element's variables, and only the ones that changed: the first ones now, later ones in the
-// next frame (frame.js). The Chart's scale and an Area's span; other blocks do this in blockElement.
-export function writeVars(el, vars) {
+// next frame (frame.js). back(v), for a Bar: whether it runs backward. The Chart's scale, an Area's span, and a block
+// with props of its own kind; other blocks do this in blockElement.
+export function writeVars(el, vars, back) {
   createRenderEffect((prev) => {
     const v = vars();
     for (const k in v) if (v[k] !== prev?.[k]) prev ? write(el, k, v[k]) : v[k] != null && el.style.setProperty(k, v[k]);
+    if (back) el.toggleAttribute("data-rhp-back", back(v));
     return v;
   });
 }
@@ -42,7 +44,19 @@ const MINE = ["class", "style", "ref", "children"];
 // (a Bar whose `to` is below its `from`), so its end is on the scale's start side.
 function blockElement(props, mine, base, vars, attrs, back) {
   const o = useOrientation();
-  const el = others(props, mine) ? <div {...splitProps(props, [...mine])[1]} /> : <div />;
+  if (others(props, mine)) {
+    // Props of its own kind (onClick, title, classList, use:…): Solid spreads them, and sets the class, direction and
+    // style with them. The class comes first, so a classList after it adds to it instead of being overwritten.
+    const el = (
+      <div class={cls(base, props.class)} data-rhp-o={short(o())} {...splitProps(props, [...mine])[1]} ref={(e) => props.ref?.(e)}
+        {...(attrs ? attrs() : {})} style={props.style}>
+        {props.children}
+      </div>
+    );
+    writeVars(el, vars, back);
+    return el;
+  }
+  const el = <div />;
   if ("children" in props) insert(el, () => props.children);
   createRenderEffect((prev) => {
     const c = cls(base, props.class), dir = short(o()), st = props.style, a = attrs?.(), v = vars();

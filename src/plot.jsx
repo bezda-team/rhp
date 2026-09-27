@@ -456,7 +456,11 @@ export function Axis(props) {
         {(t) => { // one effect per line for its direction and its number (three before)
           const el = <div class="rhp-gridline"><span /></div>, num = el.firstChild;
           el.style.setProperty("--rhp-at", t);
-          createRenderEffect(() => { el.setAttribute("data-rhp-o", short(o())); num.textContent = props.format ? props.format(t) : t; });
+          createRenderEffect(() => {
+            el.setAttribute("data-rhp-o", short(o()));
+            const text = props.format ? props.format(t) : t; // text, or elements (format={(v) => <b>{v}</b>})
+            num.replaceChildren(...[text].flat().map((x) => (typeof x === "function" ? x() : x)).map((x) => (x instanceof Node ? x : String(x ?? ""))));
+          });
           return el;
         }}
       </For>
