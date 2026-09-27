@@ -2,7 +2,7 @@
 
 rhp builds plots out of HTML and CSS with [SolidJS](https://www.solidjs.com). A plot is a stack of **slats**. A slat is one component, the template for every row or column, and it is made of **blocks**: Bar, Dot, Tick, Label, Cell and Area. rhp creates one slat per data row and places it. When a value changes, only the expressions that read it re-run, and a block writes only the CSS variables that changed. There is no render loop and no virtual DOM.
 
-Version 2 is a rewrite. v1 ("react html plots") was a React library in three packages (`rhp-core`, `rhp-base`, `rhp`); it stays on the `master` branch.
+Version 2 is a rewrite. v1 ("react html plots") was a React library in three packages (`rhp-core`, `rhp-base`, `rhp`); its code is on the `v1` branch.
 
 ## Install
 
