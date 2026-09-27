@@ -17,10 +17,10 @@ const cssText = { name: "css-text", setup(b) {
   });
 }};
 
-// A page bundle (examples, tests): Solid included, one IIFE.
+// A page bundle (examples, tests): Solid included, one IIFE. Imported images become data URLs, so a page stays one file.
 export const page = (entry, outfile) => build({
   entryPoints: [entry], outfile, bundle: true, format: "iife", minify: !process.env.DEV, platform: "browser", target: "es2020",
-  plugins: [solid, cssText], define: { "process.env.NODE_ENV": '"production"' }, logLevel: "warning",
+  plugins: [solid, cssText], loader: { ".svg": "dataurl", ".jpg": "dataurl" }, define: { "process.env.NODE_ENV": '"production"' }, logLevel: "warning",
 });
 
 // The package: one ES module, Solid left to the app.

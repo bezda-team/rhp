@@ -1,7 +1,7 @@
 <title>Slat Gallery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Barlow+Condensed:wght@500;600;700;800&display=swap">
 <style>
 :root {
   --bg: #f4f5f2; --paper: #ffffff; --ink: #15181c; --ink-2: #4b525c; --muted: #6a717b; --kw: #6a4bc8;
@@ -79,6 +79,95 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button.primary { background: var(--accent); border-color: var(--accent); color: var(--paper); }
 button.mini { font-size: 12.5px; padding: 3px 10px; margin-bottom: 8px; }
 
+/* Posters: the magazine-style panels the redesigned charts sit in. The panel is the page's (its paper, headline and
+   note); the chart inside takes its colors and font from the theme its demo passes. Each look below sets its paper. */
+.poster { margin: 0; padding: 20px 20px 14px; border-radius: 16px; background: var(--paper); color: var(--ink); overflow: hidden; }
+.poster figcaption { display: grid; gap: 5px; margin-bottom: 16px; }
+.poster .kicker { font: 600 10.5px/1.3 var(--mono); letter-spacing: .16em; text-transform: uppercase; opacity: .72; }
+.poster .headline { font: 800 32px/1 var(--display); letter-spacing: -0.02em; text-wrap: balance; }
+.poster .dek { font-size: 14px; line-height: 1.45; opacity: .82; max-width: 46ch; }
+.poster .note { display: block; margin-top: 12px; font-size: 11px; line-height: 1.4; opacity: .62; }
+.poster .keys { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; }
+.poster .keys i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+@media (max-width: 480px) { .poster { padding: 16px 14px 12px; } .poster .headline { font-size: 26px; } }
+/* Gold rush: a sports-page medal table on warm white. */
+.poster.medals { background: #f7f3ec; color: #111214; }
+.poster.medals .kicker { color: #8a6412; opacity: 1; }
+.poster.medals .headline { font: 800 46px/.92 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .01em; text-transform: uppercase; }
+.poster.medals .keys i.gold { background: radial-gradient(circle at 30% 26%, #fff4c4, #e0b43f 46%, #a87a14); }
+.poster.medals .keys i.silver { background: radial-gradient(circle at 30% 26%, #fff, #bfc5cb 46%, #858d95); }
+.poster.medals .keys i.bronze { background: radial-gradient(circle at 30% 26%, #ffe2c9, #cf8a55 46%, #8a4b23); }
+/* Anatomy of a coffee: a café menu on warm cream. */
+.poster.coffee { background: #f3ebe0; color: #2b1b12; }
+.poster.coffee .kicker { color: #9a5a2a; opacity: 1; }
+.poster.coffee .headline { font: 800 38px/1 Fraunces, Georgia, serif; letter-spacing: -0.02em; }
+.poster.coffee .keys i.espresso { background: linear-gradient(90deg, #24150c, #8d5b33); }
+.poster.coffee .keys i.milk { background: #e9dac4; box-shadow: inset 0 0 0 1px #d8c6ac; }
+.poster.coffee .keys i.foam { background: #fff; box-shadow: inset 0 0 0 1px #d8c6ac; }
+/* Where the battery goes: a phone's settings screen. */
+.poster.battery { background: #f5f5f7; color: #1d1d1f; }
+.poster.battery .kicker { font-family: system-ui, sans-serif; letter-spacing: .08em; opacity: .6; }
+.poster.battery .headline { font: 800 34px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+/* A year in books: a bookshop's shelf card. */
+.poster.books { background: #f7f1e6; color: #2a2118; }
+.poster.books .kicker { color: #8a5a3a; opacity: 1; }
+.poster.books .headline { font: 800 38px/1 Fraunces, Georgia, serif; letter-spacing: -0.02em; }
+.poster.books .dek { font-style: italic; }
+/* Where the wind blows from: a harbour's weather board. */
+.poster.wind { background: linear-gradient(165deg, #eef6f9, #d4e8f1); color: #0b2a3c; }
+.poster.wind .kicker { color: #ff6b4a; opacity: 1; }
+.poster.wind .headline { font: 800 34px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+/* An ageing country: a census poster. */
+.poster.census { background: #f4f1ea; color: #1f2933; }
+.poster.census .headline { font-size: 36px; }
+/* Hotter than normal: climate stripes at night. */
+.poster.climate { background: #0d1117; color: #e8ecf2; }
+.poster.climate .kicker { color: #f58058; opacity: 1; }
+.poster.climate .headline { font: 800 36px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em;
+  background: linear-gradient(90deg, #78b1d6, #e8ecf2 45%, #f58058); -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* Where the salary goes: a banking app's month summary. */
+.poster.budget { background: #fff; color: #1c2433; box-shadow: inset 0 0 0 1px #e6e9ef; }
+.poster.budget .kicker { color: #0b8a63; opacity: 1; }
+.poster.budget .headline { font: 800 32px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+.poster.budget .dek b { font-size: 20px; letter-spacing: -0.02em; color: #0b8a63; }
+/* Today's goals: a watch face at night. */
+.poster.watch { background: #0a0a0c; color: #f5f5f7; }
+.poster.watch .kicker { color: #f43f5e; opacity: 1; }
+.poster.watch .headline { font: 800 36px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
+/* 365 afternoons: a weather feature, cool to warm. */
+.poster.weather { background: linear-gradient(170deg, #fbf4ea, #eef4fa 70%); color: #1f2a37; }
+.poster.weather .kicker { color: #c4342c; opacity: 1; }
+.poster.weather .headline { font: 800 40px/.95 "Barlow Condensed", "Arial Narrow", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.poster.weather .heat-key { display: inline-flex; align-items: center; gap: 6px; margin-left: 4px; font-size: 12px; opacity: .85; }
+.poster.weather .heat-key i { width: 96px; height: 8px; border-radius: 99px;
+  background: linear-gradient(90deg, rgb(59 130 196), rgb(120 181 196), rgb(233 196 106), rgb(238 129 72), rgb(196 52 44)); }
+/* The string section: a concert programme. */
+.poster.strings { background: #121110; color: #f3e9d2; }
+.poster.strings .kicker { color: #d08a3c; opacity: 1; }
+.poster.strings .headline { font: 800 38px/1 Fraunces, Georgia, serif; letter-spacing: -0.02em; }
+.poster.strings .dek { font-style: italic; }
+/* Back on your feet sooner: a clinical trial's result card. */
+.poster.clinic { background: #f3faf8; color: #0f3d3a; }
+.poster.clinic .kicker { color: #0e9f8a; opacity: 1; }
+.poster.clinic .headline { font: 800 32px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+/* The sound of a bell: a music app's waveform. */
+.poster.sound { background: radial-gradient(120% 90% at 50% 0%, #2a1d48, #0e0c14 62%); color: #f4f1ff; }
+.poster.sound .kicker { color: #ec4899; opacity: 1; }
+.poster.sound .headline { font: 800 36px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
+/* Base camp to summit: an alpine poster at dawn. */
+.poster.alpine { background: linear-gradient(180deg, #dce9f4, #f4ede3); color: #13293d; }
+.poster.alpine .kicker { color: #c96524; opacity: 1; }
+.poster.alpine .headline { font: 800 44px/.92 "Barlow Condensed", "Arial Narrow", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+/* From plot to keys: an architect's drawing sheet. */
+.poster.drawing { color: #141414; background-color: #fbfaf7;
+  background-image: linear-gradient(#efece6 1px, transparent 1px), linear-gradient(90deg, #efece6 1px, transparent 1px); background-size: 16px 16px; }
+.poster.drawing .kicker { color: #ff5a1f; opacity: 1; }
+.poster.drawing .headline { font: 800 34px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
+/* A month on the market: the salmon pages. */
+.poster.market { background: #fff1e5; color: #33302e; }
+.poster.market .kicker { color: #990f3d; opacity: 1; }
+.poster.market .headline { font: 600 36px/1.05 Fraunces, Georgia, serif; letter-spacing: -0.015em; }
+
 /* cards */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 470px), 1fr)); gap: 16px; }
 .card { background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; padding: 16px 16px 10px; min-width: 0; display: flex; flex-direction: column; }
@@ -89,6 +178,25 @@ button.mini { font-size: 12.5px; padding: 3px 10px; margin-bottom: 8px; }
 .card details { border-top: 1px solid var(--rule-soft); margin-top: 8px; padding-top: 6px; }
 .card summary { cursor: pointer; font-size: 13px; color: var(--muted); font-family: var(--mono); padding: 2px 0 4px; }
 .card details pre { margin-top: 6px; max-height: 460px; }
+.card.wide { grid-column: 1 / -1; }
+.buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.slider { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 8px 8px; font-size: 12.5px; color: var(--ink-2); }
+.slider input { width: 160px; margin: 0; accent-color: var(--accent); }
+.slider output { min-width: 2.5ch; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* The v1 replicas' page boxes. v1's box plot sat on a white card; a Chart's root pads itself for its gutters,
+   so the card is a div around it, with v1's 28.8px of extra room below. */
+.v1-card { background: var(--paper); border-radius: 16px; padding-bottom: 24px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .v1-card { background: var(--bg); box-shadow: 0 0 0 1px var(--rule); } }
+:root[data-theme="dark"] .v1-card { background: var(--bg); box-shadow: 0 0 0 1px var(--rule); }
+/* The dots' window: the value axis is exactly 11 dots long (content-box width, the gutters outside it).
+   Where the card is narrower, the window zooms down to fit, as v1's `scale` prop did. The hover target is the window. */
+.dots-fit { container-type: inline-size; }
+.dots-window { width: fit-content; margin: 0 auto; }
+.rhp-chart.dots { box-sizing: content-box; }
+.rhp-chart.dots[data-rhp-o="h"] { width: 660px; zoom: min(1, tan(atan2(100cqw, 664px))); }
+.rhp-chart.dots[data-rhp-o="v"] { width: 540px; zoom: min(1, tan(atan2(100cqw, 544px))); }
 
 /* write-up */
 .qa { display: grid; gap: 10px; margin: 8px 0 22px; }
@@ -112,7 +220,7 @@ footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
 <header class="hero">
   <div class="eyebrow">rhp v2 · second prototype · same look in any app</div>
   <h1>Slat Gallery</h1>
-  <p class="lead">Twenty plots, each one slat inside a Plot. Each slat owns its CSS and its layout, and the page hands rhp only a theme object, so a slat looks the same in any app. Every chart switches between horizontal and vertical, and between the CSS version and the JS version of animation.</p>
+  <p class="lead">Twenty plots built from slats. The first three rebuild v1's demos; the rest are magazine-style pieces, each designed around its data. Each slat owns its CSS and its layout, and a chart takes its colors from a theme object, so a slat looks the same in any app. Every chart switches between horizontal and vertical, and between the CSS version and the JS version of animation.</p>
   <nav class="jump" aria-label="Sections">
     <a href="#gallery-top">Gallery</a><a href="#isolation">Same look in any app</a><a href="#d">How d works</a><a href="#review">What changed and why</a><a href="#parity">v1 parity</a><a href="#reference">Reference</a>
   </nav>
@@ -125,12 +233,13 @@ footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
   <li><b>Data groups</b>The longest list sets the slat count. A group can be a function of <code>d</code> (computed per slat, cached). <code>rows</code> takes objects; <code>key</code> gives rows identity.</li>
   <li><b>A slat is portable</b><code>slat({ css, band, inset, room }, fn)</code>: the slat's CSS applies to its own slats only, and its sizes are its own. Colors come from a theme object. No page stylesheet changes a chart.</li>
   <li><b>One package</b>One import, Solid as the only peer dependency. The CSS is injected by the package on the first chart; there is no stylesheet to import.</li>
+  <li><b>Scales</b><code>Scale</code> draws a chart's scale with a slat: one per tick of the Chart's own scale, keyed by value. A slat marks <code>d.at</code> or fills the interval to <code>d.next</code>: gridlines, bands, a ruler, a keyboard.</li>
   <li><b>Animation in one place</b><code>animate</code> on a Chart or Plot configures both versions. The JS version now also moves numbers inside arrays and objects (a box's five numbers, a row of segments).</li>
 </ul>
 
 <section id="gallery-top">
   <h2>Gallery</h2>
-  <p class="prose">The controls apply to every chart. In the code, <code>p.o()</code>, <code>p.js()</code> and <code>p.seed()</code> are those controls; everything else is what a user of rhp would write. <code>HOVER</code> is one line of slat CSS the demos share: <code>.slat:hover { background: color-mix(in srgb, var(--rhp-ink) 6%, transparent) }</code>. Terms: a <b>block</b> is a building piece inside a slat; the <b>band</b> is the strip one slat occupies; the <b>value axis</b> is the direction bars run.</p>
+  <p class="prose">The controls apply to every chart. In the code, <code>p.o()</code>, <code>p.js()</code> and <code>p.seed()</code> are those controls; everything else is what a user of rhp would write. Most charts sit in a poster: a panel the page draws around the chart, with its paper, headline and note. The chart inside takes its colors and font from the theme its demo passes to the Chart, and its data colors from its own data. The first three cards replicate v1's demos with v1's data, assets and look; their motion is v2's, the CSS or JS version like every other card, not v1's transitions. The page gives them v1's theme (Chakra UI's font, <code>#555</code> text, black on hover) and draws the box plot's card and the dots' window around their charts. Terms: a <b>block</b> is a building piece inside a slat; the <b>band</b> is the strip one slat occupies; the <b>value axis</b> is the direction bars run.</p>
   <div id="gallery"></div>
 </section>
 
@@ -224,10 +333,14 @@ footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
       <tr><td>Slide used a fixed pixel pitch vertically but 100%/n horizontally, so slats could not fill a chart in one orientation.</td><td>Every reorder action places slats by <code>--rhp-position</code>. A band is the slat's <code>band</code> (default 32px horizontal), or an equal share of the width vertically.</td><td>Horizontal plots size to their rows, vertical plots fill their width, nested plots fill their slat.</td><td><span class="state fixed">fixed</span></td></tr>
       <tr><td>Found while building: nested Plots in a JS-version Chart animated their data twice, so inner bars lagged.</td><td>A nested Plot doesn't take the Chart's <code>animate</code>; its data already arrive moving.</td><td>Inner bars follow the outer data with no second delay. Measured on the stacked bars during New data: the widest gap between neighboring segments was 0.02 px in both versions.</td><td><span class="state fixed">fixed</span></td></tr>
       <tr><td>Bad children failed with "props.children is not a function"; server rendering threw on <code>instanceof Element</code>.</td><td>Clear errors for a child that isn't a slat function and a slat that isn't one element; the check is skipped without a DOM.</td><td>Full server rendering is still untested.</td><td><span class="state fixed">fixed</span></td></tr>
-      <tr><td>Slats read the app's CSS variables (<code>--d1</code>, <code>--rhp-row</code>) and the gallery's CSS styled them, so a slat moved to another app changed color and size. Tailwind 4's preflight removed the gutters; Pico rescaled every element (199 of 199 moved).</td><td>Theme object, <code>slat({ css, band, inset, room }, fn)</code>, and guarded CSS injected by the package.</td><td>This page has no chart CSS at all. Across 51 real app stylesheets, no element rhp owns moved.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Slats read the app's CSS variables (<code>--d1</code>, <code>--rhp-row</code>) and the gallery's CSS styled them, so a slat moved to another app changed color and size. Tailwind 4's preflight removed the gutters; Pico rescaled every element (199 of 199 moved).</td><td>Theme object, <code>slat({ css, band, inset, room }, fn)</code>, and guarded CSS injected by the package.</td><td>This page styles nothing inside a chart; it draws the panels around them and sizes the dots' window. Across 51 real app stylesheets, no element rhp owns moved.</td><td><span class="state fixed">fixed</span></td></tr>
       <tr><td>Found while building: switching orientation slid every slat across the turn, and Chromium kept the mid-slide overflow, so on a 390px phone the page scrolled sideways by 670px after turning the heatmap.</td><td>Turning a chart is a jump: nothing inside transitions for the two frames after a change.</td><td>Page width stays 390px in both orientations and both animation versions.</td><td><span class="state fixed">fixed</span></td></tr>
       <tr><td>With Slide, reading and tab order follow the data, not the screen (WCAG 1.3.2, 2.4.3).</td><td>Not changed yet. Proposal: when the chart is still, move the DOM into position order in one batch; this is invisible because positions come from <code>--rhp-position</code>. Add list roles.</td><td>Screen readers read rows in data order today.</td><td><span class="state open">open</span></td></tr>
       <tr><td>A slat root with a string <code>style</code> wipes <code>--rhp-position</code>.</td><td>Documented: a slat's style must be an object.</td><td>No runtime check yet.</td><td><span class="state open">open</span></td></tr>
+      <tr><td>A custom scale was a Plot the app kept in step with the Chart's scale by hand, and the Chart's own axis could not be restyled.</td><td><code>Scale</code>: a Plot of ticks taken from the Chart's scale (a list, a count, or a function such as <code>every(5)</code>), in one band, keyed by value. Each tick's slat sees <code>d.at</code>, <code>d.next</code>, <code>d.first</code> and <code>d.last</code>. A Chart with a Scale draws no axis of its own.</td><td>The v1 scales, the keyboard under the violins, the Gantt's month bands and the climate chart's normal line are each one slat.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Found while building: when the max changed, the tick that became the scale's end slid out to the end (a CSS transition, or the JS version's moving scale), so the end line jumped inward by up to 65px.</td><td>A tick at either end of the scale is keyed as that end: the end is one slat whose value moves with the scale.</td><td>Measured every frame while the max crosses a tick: the end line stays within 0.1px of the end, in both versions. A test drags the fruit slider and checks it.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Found while building: a <code>key</code> function read the JS version's in-between values, through a reader it shared with the row of the same number.</td><td>A key function reads the data as given.</td><td>Keys stay stable while values move.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Found while building: the axis kept half a number of room past the end of the scale but none before its start, so a slat with little start room had its first number cut off.</td><td>The same half number of room at the start.</td><td>No axis number sticks out in 240 random draws of the gallery, at 390px and 1280px, in both orientations.</td><td><span class="state fixed">fixed</span></td></tr>
       <tr><td>No enter or exit animation; typos like <code>d.valeu</code> return undefined silently.</td><td>Not changed. With <code>key</code>, enter and exit are now possible to add.</td><td>New rows appear and removed rows vanish in one frame.</td><td><span class="state open">open</span></td></tr>
     </tbody>
   </table></div>
@@ -236,14 +349,14 @@ footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
 <section class="block" id="parity">
   <div class="prose">
     <h2>v1 parity</h2>
-    <p>Everything a v1 user could configure, and where it lives now. The four v1 examples are the first four cards of the gallery.</p>
+    <p>Everything a v1 user could configure, and where it lives now. The four v1 examples are the first four cards of the gallery; the first three look like v1's demos: at v1's width, what they draw is within 1px of where v1 draws it (a test checks this).</p>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>v1</th><th>Now</th></tr></thead>
     <tbody>
       <tr><td><code>plotData</code> and <code>vars</code>, with short arrays cycling</td><td>Data groups, with shorter lists wrapping; <code>series()</code> and <code>cycle()</code>; computed groups replace precomputed vars such as <code>last-whisker-pos</code>.</td></tr>
       <tr><td><code>orientation</code> 0 or 1 (no vertical example, scale or labels shipped)</td><td><code>orientation="horizontal" | "vertical" | "across"</code>; axis, labels and every block work in both.</td></tr>
-      <tr><td><code>dataMax</code>, <code>Scale</code>, <code>scaleTemplate</code>, <code>spacing</code></td><td>Chart <code>scale={[min, max]}</code>, <code>ticks</code> (a list or a count), <code>format</code>; <code>nice()</code> for round scales. The axis is a For of grid lines.</td></tr>
+      <tr><td><code>dataMax</code>, <code>Scale</code>, <code>scaleTemplate</code>, <code>spacing</code></td><td>Chart <code>scale={[min, max]}</code>, <code>ticks</code> (a list or a count), <code>format</code>; <code>nice()</code> for round scales. A custom look is a <code>Scale</code> with its own slat; <code>every(5)</code> is v1's spacing, and <code>d.next</code> gives v1's scale segments.</td></tr>
       <tr><td>JSON or JSX templates, decorations, <code>{{token}}</code> markup</td><td>The slat function: JSX with blocks and any element, reading <code>d</code>.</td></tr>
       <tr><td>Emotion CSS strings per level, class names per level</td><td>One <code>css</code> string per slat type, scoped to its slats; <code>class</code> and <code>style</code> on any element or block; colors from the theme object.</td></tr>
       <tr><td>Three packages (<code>rhp-core</code>, <code>rhp-base</code>, <code>rhp</code>)</td><td>One package, one import. CSS injected by the package.</td></tr>
@@ -284,11 +397,22 @@ footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
     <tbody>
       <tr><td><code>scale</code></td><td><code>[min, max]</code>, written as <code>--rhp-min</code> and <code>--rhp-max</code>. Default <code>[0, 100]</code>.</td></tr>
       <tr><td><code>orientation</code></td><td>For every Plot and block inside. Default <code>"horizontal"</code>.</td></tr>
-      <tr><td><code>ticks</code>, <code>format</code></td><td>Grid lines: a list, a count (default 5, rounded with <code>nice()</code>), or <code>false</code>. <code>format</code> turns a tick into text.</td></tr>
+      <tr><td><code>ticks</code>, <code>format</code></td><td>The built-in axis: a list, a count (default 5, rounded with <code>nice()</code>), or <code>false</code>. <code>format</code> turns a tick into text. A Scale inside the Chart replaces it.</td></tr>
       <tr><td><code>animate</code></td><td>Moves the scale with the JS version, and is the default <code>animate</code> of the Plots inside.</td></tr>
       <tr><td><code>theme</code></td><td>A theme object (or some of its keys) for this chart, over the one from <code>&lt;Theme&gt;</code>.</td></tr>
       <tr><td><code>height</code></td><td>The value axis length in px when vertical. Default 240.</td></tr>
       <tr><td><code>class</code>, <code>style</code>, <code>ref</code></td><td>Go to the chart root, which is the page's box: size it, space it, give it a background.</td></tr>
+    </tbody>
+  </table></div>
+  <h4><code>Scale</code></h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Prop or field</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>children</code></td><td>The tick's slat, <code>(t) =&gt; &lt;div&gt;…&lt;/div&gt;</code>, as for a Plot. Its <code>room</code> is the room the scale's numbers need.</td></tr>
+      <tr><td><code>ticks</code></td><td>A list of values; a count of round values (default 5); or a function of the Chart's <code>[min, max]</code> that returns a list, such as <code>every(5, { ends: true })</code>.</td></tr>
+      <tr><td><code>d.at</code>, <code>d.next</code></td><td>The tick's value, and the next tick's (the scale's max after the last): a mark at <code>d.at</code>, or a segment from <code>d.at</code> to <code>d.next</code>.</td></tr>
+      <tr><td><code>d.first</code>, <code>d.last</code></td><td>Whether the tick is the first or the last. A tick at either end of the scale keeps its slat as the scale changes, so the ends never slide.</td></tr>
+      <tr><td>Any other prop</td><td>A data group, as for a Plot (<code>marks="line"</code>).</td></tr>
     </tbody>
   </table></div>
   <h4><code>slat(def, fn)</code></h4>
@@ -317,7 +441,7 @@ footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
   </table></div>
   <p class="prose">Every <code>color</code> takes a theme key or a CSS color. Every block also takes <code>class</code>, <code>style</code> (an object), <code>ref</code>, children, and any other attribute or handler.</p>
   <h4>Data helpers</h4>
-  <p class="prose">Plain functions that turn raw data into data groups: <code>sortBy(key, direction)</code>, <code>series(n)</code>, <code>cycle(list)</code>, <code>nice(lo, hi, count)</code>, <code>extent(values)</code>, <code>stackUp(values)</code>, <code>shares(values, total)</code>, <code>running(changes)</code>, <code>summary(samples)</code>, <code>bins(samples, { domain, count })</code>, <code>density(samples, { domain, points, bandwidth })</code>.</p>
+  <p class="prose">Plain functions that turn raw data into data groups: <code>sortBy(key, direction)</code>, <code>series(n)</code>, <code>cycle(list)</code>, <code>every(step, { ends })</code>, <code>nice(lo, hi, count)</code>, <code>extent(values)</code>, <code>stackUp(values)</code>, <code>shares(values, total)</code>, <code>running(changes)</code>, <code>summary(samples)</code>, <code>bins(samples, { domain, count })</code>, <code>density(samples, { domain, points, bandwidth })</code>.</p>
   <h4>CSS variables a slat may set</h4>
   <p class="prose">In its own <code>css</code>: <code>--rhp-label-size</code>, <code>--rhp-radius</code>, <code>--rhp-tick-width</code>, <code>--rhp-cell-gap</code>, <code>--rhp-length-time</code>, <code>--rhp-length-ease</code>, <code>--rhp-slide-time</code>, <code>--rhp-slide-ease</code>. rhp writes the rest (the theme, <code>--rhp-min</code>, <code>--rhp-max</code>, the gutters, each block's numbers). Every variable is <code>--rhp-</code> prefixed, so an app's own variables never collide.</p>
 </section>

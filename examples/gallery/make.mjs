@@ -1,4 +1,4 @@
-// npm run gallery: examples/gallery/out/slat-gallery.html, one self-contained page (the core, Solid and the page inlined).
+// npm run gallery: examples/gallery/out/slat-gallery.html, one self-contained page (the core, Solid, the page and its images inlined).
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -14,4 +14,4 @@ const js = fs.readFileSync(at("out/page.js"), "utf8");
 if (/<\/script/i.test(js)) throw new Error("bundle contains </script>");
 const html = fs.readFileSync(at("page.src.html"), "utf8").replace("/*BUNDLE*/", () => js);
 fs.writeFileSync(at("out/slat-gallery.html"), "<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'></head><body>" + html + "</body></html>");
-console.log(`examples/gallery/out/slat-gallery.html: ${Object.keys(code).length} charts, ${html.length} B`);
+console.log(`examples/gallery/out/slat-gallery.html: ${Object.keys(code).length} code blocks, ${html.length} B`);
