@@ -5,4 +5,4 @@ export * from "./index.js";
 export { render } from "solid-js/web";
 export { default as html } from "solid-js/html";
 export { createSignal, createMemo, createEffect, createRoot, onMount, onCleanup, batch, untrack, For, Index, Show } from "solid-js";
-export { createStore } from "solid-js/store";
+export { createStore, reconcile, produce, unwrap } from "solid-js/store";

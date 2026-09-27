@@ -12,6 +12,8 @@ npm install @bezda/rhp solid-js
 
 This is one package with one import. Solid is its only peer dependency. The CSS is injected by the package when the first chart mounts, so there is no stylesheet to import.
 
+In a React app, `@bezda/rhp-react` (in `react/`) turns an rhp chart into a React component: `` toReact((props) => html`…`) ``, where `props` follows the component's props item by item. See its README.
+
 With no build step, a page can import `@bezda/rhp/standalone`, one module with Solid included (27 kB gzipped), from a CDN. Slats are then written with Solid's `html` template tag instead of JSX, and a value that changes is wrapped in a function:
 
 ```html

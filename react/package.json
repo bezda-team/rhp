@@ -1,0 +1,30 @@
+{
+  "name": "@bezda/rhp-react",
+  "version": "2.0.0",
+  "description": "rhp (reactive html plots) charts as React components",
+  "keywords": ["react", "charts", "plots", "html", "css", "reactive"],
+  "author": {
+    "name": "Bouzid Anas",
+    "email": "anas.bouzid@bezda.net"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bezda-team/rhp",
+    "directory": "react"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "@bezda/rhp": "^2.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}
