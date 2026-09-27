@@ -23,6 +23,12 @@ export const page = (entry, outfile) => build({
   plugins: [solid, cssText], loader: { ".svg": "dataurl", ".jpg": "dataurl" }, define: { "process.env.NODE_ENV": '"production"' }, logLevel: "warning",
 });
 
+// The standalone module: rhp and Solid in one minified ES module, for pages with no build step.
+export const standalone = (entry, outfile) => build({
+  entryPoints: [entry], outfile, bundle: true, format: "esm", minify: true, platform: "browser", target: "es2020",
+  plugins: [solid, cssText], define: { "process.env.NODE_ENV": '"production"' }, logLevel: "warning",
+});
+
 // The package: one ES module, Solid left to the app.
 export const lib = (entry, outfile) => build({
   entryPoints: [entry], outfile, bundle: true, format: "esm", platform: "browser", target: "es2020",

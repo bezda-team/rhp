@@ -15,7 +15,8 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./standalone": "./dist/standalone.js"
   },
   "module": "./dist/index.js",
   "files": [

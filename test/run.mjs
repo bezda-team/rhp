@@ -5,13 +5,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { execFileSync } from "child_process";
 import { chromium } from "playwright";
-import { page as bundle } from "../scripts/bundle.mjs";
+import { page as bundle, standalone } from "../scripts/bundle.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
 for (const t of ["core", "cost", "mount"]) {
   await bundle(at(t + ".jsx"), at(`out/${t}.js`));
   fs.writeFileSync(at(`out/${t}.html`), `<!doctype html><html><head><meta charset=utf-8></head><body><script src="${t}.js"></script></body></html>`);
 }
+await standalone(path.join(here, "../src/standalone.js"), at("out/standalone.js"));
 execFileSync("node", [path.join(here, "../examples/gallery/make.mjs")], { stdio: "inherit" });
 const gallery = "file://" + path.join(here, "../examples/gallery/out/slat-gallery.html");
 
@@ -93,6 +94,37 @@ const open = async (url, opts = {}) => {
     await new Promise((done) => { let v = 10; const f = () => { if (v > 10 && read() !== String(v - 1)) late.push(v - 1); if (v > 20) return done(); T.setPaced(v++); requestAnimationFrame(f); }; requestAnimationFrame(f); });
     return late.slice(1);
   }, bar.toString()), []);
+  check("no page errors", p.errors, []);
+  await p.close();
+}
+
+// No build step (src/standalone.js): a plain page imports one module and writes slats with html templates.
+{
+  const p = await browser.newPage();
+  p.errors = []; p.on("pageerror", (e) => p.errors.push(e.message));
+  await p.route("http://rhp.test/**", (r) => {
+    const f = new URL(r.request().url()).pathname.slice(1);
+    if (f === "standalone.js") return r.fulfill({ path: at("out/standalone.js"), contentType: "text/javascript" });
+    r.fulfill({ contentType: "text/html", body: `<!doctype html><meta charset="utf-8"><div id="app"></div><script type="module">
+      import { Chart, Plot, Bar, Label, slat, sortBy, html, render, createSignal } from "./standalone.js";
+      const [values, setValues] = createSignal([12, 18, 7]);
+      window.setValues = setValues;
+      const Row = slat({ css: ".bar { --rhp-end-radius: 6px; }" }, (d) => html\`<div>
+        <\${Label} edge="start">\${() => d.name}<//>
+        <\${Bar} class="bar" to=\${() => d.value} />
+        <\${Label} at=\${() => d.value}>\${() => d.value}<//>
+      </div>\`);
+      render(() => html\`<\${Chart} scale=\${[0, 30]}>
+        <\${Plot} name=\${["Apple", "Kiwi", "Lemon"]} value=\${values} order=\${sortBy("value", "desc")}>\${Row}<//>
+      <//>\`, document.getElementById("app"));
+    </script>` });
+  });
+  await p.goto("http://rhp.test/index.html"); await p.waitForTimeout(400);
+  const rows = () => p.evaluate(() => [...document.querySelectorAll(".rhp-plot > *")].map((s) => s.textContent.replace(/\s+/g, "") + "@" + s.style.getPropertyValue("--rhp-position")).join(" "));
+  check("no build step: html templates draw a chart, sorted", await rows(), "Apple12@1 Kiwi18@0 Lemon7@2");
+  await p.evaluate(() => window.setValues([12, 18, 25])); await p.waitForTimeout(100);
+  check("no build step: a signal passed as a data group updates the chart", await rows(), "Apple12@2 Kiwi18@1 Lemon25@0");
+  check("no build step: slat CSS applies", await p.evaluate(() => getComputedStyle(document.querySelector(".bar")).borderTopRightRadius), "6px");
   check("no page errors", p.errors, []);
   await p.close();
 }

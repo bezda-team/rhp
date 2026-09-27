@@ -12,6 +12,23 @@ npm install @bezda/rhp solid-js
 
 This is one package with one import. Solid is its only peer dependency. The CSS is injected by the package when the first chart mounts, so there is no stylesheet to import.
 
+With no build step, a page can import `@bezda/rhp/standalone`, one module with Solid included (27 kB gzipped), from a CDN. Slats are then written with Solid's `html` template tag instead of JSX, and a value that changes is wrapped in a function:
+
+```html
+<script type="module">
+  import { Chart, Plot, Bar, Label, slat, html, render } from "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js";
+
+  const Row = slat({}, (d) => html`<div>
+    <${Label} edge="start">${() => d.name}<//>
+    <${Bar} to=${() => d.value} />
+  </div>`);
+
+  render(() => html`<${Chart} scale=${[0, 30]}>
+    <${Plot} name=${["Apple", "Kiwi"]} value=${[12, 18]}>${Row}<//>
+  <//>`, document.body);
+</script>
+```
+
 ## A plot
 
 ```jsx
