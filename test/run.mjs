@@ -134,6 +134,8 @@ const open = async (url, opts = {}) => {
           for (const e of ch.querySelectorAll("*")) {
             const b = e.getBoundingClientRect();
             if (!b.width && !b.height) continue;
+            // What shows only on hover (a tag, a bubble, a dimension) is there, invisible, at rest: it doesn't count.
+            if (!e.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue;
             // What shows: the box cut by each clipping ancestor inside the chart. A slat may hide what it draws
             // (the dots past their window, a photo zoomed in its circle); only what is left counts.
             let { left, top, right, bottom } = b;
@@ -156,6 +158,73 @@ const open = async (url, opts = {}) => {
     check(`${scheme}, ${width}px, ${motion.toUpperCase()} version: no page errors`, q.errors, []);
     await q.close();
   }
+}
+
+// The gallery's interactions: pointer and click handlers on the posters feed signals into the Plots' data, in both
+// animation versions; and an overlay Plot with pointer-events: none lets the pointer through to the Plot under it.
+for (const motion of ["css", "js"]) {
+  const p = await open(gallery, { viewport: { width: 1280, height: 900 } });
+  if (motion === "js") { await p.click("label:has(#motion-js)"); await p.waitForTimeout(100); }
+  const M = motion.toUpperCase() + " version";
+  const hover = async (sel) => { await p.hover(sel, { force: true }); await p.waitForTimeout(500); };
+  const away = async () => { await p.mouse.move(0, 0); await p.waitForTimeout(500); };
+
+  await hover("#segmented .charge.games >> nth=0");
+  check(`${M}, battery: pointing at an app lights it in every battery and fades the others`, await p.evaluate(() => ({
+    on: [...document.querySelectorAll("#segmented .charge.on")].map((e) => e.dataset.app).join(),
+    off: document.querySelectorAll("#segmented .charge.off").length,
+    keys: [...document.querySelectorAll("#segmented .keys button.off")].map((e) => e.dataset.app).join(),
+  })), { on: "Games,Games,Games,Games", off: 16, keys: "Video,Social,Music,Maps" });
+  const lit = () => p.evaluate(() => [...document.querySelectorAll("#segmented .charge.on")].map((e) => e.dataset.app).join());
+  await p.focus('#segmented .keys button[data-app="Maps"]'); await p.keyboard.press("Enter"); await p.waitForTimeout(300);
+  check(`${M}, battery: Enter on a key pins its app, over the app a still pointer is on`, await lit(), "Maps,Maps,Maps,Maps");
+  await away();
+  check(`${M}, battery: a pinned app stays when the pointer leaves`, [await lit(), await p.evaluate(() => document.querySelector('#segmented button[data-app="Maps"]').getAttribute("aria-pressed"))], ["Maps,Maps,Maps,Maps", "true"]);
+  await p.keyboard.press("Enter"); await p.waitForTimeout(300);
+  check(`${M}, battery: Enter again unpins it`, await p.evaluate(() => document.querySelectorAll("#segmented :is(.charge.on, .charge.off)").length), 0);
+
+  const budget = () => p.evaluate(() => {
+    const out = document.querySelector('#waterfall .step[data-line="5"]').getBoundingClientRect();
+    return { saved: document.querySelector("#waterfall .dek b").textContent, out: Math.round(out.width), pressed: document.querySelector('#waterfall button[data-line="5"]').getAttribute("aria-pressed") };
+  });
+  const before = await budget();
+  await p.click('#waterfall button[data-line="5"]'); await p.waitForTimeout(700);
+  const cut = await budget();
+  check(`${M}, budget: clicking an expense cuts it, and the savings grow by what it cost`,
+    [cut.saved, cut.out, cut.pressed], ["£1,820", 0, "true"]);
+  await p.focus('#waterfall button[data-line="5"]'); await p.keyboard.press("Enter"); await p.waitForTimeout(700);
+  check(`${M}, budget: Enter on it brings it back`, await budget(), before);
+
+  await hover('#violin [data-instrument="3"] .median');
+  check(`${M}, strings: pointing at an instrument lights the keys it reaches, and names its lowest and highest`, await p.evaluate(() => {
+    const lit = [...document.querySelectorAll("#violin .rhp-scale > .lit")], names = [...document.querySelectorAll("#violin .rhp-scale .c")].map((e) => e.textContent);
+    return lit.length > 20 && lit.length < 45 && names.length === 2 && document.querySelectorAll('#violin [data-instrument].off').length === 3;
+  }), true);
+  await away();
+  check(`${M}, strings: leaving puts the C's back`, await p.evaluate(() => [document.querySelectorAll("#violin .rhp-scale > .lit").length, [...document.querySelectorAll("#violin .rhp-scale .c")].map((e) => e.textContent).join()]),
+    [0, "C2,C3,C4,C5,C6,C7"]);
+
+  await hover("#gantt .row .job >> nth=1");
+  check(`${M}, gantt: a trade under the today line still takes the pointer`, await p.evaluate(() =>
+    [...document.querySelectorAll("#gantt .weeks")].filter((e) => getComputedStyle(e).visibility === "visible").length), 1);
+  await away();
+
+  await hover('#candles [data-day="4"] .wick');
+  check(`${M}, candles: a day under the pointer gets a line at its close, its price and the readout`, await p.evaluate(() => {
+    const body = document.querySelector('#candles [data-day="4"] .body').getBoundingClientRect(), cross = document.querySelector("#candles .cross").getBoundingClientRect();
+    const h = document.querySelector("#candles .rhp-chart").dataset.rhpO === "h"; // the close is one end of the body
+    const ends = h ? [body.left, body.right] : [body.top, body.bottom], at = h ? cross.left + cross.width / 2 : cross.top + cross.height / 2;
+    return [document.querySelector("#candles .ohlc b").textContent, Math.min(...ends.map((x) => Math.abs(x - at))) < 1.5];
+  }), ["Day 5", true]);
+  await away();
+  check(`${M}, candles: leaving drops the line and reads the latest day`, await p.evaluate(() => [document.querySelectorAll("#candles .cross").length, document.querySelector("#candles .ohlc b").textContent]), [0, "Day 22"]);
+
+  const wave = () => p.evaluate(() => [...document.querySelectorAll("#stem .swing")].map((e) => e.style.getPropertyValue("--rhp-to")).join());
+  const w0 = await wave();
+  await p.click("#stem .strike"); await p.waitForTimeout(100);
+  check(`${M}, bell: clicking strikes it again`, (await wave()) !== w0, true);
+  check(`${M}: no page errors`, p.errors, []);
+  await p.close();
 }
 
 // The v1 replicas in the gallery (fruit bars, box and whisker, animated dots): v1's assets and geometry,

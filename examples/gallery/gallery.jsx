@@ -4,7 +4,7 @@
 // Most charts sit in a Poster, a magazine-style panel that belongs to the page (page.src.html styles it).
 // Each demo gets p.o() (orientation), p.js() (JS version on) and p.seed() (bumped by "New data").
 // The code between show markers is what the page prints under each chart.
-import { createSignal, createMemo, createComputed, on, onCleanup, Show } from "solid-js";
+import { createSignal, createMemo, createComputed, on, onCleanup, splitProps, Show } from "solid-js";
 import { Plot, Scale, Chart, Bar, Dot, Tick, Label, Cell, Area, slat, useOrientation, sortBy, every, nice, stackUp, shares, running, summary, bins, density } from "../../src/index.js";
 // v1's assets (master's public/), bundled into the page as data URLs. Fruit art: FreeVector.com.
 // The cloud photos are v1's, re-encoded at the size they are shown (640px on the short side), without their EXIF.
@@ -32,16 +32,18 @@ const sum = (a) => a.reduce((x, y) => x + y, 0);
 
 // A magazine-style panel around a chart: kicker, headline, dek, the chart, a note. It is the page's: the page CSS
 // styles .poster and its look (.medals, .coffee, …); the chart inside gets its colors and font from its theme.
+// Any other prop goes on the panel: a demo that follows the pointer listens there, over its key and its chart.
 function Poster(p) {
+  const [own, rest] = splitProps(p, ["look", "kicker", "title", "dek", "note", "children"]);
   return (
-    <figure class={"poster " + p.look}>
+    <figure class={"poster " + own.look} {...rest}>
       <figcaption>
-        <span class="kicker">{p.kicker}</span>
-        <span class="headline">{p.title}</span>
-        <span class="dek">{p.dek}</span>
+        <span class="kicker">{own.kicker}</span>
+        <span class="headline">{own.title}</span>
+        <span class="dek">{own.dek}</span>
       </figcaption>
-      {p.children}
-      <Show when={p.note}><span class="note">{p.note}</span></Show>
+      {own.children}
+      <Show when={own.note}><span class="note">{own.note}</span></Show>
     </figure>
   );
 }
@@ -150,7 +152,8 @@ const BEARING = { North: 0, East: 90, South: 180, West: 270 };
 const HARBOUR = { font: "system-ui, sans-serif", ink: "#0b2a3c", muted: "#55707f", grid: "#c3d9e3", surface: "#e3f0f5" };
 
 // v1's tutorial: the value hides until you hover its row, with CSS the slat owns. The compass needle points
-// to the quarter the wind comes from.
+// to the quarter the wind comes from. The fade is on the text inside the Label: a transition set on a block
+// would replace the one rhp gives it, and the Label would jump to a new value instead of moving with its bar.
 const WindSlat = slat({
   band: { horizontal: 60 },
   room: { horizontal: { start: 128, end: 64 }, vertical: { start: 64, end: 30 } },
@@ -165,14 +168,15 @@ const WindSlat = slat({
     [data-rhp-o="v"].gust { background: linear-gradient(0deg, rgb(11 42 60 / 0), #0b2a3c); }
     [data-rhp-o="h"].slat:hover .gust, .slat:hover > [data-rhp-o="h"].gust { background: linear-gradient(90deg, rgb(255 107 74 / 0), #ff6b4a); }
     .slat:hover > [data-rhp-o="v"].gust { background: linear-gradient(0deg, rgb(255 107 74 / 0), #ff6b4a); }
-    .knots { opacity: 0; transition: opacity .15s; font-size: 14px; font-weight: 800; color: #ff6b4a; }
+    .knots { font-size: 14px; font-weight: 800; color: #ff6b4a; }
+    .knots > span { opacity: 0; transition: opacity .15s; }
     [data-rhp-o="h"].knots { padding-left: 10px; }
-    .slat:hover .knots { opacity: 1; }`,
+    .slat:hover .knots > span { opacity: 1; }`,
 }, (d) => (
   <div class="slat">
     <Label edge="start" class="quarter"><span class="dial"><i class="needle" style={{ rotate: BEARING[d.quarter] + "deg" }} /></span>{d.quarter}</Label>
     <Bar to={d.knots} thick="10px" class="gust" />
-    <Label at={d.knots} class="knots">{Math.round(d.knots)} kn</Label>
+    <Label at={d.knots} class="knots"><span>{Math.round(d.knots)} kn</span></Label>
   </div>
 ));
 
@@ -331,22 +335,30 @@ const TEAMS = ["North", "East", "South", "West"];
 const METALS = ["gold", "silver", "bronze"];
 const MEDAL_TABLE = { font: "system-ui, sans-serif", ink: "#111214", muted: "#6d6a63", grid: "#e4ddd0", surface: "#f7f3ec" };
 
-// One count: a thin ribbon from 0, and the medal at its end with the count struck on it.
+// One count: a thin ribbon from 0, and the medal at its end with the count struck on it. Hover a count and its medal
+// lifts off the table. The medal's face is an element inside the Dot: rhp moves the Dot, and the face can grow,
+// rise and cast its shadow on its own time, in either animation version.
 const MedalSlat = slat({
   css: `
     .ribbon { --rhp-radius: 2px; }
     [data-rhp-o="h"].ribbon { background: linear-gradient(90deg, transparent, var(--metal)); }
     [data-rhp-o="v"].ribbon { background: linear-gradient(0deg, transparent, var(--metal)); }
-    .medal { display: grid; place-items: center; font: 800 11px/1 var(--rhp-font); font-variant-numeric: tabular-nums;
+    .medal { background: none; }
+    .face { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%;
+      font: 800 11px/1 var(--rhp-font); font-variant-numeric: tabular-nums; color: var(--stamp);
       background: radial-gradient(circle at 30% 26%, var(--shine), var(--metal) 46%, var(--edge));
-      color: var(--stamp); box-shadow: 0 1px 2px rgb(0 0 0 / .28), inset 0 0 0 2px rgb(255 255 255 / .28); }
+      box-shadow: 0 1px 2px rgb(0 0 0 / .28), inset 0 0 0 2px rgb(255 255 255 / .28);
+      transition: scale .3s cubic-bezier(.3, 1.6, .5, 1), translate .3s cubic-bezier(.3, 1.6, .5, 1), box-shadow .3s; }
+    .count:hover { z-index: 1; }
+    .count:hover .face { scale: 1.45; translate: 0 -4px; box-shadow: 0 10px 14px -5px rgb(0 0 0 / .45), inset 0 0 0 2px rgb(255 255 255 / .45); }
+    .count:hover .ribbon { filter: saturate(1.5); }
     .gold { --metal: #e0b43f; --shine: #fff4c4; --edge: #a87a14; --stamp: #3f2c02; }
     .silver { --metal: #bfc5cb; --shine: #ffffff; --edge: #858d95; --stamp: #22272c; }
     .bronze { --metal: #cf8a55; --shine: #ffe2c9; --edge: #8a4b23; --stamp: #2e1405; }`,
 }, (m) => (
-  <div class={m.metal}>
+  <div class={"count " + m.metal}>
     <Bar to={m.value} thick="3px" class="ribbon" />
-    <Dot at={m.value} size="24px" class="medal">{Math.round(m.value)}</Dot>
+    <Dot at={m.value} size="24px" class="medal"><span class="face">{Math.round(m.value)}</span></Dot>
   </div>
 ));
 
@@ -383,9 +395,12 @@ export function Grouped(p) {
 const DRINKS = ["Espresso", "Macchiato", "Cortado", "Flat white", "Cappuccino", "Latte"];
 const RECIPES = [[30, 0, 0], [30, 0, 15], [30, 30, 0], [60, 100, 10], [60, 60, 60], [60, 150, 20]]; // ml of espresso, milk, foam
 const LAYERS = ["espresso", "milk", "foam"];
+const POURS = { espresso: "espresso", milk: "steamed milk", foam: "foam" };
 const CAFE = { font: "system-ui, sans-serif", ink: "#2b1b12", muted: "#8a7260", grid: "#e4d8c8", surface: "#f3ebe0" };
 
 // One layer of a drink. `end` is the last layer with anything in it, which gets the cup's rounded end.
+// Hover a layer and it lifts out of the cup, with a tag over it naming the pour. The tag is an element inside the
+// Bar: rhp guards its blocks from the page's CSS, not what a slat puts in them, so its class is one a page won't use.
 const LayerSlat = slat({
   css: `
     .layer { --rhp-radius: 0px; }
@@ -398,8 +413,20 @@ const LayerSlat = slat({
     [data-rhp-o="v"].foam { border-bottom: 2px solid var(--rhp-surface); }
     [data-rhp-o="h"].end { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
     [data-rhp-o="v"].end { border-top-left-radius: 12px; border-top-right-radius: 12px; }
-    .empty { display: none; }`,
-}, (l) => <Bar from={l.from} to={l.to} class={"layer " + l.part + (l.index === l.end ? " end" : "") + (l.to - l.from < 0.5 ? " empty" : "")} />);
+    .empty { display: none; }
+    .layer:hover { z-index: 1; box-shadow: 0 0 0 2px var(--rhp-surface), 0 12px 18px -8px rgb(43 27 18 / .7); }
+    .pour { position: absolute; left: 50%; bottom: calc(100% + 10px); display: grid; justify-items: center; gap: 3px;
+      padding: 7px 11px 6px; border-radius: 9px; background: #2b1b12; color: #f3ebe0; box-shadow: 0 6px 14px -6px rgb(43 27 18 / .6);
+      font: 600 10.5px/1 var(--rhp-font); letter-spacing: .05em; white-space: nowrap; pointer-events: none;
+      opacity: 0; translate: -50% 5px; transition: opacity .15s, translate .15s; }
+    .pour b { font: italic 700 16px/1 Fraunces, Georgia, serif; letter-spacing: 0; }
+    .pour::after { content: ""; position: absolute; top: 100%; left: 50%; translate: -50% 0; border: 5px solid transparent; border-top-color: #2b1b12; }
+    .layer:hover > .pour { opacity: 1; translate: -50% 0; }`,
+}, (l) => (
+  <Bar from={l.from} to={l.to} class={"layer " + l.part + (l.index === l.end ? " end" : "") + (l.to - l.from < 0.5 ? " empty" : "")}>
+    <span class="pour"><b>{Math.round(l.to - l.from)} ml</b>{POURS[l.part]}</span>
+  </Bar>
+));
 
 const DrinkSlat = slat({
   inset: "10px",
@@ -411,11 +438,12 @@ const DrinkSlat = slat({
     [data-rhp-o="v"].drink { font-size: 13px; line-height: 1.1; white-space: normal; hyphens: auto; }
     .ml { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--rhp-muted); }
     [data-rhp-o="h"].ml { padding-left: 10px; }
-    .cup { background: none; box-shadow: 0 10px 18px -12px rgb(43 27 18 / .55); --rhp-radius: 12px; }`,
+    .cup { background: none; box-shadow: 0 10px 18px -12px rgb(43 27 18 / .55); --rhp-radius: 12px; }
+    .serving:hover { z-index: 1; } /* slats paint in data order: the drink under the pointer comes over the others */`,
 }, (d) => {
   const layer = createMemo(() => stackUp(d.ml)); // { from, to } per layer
   return (
-    <div>
+    <div class="serving">
       <Label edge="start" class="drink">{d.name}</Label>
       <Bar to={layer().to.at(-1)} class="cup" />
       <Plot overlap from={layer().from} to={layer().to} part={LAYERS} end={d.ml.findLastIndex((v) => v > 0.5)}>{LayerSlat}</Plot>
@@ -446,6 +474,8 @@ const USE = [[26, 34, 8, 20, 12], [18, 22, 4, 26, 30], [20, 12, 48, 12, 8], [10,
 const PHONE = { font: "system-ui, sans-serif", ink: "#1d1d1f", muted: "#6e6e73", grid: "#dcdce1", surface: "#f5f5f7" };
 
 // One app's share of the charge. Its number shows only where it fits: 9% and up, 16% on a narrow battery.
+// d.focus is the app under the pointer, from the poster: it stays lit in every battery and the others fade, so one
+// app reads across people. Its number then shows on every segment, as a badge over one too thin to hold it.
 const ChargeSlat = slat({
   css: `
     .charge { display: grid; place-items: center; overflow: hidden; --rhp-radius: 4px; color: #fff; font-size: 11px; font-weight: 700; }
@@ -453,12 +483,24 @@ const ChargeSlat = slat({
     [data-rhp-o="v"].charge { width: 62px; clip-path: inset(1px 0); }
     .charge.games { color: #2a1b00; }
     .charge.small > span { display: none; }
-    @container (max-width: 300px) { [data-rhp-o="h"].charge.mid > span { display: none; } } /* a narrow battery needs 16% for a number */`,
-}, (c) => (
-  <Bar from={c.from} to={c.to} color={c.color} class={"charge " + c.app.toLowerCase() + (c.to - c.from < 9 ? " small" : c.to - c.from < 16 ? " mid" : "")}>
-    <span>{Math.round(c.to - c.from)}%</span>
-  </Bar>
-));
+    @container (max-width: 300px) { [data-rhp-o="h"].charge.mid > span { display: none; } } /* a narrow battery needs 16% for a number */
+    .charge.off { opacity: .14; }
+    .charge.on { overflow: visible; clip-path: none; } /* its badge may be bigger than it; the faded neighbors need no gap */
+    .charge.on.small > span { display: block; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+      padding: 3px 6px; border-radius: 5px; background: var(--rhp-color); box-shadow: 0 0 0 2px var(--rhp-surface); }
+    @container (max-width: 300px) {
+      [data-rhp-o="h"].charge.on.mid > span { display: block; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+        padding: 3px 6px; border-radius: 5px; background: var(--rhp-color); box-shadow: 0 0 0 2px var(--rhp-surface); } }`,
+}, (c) => {
+  const share = () => c.to - c.from;
+  const fits = () => (share() < 9 ? " small" : share() < 16 ? " mid" : "");
+  const lit = () => (c.focus == null ? "" : c.focus === c.app ? " on" : " off");
+  return (
+    <Bar from={c.from} to={c.to} color={c.color} data-app={c.app} class={"charge " + c.app.toLowerCase() + fits() + lit()}>
+      <span>{Math.round(share())}%</span>
+    </Bar>
+  );
+});
 
 // A battery: the shell a little larger than the track, the nub past its end, the charge inside.
 const BatterySlat = slat({
@@ -480,18 +522,36 @@ const BatterySlat = slat({
       <Label edge="start" class="who">{d.name}</Label>
       <Bar to={100} class="shell" />
       <Tick at={100} class="nub" />
-      <Plot overlap from={cell().from} to={cell().to} color={APP_COLORS} app={APPS}>{ChargeSlat}</Plot>
+      <Plot overlap from={cell().from} to={cell().to} color={APP_COLORS} app={APPS} focus={d.focus}>{ChargeSlat}</Plot>
     </div>
   );
 });
 
 export function Segmented(p) {
   const use = createMemo(() => (p.seed() ? PEOPLE.map(() => APPS.map(() => rand(4, 40))) : USE));
+  // The app in focus: the one the pointer is on, in the key or in a battery, else the one clicked. The key buttons and
+  // the segments carry data-app, and the poster listens for both. A click, or Enter on a key, pins an app or unpins it.
+  // The pointer counts when it moves: a still pointer over a badge that comes or goes isn't a new choice.
+  const [hovered, setHovered] = createSignal(null), [pinned, setPinned] = createSignal(null);
+  const app = () => hovered() ?? pinned();
+  const under = (e) => e.target.closest("[data-app]")?.dataset.app ?? null;
+  const pin = (e) => {
+    const a = under(e);
+    if (!a) return;
+    setPinned(pinned() === a ? null : a);
+    setHovered(null); // the click is the latest word, until the pointer moves again
+  };
   return (
     <Poster look="battery" kicker="A day on one charge" title="Where the battery goes"
-      dek={<span class="keys">{APPS.map((a, i) => <span><i style={{ background: APP_COLORS[i] }} />{a}</span>)}</span>}>
+      onPointerMove={(e) => setHovered(under(e))} onPointerLeave={() => setHovered(null)} onClick={pin}
+      dek={<span class="keys">{APPS.map((a, i) => (
+        <button type="button" data-app={a} aria-pressed={pinned() === a} classList={{ off: app() != null && app() !== a }}>
+          <i style={{ background: APP_COLORS[i] }} />{a}
+        </button>
+      ))}</span>}
+      note="Point at an app, in the key or in a battery, to follow it through everyone's day; click to keep it.">
       <Chart orientation={p.o()} scale={[0, 100]} ticks={false} height={300} animate={p.js()} theme={PHONE}>
-        <Plot name={PEOPLE} use={use()}>{BatterySlat}</Plot>
+        <Plot name={PEOPLE} use={use()} focus={app()}>{BatterySlat}</Plot>
       </Chart>
     </Poster>
   );
@@ -507,14 +567,22 @@ const tall = (i) => 0.7 + ((i * 0.618034) % 1) * 0.24; // each spine's height, a
 const binding = (c, i) => { const t = [0, 10, -8, 5, -12, 8, -4][i % 7]; return `color-mix(in oklab, ${c}, ${t > 0 ? "white" : "black"} ${Math.abs(t)}%)`; };
 
 // Five books: a spine standing on the shelf (horizontal) or lying on the pile (vertical). The last one is thinner.
+// Hover a book and it slides half out. The Bar holds the book's place; the book is an element inside it, so it
+// can move and cast its shadow on its own time.
 const SpineSlat = slat({
   css: `
-    .spine { --rhp-radius: 2px; }
-    [data-rhp-o="h"].spine { top: auto; bottom: 0; translate: none; clip-path: inset(0 1px);
+    .spine { background: none; }
+    [data-rhp-o="h"].spine { top: auto; bottom: 0; translate: none; }
+    .book { position: absolute; border-radius: 2px; background-color: var(--rhp-color);
+      transition: translate .25s cubic-bezier(.2, .9, .3, 1.15), box-shadow .25s; }
+    [data-rhp-o="h"] > .book { inset: 0 1px;
       background-image: linear-gradient(transparent 9%, rgb(255 255 255 / .4) 9% 11%, transparent 11% 89%, rgb(255 255 255 / .4) 89% 91%, transparent 91%); }
-    [data-rhp-o="v"].spine { clip-path: inset(1px 0);
-      background-image: linear-gradient(90deg, transparent 9%, rgb(255 255 255 / .4) 9% 11%, transparent 11% 89%, rgb(255 255 255 / .4) 89% 91%, transparent 91%); }`,
-}, (u) => <Bar from={u.from} to={u.to} thick={tall(u.index)} color={binding(u.cloth, u.index)} class="spine" />);
+    [data-rhp-o="v"] > .book { inset: 1px 0;
+      background-image: linear-gradient(90deg, transparent 9%, rgb(255 255 255 / .4) 9% 11%, transparent 11% 89%, rgb(255 255 255 / .4) 89% 91%, transparent 91%); }
+    .spine:hover { z-index: 1; }
+    [data-rhp-o="h"].spine:hover > .book { translate: 0 -12px; box-shadow: 0 8px 10px -6px rgb(42 33 24 / .45); }
+    [data-rhp-o="v"].spine:hover > .book { translate: 14px 0; box-shadow: -6px 4px 10px -6px rgb(42 33 24 / .45); }`,
+}, (u) => <Bar from={u.from} to={u.to} thick={tall(u.index)} color={binding(u.cloth, u.index)} class="spine"><i class="book" /></Bar>);
 
 const ShelfSlat = slat({
   band: { horizontal: 66 },
@@ -672,15 +740,16 @@ const BinSlat = slat({
   css: `
     .bin { --rhp-radius: 3px; }
     .deg { font-size: 11px; font-weight: 700; color: var(--rhp-muted); }
-    .days { opacity: 0; font-size: 11px; font-weight: 800; transition: opacity .15s; }
+    .days { font-size: 11px; font-weight: 800; }
+    .days > span { opacity: 0; transition: opacity .15s; }
     [data-rhp-o="h"].days { padding-left: 6px; }
-    .slat:hover .days { opacity: 1; }
+    .slat:hover .days > span { opacity: 1; }
     .slat:hover .bin { filter: brightness(1.08) saturate(1.1); }`,
 }, (d) => (
   <div class="slat">
     <Bar to={d.tally} color={warmth((d.x0 + d.x1) / 2)} class="bin" />
     <Show when={d.x0 % 4 === 0}><Label edge="start" class="deg">{d.x0}°</Label></Show>
-    <Label at={d.tally} class="days">{d.tally}</Label>
+    <Label at={d.tally} class="days"><span>{d.tally}</span></Label>
   </div>
 ));
 
@@ -702,10 +771,13 @@ export function Histogram(p) {
 const MIDNIGHT = { font: "system-ui, sans-serif", ink: "#f4f1ff", muted: "#8f89a8", grid: "#2a2638", surface: "#0e0c14" };
 
 // One sample: a stem from rest, glowing at its tip, fading as the ring dies away (--fade).
+// A new strike reaches the samples one after another (--k, 8 ms apart), so it runs down the wave like the sound does.
+// A delay adds to the transition rhp gives a block without replacing it. (The JS version moves every sample at once.)
 const SampleSlat = slat({
   band: { horizontal: 12 },
   room: { start: 12, end: 12 },
   css: `
+    .swing, .tip { transition-delay: calc(var(--k) * 8ms); }
     .swing { --rhp-radius: 99px; opacity: var(--fade); }
     [data-rhp-o="h"].swing { background: linear-gradient(90deg, #6d28d9, #ec4899); }
     [data-rhp-o="h"].swing.down { background: linear-gradient(270deg, #6d28d9, #ec4899); }
@@ -713,7 +785,7 @@ const SampleSlat = slat({
     [data-rhp-o="v"].swing.down { background: linear-gradient(180deg, #6d28d9, #ec4899); }
     .tip { background: #fff; opacity: var(--fade); box-shadow: 0 0 10px 2px rgb(236 72 153 / .7); }`,
 }, (d) => (
-  <div style={{ "--fade": 1 - d.index / 46 }}>
+  <div style={{ "--fade": 1 - d.index / 46, "--k": d.index }}>
     <Bar to={d.y} thick="4px" class={d.y < 0 ? "swing down" : "swing"} />
     <Dot at={d.y} size="7px" class="tip" />
   </div>
@@ -723,17 +795,22 @@ const SampleSlat = slat({
 const RestSlat = slat({ css: `.rest { background: var(--rhp-grid); --rhp-tick-width: 1px; }` }, () => <div><Tick at={0} thick={1} class="rest" /></div>);
 
 export function Stem(p) {
+  const [strikes, setStrikes] = createSignal(0); // each strike rings with a new pitch and decay
   const y = createMemo(() => {
-    p.seed();
+    p.seed(), strikes();
     const w = rand(0.45, 0.8), decay = rand(9, 18);
     return Array.from({ length: 36 }, (_, k) => Math.cos(k * w) * Math.exp(-k / decay));
   });
+  const strike = () => setStrikes(strikes() + 1);
   return (
-    <Poster look="sound" kicker="One strike · 36 samples" title="The sound of a bell" dek="Each swing is smaller than the last, until the note dies away.">
-      <Chart orientation={p.o()} scale={[-1.05, 1.05]} height={280} animate={p.js()} theme={MIDNIGHT}>
-        <Scale ticks={[0]}>{RestSlat}</Scale>
-        <Plot y={y()}>{SampleSlat}</Plot>
-      </Chart>
+    <Poster look="sound" kicker="One strike · 36 samples" title="The sound of a bell" dek="Each swing is smaller than the last, until the note dies away. Click the wave to strike the bell again.">
+      <div class="strike" role="button" tabindex="0" aria-label="Strike the bell again" onClick={strike}
+        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), strike())}>
+        <Chart orientation={p.o()} scale={[-1.05, 1.05]} height={280} animate={p.js()} theme={MIDNIGHT}>
+          <Scale ticks={[0]}>{RestSlat}</Scale>
+          <Plot y={y()}>{SampleSlat}</Plot>
+        </Chart>
+      </div>
     </Poster>
   );
 }
@@ -745,8 +822,11 @@ const TESSITURA = [[55, 100, 76, 6.5], [48, 88, 66, 6], [36, 81, 54, 6.5], [28, 
 const VARNISH = ["#d08a3c", "#b0652a", "#8a4719", "#6a3312"]; // darker wood for the bigger instruments
 const HALL = { font: "system-ui, sans-serif", ink: "#f3e9d2", muted: "#a89a80", grid: "#26221c", surface: "#121110" };
 const black = (m) => [1, 3, 6, 8, 10].includes(((m % 12) + 12) % 12);
+const noteName = (m) => ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"][((m % 12) + 12) % 12] + (Math.floor(m / 12) - 1);
 
-// The pitch scale is a keyboard: a Scale with a key per semitone, each drawn from d.at to d.next.
+// The pitch scale is a keyboard: a Scale with a key per semitone, each drawn from d.at to d.next, and every C named.
+// d.low, d.high and d.tint come from the instrument under the pointer: the keys it reaches light up in its varnish,
+// and the names mark its lowest and highest notes instead.
 const KeySlat = slat({
   room: { horizontal: { after: 50 }, vertical: { before: 60 } },
   css: `
@@ -756,13 +836,20 @@ const KeySlat = slat({
     [data-rhp-o="v"].key { left: auto; right: calc(100% + 6px); width: 24px; translate: none; clip-path: inset(.5px 0); --rhp-radius: 3px 0 0 3px; }
     .c { font-size: 10px; font-weight: 700; color: var(--rhp-muted); padding: 0; }
     [data-rhp-o="h"].c { top: calc(100% + 34px); translate: -2px 0; }
-    [data-rhp-o="v"].c { left: auto; right: calc(100% + 34px); translate: 0 50%; }`,
-}, (k) => (
-  <div class={black(k.at) ? "black" : "white"}>
-    <Bar from={k.at} to={k.next} class="key" />
-    <Show when={k.at % 12 === 0}><Label at={k.at} class="c">C{k.at / 12 - 1}</Label></Show>
-  </div>
-));
+    [data-rhp-o="v"].c { left: auto; right: calc(100% + 34px); translate: 0 50%; }
+    .lit.white .key { background: color-mix(in oklab, var(--tint), white 45%); }
+    .lit.black .key { background: var(--tint); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--tint), black 35%); }
+    .lit .c { color: color-mix(in oklab, var(--tint), white 55%); }`,
+}, (k) => {
+  const lit = () => k.low != null && k.at >= k.low && k.at <= k.high;
+  const named = () => (k.low == null ? k.at % 12 === 0 : k.at === k.low || k.at === k.high);
+  return (
+    <div class={(black(k.at) ? "black" : "white") + (lit() ? " lit" : "")} style={{ "--tint": k.tint }}>
+      <Bar from={k.at} to={k.next} class="key" />
+      <Show when={named()}><Label at={k.at} class="c">{noteName(k.at)}</Label></Show>
+    </div>
+  );
+});
 
 const InstrumentSlat = slat({
   band: { horizontal: 74 },
@@ -774,12 +861,14 @@ const InstrumentSlat = slat({
     [data-rhp-o="v"].name { font-size: 14px; }
     .body { fill: var(--rhp-color); stroke: rgb(0 0 0 / .5); stroke-width: 1px; }
     .string { background: var(--rhp-ink); opacity: .85; }
-    .median { background: var(--rhp-ink); box-shadow: 0 0 0 2px var(--rhp-color); }`,
+    .median { background: var(--rhp-ink); box-shadow: 0 0 0 2px var(--rhp-color); }
+    .on .body { filter: brightness(1.2) drop-shadow(0 0 10px color-mix(in srgb, var(--rhp-color) 60%, transparent)); }
+    .off { opacity: .3; }`,
 }, (d) => {
   const shape = createMemo(() => density(d.notes, { points: 48 })); // [[note, density], ...]
   const box = createMemo(() => summary(d.notes));
   return (
-    <div>
+    <div data-instrument={d.index} class={d.pick == null ? "" : d.pick === d.index ? "on" : "off"}>
       <Label edge="start" class="name">{d.name}</Label>
       <Area points={shape()} mirror peak={d.peak} color={d.varnish} class="body" />
       <Bar from={box().q1} to={box().q3} thick="3px" class="string" />
@@ -792,11 +881,19 @@ export function Violin(p) {
   const notes = createMemo(() => (p.seed(), TESSITURA.map(([lo, hi, mid, sd]) => normalsIn(80, lo, hi, mid, sd))));
   // One peak for every instrument, so their widths compare: a value shared by all slats, not a list.
   const peak = createMemo(() => Math.max(...notes().flatMap((s) => density(s, { points: 48 }).map((q) => q[1]))));
+  // The instrument under the pointer (when it moves), and the keys it reaches (a note is on the key it falls in).
+  const [pick, setPick] = createSignal(null);
+  const point = (e) => { const i = e.target.closest("[data-instrument]")?.dataset.instrument; setPick(i == null ? null : +i); };
+  const reach = createMemo(() => (pick() == null ? {} : {
+    low: Math.floor(Math.min(...notes()[pick()])), high: Math.floor(Math.max(...notes()[pick()])), tint: VARNISH[pick()],
+  }));
   return (
-    <Poster look="strings" kicker="Where the strings play" title="The string section" dek="Every note each instrument plays in one movement, by pitch, over a piano keyboard." note="Illustrative data.">
+    <Poster look="strings" kicker="Where the strings play" title="The string section" dek="Every note each instrument plays in one movement, by pitch, over a piano keyboard."
+      note="Illustrative data. Point at an instrument to find its range on the keyboard."
+      onPointerMove={point} onPointerDown={point} onPointerLeave={(e) => e.pointerType !== "touch" && setPick(null)}>
       <Chart orientation={p.o()} scale={[26, 102]} height={360} animate={p.js()} theme={HALL}>
-        <Scale ticks={every(1)}>{KeySlat}</Scale>
-        <Plot name={STRINGS} notes={notes()} peak={peak()} varnish={VARNISH}>{InstrumentSlat}</Plot>
+        <Scale ticks={every(1)} low={reach().low} high={reach().high} tint={reach().tint}>{KeySlat}</Scale>
+        <Plot name={STRINGS} notes={notes()} peak={peak()} varnish={VARNISH} pick={pick()}>{InstrumentSlat}</Plot>
       </Chart>
     </Poster>
   );
@@ -958,9 +1055,18 @@ const GLYPH = { // 24 × 24 icons
   Water: "M12 2.5s-6.5 7.5-6.5 12a6.5 6.5 0 0 0 13 0c0-4.5-6.5-12-6.5-12z",
   Mindful: "M5 19C5 10 11 4 20 4c0 9-6 15-15 15z",
 };
+// What a share of each goal comes to, in the goal's own unit.
+const AMOUNT = {
+  Move: (f) => Math.round(600 * f) + " kcal",
+  Sleep: (f) => { const m = Math.round(480 * f); return `${Math.floor(m / 60)}h ${m % 60}m`; },
+  Steps: (f) => Math.round(10000 * f).toLocaleString("en-GB") + " steps",
+  Water: (f) => (2 * f).toFixed(1) + " litres",
+  Mindful: (f) => Math.round(10 * f) + " min",
+};
 const WATCH = { font: "system-ui, sans-serif", ink: "#f5f5f7", muted: "#8e8e93", grid: "#1f1f24", surface: "#0a0a0c" };
 
 // A goal: the track to 120%, the day's progress glowing along it, and a white line at the goal (100%).
+// Hover a goal and its progress burns brighter, with a bubble at its tip saying what it comes to.
 const GoalSlat = slat({
   band: { horizontal: 62 },
   room: { horizontal: { start: 134, end: 58 }, vertical: { start: 70, end: 30 } },
@@ -977,9 +1083,17 @@ const GoalSlat = slat({
     [data-rhp-o="v"].done { background: linear-gradient(0deg, color-mix(in srgb, var(--rhp-color) 25%, transparent), var(--rhp-color)); }
     .goal { background: #fff; --rhp-tick-width: 2px; border-radius: 2px; }
     .pct { font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
-    [data-rhp-o="h"].pct { padding-left: 14px; }`,
+    [data-rhp-o="h"].pct { padding-left: 14px; }
+    .row:hover .done { box-shadow: 0 0 24px 2px color-mix(in srgb, var(--rhp-color) 80%, transparent); filter: brightness(1.2); }
+    .row:hover .icon { background: color-mix(in srgb, var(--rhp-color) 34%, transparent); }
+    .tip { width: 0; height: 0; padding: 0; translate: none; } /* a point at the tip of the progress; the bubble hangs from it */
+    .tip > span { position: absolute; left: 0; bottom: 14px; padding: 5px 9px; border-radius: 99px; background: var(--rhp-color); color: #0a0a0c;
+      font-size: 11.5px; font-weight: 800; box-shadow: 0 0 16px color-mix(in srgb, var(--rhp-color) 60%, transparent);
+      opacity: 0; translate: -50% 4px; transition: opacity .15s, translate .15s; }
+    .row:hover .tip > span { opacity: 1; translate: -50% 0; }
+    .row:hover .pct { opacity: 0; } /* the bubble can reach the end gutter */`,
 }, (d) => (
-  <div style={{ "--rhp-color": d.color }}>
+  <div class="row" style={{ "--rhp-color": d.color }}>
     <Label edge="start" class="habit">
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d={GLYPH[d.habit]} /></svg>
       <span>{d.habit}<small>{d.goal}</small></span>
@@ -988,6 +1102,7 @@ const GoalSlat = slat({
     <Bar to={Math.min(120, d.pct)} thick="12px" class="done" />
     <Tick at={100} thick="24px" class="goal" />
     <Label edge="end" class="pct">{Math.round(d.pct)}%</Label>
+    <Label at={Math.min(120, d.pct)} class="tip"><span>{AMOUNT[d.habit](d.pct / 100)}</span></Label>
   </div>
 ));
 
@@ -1007,9 +1122,12 @@ export function Bullet(p) {
 const LINES = ["Salary", "Rent", "Groceries", "Transport", "Bills", "Going out", "Saved"];
 const MONTH = [4200, -1450, -520, -180, -230, -300]; // £ in, then out; what is left is saved
 const FINTECH = { font: "system-ui, sans-serif", ink: "#1c2433", muted: "#6b7385", grid: "#edf0f4", surface: "#ffffff" };
+const STEP = { in: "#12b886", out: "#f25f5c", total: "#1c2433" }; // money in, money out, what is left
 const pounds = (v) => (v < 0 ? "−" : "") + "£" + Math.abs(Math.round(v)).toLocaleString("en-GB");
 
 // A step from the running total before it to the one after; a hairline links it to the next step.
+// An expense is a button: click it (its name or its bar) to cut it from the month. A cut step has no length, and a
+// dashed outline keeps its place, so the steps after it and the savings move up by what it cost.
 const StepSlat = slat({
   band: { horizontal: 46 },
   room: { horizontal: { start: 100, end: 66 }, vertical: { start: 40, end: 26, after: 18 } },
@@ -1017,34 +1135,57 @@ const StepSlat = slat({
     .item { font-size: 14px; font-weight: 600; }
     [data-rhp-o="h"].item { padding-right: 14px; }
     [data-rhp-o="v"].item { font-size: 11px; white-space: normal; line-height: 1.1; hyphens: auto; }
+    .item button { all: unset; cursor: pointer; border-radius: 3px; text-decoration: underline 1.5px dotted #b5bcc8; text-underline-offset: 3px; }
+    .item button:focus-visible { outline: 2px solid #0b8a63; outline-offset: 2px; }
+    .out:hover .item button { text-decoration-color: #d2423f; }
+    .cut .item button { color: #8a93a3; text-decoration: line-through 1.5px #d2423f; }
     .step { --rhp-radius: 6px; }
+    .out .step, .ghost { cursor: pointer; }
+    .out:hover .step { box-shadow: 0 6px 12px -6px rgb(210 66 63 / .8); }
+    .ghost { background: none; border: 1.5px dashed #f25f5c; opacity: 0; }
+    .cut .ghost { opacity: .75; }
     .amount { font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
     .in .amount { color: #0b8a63; }
     .out .amount { color: #d2423f; }
+    .cut .amount { color: #8a93a3; text-decoration: line-through; }
     [data-rhp-o="h"].amount { padding-left: 8px; }
     [data-rhp-o="v"].amount { font-size: 10.5px; }
     .link { background: #b5bcc8; }
     [data-rhp-o="h"].link { width: 1px; top: calc(50% + 12px); height: 22px; translate: -50% 0; }
     [data-rhp-o="v"].link { height: 1px; left: calc(50% + 12px); width: calc(100% - 24px); translate: 0 50%; }`,
-}, (d) => (
-  <div class={d.total ? "total" : d.to >= d.from ? "in" : "out"}>
-    <Label edge="start" class="item">{d.item}</Label>
-    <Bar from={d.from} to={d.to} thick="24px" color={d.total ? "#1c2433" : d.to >= d.from ? "#12b886" : "#f25f5c"} class="step" />
-    <Show when={!d.total}><Tick at={d.to} class="link" /></Show>
-    <Label at={Math.max(d.from, d.to)} class="amount">{d.total ? pounds(d.to) : pounds(d.to - d.from)}</Label>
-  </div>
-));
+}, (d) => {
+  const kind = () => (d.total ? "total" : d.amount > 0 ? "in" : "out");
+  return (
+    <div class={kind() + (d.cut ? " cut" : "")}>
+      <Label edge="start" class="item">
+        <Show when={kind() === "out"} fallback={d.item}><button type="button" data-line={d.index} aria-pressed={d.cut}>{d.item}</button></Show>
+      </Label>
+      <Show when={kind() === "out"}><Bar from={d.from} to={d.from + d.amount} thick="24px" data-line={d.index} class="ghost" /></Show>
+      <Bar from={d.from} to={d.to} thick="24px" color={STEP[kind()]} data-line={kind() === "out" ? d.index : undefined} class="step" />
+      <Show when={!d.total}><Tick at={d.to} class="link" /></Show>
+      <Label at={Math.max(d.from, d.to)} class="amount">{d.total ? pounds(d.to) : pounds(d.amount)}</Label>
+    </div>
+  );
+});
 
 export function Waterfall(p) {
   const month = createMemo(() => (p.seed() ? [rand(3800, 4600), -rand(1300, 1600), -rand(400, 650), -rand(100, 260), -rand(180, 300), -rand(150, 500)] : MONTH));
+  const [cut, setCut] = createSignal([]); // the rows of the expenses cut; new data brings them all back
+  createComputed(on(month, () => setCut([])));
+  const toggle = (e) => {
+    const i = e.target.closest("[data-line]")?.dataset.line;
+    if (i != null) setCut((c) => (c.includes(+i) ? c.filter((k) => k !== +i) : [...c, +i]));
+  };
   const steps = createMemo(() => {
-    const r = running(month()); // step k goes from the total before it to the total after it
+    const r = running(month().map((v, i) => (cut().includes(i) ? 0 : v))); // step k goes from the total before it to the total after it
     return { from: [...r.from, 0], to: [...r.to, r.to.at(-1)] };
   });
   return (
-    <Poster look="budget" kicker="Monthly budget" title="Where the salary goes" dek={<><b>{pounds(steps().to.at(-1))}</b> left to save this month.</>}>
+    <Poster look="budget" kicker="Monthly budget" title="Where the salary goes" onClick={toggle}
+      dek={<><b>{pounds(steps().to.at(-1))}</b> left to save this month.</>} note="Click an expense to cut it from the month; click it again to bring it back.">
       <Chart orientation={p.o()} scale={[0, 5000]} ticks={[0, 1000, 2000, 3000, 4000, 5000]} format={(v) => (v ? "£" + v / 1000 + "k" : "0")} height={320} animate={p.js()} theme={FINTECH}>
-        <Plot item={LINES} from={steps().from} to={steps().to} total={LINES.map((_, i) => i === LINES.length - 1)}>{StepSlat}</Plot>
+        <Plot item={LINES} from={steps().from} to={steps().to} amount={[...month(), null]} cut={LINES.map((_, i) => cut().includes(i))}
+          total={LINES.map((_, i) => i === LINES.length - 1)}>{StepSlat}</Plot>
       </Chart>
     </Poster>
   );
@@ -1078,6 +1219,7 @@ const MonthBandSlat = slat({
 ));
 
 // A trade on site: the whole job as a thin gray bar, the part done by today in site orange.
+// Hover a trade and the drawing dimensions it: a line with end marks alongside the bar, and its length in weeks.
 const TradeSlat = slat({
   band: { horizontal: 44 },
   room: { horizontal: { start: 116, end: 16 }, vertical: { start: 40, end: 10 } },
@@ -1088,12 +1230,29 @@ const TradeSlat = slat({
     [data-rhp-o="v"].trade { font-size: 10px; white-space: normal; line-height: 1.1; hyphens: auto; }
     [data-rhp-o="v"].trade small { display: none; }
     .job { background: #d8d5cf; --rhp-radius: 99px; }
-    .done { background: #ff5a1f; --rhp-radius: 99px; }`,
+    .done { background: #ff5a1f; --rhp-radius: 99px; }
+    .row:hover .job { background: #c4c0b8; }
+    .row:hover .trade { color: #ff5a1f; }
+    .dim, .weeks { visibility: hidden; }
+    .row:hover :is(.dim, .weeks) { visibility: visible; }
+    .dim { background: var(--rhp-ink); --rhp-radius: 0px; }
+    [data-rhp-o="h"].dim { translate: 0 -13px; }
+    [data-rhp-o="v"].dim { translate: 13px 0; }
+    .dim::before, .dim::after { content: ""; position: absolute; background: var(--rhp-ink); }
+    [data-rhp-o="h"].dim::before, [data-rhp-o="h"].dim::after { top: -4px; width: 1px; height: 9px; }
+    [data-rhp-o="h"].dim::before { left: 0; } [data-rhp-o="h"].dim::after { right: 0; }
+    [data-rhp-o="v"].dim::before, [data-rhp-o="v"].dim::after { left: -4px; height: 1px; width: 9px; }
+    [data-rhp-o="v"].dim::before { bottom: 0; } [data-rhp-o="v"].dim::after { top: 0; }
+    .weeks { padding: 0 4px; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; background: var(--rhp-surface); }
+    [data-rhp-o="h"].weeks { translate: -50% calc(-50% - 13px); } /* on the line, breaking it, as on a drawing */
+    [data-rhp-o="v"].weeks { left: calc(50% + 13px); translate: -50% 50%; }`,
 }, (d) => (
-  <div>
+  <div class="row">
     <Label edge="start" class="trade">{d.trade}<small>wk {Math.round(d.start)}–{Math.round(d.end)}</small></Label>
     <Bar from={d.start} to={d.end} thick="10px" class="job" />
     <Show when={d.start < TODAY}><Bar from={d.start} to={Math.min(TODAY, d.end)} thick="10px" class="done" /></Show>
+    <Bar from={d.start} to={d.end} thick="1px" class="dim" />
+    <Label at={(d.start + d.end) / 2} class="weeks">{Math.round(d.end - d.start)} WK</Label>
   </div>
 ));
 
@@ -1107,11 +1266,12 @@ const TodaySlat = slat({
 export function Gantt(p) {
   const plan = createMemo(() => (p.seed() ? PLAN.map(([a, b]) => { const s = Math.max(0, a + Math.round(rand(-2, 2))); return [s, Math.min(32, Math.max(s + 2, b + Math.round(rand(-2, 2))))]; }) : PLAN));
   return (
-    <Poster look="drawing" kicker={`Building a house · week ${TODAY} of 32`} title="From plot to keys" dek="Each bar is a trade on site; the orange part is done.">
+    <Poster look="drawing" kicker={`Building a house · week ${TODAY} of 32`} title="From plot to keys" dek="Each bar is a trade on site; the orange part is done. Point at one to measure it.">
       <Chart orientation={p.o()} scale={[0, 32]} height={340} animate={p.js()} theme={DRAWING}>
         <Scale ticks={every(4)}>{MonthBandSlat}</Scale>
         <Plot trade={TRADES} start={plan().map((w) => w[0])} end={plan().map((w) => w[1])} key="trade" order={sortBy("start")}>{TradeSlat}</Plot>
-        <Plot overlap slats={1}>{TodaySlat}</Plot>
+        {/* today, over the trades; the pointer passes through it to them */}
+        <Plot overlap slats={1} style={{ "pointer-events": "none" }}>{TodaySlat}</Plot>
       </Chart>
     </Poster>
   );
@@ -1123,10 +1283,12 @@ const SALMON = { font: "system-ui, sans-serif", ink: "#33302e", muted: "#66605c"
 const dollars = (v) => "$" + v.toFixed(v < 100 ? 2 : 0);
 
 // A day: the wick over the day's range, the body from the open to the close; teal up, claret down.
+// Its root carries data-day, so the poster knows which day is under the pointer; that day's band is shaded.
 const DaySlat = slat({
   band: { horizontal: 15 },
   room: { horizontal: { start: 24, end: 64 }, vertical: { start: 10, end: 10 } }, // the axis numbers read "$42.5"
   css: `
+    .day:hover { background: rgb(51 48 46 / .07); }
     .wick { background: #807973; }
     .body { --rhp-radius: 1px; }
     .last { font-size: 11.5px; font-weight: 800; color: #fff; padding: 2px 6px; border-radius: 3px; background: var(--rhp-color); font-variant-numeric: tabular-nums; }
@@ -1135,13 +1297,31 @@ const DaySlat = slat({
 }, (d) => {
   const color = () => (d.close >= d.open ? "#0d7680" : "#990f3d");
   return (
-    <div>
+    <div class="day" data-day={d.index}>
       <Bar from={d.low} to={d.high} thick="1.5px" class="wick" />
       <Bar from={d.open} to={d.close} thick={0.72} color={color()} class="body" />
       <Show when={d.latest}><Label at={d.close} class="last" style={{ "--rhp-color": color() }}>{dollars(d.close)}</Label></Show>
     </div>
   );
 });
+
+// The day under the pointer: a dashed line across the chart at its close, and its price over the axis numbers.
+// It draws in the axis gutter, so it asks for no room of its own (a top-level Plot whose slat gives none gets the default gutters).
+const CrossSlat = slat({
+  room: {},
+  css: `
+    .cross { background: none; --rhp-tick-width: 0px; }
+    [data-rhp-o="h"].cross { border-left: 1px dashed var(--rhp-ink); }
+    [data-rhp-o="v"].cross { border-top: 1px dashed var(--rhp-ink); }
+    .price { padding: 3px 6px; border-radius: 3px; background: var(--rhp-ink); color: var(--rhp-surface); font-size: 11px; font-weight: 800; }
+    [data-rhp-o="h"].price { top: calc(100% + 1px); translate: -50% 0; }
+    [data-rhp-o="v"].price { left: auto; right: calc(100% + 3px); translate: 0 50%; }`,
+}, (c) => (
+  <div>
+    <Tick at={c.close} thick={1} class="cross" />
+    <Label at={c.close} class="price">{dollars(c.close)}</Label>
+  </div>
+));
 
 export function Candles(p) {
   const days = createMemo(() => {
@@ -1154,11 +1334,24 @@ export function Candles(p) {
     });
   });
   const range = createMemo(() => nice(Math.min(...days().map((d) => d.low)), Math.max(...days().map((d) => d.high)), 4)); // fitted to the month
+  // The day under the pointer (when it moves: the readout's height may change under a still one); the readout shows it,
+  // or the latest day.
+  const [day, setDay] = createSignal(null);
+  const point = (e) => { const i = e.target.closest("[data-day]")?.dataset.day; setDay(i == null ? null : +i); };
+  const read = createMemo(() => {
+    const i = day() ?? days().length - 1, d = days()[i], before = i ? days()[i - 1].close : d.open;
+    return { ...d, day: i + 1, change: ((d.close - before) / before) * 100 };
+  });
   return (
     <Poster look="market" kicker="Share price · daily" title="A month on the market" dek="Each candle is a day: its body runs from the open to the close, its wick covers the day's range."
-      note="Illustrative data.">
+      note="Illustrative data. Point at a day for its prices." onPointerMove={point} onPointerDown={point} onPointerLeave={(e) => e.pointerType !== "touch" && setDay(null)}>
+      <p class="ohlc">
+        <b>Day {read().day}</b><span>Open {dollars(read().open)}</span><span>High {dollars(read().high)}</span><span>Low {dollars(read().low)}</span>
+        <span>Close <b class={read().change >= 0 ? "up" : "down"}>{dollars(read().close)} {read().change >= 0 ? "▲" : "▼"} {Math.abs(read().change).toFixed(1)}%</b></span>
+      </p>
       <Chart orientation={p.o()} scale={[range().min, range().max]} ticks={range().ticks} format={(v) => "$" + v} height={300} animate={p.js()} theme={SALMON}>
         <Plot rows={days()}>{DaySlat}</Plot>
+        <Plot overlap slats={day() == null ? 0 : 1} close={days()[day()]?.close} style={{ "pointer-events": "none" }}>{CrossSlat}</Plot>
       </Chart>
     </Poster>
   );

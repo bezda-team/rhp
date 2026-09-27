@@ -61,6 +61,15 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
 - A tick at either end of the scale is keyed as that end, so the end line never slides when the max changes.
 - A Chart with a Scale in it draws no axis of its own.
 
+## Interaction
+
+- **Hover states are slat CSS.** `.row:hover .tip { opacity: 1 }` shows a value, lifts a mark or lights a band, with no state at all.
+- **Put your own transitions on elements inside blocks.** rhp transitions a block's position and length (CSS version) or moves its numbers (JS version). A `transition` set on a block replaces rhp's, so the block would jump to new values. A medal's face inside a Dot, or a tag inside a Bar, can move and fade on its own time. `transition-delay` on a block is safe: it delays rhp's transition without replacing it.
+- **Elements inside blocks meet the page's CSS.** The guard covers rhp's blocks and slat roots, not what a slat puts in them, so give inner elements class names a page won't use.
+- **Handlers go on blocks or around the chart.** Blocks take `onClick`, `data-*` and `aria-*` like plain elements. A handler on an element around the chart can read `e.target.closest("[data-app]")`. Whatever it decides goes back into the Plot as data (`focus={app()}`), and the slats restyle from `d.focus`.
+- **A Plot drawn over another takes the pointer.** Its box covers the chart. Give an overlay (a today line, a crosshair) `style={{ "pointer-events": "none" }}` so the pointer reaches the Plot under it.
+- **Follow the pointer with `pointermove`, not `pointerover`.** When a hover changes the layout (a badge appears), the browser fires `pointerover` under a pointer that hasn't moved, and the choice can flip back.
+
 ## Same look in any app
 
 Slats are meant to be shared, so a slat looks and lays out the same in every app:
