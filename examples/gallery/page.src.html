@@ -1,0 +1,326 @@
+<title>Slat Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #f4f5f2; --paper: #ffffff; --ink: #15181c; --ink-2: #4b525c; --muted: #6a717b; --kw: #6a4bc8;
+  --rule: #d9ddd7; --rule-soft: #e9ece7; --accent: #1f4fa8; --accent-soft: #e5ecf8;
+  --code-bg: #eef0ec; --grid: #e2e5e0; --hover: #eef2fa; --str: #1c7a52; --tag: #a8551a;
+  --d1: #2a78d6; --d2: #eb6834; --d3: #1baf7a; --d4: #c2419a; --d5: #7b5cd6; --d6: #d39a12;
+  --good: #13894f; --bad: #c62828; --cold: #eaf0f8; --hot: #173f8a;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111315; --paper: #181b1e; --ink: #eceef0; --ink-2: #b7bdc5; --muted: #8e959e; --kw: #b3a0f5;
+    --rule: #2c3137; --rule-soft: #22262a; --accent: #8fb0f0; --accent-soft: #1c2940;
+    --code-bg: #1f2327; --grid: #2a2e33; --hover: #1d2533; --str: #6fd3a2; --tag: #f0a060;
+    --d1: #3f8ce8; --d2: #e0652f; --d3: #22b07e; --d4: #d25aac; --d5: #9277e6; --d6: #e0ad2a;
+    --good: #4fd18f; --bad: #ff7b72; --cold: #1c2430; --hot: #7fb0ff;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111315; --paper: #181b1e; --ink: #eceef0; --ink-2: #b7bdc5; --muted: #8e959e; --kw: #b3a0f5;
+  --rule: #2c3137; --rule-soft: #22262a; --accent: #8fb0f0; --accent-soft: #1c2940;
+  --code-bg: #1f2327; --grid: #2a2e33; --hover: #1d2533; --str: #6fd3a2; --tag: #f0a060;
+  --d1: #3f8ce8; --d2: #e0652f; --d3: #22b07e; --d4: #d25aac; --d5: #9277e6; --d6: #e0ad2a;
+  --good: #4fd18f; --bad: #ff7b72; --cold: #1c2430; --hot: #7fb0ff;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; padding: 0 20px 80px; }
+@media (max-width: 480px) { body { padding-inline: 16px; } }
+.page { max-width: 1120px; margin: 0 auto; }
+.prose { max-width: 740px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; letter-spacing: -0.01em; text-wrap: balance; }
+h1 { font-size: clamp(36px, 6vw, 56px); margin: 0 0 16px; font-weight: 700; }
+h2 { font-size: clamp(25px, 3.6vw, 32px); margin: 0 0 12px; font-weight: 700; }
+h3 { font-size: 18px; margin: 0 0 4px; font-weight: 700; }
+h4 { font-size: 15px; margin: 22px 0 6px; }
+p { margin: 0 0 14px; }
+a { color: var(--accent); }
+code, pre { font-family: var(--mono); font-size: 0.86em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code-bg); border-radius: 10px; padding: 14px 16px; overflow-x: auto; line-height: 1.55; margin: 0 0 16px; font-size: 12.5px; }
+pre .c { color: var(--muted); } pre .k { color: var(--kw); } pre .s { color: var(--str); } pre .t { color: var(--accent); }
+
+header.hero { padding: 52px 0 22px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.lead { font-size: 19px; color: var(--ink-2); max-width: 700px; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; margin-top: 16px; }
+nav.jump a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--rule); }
+nav.jump a:hover, nav.jump a:focus-visible { color: var(--accent); border-color: var(--accent); }
+
+.glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin: 10px 0 36px; padding: 0; list-style: none; }
+.glance li { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; font-size: 14.5px; color: var(--ink-2); min-width: 0; }
+.glance b { display: block; color: var(--ink); font-size: 15.5px; margin-bottom: 3px; }
+
+section.block { padding: 40px 0 8px; border-top: 1px solid var(--rule); }
+
+/* controls */
+.controls { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: flex-end;
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); padding: 12px 0; margin-bottom: 14px; border-bottom: 1px solid var(--rule); }
+fieldset.seg { border: 0; margin: 0; padding: 0; min-width: 0; }
+.seg legend { font-family: var(--mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 5px; }
+.seg-opts { display: flex; flex-wrap: wrap; gap: 2px; background: var(--paper); border: 1px solid var(--rule); border-radius: 9px; padding: 3px; }
+.seg label { position: relative; font-size: 14px; padding: 5px 11px; border-radius: 6px; cursor: pointer; color: var(--ink-2); user-select: none; }
+.seg label:hover { color: var(--ink); background: var(--rule-soft); }
+.seg label.on { background: var(--ink); color: var(--paper); }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+button { font: inherit; font-size: 14px; border-radius: 8px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); padding: 6px 13px; cursor: pointer; }
+button:hover { border-color: var(--ink-2); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+button.mini { font-size: 12.5px; padding: 3px 10px; margin-bottom: 8px; }
+
+/* cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 470px), 1fr)); gap: 16px; }
+.card { background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; padding: 16px 16px 10px; min-width: 0; display: flex; flex-direction: column; }
+.card header p { font-size: 13.5px; color: var(--ink-2); margin: 0 0 12px; }
+.card header code { font-size: 12px; }
+.tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--tag); border: 1px solid currentColor; border-radius: 99px; padding: 1px 7px; margin-left: 8px; vertical-align: 3px; font-weight: 500; }
+.stage { flex: 1; padding: 6px 0 4px; min-width: 0; }
+.card details { border-top: 1px solid var(--rule-soft); margin-top: 8px; padding-top: 6px; }
+.card summary { cursor: pointer; font-size: 13px; color: var(--muted); font-family: var(--mono); padding: 2px 0 4px; }
+.card details pre { margin-top: 6px; max-height: 460px; }
+
+/* write-up */
+.qa { display: grid; gap: 10px; margin: 8px 0 22px; }
+.qa div { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 18px; padding: 10px 0; border-bottom: 1px solid var(--rule-soft); }
+.qa dt { font-weight: 600; }
+.qa dd { margin: 0; color: var(--ink-2); }
+@media (max-width: 640px) { .qa div { grid-template-columns: minmax(0, 1fr); } }
+.tbl { overflow-x: auto; margin: 8px 0 22px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--rule-soft); }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td code { font-size: 12.5px; }
+.state { font-family: var(--mono); font-size: 11px; white-space: nowrap; padding: 1px 7px; border-radius: 99px; border: 1px solid currentColor; }
+.state.fixed { color: var(--good); } .state.open { color: var(--tag); }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
+</style>
+
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">rhp v2 · second prototype · same look in any app</div>
+  <h1>Slat Gallery</h1>
+  <p class="lead">Twenty plots, each one slat inside a Plot. Each slat owns its CSS and its layout, and the page hands rhp only a theme object, so a slat looks the same in any app. Every chart switches between horizontal and vertical, and between the CSS version and the JS version of animation.</p>
+  <nav class="jump" aria-label="Sections">
+    <a href="#gallery-top">Gallery</a><a href="#isolation">Same look in any app</a><a href="#d">How d works</a><a href="#review">What changed and why</a><a href="#parity">v1 parity</a><a href="#reference">Reference</a>
+  </nav>
+</header>
+
+<ul class="glance">
+  <li><b>Orientation</b><code>orientation="horizontal"</code> or <code>"vertical"</code> on a Chart. Every block works in both; a nested Plot can run <code>"across"</code> its parent (heatmap cells).</li>
+  <li><b>Six blocks</b>Bar (from, to, thick), Dot, Tick, Label, Cell, Area. Each writes raw numbers; the scale is two CSS variables on the Chart, so a scale change is 2 writes.</li>
+  <li><b>Order is data</b><code>order</code> is a list of positions, or a function that returns one; <code>sortBy()</code> is one such function. Slide, Move and Refill are unchanged as the actions.</li>
+  <li><b>Data groups</b>The longest list sets the slat count. A group can be a function of <code>d</code> (computed per slat, cached). <code>rows</code> takes objects; <code>key</code> gives rows identity.</li>
+  <li><b>A slat is portable</b><code>slat({ css, band, inset, room }, fn)</code>: the slat's CSS applies to its own slats only, and its sizes are its own. Colors come from a theme object. No page stylesheet changes a chart.</li>
+  <li><b>One package</b>One import, Solid as the only peer dependency. The CSS is injected by the package on the first chart; there is no stylesheet to import.</li>
+  <li><b>Animation in one place</b><code>animate</code> on a Chart or Plot configures both versions. The JS version now also moves numbers inside arrays and objects (a box's five numbers, a row of segments).</li>
+</ul>
+
+<section id="gallery-top">
+  <h2>Gallery</h2>
+  <p class="prose">The controls apply to every chart. In the code, <code>p.o()</code>, <code>p.js()</code> and <code>p.seed()</code> are those controls; everything else is what a user of rhp would write. <code>HOVER</code> is one line of slat CSS the demos share: <code>.slat:hover { background: color-mix(in srgb, var(--rhp-ink) 6%, transparent) }</code>. Terms: a <b>block</b> is a building piece inside a slat; the <b>band</b> is the strip one slat occupies; the <b>value axis</b> is the direction bars run.</p>
+  <div id="gallery"></div>
+</section>
+
+<section class="block" id="isolation">
+  <div class="prose">
+    <h2>Same look in any app</h2>
+    <p>A slat is meant to be shared, so it has to look and lay out the same in every app that uses it. Three rules give that: the slat owns its CSS and its sizes, the app hands rhp colors and a font as a theme object, and no page stylesheet reaches inside a chart. Charts stay plain DOM (no shadow root), so everything a developer does with DOM still works.</p>
+  </div>
+  <dl class="qa">
+    <div><dt>What the app gives</dt><dd>A theme object with fixed keys: <code>series</code> (a list), <code>positive</code>, <code>negative</code>, <code>ink</code>, <code>muted</code>, <code>grid</code>, <code>surface</code>, <code>low</code>, <code>high</code>, <code>font</code>. Pass it once with <code>&lt;Theme value={…}&gt;</code> around the app, or per chart with <code>theme</code>. Missing keys fall back to rhp's defaults. It is written inline on the chart root as <code>--rhp-&lt;key&gt;</code> (15 custom properties with 6 series colors); switching theme rewrites those and nothing else. This page switches light and dark that way.</dd></div>
+    <div><dt>What a slat owns</dt><dd><code>css</code>: applies to that slat type's slats only, the slat root included, never to the page or to another slat type. <code>band</code>: px per slat along the stack. <code>inset</code>: the empty share of the band beside a Bar. <code>room</code>: px its labels need outside the plot at each end. The Chart pads each side to the largest room its Plots ask for, and the axis's. Color props take a theme key (<code>"series-3"</code>, <code>"positive"</code>) or any CSS color.</dd></div>
+    <div><dt>Why a page can't change a chart</dt><dd>Every declaration rhp or a slat makes is <code>!important</code> inside <code>@layer rhp.place, rhp.slat, rhp.core</code>, declared first in <code>&lt;head&gt;</code>. For <code>!important</code> the first-declared layer wins, and a layered one beats an unlayered one, so no page rule wins, whatever its specificity, order or own <code>!important</code>. A zero-specificity guard sets box, text and paint properties on rhp's elements and slat roots, and the chart body inherits nothing from the page.</dd></div>
+    <div><dt>What the page still controls</dt><dd>The chart root's box: width, margin, display, background, border, everything but its padding (the gutters). On any element: opacity, cursor, filter and transform, which rhp leaves alone. On elements a slat author adds (an icon <code>&lt;span&gt;</code>), any property the slat's CSS doesn't set. A <code>--rhp-*</code> variable set on rhp's own elements, and inline <code>!important</code>, which a page only writes on purpose. (Page <code>--rhp-*</code> variables on <code>:root</code>, as v1 advised, no longer reach inside.)</dd></div>
+    <div><dt>What developers keep</dt><dd><code>document.querySelector</code>, Testing Library queries, page-level click listeners, app classes for properties rhp doesn't set (<code>opacity-50</code> works; <code>bg-red-500</code> on a Bar doesn't, use <code>color</code>), text search, and Solid hydration. A shadow root per chart lost all of these.</dd></div>
+    <div><dt>Injection</dt><dd>One constructable stylesheet for the core and one per slat type with <code>css</code>, made once and adopted by every document that shows a chart (an iframe's or a popup's too, and a shadow root the app made). A <code>&lt;style&gt;</code> element where constructable sheets are missing (jsdom, older browsers). Slat CSS is scoped by rewriting each selector S to <code>.scope:is(S), .scope :is(S)</code>, with the scope named from a hash of the CSS, so server and browser agree.</dd></div>
+  </dl>
+  <div class="prose"><h3>Measured</h3></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Check</th><th>Before (layered, normal CSS)</th><th>Shadow root per chart</th><th>Now</th></tr></thead>
+    <tbody id="iso-rows">
+      <!--ISO_ROWS-->
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block" id="d">
+  <div class="prose">
+    <h2>How <code>d</code> works</h2>
+    <p><code>d</code> is the object a slat function receives. It is one Proxy per slat, made when the slat is made, and it stores no values. Reading <code>d.value</code> reads the Plot's <code>value</code> data group (through one memo per group) and returns item <i>row</i> of it, where <i>row</i> is the slat's row number.</p>
+  </div>
+  <dl class="qa">
+    <div><dt>Does it copy or write data?</dt><dd>No. There is no per-slat object of values and no store write. The only per-slat state the Plot keeps is the slat's position.</dd></div>
+    <div><dt>How many signals does it add?</dt><dd>Per Plot: one memo per data group, plus the count, the ids and the positions. Per slat: nothing for list groups; one memo for each computed group that slat reads; one effect that writes <code>--rhp-position</code>. Each block adds one effect for its CSS variables.</dd></div>
+    <div><dt>What re-runs when data changes?</dt><dd>The expressions that read the changed group. A plain array replaced: every slat's expressions that read it re-run, and only changed values are written. A store list (<code>value={store.values}</code>) with one item set: only that slat's expressions re-run.</dd></div>
+    <div><dt>Measured cost</dt><dd>1,000 slats, each one Bar reading <code>d.value</code>; one value changed. Plain array replaced: <span class="num">1,000</span> re-runs, 1 style write, <span class="num">3 to 8 ms</span>. Store item set: 1 re-run, 1 style write, <span class="num">0.4 to 0.6 ms</span>. Creating two such Plots (2,000 slats) took <span class="num">60 ms</span>. Headless Chromium, three runs.</dd></div>
+    <div><dt>Side effects</dt><dd>Destructuring (<code>({ value }) =&gt;</code>) reads once and never updates, as with Solid props. A slat's root <code>style</code> must be an object, because a string replaces the whole attribute and wipes <code>--rhp-position</code>.</dd></div>
+  </dl>
+
+  <div class="prose">
+    <h3>What a data group can be</h3>
+    <p>Any prop of a Plot that is not a setting is a data group. You add data by adding a prop.</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>You pass</th><th>What <code>d.k</code> gives slat i</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>A list (array or typed array)</td><td>Item i. A shorter list wraps around. The longest list sets the slat count.</td><td><code>value={[12, 30, 7]}</code></td></tr>
+      <tr><td>Any other value</td><td>The same value for every slat.</td><td><code>peak={peak()}</code>, <code>unit="km"</code></td></tr>
+      <tr><td>A function of <code>d</code></td><td>Computed for row i, once per change (a memo per slat). It sees the JS version's in-between values, and <code>order</code> and <code>key</code> can use it. It never sets the count.</td><td><code>share={(d) =&gt; d.value / total()}</code>, <code>color={series()}</code></td></tr>
+      <tr><td><code>rows={objects}</code></td><td>Any field of object i, as <code>d.field</code>, when no data group has that name.</td><td><code>rows={days()}</code> then <code>d.open</code></td></tr>
+      <tr><td>A list of lists or of objects</td><td>The inner list or object. Pass a list on to a nested Plot; read an object's fields.</td><td><code>&lt;Plot value={d.values}&gt;</code>, <code>d.box.q1</code></td></tr>
+      <tr><td>Built in</td><td><code>d.index</code>: the row number. <code>d.position</code>: where the row is drawn.</td><td><code>d.index % 2</code></td></tr>
+    </tbody>
+  </table></div>
+  <pre><code><span class="k">const</span> total = createMemo(() =&gt; values().reduce((a, b) =&gt; a + b));
+
+<span class="t">&lt;Plot</span> name={names}                       <span class="c">// a list: item i to slat i</span>
+      value={values()}                   <span class="c">// the longest list sets the count</span>
+      unit=<span class="s">"kg"</span>                          <span class="c">// shared by every slat</span>
+      share={(d) =&gt; d.value / total()}   <span class="c">// computed per slat, cached</span>
+      color={series()}                   <span class="c">// theme colors that never set the count</span>
+      key=<span class="s">"name"</span>                         <span class="c">// setting: rows keep their slat by name</span>
+      order={sortBy(<span class="s">"share"</span>, <span class="s">"desc"</span>)}&gt;     <span class="c">// setting: positions from any function</span>
+  {ShareSlat}                             <span class="c">// slat({ css, band, room }, (d) =&gt; &lt;div class="slat"&gt;…&lt;/div&gt;)</span>
+<span class="t">&lt;/Plot&gt;</span></code></pre>
+  <div class="prose">
+    <p>Names the Plot keeps as settings: <code>children</code>, <code>order</code>, <code>reorder</code>, <code>orientation</code>, <code>overlap</code>, <code>slats</code>, <code>key</code>, <code>rows</code>, <code>animate</code>, <code>thick</code>, <code>class</code>, <code>style</code>, <code>ref</code>. Any other name is yours. A value shared by all slats can also be read straight from the enclosing scope, since the slat function is an ordinary closure.</p>
+  </div>
+</section>
+
+<section class="block" id="review">
+  <div class="prose">
+    <h2>What changed and why</h2>
+    <p>I reviewed the first prototype's core as a library for other developers, and reproduced most problems in Chromium before changing anything. Each row says what was wrong, what the core does now, and what that means for you. The core is now <code>plot.jsx</code> (Plot, Chart, Axis: 252 lines), <code>blocks.jsx</code> (113), <code>animate.js</code> (104) and <code>rhp.css</code> (138), plus 124 lines of data helpers.</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Problem found</th><th>Change</th><th>Consequence</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Removing a middle row made the next row show and animate from the removed row's value. Removing B from A, B, C: C's label read 20, 21, … 30 over 11 frames.</td><td><code>key</code> setting. Slats and animation readers follow the id, not the row number.</td><td>With <code>key="name"</code>, C's label read 30 only, and C kept its element. Without <code>key</code>, rows are their row numbers, as before.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>The slat count came from whichever list was written first: a 2-color palette before 5 values drew 2 slats. Data that arrived later drew 0 slats forever.</td><td>The count is the length of the longest list, recomputed when a group changes. <code>cycle()</code> makes a palette that never sets the count.</td><td>Measured: 5 slats for that case; late data now draws.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Setting names took common data names: <code>count</code> (a histogram's), <code>duration</code> (a Gantt's), <code>ease</code>. <code>class</code> and <code>style</code> became data.</td><td>Count is <code>slats</code>; timing moved inside <code>animate</code>. <code>class</code>, <code>style</code> and <code>ref</code> go to the plot element.</td><td>12 reserved names, listed above.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>An inline expression such as <code>value={rows().map(f)}</code> ran once per slat that read it, per change.</td><td>Each data group is read through one memo.</td><td>It runs once per change, whatever the slat count.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Order was only a comparator, called about 2·n·log n times per frame through the Proxy in the JS version.</td><td><code>order</code> is a list of positions (gaps, fractions, and <code>null</code> to hide a row) or a function returning one. <code>sortBy(key, "desc")</code> reads each row's key once.</td><td>Pinning, top N, a dragged order and a shared column order are all plain data. n reads per frame instead of 2·n·log n.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>One NaN value kept the page clock running at 60 frames a second forever.</td><td>Only finite numbers move.</td><td>0 frames after a NaN.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Switching JS to CSS and back replayed an old move (a value snapped to 10 and moved to 90).</td><td>Readers are dropped when a group stops animating.</td><td>Toggling the version never replays.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td><code>animate</code> was re-evaluated on every <code>d.k</code> read, so every slat subscribed to the playground's toggle.</td><td>Normalized once into memos.</td><td>Slats re-run only when the set of animated groups changes.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Timing lived in two places: JS props and CSS variables.</td><td><code>animate={{ groups, duration, ease, slide }}</code> drives the JS version and writes the CSS timing variables.</td><td>One place to configure; the variables still work per chart or per slat.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Bars only ran from 0 to <code>to</code>; no negatives, no scale minimum. Scale, ticks and gridlines lived in the page, horizontal only.</td><td>Bar has <code>from</code> and <code>to</code> in either order. A Chart sets <code>--rhp-min</code> and <code>--rhp-max</code>, draws the axis, and holds the gutters. Spans are clipped to the scale.</td><td>Bidirectional, waterfall, Gantt and candlestick need nothing special.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Orientation used descendant selectors, so a Bar inside a nested Plot matched both orientations' rules.</td><td>Each block reads the nearest Plot's orientation and carries its own <code>data-o</code>.</td><td>Nested Plots may run across their parent. Switching orientation writes one attribute per block, once.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>The core CSS fought user CSS: Slide used <code>transform</code>, so <code>.slat:hover {transform: scale(1.02)}</code> undid the slide, and core selectors had specificity 0,3,0.</td><td>Placement uses <code>translate</code>, so <code>transform</code> is the page's. Everything else rhp and a slat set is now guarded (see Same look in any app).</td><td>A hover scale on a slat works; a page rule can't move, resize or recolor a block.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Bar spread its style object, so Solid rewrote every CSS variable on any change.</td><td>Blocks write their variables in one effect that sets only the ones that changed.</td><td>Changing <code>to</code> writes <code>--to</code> only.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Slide used a fixed pixel pitch vertically but 100%/n horizontally, so slats could not fill a chart in one orientation.</td><td>Every reorder action places slats by <code>--rhp-position</code>. A band is the slat's <code>band</code> (default 32px horizontal), or an equal share of the width vertically.</td><td>Horizontal plots size to their rows, vertical plots fill their width, nested plots fill their slat.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Found while building: nested Plots in a JS-version Chart animated their data twice, so inner bars lagged.</td><td>A nested Plot doesn't take the Chart's <code>animate</code>; its data already arrive moving.</td><td>Inner bars follow the outer data with no second delay. Measured on the stacked bars during New data: the widest gap between neighboring segments was 0.02 px in both versions.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Bad children failed with "props.children is not a function"; server rendering threw on <code>instanceof Element</code>.</td><td>Clear errors for a child that isn't a slat function and a slat that isn't one element; the check is skipped without a DOM.</td><td>Full server rendering is still untested.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Slats read the app's CSS variables (<code>--d1</code>, <code>--rhp-row</code>) and the gallery's CSS styled them, so a slat moved to another app changed color and size. Tailwind 4's preflight removed the gutters; Pico rescaled every element (199 of 199 moved).</td><td>Theme object, <code>slat({ css, band, inset, room }, fn)</code>, and guarded CSS injected by the package.</td><td>This page has no chart CSS at all. Across 51 real app stylesheets, no element rhp owns moved.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>Found while building: switching orientation slid every slat across the turn, and Chromium kept the mid-slide overflow, so on a 390px phone the page scrolled sideways by 670px after turning the heatmap.</td><td>Turning a chart is a jump: nothing inside transitions for the two frames after a change.</td><td>Page width stays 390px in both orientations and both animation versions.</td><td><span class="state fixed">fixed</span></td></tr>
+      <tr><td>With Slide, reading and tab order follow the data, not the screen (WCAG 1.3.2, 2.4.3).</td><td>Not changed yet. Proposal: when the chart is still, move the DOM into position order in one batch; this is invisible because positions come from <code>--rhp-position</code>. Add list roles.</td><td>Screen readers read rows in data order today.</td><td><span class="state open">open</span></td></tr>
+      <tr><td>A slat root with a string <code>style</code> wipes <code>--rhp-position</code>.</td><td>Documented: a slat's style must be an object.</td><td>No runtime check yet.</td><td><span class="state open">open</span></td></tr>
+      <tr><td>No enter or exit animation; typos like <code>d.valeu</code> return undefined silently.</td><td>Not changed. With <code>key</code>, enter and exit are now possible to add.</td><td>New rows appear and removed rows vanish in one frame.</td><td><span class="state open">open</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block" id="parity">
+  <div class="prose">
+    <h2>v1 parity</h2>
+    <p>Everything a v1 user could configure, and where it lives now. The four v1 examples are the first four cards of the gallery.</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>v1</th><th>Now</th></tr></thead>
+    <tbody>
+      <tr><td><code>plotData</code> and <code>vars</code>, with short arrays cycling</td><td>Data groups, with shorter lists wrapping; <code>series()</code> and <code>cycle()</code>; computed groups replace precomputed vars such as <code>last-whisker-pos</code>.</td></tr>
+      <tr><td><code>orientation</code> 0 or 1 (no vertical example, scale or labels shipped)</td><td><code>orientation="horizontal" | "vertical" | "across"</code>; axis, labels and every block work in both.</td></tr>
+      <tr><td><code>dataMax</code>, <code>Scale</code>, <code>scaleTemplate</code>, <code>spacing</code></td><td>Chart <code>scale={[min, max]}</code>, <code>ticks</code> (a list or a count), <code>format</code>; <code>nice()</code> for round scales. The axis is a For of grid lines.</td></tr>
+      <tr><td>JSON or JSX templates, decorations, <code>{{token}}</code> markup</td><td>The slat function: JSX with blocks and any element, reading <code>d</code>.</td></tr>
+      <tr><td>Emotion CSS strings per level, class names per level</td><td>One <code>css</code> string per slat type, scoped to its slats; <code>class</code> and <code>style</code> on any element or block; colors from the theme object.</td></tr>
+      <tr><td>Three packages (<code>rhp-core</code>, <code>rhp-base</code>, <code>rhp</code>)</td><td>One package, one import. CSS injected by the package.</td></tr>
+      <tr><td>Per-row <code>order</code>, <code>changeOrder</code>, <code>orderByMagnitude</code> (descending only)</td><td><code>order</code>: positions from any function; <code>sortBy(key, "asc" | "desc")</code>.</td></tr>
+      <tr><td><code>dataIndexForOrdering</code> (box plot)</td><td><code>sortBy((d) =&gt; d.box.median, "desc")</code> or any other key.</td></tr>
+      <tr><td><code>dataIndex</code> and <code>isDefault</code> routing, spacer bars</td><td>A nested Plot (grouped), an overlap Plot (stacked), and Bars with <code>from</code>.</td></tr>
+      <tr><td><code>decorationWidth</code></td><td>The slat's <code>room</code>; the Chart pads each side to the largest room asked for.</td></tr>
+      <tr><td><code>convertBWData</code> (no median)</td><td><code>summary()</code>: min, q1, median, q3, max, whisker ends, outliers, mean.</td></tr>
+      <tr><td>Transitions written into template CSS</td><td>The CSS version's variables, or the JS version with <code>animate</code>.</td></tr>
+      <tr><td><code>onClickHandler</code> (declared, never wired)</td><td>Any handler or attribute on any element or block.</td></tr>
+      <tr><td>Row count fixed at mount</td><td>Rows can be added and removed; with <code>key</code>, each keeps its slat.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block" id="reference">
+  <div class="prose"><h2>Reference</h2></div>
+  <h4>Plot settings</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Setting</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>children</code></td><td>The slat function, <code>(d) =&gt; &lt;div&gt;…&lt;/div&gt;</code>. It must return one element; the Plot places that element.</td></tr>
+      <tr><td><code>order</code></td><td>A list of positions, one per row (0 is first; gaps and fractions allowed; <code>null</code> hides the row), or <code>(rows, current) =&gt; positions</code>.</td></tr>
+      <tr><td><code>reorder</code></td><td>The action: <code>"slide"</code> (default: positions animate, no DOM moves), <code>"move"</code> (For in display order, DOM moves), <code>"refill"</code> (Index in display order, contents rewrite).</td></tr>
+      <tr><td><code>orientation</code></td><td><code>"horizontal"</code>, <code>"vertical"</code> or <code>"across"</code>. Default: the nearest Chart's or Plot's.</td></tr>
+      <tr><td><code>overlap</code></td><td>Every slat shares one band. A block may be the slat itself.</td></tr>
+      <tr><td><code>slats</code></td><td>A fixed slat count, instead of the longest list.</td></tr>
+      <tr><td><code>key</code></td><td>A data group or field name, or <code>(d) =&gt; id</code>. Gives rows identity across changes.</td></tr>
+      <tr><td><code>rows</code></td><td>A list of objects whose fields <code>d</code> can read.</td></tr>
+      <tr><td><code>animate</code></td><td><code>true</code> (JS version for every group of numbers), a list of group names, or <code>{ groups, duration, ease, slide }</code>. Default: the Chart's. Nested Plots don't inherit it.</td></tr>
+      <tr><td><code>thick</code></td><td>A nested Plot: the share of the outer slat's band it fills (default 1).</td></tr>
+      <tr><td><code>class</code>, <code>style</code>, <code>ref</code></td><td>Go to the plot element.</td></tr>
+    </tbody>
+  </table></div>
+  <h4>Chart</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Prop</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>scale</code></td><td><code>[min, max]</code>, written as <code>--rhp-min</code> and <code>--rhp-max</code>. Default <code>[0, 100]</code>.</td></tr>
+      <tr><td><code>orientation</code></td><td>For every Plot and block inside. Default <code>"horizontal"</code>.</td></tr>
+      <tr><td><code>ticks</code>, <code>format</code></td><td>Grid lines: a list, a count (default 5, rounded with <code>nice()</code>), or <code>false</code>. <code>format</code> turns a tick into text.</td></tr>
+      <tr><td><code>animate</code></td><td>Moves the scale with the JS version, and is the default <code>animate</code> of the Plots inside.</td></tr>
+      <tr><td><code>theme</code></td><td>A theme object (or some of its keys) for this chart, over the one from <code>&lt;Theme&gt;</code>.</td></tr>
+      <tr><td><code>height</code></td><td>The value axis length in px when vertical. Default 240.</td></tr>
+      <tr><td><code>class</code>, <code>style</code>, <code>ref</code></td><td>Go to the chart root, which is the page's box: size it, space it, give it a background.</td></tr>
+    </tbody>
+  </table></div>
+  <h4><code>slat(def, fn)</code></h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Key</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>css</code></td><td>The slat's own CSS, scoped to its slats (the root included). Theme colors as <code>var(--rhp-&lt;key&gt;)</code>; orientation as <code>[data-rhp-o="h"]</code> or <code>"v"</code>.</td></tr>
+      <tr><td><code>band</code></td><td>px per slat along the stack: a number, or <code>{ horizontal, vertical }</code>. Default 32 horizontal; vertical slats share the width.</td></tr>
+      <tr><td><code>inset</code></td><td>Empty share of the band on each side of a Bar, Tick or Area: 0 to 0.5 (default 0.18), or a CSS length.</td></tr>
+      <tr><td><code>room</code></td><td>px the slat's labels need outside the plot: <code>{ start, end, before, after }</code>, or per orientation. start and end are the ends of the value axis (names go at start); before and after are the ends of the stack.</td></tr>
+    </tbody>
+  </table></div>
+  <h4>Theme</h4>
+  <p class="prose"><code>series</code> (list), <code>positive</code>, <code>negative</code>, <code>ink</code> (text), <code>muted</code>, <code>grid</code>, <code>surface</code> (the background a slat can mix with), <code>low</code> and <code>high</code> (the Cell scale), <code>font</code>. Given with <code>&lt;Theme value&gt;</code> or a Chart's <code>theme</code>. <code>series(n)</code> is a data group that colors row i with <code>series-(i mod n + 1)</code>.</p>
+  <h4>Blocks</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Block</th><th>Props</th><th>Draws</th></tr></thead>
+    <tbody>
+      <tr><td><code>Bar</code></td><td><code>from</code> (0), <code>to</code>, <code>thick</code>, <code>color</code></td><td>A span along the value axis. <code>thick</code>: a CSS length or a fraction of the band.</td></tr>
+      <tr><td><code>Dot</code></td><td><code>at</code>, <code>size</code>, <code>across</code> (0.5), <code>color</code></td><td>A round point.</td></tr>
+      <tr><td><code>Tick</code></td><td><code>at</code>, <code>thick</code>, <code>color</code></td><td>A short line across the band.</td></tr>
+      <tr><td><code>Label</code></td><td><code>at</code> and <code>side</code>, or <code>edge</code> (<code>"start"</code>, <code>"end"</code>)</td><td>Text at a value, or in the gutter.</td></tr>
+      <tr><td><code>Cell</code></td><td><code>value</code>, <code>color</code></td><td>Fills the slat, colored on the scale from the theme's <code>low</code> to <code>high</code>.</td></tr>
+      <tr><td><code>Area</code></td><td><code>points</code>, <code>mirror</code>, <code>peak</code>, <code>color</code></td><td>A filled shape over the value axis; mirrored for violins.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prose">Every <code>color</code> takes a theme key or a CSS color. Every block also takes <code>class</code>, <code>style</code> (an object), <code>ref</code>, children, and any other attribute or handler.</p>
+  <h4>Data helpers</h4>
+  <p class="prose">Plain functions that turn raw data into data groups: <code>sortBy(key, direction)</code>, <code>series(n)</code>, <code>cycle(list)</code>, <code>nice(lo, hi, count)</code>, <code>extent(values)</code>, <code>stackUp(values)</code>, <code>shares(values, total)</code>, <code>running(changes)</code>, <code>summary(samples)</code>, <code>bins(samples, { domain, count })</code>, <code>density(samples, { domain, points, bandwidth })</code>.</p>
+  <h4>CSS variables a slat may set</h4>
+  <p class="prose">In its own <code>css</code>: <code>--rhp-label-size</code>, <code>--rhp-radius</code>, <code>--rhp-tick-width</code>, <code>--rhp-cell-gap</code>, <code>--rhp-length-time</code>, <code>--rhp-length-ease</code>, <code>--rhp-slide-time</code>, <code>--rhp-slide-ease</code>. rhp writes the rest (the theme, <code>--rhp-min</code>, <code>--rhp-max</code>, the gutters, each block's numbers). Every variable is <code>--rhp-</code> prefixed, so an app's own variables never collide.</p>
+</section>
+<footer>Solid 1.9.15, compiled with babel-preset-solid and bundled inline. The core source ships inside this page.</footer>
+</div>
+<script>/*BUNDLE*/</script>

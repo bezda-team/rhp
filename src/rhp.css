@@ -1,0 +1,180 @@
+/* rhp core CSS. It is injected by the package (style.js), which makes every declaration !important
+   (custom properties aside) inside the layers declared there: rhp.place, then rhp.slat, then rhp.core.
+   For !important the first layer wins: slat placement beats a slat's own CSS, which beats this core.
+   No page rule beats any of them. The page reaches a chart only through the theme object and props.
+
+   Variables here are all --rhp-*: a page's own variables (--color, --size…) never collide with them.
+   The chart writes the theme as --rhp-<key> (series-1…n, positive, negative, ink, muted, grid, surface,
+   low, high, font), the scale as --rhp-min/--rhp-max, and the gutters as --rhp-pad-*. Blocks write their
+   raw numbers (--rhp-from, --rhp-to, --rhp-at, --rhp-value…). A slat's CSS may set --rhp-label-size,
+   --rhp-radius, --rhp-tick-width, --rhp-cell-gap, --rhp-length-time/-ease, --rhp-slide-time/-ease. */
+
+@layer rhp.core {
+  /* The guard: box, text and paint properties a page may set on any div, span or svg, on rhp's own
+     elements and on slat roots. Zero specificity, so every rule below (and a slat's CSS) still applies.
+     Left to the page on purpose: opacity, cursor, filter, transform, so a page class can still set them. */
+  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-area path) {
+    display: revert; box-sizing: border-box; margin: 0; padding: 0; border: 0 solid transparent; border-radius: 0;
+    box-shadow: none; outline: revert; outline-offset: revert; background: none; overflow: visible; float: none;
+    min-width: 0; min-height: 0; max-width: none; max-height: none; vertical-align: baseline;
+    transition: none; animation: none; text-decoration: none; user-select: auto; touch-action: auto;
+    font: inherit; font-synthesis: inherit; letter-spacing: inherit; word-spacing: inherit; text-transform: inherit;
+    text-indent: inherit; text-align: inherit; text-shadow: inherit; color: inherit; white-space: inherit;
+    text-rendering: inherit; -webkit-font-smoothing: inherit; -moz-osx-font-smoothing: inherit; -webkit-text-stroke: inherit;
+    -webkit-tap-highlight-color: inherit; word-break: inherit; overflow-wrap: inherit; hyphens: inherit; line-break: inherit;
+    print-color-adjust: inherit;
+  }
+  /* Sizes: a page's width or height on a common class (Milligram's .row) can't resize a slat root or a plot.
+     Replaced slat roots (svg, img, canvas…) keep their own width and height attributes. */
+  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object), .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell) { width: auto; height: auto; }
+  /* A page's view-transition-name on a common class would morph slat roots, or abort the page's own view transition
+     with a duplicate name. Slat roots only: the property costs style time on every element it is declared on. */
+  :where(.rhp-plot > *) { view-transition-name: none; }
+  /* display: revert skips the hidden attribute (a presentational hint), so it is restated. */
+  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area)[hidden] { display: none; }
+  /* A page's generated content (a div::after clearfix) would be an in-flow box in the body grid, the axis,
+     a plot or a slat root. Only these: a pseudo-element rule on every block costs mount time. display: none, not
+     content: none, which makes Chrome compute both pseudo-elements' styles (5 ms per 50 charts). A slat whose CSS
+     draws ::before or ::after gets them back in its own slats (style.js). */
+  :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::before, :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::after { display: none; }
+
+  /* Selected text in the browser's own highlight colors, not a page's ::selection (Pico, UIkit, Water, H5BP…).
+     Only elements that hold text: a ::selection rule matching every element costs ~20% of mount time. */
+  :is(.rhp-label, .rhp-gridline > span)::selection, :is(.rhp-label, .rhp-gridline > span, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) ::selection { color: HighlightText; background-color: Highlight; text-shadow: none; }
+
+  /* The chart root is the page's box (margin, width, display, background, border…) except its padding,
+     which is the gutters: the room the slats' labels asked for, and the axis numbers. */
+  .rhp-chart {
+    --rhp-min: 0; --rhp-max: 100; --rhp-inset: 18%;
+    padding: var(--rhp-pad-top, 2px) var(--rhp-pad-right, 2px) var(--rhp-pad-bottom, 2px) var(--rhp-pad-left, 2px);
+  }
+  /* Everything inside starts from the body, which inherits nothing from the page (all does not cover
+     direction, so an RTL page is undone here). A hidden or disabled page box still hides or disables it. */
+  .rhp-body { all: initial; }
+  .rhp-body {
+    position: relative; display: grid; width: 100%; direction: ltr; container-type: inline-size; visibility: inherit; pointer-events: inherit;
+    font: 400 12px/1.15 var(--rhp-font); color: var(--rhp-ink); print-color-adjust: exact;
+  }
+  .rhp-chart[data-rhp-o="h"] > .rhp-body { height: auto; }
+  .rhp-chart[data-rhp-o="v"] > .rhp-body { height: var(--rhp-height, 240px); }
+  .rhp-body > * { grid-area: 1 / 1; min-width: 0; min-height: 0; }
+
+  /* The axis: grid lines behind the plots, numbers in the axis gutter. */
+  .rhp-axis { position: relative; pointer-events: none; }
+  .rhp-gridline { position: absolute; --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))); }
+  .rhp-gridline[data-rhp-o="h"] { top: 0; bottom: 0; left: calc(var(--rhp-p) * 100%); border-left: 1px solid var(--rhp-grid); }
+  .rhp-gridline[data-rhp-o="v"] { left: 0; right: 0; bottom: calc(var(--rhp-p) * 100%); border-bottom: 1px solid var(--rhp-grid); }
+  .rhp-gridline > span { position: absolute; font-size: 11px; line-height: 1; color: var(--rhp-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .rhp-gridline[data-rhp-o="h"] > span { top: calc(100% + 5px); left: 0; translate: -50% 0; }
+  .rhp-gridline[data-rhp-o="v"] > span { right: calc(100% + 6px); bottom: 0; translate: 0 50%; }
+
+  /* The Plot. Slats are placed by the place layer below. A top-level Plot has a band (--rhp-pitch, from its
+     slat's `band`): horizontal, the plot is as tall as its bands; vertical without a band, slats share the width. */
+  .rhp-plot { position: relative; z-index: 1; }
+  .rhp-body > .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap]) { height: calc(var(--rhp-n) * var(--rhp-pitch, 32px)); }
+  .rhp-body > .rhp-plot[data-rhp-o="v"]:not([data-rhp-overlap]) { width: calc(var(--rhp-n) * var(--rhp-pitch, 100% / var(--rhp-n))); }
+  .rhp-body > .rhp-plot[data-rhp-overlap][data-rhp-o="h"] { min-height: var(--rhp-pitch, 32px); }
+  /* A Plot inside a slat fills that slat's band, or `thick` of it (centered), and splits its own length evenly. */
+  .rhp-plot > * > .rhp-plot, .rhp-plot > .rhp-plot { --rhp-pitch: initial; }
+  .rhp-plot > * > .rhp-plot { position: absolute; }
+  .rhp-plot[data-rhp-o="h"] > * > .rhp-plot { inset: calc((100% - var(--rhp-plot-thick, 100%)) / 2) 0; }
+  .rhp-plot[data-rhp-o="v"] > * > .rhp-plot { inset: 0 calc((100% - var(--rhp-plot-thick, 100%)) / 2); }
+
+  /* Blocks. p(v) = (v - min) / (max - min) is where v sits along the track, 0..1.
+     Spans are clipped to the scale; points are not. */
+  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) { position: absolute; }
+  :is(.rhp-bar, .rhp-area) {
+    --rhp-lo: clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
+    --rhp-hi: clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
+  }
+  :is(.rhp-dot, .rhp-tick, .rhp-label) { --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))); }
+
+  :is(.rhp-bar, .rhp-area)[data-rhp-o="h"] { left: calc(var(--rhp-lo) * 100%); width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
+  :is(.rhp-bar, .rhp-area)[data-rhp-o="v"] { bottom: calc(var(--rhp-lo) * 100%); height: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
+  .rhp-bar { background: var(--rhp-color, var(--rhp-series-1)); border-radius: var(--rhp-radius, 2px); }
+  .rhp-bar[data-rhp-o="h"] { top: 50%; height: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); translate: 0 -50%; }
+  .rhp-bar[data-rhp-o="v"] { left: 50%; width: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); translate: -50% 0; }
+
+  .rhp-dot { width: var(--rhp-size, 10px); height: var(--rhp-size, 10px); border-radius: 50%; background: var(--rhp-color, var(--rhp-series-1)); }
+  .rhp-dot[data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: calc(var(--rhp-across, .5) * 100%); translate: -50% -50%; }
+  .rhp-dot[data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: calc(var(--rhp-across, .5) * 100%); translate: -50% 50%; }
+
+  .rhp-tick { background: var(--rhp-color, var(--rhp-ink)); }
+  .rhp-tick[data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: 50%; height: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); width: var(--rhp-tick-width, 2px); translate: -50% -50%; }
+  .rhp-tick[data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: 50%; width: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); height: var(--rhp-tick-width, 2px); translate: -50% 50%; }
+
+  .rhp-label { font-size: var(--rhp-label-size, 12px); line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .rhp-label[data-rhp-at][data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: 50%; translate: 0 -50%; padding-left: 5px; }
+  .rhp-label[data-rhp-at][data-rhp-o="h"][data-rhp-side="before"] { translate: -100% -50%; padding: 0 5px 0 0; }
+  .rhp-label[data-rhp-at][data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: 50%; translate: -50% 0; padding-bottom: 3px; }
+  .rhp-label[data-rhp-at][data-rhp-o="v"][data-rhp-side="before"] { translate: -50% 100%; padding: 3px 0 0; }
+  .rhp-label[data-rhp-edge][data-rhp-o="h"] { top: 50%; translate: 0 -50%; overflow: hidden; text-overflow: ellipsis; }
+  .rhp-label[data-rhp-edge="start"][data-rhp-o="h"] { right: 100%; width: var(--rhp-room-start, 104px); text-align: right; padding-right: 8px; }
+  .rhp-label[data-rhp-edge="end"][data-rhp-o="h"] { left: 100%; width: var(--rhp-room-end, 44px); padding-left: 6px; }
+  .rhp-label[data-rhp-edge][data-rhp-o="v"] { left: 0; right: 0; text-align: center; overflow: hidden; text-overflow: ellipsis; }
+  .rhp-label[data-rhp-edge="start"][data-rhp-o="v"] { top: 100%; padding-top: 6px; }
+  .rhp-label[data-rhp-edge="end"][data-rhp-o="v"] { bottom: 100%; padding-bottom: 3px; }
+
+  .rhp-cell {
+    inset: var(--rhp-cell-gap, 1px);
+    background: var(--rhp-color, color-mix(in oklab, var(--rhp-high) calc(clamp(0, (var(--rhp-value) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) * 100%), var(--rhp-low)));
+    border-radius: var(--rhp-radius, 2px);
+  }
+
+  /* An svg is a replaced element, so both of its sizes are given. Its paint is pinned: page rules on svg
+     and path (icon recoloring, line-drawing dash arrays, dark-mode media filters) don't reach it. */
+  .rhp-area {
+    overflow: visible; fill: color-mix(in srgb, var(--rhp-color, var(--rhp-series-1)) 35%, transparent);
+    stroke: var(--rhp-color, var(--rhp-series-1)); stroke-width: 1.5px; filter: none; pointer-events: inherit;
+    stroke-dasharray: none; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-linecap: butt; stroke-miterlimit: 4;
+    stroke-opacity: 1; fill-opacity: 1; fill-rule: nonzero; paint-order: normal; shape-rendering: auto;
+  }
+  .rhp-area path {
+    fill: inherit; stroke: inherit; stroke-width: inherit; stroke-dasharray: inherit; stroke-dashoffset: inherit;
+    stroke-linejoin: inherit; stroke-linecap: inherit; stroke-miterlimit: inherit; stroke-opacity: inherit;
+    fill-opacity: inherit; fill-rule: inherit; paint-order: inherit; shape-rendering: inherit;
+    vector-effect: non-scaling-stroke; filter: none; pointer-events: inherit; d: var(--rhp-d, none);
+  }
+  .rhp-area[data-rhp-o="h"] { top: calc(var(--rhp-inset) / 2); height: calc(100% - var(--rhp-inset)); }
+  .rhp-area[data-rhp-o="v"] { left: calc(var(--rhp-inset) / 2); width: calc(100% - var(--rhp-inset)); }
+
+  /* CSS version: positions and lengths animate with transitions. The length is faster than the slide. */
+  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-area, .rhp-gridline) {
+    transition-property: left, width, bottom, height, background-color;
+    transition-duration: var(--rhp-length-time, .15s);
+    transition-timing-function: var(--rhp-length-ease, ease-out);
+  }
+  .rhp-cell { transition: background-color var(--rhp-length-time, .15s) var(--rhp-length-ease, ease-out); }
+  /* The JS version, reduced motion and turning are in the place layer below, so a slat's own transition can't undo them. */
+}
+
+/* Placement: every slat sits in its band by --rhp-position, whatever the reorder action. A slat's own CSS
+   can't move it off its band. Slide animates the move; Move and Refill jump (their DOM changes instead). */
+@layer rhp.place {
+  .rhp-plot > * { position: absolute; box-sizing: border-box; }
+  .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap]) > * {
+    left: 0; right: 0; top: 0; bottom: auto;
+    height: var(--rhp-pitch, calc(100% / var(--rhp-n)));
+    translate: 0 calc(var(--rhp-position) * 100%);
+  }
+  .rhp-plot[data-rhp-o="v"]:not([data-rhp-overlap]) > * {
+    top: 0; bottom: 0; left: 0; right: auto;
+    width: var(--rhp-pitch, calc(100% / var(--rhp-n)));
+    translate: calc(var(--rhp-position) * 100%) 0;
+  }
+  .rhp-plot[data-rhp-reorder="slide"]:not([data-rhp-overlap]) > * { transition: translate var(--rhp-slide-time, .3s) var(--rhp-slide-ease, ease-in-out); }
+  .rhp-chart[data-rhp-turning] .rhp-plot[data-rhp-reorder] > * { transition: none; }
+  /* Turning is a jump for everything in the chart: a slat's own transitions and elements, and the gutters (the root's
+     padding) under a page's `transition: all`. */
+  .rhp-chart[data-rhp-turning], .rhp-chart[data-rhp-turning] * { transition: none; }
+  /* JS version: the numbers themselves move, so lengths and positions are not transitioned (a slat's either). */
+  [data-rhp-animate="js"] :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-gridline, .rhp-cell) { transition: none; }
+  .rhp-plot > [hidden] { display: none; }
+  /* overlap: every slat shares one band (stacked segments, strips of dots, layers).
+     A block can be the slat itself there; any other slat fills the band. */
+  .rhp-plot[data-rhp-overlap] > :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) { inset: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .rhp-plot[data-rhp-reorder]:not([data-rhp-overlap]) > * { transition: none; }
+    .rhp-chart :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-gridline, .rhp-cell) { transition: none; }
+  }
+}
