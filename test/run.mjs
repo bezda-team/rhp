@@ -212,7 +212,12 @@ const open = async (url, opts = {}) => {
             }
             if (right < left || bottom < top) continue;
             const name = e.localName + [...e.classList].map((x) => "." + x).join("");
-            if (Math.max(right - c.right, c.left - left, bottom - c.bottom, c.top - top) > 0.5) { out.push(`${o}: ${ch.closest(".card").id} ${name} sticks out`); break; }
+            const past = { right: right - c.right, left: c.left - left, bottom: bottom - c.bottom, top: c.top - top };
+            const side = Object.keys(past).reduce((a, k) => (past[k] > past[a] ? k : a));
+            if (past[side] > 0.5) { // how far, where, and both boxes, so a rare failure can be read from the log
+              out.push(`${o}: ${ch.closest(".card").id} ${name} sticks out ${past[side].toFixed(1)}px on the ${side} (${[left, top, right, bottom].map(Math.round)} in ${[c.left, c.top, c.right, c.bottom].map(Math.round)})`);
+              break;
+            }
           }
         }
         return out;

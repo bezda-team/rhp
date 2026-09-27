@@ -1275,7 +1275,7 @@ const dollars = (v) => "$" + v.toFixed(v < 100 ? 2 : 0);
 // Its root carries data-day, so the poster knows which day is under the pointer; that day's band is shaded.
 const DaySlat = slat({
   band: { horizontal: 15 },
-  room: { horizontal: { start: 24, end: 64 }, vertical: { start: 10, end: 10 } }, // the axis numbers read "$42.5"
+  room: { horizontal: { start: 24, end: 64 }, vertical: { start: 10, end: 30 } }, // the axis numbers read "$42.5"; vertical, the last price's badge can stand 28px above the top
   css: `
     .day:hover { background: rgb(51 48 46 / .07); }
     .wick { background: #807973; }

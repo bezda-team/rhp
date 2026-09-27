@@ -201,6 +201,8 @@ button.mini { font-size: 12.5px; padding: 3px 10px; margin-bottom: 8px; }
 :root[data-theme="dark"] .v1-card { background: var(--bg); box-shadow: 0 0 0 1px var(--rule); }
 /* The dots' window: the value axis is exactly 11 dots long (content-box width, the gutters outside it).
    Where the card is narrower, the window zooms down to fit, as v1's `scale` prop did. The hover target is the window. */
+/* The dots zoom to the room they have; the room must not grow with them (a turn could leave it too wide for good). */
+.dots-fit { contain: inline-size; }
 .dots-window { width: fit-content; margin: 0 auto; }
 .rhp-chart.dots { box-sizing: content-box; }
 .rhp-chart.dots[data-rhp-o="h"] { width: 660px; }
