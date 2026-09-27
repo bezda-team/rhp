@@ -100,11 +100,13 @@
 
   .rhp-area[data-rhp-o="h"] { left: calc(var(--rhp-lo) * 100%); width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
   .rhp-area[data-rhp-o="v"] { bottom: calc(var(--rhp-lo) * 100%); height: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
-  /* --rhp-gap: empty space at a bar's start (its `from` side), between stacked segments or units. */
-  .rhp-bar[data-rhp-o="h"] { left: calc(var(--rhp-lo) * 100%); width: max(0px, calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0px))); }
-  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { left: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0px)); }
-  .rhp-bar[data-rhp-o="v"] { bottom: calc(var(--rhp-lo) * 100%); height: max(0px, calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0px))); }
-  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { bottom: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0px)); }
+  /* --rhp-gap: empty space at a bar's start (its `from` side), between stacked segments or units. Its fallback is 0%, not
+     0px: a length in the sum made layout round a bar's size differently (1/64 px, a whole pixel on screen at times). A
+     negative size is clamped to 0. */
+  .rhp-bar[data-rhp-o="h"] { left: calc(var(--rhp-lo) * 100%); width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0%)); }
+  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { left: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0%)); }
+  .rhp-bar[data-rhp-o="v"] { bottom: calc(var(--rhp-lo) * 100%); height: calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0%)); }
+  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { bottom: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0%)); }
   /* Corners: --rhp-radius for all four, or --rhp-start-radius and --rhp-end-radius for one end (the end is where `to` is). */
   .rhp-bar {
     background: var(--rhp-color, var(--rhp-series-1));
