@@ -35,4 +35,4 @@ export function App() {
 - The component renders a `<div>` the chart draws into; `className` and `style` go on it.
 - Everything `@bezda/rhp/standalone` exports is here too (`html`, `createSignal`, the blocks, the helpers), with one copy of Solid inside.
 
-The rhp docs cover the rest: https://github.com/bezda-team/rhp-documentation
+Everything else is on rhp's website: https://rhp.vercel.app
