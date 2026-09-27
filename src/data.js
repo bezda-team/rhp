@@ -27,6 +27,18 @@ export const extent = (values) => {
   return [lo, hi];
 };
 
+/**
+ * Ticks for a Scale: every multiple of `step` in the Chart's [min, max]. With ends, min and max are ticks too
+ * (a scale that ends at the largest value: 0, 5, …, 25, 27).
+ */
+export const every = (step, { ends = false } = {}) => ([min, max]) => {
+  const out = [];
+  for (let v = Math.ceil(min / step - 1e-9) * step; v <= max + 1e-9; v += step) out.push(+v.toFixed(10));
+  if (ends && out[0] !== min) out.unshift(min);
+  if (ends && out.at(-1) !== max) out.push(max);
+  return out;
+};
+
 /** A round scale that covers lo..hi, with about `count` ticks: { min, max, step, ticks }. */
 export function nice(lo, hi, count = 5) {
   if (!(hi > lo)) hi = lo + 1;

@@ -53,11 +53,21 @@ export const framesDrawn = () => frameCount;
 // a list of segment values). Numbers inside move; anything else, or a list whose length changed, jumps.
 const plain = (v) => v !== null && typeof v === "object" && !Array.isArray(v) && Object.getPrototypeOf(v) === Object.prototype;
 const movable = (v) => (typeof v === "number" ? Number.isFinite(v) : Array.isArray(v) || plain(v));
-function lerp(a, b, t) {
-  if (typeof b === "number") return typeof a === "number" && Number.isFinite(a) && Number.isFinite(b) ? a + (b - a) * t : b;
-  if (Array.isArray(b)) return Array.isArray(a) && a.length === b.length ? b.map((v, i) => lerp(a[i], v, t)) : b;
-  if (plain(b)) { if (!plain(a)) return b; const o = {}; for (const k in b) o[k] = lerp(a[k], b[k], t); return o; }
-  return b;
+// b − a, part by part: undefined where a part can't move (not a finite number both times), and for the whole
+// value when its shape changed (a list's length, an object's kind), which then jumps.
+function diff(b, a) {
+  if (typeof b === "number") return typeof a === "number" && Number.isFinite(a) && Number.isFinite(b) ? b - a : undefined;
+  if (Array.isArray(b)) return Array.isArray(a) && a.length === b.length ? b.map((v, i) => diff(v, a[i])) : undefined;
+  if (plain(b)) { if (!plain(a)) return undefined; const o = {}; for (const k in b) o[k] = diff(b[k], a[k]); return o; }
+  return undefined;
+}
+// v − d × k, part by part; a part with no difference stays as it is.
+function less(v, d, k) {
+  if (d === undefined) return v;
+  if (typeof v === "number") return v - d * k;
+  if (Array.isArray(v)) return v.map((x, i) => less(x, d[i], k));
+  if (plain(v)) { const o = {}; for (const key in v) o[key] = less(v[key], d[key], k); return o; }
+  return v;
 }
 function same(a, b) {
   if (a === b) return true;
@@ -71,34 +81,43 @@ const snapshot = (v) => (Array.isArray(v) ? v.map(snapshot) : plain(v) ? Object.
 /**
  * Wraps a reactive value so that it moves to each new value over time instead of jumping.
  * `settings()` returns { duration (ms, default 400), ease (a function of 0..1, default ease-in-out) };
- * it is read, untracked, each time a move starts.
+ * it is read, untracked, each time the value changes.
  * Returns a reader: reader() is the value to draw in this frame; reader(ms) is the value `ms` from now.
  * State is plain variables, not signals. While still, a reader does not depend on the clock.
+ *
+ * Moves add up: each change is a move of its own difference, eased from 0 to 1 over its own duration, and the
+ * value drawn is the latest value less what is left of every move under way. A change in the middle of a move
+ * adds to the motion instead of restarting it from rest, so the speed carries on (a slider dragged steadily
+ * moves a bar steadily, where restarting an ease-in-out at every step made it pulse), and the value still ends
+ * exactly on the latest one. Reading ahead (the order) sees the same smooth path, with no step back at a change.
  */
 export function animated(read, settings = () => ({})) {
-  let from, to, start = -Infinity, dur = 1, ease = easeInOut, shown, seenAt = -1;
+  let to, moves = [], shown, seenAt = -1; // moves: { d (the difference), start, dur, ease }
   return (ahead = 0) => {
     const v = read(); // an ordinary reactive read of the real value
     if (!movable(v) || reduce.matches) return v; // only numbers move; reduced motion jumps
     if (to === undefined || !same(to, v)) {
-      // The real value changed: start moving from what is on screen now.
-      const target = snapshot(v);
-      if (shown === undefined) shown = target;
+      // The real value changed: add a move of the difference (the first value, or a new shape, jumps).
+      const target = snapshot(v), d = to === undefined ? undefined : diff(target, to);
+      if (d === undefined) moves = [];
       else {
-        from = shown; start = performance.now();
-        const s = untrack(settings);
-        dur = Math.max(1, s.duration ?? 400);
-        ease = s.ease ?? easeInOut;
+        const s = untrack(settings), start = performance.now(), dur = Math.max(1, s.duration ?? 400);
+        moves.push({ d, start, dur, ease: s.ease ?? easeInOut });
         runUntil(start + dur);
       }
       to = target;
     }
-    if (frameAt + ahead >= start + dur) return ahead ? to : (shown = to); // done: no clock read
+    if (!moves.length) return to;
+    const end = moves.reduce((e, m) => Math.max(e, m.start + m.dur), 0);
+    if (frameAt + ahead >= end) { if (!ahead) moves = []; return to; } // done: no clock read
     const c = clock();
     if (!ahead && seenAt === c) return shown; // already worked out for this frame
-    const p = Math.min(1, Math.max(0, (c + ahead - start) / dur));
-    const x = lerp(from, to, ease(p));
-    if (!ahead) { seenAt = c; shown = x; }
+    let x = to;
+    for (const m of moves) {
+      const p = (c + ahead - m.start) / m.dur;
+      if (p < 1) x = less(x, m.d, 1 - m.ease(Math.max(0, p)));
+    }
+    if (!ahead) { seenAt = c; shown = x; moves = moves.filter((m) => c < m.start + m.dur); }
     return x;
   };
 }

@@ -41,6 +41,26 @@ const Row = slat({
 - `key` gives rows an identity, so a removed row takes its own slat with it.
 - `animate` on a Chart or Plot switches from CSS transitions to the JS version, where the numbers themselves move on one page clock.
 
+## Scales
+
+A Chart draws a plain axis from `ticks` and `format`. To draw the scale your own way, put a `Scale` in the Chart. It is a Plot of ticks taken from the Chart's scale: one slat per tick, all in one band, keyed by value.
+
+```jsx
+import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
+
+<Chart scale={[0, max()]}>
+  <Scale ticks={every(5, { ends: true })}>
+    {(t) => <div><Tick at={t.at} thick={1} /><Label at={t.at}>{t.at}</Label></div>}
+  </Scale>
+  <Plot name={names} value={values()}>{Row}</Plot>
+</Chart>
+```
+
+- `ticks` is a list, a count of round values, or a function of the Chart's `[min, max]` such as `every(5)`.
+- Each tick's slat sees `d.at`, `d.next` (the next tick), `d.first` and `d.last`. A slat can mark values or fill the intervals between them: bands, a ruler, a keyboard.
+- A tick at either end of the scale is keyed as that end, so the end line never slides when the max changes.
+- A Chart with a Scale in it draws no axis of its own.
+
 ## Same look in any app
 
 Slats are meant to be shared, so a slat looks and lays out the same in every app:
@@ -57,16 +77,16 @@ Charts are plain DOM, with no shadow root. `querySelector`, Testing Library, pag
 | | |
 |---|---|
 | `npm run build` | `dist/index.js`, the package: one ES module, Solid left to the app. |
-| `npm run gallery` | `examples/gallery/out/slat-gallery.html`: 20 plots, each one slat, in both orientations and both animation versions. |
+| `npm run gallery` | `examples/gallery/out/slat-gallery.html`: 20 plots, each one slat, in both orientations and both animation versions. The first three replicate v1's demos with v1's assets (`examples/gallery/assets`); the others are magazine-style pieces. |
 | `npm test` | Builds the test pages and the gallery, then checks them in Chromium with Playwright. Set `CHROMIUM=/path/to/chrome` to pick a browser. |
 
 ## Layout
 
-- `src/plot.jsx`: Plot, Chart, Axis, Theme.
+- `src/plot.jsx`: Plot, Scale, Chart, Axis, Theme.
 - `src/blocks.jsx`: Bar, Dot, Tick, Label, Cell, Area.
 - `src/style.js`: CSS injection, `slat()`, and the scoping of slat CSS.
 - `src/rhp.css`: the core CSS, including the guard.
 - `src/animate.js`: the JS version's page clock.
-- `src/data.js`: `sortBy`, `cycle`, `nice`, `extent`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`.
+- `src/data.js`: `sortBy`, `cycle`, `every`, `nice`, `extent`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`.
 
 Server rendering is not supported yet. The package is browser-only for now.

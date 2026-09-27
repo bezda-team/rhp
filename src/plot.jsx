@@ -2,7 +2,7 @@
 import { useCore, useSlatCss, useRoot, watchRoot } from "./style.js";
 import {
   createMemo, createComputed, createRenderEffect, createContext, useContext, getOwner, runWithOwner, onMount, onCleanup,
-  createSignal, Index, For, Show, Switch, Match,
+  createSignal, mergeProps, splitProps, Index, For, Show, Switch, Match,
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve } from "./animate.js";
@@ -42,7 +42,12 @@ const range = (n) => Array.from({ length: n }, (_, i) => i);
 const byPosition = (pos) => range(pos.length).filter((i) => pos[i] != null).sort((a, b) => pos[a] - pos[b]);
 
 export function Plot(props) {
-  if (typeof props.children !== "function") throw new Error("rhp: a Plot's child must be a slat function, (d) => <div>…</div>");
+  return makePlot(props, "Plot");
+}
+
+// A Plot, or the Plot inside a Scale (role "Scale": no default gutters, since a scale draws no names or values of its own).
+function makePlot(props, role) {
+  if (typeof props.children !== "function") throw new Error(`rhp: a ${role}'s child must be a slat function, (d) => <div>…</div>`);
   useSlatCss(props.children);
   const layout = props.children.layout ?? {}; // the slat's own layout: band, inset, room (fixed per slat type)
   const nested = useContext(Nested), frame = useContext(Frame);
@@ -94,10 +99,11 @@ export function Plot(props) {
 
   // Row identity. Without `key` a slat is its row number. With key={name} or key={(d) => id} a slat
   // follows its id: removing a row removes that row's slat, and the rows after it keep theirs.
+  // A key function sees the data as given, never the JS version's in-between values (the row has no id yet).
   const ids = createMemo(() => {
     if (!keyed) return range(n());
     const k = props.key;
-    return range(n()).map((i) => (typeof k === "function" ? k(datum(() => i, () => i)) : raw(k, i)));
+    return range(n()).map((i) => (typeof k === "function" ? k(datum(() => i, null)) : raw(k, i)));
   }, undefined, { equals: same });
   const rowOf = createMemo(() => (keyed ? new Map(ids().map((id, i) => [id, i])) : null));
   const rowOfId = (id) => (keyed ? rowOf().get(id) : id);
@@ -124,7 +130,8 @@ export function Plot(props) {
   // What a slat sees. d.k reads data group k at this slat's row when it is read; nothing is copied.
   // d.index is the row number, d.position its position. A data group that is a function is computed
   // per row, d.k = group(d), once per change (a memo per slat). `ahead` > 0 reads animated groups
-  // as they will be that many ms from now; it is used to work out the order.
+  // as they will be that many ms from now; it is used to work out the order. Without an id (null),
+  // d reads the data as given: animated groups move per id.
   function datum(row, id, ahead = 0) {
     const owner = getOwner(), memos = {};
     const read = (k) => {
@@ -132,7 +139,7 @@ export function Plot(props) {
       if (k === "position") return pos[row()];
       const g = isGroup.has(k) ? group[k]() : undefined;
       if (typeof g === "function") return (memos[k] ??= runWithOwner(owner, () => createMemo(() => g(self))))();
-      if (js() && isMoving(k)) return moving(k, id())(ahead);
+      if (id && js() && isMoving(k)) return moving(k, id())(ahead);
       return raw(k, row());
     };
     const has = (k) => k === "index" || k === "position" || isGroup.has(k) || (rowsList() != null && k in (at(rowsList(), row()) ?? {}));
@@ -167,9 +174,9 @@ export function Plot(props) {
   const extent = createMemo(() => positions().reduce((m, p) => (p == null ? m : Math.max(m, p + 1)), 0));
 
   // Gutters: the Chart pads each side for the largest room its Plots ask for. A top-level Plot whose slat
-  // gives no room gets the defaults (names at the start, values at the end).
-  if (frame && (layout.room || !nested)) {
-    const want = () => pick(layout.room, frame.orientation()) ?? (nested ? null : DEFAULT_ROOM[frame.orientation()]);
+  // gives no room gets the defaults (names at the start, values at the end); a Scale's slat gets none.
+  if (frame && (layout.room || (!nested && role === "Plot"))) {
+    const want = () => pick(layout.room, frame.orientation()) ?? (nested || role !== "Plot" ? null : DEFAULT_ROOM[frame.orientation()]);
     frame.need(want);
     onCleanup(() => frame.drop(want));
   }
@@ -230,6 +237,49 @@ export function Plot(props) {
   );
 }
 
+/**
+ * A scale drawn by a slat: one slat per tick of the Chart's scale, all in one band, keyed by value, so a tick
+ * keeps its slat when the scale changes. A tick at either end of the scale is keyed as that end instead: the
+ * end is one slat whose value moves with the scale, so it never leaves the end (a tick that becomes the end
+ * would otherwise slide there, in both versions). Each tick's slat sees d.at (its value), d.next (the next tick; the
+ * scale's max after the last one), d.first and d.last, and any other data group given to the Scale.
+ * A slat can mark a value (lines, ticks, numbers at d.at) or fill an interval (bands or segments from d.at to d.next).
+ * ticks: a list of values; a number (about that many round values, 5 by default); or a function of the
+ * Chart's [min, max] that returns a list, such as every(5). A Chart with a Scale in it draws no axis of its own.
+ * The ticks are those of the scale on screen: while the JS version moves the scale, a tick appears when the
+ * moving end reaches it and goes when the end passes it, and its values are not animated a second time.
+ */
+export function Scale(props) {
+  const frame = useContext(Frame);
+  if (!frame) throw new Error("rhp: a Scale goes inside a Chart");
+  frame.addScale();
+  onCleanup(frame.dropScale);
+  const ticks = createMemo(() => tickValues(props.ticks, frame.shown(), frame.domain()), undefined, { equals: same });
+  const [, rest] = splitProps(props, ["ticks", "class"]);
+  return makePlot(mergeProps(rest, {
+    overlap: true, animate: false,
+    key: (t) => { const [a, b] = frame.shown(); return t.at === a ? "min" : t.at === b ? "max" : t.at; },
+    get class() { return props.class ? "rhp-scale " + props.class : "rhp-scale"; },
+    get at() { return ticks(); },
+    next: (t) => ticks()[t.index + 1] ?? frame.shown()[1],
+    first: (t) => t.index === 0,
+    last: (t) => t.index === ticks().length - 1,
+  }), "Scale");
+}
+
+// Tick values for the part [a, b] of a scale that is on screen, where [a0, b0] is where the scale is going:
+// false (none); a list (the values inside [a, b]); a function of [a, b] (every(5)); or a count of round values,
+// whose step comes from where the scale is going, so it holds still while the JS version moves the scale.
+function tickValues(t, [a, b], [a0, b0] = [a, b]) {
+  if (t === false) return [];
+  const eps = (b - a) * 1e-9;
+  if (isList(t)) return Array.from(t).filter((v) => v >= a - eps && v <= b + eps);
+  if (typeof t === "function") return t([a, b]);
+  const { step } = nice(a0, b0, t ?? 5), out = [];
+  for (let v = Math.ceil(a / step - 1e-9) * step; v <= b + 1e-9 * step; v += step) out.push(+v.toFixed(10));
+  return out;
+}
+
 // The theme: a fixed schema, the only way a page styles a chart. Anything left out takes the default.
 // Written inline on the chart root, so a page's own CSS variables never reach a chart, and a theme
 // change (dark mode) is one write per key per chart, none per slat.
@@ -262,6 +312,7 @@ const SIDES = { // room side → padding side
 };
 const AXIS = { horizontal: ["bottom", 24], vertical: ["left", 42] }; // where the axis numbers go, and their room
 const AXIS_END = { horizontal: ["right", 14], vertical: ["top", 8] }; // half of the last number, centered on the far end
+const AXIS_START = { horizontal: ["left", 14], vertical: ["bottom", 8] }; // and half of the first, centered on the near end
 
 // A Chart is the frame around one or more Plots: it sets the scale (--rhp-min, --rhp-max) once for everything
 // inside it, gives them its orientation and theme, pads its sides for the room they ask for, and draws the
@@ -279,17 +330,20 @@ export function Chart(props) {
   const lo = animated(() => domain()[0], timing), hi = animated(() => domain()[1], timing);
   const min = () => (anim() ? lo() : domain()[0]);
   const max = () => (anim() ? hi() : domain()[1]);
-  const ticks = createMemo(() => {
-    const t = props.ticks, [a, b] = domain();
-    if (t === false) return [];
-    if (isList(t)) return t;
-    return nice(a, b, t ?? 5).ticks.filter((v) => v >= a && v <= b);
-  });
+  const shown = () => [min(), max()]; // the scale on screen: where it is going, or where the JS version has moved it to
+  const ticks = createMemo(() => tickValues(props.ticks, shown(), domain()), undefined, { equals: same });
   const [wants, setWants] = createSignal([]);
+  // The built-in axis: drawn from `ticks` and `format`, unless a Scale inside draws the scale.
+  // Whether it is drawn (and its room) depends on where the scale is going, not on the ticks passing by.
+  const [scales, setScales] = createSignal(0);
+  const hasTicks = createMemo(() => tickValues(props.ticks, domain()).length > 0);
+  const axis = () => scales() === 0 && hasTicks();
   const frame = {
-    orientation,
+    orientation, domain, shown,
     need: (w) => setWants((l) => [...l, w]),
     drop: (w) => setWants((l) => l.filter((x) => x !== w)),
+    addScale: () => setScales((n) => n + 1),
+    dropScale: () => setScales((n) => n - 1),
   };
   const pad = createMemo(() => {
     const o = orientation(), side = SIDES[o], out = { top: 2, right: 2, bottom: 2, left: 2 }, room = { start: 0, end: 0 };
@@ -297,7 +351,7 @@ export function Chart(props) {
       const r = w();
       if (r) for (const k in side) if (r[k] != null) { out[side[k]] = Math.max(out[side[k]], r[k]); if (k in room) room[k] = Math.max(room[k], r[k]); }
     }
-    if (ticks().length) for (const [s, n] of [AXIS[o], AXIS_END[o]]) out[s] = Math.max(out[s], n);
+    if (axis()) for (const [s, n] of [AXIS[o], AXIS_END[o], AXIS_START[o]]) out[s] = Math.max(out[s], n);
     return {
       "--rhp-pad-top": out.top + "px", "--rhp-pad-right": out.right + "px", "--rhp-pad-bottom": out.bottom + "px", "--rhp-pad-left": out.left + "px",
       "--rhp-room-start": room.start + "px", "--rhp-room-end": room.end + "px",
@@ -322,8 +376,9 @@ export function Chart(props) {
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined}
         style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-min": min(), "--rhp-max": max() }}>
         <div class="rhp-body">
-          <Show when={ticks().length}><Axis ticks={ticks()} format={props.format} /></Show>
           {props.children}
+          {/* after the children, so a Scale among them has registered first; plots paint above it (z-index) */}
+          <Show when={axis()}><Axis ticks={ticks()} format={props.format} /></Show>
         </div>
       </div>
     </Frame.Provider></Motion.Provider></Orientation.Provider>
