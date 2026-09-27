@@ -22,7 +22,7 @@ export function important(css) {
   for (let i = 0; i < css.length; i++) {
     const ch = css[i];
     if (ch === "\\") { seg += ch + (css[++i] ?? ""); continue; } // an escaped character is never a quote, paren or brace
-    if (quote) { seg += ch; if (ch === quote) quote = null; continue; }
+    if (quote) { seg += ch; if (ch === quote || ch === "\n") quote = null; continue; }
     if (ch === '"' || ch === "'") { quote = ch; seg += ch; continue; }
     if (ch === "(") paren++;
     else if (ch === ")") paren--;
@@ -43,7 +43,7 @@ function uncomment(css) {
   for (let i = 0; i < css.length; i++) {
     const ch = css[i];
     if (ch === "\\") { out += ch + (css[++i] ?? ""); continue; }
-    if (quote) { out += ch; if (ch === quote) quote = null; continue; }
+    if (quote) { out += ch; if (ch === quote || ch === "\n") quote = null; continue; }
     if (ch === '"' || ch === "'") { quote = ch; out += ch; continue; }
     if (ch === "/" && css[i + 1] === "*") { const end = css.indexOf("*/", i + 2); i = end < 0 ? css.length : end + 1; continue; }
     out += ch;
@@ -58,7 +58,7 @@ function split(list) {
   for (let i = 0; i < list.length; i++) {
     const ch = list[i];
     if (ch === "\\") { cur += ch + (list[++i] ?? ""); continue; }
-    if (quote) { cur += ch; if (ch === quote) quote = null; continue; }
+    if (quote) { cur += ch; if (ch === quote || ch === "\n") quote = null; continue; }
     if (ch === '"' || ch === "'") quote = ch;
     else if (ch === "(" || ch === "[") depth++;
     else if (ch === ")" || ch === "]") depth--;
@@ -75,7 +75,7 @@ function pseudoAt(sel) {
   for (let i = 0; i < sel.length; i++) {
     const ch = sel[i];
     if (ch === "\\") { i++; continue; }
-    if (quote) { if (ch === quote) quote = null; continue; }
+    if (quote) { if (ch === quote || ch === "\n") quote = null; continue; }
     if (ch === '"' || ch === "'") quote = ch;
     else if (ch === "(" || ch === "[") depth++;
     else if (ch === ")" || ch === "]") depth--;
@@ -112,7 +112,7 @@ export function scoped(css, scope) {
   for (let i = 0; i < css.length; i++) {
     const ch = css[i];
     if (ch === "\\") { seg += ch + (css[++i] ?? ""); continue; }
-    if (quote) { seg += ch; if (ch === quote) quote = null; continue; }
+    if (quote) { seg += ch; if (ch === quote || ch === "\n") quote = null; continue; }
     if (ch === '"' || ch === "'") { quote = ch; seg += ch; continue; }
     if (ch === "(") paren++;
     else if (ch === ")") paren--;
@@ -140,18 +140,20 @@ export function scoped(css, scope) {
 const hash = (t) => { let h = 5381; for (let i = 0; i < t.length; i++) h = (h * 33) ^ t.charCodeAt(i); return (h >>> 0).toString(36); };
 
 // Every root that holds a chart (the document; an iframe's or popup's document; a shadow root) gets every sheet.
-const roots = new Map(), texts = []; // root -> the sheets adopted into it
-function adoptInto(root, css) {
+// An entry is one stylesheet's text; each root holds its own copy of it, which update() rewrites in place.
+const roots = new Map(), entries = []; // root -> Map(entry -> the sheet adopted there, or its <style>)
+function adoptInto(root, entry) {
   const doc = root.ownerDocument ?? root;
   if (!Array.isArray(root.adoptedStyleSheets)) { // jsdom, older browsers: a <style> element instead
     const el = doc.createElement("style");
-    el.textContent = css;
+    el.textContent = entry.css;
     (root.head ?? root).append(el);
+    roots.get(root).set(entry, el);
     return;
   }
   const sheet = new (doc.defaultView ?? window).CSSStyleSheet(); // a sheet belongs to one document
-  sheet.replaceSync(css);
-  roots.get(root).push(sheet);
+  sheet.replaceSync(entry.css);
+  roots.get(root).set(entry, sheet);
   root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
 }
 // Adopted sheets come after every <link> and <style>, so a page layer would be declared before rhp's.
@@ -190,14 +192,23 @@ function declareLayers(root) {
 }
 function addRoot(root) {
   if (roots.has(root)) return;
-  roots.set(root, []);
+  roots.set(root, new Map());
   declareLayers(root);
-  for (const t of texts) adoptInto(root, t);
+  for (const e of entries) adoptInto(root, e);
 }
 function add(css) {
   if (!roots.size) addRoot(document);
-  texts.push(css);
-  for (const r of roots.keys()) adoptInto(r, css);
+  const entry = { css };
+  entries.push(entry);
+  for (const r of roots.keys()) adoptInto(r, entry);
+  return entry;
+}
+function update(entry, css) {
+  entry.css = css;
+  for (const own of roots.values()) {
+    const s = own.get(entry);
+    if (s) s.replaceSync ? s.replaceSync(css) : (s.textContent = css);
+  }
 }
 
 let core = false;
@@ -213,7 +224,7 @@ export function useRoot(el) {
   const r = el.getRootNode();
   if (r === el || (r.nodeType !== 9 && r.nodeType !== 11)) return;
   if (!roots.has(r)) return addRoot(r);
-  const own = roots.get(r), list = r.adoptedStyleSheets;
+  const own = [...roots.get(r).values()], list = r.adoptedStyleSheets;
   if (Array.isArray(list) && own.some((s) => !list.includes(s))) r.adoptedStyleSheets = [...list.filter((s) => !own.includes(s)), ...own];
 }
 let ro;
@@ -224,20 +235,35 @@ export function watchRoot(el) {
   ro.observe(el, { box: "border-box" }); if (body) ro.observe(body);
   return () => { ro.unobserve(el); if (body) ro.unobserve(body); };
 }
-const done = new WeakSet();
+const sheets = new Map(); // a slat type's scope -> its sheet's entry
 export function useSlatCss(fn) {
-  if (!fn?.css || typeof document === "undefined") return;
-  if (done.has(fn)) return;
-  done.add(fn);
+  if (!fn?.scope || typeof document === "undefined") return;
+  if (sheets.has(fn.scope)) return;
   useCore();
+  sheets.set(fn.scope, add(slatSheet(fn)));
+}
+function slatSheet(fn) {
   // The core hides the ::before and ::after of plots and slat roots (display: none, cheaper to style than content: none).
   // A slat whose CSS draws some gets them back inside its own slats; its own rules still win.
   const S = `[data-rhp-slat="${fn.scope}"]`;
   const own = /:(before|after)\b/i.test(fn.css)
     ? `:where(${S}, ${S} :where(.rhp-plot, .rhp-plot > *))::before, :where(${S}, ${S} :where(.rhp-plot, .rhp-plot > *))::after { content: none; display: inline; }\n` : "";
-  add(`@layer rhp.slat {\n${important(own + scoped(fn.css, fn.scope))}\n}`);
+  return `@layer rhp.slat {\n${important(own + scoped(fn.css, fn.scope))}\n}`;
 }
 
+/**
+ * Gives a slat type new CSS. Every slat of that type restyles at once, wherever it is shown, and none is made again:
+ * one stylesheet is rewritten. For style editors and live previews; elsewhere a slat's look is set where it is defined.
+ * The slat type must have been made with `css` (an empty string will do), which gives its slats their scope.
+ */
+export function restyle(fn, css) {
+  if (!fn?.scope) throw new Error("rhp: restyle takes a slat type made by slat() with css");
+  fn.css = css;
+  const entry = sheets.get(fn.scope);
+  if (entry) update(entry, slatSheet(fn));
+}
+
+const made = new Map(); // CSS hash -> how many slat types were made with that CSS
 /**
  * A slat definition: the slat function plus what it owns, so it looks and lays out the same in any app.
  *   css    its own CSS, scoped to its slats (the slat root included); theme colors as var(--rhp-<key>)
@@ -251,6 +277,10 @@ export function slat(def, fn) {
   if (typeof def === "function") return def;
   fn.layout = def;
   fn.css = def.css;
-  if (def.css) fn.scope = "rhp-s" + hash(def.css);
+  if (def.css != null) { // the scope is its CSS's hash, numbered when another type has the same CSS, so each type has its own
+    const h = hash(def.css), n = (made.get(h) ?? 0) + 1;
+    made.set(h, n);
+    fn.scope = "rhp-s" + h + (n > 1 ? "-" + n : "");
+  }
   return fn;
 }

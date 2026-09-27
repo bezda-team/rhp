@@ -60,6 +60,15 @@ const open = async (url, opts = {}) => {
     [[0, 5, "first"], [5, 10, ""], [10, 15, ""], [15, 20, ""], [20, 25, ""], [25, 27, ""], [27, 27, "last"]]);
   check("Scale: the Chart draws no axis of its own; one without a Scale does", await p.evaluate(() => [document.querySelectorAll(".sc .rhp-axis").length, document.querySelectorAll(".nosc .rhp-axis").length]), [0, 1]);
   await p.evaluate(() => { window.t25 = document.querySelector('.sc .tk[data-at="25"]'); T.setTop(30); });
+  check("restyle: a slat type's slats restyle in place, a type made with the same CSS keeps its look, and no sheet is added", await p.evaluate(() => {
+    const el = document.querySelector(".rs .r:not(.twin)"), twin = document.querySelector(".rs .twin"), n = document.adoptedStyleSheets.length;
+    T.restyle(T.Red, ".r { color: rgb(0, 0, 255); }");
+    return [getComputedStyle(el).color, document.querySelector(".rs .r:not(.twin)") === el, getComputedStyle(twin).color, document.adoptedStyleSheets.length - n];
+  }), ["rgb(0, 0, 255)", true, "rgb(255, 0, 0)", 0]);
+  check("restyle: half-typed CSS (a string a newline cuts short) still reaches nothing outside the slat", await p.evaluate(() => {
+    T.restyle(T.Red, '.r { content: "x;\n} body { background: rgb(1, 2, 3); }');
+    return getComputedStyle(document.body).backgroundColor;
+  }), "rgba(0, 0, 0, 0)");
   check("Scale: a new max moves the ticks, and a tick keeps its slat", [(await ticks()).map((t) => t[0]).join(" "), await p.evaluate(() => document.querySelector('.sc .tk[data-at="25"]') === window.t25)], ["0 5 10 15 20 25 30", true]);
   check("no page errors", p.errors, []);
   await p.close();
