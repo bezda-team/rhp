@@ -5,6 +5,7 @@
 // ref, children and any other attribute or handler (title, onClick, aria-*) like a plain element.
 import { createMemo, createRenderEffect, splitProps } from "solid-js";
 import { useOrientation, short } from "./plot.jsx";
+import { write } from "./frame.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
 // A color is a theme key ("series-2", "positive", "muted"…) or a literal CSS color. A slat that reads
@@ -18,13 +19,13 @@ export const tok = (c) => {
 };
 const length = (v) => (typeof v === "number" ? v * 100 + "%" : v); // 0.6 → "60%"; "2px" stays
 
-// One effect per block writes its variables, and only the ones that changed.
-function writeVars(el, vars) {
+// One effect per block writes its variables, and only the ones that changed: the first ones now, later ones in the next frame (frame.js).
+export function writeVars(el, vars) {
   createRenderEffect((prev) => {
     const v = vars();
-    for (const k in v) if (v[k] !== prev[k]) v[k] == null ? el.style.removeProperty(k) : el.style.setProperty(k, v[k]);
+    for (const k in v) if (v[k] !== prev?.[k]) prev ? write(el, k, v[k]) : v[k] != null && el.style.setProperty(k, v[k]);
     return v;
-  }, {});
+  });
 }
 
 function block(base, own, vars) {

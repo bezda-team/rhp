@@ -70,6 +70,17 @@ const open = async (url, opts = {}) => {
     return getComputedStyle(document.body).backgroundColor;
   }), "rgba(0, 0, 0, 0)");
   check("Scale: a new max moves the ticks, and a tick keeps its slat", [(await ticks()).map((t) => t[0]).join(" "), await p.evaluate(() => document.querySelector('.sc .tk[data-at="25"]') === window.t25)], ["0 5 10 15 20 25 30", true]);
+  const bar = () => document.querySelector(".paced .rhp-bar").style.getPropertyValue("--rhp-to");
+  check("a change from a timer is written in the next frame, before it paints", await p.evaluate(async (bar) => {
+    const read = new Function("return (" + bar + ")()");
+    await new Promise((r) => setTimeout(r, 50)); T.setPaced(2); const now = read();
+    await new Promise((r) => requestAnimationFrame(r)); return [now, read()];
+  }, bar.toString()), ["1", "2"]);
+  check("a change made in the app's own frame is written in that frame (after the first)", await p.evaluate(async (bar) => {
+    const read = new Function("return (" + bar + ")()"), late = [];
+    await new Promise((done) => { let v = 10; const f = () => { if (v > 10 && read() !== String(v - 1)) late.push(v - 1); if (v > 20) return done(); T.setPaced(v++); requestAnimationFrame(f); }; requestAnimationFrame(f); });
+    return late.slice(1);
+  }, bar.toString()), []);
   check("no page errors", p.errors, []);
   await p.close();
 }

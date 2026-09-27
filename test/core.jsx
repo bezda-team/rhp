@@ -21,6 +21,8 @@ const Tk = (t) => <div class="tk" data-at={t.at} data-next={t.next} data-end={t.
 const SAME = `.r { color: rgb(255, 0, 0); }`;
 const Red = slat({ css: SAME }, () => <div class="r">a</div>);
 const Twin = slat({ css: SAME }, () => <div class="r twin">b</div>);
+// 11. when writes land: a change from a timer, and one made in the app's own frame
+const [paced, setPaced] = createSignal(1);
 render(() => (
   <div>
     <Chart scale={[0, 40]}><Plot class="keyed" key="name" rows={rows()} animate={["v"]}>{Row("keyed")}</Plot></Chart>
@@ -35,6 +37,7 @@ render(() => (
     <Chart class="nosc" scale={[0, 10]}><Plot v={[3]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
     <Chart class="rs"><Plot slats={1}>{Red}</Plot></Chart>
     <Chart class="rs"><Plot slats={1}>{Twin}</Plot></Chart>
+    <Chart class="paced" scale={[0, 100]}><Plot v={[paced()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
   </div>
 ), document.body);
-Object.assign(T, { setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red });
+Object.assign(T, { setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red });

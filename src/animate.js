@@ -1,6 +1,7 @@
 // The JS version of animation: numbers move to their new value over time,
 // and everything drawn from them reads the same in-between value in the same frame.
 import { createSignal, untrack } from "solid-js";
+import { drawing } from "./frame.js";
 
 // CSS timing curves, solved for x, so JS and CSS can share a curve.
 export const bezier = (x1, y1, x2, y2) => {
@@ -40,7 +41,7 @@ const waiting = [];
 function tick(t) {
   frameAt = t;
   frameCount++;
-  setClock(t);
+  drawing(() => setClock(t)); // already in a frame: what the clock moves is written now
   if (t < endAt) raf = requestAnimationFrame(tick);
   else { raf = 0; waiting.splice(0).forEach((f) => f()); }
 }

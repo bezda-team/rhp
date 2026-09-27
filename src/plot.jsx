@@ -7,6 +7,7 @@ import {
 import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
 import { nice } from "./data.js";
+import { writeVars } from "./blocks.jsx";
 
 const isList = (g) => Array.isArray(g) || (ArrayBuffer.isView(g) && !(g instanceof DataView));
 
@@ -384,11 +385,11 @@ export function Chart(props) {
     ro.observe(body);
     onCleanup(() => ro.disconnect());
   });
-  return (
+  const node = (
     <Orientation.Provider value={orientation}><Motion.Provider value={() => props.animate}><Frame.Provider value={frame}>
       <div ref={(e) => { el = e; props.ref?.(e); }} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined}
-        style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-min": min(), "--rhp-max": max() }}>
+        style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240) }}>
         <div class="rhp-body">
           {props.children}
           {/* after the children, so a Scale among them has registered first; plots paint above it (z-index) */}
@@ -397,6 +398,9 @@ export function Chart(props) {
       </div>
     </Frame.Provider></Motion.Provider></Orientation.Provider>
   );
+  // The scale is written like a block's numbers: now at first, then in the next frame (frame.js).
+  writeVars(el, () => ({ "--rhp-min": min(), "--rhp-max": max() }));
+  return node;
 }
 
 // The variables blocks read by inheritance start from rhp's defaults on the chart root, inline, so a page's --rhp-*
