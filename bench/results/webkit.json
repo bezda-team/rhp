@@ -1,0 +1,331 @@
+{
+  "engine": "webkit",
+  "date": "2026-09-27T18:33:08.229Z",
+  "libs": {
+    "apex": {
+      "mount": {
+        "frame": 27,
+        "total": null
+      },
+      "large": {
+        "frame": 4933,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 289,
+        "total": null
+      },
+      "update": {
+        "latency": 25,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 26,
+        "p95": 34,
+        "long": 165,
+        "fps": 37.8,
+        "perFrame": null
+      }
+    },
+    "chartjs": {
+      "mount": {
+        "frame": 9,
+        "total": null
+      },
+      "large": {
+        "frame": 24,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 44,
+        "total": null
+      },
+      "update": {
+        "latency": 17,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 1,
+        "fps": 59.5,
+        "perFrame": null
+      }
+    },
+    "chartscss": {
+      "mount": {
+        "frame": 4,
+        "total": null
+      },
+      "large": {
+        "frame": 50,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 18,
+        "total": null
+      },
+      "update": {
+        "latency": 3,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 18,
+        "long": 0,
+        "fps": 60,
+        "perFrame": null
+      }
+    },
+    "d3": {
+      "mount": {
+        "frame": 5,
+        "total": null
+      },
+      "large": {
+        "frame": 22,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 17,
+        "total": null
+      },
+      "update": {
+        "latency": 3,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 0,
+        "fps": 59.9,
+        "perFrame": null
+      }
+    },
+    "echarts": {
+      "mount": {
+        "frame": 24,
+        "total": null
+      },
+      "large": {
+        "frame": 52,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 78,
+        "total": null
+      },
+      "update": {
+        "latency": 8,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 18,
+        "long": 0,
+        "fps": 59.9,
+        "perFrame": null
+      }
+    },
+    "nivo": {
+      "mount": {
+        "frame": 21,
+        "total": null
+      },
+      "large": {
+        "frame": 310,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 135,
+        "total": null
+      },
+      "update": {
+        "latency": 16,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 0,
+        "fps": 59.9,
+        "perFrame": null
+      }
+    },
+    "plot": {
+      "mount": {
+        "frame": 9,
+        "total": null
+      },
+      "large": {
+        "frame": 29,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 32,
+        "total": null
+      },
+      "update": {
+        "latency": 8,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 1,
+        "fps": 59.7,
+        "perFrame": null
+      }
+    },
+    "recharts": {
+      "mount": {
+        "frame": 27,
+        "total": null
+      },
+      "large": {
+        "frame": 148,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 165,
+        "total": null
+      },
+      "update": {
+        "latency": 12,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 1,
+        "fps": 59.6,
+        "perFrame": null
+      }
+    },
+    "rhp-css": {
+      "mount": {
+        "frame": 9,
+        "total": null
+      },
+      "large": {
+        "frame": 93,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 57,
+        "total": null
+      },
+      "update": {
+        "latency": 3,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": null
+      }
+    },
+    "rhp-js": {
+      "mount": {
+        "frame": 10,
+        "total": null
+      },
+      "large": {
+        "frame": 90,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 55,
+        "total": null
+      },
+      "update": {
+        "latency": 2,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 0,
+        "fps": 59.9,
+        "perFrame": null
+      }
+    },
+    "rhp-static": {
+      "mount": {
+        "frame": 9,
+        "total": null
+      },
+      "large": {
+        "frame": 92,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 54,
+        "total": null
+      },
+      "update": {
+        "latency": 10,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 1,
+        "fps": 59.7,
+        "perFrame": null
+      }
+    },
+    "vanilla": {
+      "mount": {
+        "frame": 2,
+        "total": null
+      },
+      "large": {
+        "frame": 25,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 9,
+        "total": null
+      },
+      "update": {
+        "latency": 3,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": null
+      }
+    },
+    "victory": {
+      "mount": {
+        "frame": 19,
+        "total": null
+      },
+      "large": {
+        "frame": 132,
+        "total": null
+      },
+      "dashboard": {
+        "frame": 72,
+        "total": null
+      },
+      "update": {
+        "latency": 7,
+        "perChange": null
+      },
+      "drag": {
+        "p50": 17,
+        "p95": 17,
+        "long": 1,
+        "fps": 59.7,
+        "perFrame": null
+      }
+    }
+  }
+}
