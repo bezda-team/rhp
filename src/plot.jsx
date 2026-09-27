@@ -52,6 +52,17 @@ const ROW = {
   getOwnPropertyDescriptor: (t, k) => (t.P.has(t, k) ? { configurable: true, enumerable: true, get: () => t.P.read(t, k) } : undefined),
 };
 
+// A block returned as a slat, in a Plot without overlap: the Plot places it as the row, over its own placing, so a Bar
+// starts at 0 and fills the band, and a Cell loses its gap. It goes in an element that holds the row. Said once per page.
+const BLOCK = /(^|\s)rhp-(bar|dot|tick|label|cell|area)(\s|$)/;
+let warned = false;
+const warnBare = (el) => {
+  if (warned) return;
+  warned = true;
+  const name = el.getAttribute("class").match(BLOCK)[2];
+  console.warn(`rhp: a ${name[0].toUpperCase() + name.slice(1)} is a slat's root here, so the Plot places it as the row and it ignores part of its own placing. Put it in an element: (d) => <div><${name[0].toUpperCase() + name.slice(1)} … /></div>. (Only a Plot with overlap takes a block as its slat.)`);
+};
+
 export function Plot(props) {
   return makePlot(props, "Plot");
 }
@@ -215,6 +226,7 @@ function makePlot(props, role) {
   const slat = (row, id) => {
     const el = props.children(datum(row, id));
     if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
+    if (!props.overlap && BLOCK.test(el.getAttribute("class"))) warnBare(el);
     if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope); // the slat's CSS applies inside its own slats only (an attribute: Solid's class={…} rewrites className)
     createRenderEffect((prev) => { // its orientation (for :horizontal and :vertical in slat CSS) and its position
       const dir = short(orientation()), p = pos[row()];

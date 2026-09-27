@@ -899,7 +899,7 @@ const HourCell = (day) => (h) => {
   const o = useOrientation(); // the cells' own orientation: across the day's
   return (
     <div>
-      <Cell value={h.v} title={`${day.day} ${h.index}:00, ${Math.round(h.v)}`} />
+      <Cell value={h.v} title={`${day.day} ${h.index}:00, ${Math.round(h.v)}`} class="cell" />
       <Show when={day.index === 0 && h.index % 3 === 0}>
         <Label edge={o() === "vertical" ? "end" : "start"} class="hour">{h.index}</Label>
       </Show>
@@ -911,7 +911,9 @@ const DayRow = slat({
   thickness: { horizontal: 26 },
   // day names at the start; hour numbers over the first row (horizontal) or left of the first column (vertical)
   room: { horizontal: { start: 40, before: 18 }, vertical: { start: 24, before: 30 } },
-  css: `.hour { --rhp-label-size: 10px; color: var(--rhp-muted); }
+  css: `
+    .cell { --rhp-cell-gap: 1px; --rhp-radius: 2px; }
+    .hour { --rhp-label-size: 10px; color: var(--rhp-muted); }
     .hour:horizontal { width: auto; }`,
 }, (d) => (
   <div class="slat">
