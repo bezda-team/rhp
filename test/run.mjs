@@ -359,6 +359,34 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
+  // v1's scale on a narrow chart (as on a page with the code beside it): a number next to the end hides only when it
+  // would touch the end mark, and a number that shows never does, in either orientation.
+  const narrow = await p.addStyleTag({ content: "#fruit .rhp-chart { width: 560px !important; }" });
+  for (const o of ["horizontal", "vertical"]) {
+    await p.click(`label:has(#orient-${o})`); await p.waitForTimeout(400);
+    const labels = await p.evaluate(async (h) => {
+      const input = document.querySelector("#fruit .slider input"), chart = document.querySelector("#fruit .rhp-chart");
+      const set = (v) => { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); };
+      const out = { touching: [], hiddenWithRoom: [] };
+      for (let v = 21; v <= 62; v++) {
+        set(v); await new Promise((r) => setTimeout(r, 220)); // the CSS version settles in .15s
+        const end = chart.querySelector(".rhp-scale .end .mark").getBoundingClientRect();
+        for (const n of chart.querySelectorAll(".rhp-scale :is(.line, .tick) > .num")) {
+          const range = document.createRange(); range.selectNodeContents(n);
+          const t = range.getBoundingClientRect(), shown = n.checkVisibility({ visibilityProperty: true, opacityProperty: true }) ? 1 : 0;
+          const room = h ? end.left - t.right : t.top - end.bottom; // px between the number's text and the end mark
+          if (shown > 0 && room < 0) out.touching.push(`${v}: ${n.textContent}`);
+          if (shown < 1 && room > 12) out.hiddenWithRoom.push(`${v}: ${n.textContent}`);
+        }
+      }
+      set(1);
+      return out;
+    }, o === "horizontal");
+    check(`v1 scale, narrow chart, ${o}: a number hides only when it would touch the end mark`, labels, { touching: [], hiddenWithRoom: [] });
+  }
+  await p.click("label:has(#orient-horizontal)"); await p.waitForTimeout(400);
+  await narrow.evaluate((e) => e.remove());
+
   // A value takes as long to move in the JS version as in the CSS version (150 ms, ease-out, by default): the time from
   // a change to the last frame in which Fruit A's bar still moves.
   const settle = {};

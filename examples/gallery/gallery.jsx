@@ -4,7 +4,7 @@
 // Most charts sit in a Poster, a magazine-style panel that belongs to the page (page.src.html styles it).
 // Each demo gets p.o() (orientation), p.js() (JS version on) and p.seed() (bumped by "New data").
 // The code between show markers is what the page prints under each chart.
-import { createSignal, createMemo, createComputed, on, onCleanup, splitProps, Show } from "solid-js";
+import { createSignal, createMemo, createComputed, on, onMount, onCleanup, splitProps, Show } from "solid-js";
 import { Plot, Scale, Chart, Bar, Dot, Tick, Label, Cell, Area, slat, useOrientation, sortBy, every, nice, stackUp, shares, running, summary, bins, density } from "../../src/index.js";
 // v1's assets (master's public/), bundled into the page as data URLs. Fruit art: FreeVector.com.
 // The cloud photos are v1's, re-encoded at the size they are shown (640px on the short side), without their EXIF.
@@ -72,15 +72,20 @@ const V1Scale = slat({
     .zero > [data-rhp-o="h"].num { padding-left: 4px; }
     [data-rhp-o="v"].num { left: -20px; bottom: calc(var(--rhp-p) * 100% + 8px); }
     .zero > [data-rhp-o="v"].num { bottom: calc(var(--rhp-p) * 100% + 4px); }
-    /* On a narrow plot a number close to the max would run into it, so it fades out below 30px from the end.
-       tan(atan2(x, 1px)) is the length x as a plain number of px; 100cqw is the plot's length (horizontal). */
-    .line > [data-rhp-o="h"].num, .tick > [data-rhp-o="h"].num { opacity: clamp(0, tan(atan2((1 - var(--rhp-p)) * 100cqw - 30px, 1px)), 1); }`,
-}, (t) => (
-  <div class={t.first ? "zero" : t.last ? "end" : t.marks}>
-    <Tick at={t.at} thick={1} class="mark" />
-    <Label at={t.at} class="num">{Math.round(t.at)}</Label>
-  </div>
-));
+    .num.crowded { visibility: hidden; }`,
+}, (t) => {
+  // A number just before the end would run into the end mark, so it's left out, and only then: horizontal, when its
+  // text (8px past its mark, about 8px a digit) would come within 3px of the end mark; vertical, when its line
+  // (19.5px tall, 8px above its mark) would. t.toEnd is the tick's distance to the end, in px.
+  const o = useOrientation();
+  const crowded = () => !t.first && !t.last && t.toEnd < (o() === "vertical" ? 31 : 11 + 8 * String(Math.round(t.at)).length);
+  return (
+    <div class={t.first ? "zero" : t.last ? "end" : t.marks}>
+      <Tick at={t.at} thick={1} class="mark" />
+      <Label at={t.at} class={crowded() ? "num crowded" : "num"}>{Math.round(t.at)}</Label>
+    </div>
+  );
+});
 /*</show>*/
 
 /*<show fruit>*/
@@ -318,9 +323,14 @@ export function Dots(p) {
   onCleanup(() => clearInterval(timer));
   const hold = () => (clearInterval(timer), setShift(still));
   const resume = () => (clearInterval(timer), (timer = setInterval(step, 5000)));
+  // The window is 11 dots of 60px (with its gutters, 664px across, 544px when vertical); on a narrow page it zooms to fit.
+  const [room, setRoom] = createSignal(Infinity);
+  let fit;
+  onMount(() => { const ro = new ResizeObserver(([e]) => setRoom(e.contentRect.width)); ro.observe(fit); onCleanup(() => ro.disconnect()); });
+  const zoom = () => Math.min(1, room() / (p.o() === "vertical" ? 544 : 664));
   return (
-    <div class="dots-fit">
-      <div class="dots-window" onMouseEnter={hold} onMouseLeave={resume}>
+    <div class="dots-fit" ref={fit}>
+      <div class="dots-window" style={{ zoom: zoom() }} onMouseEnter={hold} onMouseLeave={resume}>
         <Chart orientation={p.o()} scale={[10, 21]} ticks={false} height={660} animate={p.js()} class="dots">
           <Plot art={LOGO} shift={shift()}>{DotRow}</Plot>
         </Chart>

@@ -58,6 +58,7 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
 
 - `ticks` is a list, a count of round values, or a function of the Chart's `[min, max]` such as `every(5)`.
 - Each tick's slat sees `d.at`, `d.next` (the next tick), `d.first` and `d.last`. A slat can mark values or fill the intervals between them: bands, a ruler, a keyboard.
+- `d.toEnd` is the tick's distance to the scale's end on screen, in px, measured. A slat can leave out a number that would run into the end: `class={d.toEnd < 30 ? "crowded" : ""}`. It works the same in every browser, where CSS arithmetic on container units does not (Safari).
 - A tick at either end of the scale is keyed as that end, so the end line never slides when the max changes.
 - A Chart with a Scale in it draws no axis of its own.
 

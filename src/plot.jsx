@@ -243,7 +243,8 @@ function makePlot(props, role) {
  * keeps its slat when the scale changes. A tick at either end of the scale is keyed as that end instead: the
  * end is one slat whose value moves with the scale, so it never leaves the end (a tick that becomes the end
  * would otherwise slide there, in both versions). Each tick's slat sees d.at (its value), d.next (the next tick; the
- * scale's max after the last one), d.first and d.last, and any other data group given to the Scale.
+ * scale's max after the last one), d.first and d.last, d.toEnd (px from the tick to the scale's end on screen, measured,
+ * so a slat can leave out a number with no room), and any other data group given to the Scale.
  * A slat can mark a value (lines, ticks, numbers at d.at) or fill an interval (bands or segments from d.at to d.next).
  * ticks: a list of values; a number (about that many round values, 5 by default); or a function of the
  * Chart's [min, max] that returns a list, such as every(5). A Chart with a Scale in it draws no axis of its own.
@@ -265,6 +266,7 @@ export function Scale(props) {
     next: (t) => ticks()[t.index + 1] ?? frame.shown()[1],
     first: (t) => t.index === 0,
     last: (t) => t.index === ticks().length - 1,
+    toEnd: (t) => { const [a, b] = frame.shown(), px = frame.length(); return px ? ((b - t.at) / (b - a || 1)) * px : Infinity; }, // Infinity until measured
   }), "Scale");
 }
 
@@ -339,8 +341,11 @@ export function Chart(props) {
   const [scales, setScales] = createSignal(0);
   const hasTicks = createMemo(() => tickValues(props.ticks, domain()).length > 0);
   const axis = () => scales() === 0 && hasTicks();
+  // The plot's size on screen, measured (a Scale gives each tick its distance to the end in px). 0 until measured.
+  const [size, setSize] = createSignal({ w: 0, h: 0 }, { equals: (a, b) => a.w === b.w && a.h === b.h });
+  const length = () => (orientation() === "vertical" ? size().h : size().w);
   const frame = {
-    orientation, domain, shown,
+    orientation, domain, shown, length,
     need: (w) => setWants((l) => [...l, w]),
     drop: (w) => setWants((l) => l.filter((x) => x !== w)),
     addScale: () => setScales((n) => n + 1),
@@ -370,7 +375,15 @@ export function Chart(props) {
     return o;
   });
   let el;
-  onMount(() => { useRoot(el); onCleanup(watchRoot(el)); });
+  onMount(() => {
+    useRoot(el);
+    onCleanup(watchRoot(el));
+    const body = el.querySelector(".rhp-body");
+    if (!body || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(([e]) => setSize({ w: e.contentRect.width, h: e.contentRect.height })); // delivered before the first paint
+    ro.observe(body);
+    onCleanup(() => ro.disconnect());
+  });
   return (
     <Orientation.Provider value={orientation}><Motion.Provider value={() => props.animate}><Frame.Provider value={frame}>
       <div ref={(e) => { el = e; props.ref?.(e); }} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
