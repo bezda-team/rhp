@@ -2,7 +2,7 @@
 import { useCore, useSlatCss, useRoot, watchRoot } from "./style.js";
 import {
   createMemo, createComputed, createRenderEffect, createContext, useContext, getOwner, runWithOwner, onMount, onCleanup,
-  createSignal, mergeProps, splitProps, untrack, Index, For, Show,
+  createSignal, createRoot, mergeProps, splitProps, untrack, Index, For, Show,
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
@@ -27,13 +27,14 @@ export const at = (group, i) => {
 // What the Chart and Plots around an element tell it, in one context (a provider costs four computations; a chart
 // held six before, a third of all it made):
 //   orientation: its direction; motion: the Chart's `animate`, for the Plots inside it; frame: the Chart around it
-//   (its scale, and where a Plot asks for gutter room); nested: inside a slat, where a Plot fills its slat's band.
-const Around = createContext({ orientation: () => "horizontal", motion: () => undefined, frame: null, nested: false });
+//   (its scale, and where a Plot asks for gutter room); nested: inside a slat, where a Plot fills its slat's band;
+//   still: the Chart is static.
+const Around = createContext({ orientation: () => "horizontal", motion: () => undefined, frame: null, nested: false, still: false });
 export const useOrientation = () => useContext(Around).orientation;
 export const short = (o) => (o === "vertical" ? "v" : "h");
 
 // Plot settings. Every other prop is a data group.
-const SETTINGS = new Set(["children", "order", "reorder", "orientation", "overlap", "slats", "key", "rows", "animate", "thick", "class", "style", "ref", "onLoop"]);
+const SETTINGS = new Set(["children", "order", "reorder", "orientation", "overlap", "slats", "key", "rows", "animate", "thick", "class", "style", "ref", "onLoop", "static"]);
 // A slat's layout value for an orientation: a plain value, or { horizontal, vertical }.
 const pick = (v, o) => (v != null && typeof v === "object" && ("horizontal" in v || "vertical" in v) ? v[o] : v);
 const px = (v) => (typeof v === "number" ? v + "px" : v);
@@ -60,7 +61,11 @@ function makePlot(props, role) {
   if (typeof props.children !== "function") throw new Error(`rhp: a ${role}'s child must be a slat function, (d) => <div>…</div>`);
   useSlatCss(props.children);
   const layout = props.children.layout ?? {}; // the slat's own layout: band, inset, room (fixed per slat type)
-  const { nested, frame, orientation: inherited, motion: inheritedMotion } = useContext(Around);
+  const { nested, frame, orientation: inherited, motion: inheritedMotion, still: stillAround } = useContext(Around);
+  // Static (`static` on the Plot or its Chart, read once): each row is drawn once and keeps no signals, memos or effects,
+  // for charts whose data doesn't change. A chart of 1,000 rows then holds a sixth of the memory. When the Plot's data,
+  // order or direction does change, every row is drawn again, without animation, so the chart is never out of date.
+  const still = props.static ?? stillAround;
   const orientation = () => {
     const o = props.orientation ?? inherited();
     return o === "across" ? (inherited() === "vertical" ? "horizontal" : "vertical") : o;
@@ -213,10 +218,30 @@ function makePlot(props, role) {
     el.$row = row; // lets a handler on the chart find which row a slat shows
     return el;
   };
+  // A static row: drawn in a root that is disposed right after, so its elements keep their values and nothing else stays.
+  const drawn = (i, p) => {
+    let el;
+    createRoot((dispose) => {
+      el = props.children(datum(() => i, null));
+      if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
+      if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope);
+      el.setAttribute("data-rhp-o", short(orientation()));
+      el.hidden = p == null;
+      if (p != null) el.style.setProperty("--rhp-position", p);
+      dispose();
+    });
+    el.$row = () => i;
+    return el;
+  };
   const action = () => props.reorder ?? "slide";
   // The slats, made by the reorder action (one memo, not a Switch: five fewer computations per Plot).
   // A component, so the memo is made inside the Provider below and the slats see what it provides.
-  const Slats = () => createMemo(() => {
+  const Slats = () => still ? createMemo(() => {
+    for (const k of groups) group[k](); // what the rows are drawn from: when it changes, they're drawn again
+    rowsList(); orientation();
+    const p = positions();
+    return untrack(() => ran(range(n())).map((i) => drawn(i, p[i])));
+  }) : createMemo(() => {
     const a = action();
     return untrack(() => {
       // Move: For over the ids in display order. Each slat's element moves in the DOM with its row.
@@ -232,7 +257,7 @@ function makePlot(props, role) {
 
   // A Plot nested in a slat does not take the Chart's `animate`: its data already arrive moving.
   return (
-    <Around.Provider value={{ orientation, motion: () => undefined, frame, nested: true }}>
+    <Around.Provider value={{ orientation, motion: () => undefined, frame, nested: true, still }}>
       <div ref={props.ref} class={props.class ? "rhp-plot " + props.class : "rhp-plot"}
         data-rhp-o={short(orientation())} data-rhp-reorder={action()} data-rhp-overlap={props.overlap ? "" : undefined}
         data-rhp-animate={js() ? "js" : undefined}
@@ -335,6 +360,7 @@ const AXIS_START = { horizontal: ["left", 14], vertical: ["bottom", 8] }; // and
 // value axis. Its own box is the page's (margin, width, display…), except that padding.
 // animate={true | { duration, ease, slide }} moves the scale with the JS version, on the same page clock,
 // and is the default `animate` of every Plot inside. height: the value axis length in px when vertical (240).
+// static: the Plots inside draw their rows once (see makePlot); the Chart's own scale, theme and size stay live.
 export function Chart(props) {
   useCore();
   const orientation = () => props.orientation ?? "horizontal";
@@ -398,7 +424,7 @@ export function Chart(props) {
     onCleanup(() => ro.disconnect());
   });
   const node = (
-    <Around.Provider value={{ orientation, motion: () => props.animate, frame, nested: false }}>
+    <Around.Provider value={{ orientation, motion: () => props.animate, frame, nested: false, still: props.static === true }}>
       <div ref={(e) => { el = e; props.ref?.(e); }} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined}
         style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240) }}>

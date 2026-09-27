@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 import { createSignal, batch } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Plot, Scale, Chart, Bar, Label, sortBy, cycle, every, slat, restyle } from "../src/index.js";
+import { Plot, Scale, Chart, Bar, Dot, Label, sortBy, cycle, every, slat, restyle } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/animate.js";
 const T = (window.T = {});
 // 1. keyed vs unkeyed removal, JS version
@@ -30,6 +30,8 @@ const Turned = slat({ css: `
 .l { --rhp-label-gap: 11px; }
 .b { --rhp-gap: 3px; }
 ` }, (d) => <div class="o"><span class="inner">x</span><Bar class="b" from={d.from} to={d.to} /><Label class="l" at={d.to}>v</Label></div>);
+// 13. static: rows drawn once, drawn again when the Plot's data changes
+const [still, setStill] = createSignal([5, 9]);
 // 12. when writes land: a change from a timer, and one made in the app's own frame
 const [paced, setPaced] = createSignal(1);
 render(() => (
@@ -48,7 +50,12 @@ render(() => (
     <Chart class="rs"><Plot slats={1}>{Twin}</Plot></Chart>
     <Chart class="or-h" scale={[0, 10]}><Plot from={[0, 10]} to={[6, 2]}>{Turned}</Plot></Chart>
     <Chart class="or-v" orientation="vertical" scale={[0, 10]}><Plot from={[0, 10]} to={[6, 2]}>{Turned}</Plot></Chart>
+    <Chart class="st" static scale={[0, 20]}>
+      <Plot name={["a", "b"]} v={still()} order={sortBy("v", "desc")}>
+        {(d) => <div class="sr" data-n={d.name}><Bar to={d.v} /><Label at={d.v}>{d.v}</Label><Plot overlap part={[1, 2]}>{(q) => <Dot at={q.part} class="sd" />}</Plot></div>}
+      </Plot>
+    </Chart>
     <Chart class="paced" scale={[0, 100]}><Plot v={[paced()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
   </div>
 ), document.body);
-Object.assign(T, { setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red });
+Object.assign(T, { setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red });

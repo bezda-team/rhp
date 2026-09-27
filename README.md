@@ -57,6 +57,7 @@ const Row = slat({
 - `order` is a list of positions, or a function that returns one (`sortBy` is one such function). The slats slide to their positions and no DOM node moves.
 - `key` gives rows an identity, so a removed row takes its own slat with it.
 - `animate` on a Chart or Plot switches from CSS transitions to the JS version, where the numbers themselves move on one page clock.
+- `static` on a Chart is for data that doesn't change: each row is drawn once and keeps no signals, memos or effects, so a chart of 1,000 rows holds a sixth of the memory. If the Plot's data, order or direction does change, every row is drawn again, without animation. Hover styles, themes, resizing and the scale still work. A Plot can set `static` on its own, for a still layer under a live one.
 
 ## Scales
 

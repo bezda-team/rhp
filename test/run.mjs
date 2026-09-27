@@ -83,6 +83,10 @@ const open = async (url, opts = {}) => {
     return c === ".or-h" ? [Math.round(a.left - plot.left), Math.round(plot.right - b.right)] : [Math.round(plot.bottom - a.bottom), Math.round(b.top - plot.top)];
   })), [3, 3, 3, 3]);
   check("--rhp-label-gap spaces a label from its value", await p.evaluate(() => [getComputedStyle(document.querySelector(".or-h .l")).paddingLeft, getComputedStyle(document.querySelector(".or-v .l")).paddingBottom]), ["11px", "11px"]);
+  const still = () => p.evaluate(() => [...document.querySelectorAll(".st .sr")].map((e) => e.dataset.n + e.querySelector(".rhp-label").textContent + "@" + e.style.getPropertyValue("--rhp-position") + ":" + e.querySelectorAll(".sd").length).join(" "));
+  check("static: rows are drawn sorted, nested Plots included", await still(), "a5@1:2 b9@0:2");
+  await p.evaluate(() => T.setStill([12, 3])); await p.waitForTimeout(50);
+  check("static: when the Plot's data changes, its rows are drawn again", await still(), "a12@0:2 b3@1:2");
   const bar = () => document.querySelector(".paced .rhp-bar").style.getPropertyValue("--rhp-to");
   check("a change from a timer is written in the next frame, before it paints", await p.evaluate(async (bar) => {
     const read = new Function("return (" + bar + ")()");
