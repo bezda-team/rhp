@@ -60,6 +60,9 @@
   }
   .rhp-chart[data-rhp-o="h"] > .rhp-body { height: auto; }
   .rhp-chart[data-rhp-o="v"] > .rhp-body { height: var(--rhp-height, 240px); }
+  /* A horizontal chart with a height and rows without a thickness fits them into it: they share it, as columns share a
+     vertical chart's width. Otherwise it grows with its rows (32px each unless they say). */
+  .rhp-chart[data-rhp-o="h"][data-rhp-sized] > .rhp-body { height: var(--rhp-height); }
   .rhp-body > * { grid-area: 1 / 1; min-width: 0; min-height: 0; }
 
   /* The axis: grid lines behind the plots, numbers in the axis gutter. */
@@ -80,6 +83,7 @@
   .rhp-bar[data-rhp-o="h"][data-rhp-back] { --rhp-toward-end: to left; }
   .rhp-bar[data-rhp-o="v"][data-rhp-back] { --rhp-toward-end: to bottom; }
   .rhp-body > .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap]) { height: calc(var(--rhp-n) * var(--rhp-pitch, 32px)); }
+  .rhp-chart[data-rhp-sized] > .rhp-body > .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap]) { height: calc(var(--rhp-n) * var(--rhp-pitch, 100% / var(--rhp-n))); }
   .rhp-body > .rhp-plot[data-rhp-o="v"]:not([data-rhp-overlap]) { width: calc(var(--rhp-n) * var(--rhp-pitch, 100% / var(--rhp-n))); }
   .rhp-body > .rhp-plot[data-rhp-overlap][data-rhp-o="h"] { min-height: var(--rhp-pitch, 32px); }
   /* A Plot inside a slat fills that slat's band, or `thick` of it (centered), and splits its own length evenly. */

@@ -200,6 +200,13 @@ function makePlot(props, role) {
     frame.need(want);
     onCleanup(() => frame.drop(want));
   }
+  // A top-level Plot whose rows have no thickness in this direction asks its Chart to fit them: a horizontal Chart with
+  // a height then makes its plot that tall, and the rows share it.
+  if (frame && !nested && role === "Plot" && !props.overlap) {
+    const fits = () => pick(layout.thickness, orientation()) == null;
+    frame.fit(fits);
+    onCleanup(() => frame.unfit(fits));
+  }
 
   const ran = (list) => (props.onLoop?.(), list); // lets a meter count loop runs
 
@@ -359,7 +366,8 @@ const AXIS_START = { horizontal: ["left", 14], vertical: ["bottom", 8] }; // and
 // inside it, gives them its orientation and theme, pads its sides for the room they ask for, and draws the
 // value axis. Its own box is the page's (margin, width, display…), except that padding.
 // animate={true | { duration, ease, slide }} moves the scale with the JS version, on the same page clock,
-// and is the default `animate` of every Plot inside. height: the value axis length in px when vertical (240).
+// and is the default `animate` of every Plot inside. height: the plot's height in px: a vertical chart's value axis (240 by default). A horizontal chart with a
+// height fits rows that have no thickness into it; otherwise it grows with its rows.
 // static: the Plots inside draw their rows once (see makePlot); the Chart's own scale, theme and size stay live.
 export function Chart(props) {
   useCore();
@@ -378,6 +386,8 @@ export function Chart(props) {
   // The built-in axis: drawn from `ticks` and `format`, unless a Scale inside draws the scale.
   // Whether it is drawn (and its room) depends on where the scale is going, not on the ticks passing by.
   const [scales, setScales] = createSignal(0);
+  const [fitters, setFitters] = createSignal([]); // Plots whose rows have no thickness
+  const sized = () => props.height != null && orientation() === "horizontal" && fitters().some((f) => f());
   const hasTicks = createMemo(() => tickValues(props.ticks, domain()).length > 0);
   const axis = () => scales() === 0 && hasTicks();
   // The plot's size on screen, measured (a Scale gives each tick its distance to the end in px). 0 until measured.
@@ -388,6 +398,8 @@ export function Chart(props) {
     need: (w) => setWants((l) => [...l, w]),
     drop: (w) => setWants((l) => l.filter((x) => x !== w)),
     addScale: () => setScales((n) => n + 1),
+    fit: (f) => setFitters((l) => [...l, f]),
+    unfit: (f) => setFitters((l) => l.filter((x) => x !== f)),
     dropScale: () => setScales((n) => n - 1),
   };
   const pad = createMemo(() => {
@@ -426,7 +438,7 @@ export function Chart(props) {
   const node = (
     <Around.Provider value={{ orientation, motion: () => props.animate, frame, nested: false, still: props.static === true }}>
       <div ref={(e) => { el = e; props.ref?.(e); }} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
-        data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined}
+        data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined} data-rhp-sized={sized() ? "" : undefined}
         style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240) }}>
         <div class="rhp-body">
           {props.children}

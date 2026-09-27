@@ -39,6 +39,9 @@ const Placed = slat({ css: `
 .pin { position: absolute; left: calc(var(--rhp-p) * 100%); }
 .from { position: absolute; left: calc(var(--rhp-lo) * 100%); }
 ` }, (d) => <div><Bar from={2} to={d.v} class="kb" classList={{ lit: lit() }} /><Dot at={d.v} size="4px"><i class="pin" /></Dot><Bar from={2} to={d.v}><i class="from" /></Bar></div>);
+// 15. a horizontal chart with a height fits rows without a thickness into it
+const Fit = (d) => <div class="fit"><Bar to={d.v} /></div>;
+const Fixed = slat({ thickness: 20 }, (d) => <div class="fix"><Bar to={d.v} /></div>);
 // 12. when writes land: a change from a timer, and one made in the app's own frame
 const [paced, setPaced] = createSignal(1);
 render(() => (
@@ -63,6 +66,9 @@ render(() => (
       </Plot>
     </Chart>
     <Chart class="kept" scale={[0, 10]} ticks={[0, 5, 10]} format={(v) => <b class="fmt">{v}</b>}><Plot v={[8]}>{Placed}</Plot></Chart>
+    <Chart class="fits" height={200} ticks={false}><Plot v={[1, 2, 3, 4]}>{Fit}</Plot></Chart>
+    <Chart class="grows" ticks={false}><Plot v={[1, 2, 3, 4]}>{Fit}</Plot></Chart>
+    <Chart class="keeps" height={200} ticks={false}><Plot v={[1, 2, 3, 4]}>{Fixed}</Plot></Chart>
     <Chart class="paced" scale={[0, 100]}><Plot v={[paced()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
   </div>
 ), document.body);
