@@ -1,5 +1,5 @@
 // The gallery: every chart is a Chart holding a Plot of slats, and some draw their own scale with a Scale.
-// A slat owns its look and layout: its CSS, band, inset and gutter room travel with it. Its structural colors and
+// A slat owns its look and layout: its CSS, thickness, inset and gutter room travel with it. Its structural colors and
 // font come from a theme: the page's (page.jsx) or one a demo passes to its Chart. Nothing here reads the page's CSS.
 // Most charts sit in a Poster, a magazine-style panel that belongs to the page (page.src.html styles it).
 // Each demo gets p.o() (orientation), p.js() (JS version on) and p.seed() (bumped by "New data").
@@ -94,7 +94,7 @@ const ART = [grape, watermelon, pear, banana, orange, peach, strawberry];
 const COLORS = ["pink", "#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#ce4257"];
 
 const FruitSlat = slat({
-  band: { horizontal: 79 }, // v1: seven rows in 552px; vertical: the rows share the width
+  thickness: { horizontal: 79 }, // v1: seven rows in 552px; vertical: the rows share the width
   inset: "8px",
   room: { horizontal: { start: 112, end: 32 }, vertical: { start: 32, end: 30 } }, // for the names and values
   css: `
@@ -156,7 +156,7 @@ const HARBOUR = { font: "system-ui, sans-serif", ink: "#0b2a3c", muted: "#55707f
 // to the quarter the wind comes from. The fade is on the text inside the Label: a transition set on a block
 // would replace the one rhp gives it, and the Label would jump to a new value instead of moving with its bar.
 const WindSlat = slat({
-  band: { horizontal: 60 },
+  thickness: { horizontal: 60 },
   room: { horizontal: { start: 128, end: 64 }, vertical: { start: 64, end: 30 } },
   css: `
     .quarter { display: flex; align-items: center; gap: 10px; overflow: visible; font-size: 16px; font-weight: 700; }
@@ -199,7 +199,7 @@ const GREYS = ["#9fa2a4", "#cbdddf", "#a5aeb5", "#dbe7eb", "#dae6ec", "#c2d6e0",
 const WHISKERS = [[1, 3, 9, 10], [2, 3, 15, 20], [5, 9, 16, 18], [3, 4, 7, 9], [10, 18, 22, 25], [13, 15, 18, 22], [15, 20, 26, 27]];
 
 const BoxSlat = slat({
-  band: { horizontal: 79 },
+  thickness: { horizontal: 79 },
   inset: "8px",
   room: { horizontal: { start: 96, end: 37 }, vertical: { start: 80, end: 30 } }, // for the photos and values
   css: `
@@ -291,7 +291,7 @@ const LOGO = [
 ];
 
 const DotRow = slat({
-  band: 60, // 52px dots, 8px apart: the page makes the value axis 11 × 60px long
+  thickness: 60, // 52px dots, 8px apart: the page makes the value axis 11 × 60px long
   room: { horizontal: { start: 2, end: 2, before: 2, after: 4 }, vertical: { start: 4, end: 2, before: 2, after: 2 } },
   css: `
     .row:horizontal { overflow-x: clip; } /* dots past the ends of the scale are hidden */
@@ -365,7 +365,7 @@ const MedalSlat = slat({
 ));
 
 const TeamSlat = slat({
-  band: { horizontal: 84 },
+  thickness: { horizontal: 84 },
   room: { horizontal: { start: 96, end: 22 }, vertical: { start: 46, end: 18 } },
   css: `
     .team { font: 700 22px/1 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .03em; text-transform: uppercase; }
@@ -427,7 +427,7 @@ const LayerSlat = slat({
 
 const DrinkSlat = slat({
   inset: "10px",
-  band: { horizontal: 58 },
+  thickness: { horizontal: 58 },
   room: { horizontal: { start: 132, end: 60 }, vertical: { start: 46, end: 30 } },
   css: `
     .drink { font: italic 600 18px/1 Fraunces, Georgia, serif; }
@@ -501,7 +501,7 @@ const ChargeSlat = slat({
 
 // A battery: the shell a little larger than the track, the nub past its end, the charge inside.
 const BatterySlat = slat({
-  band: { horizontal: 52 },
+  thickness: { horizontal: 52 },
   room: { horizontal: { start: 92, end: 18 }, vertical: { start: 30, end: 18 } },
   css: `
     .who { font-size: 15px; font-weight: 600; }
@@ -582,7 +582,7 @@ const SpineSlat = slat({
 }, (u) => <Bar from={u.from} to={u.to} thick={tall(u.index)} color={binding(u.cloth, u.index)} class="spine"><i class="book" /></Bar>);
 
 const ShelfSlat = slat({
-  band: { horizontal: 66 },
+  thickness: { horizontal: 66 },
   room: { horizontal: { start: 96, end: 52 }, vertical: { start: 30, end: 38 } },
   css: `
     .shelf { border-bottom: 5px solid #c79f72; }
@@ -620,7 +620,7 @@ const CENSUS = { font: "system-ui, sans-serif", ink: "#1f2933", muted: "#687482"
 
 // Men to the left of a spine of ages, women to the right: both Bars start SPINE away from 0 and run outward.
 const AgeSlat = slat({
-  band: { horizontal: 30 },
+  thickness: { horizontal: 30 },
   inset: 0.13,
   room: { horizontal: { start: 38, end: 38 }, vertical: { start: 26, end: 26 } },
   css: `
@@ -728,7 +728,7 @@ const warmth = (t) => {
 const year = () => Array.from({ length: 365 }, (_, day) => 17.5 + 7 * Math.sin((2 * Math.PI * (day - 110)) / 365) + normal(0, 2.2));
 
 const BinSlat = slat({
-  band: { horizontal: 20 },
+  thickness: { horizontal: 20 },
   inset: "1.5px",
   room: { horizontal: { start: 40, end: 40 }, vertical: { start: 26, end: 22 } },
   css: `
@@ -768,7 +768,7 @@ const MIDNIGHT = { font: "system-ui, sans-serif", ink: "#f4f1ff", muted: "#8f89a
 // A new strike reaches the samples one after another (--k, 8 ms apart), so it runs down the wave like the sound does.
 // A delay adds to the transition rhp gives a block without replacing it. (The JS version moves every sample at once.)
 const SampleSlat = slat({
-  band: { horizontal: 12 },
+  thickness: { horizontal: 12 },
   room: { start: 12, end: 12 },
   css: `
     .swing, .tip { transition-delay: calc(var(--k) * 8ms); }
@@ -843,7 +843,7 @@ const KeySlat = slat({
 });
 
 const InstrumentSlat = slat({
-  band: { horizontal: 74 },
+  thickness: { horizontal: 74 },
   inset: 0.05,
   room: { horizontal: { start: 140, end: 16 }, vertical: { start: 30, end: 12 } },
   css: `
@@ -907,7 +907,7 @@ const HourCell = (day) => (h) => {
 };
 
 const DayRow = slat({
-  band: { horizontal: 26 },
+  thickness: { horizontal: 26 },
   // day names at the start; hour numbers over the first row (horizontal) or left of the first column (vertical)
   room: { horizontal: { start: 40, before: 18 }, vertical: { start: 24, before: 30 } },
   css: `.hour { --rhp-label-size: 10px; color: var(--rhp-muted); }
@@ -946,7 +946,7 @@ const PatientSlat = slat({
 }, (s) => <Dot at={s.at} across={across(s.index)} color={s.color} class="pill" style={{ rotate: tilt(s.index) + "deg" }} />);
 
 const ArmSlat = slat({
-  band: { horizontal: 80 },
+  thickness: { horizontal: 80 },
   room: { horizontal: { start: 84, end: 76 }, vertical: { start: 30, end: 30 } },
   css: `
     .arm { font-size: 15px; font-weight: 700; }
@@ -989,7 +989,7 @@ const metres = (v) => Math.round(v).toLocaleString("en-GB") + " m";
 
 // A climb: the route from the tent at base camp to the snow-capped peak.
 const ClimbSlat = slat({
-  band: { horizontal: 50 },
+  thickness: { horizontal: 50 },
   room: { horizontal: { start: 124, end: 70 }, vertical: { start: 38, end: 34, after: 18 } },
   css: `
     .peak-name { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
@@ -1058,7 +1058,7 @@ const WATCH = { font: "system-ui, sans-serif", ink: "#f5f5f7", muted: "#8e8e93",
 // A goal: the track to 120%, the day's progress glowing along it, and a white line at the goal (100%).
 // Hover a goal and its progress burns brighter, with a bubble at its tip saying what it comes to.
 const GoalSlat = slat({
-  band: { horizontal: 62 },
+  thickness: { horizontal: 62 },
   room: { horizontal: { start: 134, end: 58 }, vertical: { start: 70, end: 30 } },
   css: `
     .habit { display: flex; align-items: center; gap: 10px; overflow: visible; font-size: 15px; font-weight: 700; }
@@ -1118,7 +1118,7 @@ const pounds = (v) => (v < 0 ? "−" : "") + "£" + Math.abs(Math.round(v)).toLo
 // An expense is a button: click it (its name or its bar) to cut it from the month. A cut step has no length, and a
 // dashed outline keeps its place, so the steps after it and the savings move up by what it cost.
 const StepSlat = slat({
-  band: { horizontal: 46 },
+  thickness: { horizontal: 46 },
   room: { horizontal: { start: 100, end: 66 }, vertical: { start: 40, end: 26, after: 18 } },
   css: `
     .item { font-size: 14px; font-weight: 600; }
@@ -1210,7 +1210,7 @@ const MonthBandSlat = slat({
 // A trade on site: the whole job as a thin gray bar, the part done by today in site orange.
 // Hover a trade and the drawing dimensions it: a line with end marks alongside the bar, and its length in weeks.
 const TradeSlat = slat({
-  band: { horizontal: 44 },
+  thickness: { horizontal: 44 },
   room: { horizontal: { start: 116, end: 16 }, vertical: { start: 40, end: 10 } },
   css: `
     .trade { font-size: 14px; font-weight: 700; }
@@ -1274,7 +1274,7 @@ const dollars = (v) => "$" + v.toFixed(v < 100 ? 2 : 0);
 // A day: the wick over the day's range, the body from the open to the close; teal up, claret down.
 // Its root carries data-day, so the poster knows which day is under the pointer; that day's band is shaded.
 const DaySlat = slat({
-  band: { horizontal: 15 },
+  thickness: { horizontal: 15 },
   room: { horizontal: { start: 24, end: 64 }, vertical: { start: 10, end: 30 } }, // the axis numbers read "$42.5"; vertical, the last price's badge can stand 28px above the top
   css: `
     .day:hover { background: rgb(51 48 46 / .07); }

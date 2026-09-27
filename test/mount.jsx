@@ -5,7 +5,7 @@ import { render } from "solid-js/web";
 import { Plot, Chart, Bar, Label, slat, series } from "../src/index.js";
 import { useCore } from "../src/style.js";
 const NAMES = ["Apple", "Banana", "Cherry", "Grape", "Kiwi", "Lemon", "Orange"];
-const S = slat({ band: 32, room: { horizontal: { start: 104, end: 44 } }, css: `.slat:hover { background: red } .icon { position: absolute; right: 2px }` },
+const S = slat({ thickness: 32, room: { horizontal: { start: 104, end: 44 } }, css: `.slat:hover { background: red } .icon { position: absolute; right: 2px }` },
   (d) => <div class="slat"><Label edge="start">{d.name}</Label><Bar to={d.value} color={d.color}><span class="icon">*</span></Bar><Label at={d.value}>{d.value}</Label></div>);
 
 useCore();

@@ -290,7 +290,8 @@ const made = new Map(); // CSS hash -> how many slat types were made with that C
 /**
  * A slat definition: the slat function plus what it owns, so it looks and lays out the same in any app.
  *   css    its own CSS, scoped to its slats (the slat root included); theme colors as var(--rhp-<key>)
- *   band   px along the stack per slat: a number, or { horizontal, vertical } (default 32 horizontal; vertical fills)
+ *   thickness  px along the stack per slat (a row's height, a column's width): a number, or { horizontal, vertical }
+ *          (default 32 horizontal; vertical fills)
  *   inset  empty share of the band on each side of a Bar, Tick or Area: 0..0.5 (default 0.18), or a CSS length
  *   room   px the slat's labels need outside the plot: { start, end, before, after }, or per orientation
  *          { horizontal: {…}, vertical: {…} }. start/end are the ends of the value axis (category names go

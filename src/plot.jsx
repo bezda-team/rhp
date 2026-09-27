@@ -60,7 +60,7 @@ export function Plot(props) {
 function makePlot(props, role) {
   if (typeof props.children !== "function") throw new Error(`rhp: a ${role}'s child must be a slat function, (d) => <div>…</div>`);
   useSlatCss(props.children);
-  const layout = props.children.layout ?? {}; // the slat's own layout: band, inset, room (fixed per slat type)
+  const layout = props.children.layout ?? {}; // the slat's own layout: thickness, inset, room (fixed per slat type)
   const { nested, frame, orientation: inherited, motion: inheritedMotion, still: stillAround } = useContext(Around);
   // Static (`static` on the Plot or its Chart, read once): each row is drawn once and keeps no signals, memos or effects,
   // for charts whose data doesn't change. A chart of 1,000 rows then holds a sixth of the memory. When the Plot's data,
@@ -263,7 +263,7 @@ function makePlot(props, role) {
         data-rhp-animate={js() ? "js" : undefined}
         style={{
           ...props.style, "--rhp-n": extent(),
-          "--rhp-pitch": nested ? undefined : px(pick(layout.band, orientation())),
+          "--rhp-pitch": nested ? undefined : px(pick(layout.thickness, orientation())),
           "--rhp-inset": share(pick(layout.inset, orientation())),
           "--rhp-plot-thick": share(props.thick),
           "--rhp-slide-time": slideMs() == null ? undefined : slideMs() + "ms",

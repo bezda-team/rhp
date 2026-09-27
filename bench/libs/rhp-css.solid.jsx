@@ -6,7 +6,7 @@ import { Chart, Plot, Bar, Label, slat } from "../../src/index.js";
 export const make = (animate, still) => (el, rows, { band }) => {
   const [values, setValues] = createSignal(rows.map((r) => r.value));
   const names = rows.map((r) => r.name);
-  const Row = slat({ band }, (d) => (
+  const Row = slat({ thickness: band }, (d) => (
     <div>
       <Label edge="start">{d.name}</Label>
       <Bar to={d.value} />

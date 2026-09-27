@@ -12,10 +12,10 @@ T.mount = () => {
   render(() => (
     <div>
       <Chart scale={[0, 100]}>
-        <Plot value={plain()}>{slat({ band: 4 }, (d) => <div><Bar to={(T.runs.plain++, d.value)} /></div>)}</Plot>
+        <Plot value={plain()}>{slat({ thickness: 4 }, (d) => <div><Bar to={(T.runs.plain++, d.value)} /></div>)}</Plot>
       </Chart>
       <Chart scale={[0, 100]}>
-        <Plot value={st.v}>{slat({ band: 4 }, (d) => <div><Bar to={(T.runs.store++, d.value)} /></div>)}</Plot>
+        <Plot value={st.v}>{slat({ thickness: 4 }, (d) => <div><Bar to={(T.runs.store++, d.value)} /></div>)}</Plot>
       </Chart>
     </div>
   ), document.body);

@@ -37,7 +37,7 @@ With no build step, a page can import `@bezda/rhp/standalone`, one module with S
 import { Chart, Plot, Bar, Label, slat, sortBy, series } from "@bezda/rhp";
 
 const Row = slat({
-  band: 32,                          // px per slat along the stack
+  thickness: 32,                     // px per slat along the stack
   room: { start: 104, end: 44 },     // px its labels need outside the plot
   css: `.slat:hover { background: color-mix(in srgb, var(--rhp-ink) 6%, transparent); }`,
 }, (d) => (
@@ -116,7 +116,7 @@ Theme colors are `var(--rhp-ink)`, `var(--rhp-muted)`, `var(--rhp-series-1)` and
 
 Slats are meant to be shared, so a slat looks and lays out the same in every app:
 
-- **The slat owns its CSS and its sizes.** Its `css` applies to that slat type's own slats only (the slat root included). It never reaches the page or another slat type. `band`, `inset` and `room` are its layout.
+- **The slat owns its CSS and its sizes.** Its `css` applies to that slat type's own slats only (the slat root included). It never reaches the page or another slat type. `thickness`, `inset` and `room` are its layout.
 - **A style editor can change a slat type's CSS live.** `restyle(Row, css)` rewrites that type's one stylesheet, and every slat of the type restyles in place without being made again. Half-typed CSS still stays inside the slat.
 - **The app passes a theme object.** The keys are `series` (a list), `positive`, `negative`, `ink`, `muted`, `grid`, `surface`, `low`, `high` and `font`. Pass it with `<Theme value={…}>` around the app, or with `theme` on a Chart. Every `color` prop takes a theme key (`"series-3"`, `"positive"`) or any CSS color.
 - **No page stylesheet changes a chart.** Every declaration rhp or a slat makes is `!important` inside `@layer rhp.place, rhp.slat, rhp.core`, and that layer order is declared first in the document. A zero-specificity guard covers the box, text and paint properties of rhp's elements, and the chart body inherits nothing from the page.
