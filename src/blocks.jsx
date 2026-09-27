@@ -4,6 +4,7 @@
 // Every block reads the orientation of the Plot it is in, and takes class, style (an object),
 // ref, children and any other attribute or handler (title, onClick, aria-*) like a plain element.
 import { createMemo, createRenderEffect, splitProps } from "solid-js";
+import { insert, style } from "solid-js/web";
 import { useOrientation, short } from "./plot.jsx";
 import { write } from "./frame.js";
 
@@ -19,32 +20,47 @@ export const tok = (c) => {
 };
 const length = (v) => (typeof v === "number" ? v * 100 + "%" : v); // 0.6 → "60%"; "2px" stays
 
-// One effect per block writes its variables, and only the ones that changed: the first ones now, later ones in the next frame (frame.js).
-// then(v) runs after, with the same values: a block can set an attribute from them without reading its props again.
-export function writeVars(el, vars, then) {
+// An effect that writes an element's variables, and only the ones that changed: the first ones now, later ones in the
+// next frame (frame.js). The Chart's scale and an Area's span; other blocks do this in blockElement.
+export function writeVars(el, vars) {
   createRenderEffect((prev) => {
     const v = vars();
     for (const k in v) if (v[k] !== prev?.[k]) prev ? write(el, k, v[k]) : v[k] != null && el.style.setProperty(k, v[k]);
-    then?.(v);
     return v;
   });
 }
 
-// back(v): true when the block runs backward along the value axis (a Bar whose `to` is below its `from`), so its end is on the scale's start side.
+// Whether a block got props beyond its own (onClick, title, data-*…), which then go onto its element.
+// Most blocks get none, and skip Solid's spread, which cost a third of a chart's script time.
+const others = (props, mine) => { for (const k in props) if (!mine.has(k)) return true; return false; };
+const MINE = ["class", "style", "ref", "children"];
+
+// A block's element, and one effect for all that changes on it: its class, orientation, attributes, style prop and
+// variables (the first ones now, later ones in the next frame, frame.js). One effect instead of one for the attributes
+// and one for the variables: a chart of 1,000 rows holds 3,000 fewer computations.
+// attrs(): its own attributes (a Label's edge and side). back(v): true when it runs backward along the value axis
+// (a Bar whose `to` is below its `from`), so its end is on the scale's start side.
+function blockElement(props, mine, base, vars, attrs, back) {
+  const o = useOrientation();
+  const el = others(props, mine) ? <div {...splitProps(props, [...mine])[1]} /> : <div />;
+  if ("children" in props) insert(el, () => props.children);
+  createRenderEffect((prev) => {
+    const c = cls(base, props.class), dir = short(o()), st = props.style, a = attrs?.(), v = vars();
+    if (c !== prev?.c) el.setAttribute("class", c);
+    if (dir !== prev?.dir) el.setAttribute("data-rhp-o", dir);
+    for (const k in a) if (a[k] !== prev?.a[k]) a[k] == null ? el.removeAttribute(k) : el.setAttribute(k, a[k]);
+    if (st !== prev?.st) style(el, st, prev?.st);
+    for (const k in v) if (v[k] !== prev?.v[k]) prev ? write(el, k, v[k]) : v[k] != null && el.style.setProperty(k, v[k]);
+    if (back) el.toggleAttribute("data-rhp-back", back(v));
+    return { c, dir, a, st, v };
+  });
+  props.ref?.(el);
+  return el;
+}
+
 function block(base, own, vars, back) {
-  const keys = ["class", "style", "ref", "children", ...own];
-  return (props) => {
-    const o = useOrientation();
-    const [p, rest] = splitProps(props, keys);
-    let el;
-    const node = (
-      <div {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls(base, p.class)} data-rhp-o={short(o())} style={p.style}>
-        {p.children}
-      </div>
-    );
-    writeVars(el, () => vars(p), back && ((v) => el.toggleAttribute("data-rhp-back", back(v))));
-    return node;
-  };
+  const mine = new Set([...MINE, ...own]);
+  return (props) => blockElement(props, mine, base, () => vars(props), null, back);
 }
 
 /**
@@ -72,19 +88,9 @@ export const Cell = block("rhp-cell", ["value", "color"], (p) => ({ "--rhp-value
  * at={v}: just after the value v; side="before" puts it just before (inside a bar's end, or on the left of a negative bar).
  * edge="start" | "end": outside the track, in the chart's gutter (category names, totals).
  */
-export function Label(props) {
-  const o = useOrientation();
-  const [p, rest] = splitProps(props, ["class", "style", "ref", "children", "at", "side", "edge"]);
-  let el;
-  const node = (
-    <div {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-label", p.class)} data-rhp-o={short(o())}
-      data-rhp-edge={p.edge} data-rhp-side={p.side} data-rhp-at={p.edge == null ? "" : undefined} style={p.style}>
-      {p.children}
-    </div>
-  );
-  writeVars(el, () => ({ "--rhp-at": p.at }));
-  return node;
-}
+const LABEL = new Set([...MINE, "at", "side", "edge"]);
+export const Label = (props) => blockElement(props, LABEL, "rhp-label", () => ({ "--rhp-at": props.at }),
+  () => ({ "data-rhp-edge": props.edge, "data-rhp-side": props.side, "data-rhp-at": props.edge == null ? "" : undefined }));
 
 /**
  * A filled shape over the value axis from `points`, a list of [x, y] sorted by x (x on the scale, y >= 0).

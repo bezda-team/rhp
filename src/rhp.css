@@ -64,9 +64,9 @@
 
   /* The axis: grid lines behind the plots, numbers in the axis gutter. */
   .rhp-axis { position: relative; pointer-events: none; }
-  .rhp-gridline { position: absolute; --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))); }
-  .rhp-gridline[data-rhp-o="h"] { top: 0; bottom: 0; left: calc(var(--rhp-p) * 100%); border-left: 1px solid var(--rhp-grid); }
-  .rhp-gridline[data-rhp-o="v"] { left: 0; right: 0; bottom: calc(var(--rhp-p) * 100%); border-bottom: 1px solid var(--rhp-grid); }
+  .rhp-gridline { position: absolute; }
+  .rhp-gridline[data-rhp-o="h"] { top: 0; bottom: 0; left: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); border-left: 1px solid var(--rhp-grid); }
+  .rhp-gridline[data-rhp-o="v"] { left: 0; right: 0; bottom: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); border-bottom: 1px solid var(--rhp-grid); }
   .rhp-gridline > span { position: absolute; font-size: 11px; line-height: 1; color: var(--rhp-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .rhp-gridline[data-rhp-o="h"] > span { top: calc(100% + 5px); left: 0; translate: -50% 0; }
   .rhp-gridline[data-rhp-o="v"] > span { right: calc(100% + 6px); bottom: 0; translate: 0 50%; }
@@ -89,46 +89,41 @@
   .rhp-plot[data-rhp-o="v"] > * > .rhp-plot { inset: 0 calc((100% - var(--rhp-plot-thick, 100%)) / 2); }
 
   /* Blocks. p(v) = (v - min) / (max - min) is where v sits along the track, 0..1.
-     Spans are clipped to the scale; points are not. */
+     Spans are clipped to the scale; points are not. p is written out in each place it is used, not kept in a
+     variable of its own: a custom property declared on every block made style work a fifth slower (bench/style-ab.mjs). */
   :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) { position: absolute; }
-  :is(.rhp-bar, .rhp-area) {
-    --rhp-lo: clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
-    --rhp-hi: clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
-  }
-  :is(.rhp-dot, .rhp-tick, .rhp-label) { --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))); }
 
-  :is(.rhp-bar, .rhp-area)[data-rhp-o="h"] { left: calc(var(--rhp-lo) * 100%); width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
-  :is(.rhp-bar, .rhp-area)[data-rhp-o="v"] { bottom: calc(var(--rhp-lo) * 100%); height: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
+  .rhp-area[data-rhp-o="h"] { left: calc(clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) * 100%); width: calc((clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) - clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1)) * 100%); }
+  .rhp-area[data-rhp-o="v"] { bottom: calc(clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) * 100%); height: calc((clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) - clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1)) * 100%); }
   /* --rhp-gap: empty space at a bar's start (its `from` side), between stacked segments or units. */
-  .rhp-bar[data-rhp-o="h"] { width: max(0px, calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0px))); }
-  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { left: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0px)); }
-  .rhp-bar[data-rhp-o="v"] { height: max(0px, calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0px))); }
-  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { bottom: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0px)); }
+  .rhp-bar[data-rhp-o="h"] { left: calc(clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) * 100%); width: max(0px, calc((clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) - clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1)) * 100% - var(--rhp-gap, 0px))); }
+  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { left: calc(clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) * 100% + var(--rhp-gap, 0px)); }
+  .rhp-bar[data-rhp-o="v"] { bottom: calc(clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) * 100%); height: max(0px, calc((clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) - clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1)) * 100% - var(--rhp-gap, 0px))); }
+  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { bottom: calc(clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1) * 100% + var(--rhp-gap, 0px)); }
   /* Corners: --rhp-radius for all four, or --rhp-start-radius and --rhp-end-radius for one end (the end is where `to` is). */
   .rhp-bar {
-    --rhp-s: var(--rhp-start-radius, var(--rhp-radius, 2px)); --rhp-e: var(--rhp-end-radius, var(--rhp-radius, 2px));
     background: var(--rhp-color, var(--rhp-series-1));
   }
-  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { border-radius: var(--rhp-s) var(--rhp-e) var(--rhp-e) var(--rhp-s); }
-  .rhp-bar[data-rhp-o="h"][data-rhp-back] { border-radius: var(--rhp-e) var(--rhp-s) var(--rhp-s) var(--rhp-e); }
-  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { border-radius: var(--rhp-e) var(--rhp-e) var(--rhp-s) var(--rhp-s); }
-  .rhp-bar[data-rhp-o="v"][data-rhp-back] { border-radius: var(--rhp-s) var(--rhp-s) var(--rhp-e) var(--rhp-e); }
+  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { border-radius: var(--rhp-start-radius, var(--rhp-radius, 2px)) var(--rhp-end-radius, var(--rhp-radius, 2px)) var(--rhp-end-radius, var(--rhp-radius, 2px)) var(--rhp-start-radius, var(--rhp-radius, 2px)); }
+  .rhp-bar[data-rhp-o="h"][data-rhp-back] { border-radius: var(--rhp-end-radius, var(--rhp-radius, 2px)) var(--rhp-start-radius, var(--rhp-radius, 2px)) var(--rhp-start-radius, var(--rhp-radius, 2px)) var(--rhp-end-radius, var(--rhp-radius, 2px)); }
+  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { border-radius: var(--rhp-end-radius, var(--rhp-radius, 2px)) var(--rhp-end-radius, var(--rhp-radius, 2px)) var(--rhp-start-radius, var(--rhp-radius, 2px)) var(--rhp-start-radius, var(--rhp-radius, 2px)); }
+  .rhp-bar[data-rhp-o="v"][data-rhp-back] { border-radius: var(--rhp-start-radius, var(--rhp-radius, 2px)) var(--rhp-start-radius, var(--rhp-radius, 2px)) var(--rhp-end-radius, var(--rhp-radius, 2px)) var(--rhp-end-radius, var(--rhp-radius, 2px)); }
   .rhp-bar[data-rhp-o="h"] { top: 50%; height: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); translate: 0 -50%; }
   .rhp-bar[data-rhp-o="v"] { left: 50%; width: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); translate: -50% 0; }
 
   .rhp-dot { width: var(--rhp-size, 10px); height: var(--rhp-size, 10px); border-radius: 50%; background: var(--rhp-color, var(--rhp-series-1)); }
-  .rhp-dot[data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: calc(var(--rhp-across, .5) * 100%); translate: -50% -50%; }
-  .rhp-dot[data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: calc(var(--rhp-across, .5) * 100%); translate: -50% 50%; }
+  .rhp-dot[data-rhp-o="h"] { left: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); top: calc(var(--rhp-across, .5) * 100%); translate: -50% -50%; }
+  .rhp-dot[data-rhp-o="v"] { bottom: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); left: calc(var(--rhp-across, .5) * 100%); translate: -50% 50%; }
 
   .rhp-tick { background: var(--rhp-color, var(--rhp-ink)); }
-  .rhp-tick[data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: 50%; height: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); width: var(--rhp-tick-width, 2px); translate: -50% -50%; }
-  .rhp-tick[data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: 50%; width: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); height: var(--rhp-tick-width, 2px); translate: -50% 50%; }
+  .rhp-tick[data-rhp-o="h"] { left: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); top: 50%; height: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); width: var(--rhp-tick-width, 2px); translate: -50% -50%; }
+  .rhp-tick[data-rhp-o="v"] { bottom: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); left: 50%; width: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); height: var(--rhp-tick-width, 2px); translate: -50% 50%; }
 
   .rhp-label { font-size: var(--rhp-label-size, 12px); line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
   /* --rhp-label-gap: the space between a label and its value (at) or the plot (edge). */
-  .rhp-label[data-rhp-at][data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: 50%; translate: 0 -50%; padding-left: var(--rhp-label-gap, 5px); }
+  .rhp-label[data-rhp-at][data-rhp-o="h"] { left: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); top: 50%; translate: 0 -50%; padding-left: var(--rhp-label-gap, 5px); }
   .rhp-label[data-rhp-at][data-rhp-o="h"][data-rhp-side="before"] { translate: -100% -50%; padding: 0 var(--rhp-label-gap, 5px) 0 0; }
-  .rhp-label[data-rhp-at][data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: 50%; translate: -50% 0; padding-bottom: var(--rhp-label-gap, 3px); }
+  .rhp-label[data-rhp-at][data-rhp-o="v"] { bottom: calc(((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min))) * 100%); left: 50%; translate: -50% 0; padding-bottom: var(--rhp-label-gap, 3px); }
   .rhp-label[data-rhp-at][data-rhp-o="v"][data-rhp-side="before"] { translate: -50% 100%; padding: var(--rhp-label-gap, 3px) 0 0; }
   .rhp-label[data-rhp-edge][data-rhp-o="h"] { top: 50%; translate: 0 -50%; overflow: hidden; text-overflow: ellipsis; }
   .rhp-label[data-rhp-edge="start"][data-rhp-o="h"] { right: 100%; width: var(--rhp-room-start, 104px); text-align: right; padding-right: var(--rhp-label-gap, 8px); }

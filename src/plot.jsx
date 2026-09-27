@@ -2,7 +2,7 @@
 import { useCore, useSlatCss, useRoot, watchRoot } from "./style.js";
 import {
   createMemo, createComputed, createRenderEffect, createContext, useContext, getOwner, runWithOwner, onMount, onCleanup,
-  createSignal, mergeProps, splitProps, Index, For, Show, Switch, Match,
+  createSignal, mergeProps, splitProps, untrack, Index, For, Show,
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
@@ -24,11 +24,12 @@ export const at = (group, i) => {
 // "vertical": bars run bottom to top, and slats stack left to right.
 // A Plot takes it from the nearest Chart or Plot above it unless it sets its own;
 // "across" means the other one (the cells of a heatmap row run across the row).
-const Orientation = createContext(() => "horizontal");
-const Motion = createContext(() => undefined); // a Chart's `animate`, for the Plots inside it
-const Frame = createContext(null); // the Chart around a Plot: its orientation, and where a Plot asks for gutter room
-const Nested = createContext(false); // true inside a slat: a Plot there fills its slat's band
-export const useOrientation = () => useContext(Orientation);
+// What the Chart and Plots around an element tell it, in one context (a provider costs four computations; a chart
+// held six before, a third of all it made):
+//   orientation: its direction; motion: the Chart's `animate`, for the Plots inside it; frame: the Chart around it
+//   (its scale, and where a Plot asks for gutter room); nested: inside a slat, where a Plot fills its slat's band.
+const Around = createContext({ orientation: () => "horizontal", motion: () => undefined, frame: null, nested: false });
+export const useOrientation = () => useContext(Around).orientation;
 export const short = (o) => (o === "vertical" ? "v" : "h");
 
 // Plot settings. Every other prop is a data group.
@@ -42,6 +43,14 @@ const sameSet = (a, b) => a.size === b.size && [...a].every((v) => b.has(v));
 const range = (n) => Array.from({ length: n }, (_, i) => i);
 const byPosition = (pos) => range(pos.length).filter((i) => pos[i] != null).sort((a, b) => pos[a] - pos[b]);
 
+// The proxy handler of every row's d: its target holds the row, and P, its Plot's readers (makePlot).
+const ROW = {
+  get: (t, k) => (typeof k === "string" ? t.P.read(t, k) : undefined),
+  has: (t, k) => t.P.has(t, k),
+  ownKeys: (t) => t.P.keys(t),
+  getOwnPropertyDescriptor: (t, k) => (t.P.has(t, k) ? { configurable: true, enumerable: true, get: () => t.P.read(t, k) } : undefined),
+};
+
 export function Plot(props) {
   return makePlot(props, "Plot");
 }
@@ -51,19 +60,22 @@ function makePlot(props, role) {
   if (typeof props.children !== "function") throw new Error(`rhp: a ${role}'s child must be a slat function, (d) => <div>…</div>`);
   useSlatCss(props.children);
   const layout = props.children.layout ?? {}; // the slat's own layout: band, inset, room (fixed per slat type)
-  const nested = useContext(Nested), frame = useContext(Frame);
-  const inherited = useOrientation();
+  const { nested, frame, orientation: inherited, motion: inheritedMotion } = useContext(Around);
   const orientation = () => {
     const o = props.orientation ?? inherited();
     return o === "across" ? (inherited() === "vertical" ? "horizontal" : "vertical") : o;
   };
   const groups = Object.keys(props).filter((k) => !SETTINGS.has(k));
   const isGroup = new Set(groups);
+  // A memo made the first time it's read, under the Plot: for what only some Plots use (sorting by a function,
+  // keys, the JS version). A chart holds some sixty signals and memos; each one it doesn't make is memory it keeps.
+  const owner = getOwner();
+  const later = (fn, options) => { let m; return () => (m ??= runWithOwner(owner, () => createMemo(fn, undefined, options)))(); };
   // Each data group is read through one memo, so an inline expression (value={rows().map(f)})
   // runs once per change, not once per slat that reads it.
   const group = {};
   for (const k of groups) group[k] = createMemo(() => props[k]);
-  const rowsList = createMemo(() => props.rows);
+  const rowsList = "rows" in props ? createMemo(() => props.rows) : () => undefined;
   const keyed = props.key != null;
 
   // The slat count: `slats` if set, otherwise the longest list among the data groups and `rows`.
@@ -76,12 +88,34 @@ function makePlot(props, role) {
   // A value from a list data group, or else from the row objects in `rows`.
   const raw = (k, i) => (isGroup.has(k) ? at(group[k](), i) : at(rowsList(), i)?.[k]);
 
+  // What a slat sees. d.k reads data group k at this slat's row when it is read; nothing is copied.
+  // d.index is the row number, d.position its position. A data group that is a function is computed
+  // per row, d.k = group(d), once per change (a memo per slat). `ahead` > 0 reads animated groups
+  // as they will be that many ms from now; it is used to work out the order. Without an id (null),
+  // d reads the data as given: animated groups move per id.
+  // One handler (ROW, below) serves every row's d; this row's own state is on the proxy's target.
+  const P = {
+    read(t, k) {
+      if (k === "index") return t.row();
+      if (k === "position") return pos[t.row()];
+      const g = isGroup.has(k) ? group[k]() : undefined;
+      if (typeof g === "function") return ((t.memos ??= {})[k] ??= runWithOwner(t.owner, () => createMemo(() => g(t.self))))();
+      if (t.id && js() && isMoving(k)) return moving(k, t.id())(t.ahead);
+      return raw(k, t.row());
+    },
+    has: (t, k) => k === "index" || k === "position" || isGroup.has(k) || (rowsList() != null && k in (at(rowsList(), t.row()) ?? {})),
+    keys: (t) => [...new Set(["index", "position", ...groups, ...Object.keys(at(rowsList(), t.row()) ?? {})])],
+  };
+  function datum(row, id, ahead = 0) {
+    const t = { P, row, id, ahead, owner: getOwner(), memos: null, self: null };
+    return (t.self = new Proxy(t, ROW));
+  }
+
   // Animation. No `animate`: the CSS version. animate={true}: the JS version for every data group of numbers.
   // animate={["value"]}: the JS version for those groups. animate={{ groups, duration, ease, slide }}: the same
   // with timing (groups default to all). A Plot without `animate` takes its Chart's. duration, ease and slide are
   // also written as the CSS timing variables, so transitions in the slat match. By default a value moves as fast in
   // the JS version as in the CSS version: 150 ms, ease-out (MOVE_MS, rhp.css).
-  const inheritedMotion = useContext(Motion);
   const anim = createMemo(() => {
     const a = props.animate ?? inheritedMotion();
     if (!a) return null;
@@ -89,11 +123,11 @@ function makePlot(props, role) {
     if (Array.isArray(a)) return { groups: a };
     return { ...a, all: a.groups == null };
   });
-  const listed = createMemo(() => new Set(anim()?.groups ?? []), undefined, { equals: sameSet });
-  const all = createMemo(() => anim()?.all === true);
+  const listed = later(() => new Set(anim()?.groups ?? []), { equals: sameSet });
+  const all = later(() => anim()?.all === true);
   const isMoving = (k) => all() || listed().has(k);
   const js = () => anim() != null;
-  const easing = createMemo(() => curve(anim()?.ease));
+  const easing = later(() => curve(anim()?.ease));
   const timing = () => ({ duration: anim()?.duration ?? MOVE_MS, ease: easing() });
   // How long a slat slides to a new position. JS version: 100 ms by default, centered on the
   // frame where the two values are equal (0 switches in that frame). CSS version: 0.3 s unless set.
@@ -102,57 +136,36 @@ function makePlot(props, role) {
   // Row identity. Without `key` a slat is its row number. With key={name} or key={(d) => id} a slat
   // follows its id: removing a row removes that row's slat, and the rows after it keep theirs.
   // A key function sees the data as given, never the JS version's in-between values (the row has no id yet).
-  const ids = createMemo(() => {
-    if (!keyed) return range(n());
+  const ids = keyed && createMemo(() => {
     const k = props.key;
     return range(n()).map((i) => (typeof k === "function" ? k(datum(() => i, null)) : raw(k, i)));
   }, undefined, { equals: same });
-  const rowOf = createMemo(() => (keyed ? new Map(ids().map((id, i) => [id, i])) : null));
+  const rowOf = keyed && later(() => new Map(ids().map((id, i) => [id, i])));
   const rowOfId = (id) => (keyed ? rowOf().get(id) : id);
+  const idOf = (i) => (keyed ? ids()[i] : i);
 
   // JS version: one reader per (group, id), made on first use. Readers hold plain numbers, not signals.
   const readers = {};
+  let pruning = false;
   const moving = (k, id) => {
+    if (!pruning) { // forget readers of ids that are gone and of groups that stopped animating
+      pruning = true;
+      runWithOwner(owner, () => createComputed(() => {
+        const live = new Set(keyed ? ids() : range(n()));
+        for (const k in readers) {
+          if (!js() || !isMoving(k)) delete readers[k];
+          else for (const id of readers[k].keys()) if (!live.has(id)) readers[k].delete(id);
+        }
+      }));
+    }
     const m = (readers[k] ??= new Map());
     let r = m.get(id);
     if (!r) m.set(id, (r = animated(() => raw(k, rowOfId(id)), timing)));
     return r;
   };
-  createComputed(() => { // forget readers of ids that are gone and of groups that stopped animating
-    const live = new Set(ids());
-    for (const k in readers) {
-      if (!js() || !isMoving(k)) delete readers[k];
-      else for (const id of readers[k].keys()) if (!live.has(id)) readers[k].delete(id);
-    }
-  });
 
   // Positions: where each row is drawn (0 = first). A store, so a change notifies only rows whose position changed.
   const [pos, setPos] = createStore([]);
-
-  // What a slat sees. d.k reads data group k at this slat's row when it is read; nothing is copied.
-  // d.index is the row number, d.position its position. A data group that is a function is computed
-  // per row, d.k = group(d), once per change (a memo per slat). `ahead` > 0 reads animated groups
-  // as they will be that many ms from now; it is used to work out the order. Without an id (null),
-  // d reads the data as given: animated groups move per id.
-  function datum(row, id, ahead = 0) {
-    const owner = getOwner(), memos = {};
-    const read = (k) => {
-      if (k === "index") return row();
-      if (k === "position") return pos[row()];
-      const g = isGroup.has(k) ? group[k]() : undefined;
-      if (typeof g === "function") return (memos[k] ??= runWithOwner(owner, () => createMemo(() => g(self))))();
-      if (id && js() && isMoving(k)) return moving(k, id())(ahead);
-      return raw(k, row());
-    };
-    const has = (k) => k === "index" || k === "position" || isGroup.has(k) || (rowsList() != null && k in (at(rowsList(), row()) ?? {}));
-    const self = new Proxy({}, {
-      get: (_, k) => (typeof k === "string" ? read(k) : undefined),
-      has: (_, k) => has(k),
-      ownKeys: () => [...new Set(["index", "position", ...groups, ...Object.keys(at(rowsList(), row()) ?? {})])],
-      getOwnPropertyDescriptor: (_, k) => (has(k) ? { configurable: true, enumerable: true, get: () => read(k) } : undefined),
-    });
-    return self;
-  }
 
   // Order: one position per row, from any function. `order` is either that list (a data group:
   // gaps, ties and fractions all work; null hides a row) or a function (rows, current) => list,
@@ -160,7 +173,7 @@ function makePlot(props, role) {
   // JS version with Slide: rows are read half a slide ahead, so two rows switching places
   // pass each other in the frame where their values are equal.
   const lead = () => (js() && (props.reorder ?? "slide") === "slide" ? (slideMs() ?? 0) / 2 : 0);
-  const views = createMemo(() => { const ms = lead(); return range(n()).map((i) => datum(() => i, () => ids()[i], ms)); });
+  const views = later(() => { const ms = lead(); return range(n()).map((i) => datum(() => i, () => idOf(i), ms)); });
   const positions = createMemo(
     (prev) => {
       const o = props.order;
@@ -172,7 +185,7 @@ function makePlot(props, role) {
     { equals: same },
   );
   createComputed(() => setPos(positions().slice()));
-  const shown = createMemo(() => byPosition(positions()), undefined, { equals: same }); // rows in display order
+  const shown = later(() => byPosition(positions()), { equals: same }); // rows in display order (Move, Refill)
   const extent = createMemo(() => positions().reduce((m, p) => (p == null ? m : Math.max(m, p + 1)), 0));
 
   // Gutters: the Chart pads each side for the largest room its Plots ask for. A top-level Plot whose slat
@@ -191,19 +204,35 @@ function makePlot(props, role) {
     const el = props.children(datum(row, id));
     if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
     if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope); // the slat's CSS applies inside its own slats only (an attribute: Solid's class={…} rewrites className)
-    createRenderEffect(() => el.setAttribute("data-rhp-o", short(orientation()))); // for :horizontal and :vertical in slat CSS
-    createRenderEffect(() => {
-      const p = pos[row()];
-      el.hidden = p == null;
-      if (p != null) el.style.setProperty("--rhp-position", p);
+    createRenderEffect((prev) => { // its orientation (for :horizontal and :vertical in slat CSS) and its position
+      const dir = short(orientation()), p = pos[row()];
+      if (dir !== prev?.dir) el.setAttribute("data-rhp-o", dir);
+      if (p !== prev?.p) { el.hidden = p == null; if (p != null) el.style.setProperty("--rhp-position", p); }
+      return { dir, p };
     });
     el.$row = row; // lets a handler on the chart find which row a slat shows
     return el;
   };
   const action = () => props.reorder ?? "slide";
+  // The slats, made by the reorder action (one memo, not a Switch: five fewer computations per Plot).
+  // A component, so the memo is made inside the Provider below and the slats see what it provides.
+  const Slats = () => createMemo(() => {
+    const a = action();
+    return untrack(() => {
+      // Move: For over the ids in display order. Each slat's element moves in the DOM with its row.
+      if (a === "move") return <For each={ran(shown().map(idOf))}>{(id) => { const row = createMemo(() => rowOfId(id)); return slat(row, () => id); }}</For>;
+      // Refill: Index over the rows in display order. Slot k shows whichever row is k-th.
+      if (a === "refill") return <Index each={ran(shown())}>{(row) => slat(row, () => idOf(row()))}</Index>;
+      // Slide with key: For over the ids in row order. Slats never move in the page; --rhp-position moves them on screen.
+      if (keyed) return <For each={ran(ids())}>{(id, i) => slat(i, () => id)}</For>;
+      // Slide: Index over the count.
+      return <Index each={ran(Array(n()))}>{(_, i) => slat(() => i, () => i)}</Index>;
+    });
+  });
 
+  // A Plot nested in a slat does not take the Chart's `animate`: its data already arrive moving.
   return (
-    <Orientation.Provider value={orientation}>
+    <Around.Provider value={{ orientation, motion: () => undefined, frame, nested: true }}>
       <div ref={props.ref} class={props.class ? "rhp-plot " + props.class : "rhp-plot"}
         data-rhp-o={short(orientation())} data-rhp-reorder={action()} data-rhp-overlap={props.overlap ? "" : undefined}
         data-rhp-animate={js() ? "js" : undefined}
@@ -216,27 +245,9 @@ function makePlot(props, role) {
           "--rhp-length-time": anim()?.duration == null ? undefined : anim().duration + "ms",
           "--rhp-length-ease": cssCurve(anim()?.ease),
         }}>
-        {/* A Plot nested in a slat does not take the Chart's `animate`: its data already arrive moving. */}
-        <Nested.Provider value={true}><Motion.Provider value={() => undefined}><Switch>
-          <Match when={action() === "slide" && !keyed}>
-            {/* Slide: Index over the count. Slats never move in the page; --rhp-position moves them on screen. */}
-            <Index each={ran(Array(n()))}>{(_, i) => slat(() => i, () => i)}</Index>
-          </Match>
-          <Match when={action() === "slide" && keyed}>
-            {/* Slide with key: For over the ids in row order. Still no moves when the order changes. */}
-            <For each={ran(ids())}>{(id, i) => slat(i, () => id)}</For>
-          </Match>
-          <Match when={action() === "move"}>
-            {/* Move: For over the ids in display order. Each slat's element moves in the DOM with its row. */}
-            <For each={ran(shown().map((i) => ids()[i]))}>{(id) => { const row = createMemo(() => rowOfId(id)); return slat(row, () => id); }}</For>
-          </Match>
-          <Match when={action() === "refill"}>
-            {/* Refill: Index over the rows in display order. Slot k shows whichever row is k-th. */}
-            <Index each={ran(shown())}>{(row) => slat(row, () => ids()[row()])}</Index>
-          </Match>
-        </Switch></Motion.Provider></Nested.Provider>
+        <Slats />
       </div>
-    </Orientation.Provider>
+    </Around.Provider>
   );
 }
 
@@ -254,7 +265,7 @@ function makePlot(props, role) {
  * moving end reaches it and goes when the end passes it, and its values are not animated a second time.
  */
 export function Scale(props) {
-  const frame = useContext(Frame);
+  const frame = useContext(Around).frame;
   if (!frame) throw new Error("rhp: a Scale goes inside a Chart");
   frame.addScale();
   onCleanup(frame.dropScale);
@@ -387,7 +398,7 @@ export function Chart(props) {
     onCleanup(() => ro.disconnect());
   });
   const node = (
-    <Orientation.Provider value={orientation}><Motion.Provider value={() => props.animate}><Frame.Provider value={frame}>
+    <Around.Provider value={{ orientation, motion: () => props.animate, frame, nested: false }}>
       <div ref={(e) => { el = e; props.ref?.(e); }} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined}
         style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240) }}>
@@ -397,7 +408,7 @@ export function Chart(props) {
           <Show when={axis()}><Axis ticks={ticks()} format={props.format} /></Show>
         </div>
       </div>
-    </Frame.Provider></Motion.Provider></Orientation.Provider>
+    </Around.Provider>
   );
   // The scale is written like a block's numbers: now at first, then in the next frame (frame.js).
   writeVars(el, () => ({ "--rhp-min": min(), "--rhp-max": max() }));
@@ -416,7 +427,12 @@ export function Axis(props) {
   return (
     <div class="rhp-axis" aria-hidden="true">
       <For each={props.ticks}>
-        {(t) => <div class="rhp-gridline" data-rhp-o={short(o())} style={{ "--rhp-at": t }}><span>{props.format ? props.format(t) : t}</span></div>}
+        {(t) => { // one effect per line for its direction and its number (three before)
+          const el = <div class="rhp-gridline"><span /></div>, num = el.firstChild;
+          el.style.setProperty("--rhp-at", t);
+          createRenderEffect(() => { el.setAttribute("data-rhp-o", short(o())); num.textContent = props.format ? props.format(t) : t; });
+          return el;
+        }}
       </For>
     </div>
   );
