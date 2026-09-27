@@ -8,7 +8,7 @@ import { chromium } from "playwright";
 import { page as bundle } from "../scripts/bundle.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
-for (const t of ["core", "cost"]) {
+for (const t of ["core", "cost", "mount"]) {
   await bundle(at(t + ".jsx"), at(`out/${t}.js`));
   fs.writeFileSync(at(`out/${t}.html`), `<!doctype html><html><head><meta charset=utf-8></head><body><script src="${t}.js"></script></body></html>`);
 }
@@ -76,6 +76,23 @@ const open = async (url, opts = {}) => {
   check("a plain array replaced: every slat re-runs, one style write", [r.runs.plain, r.writes.plain], [1000, 1]);
   check("a store item set: one slat re-runs, one style write", [r.runs.store, r.writes.store], [1, 1]);
   console.log(`     mount, 2 Plots x 1,000 slats: ${ms.toFixed(1)} ms`);
+  await p.close();
+}
+
+// Mount cost (test/mount.jsx): 50 charts of 7 slats; and a page's view-transition-name on a slat class
+{
+  const p = await open("file://" + at("out/mount.html"));
+  const ms = await p.evaluate(() => T.mount());
+  const vt = await p.evaluate(async () => {
+    const s = document.createElement("style");
+    s.textContent = ".slat { view-transition-name: card }"; // 350 slat roots with one name: a duplicate aborts the transition
+    document.head.append(s);
+    const t = document.startViewTransition(() => {});
+    try { await t.finished; return "ran"; } catch (e) { return e.message; }
+  });
+  check("a page's view-transition-name on slat roots doesn't abort the page's view transition", vt, "ran");
+  check("no page errors", p.errors, []);
+  console.log(`     mount, 50 charts x 7 slats, with style and layout: ${ms.toFixed(1)} ms`);
   await p.close();
 }
 

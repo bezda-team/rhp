@@ -28,8 +28,9 @@
      Replaced slat roots (svg, img, canvas…) keep their own width and height attributes. */
   :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object), .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell) { width: auto; height: auto; }
   /* A page's view-transition-name on a common class would morph slat roots, or abort the page's own view transition
-     with a duplicate name. Slat roots only: the property costs style time on every element it is declared on. */
-  :where(.rhp-plot > *) { view-transition-name: none; }
+     with a duplicate name. Slat roots only, and only while a view transition runs: declared on 350 slat roots, the
+     property costs 1.5 ms per 50 charts at mount (test/mount.jsx), and a name matters only when a transition captures it. */
+  :where(:root:active-view-transition .rhp-plot > *) { view-transition-name: none; }
   /* display: revert skips the hidden attribute (a presentational hint), so it is restated. */
   :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area)[hidden] { display: none; }
   /* A page's generated content (a div::after clearfix) would be an in-flow box in the body grid, the axis,
