@@ -3,9 +3,9 @@
 // set once on the Chart. A scale change is one write, not one per block.
 // Every block reads the orientation of the Plot it is in, and takes class, style (an object),
 // ref, children and any other attribute or handler (title, onClick, aria-*) like a plain element.
-import { createMemo, createRenderEffect, splitProps, untrack } from "solid-js";
+import { createMemo, createRenderEffect, splitProps } from "solid-js";
 import { insert, style } from "solid-js/web";
-import { useOrientation, useStill, short } from "./plot.jsx";
+import { useOrientation, short } from "./plot.jsx";
 import { write } from "./frame.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
@@ -44,21 +44,6 @@ const MINE = ["class", "style", "ref", "children"];
 // (a Bar whose `to` is below its `from`), so its end is on the scale's start side.
 function blockElement(props, mine, base, vars, attrs, back) {
   const o = useOrientation();
-  // In a static chart a block is drawn once: its values are written straight to the element, and it makes no effect.
-  if (useStill()) return untrack(() => {
-    const el = others(props, mine) ? <div {...splitProps(props, [...mine])[1]} /> : <div />;
-    if ("children" in props) insert(el, props.children);
-    el.setAttribute("class", cls(base, props.class));
-    el.setAttribute("data-rhp-o", short(o()));
-    const a = attrs?.();
-    for (const k in a) if (a[k] != null) el.setAttribute(k, a[k]);
-    if (props.style) style(el, props.style);
-    const v = vars();
-    for (const k in v) if (v[k] != null) el.style.setProperty(k, v[k]);
-    if (back?.(v)) el.setAttribute("data-rhp-back", "");
-    props.ref?.(el);
-    return el;
-  });
   if (others(props, mine)) {
     // Props of its own kind (onClick, title, classList, use:…): Solid spreads them, and sets the class, direction and
     // style with them. The class comes first, so a classList after it adds to it instead of being overwritten.

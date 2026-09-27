@@ -31,7 +31,6 @@ export const at = (group, i) => {
 //   still: the Chart is static.
 const Around = createContext({ orientation: () => "horizontal", motion: () => undefined, frame: null, nested: false, still: false });
 export const useOrientation = () => useContext(Around).orientation;
-export const useStill = () => useContext(Around).still; // inside a static Plot's rows
 export const short = (o) => (o === "vertical" ? "v" : "h");
 
 // Plot settings. Every other prop is a data group.
