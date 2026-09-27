@@ -16,13 +16,17 @@ export const bezier = (x1, y1, x2, y2) => {
   };
 };
 export const easeInOut = bezier(0.42, 0, 0.58, 1); // v1's curve
-const NAMED = { linear: (x) => x, ease: bezier(0.25, 0.1, 0.25, 1), "ease-in": bezier(0.42, 0, 1, 1), "ease-out": bezier(0, 0, 0.58, 1), "ease-in-out": easeInOut };
-/** A timing curve from a CSS name ("ease-out"), cubic-bezier numbers ([x1, y1, x2, y2]) or a function of 0..1. */
+export const easeOut = bezier(0, 0, 0.58, 1);
+const NAMED = { linear: (x) => x, ease: bezier(0.25, 0.1, 0.25, 1), "ease-in": bezier(0.42, 0, 1, 1), "ease-out": easeOut, "ease-in-out": easeInOut };
+// How a value moves by default, in either version: the CSS version transitions lengths and positions over
+// .15s ease-out (rhp.css, --rhp-length-time and --rhp-length-ease), and the JS version takes the same time and curve.
+export const MOVE_MS = 150;
+/** A timing curve from a CSS name ("ease-out"), cubic-bezier numbers ([x1, y1, x2, y2]) or a function of 0..1. Default: ease-out. */
 export const curve = (c) => {
   if (typeof c === "function") return c;
   if (Array.isArray(c)) return bezier(...c);
-  if (c != null && !NAMED[c]) console.warn(`rhp: unknown ease "${c}", using ease-in-out`);
-  return NAMED[c] ?? easeInOut;
+  if (c != null && !NAMED[c]) console.warn(`rhp: unknown ease "${c}", using ease-out`);
+  return NAMED[c] ?? easeOut;
 };
 /** The same curve as a CSS timing function, or undefined when CSS can't express it (a JS function). */
 export const cssCurve = (c) => (Array.isArray(c) ? `cubic-bezier(${c.join(",")})` : typeof c === "string" ? c : undefined);
@@ -80,7 +84,7 @@ const snapshot = (v) => (Array.isArray(v) ? v.map(snapshot) : plain(v) ? Object.
 
 /**
  * Wraps a reactive value so that it moves to each new value over time instead of jumping.
- * `settings()` returns { duration (ms, default 400), ease (a function of 0..1, default ease-in-out) };
+ * `settings()` returns { duration (ms, default MOVE_MS: 150), ease (a function of 0..1, default ease-out) }, the CSS version's timing;
  * it is read, untracked, each time the value changes.
  * Returns a reader: reader() is the value to draw in this frame; reader(ms) is the value `ms` from now.
  * State is plain variables, not signals. While still, a reader does not depend on the clock.
@@ -101,8 +105,8 @@ export function animated(read, settings = () => ({})) {
       const target = snapshot(v), d = to === undefined ? undefined : diff(target, to);
       if (d === undefined) moves = [];
       else {
-        const s = untrack(settings), start = performance.now(), dur = Math.max(1, s.duration ?? 400);
-        moves.push({ d, start, dur, ease: s.ease ?? easeInOut });
+        const s = untrack(settings), start = performance.now(), dur = Math.max(1, s.duration ?? MOVE_MS);
+        moves.push({ d, start, dur, ease: s.ease ?? easeOut });
         runUntil(start + dur);
       }
       to = target;

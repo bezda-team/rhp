@@ -359,6 +359,35 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
+  // A value takes as long to move in the JS version as in the CSS version (150 ms, ease-out, by default): the time from
+  // a change to the last frame in which Fruit A's bar still moves.
+  const settle = {};
+  for (const motion of ["css", "js"]) {
+    await p.click(`label:has(#motion-${motion})`); await p.waitForTimeout(400);
+    settle[motion] = await p.evaluate(async () => {
+      const input = document.querySelector("#fruit .slider input");
+      const set = (v) => { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); };
+      const frame = () => new Promise((r) => requestAnimationFrame(r));
+      const bar = [...document.querySelectorAll("#fruit .slat")].find((s) => s.querySelector(".name")?.textContent === "Fruit A").querySelector(".bar");
+      set(5); await new Promise((r) => setTimeout(r, 500));
+      let last = bar.getBoundingClientRect().width, moved = 0;
+      set(60);
+      const t0 = performance.now();
+      for (let f = 0; f < 45; f++) {
+        await frame();
+        const w = bar.getBoundingClientRect().width;
+        if (Math.abs(w - last) > 0.01) { last = w; moved = performance.now() - t0; }
+      }
+      set(1);
+      return Math.round(moved);
+    });
+  }
+  check("JS version: a value moves as fast as in the CSS version (ms until it settles)", settle,
+    (t) => t.css >= 100 && t.css <= 220 && t.js >= 100 && t.js <= 220 && Math.abs(t.js - t.css) <= 40);
+  console.log(`     a value settles in: CSS version ${settle.css} ms, JS version ${settle.js} ms`);
+  await p.click("label:has(#motion-css)");
+  await p.waitForTimeout(600);
+
   // The dots: each row's whole dots in the window, lit or not, and whether the window shows a hole anywhere in the row:
   // a gap wider than the 8px between dots (counting the dots just past its ends), or no dot within 4px of an end.
   const look = () => p.evaluate(() => [...document.querySelectorAll("#dots .rhp-body > .rhp-plot > *")].map((row) => {

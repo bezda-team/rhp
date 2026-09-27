@@ -5,7 +5,7 @@ import {
   createSignal, mergeProps, splitProps, Index, For, Show, Switch, Match,
 } from "solid-js";
 import { createStore } from "solid-js/store";
-import { animated, curve, cssCurve } from "./animate.js";
+import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
 import { nice } from "./data.js";
 
 const isList = (g) => Array.isArray(g) || (ArrayBuffer.isView(g) && !(g instanceof DataView));
@@ -78,7 +78,8 @@ function makePlot(props, role) {
   // Animation. No `animate`: the CSS version. animate={true}: the JS version for every data group of numbers.
   // animate={["value"]}: the JS version for those groups. animate={{ groups, duration, ease, slide }}: the same
   // with timing (groups default to all). A Plot without `animate` takes its Chart's. duration, ease and slide are
-  // also written as the CSS timing variables, so transitions in the slat match.
+  // also written as the CSS timing variables, so transitions in the slat match. By default a value moves as fast in
+  // the JS version as in the CSS version: 150 ms, ease-out (MOVE_MS, rhp.css).
   const inheritedMotion = useContext(Motion);
   const anim = createMemo(() => {
     const a = props.animate ?? inheritedMotion();
@@ -92,7 +93,7 @@ function makePlot(props, role) {
   const isMoving = (k) => all() || listed().has(k);
   const js = () => anim() != null;
   const easing = createMemo(() => curve(anim()?.ease));
-  const timing = () => ({ duration: anim()?.duration ?? 400, ease: easing() });
+  const timing = () => ({ duration: anim()?.duration ?? MOVE_MS, ease: easing() });
   // How long a slat slides to a new position. JS version: 100 ms by default, centered on the
   // frame where the two values are equal (0 switches in that frame). CSS version: 0.3 s unless set.
   const slideMs = () => anim()?.slide ?? (js() ? 100 : undefined);
@@ -326,7 +327,7 @@ export function Chart(props) {
   const theme = createMemo(() => themeVars({ ...THEME, ...pageTheme?.(), ...props.theme }));
   const domain = createMemo(() => props.scale ?? [0, 100], undefined, { equals: same });
   const anim = () => (props.animate === true ? {} : props.animate);
-  const timing = () => ({ duration: anim()?.duration ?? 400, ease: curve(anim()?.ease) });
+  const timing = () => ({ duration: anim()?.duration ?? MOVE_MS, ease: curve(anim()?.ease) });
   const lo = animated(() => domain()[0], timing), hi = animated(() => domain()[1], timing);
   const min = () => (anim() ? lo() : domain()[0]);
   const max = () => (anim() ? hi() : domain()[1]);
