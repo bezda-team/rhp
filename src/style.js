@@ -191,7 +191,7 @@ function declareLayers(root) {
   const edited = new WeakSet();
   let moves = 0, reset;
   const keep = () => {
-    const first = root.querySelector('style, link[rel~="stylesheet"]');
+    const first = root.querySelector('style:not([data-rhp-server]), link[rel~="stylesheet"]'); // not a server's, which goes
     if (!first?.hasAttribute(MARK)) {
       if (++moves > 20) return; // another script keeps its own sheet first: stop instead of looping with it
       reset ??= setTimeout(() => { moves = 0; reset = undefined; }, 1000);
@@ -227,6 +227,19 @@ function update(entry, css) {
     const s = own.get(entry);
     if (s) s.replaceSync ? s.replaceSync(css) : (s.textContent = css);
   }
+}
+
+// On a server: the CSS a chart's first paint needs, written into the page with it: rhp's core and the sheets of the slat
+// types drawn in it. Each goes into a page once per render (`render`: an object the render shares, its assets list); a chart rendered
+// on its own (an island) brings all it needs.
+let coreText;
+const written = new WeakMap(); // render -> the sheets already in its page
+export function serverSheets(slats, render) {
+  const seen = render ? written.get(render) ?? written.set(render, new Set()).get(render) : new Set();
+  let out = "";
+  if (!seen.has("core")) { seen.add("core"); out += (coreText ??= LAYERS + "\n" + important(CORE)); }
+  for (const fn of slats) if (!seen.has(fn.scope)) { seen.add(fn.scope); out += "\n" + slatSheet(fn); }
+  return out;
 }
 
 let core = false;

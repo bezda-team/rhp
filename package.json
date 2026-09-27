@@ -24,7 +24,13 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./dist/index.js",
+    ".": {
+      "worker": "./dist/server.js",
+      "browser": "./dist/index.js",
+      "deno": "./dist/server.js",
+      "node": "./dist/server.js",
+      "default": "./dist/index.js"
+    },
     "./standalone": "./dist/standalone.js"
   },
   "module": "./dist/index.js",

@@ -16,7 +16,7 @@ This is one package with one import. Solid is its only peer dependency. The CSS 
 
 In a React app, `@bezda/rhp-react` (in `react/`) turns an rhp chart into a React component: `` toReact((props) => html`…`) ``, where `props` follows the component's props item by item. See its README.
 
-With no build step, a page can import `@bezda/rhp/standalone`, one module with Solid included (27 kB gzipped), from a CDN. Slats are then written with Solid's `html` template tag instead of JSX, and a value that changes is wrapped in a function:
+With no build step, a page can import `@bezda/rhp/standalone`, one module with Solid included (29 kB gzipped), from a CDN. Slats are then written with Solid's `html` template tag instead of JSX, and a value that changes is wrapped in a function:
 
 ```html
 <script type="module">
@@ -114,6 +114,23 @@ Theme colors are `var(--rhp-ink)`, `var(--rhp-muted)`, `var(--rhp-series-1)` and
 - **A Plot drawn over another takes the pointer.** Its box covers the chart. Give an overlay (a today line, a crosshair) `style={{ "pointer-events": "none" }}` so the pointer reaches the Plot under it.
 - **Follow the pointer with `pointermove`, not `pointerover`.** When a hover changes the layout (a badge appears), the browser fires `pointerover` under a pointer that hasn't moved, and the choice can flip back.
 
+## Screen readers
+
+A chart reads as what it shows, with nothing to set up:
+
+- **A Chart with a `label` is a figure with that name**: `<Chart label="Fruit sold this week">`. It also takes `aria-labelledby`, `aria-describedby` and any other `aria-*` prop, and `id`.
+- **A Plot is a list, and each row a list item**, read in the order the rows are shown. Sorted rows slide on screen but keep their place in the page, so a sorted Plot lists them in display order in `aria-owns`, and gives each row an id for it (a slat's own id, if it sets one).
+- **A row reads its text**: its Labels and anything else the slat writes. A row that shows only shapes (a bar with no value) needs words: add a Label, or text a screen reader reads but the page doesn't show (a visually hidden class, in the slat's CSS).
+- **A slat root with a role of its own keeps it** (`role="group"`, a button). The axis and a Scale are left out: their numbers are for the eye.
+
+## On a server
+
+rhp draws charts on a server too, as HTML, with Solid's `renderToString` (SolidStart, Astro, or your own server). The page then shows the charts before any script runs, and the browser takes them over (`hydrate`) without drawing them again.
+
+- **Nothing to change in the app.** `@bezda/rhp` resolves to its server build where Solid resolves to its own (Node, Deno, workers), and to its browser build in a browser.
+- **The CSS comes with the charts.** Each chart writes the CSS it needs into the page (rhp's core once per render, and its slat types' CSS), and the browser swaps it for its own sheets when it takes over.
+- **What a server can't know** it leaves to the browser: a Scale's `d.toEnd` (px measured on screen) is `Infinity` until then, and animations start from the first values the browser sees.
+
 ## Same look in any app
 
 Slats are meant to be shared, so a slat looks and lays out the same in every app:
@@ -132,7 +149,7 @@ Charts are plain DOM, with no shadow root. `querySelector`, Testing Library, pag
 
 | | |
 |---|---|
-| `npm run build` | `dist/index.js`, the package: one ES module, Solid left to the app. |
+| `npm run build` | `dist/index.js`, the package: one ES module, Solid left to the app; `dist/server.js`, the same for a server; `dist/standalone.js`, rhp and Solid in one module for pages with no build step. |
 | `npm run gallery` | `examples/gallery/out/slat-gallery.html`: 20 plots, each one slat, in both orientations and both animation versions. The first three replicate v1's demos with v1's assets (`examples/gallery/assets`); the others are magazine-style pieces. |
 | `npm test` | Builds the test pages and the gallery, then checks them in Chromium with Playwright. Set `CHROMIUM=/path/to/chrome` to pick a browser. |
 | `bench/` | rhp against eleven other chart setups (Chart.js, ECharts, Recharts, D3, Charts.css…): mount, update, drag, size and memory in Chrome, Safari, Firefox and WebKit. Results in `bench/RESULTS.md`, how to run in `bench/README.md`. |

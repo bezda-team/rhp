@@ -5,6 +5,7 @@
 // ref, children and any other attribute or handler (title, onClick, aria-*) like a plain element.
 import { createMemo, createRenderEffect, splitProps } from "solid-js";
 import { insert, style } from "solid-js/web";
+import { isServer } from "./env.js";
 import { useOrientation, short } from "./plot.jsx";
 import { write } from "./frame.js";
 
@@ -24,12 +25,22 @@ const length = (v) => (typeof v === "number" ? v * 100 + "%" : v); // 0.6 → "6
 // next frame (frame.js). back(v), for a Bar: whether it runs backward. The Chart's scale, an Area's span, and a block
 // with props of its own kind; other blocks do this in blockElement.
 export function writeVars(el, vars, back) {
+  if (isServer) return; // a server writes them into the element's style (withVars)
   createRenderEffect((prev) => {
     const v = vars();
     for (const k in v) if (v[k] !== prev?.[k]) prev ? write(el, k, v[k]) : v[k] != null && el.style.setProperty(k, v[k]);
     if (back) el.toggleAttribute("data-rhp-back", back(v));
     return v;
   });
+}
+
+// On a server, an element's style attribute: its style prop (an object or a string) and its variables, which the browser
+// then keeps writing. A variable that is null or undefined is left out, as writeVars leaves it unset.
+export function withVars(st, vars) {
+  let css = typeof st === "string" ? st : "";
+  if (st && typeof st === "object") for (const k in st) if (st[k] != null) css += (css && !css.endsWith(";") ? ";" : "") + k + ":" + st[k];
+  for (const k in vars) if (vars[k] != null) css += (css && !css.endsWith(";") ? ";" : "") + k + ":" + vars[k];
+  return css || undefined;
 }
 
 // Whether a block got props beyond its own (onClick, title, data-*…), which then go onto its element.
@@ -42,7 +53,7 @@ const MINE = ["class", "style", "ref", "children"];
 // and one for the variables: a chart of 1,000 rows holds 3,000 fewer computations.
 // attrs(): its own attributes (a Label's edge and side). back(v): true when it runs backward along the value axis
 // (a Bar whose `to` is below its `from`), so its end is on the scale's start side.
-function blockElement(props, mine, base, vars, attrs, back) {
+function browserBlock(props, mine, base, vars, attrs, back) {
   const o = useOrientation();
   if (others(props, mine)) {
     // Props of its own kind (onClick, title, classList, use:…): Solid spreads them, and sets the class, direction and
@@ -71,6 +82,19 @@ function blockElement(props, mine, base, vars, attrs, back) {
   props.ref?.(el);
   return el;
 }
+
+// On a server: the element as the browser will first draw it, from the values of now.
+function serverBlock(props, mine, base, vars, attrs, back) {
+  const o = useOrientation(), v = vars();
+  return (
+    <div {...(others(props, mine) ? splitProps(props, [...mine])[1] : {})} class={cls(base, props.class)} data-rhp-o={short(o())}
+      {...(attrs ? attrs() : {})} data-rhp-back={back?.(v) ? "" : undefined} style={withVars(props.style, v)}>
+      {props.children}
+    </div>
+  );
+}
+// Each build keeps the one for its side (isServer is a constant there).
+const blockElement = isServer ? serverBlock : browserBlock;
 
 function block(base, own, vars, back) {
   const mine = new Set([...MINE, ...own]);
@@ -134,14 +158,15 @@ export function Area(props) {
       : [xy(ut[0][0], 1000), ...ut.map(([u, y]) => xy(u, 1000 - y * 1000)), xy(ut[ut.length - 1][0], 1000)];
     return "M" + line.join("L") + "Z";
   });
+  // the path is also given as CSS (d: var(--rhp-d)), so a page's "all: revert" / "all: unset" can't drop the attribute's shape
+  const vars = () => ({ "--rhp-from": span()[0], "--rhp-to": span()[1], "--rhp-color": tok(p.color), "--rhp-d": path() ? `path("${path()}")` : undefined });
   let el;
   const node = (
     <svg {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-area", p.class)} data-rhp-o={short(o())}
-      viewBox="0 0 1000 1000" preserveAspectRatio="none" style={p.style}>
+      viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : p.style}>
       <path d={path()} vector-effect="non-scaling-stroke" />
     </svg>
   );
-  // the path is also given as CSS (d: var(--rhp-d)), so a page's "all: revert" / "all: unset" can't drop the attribute's shape
-  writeVars(el, () => ({ "--rhp-from": span()[0], "--rhp-to": span()[1], "--rhp-color": tok(p.color), "--rhp-d": path() ? `path("${path()}")` : undefined }));
+  writeVars(el, vars);
   return node;
 }

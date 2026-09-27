@@ -5,7 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { execFileSync } from "child_process";
 import { chromium } from "playwright";
-import { page as bundle, standalone } from "../scripts/bundle.mjs";
+import { page as bundle, standalone, ssrServer, ssrClient, ssrPackage } from "../scripts/bundle.mjs";
 import { build } from "esbuild";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
@@ -17,6 +17,18 @@ await standalone(path.join(here, "../src/standalone.js"), at("out/standalone.js"
 await build({ entryPoints: [at("react.js")], outfile: at("out/react.js"), bundle: true, format: "iife", minify: true, logLevel: "warning",
   alias: { "@bezda/rhp/standalone": at("out/standalone.js") }, define: { "process.env.NODE_ENV": '"production"' } });
 fs.writeFileSync(at("out/react.html"), '<!doctype html><html><head><meta charset=utf-8></head><body><script src="react.js"></script></body></html>');
+// test/ssr.jsx: the app's HTML from a server (Node), and the script that takes it over in the browser
+// (from src), and the same with the published package: Node picks dist/server.js through package.json's exports,
+// and the page script is built from dist/index.js, the browser's pick
+await ssrServer(at("ssr-server.jsx"), at("out/ssr-server.mjs"));
+await ssrClient(at("ssr-client.jsx"), at("out/ssr-client.js"));
+execFileSync("node", [path.join(here, "../scripts/build.mjs")], { stdio: "ignore" });
+await ssrPackage(at("ssr-server.jsx"), at("out/ssr-dist-server.mjs"), "server");
+await ssrPackage(at("ssr-client.jsx"), at("out/ssr-dist-client.js"), "browser");
+const SSR = await import("file://" + at("out/ssr-server.mjs") + "?" + Date.now());
+const SSRD = await import("file://" + at("out/ssr-dist-server.mjs") + "?" + Date.now());
+fs.writeFileSync(at("out/ssr.html"), SSR.page());
+fs.writeFileSync(at("out/ssr-dist.html"), SSRD.page("ssr-dist-client.js"));
 execFileSync("node", [path.join(here, "../examples/gallery/make.mjs")], { stdio: "inherit" });
 const gallery = "file://" + path.join(here, "../examples/gallery/out/slat-gallery.html");
 
@@ -556,6 +568,123 @@ for (const motion of ["css", "js"]) {
   check("no page errors", p.errors, []);
   await p.close();
 }
+// Drawn on a server (test/ssr.jsx): the server's HTML alone draws the charts, the browser takes them over without
+// drawing them again, and both look exactly like the same app drawn in the browser alone.
+{
+  const url = "file://" + at("out/ssr.html"), shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
+  const server = await open(url + "?wait"); // the script held back: what the server sent, and nothing else
+  const count = (p) => p.evaluate(() => ["main *", ".rhp-bar", ".rhp-plot > *", "style[data-rhp-server]"].map((q) => document.querySelectorAll(q).length));
+  const before = await count(server), serverShot = await shot(server);
+  check("server: each chart brings its slats' CSS, and rhp's core comes once per page", await server.evaluate(() => {
+    const st = [...document.querySelectorAll("style[data-rhp-server]")];
+    return [st.length, st.filter((s) => s.textContent.includes("@layer rhp.place, rhp.slat, rhp.core;")).length, st.some((s) => s.textContent.includes('[data-rhp-slat="'))];
+  }), [await server.evaluate(() => document.querySelectorAll(".rhp-chart").length), 1, true]);
+  await server.evaluate(() => { window.firstBar = document.querySelector("#fruit .rhp-bar"); window.go(); });
+  await server.waitForTimeout(300);
+  const after = await count(server), hydratedShot = await shot(server);
+  const fresh = await open(url + "#fresh"), freshShot = await shot(fresh);
+  check("server: the HTML draws every chart before any script runs", before.slice(1, 3), (b) => b[0] >= 20 && b[1] >= 20);
+  check("server: the HTML looks exactly like the app drawn in the browser alone", Buffer.compare(serverShot, freshShot), 0);
+  check("server: taken over, the page keeps the server's elements (none drawn twice) and drops the server's CSS", [after[0] - before[0] + before[3], after[1], after[3], await server.evaluate(() => document.querySelector("#fruit .rhp-bar") === window.firstBar)], [0, before[1], 0, true]);
+  check("server: taken over, it still looks the same", Buffer.compare(hydratedShot, freshShot), 0);
+  await server.evaluate(() => window.setSold([30, 1, 2, 3])); await server.waitForTimeout(400);
+  check("server: taken over, the chart follows its data", await server.evaluate(() => [...document.querySelectorAll("#fruit .fruit")].map((e) => e.querySelector(".value").textContent + "@" + e.style.getPropertyValue("--rhp-position"))), ["30@0", "1@3", "2@2", "3@1"]);
+  check("server: no page errors, and no hydration warnings", [...server.errors, ...fresh.errors], []);
+  for (const p of [server, fresh]) await p.close();
+}
+
+// On a server, in Node: the published package, the other ways of rendering, and the browser build.
+{
+  check("server package: Node loads @bezda/rhp's server build, and it writes the same HTML as the source", SSRD.html() === SSR.html(), true);
+  check("server package: the browser build carries no server code, and the server build no browser blocks",
+    [/onRoot|serverSheets|withVars/.test(fs.readFileSync(path.join(here, "../dist/index.js"), "utf8")), /getNextElement|\binsert\(/.test(fs.readFileSync(path.join(here, "../dist/server.js"), "utf8"))], [false, false]);
+  const core = (h) => h.split("@layer rhp.place, rhp.slat, rhp.core;").length - 1;
+  check("server: two renders (two islands) each bring rhp's core, once", [core(SSR.html()), core(SSR.html())], [1, 1]);
+  check("server: renderToStringAsync writes the same HTML", await SSR.htmlAsync(), SSR.html());
+  const plain = SSR.plain();
+  check("server: without hydration keys, the charts are all there", [/data-hk/.test(plain), (plain.match(/class="rhp-bar/g) ?? []).length], [false, (SSR.html().match(/class="rhp-bar/g) ?? []).length]);
+  let err = "";
+  try { SSR.bad(); } catch (e) { err = e.message; }
+  check("server: a slat that returns text is an error that says so", err, "rhp: a slat must return one element");
+}
+
+// The server's HTML alone, in the details a screenshot can't show: CSS with &, > and quotes arrives intact, a slat
+// root keeps its own style next to rhp's, hidden rows are hidden, a backward bar is marked, and move puts the page's
+// order in display order.
+{
+  const p = await open("file://" + at("out/ssr.html") + "?wait");
+  check("server HTML: slat CSS with &, > and quotes applies as written", await p.evaluate(() => {
+    const t = document.querySelector("#themed .t");
+    return [getComputedStyle(t.querySelector(".in")).fontFamily, getComputedStyle(t, "::after").content];
+  }), ['"Tricky & Co", serif', '"&<>"']);
+  check("server HTML: a slat root keeps its own style next to its position", await p.evaluate(() => {
+    const t = document.querySelectorAll("#themed .t")[1];
+    return [t.style.getPropertyValue("--own"), t.style.getPropertyValue("--rhp-position")];
+  }), ["8", "1"]);
+  check("server HTML: a block keeps a style given as text next to its values, and a backward bar is marked", await p.evaluate(() => {
+    const b = document.querySelector("#themed .back");
+    return [getComputedStyle(b).opacity, b.style.getPropertyValue("--rhp-to"), b.hasAttribute("data-rhp-back")];
+  }), ["0.9", "-4", true]);
+  check("server HTML: the theme (a Theme around it and its own) and the page's class reach the chart", await p.evaluate(() => {
+    const c = document.getElementById("themed");
+    return [c.classList.contains("page-class"), c.style.getPropertyValue("--rhp-series-1"), c.style.getPropertyValue("--rhp-muted"), c.style.getPropertyValue("--rhp-ink")];
+  }), [true, "rgb(200, 30, 90)", "rgb(1, 2, 3)", "rgb(10, 20, 30)"]);
+  check("server HTML: a row whose position is null is hidden", await p.evaluate(() => [...document.querySelectorAll("#move .hid")].map((e) => e.dataset.n + (e.hidden ? ":hidden" : ""))), ["h1:hidden", "h2"]);
+  check("server HTML: reorder=move writes the rows in display order", await p.evaluate(() => [...document.querySelectorAll("#move .mv")].map((e) => e.textContent)), ["b", "d", "c", "a"]);
+  check("server HTML: the JS version starts where the data is", await p.evaluate(() => [...document.querySelectorAll("#anim .rhp-bar")].map((b) => b.style.getPropertyValue("--rhp-to"))), ["5", "15", "10"]);
+  await p.close();
+}
+
+// The published package end to end: its server's HTML taken over by its browser build, like the source.
+{
+  const url = "file://" + at("out/ssr-dist.html"), shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
+  const server = await open(url + "?wait"), serverShot = await shot(server), n = await server.evaluate(() => document.querySelectorAll("main *:not(style)").length);
+  await server.evaluate(() => window.go()); await server.waitForTimeout(300);
+  const fresh = await open(url + "#fresh");
+  check("server package: its HTML, taken over, looks like the app drawn in the browser alone, with the same elements",
+    [Buffer.compare(serverShot, await shot(fresh)), Buffer.compare(await shot(server), await shot(fresh)), await server.evaluate(() => document.querySelectorAll("main *:not(style)").length) - n], [0, 0, 0]);
+  await server.evaluate(() => window.setSold([30, 1, 2, 3])); await server.waitForTimeout(400);
+  check("server package: taken over, the chart follows its data", await server.evaluate(() => document.querySelector("#fruit .fruit .value").textContent), "30");
+  check("server package: no page errors", [...server.errors, ...fresh.errors], []);
+  for (const p of [server, fresh]) await p.close();
+}
+
+// What a screen reader gets (Chromium's accessibility tree): a named chart is a figure, a Plot a list of its rows in the
+// order they are shown (sorted rows slide but keep their place in the page), a slat root with a role of its own keeps
+// it, and the axis and a Scale are left out.
+{
+  const p = await open("file://" + at("out/ssr.html") + "#fresh");
+  const cdp = await p.context().newCDPSession(p);
+  const tree = async (sel) => {
+    const { nodes } = await cdp.send("Accessibility.getFullAXTree");
+    const byId = new Map(nodes.map((n) => [n.nodeId, n]));
+    const { node: { backendNodeId } } = await cdp.send("DOM.describeNode", { objectId: (await cdp.send("Runtime.evaluate", { expression: `document.querySelector(${JSON.stringify(sel)})` })).result.objectId });
+    const text = (n) => (n.ignored ? (n.childIds ?? []).map((c) => text(byId.get(c))).join(" ") : n.role?.value === "StaticText" ? n.name?.value ?? "" : (n.childIds ?? []).map((c) => text(byId.get(c))).join(" ")).replace(/\s+/g, " ").trim();
+    const root = nodes.find((n) => n.backendDOMNodeId === backendNodeId);
+    // a node's children as a screen reader gets them: ignored and generic nodes (plain divs) give their children instead
+    const walk = (n) => n.ignored || n.role?.value === "generic" ? (n.childIds ?? []).flatMap((c) => walk(byId.get(c))) : [n];
+    const shown = (n) => (n.childIds ?? []).flatMap((c) => walk(byId.get(c)));
+    return { root, byId, text, shown };
+  };
+  const { root, byId, text, shown } = await tree("#fruit");
+  const list = shown(root).find((n) => n.role.value === "list");
+  check("a11y: a chart with a label is a figure with that name", [root.role.value, root.name?.value], ["figure", "Fruit sold this week"]);
+  check("a11y: a Plot is a list of its rows, in the order they are shown", list && shown(list).map((n) => [n.role.value, text(n)]),
+    [["listitem", "Kiwis 22"], ["listitem", "Bananas 18"], ["listitem", "Apples 12"], ["listitem", "Cherries 7"]]);
+  check("a11y: the axis numbers are left out", text(root).includes("30"), false);
+  await p.evaluate(() => window.setSold([1, 2, 30, 3])); await p.waitForTimeout(500);
+  const again = await tree("#fruit"), list2 = again.shown(again.root).find((n) => n.role.value === "list");
+  check("a11y: a new order reads in its new order", again.shown(list2).map((n) => again.text(n).split(" ")[0]), ["Cherries", "Kiwis", "Bananas", "Apples"]);
+  const keyed = await tree("#vertical"), kl = keyed.shown(keyed.root).find((n) => n.role.value === "list");
+  check("a11y: keyed rows read in the order shown too", keyed.shown(kl).map((n) => keyed.text(n).split(" ")[0]), ["Apples", "Cherries", "Bananas"]);
+  const own = await tree("#own");
+  check("a11y: a slat root with its own role keeps it, and its own id", [own.shown(own.shown(own.root)[0])[0]?.role.value, await p.evaluate(() => !!document.getElementById("own-0"))], ["group", true]);
+  const sc = await tree("#scale");
+  check("a11y: a Scale is left out", sc.text(sc.root).includes("20"), false);
+  check("a11y: a chart with no name is no figure", sc.root.role.value !== "figure", true);
+  await p.close();
+}
+
 await browser.close();
 console.log(failed ? `${failed} failed` : "all passed");
 process.exit(failed ? 1 : 0);

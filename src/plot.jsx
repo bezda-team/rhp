@@ -1,13 +1,14 @@
 // rhp core: Plot stacks slats; Chart holds the scale, the orientation and the axis.
-import { useCore, useSlatCss, useRoot, watchRoot } from "./style.js";
+import { useCore, useSlatCss, useRoot, watchRoot, serverSheets } from "./style.js";
 import {
   createMemo, createComputed, createRenderEffect, createContext, useContext, getOwner, runWithOwner, onMount, onCleanup,
-  createSignal, createRoot, mergeProps, splitProps, untrack, Index, For, Show,
+  createSignal, createRoot, createUniqueId, mergeProps, splitProps, untrack, sharedConfig, Index, For, Show,
 } from "solid-js";
+import { isServer } from "./env.js";
 import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
 import { nice } from "./data.js";
-import { writeVars } from "./blocks.jsx";
+import { writeVars, withVars } from "./blocks.jsx";
 
 const isList = (g) => Array.isArray(g) || (ArrayBuffer.isView(g) && !(g instanceof DataView));
 
@@ -63,6 +64,32 @@ const warnBare = (el) => {
   console.warn(`rhp: a ${name[0].toUpperCase() + name.slice(1)} is a slat's root here, so the Plot places it as the row and it ignores part of its own placing. Put it in an element: (d) => <div><${name[0].toUpperCase() + name.slice(1)} … /></div>. (Only a Plot with overlap takes a block as its slat.)`);
 };
 
+// On a server a slat is HTML text ({ t }), not an element. What the browser sets on a slat's root (its scope, direction,
+// position, role…) is written into its first tag instead: attrs are set (null removes one; a function of the attribute's
+// value now, or undefined, decides from it), and vars are added to its style. Solid writes every attribute value in
+// double quotes, with " escaped, so the tag is read attribute by attribute.
+const ATTR = /\s([^\s="'>\/]+)(?:="([^"]*)")?/g;
+const quote = (v) => String(v).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+function onRoot(node, attrs, vars) {
+  while (typeof node === "function") node = node(); // a context provider's children come as functions
+  const t = node?.t;
+  const m = typeof t === "string" && t.match(/^(\s*<([a-zA-Z][^\s/>]*))((?:\s+[^\s="'>\/]+(?:="[^"]*")?)*)\s*(\/?>)/);
+  if (!m) throw new Error("rhp: a slat must return one element");
+  const list = [...m[3].matchAll(ATTR)].map(([, k, v]) => [k, v]);
+  const get = (k) => list.find((a) => a[0] === k);
+  for (const k in attrs) {
+    const now = get(k), v = typeof attrs[k] === "function" ? attrs[k](now?.[1]) : attrs[k];
+    if (v === undefined) continue;
+    if (now) list.splice(list.indexOf(now), 1);
+    if (v !== null) list.push([k, v === true ? undefined : quote(v)]);
+  }
+  const css = withVars(undefined, vars);
+  if (css) { const st = get("style"); st ? (st[1] = (st[1] ? st[1].replace(/;?$/, ";") : "") + quote(css)) : list.push(["style", quote(css)]); }
+  return { t: m[1] + list.map(([k, v]) => " " + k + (v === undefined ? "" : `="${v}"`)).join("") + m[4] + t.slice(m[0].length) };
+}
+/** The id attribute a server wrote on a slat's root, if any. */
+const rootId = (node) => node?.t?.match(/^\s*<[^>]*?\sid="([^"]*)"/)?.[1];
+
 export function Plot(props) {
   return makePlot(props, "Plot");
 }
@@ -73,6 +100,7 @@ function makePlot(props, role) {
   useSlatCss(props.children);
   const layout = props.children.layout ?? {}; // the slat's own layout: thickness, inset, room (fixed per slat type)
   const { nested, frame, orientation: inherited, motion: inheritedMotion, still: stillAround } = useContext(Around);
+  if (isServer) frame?.sheet(props.children); // a server writes the slat's CSS into the page with its Chart
   // Static (`static` on the Plot or its Chart, read once): each row is drawn once and keeps no signals, memos or effects,
   // for charts whose data doesn't change. A chart of 1,000 rows then holds a sixth of the memory. When the Plot's data,
   // order or direction does change, every row is drawn again, without animation, so the chart is never out of date.
@@ -201,8 +229,25 @@ function makePlot(props, role) {
     { equals: same },
   );
   createComputed(() => setPos(positions().slice()));
-  const shown = later(() => byPosition(positions()), { equals: same }); // rows in display order (Move, Refill)
+  const shown = later(() => byPosition(positions()), { equals: same }); // rows in display order (Move, Refill, aria-owns)
   const extent = createMemo(() => positions().reduce((m, p) => (p == null ? m : Math.max(m, p + 1)), 0));
+
+  // Accessibility. A Plot is a list and each slat root a list item (unless the slat gives its root a role of its own); a
+  // Scale is hidden from screen readers, as the axis is. Sorted rows slide on screen but keep their place in the page,
+  // so a screen reader would read them in data order: the Plot then lists its rows in display order in aria-owns,
+  // which is the order it reads them in, and each row gets an id for it (its own, if the slat gives one).
+  const scale = role === "Scale";
+  const uid = createUniqueId(); // the same on a server and in the browser that hydrates its HTML
+  // row -> its root's own id, for the rows whose slat gives one (few do: a Map in a signal, made on first use)
+  const [rowIds, setRowIds] = createSignal(null);
+  const ownIdAt = (r, id) => setRowIds((m) => { const next = new Map(m); id ? next.set(r, id) : next.delete(r); return next; });
+  const reordered = () => props.order != null && (props.reorder ?? "slide") === "slide";
+  const owns = () => {
+    if (scale || !reordered()) return undefined;
+    const list = shown();
+    const own = rowIds();
+    return list.some((r, k) => r !== k) ? list.map((r) => own?.get(r) ?? `rhp-${uid}-${r}`).join(" ") : undefined;
+  };
 
   // Gutters: the Chart pads each side for the largest room its Plots ask for. A top-level Plot whose slat
   // gives no room gets the defaults (names at the start, values at the end); a Scale's slat gets none.
@@ -224,26 +269,45 @@ function makePlot(props, role) {
   // The slat's own root element is what the Plot stacks; the Plot adds no wrapper.
   // It writes --rhp-position on it (and hides it when its position is null); CSS translates it that many bands.
   const slat = (row, id) => {
+    if (isServer) return serverRow(props.children(datum(row, id)), row(), pos[row()]);
     const el = props.children(datum(row, id));
     if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
+    if (!scale && !el.hasAttribute("role")) el.setAttribute("role", "listitem");
+    const ownId = el.id.startsWith(`rhp-${uid}-`) ? "" : el.id; // the slat's own id (not one a server gave it for aria-owns)
     if (!props.overlap && BLOCK.test(el.getAttribute("class"))) warnBare(el);
     if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope); // the slat's CSS applies inside its own slats only (an attribute: Solid's class={…} rewrites className)
-    createRenderEffect((prev) => { // its orientation (for :horizontal and :vertical in slat CSS) and its position
-      const dir = short(orientation()), p = pos[row()];
+    createRenderEffect((prev) => { // its orientation (for :horizontal and :vertical in slat CSS), its position and its id
+      const r = row(), dir = short(orientation()), p = pos[r], id = ownId || (reordered() ? `rhp-${uid}-${r}` : "");
       if (dir !== prev?.dir) el.setAttribute("data-rhp-o", dir);
       if (p !== prev?.p) { el.hidden = p == null; if (p != null) el.style.setProperty("--rhp-position", p); }
-      return { dir, p };
+      if (id !== prev?.id && id !== el.id) id ? (el.id = id) : el.removeAttribute("id");
+      if (ownId && r !== prev?.r) { if (prev && untrack(rowIds)?.get(prev.r) === ownId) ownIdAt(prev.r); ownIdAt(r, ownId); }
+      return { r, dir, p, id };
     });
+    if (ownId) onCleanup(() => untrack(rowIds)?.get(untrack(row)) === ownId && ownIdAt(untrack(row)));
     el.$row = row; // lets a handler on the chart find which row a slat shows
     return el;
   };
+  // A row on a server: its root's first tag gets what slat() sets on it in a browser. (Made only there, so a browser's
+  // build leaves it and what it uses out.)
+  const serverRow = isServer && ((node, r, p) => {
+    const own = rootId(node), id = own ?? (reordered() ? `rhp-${uid}-${r}` : undefined);
+    if (own) ownIdAt(r, own);
+    return onRoot(node, {
+      "data-rhp-slat": props.children.scope ?? undefined, "data-rhp-o": short(orientation()), hidden: p == null ? true : undefined,
+      role: scale ? undefined : (v) => (v === undefined ? "listitem" : undefined), id: own ? undefined : id,
+    }, { "--rhp-position": p });
+  });
   // A static row: drawn in a root that is disposed right after, so its elements keep their values and nothing else stays.
   const drawn = (i, p) => {
+    if (isServer) return serverRow(props.children(datum(() => i, null)), i, p);
     let el;
     createRoot((dispose) => {
       el = props.children(datum(() => i, null));
       if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
       if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope);
+      if (!scale && !el.hasAttribute("role")) el.setAttribute("role", "listitem");
+      if (!el.id && reordered()) el.id = `rhp-${uid}-${i}`;
       el.setAttribute("data-rhp-o", short(orientation()));
       el.hidden = p == null;
       if (p != null) el.style.setProperty("--rhp-position", p);
@@ -278,6 +342,7 @@ function makePlot(props, role) {
   return (
     <Around.Provider value={{ orientation, motion: () => undefined, frame, nested: true, still }}>
       <div ref={props.ref} class={props.class ? "rhp-plot " + props.class : "rhp-plot"}
+        role={scale ? undefined : "list"} aria-hidden={scale ? "true" : undefined} aria-owns={owns()}
         data-rhp-o={short(orientation())} data-rhp-reorder={action()} data-rhp-overlap={props.overlap ? "" : undefined}
         data-rhp-animate={js() ? "js" : undefined}
         style={{
@@ -405,8 +470,11 @@ export function Chart(props) {
   // The plot's size on screen, measured (a Scale gives each tick its distance to the end in px). 0 until measured.
   const [size, setSize] = createSignal({ w: 0, h: 0 }, { equals: (a, b) => a.w === b.w && a.h === b.h });
   const length = () => (orientation() === "vertical" ? size().h : size().w);
+  // On a server: the slat types drawn inside, whose CSS goes into the page with the chart (serverSheets).
+  const slats = new Set();
   const frame = {
     orientation, domain, shown, length,
+    sheet: (fn) => fn?.scope && slats.add(fn),
     need: (w) => setWants((l) => [...l, w]),
     drop: (w) => setWants((l) => l.filter((x) => x !== w)),
     addScale: () => setScales((n) => n + 1),
@@ -414,7 +482,8 @@ export function Chart(props) {
     unfit: (f) => setFitters((l) => l.filter((x) => x !== f)),
     dropScale: () => setScales((n) => n - 1),
   };
-  const pad = createMemo(() => {
+  // (A server's memo is worked out once, when it's made, before the Plots have asked: there, it's worked out when read.)
+  const padding = () => {
     const o = orientation(), side = SIDES[o], out = { top: 2, right: 2, bottom: 2, left: 2 }, room = { start: 0, end: 0 };
     for (const w of wants()) {
       const r = w();
@@ -425,7 +494,8 @@ export function Chart(props) {
       "--rhp-pad-top": out.top + "px", "--rhp-pad-right": out.right + "px", "--rhp-pad-bottom": out.bottom + "px", "--rhp-pad-left": out.left + "px",
       "--rhp-room-start": room.start + "px", "--rhp-room-end": room.end + "px",
     };
-  }, undefined, { equals: (a, b) => Object.keys(a).every((k) => a[k] === b[k]) });
+  };
+  const pad = isServer ? padding : createMemo(padding, undefined, { equals: (a, b) => Object.keys(a).every((k) => a[k] === b[k]) });
   // Turning the chart is a jump, not a slide: nothing inside transitions for the two frames after a change.
   // (A transition across the turn also left Chromium with stale overflow: a phone page scrolled sideways by 670px.)
   const [turning, setTurning] = createSignal(false);
@@ -439,6 +509,8 @@ export function Chart(props) {
   });
   let el;
   onMount(() => {
+    // A server wrote rhp's CSS into the chart for the first paint; the browser's own sheets have it now.
+    for (const st of el.querySelectorAll(":scope > style[data-rhp-server]")) st.remove();
     useRoot(el);
     onCleanup(watchRoot(el));
     const body = el.querySelector(".rhp-body");
@@ -447,9 +519,16 @@ export function Chart(props) {
     ro.observe(body);
     onCleanup(() => ro.disconnect());
   });
+  // A chart with a name is a figure, read out with its name first: label="Fruit sold this week" (or the page's own
+  // aria-label or aria-labelledby). Any other aria-* prop, and id, go on the chart's element too: the common ones as
+  // attributes, the rest in one effect (a spread would make Solid watch every attribute of the chart's element).
+  const name = () => props.label ?? props["aria-label"];
+  const figure = () => (name() != null || props["aria-labelledby"] != null ? props.role ?? "figure" : props.role);
+  const moreAria = () => Object.keys(props).filter((k) => k.startsWith("aria-") && !OWN_ARIA.has(k));
   const node = (
     <Around.Provider value={{ orientation, motion: () => props.animate, frame, nested: false, still: props.static === true }}>
-      <div ref={(e) => { el = e; props.ref?.(e); }} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
+      <div ref={(e) => { el = e; props.ref?.(e); }} id={props.id} role={figure()} aria-label={name()} aria-labelledby={props["aria-labelledby"]}
+        aria-describedby={props["aria-describedby"]} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined} data-rhp-sized={sized() ? "" : undefined}
         style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240) }}>
         <div class="rhp-body">
@@ -457,13 +536,25 @@ export function Chart(props) {
           {/* after the children, so a Scale among them has registered first; plots paint above it (z-index) */}
           <Show when={axis()}><Axis ticks={ticks()} format={props.format} /></Show>
         </div>
+        {/* after the body: the CSS of every slat type drawn in it, which a server knows only once they're drawn */}
+        {isServer && <style data-rhp-server="" innerHTML={serverSheets(slats, sharedConfig.context?.assets)} />}
       </div>
     </Around.Provider>
   );
   // The scale is written like a block's numbers: now at first, then in the next frame (frame.js).
   writeVars(el, () => ({ "--rhp-min": min(), "--rhp-max": max() }));
+  if (!isServer && moreAria().length) createRenderEffect(() => { for (const k of moreAria()) props[k] == null ? el.removeAttribute(k) : el.setAttribute(k, props[k]); });
+  // A server writes the chart's style once its Plots have drawn: the room they ask for, and whether they fit its
+  // height, are known only then (a browser updates them as they come).
+  if (isServer) return onRoot(node, {
+    ...Object.fromEntries(moreAria().map((k) => [k, props[k] ?? null])),
+    style: withVars(undefined, { ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-min": min(), "--rhp-max": max() }),
+    "data-rhp-sized": sized() ? true : null,
+  });
   return node;
 }
+
+const OWN_ARIA = new Set(["aria-label", "aria-labelledby", "aria-describedby"]); // the Chart sets these itself
 
 // The variables blocks read by inheritance start from rhp's defaults on the chart root, inline, so a page's --rhp-*
 // (v1's docs told apps to set them on :root or on .rhp-chart) can't reach inside. The Plot, a block or a slat's CSS still sets them below.
@@ -478,6 +569,9 @@ export function Axis(props) {
     <div class="rhp-axis" aria-hidden="true">
       <For each={props.ticks}>
         {(t) => { // one effect per line for its direction and its number (three before)
+          // On a server, the number is made inside the line, as in a browser: a format that returns elements makes
+          // them after the line's, so the browser that takes the page over finds each where it looks for it.
+          if (isServer) return <div class="rhp-gridline" data-rhp-o={short(o())} style={withVars(undefined, { "--rhp-at": t })}><span>{props.format ? props.format(t) : String(t)}</span></div>;
           const el = <div class="rhp-gridline"><span /></div>, num = el.firstChild;
           el.style.setProperty("--rhp-at", t);
           createRenderEffect(() => {
