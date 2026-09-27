@@ -62,6 +62,27 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
 - A tick at either end of the scale is keyed as that end, so the end line never slides when the max changes.
 - A Chart with a Scale in it draws no axis of its own.
 
+## Styling a slat
+
+A slat's `css` is plain CSS for the classes you put in the slat.
+Two additions cover what changes with the orientation:
+
+- **`:horizontal` and `:vertical`** match a slat root or a block drawn in that orientation: `.bar:vertical { … }`, `.row:horizontal .name { … }`.
+- **Knobs** are CSS variables rhp reads, named along the value axis, so one rule fits both orientations. The start is the scale's start side of a bar (its `from`), the end is its value (its `to`), also for a bar that runs backward.
+
+| Knob | What it sets |
+|---|---|
+| `--rhp-radius` | a Bar's corners (default 2px) |
+| `--rhp-start-radius`, `--rhp-end-radius` | the corners at one end: `--rhp-start-radius: 0` squares the base |
+| `--rhp-gap` | empty space at a Bar's start: the gap between stacked segments or units |
+| `--rhp-label-gap` | the space between a Label and its value, or the plot for an `edge` label |
+| `--rhp-label-size` | a Label's font size (default 12px) |
+| `--rhp-tick-width` | a Tick's width (default 2px) |
+| `--rhp-cell-gap` | the space around a Cell (default 1px) |
+| `--rhp-toward-end` | read it: the direction from a Bar's start to its end, for gradients: `linear-gradient(var(--rhp-toward-end), …)` |
+
+Theme colors are `var(--rhp-ink)`, `var(--rhp-muted)`, `var(--rhp-series-1)` and so on, and a block's `color` is `var(--rhp-color)`.
+
 ## Interaction
 
 - **Hover states are slat CSS.** `.row:hover .tip { opacity: 1 }` shows a value, lifts a mark or lights a band, with no state at all.

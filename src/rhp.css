@@ -6,8 +6,10 @@
    Variables here are all --rhp-*: a page's own variables (--color, --size…) never collide with them.
    The chart writes the theme as --rhp-<key> (series-1…n, positive, negative, ink, muted, grid, surface,
    low, high, font), the scale as --rhp-min/--rhp-max, and the gutters as --rhp-pad-*. Blocks write their
-   raw numbers (--rhp-from, --rhp-to, --rhp-at, --rhp-value…). A slat's CSS may set --rhp-label-size,
-   --rhp-radius, --rhp-tick-width, --rhp-cell-gap, --rhp-length-time/-ease, --rhp-slide-time/-ease. */
+   raw numbers (--rhp-from, --rhp-to, --rhp-at, --rhp-value…). A slat's CSS may set --rhp-label-size, --rhp-label-gap, --rhp-gap,
+   --rhp-radius, --rhp-start-radius, --rhp-end-radius, --rhp-tick-width, --rhp-cell-gap, --rhp-length-time/-ease,
+   --rhp-slide-time/-ease, and read --rhp-toward-end. These knobs are named along the value axis (start: the scale's
+   start side; end: the value's side), so one rule fits both orientations. */
 
 @layer rhp.core {
   /* The guard: box, text and paint properties a page may set on any div, span or svg, on rhp's own
@@ -72,6 +74,11 @@
   /* The Plot. Slats are placed by the place layer below. A top-level Plot has a band (--rhp-pitch, from its
      slat's `band`): horizontal, the plot is as tall as its bands; vertical without a band, slats share the width. */
   .rhp-plot { position: relative; z-index: 1; }
+  /* The direction toward a value's end, for gradients along a bar: linear-gradient(var(--rhp-toward-end), …). */
+  .rhp-plot[data-rhp-o="h"], .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { --rhp-toward-end: to right; }
+  .rhp-plot[data-rhp-o="v"], .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { --rhp-toward-end: to top; }
+  .rhp-bar[data-rhp-o="h"][data-rhp-back] { --rhp-toward-end: to left; }
+  .rhp-bar[data-rhp-o="v"][data-rhp-back] { --rhp-toward-end: to bottom; }
   .rhp-body > .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap]) { height: calc(var(--rhp-n) * var(--rhp-pitch, 32px)); }
   .rhp-body > .rhp-plot[data-rhp-o="v"]:not([data-rhp-overlap]) { width: calc(var(--rhp-n) * var(--rhp-pitch, 100% / var(--rhp-n))); }
   .rhp-body > .rhp-plot[data-rhp-overlap][data-rhp-o="h"] { min-height: var(--rhp-pitch, 32px); }
@@ -92,7 +99,20 @@
 
   :is(.rhp-bar, .rhp-area)[data-rhp-o="h"] { left: calc(var(--rhp-lo) * 100%); width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
   :is(.rhp-bar, .rhp-area)[data-rhp-o="v"] { bottom: calc(var(--rhp-lo) * 100%); height: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%); }
-  .rhp-bar { background: var(--rhp-color, var(--rhp-series-1)); border-radius: var(--rhp-radius, 2px); }
+  /* --rhp-gap: empty space at a bar's start (its `from` side), between stacked segments or units. */
+  .rhp-bar[data-rhp-o="h"] { width: max(0px, calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0px))); }
+  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { left: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0px)); }
+  .rhp-bar[data-rhp-o="v"] { height: max(0px, calc((var(--rhp-hi) - var(--rhp-lo)) * 100% - var(--rhp-gap, 0px))); }
+  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { bottom: calc(var(--rhp-lo) * 100% + var(--rhp-gap, 0px)); }
+  /* Corners: --rhp-radius for all four, or --rhp-start-radius and --rhp-end-radius for one end (the end is where `to` is). */
+  .rhp-bar {
+    --rhp-s: var(--rhp-start-radius, var(--rhp-radius, 2px)); --rhp-e: var(--rhp-end-radius, var(--rhp-radius, 2px));
+    background: var(--rhp-color, var(--rhp-series-1));
+  }
+  .rhp-bar[data-rhp-o="h"]:not([data-rhp-back]) { border-radius: var(--rhp-s) var(--rhp-e) var(--rhp-e) var(--rhp-s); }
+  .rhp-bar[data-rhp-o="h"][data-rhp-back] { border-radius: var(--rhp-e) var(--rhp-s) var(--rhp-s) var(--rhp-e); }
+  .rhp-bar[data-rhp-o="v"]:not([data-rhp-back]) { border-radius: var(--rhp-e) var(--rhp-e) var(--rhp-s) var(--rhp-s); }
+  .rhp-bar[data-rhp-o="v"][data-rhp-back] { border-radius: var(--rhp-s) var(--rhp-s) var(--rhp-e) var(--rhp-e); }
   .rhp-bar[data-rhp-o="h"] { top: 50%; height: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); translate: 0 -50%; }
   .rhp-bar[data-rhp-o="v"] { left: 50%; width: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); translate: -50% 0; }
 
@@ -105,16 +125,17 @@
   .rhp-tick[data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: 50%; width: var(--rhp-thick, calc(100% - 2 * var(--rhp-inset))); height: var(--rhp-tick-width, 2px); translate: -50% 50%; }
 
   .rhp-label { font-size: var(--rhp-label-size, 12px); line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .rhp-label[data-rhp-at][data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: 50%; translate: 0 -50%; padding-left: 5px; }
-  .rhp-label[data-rhp-at][data-rhp-o="h"][data-rhp-side="before"] { translate: -100% -50%; padding: 0 5px 0 0; }
-  .rhp-label[data-rhp-at][data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: 50%; translate: -50% 0; padding-bottom: 3px; }
-  .rhp-label[data-rhp-at][data-rhp-o="v"][data-rhp-side="before"] { translate: -50% 100%; padding: 3px 0 0; }
+  /* --rhp-label-gap: the space between a label and its value (at) or the plot (edge). */
+  .rhp-label[data-rhp-at][data-rhp-o="h"] { left: calc(var(--rhp-p) * 100%); top: 50%; translate: 0 -50%; padding-left: var(--rhp-label-gap, 5px); }
+  .rhp-label[data-rhp-at][data-rhp-o="h"][data-rhp-side="before"] { translate: -100% -50%; padding: 0 var(--rhp-label-gap, 5px) 0 0; }
+  .rhp-label[data-rhp-at][data-rhp-o="v"] { bottom: calc(var(--rhp-p) * 100%); left: 50%; translate: -50% 0; padding-bottom: var(--rhp-label-gap, 3px); }
+  .rhp-label[data-rhp-at][data-rhp-o="v"][data-rhp-side="before"] { translate: -50% 100%; padding: var(--rhp-label-gap, 3px) 0 0; }
   .rhp-label[data-rhp-edge][data-rhp-o="h"] { top: 50%; translate: 0 -50%; overflow: hidden; text-overflow: ellipsis; }
-  .rhp-label[data-rhp-edge="start"][data-rhp-o="h"] { right: 100%; width: var(--rhp-room-start, 104px); text-align: right; padding-right: 8px; }
-  .rhp-label[data-rhp-edge="end"][data-rhp-o="h"] { left: 100%; width: var(--rhp-room-end, 44px); padding-left: 6px; }
+  .rhp-label[data-rhp-edge="start"][data-rhp-o="h"] { right: 100%; width: var(--rhp-room-start, 104px); text-align: right; padding-right: var(--rhp-label-gap, 8px); }
+  .rhp-label[data-rhp-edge="end"][data-rhp-o="h"] { left: 100%; width: var(--rhp-room-end, 44px); padding-left: var(--rhp-label-gap, 6px); }
   .rhp-label[data-rhp-edge][data-rhp-o="v"] { left: 0; right: 0; text-align: center; overflow: hidden; text-overflow: ellipsis; }
-  .rhp-label[data-rhp-edge="start"][data-rhp-o="v"] { top: 100%; padding-top: 6px; }
-  .rhp-label[data-rhp-edge="end"][data-rhp-o="v"] { bottom: 100%; padding-bottom: 3px; }
+  .rhp-label[data-rhp-edge="start"][data-rhp-o="v"] { top: 100%; padding-top: var(--rhp-label-gap, 6px); }
+  .rhp-label[data-rhp-edge="end"][data-rhp-o="v"] { bottom: 100%; padding-bottom: var(--rhp-label-gap, 3px); }
 
   .rhp-cell {
     inset: var(--rhp-cell-gap, 1px);

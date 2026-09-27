@@ -191,6 +191,7 @@ function makePlot(props, role) {
     const el = props.children(datum(row, id));
     if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
     if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope); // the slat's CSS applies inside its own slats only (an attribute: Solid's class={…} rewrites className)
+    createRenderEffect(() => el.setAttribute("data-rhp-o", short(orientation()))); // for :horizontal and :vertical in slat CSS
     createRenderEffect(() => {
       const p = pos[row()];
       el.hidden = p == null;
@@ -406,7 +407,7 @@ export function Chart(props) {
 // The variables blocks read by inheritance start from rhp's defaults on the chart root, inline, so a page's --rhp-*
 // (v1's docs told apps to set them on :root or on .rhp-chart) can't reach inside. The Plot, a block or a slat's CSS still sets them below.
 const KNOBS = { "--rhp-inset": "18%" };
-for (const k of ["color", "thick", "size", "across", "radius", "tick-width", "label-size", "cell-gap", "pitch", "plot-thick", "length-time",
+for (const k of ["color", "thick", "size", "across", "radius", "start-radius", "end-radius", "label-gap", "gap", "tick-width", "label-size", "cell-gap", "pitch", "plot-thick", "length-time",
   "length-ease", "slide-time", "slide-ease", "at", "from", "to", "value", "d", "position"]) KNOBS["--rhp-" + k] = "initial";
 
 // The value axis: one grid line per tick, keyed by value (For), numbers in the axis gutter.

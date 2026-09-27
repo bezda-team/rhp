@@ -57,21 +57,20 @@ const V1Scale = slat({
   room: { horizontal: { before: 40, after: 13 }, vertical: { before: 24, end: 30, after: 13 } },
   css: `
     .mark { --rhp-tick-width: 4px; background: var(--rhp-muted); translate: none; }
-    [data-rhp-o="h"].mark { top: -16px; bottom: -12.8px; height: auto; }
-    [data-rhp-o="v"].mark { left: -16px; right: -12.8px; width: auto; }
-    .zero > [data-rhp-o="h"].mark { translate: -100% 0; }
-    .zero > [data-rhp-o="v"].mark { translate: 0 100%; }
+    .mark:horizontal { top: -16px; bottom: -12.8px; height: auto; }
+    .mark:vertical { left: -16px; right: -12.8px; width: auto; }
+    .zero > .mark:horizontal { translate: -100% 0; }
+    .zero > .mark:vertical { translate: 0 100%; }
     .line > .mark { background: none; }
-    .line > [data-rhp-o="h"].mark { border-left: 4px dashed var(--rhp-grid); }
-    .line > [data-rhp-o="v"].mark { border-top: 4px dashed var(--rhp-grid); }
+    .line > .mark:horizontal { border-left: 4px dashed var(--rhp-grid); }
+    .line > .mark:vertical { border-top: 4px dashed var(--rhp-grid); }
     .tick > .mark { background: var(--rhp-grid); }
-    .tick > [data-rhp-o="h"].mark { bottom: auto; height: 13px; }
-    .tick > [data-rhp-o="v"].mark { right: auto; width: 13px; }
-    .num { font-size: 13px; font-weight: 700; line-height: 19.5px; font-variant-numeric: normal; color: var(--rhp-muted); translate: none; padding: 0; }
-    [data-rhp-o="h"].num { top: -20px; padding-left: 8px; }
-    .zero > [data-rhp-o="h"].num { padding-left: 4px; }
-    [data-rhp-o="v"].num { left: -20px; bottom: calc(var(--rhp-p) * 100% + 8px); }
-    .zero > [data-rhp-o="v"].num { bottom: calc(var(--rhp-p) * 100% + 4px); }
+    .tick > .mark:horizontal { bottom: auto; height: 13px; }
+    .tick > .mark:vertical { right: auto; width: 13px; }
+    .num { font-size: 13px; font-weight: 700; line-height: 19.5px; font-variant-numeric: normal; color: var(--rhp-muted); translate: none; --rhp-label-gap: 8px; }
+    .zero > .num { --rhp-label-gap: 4px; }
+    .num:horizontal { top: -20px; }
+    .num:vertical { left: -20px; }
     .num.crowded { visibility: hidden; }`,
 }, (t) => {
   // A number just before the end would run into the end mark, so it's left out, and only then: horizontal, when its
@@ -100,18 +99,15 @@ const FruitSlat = slat({
   room: { horizontal: { start: 112, end: 32 }, vertical: { start: 32, end: 30 } }, // for the names and values
   css: `
     .name { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--rhp-muted); }
-    [data-rhp-o="h"].name { text-align: center; padding: 0; }
-    .bar { display: flex; align-items: center; overflow: hidden; }
-    [data-rhp-o="h"].bar { border-radius: 0 16px 16px 0; }
-    [data-rhp-o="v"].bar { border-radius: 16px 16px 0 0; flex-direction: column-reverse; }
+    .name:horizontal { text-align: center; --rhp-label-gap: 0px; }
+    .bar { display: flex; align-items: center; overflow: hidden; --rhp-start-radius: 0px; --rhp-end-radius: 16px; }
+    .bar:vertical { flex-direction: column-reverse; }
     .bar:hover { border: 4px solid var(--rhp-ink); }
     /* The art fills the bar's length up to 300px, is never under 50px, and the bar crops it. */
     .bar > img { display: block; flex: 1 1 auto; width: auto; height: auto; margin: 0; min-width: 0; min-height: 0; max-width: none; max-height: none; }
-    [data-rhp-o="h"].bar > img { min-width: 50px; max-width: 300px; }
-    [data-rhp-o="v"].bar > img { min-height: 50px; max-height: 300px; }
-    .value { font-size: 13px; font-weight: 700; line-height: 19.5px; font-variant-numeric: normal; color: var(--rhp-color); }
-    [data-rhp-o="h"].value { padding-left: 8px; }
-    [data-rhp-o="v"].value { padding-bottom: 8px; }
+    .bar:horizontal > img { min-width: 50px; max-width: 300px; }
+    .bar:vertical > img { min-height: 50px; max-height: 300px; }
+    .value { font-size: 13px; font-weight: 700; line-height: 19.5px; font-variant-numeric: normal; color: var(--rhp-color); --rhp-label-gap: 8px; }
     .bar:hover ~ .value { color: var(--rhp-ink); }
     .dim { filter: saturate(40%); }
     .dim:hover { filter: saturate(110%); }`,
@@ -164,18 +160,16 @@ const WindSlat = slat({
   room: { horizontal: { start: 128, end: 64 }, vertical: { start: 64, end: 30 } },
   css: `
     .quarter { display: flex; align-items: center; gap: 10px; overflow: visible; font-size: 16px; font-weight: 700; }
-    [data-rhp-o="h"].quarter { justify-content: flex-end; padding-right: 16px; }
-    [data-rhp-o="v"].quarter { flex-direction: column; gap: 6px; padding-top: 8px; font-size: 13px; }
+    .quarter:horizontal { justify-content: flex-end; padding-right: 16px; }
+    .quarter:vertical { flex-direction: column; gap: 6px; padding-top: 8px; font-size: 13px; }
     .dial { position: relative; flex: none; width: 30px; height: 30px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgb(11 42 60 / .2); }
     .needle { position: absolute; inset: 4px 11px; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: linear-gradient(#ff6b4a 50%, #0b2a3c 50%); }
     .gust { --rhp-radius: 99px; }
-    [data-rhp-o="h"].gust { background: linear-gradient(90deg, rgb(11 42 60 / 0), #0b2a3c); }
-    [data-rhp-o="v"].gust { background: linear-gradient(0deg, rgb(11 42 60 / 0), #0b2a3c); }
-    [data-rhp-o="h"].slat:hover .gust, .slat:hover > [data-rhp-o="h"].gust { background: linear-gradient(90deg, rgb(255 107 74 / 0), #ff6b4a); }
-    .slat:hover > [data-rhp-o="v"].gust { background: linear-gradient(0deg, rgb(255 107 74 / 0), #ff6b4a); }
+    .gust { background: linear-gradient(var(--rhp-toward-end), rgb(11 42 60 / 0), #0b2a3c); }
+    .slat:hover .gust { background: linear-gradient(var(--rhp-toward-end), rgb(255 107 74 / 0), #ff6b4a); }
     .knots { font-size: 14px; font-weight: 800; color: #ff6b4a; }
     .knots > span { opacity: 0; transition: opacity .15s; }
-    [data-rhp-o="h"].knots { padding-left: 10px; }
+    .knots:horizontal { --rhp-label-gap: 10px; }
     .slat:hover .knots > span { opacity: 1; }`,
 }, (d) => (
   <div class="slat">
@@ -210,22 +204,21 @@ const BoxSlat = slat({
   room: { horizontal: { start: 96, end: 37 }, vertical: { start: 80, end: 30 } }, // for the photos and values
   css: `
     .photo { display: flex; align-items: center; justify-content: center; padding: 0; overflow: visible; }
-    [data-rhp-o="h"].photo { top: 8px; bottom: 8px; translate: none; }
-    [data-rhp-o="v"].photo { height: var(--rhp-room-start); }
+    .photo:horizontal { top: 8px; bottom: 8px; translate: none; }
+    .photo:vertical { height: var(--rhp-room-start); }
     .circle { flex: none; aspect-ratio: 1; border-radius: 50%; border: 4px solid var(--rhp-grid); overflow: hidden; }
-    [data-rhp-o="h"] > .circle { height: 100%; }
-    [data-rhp-o="v"] > .circle { width: min(63px, 100% - 16px); }
+    .photo:horizontal > .circle { height: 100%; }
+    .photo:vertical > .circle { width: min(63px, 100% - 16px); }
     .circle > img { display: block; width: 100%; height: 100%; margin: 0; object-fit: cover; transform: scale(5); }
     .whisker, .box { --rhp-radius: 0px; }
     .cap { --rhp-tick-width: 4px; }
-    [data-rhp-o="h"].cap { translate: 0 -50%; }
-    [data-rhp-o="v"].cap { translate: -50% 0; }
+    .cap:horizontal { translate: 0 -50%; }
+    .cap:vertical { translate: -50% 0; }
     .box { display: flex; align-items: center; justify-content: center; overflow: hidden; background: none;
       border: 4px solid var(--rhp-color); color: var(--rhp-color); font-size: 16px; line-height: 24px; white-space: nowrap; }
-    [data-rhp-o="v"].box > span { writing-mode: vertical-rl; rotate: 180deg; }
-    .value { font-size: 13px; font-weight: 700; line-height: 19.5px; font-variant-numeric: normal; color: var(--rhp-color); }
-    [data-rhp-o="h"].value { padding-left: 8px; margin-top: -1px; } /* v1: 1px above the middle */
-    [data-rhp-o="v"].value { padding-bottom: 8px; }
+    .box:vertical > span { writing-mode: vertical-rl; rotate: 180deg; }
+    .value { font-size: 13px; font-weight: 700; line-height: 19.5px; font-variant-numeric: normal; color: var(--rhp-color); --rhp-label-gap: 8px; }
+    .value:horizontal { margin-top: -1px; } /* v1: 1px above the middle */
     .slat:hover .circle { border: 5px solid var(--rhp-muted); }
     .slat:hover .circle > img { transform: scale(1.5); }
     .slat:hover .box { border: 5px solid var(--rhp-muted); color: var(--rhp-muted); font-weight: 500; }
@@ -301,8 +294,8 @@ const DotRow = slat({
   band: 60, // 52px dots, 8px apart: the page makes the value axis 11 × 60px long
   room: { horizontal: { start: 2, end: 2, before: 2, after: 4 }, vertical: { start: 4, end: 2, before: 2, after: 2 } },
   css: `
-    [data-rhp-o="h"] > .row { overflow-x: clip; } /* dots past the ends of the scale are hidden */
-    [data-rhp-o="v"] > .row { overflow-y: clip; }
+    .row:horizontal { overflow-x: clip; } /* dots past the ends of the scale are hidden */
+    .row:vertical { overflow-y: clip; }
     .dot { box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; }
     .dot:hover { box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; filter: brightness(1.2); }`,
 }, (d) => (
@@ -351,8 +344,7 @@ const MEDAL_TABLE = { font: "system-ui, sans-serif", ink: "#111214", muted: "#6d
 const MedalSlat = slat({
   css: `
     .ribbon { --rhp-radius: 2px; }
-    [data-rhp-o="h"].ribbon { background: linear-gradient(90deg, transparent, var(--metal)); }
-    [data-rhp-o="v"].ribbon { background: linear-gradient(0deg, transparent, var(--metal)); }
+    .ribbon { background: linear-gradient(var(--rhp-toward-end), transparent, var(--metal)); }
     .medal { background: none; }
     .face { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%;
       font: 800 11px/1 var(--rhp-font); font-variant-numeric: tabular-nums; color: var(--stamp);
@@ -378,8 +370,8 @@ const TeamSlat = slat({
   css: `
     .team { font: 700 22px/1 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .03em; text-transform: uppercase; }
     .team small { display: block; margin-top: 3px; font: 500 11px/1 var(--rhp-font); letter-spacing: .06em; text-transform: none; color: var(--rhp-muted); }
-    [data-rhp-o="h"].team { padding-right: 14px; }
-    [data-rhp-o="v"].team { font-size: 18px; }`,
+    .team:horizontal { --rhp-label-gap: 14px; }
+    .team:vertical { font-size: 18px; }`,
 }, (d) => (
   <div>
     <Label edge="start" class="team">{d.name}<small>{sum(d.medals.map(Math.round))} medals</small></Label>
@@ -414,15 +406,10 @@ const CAFE = { font: "system-ui, sans-serif", ink: "#2b1b12", muted: "#8a7260", 
 const LayerSlat = slat({
   css: `
     .layer { --rhp-radius: 0px; }
-    [data-rhp-o="h"].espresso { background: linear-gradient(90deg, #24150c, #3f2415 65%, #8d5b33); border-radius: 12px 0 0 12px; }
-    [data-rhp-o="v"].espresso { background: linear-gradient(0deg, #24150c, #3f2415 65%, #8d5b33); border-radius: 0 0 12px 12px; }
-    [data-rhp-o="h"].milk { background: linear-gradient(90deg, #e6d4bb, #f5ecdf); border-left: 2px solid var(--rhp-surface); }
-    [data-rhp-o="v"].milk { background: linear-gradient(0deg, #e6d4bb, #f5ecdf); border-bottom: 2px solid var(--rhp-surface); }
-    .foam { background: radial-gradient(circle, #fff 1.4px, transparent 2px) 0 0 / 7px 7px, #fcf8f1; }
-    [data-rhp-o="h"].foam { border-left: 2px solid var(--rhp-surface); }
-    [data-rhp-o="v"].foam { border-bottom: 2px solid var(--rhp-surface); }
-    [data-rhp-o="h"].end { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
-    [data-rhp-o="v"].end { border-top-left-radius: 12px; border-top-right-radius: 12px; }
+    .espresso { background: linear-gradient(var(--rhp-toward-end), #24150c, #3f2415 65%, #8d5b33); --rhp-start-radius: 12px; }
+    .milk { background: linear-gradient(var(--rhp-toward-end), #e6d4bb, #f5ecdf); --rhp-gap: 2px; }
+    .foam { background: radial-gradient(circle, #fff 1.4px, transparent 2px) 0 0 / 7px 7px, #fcf8f1; --rhp-gap: 2px; }
+    .end { --rhp-end-radius: 12px; }
     .empty { display: none; }
     .layer:hover { z-index: 1; box-shadow: 0 0 0 2px var(--rhp-surface), 0 12px 18px -8px rgb(43 27 18 / .7); }
     .pour { position: absolute; left: 50%; bottom: calc(100% + 10px); display: grid; justify-items: center; gap: 3px;
@@ -444,10 +431,10 @@ const DrinkSlat = slat({
   room: { horizontal: { start: 132, end: 60 }, vertical: { start: 46, end: 30 } },
   css: `
     .drink { font: italic 600 18px/1 Fraunces, Georgia, serif; }
-    [data-rhp-o="h"].drink { padding-right: 16px; }
-    [data-rhp-o="v"].drink { font-size: 13px; line-height: 1.1; white-space: normal; hyphens: auto; }
+    .drink:horizontal { --rhp-label-gap: 16px; }
+    .drink:vertical { font-size: 13px; line-height: 1.1; white-space: normal; hyphens: auto; }
     .ml { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--rhp-muted); }
-    [data-rhp-o="h"].ml { padding-left: 10px; }
+    .ml:horizontal { --rhp-label-gap: 10px; }
     .cup { background: none; box-shadow: 0 10px 18px -12px rgb(43 27 18 / .55); --rhp-radius: 12px; }
     .serving:hover { z-index: 1; } /* slats paint in data order: the drink under the pointer comes over the others */`,
 }, (d) => {
@@ -489,17 +476,17 @@ const PHONE = { font: "system-ui, sans-serif", ink: "#1d1d1f", muted: "#6e6e73",
 const ChargeSlat = slat({
   css: `
     .charge { display: grid; place-items: center; overflow: hidden; --rhp-radius: 4px; color: #fff; font-size: 11px; font-weight: 700; }
-    [data-rhp-o="h"].charge { height: 26px; clip-path: inset(0 1px); }
-    [data-rhp-o="v"].charge { width: 62px; clip-path: inset(1px 0); }
+    .charge:horizontal { height: 26px; clip-path: inset(0 1px); }
+    .charge:vertical { width: 62px; clip-path: inset(1px 0); }
     .charge.games { color: #2a1b00; }
     .charge.small > span { display: none; }
-    @container (max-width: 300px) { [data-rhp-o="h"].charge.mid > span { display: none; } } /* a narrow battery needs 16% for a number */
+    @container (max-width: 300px) { .charge.mid:horizontal > span { display: none; } } /* a narrow battery needs 16% for a number */
     .charge.off { opacity: .14; }
     .charge.on { overflow: visible; clip-path: none; } /* its badge may be bigger than it; the faded neighbors need no gap */
     .charge.on.small > span { display: block; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
       padding: 3px 6px; border-radius: 5px; background: var(--rhp-color); box-shadow: 0 0 0 2px var(--rhp-surface); }
     @container (max-width: 300px) {
-      [data-rhp-o="h"].charge.on.mid > span { display: block; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+      .charge.on.mid:horizontal > span { display: block; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
         padding: 3px 6px; border-radius: 5px; background: var(--rhp-color); box-shadow: 0 0 0 2px var(--rhp-surface); } }`,
 }, (c) => {
   const share = () => c.to - c.from;
@@ -518,13 +505,13 @@ const BatterySlat = slat({
   room: { horizontal: { start: 92, end: 18 }, vertical: { start: 30, end: 18 } },
   css: `
     .who { font-size: 15px; font-weight: 600; }
-    [data-rhp-o="h"].who { padding-right: 16px; }
+    .who:horizontal { --rhp-label-gap: 16px; }
     .shell { background: none; border: 2px solid rgb(29 29 31 / .32); --rhp-radius: 10px; }
-    [data-rhp-o="h"].shell { left: -5px; width: calc(100% + 10px); height: 36px; }
-    [data-rhp-o="v"].shell { bottom: -5px; height: calc(100% + 10px); width: 72px; }
+    .shell:horizontal { left: -5px; width: calc(100% + 10px); height: 36px; }
+    .shell:vertical { bottom: -5px; height: calc(100% + 10px); width: 72px; }
     .nub { background: rgb(29 29 31 / .32); }
-    [data-rhp-o="h"].nub { width: 5px; height: 14px; translate: 7px -50%; border-radius: 0 3px 3px 0; }
-    [data-rhp-o="v"].nub { height: 5px; width: 22px; translate: -50% -7px; border-radius: 3px 3px 0 0; }`,
+    .nub:horizontal { width: 5px; height: 14px; translate: 7px -50%; border-radius: 0 3px 3px 0; }
+    .nub:vertical { height: 5px; width: 22px; translate: -50% -7px; border-radius: 3px 3px 0 0; }`,
 }, (d) => {
   const cell = createMemo(() => stackUp(shares(d.use))); // each app as a share of 100, stacked
   return (
@@ -582,16 +569,16 @@ const binding = (c, i) => { const t = [0, 10, -8, 5, -12, 8, -4][i % 7]; return 
 const SpineSlat = slat({
   css: `
     .spine { background: none; }
-    [data-rhp-o="h"].spine { top: auto; bottom: 0; translate: none; }
+    .spine:horizontal { top: auto; bottom: 0; translate: none; }
     .book { position: absolute; border-radius: 2px; background-color: var(--rhp-color);
       transition: translate .25s cubic-bezier(.2, .9, .3, 1.15), box-shadow .25s; }
-    [data-rhp-o="h"] > .book { inset: 0 1px;
+    .spine:horizontal > .book { inset: 0 1px;
       background-image: linear-gradient(transparent 9%, rgb(255 255 255 / .4) 9% 11%, transparent 11% 89%, rgb(255 255 255 / .4) 89% 91%, transparent 91%); }
-    [data-rhp-o="v"] > .book { inset: 1px 0;
+    .spine:vertical > .book { inset: 1px 0;
       background-image: linear-gradient(90deg, transparent 9%, rgb(255 255 255 / .4) 9% 11%, transparent 11% 89%, rgb(255 255 255 / .4) 89% 91%, transparent 91%); }
     .spine:hover { z-index: 1; }
-    [data-rhp-o="h"].spine:hover > .book { translate: 0 -12px; box-shadow: 0 8px 10px -6px rgb(42 33 24 / .45); }
-    [data-rhp-o="v"].spine:hover > .book { translate: 14px 0; box-shadow: -6px 4px 10px -6px rgb(42 33 24 / .45); }`,
+    .spine:horizontal:hover > .book { translate: 0 -12px; box-shadow: 0 8px 10px -6px rgb(42 33 24 / .45); }
+    .spine:vertical:hover > .book { translate: 14px 0; box-shadow: -6px 4px 10px -6px rgb(42 33 24 / .45); }`,
 }, (u) => <Bar from={u.from} to={u.to} thick={tall(u.index)} color={binding(u.cloth, u.index)} class="spine"><i class="book" /></Bar>);
 
 const ShelfSlat = slat({
@@ -600,10 +587,10 @@ const ShelfSlat = slat({
   css: `
     .shelf { border-bottom: 5px solid #c79f72; }
     .genre { font: 600 17px/1 Fraunces, Georgia, serif; }
-    [data-rhp-o="h"].genre { padding-right: 16px; }
+    .genre:horizontal { --rhp-label-gap: 16px; }
     .count { font: 800 18px/1 Fraunces, Georgia, serif; }
     .count small { display: block; margin-top: 1px; font: 500 11px/1 var(--rhp-font); color: var(--rhp-muted); }
-    [data-rhp-o="h"].count { padding-left: 10px; }`,
+    .count:horizontal { --rhp-label-gap: 10px; }`,
 }, (d) => (
   <div class="shelf">
     <Label edge="start" class="genre">{d.genre}</Label>
@@ -631,24 +618,21 @@ const MEN = [3.6, 4.2, 4.9, 5.5, 6.7, 7.3, 6.8, 5.7, 4.1]; // % of the populatio
 const SPINE = 1.7; // scale units kept clear each side of 0, for the age labels
 const CENSUS = { font: "system-ui, sans-serif", ink: "#1f2933", muted: "#687482", grid: "#e2ddd3", surface: "#f4f1ea" };
 
-// Men to the left of a spine of ages, women to the right: both Bars start SPINE away from 0.
+// Men to the left of a spine of ages, women to the right: both Bars start SPINE away from 0 and run outward.
 const AgeSlat = slat({
   band: { horizontal: 30 },
   inset: 0.13,
   room: { horizontal: { start: 38, end: 38 }, vertical: { start: 26, end: 26 } },
   css: `
-    [data-rhp-o="h"].men { border-radius: 99px 3px 3px 99px; }
-    [data-rhp-o="h"].women { border-radius: 3px 99px 99px 3px; }
-    [data-rhp-o="v"].men { border-radius: 3px 3px 99px 99px; }
-    [data-rhp-o="v"].women { border-radius: 99px 99px 3px 3px; }
+    .side { --rhp-start-radius: 3px; --rhp-end-radius: 99px; }
     .age { padding: 0; font-size: 11px; font-weight: 800; letter-spacing: .02em; }
-    [data-rhp-o="h"].age { translate: -50% -50%; }
-    [data-rhp-o="v"].age { translate: -50% 50%; }
+    .age:horizontal { translate: -50% -50%; }
+    .age:vertical { translate: -50% 50%; }
     .pct { font-size: 11px; color: var(--rhp-muted); font-variant-numeric: tabular-nums; }`,
 }, (d) => (
   <div>
-    <Bar from={-(d.men + SPINE)} to={-SPINE} color="#1d6fa5" class="men" />
-    <Bar from={SPINE} to={d.women + SPINE} color="#d9694c" class="women" />
+    <Bar from={-SPINE} to={-(d.men + SPINE)} color="#1d6fa5" class="side" />
+    <Bar from={SPINE} to={d.women + SPINE} color="#d9694c" class="side" />
     <Label at={0} class="age">{d.age}</Label>
     <Label at={-(d.men + SPINE)} side="before" class="pct">{d.men.toFixed(1)}</Label>
     <Label at={d.women + SPINE} class="pct">{d.women.toFixed(1)}</Label>
@@ -708,8 +692,8 @@ const NormalSlat = slat({
     .line { background: var(--rhp-grid); --rhp-tick-width: 1px; }
     .zero .line { background: var(--rhp-muted); }
     .num { font-size: 10.5px; color: var(--rhp-muted); padding: 0; }
-    [data-rhp-o="h"].num { top: calc(100% + 8px); translate: -50% 0; }
-    [data-rhp-o="v"].num { left: auto; right: calc(100% + 8px); translate: 0 50%; }
+    .num:horizontal { top: calc(100% + 8px); translate: -50% 0; }
+    .num:vertical { left: auto; right: calc(100% + 8px); translate: 0 50%; }
     .zero .num { color: var(--rhp-ink); font-weight: 700; }`,
 }, (t) => (
   <div class={t.at === 0 ? "zero" : ""}>
@@ -752,7 +736,7 @@ const BinSlat = slat({
     .deg { font-size: 11px; font-weight: 700; color: var(--rhp-muted); }
     .days { font-size: 11px; font-weight: 800; }
     .days > span { opacity: 0; transition: opacity .15s; }
-    [data-rhp-o="h"].days { padding-left: 6px; }
+    .days:horizontal { --rhp-label-gap: 6px; }
     .slat:hover .days > span { opacity: 1; }
     .slat:hover .bin { filter: brightness(1.08) saturate(1.1); }`,
 }, (d) => (
@@ -789,14 +773,11 @@ const SampleSlat = slat({
   css: `
     .swing, .tip { transition-delay: calc(var(--k) * 8ms); }
     .swing { --rhp-radius: 99px; opacity: var(--fade); }
-    [data-rhp-o="h"].swing { background: linear-gradient(90deg, #6d28d9, #ec4899); }
-    [data-rhp-o="h"].swing.down { background: linear-gradient(270deg, #6d28d9, #ec4899); }
-    [data-rhp-o="v"].swing { background: linear-gradient(0deg, #6d28d9, #ec4899); }
-    [data-rhp-o="v"].swing.down { background: linear-gradient(180deg, #6d28d9, #ec4899); }
+    .swing { background: linear-gradient(var(--rhp-toward-end), #6d28d9, #ec4899); }
     .tip { background: #fff; opacity: var(--fade); box-shadow: 0 0 10px 2px rgb(236 72 153 / .7); }`,
 }, (d) => (
   <div style={{ "--fade": 1 - d.index / 46, "--k": d.index }}>
-    <Bar to={d.y} thick="4px" class={d.y < 0 ? "swing down" : "swing"} />
+    <Bar to={d.y} thick="4px" class="swing" />
     <Dot at={d.y} size="7px" class="tip" />
   </div>
 ));
@@ -842,11 +823,11 @@ const KeySlat = slat({
   css: `
     .key { --rhp-radius: 0 0 3px 3px; background: #efe6d2; }
     .black .key { background: #1b1916; box-shadow: inset 0 0 0 1px #3a342b; }
-    [data-rhp-o="h"].key { top: calc(100% + 6px); height: 24px; translate: none; clip-path: inset(0 .5px); }
-    [data-rhp-o="v"].key { left: auto; right: calc(100% + 6px); width: 24px; translate: none; clip-path: inset(.5px 0); --rhp-radius: 3px 0 0 3px; }
+    .key:horizontal { top: calc(100% + 6px); height: 24px; translate: none; clip-path: inset(0 .5px); }
+    .key:vertical { left: auto; right: calc(100% + 6px); width: 24px; translate: none; clip-path: inset(.5px 0); --rhp-radius: 3px 0 0 3px; }
     .c { font-size: 10px; font-weight: 700; color: var(--rhp-muted); padding: 0; }
-    [data-rhp-o="h"].c { top: calc(100% + 34px); translate: -2px 0; }
-    [data-rhp-o="v"].c { left: auto; right: calc(100% + 34px); translate: 0 50%; }
+    .c:horizontal { top: calc(100% + 34px); translate: -2px 0; }
+    .c:vertical { left: auto; right: calc(100% + 34px); translate: 0 50%; }
     .lit.white .key { background: color-mix(in oklab, var(--tint), white 45%); }
     .lit.black .key { background: var(--tint); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--tint), black 35%); }
     .lit .c { color: color-mix(in oklab, var(--tint), white 55%); }`,
@@ -867,8 +848,8 @@ const InstrumentSlat = slat({
   room: { horizontal: { start: 140, end: 16 }, vertical: { start: 30, end: 12 } },
   css: `
     .name { font: italic 600 17px/1 Fraunces, Georgia, serif; }
-    [data-rhp-o="h"].name { padding-right: 16px; }
-    [data-rhp-o="v"].name { font-size: 14px; }
+    .name:horizontal { --rhp-label-gap: 16px; }
+    .name:vertical { font-size: 14px; }
     .body { fill: var(--rhp-color); stroke: rgb(0 0 0 / .5); stroke-width: 1px; }
     .string { background: var(--rhp-ink); opacity: .85; }
     .median { background: var(--rhp-ink); box-shadow: 0 0 0 2px var(--rhp-color); }
@@ -930,7 +911,7 @@ const DayRow = slat({
   // day names at the start; hour numbers over the first row (horizontal) or left of the first column (vertical)
   room: { horizontal: { start: 40, before: 18 }, vertical: { start: 24, before: 30 } },
   css: `.hour { --rhp-label-size: 10px; color: var(--rhp-muted); }
-    .hour[data-rhp-o="h"] { width: auto; }`,
+    .hour:horizontal { width: auto; }`,
 }, (d) => (
   <div class="slat">
     <Label edge="start">{d.day}</Label>
@@ -969,11 +950,11 @@ const ArmSlat = slat({
   room: { horizontal: { start: 84, end: 76 }, vertical: { start: 30, end: 30 } },
   css: `
     .arm { font-size: 15px; font-weight: 700; }
-    [data-rhp-o="h"].arm { padding-right: 14px; }
+    .arm:horizontal { --rhp-label-gap: 14px; }
     .mean { background: var(--rhp-ink); --rhp-tick-width: 3px; border-radius: 2px; }
     .avg { font-size: 12px; font-weight: 700; color: var(--rhp-ink); }
     .avg small { display: block; font-size: 10.5px; font-weight: 500; color: var(--rhp-muted); }
-    [data-rhp-o="h"].avg { padding-left: 12px; }`,
+    .avg:horizontal { --rhp-label-gap: 12px; }`,
 }, (d) => {
   const mean = createMemo(() => sum(d.days) / d.days.length);
   return (
@@ -1013,20 +994,19 @@ const ClimbSlat = slat({
   css: `
     .peak-name { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
     .peak-name small { display: block; margin-top: 2px; font-size: 11px; font-weight: 500; color: var(--rhp-muted); }
-    [data-rhp-o="h"].peak-name { padding-right: 14px; }
-    [data-rhp-o="v"].peak-name { font-size: 10px; white-space: normal; line-height: 1.1; hyphens: auto; }
-    [data-rhp-o="v"].peak-name small { display: none; }
+    .peak-name:horizontal { --rhp-label-gap: 14px; }
+    .peak-name:vertical { font-size: 10px; white-space: normal; line-height: 1.1; hyphens: auto; }
+    .peak-name:vertical small { display: none; }
     .route { --rhp-radius: 99px; }
-    [data-rhp-o="h"].route { background: linear-gradient(90deg, #d9772b, #13293d); }
-    [data-rhp-o="v"].route { background: linear-gradient(0deg, #d9772b, #13293d); }
+    .route { background: linear-gradient(var(--rhp-toward-end), #d9772b, #13293d); }
     .tent { width: 16px; height: 13px; border-radius: 0; background: #d9772b; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
     .summit { width: 24px; height: 20px; border-radius: 0; clip-path: polygon(50% 0, 100% 100%, 0 100%);
       background: linear-gradient(#fff 34%, #13293d 34%); }
-    [data-rhp-o="h"].summit { translate: -50% -60%; }
-    [data-rhp-o="v"].summit { translate: -50% 30%; }
+    .summit:horizontal { translate: -50% -60%; }
+    .summit:vertical { translate: -50% 30%; }
     .height { font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
-    [data-rhp-o="h"].height { padding-left: 16px; }
-    [data-rhp-o="v"].height { padding-bottom: 14px; font-size: 11px; }`,
+    .height:horizontal { --rhp-label-gap: 16px; }
+    .height:vertical { padding-bottom: 14px; font-size: 11px; }`,
 }, (d) => (
   <div>
     <Label edge="start" class="peak-name">{d.peak}<small>{d.where}</small></Label>
@@ -1082,18 +1062,17 @@ const GoalSlat = slat({
   room: { horizontal: { start: 134, end: 58 }, vertical: { start: 70, end: 30 } },
   css: `
     .habit { display: flex; align-items: center; gap: 10px; overflow: visible; font-size: 15px; font-weight: 700; }
-    [data-rhp-o="h"].habit { justify-content: flex-end; padding-right: 18px; }
-    [data-rhp-o="v"].habit { flex-direction: column; gap: 4px; padding-top: 10px; font-size: 12px; text-align: center; }
+    .habit:horizontal { justify-content: flex-end; padding-right: 18px; }
+    .habit:vertical { flex-direction: column; gap: 4px; padding-top: 10px; font-size: 12px; text-align: center; }
     .habit small { display: block; font-size: 11px; font-weight: 500; color: var(--rhp-muted); }
     .icon { flex: none; width: 30px; height: 30px; padding: 6px; border-radius: 50%; fill: var(--rhp-color);
       background: color-mix(in srgb, var(--rhp-color) 18%, transparent); }
     .track { background: #1c1c22; --rhp-radius: 99px; }
     .done { --rhp-radius: 99px; box-shadow: 0 0 14px color-mix(in srgb, var(--rhp-color) 55%, transparent); }
-    [data-rhp-o="h"].done { background: linear-gradient(90deg, color-mix(in srgb, var(--rhp-color) 25%, transparent), var(--rhp-color)); }
-    [data-rhp-o="v"].done { background: linear-gradient(0deg, color-mix(in srgb, var(--rhp-color) 25%, transparent), var(--rhp-color)); }
+    .done { background: linear-gradient(var(--rhp-toward-end), color-mix(in srgb, var(--rhp-color) 25%, transparent), var(--rhp-color)); }
     .goal { background: #fff; --rhp-tick-width: 2px; border-radius: 2px; }
     .pct { font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
-    [data-rhp-o="h"].pct { padding-left: 14px; }
+    .pct:horizontal { --rhp-label-gap: 14px; }
     .row:hover .done { box-shadow: 0 0 24px 2px color-mix(in srgb, var(--rhp-color) 80%, transparent); filter: brightness(1.2); }
     .row:hover .icon { background: color-mix(in srgb, var(--rhp-color) 34%, transparent); }
     .tip { width: 0; height: 0; padding: 0; translate: none; } /* a point at the tip of the progress; the bubble hangs from it */
@@ -1143,8 +1122,8 @@ const StepSlat = slat({
   room: { horizontal: { start: 100, end: 66 }, vertical: { start: 40, end: 26, after: 18 } },
   css: `
     .item { font-size: 14px; font-weight: 600; }
-    [data-rhp-o="h"].item { padding-right: 14px; }
-    [data-rhp-o="v"].item { font-size: 11px; white-space: normal; line-height: 1.1; hyphens: auto; }
+    .item:horizontal { --rhp-label-gap: 14px; }
+    .item:vertical { font-size: 11px; white-space: normal; line-height: 1.1; hyphens: auto; }
     .item button { all: unset; cursor: pointer; border-radius: 3px; text-decoration: underline 1.5px dotted #b5bcc8; text-underline-offset: 3px; }
     .item button:focus-visible { outline: 2px solid #0b8a63; outline-offset: 2px; }
     .out:hover .item button { text-decoration-color: #d2423f; }
@@ -1158,11 +1137,11 @@ const StepSlat = slat({
     .in .amount { color: #0b8a63; }
     .out .amount { color: #d2423f; }
     .cut .amount { color: #8a93a3; text-decoration: line-through; }
-    [data-rhp-o="h"].amount { padding-left: 8px; }
-    [data-rhp-o="v"].amount { font-size: 10.5px; }
+    .amount:horizontal { --rhp-label-gap: 8px; }
+    .amount:vertical { font-size: 10.5px; }
     .link { background: #b5bcc8; }
-    [data-rhp-o="h"].link { width: 1px; top: calc(50% + 12px); height: 22px; translate: -50% 0; }
-    [data-rhp-o="v"].link { height: 1px; left: calc(50% + 12px); width: calc(100% - 24px); translate: 0 50%; }`,
+    .link:horizontal { width: 1px; top: calc(50% + 12px); height: 22px; translate: -50% 0; }
+    .link:vertical { height: 1px; left: calc(50% + 12px); width: calc(100% - 24px); translate: 0 50%; }`,
 }, (d) => {
   const kind = () => (d.total ? "total" : d.amount > 0 ? "in" : "out");
   return (
@@ -1215,12 +1194,12 @@ const MonthBandSlat = slat({
   css: `
     .band { background: none; --rhp-radius: 0px; }
     .odd .band { background: rgb(20 20 20 / .035); }
-    [data-rhp-o="h"].band { top: 0; height: 100%; translate: none; }
-    [data-rhp-o="v"].band { left: 0; width: 100%; translate: none; }
+    .band:horizontal { top: 0; height: 100%; translate: none; }
+    .band:vertical { left: 0; width: 100%; translate: none; }
     .month { font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--rhp-muted); padding: 0; }
-    [data-rhp-o="h"].month { top: -20px; translate: 6px 0; }
-    [data-rhp-o="v"].month { left: -34px; translate: 0 -4px; }
-    @container (max-width: 360px) { .odd > [data-rhp-o="h"].month { display: none; } } /* a narrow plot names every other month */`,
+    .month:horizontal { top: -20px; translate: 6px 0; }
+    .month:vertical { left: -34px; translate: 0 -4px; }
+    @container (max-width: 360px) { .odd > .month:horizontal { display: none; } } /* a narrow plot names every other month */`,
 }, (t) => (
   <div class={t.index % 2 ? "odd" : ""}>
     <Bar from={t.at} to={t.next} class="band" />
@@ -1236,9 +1215,9 @@ const TradeSlat = slat({
   css: `
     .trade { font-size: 14px; font-weight: 700; }
     .trade small { display: block; font-size: 10.5px; font-weight: 500; color: var(--rhp-muted); }
-    [data-rhp-o="h"].trade { padding-right: 14px; }
-    [data-rhp-o="v"].trade { font-size: 10px; white-space: normal; line-height: 1.1; hyphens: auto; }
-    [data-rhp-o="v"].trade small { display: none; }
+    .trade:horizontal { --rhp-label-gap: 14px; }
+    .trade:vertical { font-size: 10px; white-space: normal; line-height: 1.1; hyphens: auto; }
+    .trade:vertical small { display: none; }
     .job { background: #d8d5cf; --rhp-radius: 99px; }
     .done { background: #ff5a1f; --rhp-radius: 99px; }
     .row:hover .job { background: #c4c0b8; }
@@ -1246,16 +1225,16 @@ const TradeSlat = slat({
     .dim, .weeks { visibility: hidden; }
     .row:hover :is(.dim, .weeks) { visibility: visible; }
     .dim { background: var(--rhp-ink); --rhp-radius: 0px; }
-    [data-rhp-o="h"].dim { translate: 0 -13px; }
-    [data-rhp-o="v"].dim { translate: 13px 0; }
+    .dim:horizontal { translate: 0 -13px; }
+    .dim:vertical { translate: 13px 0; }
     .dim::before, .dim::after { content: ""; position: absolute; background: var(--rhp-ink); }
-    [data-rhp-o="h"].dim::before, [data-rhp-o="h"].dim::after { top: -4px; width: 1px; height: 9px; }
-    [data-rhp-o="h"].dim::before { left: 0; } [data-rhp-o="h"].dim::after { right: 0; }
-    [data-rhp-o="v"].dim::before, [data-rhp-o="v"].dim::after { left: -4px; height: 1px; width: 9px; }
-    [data-rhp-o="v"].dim::before { bottom: 0; } [data-rhp-o="v"].dim::after { top: 0; }
+    .dim:horizontal::before, .dim:horizontal::after { top: -4px; width: 1px; height: 9px; }
+    .dim:horizontal::before { left: 0; } .dim:horizontal::after { right: 0; }
+    .dim:vertical::before, .dim:vertical::after { left: -4px; height: 1px; width: 9px; }
+    .dim:vertical::before { bottom: 0; } .dim:vertical::after { top: 0; }
     .weeks { padding: 0 4px; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; background: var(--rhp-surface); }
-    [data-rhp-o="h"].weeks { translate: -50% calc(-50% - 13px); } /* on the line, breaking it, as on a drawing */
-    [data-rhp-o="v"].weeks { left: calc(50% + 13px); translate: -50% 50%; }`,
+    .weeks:horizontal { translate: -50% calc(-50% - 13px); } /* on the line, breaking it, as on a drawing */
+    .weeks:vertical { left: calc(50% + 13px); translate: -50% 50%; }`,
 }, (d) => (
   <div class="row">
     <Label edge="start" class="trade">{d.trade}<small>wk {Math.round(d.start)}–{Math.round(d.end)}</small></Label>
@@ -1270,7 +1249,7 @@ const TradeSlat = slat({
 const TodaySlat = slat({
   room: { horizontal: { after: 24 } },
   css: `.now { background: #ff5a1f; --rhp-tick-width: 2px; } .now-label { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; color: #ff5a1f; padding: 0; }
-    [data-rhp-o="h"].now-label { top: calc(100% + 6px); translate: -50% 0; } [data-rhp-o="v"].now-label { left: auto; right: 4px; translate: 0 -2px; }`,
+    .now-label:horizontal { top: calc(100% + 6px); translate: -50% 0; } .now-label:vertical { left: auto; right: 4px; translate: 0 -2px; }`,
 }, () => <div><Tick at={TODAY} thick={1} class="now" /><Label at={TODAY} class="now-label">TODAY</Label></div>);
 
 export function Gantt(p) {
@@ -1302,8 +1281,8 @@ const DaySlat = slat({
     .wick { background: #807973; }
     .body { --rhp-radius: 1px; }
     .last { font-size: 11.5px; font-weight: 800; color: #fff; padding: 2px 6px; border-radius: 3px; background: var(--rhp-color); font-variant-numeric: tabular-nums; }
-    [data-rhp-o="h"].last { margin-left: 8px; }
-    [data-rhp-o="v"].last { left: auto; right: 0; translate: 0 -8px; }`,
+    .last:horizontal { margin-left: 8px; }
+    .last:vertical { left: auto; right: 0; translate: 0 -8px; }`,
 }, (d) => {
   const color = () => (d.close >= d.open ? "#0d7680" : "#990f3d");
   return (
@@ -1321,11 +1300,11 @@ const CrossSlat = slat({
   room: {},
   css: `
     .cross { background: none; --rhp-tick-width: 0px; }
-    [data-rhp-o="h"].cross { border-left: 1px dashed var(--rhp-ink); }
-    [data-rhp-o="v"].cross { border-top: 1px dashed var(--rhp-ink); }
+    .cross:horizontal { border-left: 1px dashed var(--rhp-ink); }
+    .cross:vertical { border-top: 1px dashed var(--rhp-ink); }
     .price { padding: 3px 6px; border-radius: 3px; background: var(--rhp-ink); color: var(--rhp-surface); font-size: 11px; font-weight: 800; }
-    [data-rhp-o="h"].price { top: calc(100% + 1px); translate: -50% 0; }
-    [data-rhp-o="v"].price { left: auto; right: calc(100% + 3px); translate: 0 50%; }`,
+    .price:horizontal { top: calc(100% + 1px); translate: -50% 0; }
+    .price:vertical { left: auto; right: calc(100% + 3px); translate: 0 50%; }`,
 }, (c) => (
   <div>
     <Tick at={c.close} thick={1} class="cross" />

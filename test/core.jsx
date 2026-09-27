@@ -21,7 +21,16 @@ const Tk = (t) => <div class="tk" data-at={t.at} data-next={t.next} data-end={t.
 const SAME = `.r { color: rgb(255, 0, 0); }`;
 const Red = slat({ css: SAME }, () => <div class="r">a</div>);
 const Twin = slat({ css: SAME }, () => <div class="r twin">b</div>);
-// 11. when writes land: a change from a timer, and one made in the app's own frame
+// 11. orientation in slat CSS: :horizontal and :vertical, and knobs named along the value axis
+const Turned = slat({ css: `
+.o:horizontal { color: rgb(0, 128, 0); }
+.o:vertical { color: rgb(0, 0, 128); }
+.o:vertical .inner { color: rgb(1, 2, 3); }
+.b { --rhp-start-radius: 0px; --rhp-end-radius: 7px; background-image: linear-gradient(var(--rhp-toward-end), red, blue); }
+.l { --rhp-label-gap: 11px; }
+.b { --rhp-gap: 3px; }
+` }, (d) => <div class="o"><span class="inner">x</span><Bar class="b" from={d.from} to={d.to} /><Label class="l" at={d.to}>v</Label></div>);
+// 12. when writes land: a change from a timer, and one made in the app's own frame
 const [paced, setPaced] = createSignal(1);
 render(() => (
   <div>
@@ -37,6 +46,8 @@ render(() => (
     <Chart class="nosc" scale={[0, 10]}><Plot v={[3]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
     <Chart class="rs"><Plot slats={1}>{Red}</Plot></Chart>
     <Chart class="rs"><Plot slats={1}>{Twin}</Plot></Chart>
+    <Chart class="or-h" scale={[0, 10]}><Plot from={[0, 10]} to={[6, 2]}>{Turned}</Plot></Chart>
+    <Chart class="or-v" orientation="vertical" scale={[0, 10]}><Plot from={[0, 10]} to={[6, 2]}>{Turned}</Plot></Chart>
     <Chart class="paced" scale={[0, 100]}><Plot v={[paced()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
   </div>
 ), document.body);

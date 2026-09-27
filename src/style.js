@@ -102,11 +102,11 @@ export function scoped(css, scope) {
   }
   const S = `[data-rhp-slat="${scope}"]`, other = `:not(:where(${S} [data-rhp-slat]:not(${S}), ${S} [data-rhp-slat]:not(${S}) *))`;
   const one = (sel) => {
-    const at = pseudoAt(sel), base = (at < 0 ? sel : sel.slice(0, at)).trim(), pe = at < 0 ? "" : sel.slice(at);
+    const at = pseudoAt(sel), base = oriented((at < 0 ? sel : sel.slice(0, at)).trim()), pe = at < 0 ? "" : sel.slice(at);
     const x = !base ? "" : /^[^\s>+~]*\.rhp-chart(?![-\w])/.test(base) ? `:is(${base})` : `:is(.rhp-chart ${base})`; // anchored at the chart root
     return `${S}${x}${other}${pe}, ${S} ${x}${other}${pe}`;
   };
-  const tail = (sel) => { const at = pseudoAt(sel); return at < 0 ? sel + other : sel.slice(0, at) + other + sel.slice(at); };
+  const tail = (sel) => { const at = pseudoAt(sel); return at < 0 ? oriented(sel) + other : oriented(sel.slice(0, at)) + other + sel.slice(at); };
   let out = "", seg = "", quote = null, paren = 0;
   const kinds = []; // "at" (a grouping rule), "frames", "rule" (a style rule), "nested", "scope"
   for (let i = 0; i < css.length; i++) {
@@ -134,6 +134,24 @@ export function scoped(css, scope) {
     else seg += ch;
   }
   return out + seg;
+}
+
+// :horizontal and :vertical in a slat's CSS match a slat root, a block or a Plot drawn in that orientation
+// (`.bar:vertical`, `.row:horizontal .name`). rhp marks those elements with data-rhp-o.
+// Only outside strings, and not after a pseudo-element (::-webkit-scrollbar:horizontal is the browser's own).
+function oriented(sel) {
+  if (!/:(horizontal|vertical)/.test(sel)) return sel;
+  let out = "", quote = null;
+  for (let i = 0; i < sel.length; i++) {
+    const ch = sel[i];
+    if (ch === "\\") { out += ch + (sel[++i] ?? ""); continue; }
+    if (quote) { out += ch; if (ch === quote) quote = null; continue; }
+    if (ch === '"' || ch === "'") { quote = ch; out += ch; continue; }
+    const m = ch === ":" && sel[i - 1] !== ":" && sel.slice(i).match(/^:(horizontal|vertical)(?![-\w(])/);
+    if (m) { out += `[data-rhp-o="${m[1][0]}"]`; i += m[0].length - 1; continue; }
+    out += ch;
+  }
+  return out;
 }
 
 // A short, stable name from the CSS text, so a server and a browser pick the same one.

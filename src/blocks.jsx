@@ -20,15 +20,18 @@ export const tok = (c) => {
 const length = (v) => (typeof v === "number" ? v * 100 + "%" : v); // 0.6 → "60%"; "2px" stays
 
 // One effect per block writes its variables, and only the ones that changed: the first ones now, later ones in the next frame (frame.js).
-export function writeVars(el, vars) {
+// then(v) runs after, with the same values: a block can set an attribute from them without reading its props again.
+export function writeVars(el, vars, then) {
   createRenderEffect((prev) => {
     const v = vars();
     for (const k in v) if (v[k] !== prev?.[k]) prev ? write(el, k, v[k]) : v[k] != null && el.style.setProperty(k, v[k]);
+    then?.(v);
     return v;
   });
 }
 
-function block(base, own, vars) {
+// back(v): true when the block runs backward along the value axis (a Bar whose `to` is below its `from`), so its end is on the scale's start side.
+function block(base, own, vars, back) {
   const keys = ["class", "style", "ref", "children", ...own];
   return (props) => {
     const o = useOrientation();
@@ -39,7 +42,7 @@ function block(base, own, vars) {
         {p.children}
       </div>
     );
-    writeVars(el, () => vars(p));
+    writeVars(el, () => vars(p), back && ((v) => el.toggleAttribute("data-rhp-back", back(v))));
     return node;
   };
 }
@@ -51,7 +54,7 @@ function block(base, own, vars) {
  */
 export const Bar = block("rhp-bar", ["from", "to", "thick", "color"], (p) => ({
   "--rhp-from": p.from ?? 0, "--rhp-to": p.to ?? 0, "--rhp-thick": length(p.thick), "--rhp-color": tok(p.color),
-}));
+}), (v) => v["--rhp-to"] < v["--rhp-from"]);
 
 /** A round point at value `at`. `size` is its diameter (default 10px); `across` places it across the band, 0..1 (default 0.5). */
 export const Dot = block("rhp-dot", ["at", "size", "across", "color"], (p) => ({

@@ -70,6 +70,18 @@ const open = async (url, opts = {}) => {
     return getComputedStyle(document.body).backgroundColor;
   }), "rgba(0, 0, 0, 0)");
   check("Scale: a new max moves the ticks, and a tick keeps its slat", [(await ticks()).map((t) => t[0]).join(" "), await p.evaluate(() => document.querySelector('.sc .tk[data-at="25"]') === window.t25)], ["0 5 10 15 20 25 30", true]);
+  check(":horizontal and :vertical match a slat root and what is inside it", await p.evaluate(() => [".or-h .o", ".or-v .o", ".or-h .inner", ".or-v .inner"].map((q) => getComputedStyle(document.querySelector(q)).color)),
+    ["rgb(0, 128, 0)", "rgb(0, 0, 128)", "rgb(0, 128, 0)", "rgb(1, 2, 3)"]);
+  check("--rhp-end-radius rounds a bar's value end, also for a bar that runs backward", await p.evaluate(() => [".or-h", ".or-v"].flatMap((c) =>
+    [...document.querySelectorAll(c + " .b")].map((b) => { const s = getComputedStyle(b); return [s.borderTopLeftRadius, s.borderTopRightRadius, s.borderBottomRightRadius, s.borderBottomLeftRadius].join(" "); }))),
+    ["0px 7px 7px 0px", "7px 0px 0px 7px", "7px 7px 0px 0px", "0px 0px 7px 7px"]);
+  check("--rhp-toward-end points a gradient at the value end", await p.evaluate(() => [".or-h", ".or-v"].flatMap((c) =>
+    [...document.querySelectorAll(c + " .b")].map((b) => getComputedStyle(b).backgroundImage.match(/to \w+/)?.[0] ?? "to bottom"))), ["to right", "to left", "to top", "to bottom"]);
+  check("--rhp-gap leaves room at a bar's from side", await p.evaluate(() => [".or-h", ".or-v"].flatMap((c) => {
+    const plot = document.querySelector(c + " .rhp-plot").getBoundingClientRect(), [a, b] = [...document.querySelectorAll(c + " .b")].map((e) => e.getBoundingClientRect());
+    return c === ".or-h" ? [Math.round(a.left - plot.left), Math.round(plot.right - b.right)] : [Math.round(plot.bottom - a.bottom), Math.round(b.top - plot.top)];
+  })), [3, 3, 3, 3]);
+  check("--rhp-label-gap spaces a label from its value", await p.evaluate(() => [getComputedStyle(document.querySelector(".or-h .l")).paddingLeft, getComputedStyle(document.querySelector(".or-v .l")).paddingBottom]), ["11px", "11px"]);
   const bar = () => document.querySelector(".paced .rhp-bar").style.getPropertyValue("--rhp-to");
   check("a change from a timer is written in the next frame, before it paints", await p.evaluate(async (bar) => {
     const read = new Function("return (" + bar + ")()");
@@ -130,14 +142,14 @@ const open = async (url, opts = {}) => {
     let worst = 0;
     for (const plot of document.querySelectorAll("#stacked .rhp-plot .rhp-plot")) {
       const r = [...plot.querySelectorAll(".rhp-bar")].map((e) => e.getBoundingClientRect()).filter((b) => b.width).sort((a, b) => a.left - b.left); // hidden (empty) segments aside
-      for (let i = 1; i < r.length; i++) worst = Math.max(worst, Math.abs(r[i].left - r[i - 1].right));
+      for (let i = 1; i < r.length; i++) worst = Math.max(worst, Math.abs(r[i].left - r[i - 1].right - 2)); // the layers' --rhp-gap: 2px
     }
     return worst;
   });
   let worst = 0;
   await p.click("#new-data");
   for (let t = 0; t < 12; t++) { await p.waitForTimeout(40); worst = Math.max(worst, await gaps()); }
-  check("JS version: stacked segments stay joined while they move (px)", +worst.toFixed(2), (w) => w < 0.5);
+  check("JS version: stacked segments keep their 2px gap while they move (px off)", +worst.toFixed(2), (w) => w < 0.5);
   check("no page errors", p.errors, []);
   await p.close();
   for (const scheme of ["light", "dark"]) for (const width of [1280, 390]) for (const motion of ["css", "js"]) {
