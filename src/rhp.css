@@ -497,26 +497,28 @@
     box-sizing: border-box;
   }
 
+  /* A row is placed by top or left, as that many pitches into the plot. NOTE: Not by a translate of its own size: WebKit
+     resolves a percentage translate against the row's size rounded to whole pixels, so the rows drifted one by one. */
   .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap])>* {
     left: 0;
     right: 0;
-    top: 0;
+    top: calc(var(--rhp-position) * var(--rhp-pitch, 100% / var(--rhp-n)));
     bottom: auto;
     height: var(--rhp-pitch, calc(100% / var(--rhp-n)));
-    translate: 0 calc(var(--rhp-position) * 100%);
+    translate: none;
   }
 
   .rhp-plot[data-rhp-o="v"]:not([data-rhp-overlap])>* {
     top: 0;
     bottom: 0;
-    left: 0;
+    left: calc(var(--rhp-position) * var(--rhp-pitch, 100% / var(--rhp-n)));
     right: auto;
     width: var(--rhp-pitch, calc(100% / var(--rhp-n)));
-    translate: calc(var(--rhp-position) * 100%) 0;
+    translate: none;
   }
 
   .rhp-plot[data-rhp-reorder="slide"]:not([data-rhp-overlap])>* {
-    transition: translate var(--rhp-slide-time, .3s) var(--rhp-slide-ease, ease-in-out);
+    transition: top var(--rhp-slide-time, .3s) var(--rhp-slide-ease, ease-in-out), left var(--rhp-slide-time, .3s) var(--rhp-slide-ease, ease-in-out);
   }
 
   .rhp-chart[data-rhp-turning] .rhp-plot[data-rhp-reorder]>* {
