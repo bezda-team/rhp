@@ -301,7 +301,13 @@ const open = async (url, opts = {}) => {
     T.runs.plain = 0; T.runs.store = 0;
     const next = T.plain().slice(); next[500] = 3; T.setPlain(next);
     T.setSt("v", 500, 3);
-    await new Promise((r) => setTimeout(r, 50));
+
+    // The new value is written in the next animation frame, so we wait for the writes themselves and not for a length
+    // of time (a busy machine takes longer). The cap makes a Plot that never writes a failure rather than a hang.
+    for (let f = 0; f < 60 && !(mo.plain && mo.store); f++) {
+      await new Promise((r) => requestAnimationFrame(() => setTimeout(r)));
+    }
+
     return { runs: { ...T.runs }, writes: mo };
   });
   check("a plain array replaced: every slat re-runs, one style write", [r.runs.plain, r.writes.plain], [1000, 1]);
@@ -590,13 +596,21 @@ for (const motion of ["css", "js"]) {
         w.push([t, bar.getBoundingClientRect().width]);
       }
     }
+    // Each speed with the time it was measured over. Across a frame as long as a move itself (MOVE_MS, 150ms) the bar
+    // reaches its value and sets off again on the next one, which is a busy machine, not the pulse this looks for.
     const speed = [];
+
     for (let i = 1; i < w.length; i++) {
-      if (w[i][0] - w[i - 1][0] >= 1) speed.push((w[i][1] - w[i - 1][1]) / (w[i][0] - w[i - 1][0]));
+      const dt = w[i][0] - w[i - 1][0];
+      if (dt >= 1) speed.push([(w[i][1] - w[i - 1][1]) / dt, dt]);
     }
+
     let n = 0;
+
     for (let i = 2; i < speed.length; i++) {
-      if (speed[i - 1] < speed[i - 2] * 0.25 && speed[i] > Math.max(0.03, speed[i - 1] * 2)) n++;
+      if (speed[i - 1][1] >= 150 || speed[i][1] >= 150) continue;
+
+      if (speed[i - 1][0] < speed[i - 2][0] * 0.25 && speed[i][0] > Math.max(0.03, speed[i - 1][0] * 2)) n++;
     }
     set(1);
     return n;
