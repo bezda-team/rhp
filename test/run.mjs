@@ -661,8 +661,9 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
-  // Each row's whole dots (lit or not), and whether its window shows a hole wider than the 8px between dots
-  const look = () => p.evaluate(() => [...document.querySelectorAll("#dots .rhp-body > .rhp-plot > *")].map((row) => {
+  // Each row's whole dots (lit or not), where its first dot shows, and whether its window shows a hole wider than the 8px
+  // between dots. It is a function for the page, so a check can also read it every frame there.
+  const DOTS = () => [...document.querySelectorAll("#dots .rhp-body > .rhp-plot > *")].map((row) => {
     const w = row.getBoundingClientRect();
     const d = [...row.querySelectorAll(".rhp-dot")].map((e) => ({ b: e.getBoundingClientRect(), lit: getComputedStyle(e).backgroundColor === "rgb(242, 204, 143)" }))
       .sort((a, b) => a.b.left - b.b.left);
@@ -672,26 +673,46 @@ for (const motion of ["css", "js"]) {
     }
     const shown = d.filter((x) => x.b.right > w.left && x.b.left < w.right), whole = shown.filter((x) => x.b.left >= w.left - 0.5 && x.b.right <= w.right + 0.5);
     return { lit: whole.map((x) => (x.lit ? "#" : ".")).join(""), hole, x: shown[0]?.b.left - w.left, size: [shown[0]?.b.width, shown[1]?.b.left - shown[0]?.b.left] };
-  }));
+  });
+  const look = () => p.evaluate(`(${DOTS})()`);
   await p.hover("#dots .dots-window"); await p.waitForTimeout(600); // hovering holds the logo still
   const rest = await look();
   await p.mouse.move(0, 0); // leaving starts the cycle again
   check("v1 dots: v1's logo, 11 whole dots by 9 rows, 52px dots 60px apart", [rest.map((r) => r.lit), rest[0].size.map((v) => +v.toFixed(2))],
     [["...........", "....#......", "....#......", ".##.##..##.", "#...#.#.#.#", "#...#.#.##.", "........#..", "........#..", "..........."], [52, 60]]);
-  // The rows scatter or come back every 5 s, so we sample one change in each animation version
+  // The rows scatter or come back every 5 s, so we watch one move in each animation version. The page reads the rows
+  // every frame (from Node, a busy machine reads them too seldom to catch a move): it waits for them to rest (a whole
+  // number of dots over, so the first dot shows 4px in), then for the next move, and reads each frame for 700 ms.
   for (const motion of ["css", "js"]) {
     if (motion === "js") await p.click("label:has(#motion-js)");
-    const still = JSON.stringify((await look()).map((r) => Math.round(r.x)));
-    let samples = 0, between = 0, holes = 0;
-    for (const end = Date.now() + 6000; Date.now() < end && !samples; ) {
-      if (JSON.stringify((await look()).map((r) => Math.round(r.x))) !== still) samples = 1;
-    }
-    for (const end = Date.now() + 700; Date.now() < end; samples++) {
-      const rows = await look();
-      if (rows.some((r) => r.hole)) holes++;
-      if (rows.some((r) => Math.abs(r.x - 4) > 0.5)) between++;
-    }
-    check(`v1 dots, ${motion.toUpperCase()} version: rows moved, and no frame shows a hole in the window`, [between > 0, holes], [true, 0]);
+    const [moved, between, holes] = await p.evaluate(async (dots) => {
+      const rows = new Function("return (" + dots + ")")();
+      const frame = () => new Promise((r) => requestAnimationFrame(r));
+      const resting = () => rows().every((r) => Math.abs(r.x - 4) <= 0.5);
+      const at = () => JSON.stringify(rows().map((r) => Math.round(r.x)));
+
+      for (let calm = 0, end = performance.now() + 3000; calm < 3 && performance.now() < end; calm = resting() ? calm + 1 : 0) {
+        await frame();
+      }
+
+      const still = at();
+      let moved = false;
+      for (const end = performance.now() + 7000; !moved && performance.now() < end; moved = at() !== still) {
+        await frame();
+      }
+
+      let between = 0;
+      let holes = 0;
+      for (const end = performance.now() + 700; performance.now() < end; ) {
+        await frame();
+        const now = rows();
+        if (now.some((r) => r.hole)) holes++;
+        if (now.some((r) => Math.abs(r.x - 4) > 0.5)) between++;
+      }
+
+      return [moved, between > 0, holes];
+    }, DOTS.toString());
+    check(`v1 dots, ${motion.toUpperCase()} version: rows moved, and no frame shows a hole in the window`, [moved, between, holes], [true, true, 0]);
   }
   check("no page errors", p.errors, []);
   await p.close();
