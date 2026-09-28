@@ -4,6 +4,7 @@
 //   dist/source/        the source, for a Solid app's own build ("solid" condition in package.json)
 //   dist/rhp.css        rhp's stylesheet, for a page that links it once itself (linkedCss)
 //   dist/standalone.js  rhp and Solid in one module, for a page with no build step
+//   dist/*.d.ts         the types, written by hand in src (index.d.ts, standalone.d.ts)
 import fs from "fs";
 import path from "path";
 import zlib from "zlib";
@@ -19,6 +20,10 @@ fs.writeFileSync("dist/rhp.css", (await coreStylesheet()) + "\n");
 fs.rmSync("dist/source", { recursive: true, force: true });
 fs.mkdirSync("dist/source", { recursive: true });
 for (const f of fs.readdirSync("src")) {
+  if (f.endsWith(".d.ts")) {
+    fs.copyFileSync(path.join("src", f), path.join("dist", f));
+    continue;
+  }
   if (f === "standalone.js") continue;
   if (f.endsWith(".css")) {
     const css = await minifiedCss(path.join("src", f));

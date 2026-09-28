@@ -23,11 +23,16 @@
   },
   "type": "module",
   "sideEffects": false,
+  "types": "./index.d.ts",
   "exports": {
-    ".": "./index.js"
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
   },
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "dependencies": {
     "@bezda/rhp": "^2.0.0"

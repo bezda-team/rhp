@@ -1,0 +1,34 @@
+# npm test on every push to master and every pull request, in Chromium, WebKit and Firefox at once (three jobs side by
+# side, each about 5 minutes). macOS, so WebKit is Safari's engine and the fonts are the ones the checks were measured
+# with. A newer push cancels the run of an older one.
+name: test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit, firefox]
+    name: test (${{ matrix.browser }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install ${{ matrix.browser }}
+      - run: npm test
+        env:
+          BROWSER: ${{ matrix.browser }}

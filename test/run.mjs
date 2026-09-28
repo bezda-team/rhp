@@ -1,10 +1,11 @@
 // npm test builds the test pages and the gallery and checks them in Chromium with Playwright.
-// Set CHROMIUM=/path/to/chrome to use a browser other than Playwright's.
+// Set BROWSER=webkit or BROWSER=firefox to check them in that engine instead (the checks that only Chromium can make
+// are skipped there), and CHROMIUM=/path/to/chrome to use a Chromium other than Playwright's.
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { execFileSync } from "child_process";
-import { chromium } from "playwright";
+import { chromium, webkit, firefox } from "playwright";
 import { page as bundle, standalone, ssrServer, ssrClient, ssrPackage } from "../scripts/bundle.mjs";
 import { build } from "esbuild";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
@@ -49,9 +50,35 @@ const check = (name, got, want) => {
   if (!ok) failed++;
   console.log(`${ok ? "ok  " : "FAIL"} ${name}${ok ? "" : `: got ${JSON.stringify(got)}, want ${typeof want === "function" ? want.toString() : JSON.stringify(want)}`}`);
 };
-const browser = await chromium.launch({ executablePath: process.env.CHROMIUM || undefined });
+
+// The types: apps written against rhp's declarations (test/types) compile, and what they mark as errors are errors
+for (const [name, config] of [["rhp's", "tsconfig.json"], ["@bezda/rhp-react's", "tsconfig.react.json"]]) {
+  let out = "";
+  try {
+    execFileSync(path.join(here, "../node_modules/.bin/tsc"), ["-p", at("types/" + config)], { encoding: "utf8" });
+  } catch (e) {
+    out = (e.stdout || e.message).trim();
+  }
+  check(`types: an app compiles against ${name} declarations`, out, "");
+}
+const ENGINE = process.env.BROWSER ?? "chromium";
+const browser = await { chromium, webkit, firefox }[ENGINE].launch(ENGINE === "chromium" ? { executablePath: process.env.CHROMIUM || undefined } : {});
+console.log(`in ${ENGINE}`);
+// A check that can't finish fails instead of hanging: 30 s for any action on a page, 20 minutes for everything
+setTimeout(() => { console.log("FAIL the checks took over 20 minutes"); process.exit(1); }, 20 * 60 * 1000).unref();
+const newPage = async (opts) => {
+  const p = await browser.newPage(opts);
+  p.setDefaultTimeout(30000);
+  return p;
+};
+// A check that only Chromium can make (its accessibility tree, or geometry measured in its text rendering)
+const chromiumOnly = (name) => {
+  if (ENGINE === "chromium") return true;
+  console.log(`skip ${name} (Chromium only)`);
+  return false;
+};
 const open = async (url, opts = {}) => {
-  const p = await browser.newPage({ viewport: { width: 900, height: 900 }, ...opts });
+  const p = await newPage({ viewport: { width: 900, height: 900 }, ...opts });
   p.errors = [];
   p.on("pageerror", (e) => p.errors.push(e.message));
   await p.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
@@ -158,7 +185,7 @@ const open = async (url, opts = {}) => {
 
 // No build step: a plain page that imports standalone.js and writes slats with html templates
 {
-  const p = await browser.newPage();
+  const p = await newPage();
   p.errors = []; p.on("pageerror", (e) => p.errors.push(e.message));
   await p.route("http://rhp.test/**", (r) => {
     const f = new URL(r.request().url()).pathname.slice(1);
@@ -425,7 +452,7 @@ for (const motion of ["css", "js"]) {
       if (!g || want.some((v, i) => Math.abs(g[i] - v) > 1)) off.push(`${id} ${k}: got ${g?.map((v) => +v.toFixed(2))}, v1 ${want}`);
     }
   }
-  check("v1 replicas: the top rows and scales sit where v1 draws them, within 1px", off, []);
+  if (chromiumOnly("v1 replicas: where v1 draws the top rows and scales")) check("v1 replicas: the top rows and scales sit where v1 draws them, within 1px", off, []);
 
   // The scale's end line stays at the end while the max changes, also when the new max lands on a tick
   for (const motion of ["css", "js"]) {
@@ -720,7 +747,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   };
   // Each view gets its own page, since a page scrolled through twice draws a dotted underline a shade off
   const still = { viewport: { width: 800, height: 900 } };
-  const alone = await browser.newPage(still), server = await browser.newPage(still), fresh = await browser.newPage(still);
+  const alone = await newPage(still), server = await newPage(still), fresh = await newPage(still);
   for (const p of [alone, server, fresh]) {
     p.errors = [];
     p.on("pageerror", (e) => p.errors.push(e.message));
@@ -763,7 +790,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
     const c = document.getElementById("auto-v"), names = [...c.querySelectorAll(".nm")], body = c.querySelector(".rhp-body").getBoundingClientRect();
     const bar = c.querySelector(".rhp-bar").getBoundingClientRect(), tallest = Math.max(...names.map((e) => e.getBoundingClientRect().height));
     return [names[1].getBoundingClientRect().height > names[0].getBoundingClientRect().height, Math.round(body.bottom - bar.bottom) === Math.round(tallest)];
-  }), [true, true]);
+  }), [true, ENGINE !== "firefox"]); // Firefox makes that gutter one line tall (the README says so): if it changes, this tells
   check("room to the end: a number too close to the scale's end is left out, in CSS, on the server's HTML", await p.evaluate(() =>
     [...document.querySelectorAll("#toend .n")].map((e) => e.getBoundingClientRect().width - parseFloat(getComputedStyle(e).paddingLeft) > 0)), [true, true, false]);
   check("server roots: a component's, a spread's, an svg and an img all get their row's place", await p.evaluate(() =>
@@ -789,7 +816,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   await server.evaluate(() => window.go()); await server.waitForTimeout(300);
   check("linkedCss: taken over, the browser adopts no core of its own, and it looks the same", [await coreIn(server), Buffer.compare(await shot(server), want)], [[false, false], 0]);
   const warned = [];
-  const unlinked = await browser.newPage({ viewport: { width: 900, height: 900 } });
+  const unlinked = await newPage({ viewport: { width: 900, height: 900 } });
   unlinked.on("console", (m) => m.type() === "warning" && warned.push(m.text()));
   await unlinked.goto("file://" + at("out/ssr-unlinked.html") + "#fresh"); await unlinked.waitForTimeout(400);
   check("linkedCss: a page that doesn't link the stylesheet is warned, and rhp adopts its core after all", [warned.some((w) => w.includes("linkedCss")), Buffer.compare(await shot(unlinked), want)], [true, 0]);
@@ -813,7 +840,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
 }
 
 // What a screen reader gets, from Chromium's accessibility tree
-{
+if (chromiumOnly("what a screen reader gets")) {
   const p = await open("file://" + at("out/ssr.html") + "#fresh");
   const cdp = await p.context().newCDPSession(p);
   const tree = async (sel) => {
