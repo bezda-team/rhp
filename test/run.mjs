@@ -522,18 +522,23 @@ for (const motion of ["css", "js"]) {
     const set = (v) => { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); };
     const bar = document.querySelector("#fruit .rhp-body > .rhp-plot:last-child > * .bar");
     set(12); await new Promise((r) => setTimeout(r, 900));
+    // The bar's width at each frame's time: speed is px per ms, so a frame that comes early or late (a busy machine)
+    // isn't taken for the bar slowing down or speeding up
     const w = [];
     for (let v = 12; v <= 24; v++) {
       for (let k = 0; k < 3; k++) {
         set(v);
-        await new Promise((r) => requestAnimationFrame(r));
-        w.push(bar.getBoundingClientRect().width);
+        const t = await new Promise((r) => requestAnimationFrame(r));
+        w.push([t, bar.getBoundingClientRect().width]);
       }
     }
-    const speed = w.slice(1).map((x, i) => x - w[i]);
+    const speed = [];
+    for (let i = 1; i < w.length; i++) {
+      if (w[i][0] - w[i - 1][0] >= 1) speed.push((w[i][1] - w[i - 1][1]) / (w[i][0] - w[i - 1][0]));
+    }
     let n = 0;
     for (let i = 2; i < speed.length; i++) {
-      if (speed[i - 1] < speed[i - 2] * 0.25 && speed[i] > Math.max(0.5, speed[i - 1] * 2)) n++;
+      if (speed[i - 1] < speed[i - 2] * 0.25 && speed[i] > Math.max(0.03, speed[i - 1] * 2)) n++;
     }
     set(1);
     return n;
