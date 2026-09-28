@@ -43,6 +43,11 @@ const Fit = (d) => <div class="fit"><Bar to={d.v} /></div>;
 const Fixed = slat({ thickness: 20 }, (d) => <div class="fix"><Bar to={d.v} /></div>);
 // When writes land
 const [paced, setPaced] = createSignal(1);
+// Edge labels with room "auto": a child of the row, one inside another element, and one of a Plot inside the row
+const Direct = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Label><Bar to={d.v} /></div>);
+const Wrapped = slat({ room: "auto" }, (d) => <div><span><Label edge="start">{d.n}</Label></span><Bar to={d.v} /></div>);
+const Inner = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Label><Plot overlap part={[1, 2]}>{(q) => <div><Label edge="start">{q.part}</Label></div>}</Plot></div>);
+const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
     <Chart scale={[0, 40]}><Plot class="keyed" key="name" rows={rows()} animate={["v"]}>{Row("keyed")}</Plot></Chart>
@@ -71,4 +76,4 @@ render(() => (
     <Chart class="paced" scale={[0, 100]}><Plot v={[paced()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
   </div>
 ), document.body);
-Object.assign(T, { setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red });
+Object.assign(T, { setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

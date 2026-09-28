@@ -127,6 +127,14 @@ const open = async (url, opts = {}) => {
     T.restyle(R, ".x { --rhp-radius: 0 0 3px 3px; }"); T.restyle(R, ".x { --rhp-radius: calc(2px + 1px); }");
     console.warn = warn; return seen.length;
   }), 2);
+  check("room auto: an edge Label inside another element gets a warning, once; a child of the row, or a Plot's own inside the row, gets none", await p.evaluate(() => {
+    const seen = []; const warn = console.warn; console.warn = (m) => seen.push(m);
+    const count = () => seen.filter((m) => m.includes("edge Label")).length;
+    T.edges(T.Direct); T.edges(T.Inner);
+    const before = count();
+    T.edges(T.Wrapped); T.edges(T.Wrapped);
+    console.warn = warn; return [before, count()];
+  }), [0, 1]);
   check("a horizontal chart with a height fits rows without a thickness; without one, rows are 32px; a thickness stays", await p.evaluate(() =>
     [".fits .fit", ".grows .fit", ".keeps .fix"].map((q) => Math.round(document.querySelector(q).getBoundingClientRect().height))), [50, 32, 20]);
   const still = () => p.evaluate(() => [...document.querySelectorAll(".st .sr")].map((e) => e.dataset.n + e.querySelector(".rhp-label").textContent + "@" + e.style.getPropertyValue("--rhp-position") + ":" + e.querySelectorAll(".sd").length).join(" "));

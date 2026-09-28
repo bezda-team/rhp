@@ -73,6 +73,23 @@ const warnBare = (el) => {
   console.warn(`rhp: a ${Name} is a slat's root here, so the Plot places it as the row and it ignores part of its own placing. Put it in an element: (d) => <div><${Name} … /></div>. (Only a Plot with overlap takes a block as its slat.)`);
 };
 
+// Room "auto" only measures an edge label that is a child of the slat's root. One inside another element gets no room,
+// so we warn about it once per page. The labels of a Plot inside the row belong to that Plot and are left alone.
+const autoRoom = (r) => r === "auto" || r?.start === "auto" || r?.end === "auto";
+let warnedWrapped = false;
+const warnWrapped = (el) => {
+
+  if (warnedWrapped) return;
+
+  for (const label of el.querySelectorAll(".rhp-label[data-rhp-edge]")) {
+    const inner = label.closest(".rhp-plot");
+    if (label.parentElement === el || (inner && el.contains(inner))) continue;
+    warnedWrapped = true;
+    console.warn(`rhp: an edge Label is inside another element here, so room "auto" doesn't measure it and it gets no room. Make it a child of the slat's root element: (d) => <div><Label edge="start">…</Label> … </div>. (Room in px has no such limit.)`);
+    return;
+  }
+};
+
 // On a server, a slat is HTML text ({ t }) instead of an element. So what the browser sets on a slat's root (its scope,
 // orientation, position, role...) is written into the first tag of that text. The tag is read attribute by attribute
 // (values in double quotes, single quotes, bare or none) and the rest of the HTML is left as it is.
@@ -405,6 +422,13 @@ function makePlot(props, role) {
     onCleanup(() => frame.drop(want));
   }
 
+  // With room "auto", the first row is checked for an edge label inside another element (see warnWrapped)
+  let edgesUnchecked = !isServer && !nested && layout.room != null;
+  const checkEdges = (el) => {
+    edgesUnchecked = false;
+    if (autoRoom(pick(layout.room, orientation()))) warnWrapped(el);
+  };
+
   // A top-level Plot whose rows have no thickness asks its Chart to fit them (a horizontal Chart with a height then
   // makes its plot that tall and the rows share it)
   if (frame && !nested && role === "Plot" && !props.overlap) {
@@ -428,6 +452,7 @@ function makePlot(props, role) {
     if (asList() && !el.hasAttribute("role")) el.setAttribute("role", "listitem");
     const ownId = el.id.startsWith(`rhp-${uid}-`) ? "" : el.id; // not an id a server gave it for aria-owns
     if (!props.overlap && BLOCK.test(el.getAttribute("class"))) warnBare(el);
+    if (edgesUnchecked) checkEdges(el);
     // The slat's CSS applies inside its own slats only (an attribute, because Solid's class={...} replaces className)
     if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope);
 
@@ -494,6 +519,7 @@ function makePlot(props, role) {
       dispose();
     });
 
+    if (edgesUnchecked) checkEdges(el);
     el.$row = () => i;
 
     return el;
