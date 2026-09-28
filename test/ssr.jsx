@@ -85,7 +85,7 @@ export default function App() {
   return (
     <main style={{ width: "640px", font: "14px system-ui", padding: "8px" }}>
       <Chart id="fruit" label="Fruit sold this week" scale={[0, 30]}>
-        <Plot fruit={["Apples", "Bananas", "Cherries", "Kiwis"]} sold={sold()} order={sortBy("sold", "desc")}>{Fruit}</Plot>
+        <Plot keyboard fruit={["Apples", "Bananas", "Cherries", "Kiwis"]} sold={sold()} order={sortBy("sold", "desc")}>{Fruit}</Plot>
       </Chart>
       <Chart id="vertical" orientation="vertical" scale={[0, 30]} height={160} format={(v) => <b>{v}</b>}>
         <Plot key="fruit" fruit={["Apples", "Bananas", "Cherries"]} sold={[9, 25, 14]} order={sortBy("sold")}>{Fruit}</Plot>

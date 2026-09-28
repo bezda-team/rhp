@@ -47,6 +47,7 @@ export function App() {
         <Plot overlap x={[1, 2]} y={[10, 40]}>{(d) => <div><Dot at={d.x as number} cross={d.y as number} /><Label at={d.x as number} cross={d.y as number}>{String(d.y)}</Label></div>}</Plot>
         <Plot overlap pts={[[[0, 5], [10, 45]]]}>{(d) => <div><Line points={d.pts as [number, number][]} fill base={0} color="series-3" /></div>}</Plot>
       </Chart>
+      <Chart scale={[0, 10]}><Plot keyboard fruit={["Apples"]}>{(d) => <div onFocus={() => d.index}>{String(d.fruit)}</div>}</Plot></Chart>
       {/* @ts-expect-error: a cross scale is [min, max] too */}
       <Chart cross={50} />
       {/* @ts-expect-error: a scale is [min, max] */}

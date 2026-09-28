@@ -51,6 +51,13 @@ const Inner = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Labe
 const Point = (d) => <div><Dot at={d.x} cross={d.y} size="6px" class="pt" /><Label at={d.x} cross={d.y} class="pl">{d.y}</Label></div>;
 const Trend = (d) => <div><Line points={d.pts} class="tl" /></div>;
 const Spark = (d) => <div class="sp"><Line points={d.pts} class="sl" /></div>;
+// Keyboard: sorted rows that slide, move in the page or refill their slots, and a static Plot's rows
+const [kbSlide, setKbSlide] = createSignal([3, 1, 2]);
+const [kbMove, setKbMove] = createSignal([{ n: "a", v: 3 }, { n: "b", v: 1 }, { n: "c", v: 2 }]);
+const [kbRefill, setKbRefill] = createSignal([3, 1, 2]);
+const [kbStill, setKbStill] = createSignal([3, 1, 2]);
+const Key = (d) => <div data-n={d.n}><Bar to={d.v} /></div>;
+const Typed = (d) => <div data-n={d.n}><Bar to={d.v} /><input class="kbi" /></div>;
 const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
@@ -85,6 +92,11 @@ render(() => (
       </Chart>
     ))}
     <Chart class="spark" scale={[0, 10]} ticks={false}><Plot pts={[[[0, 1], [5, 4], [10, 2]]]}>{Spark}</Plot></Chart>
+    <button class="kb-before">before</button>
+    <Chart class="kb-slide" scale={[0, 10]}><Plot keyboard n={["a", "b", "c"]} v={kbSlide()} order={sortBy("v", "desc")}>{Typed}</Plot></Chart>
+    <Chart class="kb-move" scale={[0, 10]}><Plot keyboard reorder="move" key="n" rows={kbMove()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
+    <Chart class="kb-refill" scale={[0, 10]}><Plot keyboard reorder="refill" n={["a", "b", "c"]} v={kbRefill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
+    <Chart class="kb-still" static scale={[0, 10]}><Plot keyboard n={["a", "b", "c"]} v={kbStill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
   </div>
 ), document.body);
-Object.assign(T, { setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
+Object.assign(T, { setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

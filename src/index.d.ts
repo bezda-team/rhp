@@ -140,6 +140,9 @@ export interface PlotSettings<T extends object = Record<string, any>> {
   /** A Plot inside a row fills this share of the band (or a CSS length). */
   thick?: number | string;
   static?: boolean;
+  /** The rows take focus: Tab stops at one row, the arrow keys go to the row before or after it (in the order shown), and
+   * Home and End to the first and last. */
+  keyboard?: boolean;
   class?: string;
   style?: JSX.CSSProperties;
   ref?: Ref<HTMLDivElement>;

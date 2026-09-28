@@ -141,6 +141,11 @@ Theme colors are `var(--rhp-ink)`, `var(--rhp-muted)`, `var(--rhp-series-1)` and
 - **Elements inside blocks meet the page's CSS.** The guard covers rhp's blocks and slat roots, not what a slat puts in them, so give inner elements class names a page won't use.
 - **Handlers go on blocks or around the chart.** Blocks take `onClick`, `data-*` and `aria-*` like plain elements. A handler on an element around the chart can read `e.target.closest("[data-app]")`. Whatever it decides goes back into the Plot as data (`focus={app()}`), and the slats restyle from `d.focus`.
 - **A Plot drawn over another takes the pointer.** Its box covers the chart. Give an overlay (a today line, a crosshair) `style={{ "pointer-events": "none" }}` so the pointer reaches the Plot under it.
+- **Keyboard: `keyboard` on a Plot makes its rows take focus.**
+  Tab stops at one row (the row focused last, or else the first shown), the arrow keys go to the row shown before or after it, and Home and End to the first and the last.
+  What a hover shows can show on focus too: `.row:is(:hover, :focus-visible) .tip { opacity: 1 }` in the slat's CSS, or an `onFocus` handler on the row.
+  A row keeps its focus when the rows are sorted, moved in the page or drawn again.
+  A key that something inside the row handles (a field, or a handler that calls `preventDefault`) stays with it.
 - **Follow the pointer with `pointermove`, not `pointerover`.** When a hover changes the layout (a badge appears), the browser fires `pointerover` under a pointer that hasn't moved, and the choice can flip back.
 
 ## Screen readers

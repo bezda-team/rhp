@@ -196,6 +196,44 @@ const open = async (url, opts = {}) => {
     await new Promise((done) => { let v = 10; const f = () => { if (v > 10 && read() !== String(v - 1)) late.push(v - 1); if (v > 20) return done(); T.setPaced(v++); requestAnimationFrame(f); }; requestAnimationFrame(f); });
     return late.slice(1);
   }, bar.toString()), []);
+  // Keyboard: the rows in DOM order with their tabindex, and what has focus
+  const keys = (q) => p.evaluate((q) => [[...document.querySelectorAll(q + " .rhp-plot > *")].map((e) => e.dataset.n + e.tabIndex).join(" "),
+    document.activeElement.dataset?.n ?? document.activeElement.className], q);
+  const press = async (...list) => {
+    const went = [];
+    for (const key of list) {
+      await p.keyboard.press(key);
+      went.push(await p.evaluate(() => document.activeElement.dataset?.n ?? document.activeElement.className));
+    }
+    return went;
+  };
+  check("keyboard: Tab stops at one row, the first shown, and a Plot without `keyboard` gives its rows no tabindex",
+    [await keys(".kb-slide"), await p.evaluate(() => document.querySelector(".paced .rhp-plot > *").hasAttribute("tabindex"))], [["a0 b-1 c-1", ""], false]);
+  await p.focus(".kb-before");
+  check("keyboard: Tab reaches the tab stop, the arrow keys go to the row shown after or before it, Home and End to the ends",
+    await press("Tab", "ArrowDown", "ArrowRight", "ArrowDown", "Home", "End", "ArrowUp", "ArrowLeft", "ArrowDown"), ["a", "c", "b", "b", "a", "b", "c", "a", "c"]);
+  check("keyboard: Tab then stops at the row focused last", await keys(".kb-slide"), ["a-1 b-1 c0", "c"]);
+  await p.focus(".kb-slide [data-n=c] .kbi");
+  check("keyboard: an arrow key in a field inside a row stays in the field", [await press("ArrowDown"), (await keys(".kb-slide"))[0]], [["kbi"], "a-1 b-1 c0"]);
+  await p.focus(".kb-slide [data-n=c]");
+  await p.evaluate(() => T.setKbSlide([1, 2, 3]));
+  check("keyboard: sorted again, the row keeps its focus, and the keys follow the new order", [await keys(".kb-slide"), await press("ArrowDown")], [["a-1 b-1 c0", "c"], ["b"]]);
+  await p.focus(".kb-move [data-n=b]");
+  await p.evaluate(() => T.setKbMove([{ n: "a", v: 1 }, { n: "b", v: 3 }, { n: "c", v: 2 }]));
+  check("keyboard: a row moved in the page keeps its focus", await keys(".kb-move"), ["b0 c-1 a-1", "b"]);
+  await p.evaluate(() => T.setKbMove([{ n: "a", v: 1 }, { n: "c", v: 2 }]));
+  check("keyboard: when the row with focus is removed, the first row shown takes it", await keys(".kb-move"), ["c0 a-1", "c"]);
+  await p.focus(".kb-refill [data-n=a]");
+  await p.evaluate(() => T.setKbRefill([1, 2, 3]));
+  check("keyboard: a row that refills another slot takes its focus there", await keys(".kb-refill"), ["c-1 b-1 a0", "a"]);
+  await p.focus(".kb-still [data-n=c]");
+  const drawnAgain = await p.evaluate(() => {
+    const before = document.activeElement;
+    T.setKbStill([1, 3, 2]);
+    return document.activeElement !== before && !before.isConnected;
+  });
+  check("keyboard: a static Plot's row keeps its focus when it is drawn again, and the keys move the tab stop",
+    [drawnAgain, await keys(".kb-still"), await press("ArrowUp"), (await keys(".kb-still"))[0]], [true, ["a-1 b-1 c0", "c"], ["b"], "a-1 b0 c-1"]);
   check("no page errors", p.errors, []);
   await p.close();
 }
@@ -693,12 +731,15 @@ const dom = (p, charts) => p.evaluate((charts) => {
   const after = await count(server), hydratedShot = await shot(server);
   const fresh = await open(url + "#fresh"), freshShot = await shot(fresh);
   check("server: the HTML draws every chart before any script runs", before.slice(1, 3), (b) => b[0] >= 20 && b[1] >= 20);
+  const stops = (p) => p.evaluate(() => [...document.querySelectorAll("#fruit .fruit")].map((e) => e.getAttribute("tabindex")).join(" "));
+  check("server: with `keyboard`, the HTML makes the first row shown the tab stop", await stops(server), "-1 -1 -1 0");
   check("server: the HTML looks exactly like the app drawn in the browser alone", Buffer.compare(serverShot, freshShot), 0);
   check("server: taken over, the page keeps the server's elements (none drawn twice) and drops the server's CSS", [after[0] - before[0] + before[3], after[1], after[3], await server.evaluate(() => document.querySelector("#fruit .rhp-bar") === window.firstBar)], [0, before[1], 0, true]);
   check("server: taken over, it still looks the same", Buffer.compare(hydratedShot, freshShot), 0);
   check("server: taken over, the page's elements are exactly those the browser draws alone (none matched out of order)", await dom(server) === await dom(fresh), true);
   await server.evaluate(() => window.setSold([30, 1, 2, 3])); await server.waitForTimeout(400);
   check("server: taken over, the chart follows its data", await server.evaluate(() => [...document.querySelectorAll("#fruit .fruit")].map((e) => e.querySelector(".value").textContent + "@" + e.style.getPropertyValue("--rhp-position"))), ["30@0", "1@3", "2@2", "3@1"]);
+  check("server: taken over, the tab stop follows the order", await stops(server), "0 -1 -1 -1");
   check("server: no page errors, and no hydration warnings", [...server.errors, ...fresh.errors], []);
   for (const p of [server, fresh]) await p.close();
 }
