@@ -313,9 +313,9 @@ function makePlot(props, role) {
   const easing = later(() => curve(anim()?.ease));
   const timing = () => ({ duration: anim()?.duration ?? MOVE_MS, ease: easing() });
 
-  // How long a slat takes to slide to a new position: 250ms in the JS version (centered on the frame where the two
+  // How long a slat takes to slide to a new position: 175ms in the JS version (centered on the frame where the two
   // values are equal), and 0.3s in the CSS version, unless set
-  const slideMs = () => anim()?.slide ?? (js() ? 250 : undefined);
+  const slideMs = () => anim()?.slide ?? (js() ? 175 : undefined);
 
   // Row identity. Without `key`, a slat is its row number. With key={name} or key={(d) => id}, a slat follows its id,
   // so removing a row removes that row's slat and the rows after it keep theirs.

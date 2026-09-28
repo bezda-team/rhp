@@ -307,7 +307,14 @@ export function Dots(p) {
   // On a narrow page, the window zooms to fit
   const [room, setRoom] = createSignal(Infinity);
   let fit;
-  onMount(() => { const ro = new ResizeObserver(([e]) => setRoom(e.contentRect.width)); ro.observe(fit); onCleanup(() => ro.disconnect()); });
+  // Measured once before the first paint, then on each resize in the next frame: zooming inside the observer's callback
+  // would resize what it observes while it reports, a ResizeObserver loop.
+  onMount(() => {
+    setRoom(fit.clientWidth);
+    const ro = new ResizeObserver(([e]) => requestAnimationFrame(() => setRoom(e.contentRect.width)));
+    ro.observe(fit);
+    onCleanup(() => ro.disconnect());
+  });
   const zoom = () => Math.min(1, room() / (p.o() === "vertical" ? 544 : 664));
   return (
     <div class="dots-fit" ref={fit}>
