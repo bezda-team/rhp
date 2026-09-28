@@ -22,7 +22,9 @@
     "url": "https://github.com/bezda-team/rhp"
   },
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
