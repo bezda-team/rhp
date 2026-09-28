@@ -4,24 +4,24 @@ import { createStore } from "solid-js/store";
 import { Plot, Scale, Chart, Bar, Dot, Label, sortBy, cycle, every, slat, restyle } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/animate.js";
 const T = (window.T = {});
-// 1. keyed vs unkeyed removal, JS version
+// Keyed and unkeyed removal
 const [rows, setRows] = createSignal([{ name: "A", v: 10 }, { name: "B", v: 20 }, { name: "C", v: 30 }]);
 T.seen = { keyed: [], plain: [] };
 const Row = (tag) => (d) => { const el = <div data-name={d.name}><Bar to={d.v} /><Label at={d.v}>{(T.seen[tag].push(d.name + ":" + Math.round(d.v)), Math.round(d.v))}</Label></div>; return el; };
-// 2. count = longest group; 3. null hides; 6. late data
+// Row count, hidden rows and late data
 const [late, setLate] = createSignal();
 const [pos, setPos] = createSignal([2, null, 0, 1]);
-// 8. computed group runs
+// Computed groups
 T.computed = 0;
 const [vals, setVals] = createStore({ v: [5, 7, 9] });
-// 9. a Scale: ticks from the Chart's scale, keyed by value; a Chart with a Scale draws no axis of its own
+// A Scale
 const [top, setTop] = createSignal(27);
 const Tk = (t) => <div class="tk" data-at={t.at} data-next={t.next} data-end={t.first ? "first" : t.last ? "last" : ""} />;
-// 10. restyle: new CSS for one slat type, in place; a type made with the same CSS keeps its own
+// restyle
 const SAME = `.r { color: rgb(255, 0, 0); }`;
 const Red = slat({ css: SAME }, () => <div class="r">a</div>);
 const Twin = slat({ css: SAME }, () => <div class="r twin">b</div>);
-// 11. orientation in slat CSS: :horizontal and :vertical, and knobs named along the value axis
+// Orientation in slat CSS
 const Turned = slat({ css: `
 .o:horizontal { color: rgb(0, 128, 0); }
 .o:vertical { color: rgb(0, 0, 128); }
@@ -30,19 +30,18 @@ const Turned = slat({ css: `
 .l { --rhp-label-gap: 11px; }
 .b { --rhp-gap: 3px; }
 ` }, (d) => <div class="o"><span class="inner">x</span><Bar class="b" from={d.from} to={d.to} /><Label class="l" at={d.to}>v</Label></div>);
-// 13. static: rows drawn once, drawn again when the Plot's data changes
+// Static charts
 const [still, setStill] = createSignal([5, 9]);
-// 14. what a slat or a page may rely on: classList with class on a block, a format that returns elements,
-// --rhp-p and --rhp-lo in slat CSS, and a warning for --rhp-radius with several lengths
+// classList, a format that returns elements, --rhp-p and --rhp-lo, and the --rhp-radius warning
 const [lit, setLit] = createSignal(true);
 const Placed = slat({ css: `
 .pin { position: absolute; left: calc(var(--rhp-p) * 100%); }
 .from { position: absolute; left: calc(var(--rhp-lo) * 100%); }
 ` }, (d) => <div><Bar from={2} to={d.v} class="kb" classList={{ lit: lit() }} /><Dot at={d.v} size="4px"><i class="pin" /></Dot><Bar from={2} to={d.v}><i class="from" /></Bar></div>);
-// 15. a horizontal chart with a height fits rows without a thickness into it
+// A chart with a height fits its rows
 const Fit = (d) => <div class="fit"><Bar to={d.v} /></div>;
 const Fixed = slat({ thickness: 20 }, (d) => <div class="fix"><Bar to={d.v} /></div>);
-// 12. when writes land: a change from a timer, and one made in the app's own frame
+// When writes land
 const [paced, setPaced] = createSignal(1);
 render(() => (
   <div>

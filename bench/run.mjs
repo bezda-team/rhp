@@ -1,7 +1,6 @@
 // Runs every library through every scenario in one browser and writes results/<browser>.json.
-//   node run.mjs chrome | firefox | webkit | safari      (safari: real Safari through safaridriver, see safari.mjs)
-// Chrome also reports main-thread time from its DevTools counters (script, style, layout, and all tasks),
-// and runs the drag again on a CPU slowed 4x, like a mid-range phone.
+//   node run.mjs chrome | firefox | webkit | safari      (safari is the real Safari, see safari.mjs)
+// Chrome also reports main-thread time and runs the drag again on a CPU slowed 4x, like a mid-range phone.
 import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
@@ -13,7 +12,7 @@ const engine = process.argv[2] ?? "chrome", only = process.argv[3]?.split(",");
 const LIBS = fs.readdirSync(at("out")).filter((f) => f.endsWith(".html")).map((f) => f.slice(0, -5)).filter((l) => !only || only.includes(l));
 const REPS = { mount: 10, large: 5, dashboard: 5 };
 
-// The pages are served over http (Safari can't be pointed at files).
+// The pages are served over http since Safari can't open files
 const server = http.createServer((q, r) => {
   const f = at("out" + new URL(q.url, "http://x").pathname);
   if (!fs.existsSync(f)) return r.writeHead(404).end();
@@ -61,15 +60,15 @@ async function session() {
     end: () => browser.close(),
   };
 }
-// Main-thread ms between two metric snapshots: all tasks, and script, style and layout inside them.
+// Main-thread ms between two metric snapshots
 const spent = (a, b) => a && b && Object.fromEntries(["TaskDuration", "ScriptDuration", "RecalcStyleDuration", "LayoutDuration"].map((k) => [k.replace("Duration", ""), +((b[k] - a[k]) * 1000).toFixed(1)]));
 const per = (o, n) => o && Object.fromEntries(Object.entries(o).map(([k, v]) => [k, +(v / n).toFixed(2)]));
 
 const S = await session(), results = { engine, date: new Date().toISOString(), libs: {} };
 for (const lib of LIBS) {
   const r = (results.libs[lib] = {});
-  // A fresh page per run: the ms of the frame the chart is made in, and (Chrome) all main-thread ms in the second after,
-  // which includes drawing a library defers to later frames and its entry animation.
+  // A fresh page per run. We time the frame the chart is made in, and in Chrome all main-thread time in the second
+  // after, which includes work a library defers to later frames and its entry animation.
   const fresh = async (fn, arg) => {
     const p = await S.open(url(lib));
     try {
@@ -86,7 +85,7 @@ for (const lib of LIBS) {
   r.mount = await rep(REPS.mount, "mount", { n: 20 });
   r.large = await rep(REPS.large, "mount", { n: 1000, band: 8 });
   r.dashboard = await rep(REPS.dashboard, "dashboard", { k: 50, n: 7 });
-  { // one value changed, 20 times: latency to the drawn frame, and all main-thread time per change including animation frames
+  { // one value changed 20 times: time to the drawn frame, and main-thread time per change
     const p = await S.open(url(lib));
     await p.call("prepare", { n: 20 });
     const m0 = await p.metrics(), lat = await p.call("updates", { times: 20, gap: 700 }), m1 = await p.metrics();

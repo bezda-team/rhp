@@ -1,6 +1,5 @@
-// Mount cost: 50 charts of 7 slats (two Labels and a Bar each, slat CSS), like the gallery's first chart.
-// location.hash drops core rules to see what they cost: #noguard drops the guard (its :where rules),
-// #g<k> only the k-th of them, #none every core rule.
+// Mount cost: 50 charts of 7 slats, like the gallery's first chart.
+// The hash drops core rules to see what they cost: #noguard drops the :where rules, #g<k> only the k-th, #none all.
 import { render } from "solid-js/web";
 import { Plot, Chart, Bar, Label, slat, series } from "../src/index.js";
 import { useCore } from "../src/style.js";
@@ -30,7 +29,7 @@ window.T = {
     render(() => Array.from({ length: 50 }, (_, c) => (
       <Chart scale={[0, 30]}><Plot name={NAMES} value={NAMES.map((_, i) => (i * 7 + c) % 30)} color={series()}>{S}</Plot></Chart>
     )), document.body);
-    document.body.offsetHeight; // style and layout
+    document.body.offsetHeight; // forces style and layout
     return performance.now() - t0;
   },
 };

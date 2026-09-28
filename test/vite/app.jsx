@@ -1,5 +1,4 @@
-// A Solid app that uses rhp as an app does, by its package name: Vite with vite-plugin-solid picks rhp's source (its
-// "solid" condition) and compiles it with the app, for the server and for the browser (test/run.mjs).
+// A Solid app that imports rhp by its package name, so Vite compiles rhp's source with the app ("solid" condition)
 import { createSignal } from "solid-js";
 import { Chart, Plot, Scale, Bar, Tick, Label, slat, sortBy } from "@bezda/rhp";
 

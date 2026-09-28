@@ -1,14 +1,13 @@
-// The page side of the benchmark. One library's adapter is bundled with this file; the driver (run.mjs) calls window.bench.
+// The page side of the benchmark. Each library's adapter is bundled with this file, and run.mjs calls window.bench.
 // Every scenario draws the same chart: n bars with a name and a value, on a fixed 0..100 scale, 600px wide.
 const stage = document.body.appendChild(document.createElement("div"));
 stage.style.cssText = "width:600px;margin:8px";
 const rowsOf = (n) => Array.from({ length: n }, (_, i) => ({ name: "Item " + (i + 1), value: 10 + ((i * 37) % 80) }));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-// Resolves once the next frame has been drawn: a task queued from a frame callback runs after that frame's style,
-// layout and paint (the main thread's share of them).
+// Resolves once the next frame is drawn (a task queued in a frame callback runs after its style, layout and paint)
 const painted = () => new Promise((r) => requestAnimationFrame(() => { const c = new MessageChannel(); c.port1.onmessage = () => r(performance.now()); c.port2.postMessage(0); }));
 const box = () => stage.appendChild(document.createElement("div"));
-// Runs f at the start of a frame and resolves with ms until that frame is drawn: f's own work, then style, layout and paint.
+// Runs f at the start of a frame and resolves with the ms until that frame is drawn
 const inFrame = (f) => new Promise((r) => requestAnimationFrame(() => {
   const t0 = performance.now(); f();
   const c = new MessageChannel(); c.port1.onmessage = () => r(performance.now() - t0); c.port2.postMessage(0);
@@ -17,7 +16,7 @@ const inFrame = (f) => new Promise((r) => requestAnimationFrame(() => {
 export function install(lib) {
   window.bench = {
     name: lib.name,
-    // One chart: ms of the frame it is made in (a library that draws in a later frame does that work after this).
+    // One chart, timed by the frame it is made in
     async mount({ n = 20, band = 24 }) {
       await sleep(100);
       return inFrame(() => lib.mount(box(), rowsOf(n), { band }));

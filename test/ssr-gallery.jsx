@@ -1,7 +1,6 @@
-// rhp's gallery (examples/gallery) drawn on a server and taken over in the browser (test/run.mjs): every plot,
-// horizontal, vertical and in the JS version. Math.random is seeded (test/seeded.js) so both sides draw the same data.
-// As the server's module (in Node) it writes the page; as the page's script it hydrates it, or with #fresh draws it
-// from nothing; ?wait holds it back until window.go().
+// The gallery drawn on a server and hydrated in the browser, every plot horizontal, vertical and in the JS version.
+// Math.random is seeded (test/seeded.js) so both sides draw the same data. In Node this module writes the page, and
+// in the browser it hydrates it (#fresh and ?wait work as in ssr-client.jsx).
 import { seed } from "./seeded.js";
 import { isServer, renderToString, generateHydrationScript, hydrate, render } from "solid-js/web";
 import { For } from "solid-js";

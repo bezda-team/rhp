@@ -1,7 +1,5 @@
-// Charts drawn on a server and taken over by the browser (test/run.mjs): test/ssr-server.jsx renders this app to HTML
-// in Node, and test/ssr-client.jsx hydrates that HTML, or (#fresh) draws the same app in the browser alone.
-// Between them they use every part of rhp that draws: blocks, slat CSS, sorting, keys, nesting, a Scale, an Area,
-// a format that returns elements, a static chart, a fitted height, a block with props of its own.
+// The app for the server rendering tests. ssr-server.jsx renders it to HTML in Node, and ssr-client.jsx hydrates
+// that HTML in the browser (or draws the app from scratch with #fresh). It uses every part of rhp that draws.
 import { createSignal } from "solid-js";
 import { Chart, Plot, Scale, Theme, Bar, Dot, Tick, Label, Cell, Area, slat, sortBy, every, density } from "../src/index.js";
 
@@ -40,14 +38,14 @@ const Violin = slat({ thickness: 60, css: `.shape { fill: #7b5cd6; }` }, (d) => 
   <div><Area points={density(d.values, [0, 10])} mirror class="shape" /><Tick at={d.mid} thick={0.5} /></div>
 ));
 
-// A root with an id and a role of its own, and a block with props of its own (title, data-*, classList).
+// A root with its own id and role, and a block with its own props
 const Own = (d) => (
   <div id={"own-" + d.index} role="group" aria-label={d.name}>
     <Bar to={d.v} title={d.name} data-v={d.v} classList={{ big: d.v > 5 }} />
   </div>
 );
 
-// CSS that HTML escaping would break (&, >, quotes), and a slat root with a style of its own.
+// CSS that HTML escaping would break (&, >, quotes), and a slat root with its own style
 const Tricky = slat({ css: `
   .t > .in { font-family: "Tricky & Co", serif; }
   .t::after { content: "&<>"; }
@@ -60,8 +58,7 @@ const Tricky = slat({ css: `
   </div>
 ));
 
-// Gutters sized by their labels (room "auto"): names at the start and shares at the end, horizontal and vertical; one
-// slat caps its names in its CSS (the gutter follows), another keeps 30px at the end whatever its labels.
+// Auto gutters, one capped by the slat's CSS and one with a fixed end
 const Named = slat({ room: "auto", css: `.nm { font-weight: 700; } .pct { color: rgb(90, 90, 90); }` }, (d) => (
   <div class="named"><Label edge="start" class="nm">{d.name}</Label><Bar to={d.v} /><Label edge="end" class="pct">{d.v}%</Label></div>
 ));
@@ -73,18 +70,17 @@ const Wrapped = slat({ room: "auto", css: `.nm:vertical { white-space: normal; }
 ));
 const NAMES = ["Ann", "A much longer name", "Mid"];
 
-// A number the scale's end would crowd is left out, in CSS: its room from its value to the end is (1 - p) of the track.
+// A number too close to the scale's end is hidden in CSS, since its room to the end is (1 - p) of the track
 const Crowd = slat({ css: `.n { max-width: calc(((1 - var(--rhp-p)) * 100% - 30px) * 1000); overflow: hidden; }` }, (t) => (
   <div><Tick at={t.at} thick={1} /><Label at={t.at} class="n">{t.at}</Label></div>
 ));
 
-// Slat roots of every kind a server has to write into: a component's, one with a spread, text attributes
-// with >, quotes and &, and a style of its own, an svg, an img, and one that sets hidden itself.
+// Every kind of slat root the server has to write into
 const RowComp = (p) => <div class="comp"><Bar to={p.d.v} /></div>;
 const PIXEL = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="rgb(0,160,0)"/></svg>');
 
 export default function App() {
-  const [sold, setSold] = createSignal([12, 18, 7, 22]); // the browser changes it once the app is its (window.setSold)
+  const [sold, setSold] = createSignal([12, 18, 7, 22]); // the tests change it through window.setSold
   if (typeof window !== "undefined") window.setSold = setSold;
   return (
     <main style={{ width: "640px", font: "14px system-ui", padding: "8px" }}>

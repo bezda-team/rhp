@@ -4,7 +4,7 @@ import { Theme } from "../../src/index.js";
 import CODE from "./out/code.json";
 import * as G from "./gallery.jsx";
 
-// v1 replicas (look: "v1") span the grid and get v1's theme; their code starts with the scale slat they share.
+// The v1 replicas (look: "v1") span the grid and get v1's theme. Their code starts with the scale slat they share.
 const CARDS = [
   { id: "dots", C: G.Dots, v1: true, look: "v1", title: "Animated dots", what: <>v1's logo: 9 rows of 30 Dots behind a window 11 dots wide. The scale is that window, and each row clips its dots to it, so the rows can shift up to 5 dots and the window stays full. Every 5 s the rows scatter or come back; hover to hold the logo.</> },
   { id: "fruit", C: G.Fruit, v1: true, look: "v1", code: ["v1scale", "fruit"], title: "Fruit bars", what: <>v1's live demo, with its data, colors and fruit art. The art is an <code>&lt;img&gt;</code> inside the Bar, which crops it. v1's scale is a <code>Scale</code> in the Chart: a slat per tick, <code>every(5, {"{"} ends: true {"}"})</code>, ending at the largest value. Drag Fruit A to watch the scale refit and the rows re-rank. Fruit art: <a href="https://www.freevector.com/flat-colorful-fruits-26803">FreeVector.com</a>.</> },
@@ -110,8 +110,8 @@ const DARK = {
   positive: "#4fd18f", negative: "#ff7b72", ink: "#d5d9de", muted: "#8e959e", grid: "#2a2e33",
   surface: "#181b1e", low: "#1c2430", high: "#7fb0ff",
 };
-// v1's demos ran on Chakra UI's defaults: its system font, #555 for text and axis lines, black on hover,
-// #00000011 for faint lines. Its slats read those as muted, ink and grid. v1 had no dark mode; this one keeps the contrasts.
+// v1's demos used Chakra UI's defaults (#555 text and axis lines, black on hover, #00000011 faint lines), which its
+// slats read as muted, ink and grid. v1 had no dark mode, so this one keeps the same contrasts.
 const CHAKRA_FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 const V1_LIGHT = { font: CHAKRA_FONT, muted: "#555555", ink: "#000000", grid: "#00000011" };
 const V1_DARK = { font: CHAKRA_FONT, muted: "#b4bac1", ink: "#ffffff", grid: "#ffffff1f" };

@@ -1,5 +1,5 @@
-// Which of rhp's core CSS rules cost style time: mount a 1-bar chart (so the sheet exists), delete rules matching a
-// variant's test from rhp's adopted sheets, then measure the style time of mounting n bars.
+// Which of rhp's core CSS rules cost style time. We mount a 1-bar chart so the sheet exists, delete the rules that
+// match a variant's test, then measure the style time of mounting n bars.
 import fs from "node:fs"; import http from "node:http"; import path from "node:path"; import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 const here = path.dirname(fileURLToPath(import.meta.url));

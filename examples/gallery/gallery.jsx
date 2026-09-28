@@ -1,13 +1,9 @@
-// The gallery: every chart is a Chart holding a Plot of slats, and some draw their own scale with a Scale.
-// A slat owns its look and layout: its CSS, thickness, inset and gutter room travel with it. Its structural colors and
-// font come from a theme: the page's (page.jsx) or one a demo passes to its Chart. Nothing here reads the page's CSS.
-// Most charts sit in a Poster, a magazine-style panel that belongs to the page (page.src.html styles it).
-// Each demo gets p.o() (orientation), p.js() (JS version on) and p.seed() (bumped by "New data").
-// The code between show markers is what the page prints under each chart.
+// The gallery. Every chart is a Chart with a Plot of slats, and some draw their own scale with a Scale.
+// Each demo gets p.o() (orientation), p.js() (JS version on) and p.seed() (changes with "New data").
+// The code between the show markers is what the page shows under each chart.
 import { createSignal, createMemo, createComputed, on, onMount, onCleanup, splitProps, Show } from "solid-js";
 import { Plot, Scale, Chart, Bar, Dot, Tick, Label, Cell, Area, slat, useOrientation, sortBy, every, nice, stackUp, shares, running, summary, bins, density } from "../../src/index.js";
-// v1's assets (master's public/), bundled into the page as data URLs. Fruit art: FreeVector.com.
-// The cloud photos are v1's, re-encoded at the size they are shown (640px on the short side), without their EXIF.
+// v1's images, bundled into the page as data URLs (fruit art from FreeVector.com)
 import grape from "./assets/grape.svg";
 import watermelon from "./assets/watermelon.svg";
 import pear from "./assets/pear.svg";
@@ -23,16 +19,14 @@ import nimbostratus from "./assets/nimbostratus.jpg";
 import cumulus from "./assets/cumulus.jpg";
 import cirrocumulus from "./assets/cirrocumulus.jpg";
 
-// ── data helpers for the demos (not part of rhp) ──
+// Data helpers for the demos (not part of rhp)
 const rand = (a, b) => a + Math.random() * (b - a);
 const normal = (m, s) => m + s * Math.sqrt(-2 * Math.log(1 - Math.random())) * Math.cos(2 * Math.PI * Math.random());
-// n samples of a normal truncated to lo..hi, for points that must stay on the scale (rhp clips spans, not points)
+// n samples of a normal distribution, kept inside lo..hi
 const normalsIn = (n, lo, hi, m, s) => Array.from({ length: n }, () => { for (;;) { const v = normal(m, s); if (v >= lo && v <= hi) return v; } });
 const sum = (a) => a.reduce((x, y) => x + y, 0);
 
-// A magazine-style panel around a chart: kicker, headline, dek, the chart, a note. It is the page's: the page CSS
-// styles .poster and its look (.medals, .coffee, …); the chart inside gets its colors and font from its theme.
-// Any other prop goes on the panel: a demo that follows the pointer listens there, over its key and its chart.
+// A magazine-style panel around a chart (kicker, headline, dek, the chart and a note). The page's CSS styles it.
 function Poster(p) {
   const [own, rest] = splitProps(p, ["look", "kicker", "title", "dek", "note", "children"]);
   return (
@@ -49,10 +43,7 @@ function Poster(p) {
 }
 
 /*<show v1scale>*/
-// v1's scale: a Scale in the Chart draws it, one slat per tick, a mark and its number.
-// The marks start 16px above the first row, and the numbers sit over them, in the room this slat asks for.
-// A mark is "zero" (solid, just before 0), "end" (solid, at the max), or between them `marks`:
-// "line" (dashed, as long as the plot) or "tick" (13px long).
+// v1's scale: one slat per tick, with a mark and its number. A mark is "zero", "end", or `marks` ("line" or "tick") in between.
 const V1Scale = slat({
   room: { horizontal: { before: 40, after: 13 }, vertical: { before: 24, end: 30, after: 13 } },
   css: `
@@ -71,10 +62,7 @@ const V1Scale = slat({
     .zero > .num { --rhp-label-gap: 4px; }
     .num:horizontal { top: -20px; }
     .num:vertical { left: -20px; }
-    /* A number just before the end would run into the end mark, so it's left out, and only then: horizontal, when its
-       text (8px past its mark, about 8px a digit: --need) would come within 3px of the end mark; vertical, when its line
-       (19.5px tall, 8px above its mark) would. Its room to the end is (1 - p) of the track, a percentage in its max
-       size, so this is CSS, the same on a server: with less room than it needs, its size is 0 and it shows nothing. */
+    /* A number that would run into the end mark is left out (its size becomes 0 when it doesn't have the room) */
     :is(.line, .tick) > .num { overflow: hidden; }
     :is(.line, .tick) > .num:horizontal { max-width: calc(((1 - var(--rhp-p)) * 100% - var(--need)) * 1000); }
     :is(.line, .tick) > .num:vertical { max-height: calc(((1 - var(--rhp-p)) * 100% - 31px) * 1000); }`,
@@ -93,7 +81,7 @@ const ART = [grape, watermelon, pear, banana, orange, peach, strawberry];
 const COLORS = ["pink", "#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#ce4257"];
 
 const FruitSlat = slat({
-  thickness: { horizontal: 79 }, // v1: seven rows in 552px; vertical: the rows share the width
+  thickness: { horizontal: 79 }, // seven rows in 552px, like v1
   inset: "8px",
   room: { horizontal: { start: 112, end: 32 }, vertical: { start: 32, end: 30 } }, // for the names and values
   css: `
@@ -102,7 +90,7 @@ const FruitSlat = slat({
     .bar { display: flex; align-items: center; overflow: hidden; --rhp-start-radius: 0px; --rhp-end-radius: 16px; }
     .bar:vertical { flex-direction: column-reverse; }
     .bar:hover { border: 4px solid var(--rhp-ink); }
-    /* The art fills the bar's length up to 300px, is never under 50px, and the bar crops it. */
+    /* the bar crops the art */
     .bar > img { display: block; flex: 1 1 auto; width: auto; height: auto; margin: 0; min-width: 0; min-height: 0; max-width: none; max-height: none; }
     .bar:horizontal > img { min-width: 50px; max-width: 300px; }
     .bar:vertical > img { min-height: 50px; max-height: 300px; }
@@ -120,10 +108,10 @@ const FruitSlat = slat({
 
 export function Fruit(p) {
   const data = createMemo(() => (p.seed() ? FRUITS.map(() => Math.round(rand(1, 30))) : [1, 2, 18, 3, 25, 13, 20]));
-  const [a, setA] = createSignal(); // Fruit A from the slider; new data resets it
+  const [a, setA] = createSignal(); // Fruit A, from the slider
   createComputed(on(data, () => setA(undefined)));
   const values = createMemo(() => (a() == null ? data() : [a(), ...data().slice(1)]));
-  const max = createMemo(() => Math.max(...values())); // v1's "Fit": the scale ends at the largest value
+  const max = createMemo(() => Math.max(...values())); // the scale ends at the largest value, like v1
   const [ranked, setRanked] = createSignal(true);
   const [dim, setDim] = createSignal(false);
   return (
@@ -151,9 +139,7 @@ const QUARTERS = ["North", "East", "South", "West"];
 const BEARING = { North: 0, East: 90, South: 180, West: 270 };
 const HARBOUR = { font: "system-ui, sans-serif", ink: "#0b2a3c", muted: "#55707f", grid: "#c3d9e3", surface: "#e3f0f5" };
 
-// v1's tutorial: the value hides until you hover its row, with CSS the slat owns. The compass needle points
-// to the quarter the wind comes from. The fade is on the text inside the Label: a transition set on a block
-// would replace the one rhp gives it, and the Label would jump to a new value instead of moving with its bar.
+// v1's tutorial. The value only shows when you hover its row, and the needle points to where the wind comes from.
 const WindSlat = slat({
   thickness: { horizontal: 60 },
   room: { horizontal: { start: 128, end: 64 }, vertical: { start: 64, end: 30 } },
@@ -245,8 +231,7 @@ const whiskers = () => {
 
 export function Clouds(p) {
   const data = createMemo(() => (p.seed() ? CLOUDS.map(whiskers) : WHISKERS));
-  // The slider moves stratocumulus' box end (its 3rd value); the high whisker is pushed along past it, and
-  // comes back when the box shrinks again. New data resets it.
+  // The slider moves stratocumulus' box end (and the high whisker moves with it)
   const [end, setEnd] = createSignal();
   createComputed(on(data, () => setEnd(undefined)));
   const boxes = createMemo(() => data().map((b, i) => (i === 0 && end() != null ? [b[0], b[1], Math.max(b[1], end()), Math.max(b[3], end())] : b)));
@@ -276,7 +261,7 @@ export function Clouds(p) {
 /*</show>*/
 
 /*<show dots>*/
-// v1's logo: 9 rows of 30 dots; # is lit. The scale shows dots 10 to 20 of each row.
+// v1's logo: 9 rows of 30 dots (# is lit). The scale shows dots 10 to 20.
 const LOGO = [
   "..............................",
   "..............#...............",
@@ -290,7 +275,7 @@ const LOGO = [
 ];
 
 const DotRow = slat({
-  thickness: 60, // 52px dots, 8px apart: the page makes the value axis 11 × 60px long
+  thickness: 60, // 52px dots, 8px apart
   room: { horizontal: { start: 2, end: 2, before: 2, after: 4 }, vertical: { start: 4, end: 2, before: 2, after: 2 } },
   css: `
     .row:horizontal { overflow-x: clip; } /* dots past the ends of the scale are hidden */
@@ -308,14 +293,13 @@ const DotRow = slat({
 export function Dots(p) {
   const still = LOGO.map(() => 0);
   const [shift, setShift] = createSignal(still);
-  // Every 5 s the middle rows jump up to 4 dots left or 5 right, and the next time they come back.
-  // A row reaches 10 dots past the start of the scale and 9 past its end, so no shift leaves a gap.
+  // Every 5s the middle rows shift, and the next time they come back
   const step = () => setShift((s) => (s.some((v) => v) ? still : LOGO.map((_, r) => (r === 0 || r === 8 ? 0 : Math.floor(rand(0, 10)) - 4))));
   let timer = setInterval(step, 5000);
   onCleanup(() => clearInterval(timer));
   const hold = () => (clearInterval(timer), setShift(still));
   const resume = () => (clearInterval(timer), (timer = setInterval(step, 5000)));
-  // The window is 11 dots of 60px (with its gutters, 664px across, 544px when vertical); on a narrow page it zooms to fit.
+  // On a narrow page, the window zooms to fit
   const [room, setRoom] = createSignal(Infinity);
   let fit;
   onMount(() => { const ro = new ResizeObserver(([e]) => setRoom(e.contentRect.width)); ro.observe(fit); onCleanup(() => ro.disconnect()); });
@@ -337,9 +321,8 @@ const TEAMS = ["North", "East", "South", "West"];
 const METALS = ["gold", "silver", "bronze"];
 const MEDAL_TABLE = { font: "system-ui, sans-serif", ink: "#111214", muted: "#6d6a63", grid: "#e4ddd0", surface: "#f7f3ec" };
 
-// One count: a thin ribbon from 0, and the medal at its end with the count struck on it. Hover a count and its medal
-// lifts off the table. The medal's face is an element inside the Dot: rhp moves the Dot, and the face can grow,
-// rise and cast its shadow on its own time, in either animation version.
+// One count: a ribbon and a medal with the count on it. Hover it and the medal lifts (its face is an element inside
+// the Dot, so it can move on its own).
 const MedalSlat = slat({
   css: `
     .ribbon { --rhp-radius: 2px; }
@@ -399,9 +382,7 @@ const LAYERS = ["espresso", "milk", "foam"];
 const POURS = { espresso: "espresso", milk: "steamed milk", foam: "foam" };
 const CAFE = { font: "system-ui, sans-serif", ink: "#2b1b12", muted: "#8a7260", grid: "#e4d8c8", surface: "#f3ebe0" };
 
-// One layer of a drink. `end` is the last layer with anything in it, which gets the cup's rounded end.
-// Hover a layer and it lifts out of the cup, with a tag over it naming the pour. The tag is an element inside the
-// Bar: rhp guards its blocks from the page's CSS, not what a slat puts in them, so its class is one a page won't use.
+// One layer of a drink. Hover it and it lifts out of the cup, with a tag naming the pour.
 const LayerSlat = slat({
   css: `
     .layer { --rhp-radius: 0px; }
@@ -435,7 +416,7 @@ const DrinkSlat = slat({
     .ml { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--rhp-muted); }
     .ml:horizontal { --rhp-label-gap: 10px; }
     .cup { background: none; box-shadow: 0 10px 18px -12px rgb(43 27 18 / .55); --rhp-radius: 12px; }
-    .serving:hover { z-index: 1; } /* slats paint in data order: the drink under the pointer comes over the others */`,
+    .serving:hover { z-index: 1; } /* the drink under the pointer comes over the others */`,
 }, (d) => {
   const layer = createMemo(() => stackUp(d.ml)); // { from, to } per layer
   return (
@@ -465,13 +446,12 @@ export function Stacked(p) {
 /*<show segmented>*/
 const PEOPLE = ["Student", "Commuter", "Gamer", "Traveller"];
 const APPS = ["Video", "Social", "Games", "Music", "Maps"];
-const APP_COLORS = ["#e5484d", "#5b5bd6", "#d98a00", "#c2418f", "#2f9e63"]; // an order whose neighbors stay apart for colorblind readers
+const APP_COLORS = ["#e5484d", "#5b5bd6", "#d98a00", "#c2418f", "#2f9e63"]; // neighbors stay apart for colorblind readers
 const USE = [[26, 34, 8, 20, 12], [18, 22, 4, 26, 30], [20, 12, 48, 12, 8], [10, 14, 4, 14, 58]]; // % of a day's battery
 const PHONE = { font: "system-ui, sans-serif", ink: "#1d1d1f", muted: "#6e6e73", grid: "#dcdce1", surface: "#f5f5f7" };
 
-// One app's share of the charge. Its number shows only where it fits: 9% and up, 16% on a narrow battery.
-// d.focus is the app under the pointer, from the poster: it stays lit in every battery and the others fade, so one
-// app reads across people. Its number then shows on every segment, as a badge over one too thin to hold it.
+// One app's share of the charge. Its number only shows where it fits. d.focus is the app under the pointer: it stays
+// lit in every battery and the others fade.
 const ChargeSlat = slat({
   css: `
     .charge { display: grid; place-items: center; overflow: hidden; --rhp-radius: 4px; color: #fff; font-size: 11px; font-weight: 700; }
@@ -481,7 +461,7 @@ const ChargeSlat = slat({
     .charge.small > span { display: none; }
     @container (max-width: 300px) { .charge.mid:horizontal > span { display: none; } } /* a narrow battery needs 16% for a number */
     .charge.off { opacity: .14; }
-    .charge.on { overflow: visible; clip-path: none; } /* its badge may be bigger than it; the faded neighbors need no gap */
+    .charge.on { overflow: visible; clip-path: none; } /* its badge can be bigger than it */
     .charge.on.small > span { display: block; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
       padding: 3px 6px; border-radius: 5px; background: var(--rhp-color); box-shadow: 0 0 0 2px var(--rhp-surface); }
     @container (max-width: 300px) {
@@ -498,7 +478,7 @@ const ChargeSlat = slat({
   );
 });
 
-// A battery: the shell a little larger than the track, the nub past its end, the charge inside.
+// A battery: the shell, the nub and the charge inside
 const BatterySlat = slat({
   thickness: { horizontal: 52 },
   room: { horizontal: { start: 92, end: 18 }, vertical: { start: 30, end: 18 } },
@@ -525,9 +505,7 @@ const BatterySlat = slat({
 
 export function Segmented(p) {
   const use = createMemo(() => (p.seed() ? PEOPLE.map(() => APPS.map(() => rand(4, 40))) : USE));
-  // The app in focus: the one the pointer is on, in the key or in a battery, else the one clicked. The key buttons and
-  // the segments carry data-app, and the poster listens for both. A click, or Enter on a key, pins an app or unpins it.
-  // The pointer counts when it moves: a still pointer over a badge that comes or goes isn't a new choice.
+  // The app in focus is the one under the pointer (in the key or in a battery), or else the one clicked
   const [hovered, setHovered] = createSignal(null), [pinned, setPinned] = createSignal(null);
   const app = () => hovered() ?? pinned();
   const under = (e) => e.target.closest("[data-app]")?.dataset.app ?? null;
@@ -535,7 +513,7 @@ export function Segmented(p) {
     const a = under(e);
     if (!a) return;
     setPinned(pinned() === a ? null : a);
-    setHovered(null); // the click is the latest word, until the pointer moves again
+    setHovered(null); // until the pointer moves again
   };
   return (
     <Poster look="battery" kicker="A day on one charge" title="Where the battery goes"
@@ -559,12 +537,10 @@ const GENRES = ["Mystery", "Sci-fi", "History", "Poetry"];
 const CLOTH = ["#1f3a5f", "#7a2e3b", "#2f5d50", "#b0772b"]; // one binding per genre
 const PER_SPINE = 5;
 const LIBRARY = { font: "system-ui, sans-serif", ink: "#2a2118", muted: "#7d6b58", grid: "#e8dcc8", surface: "#f7f1e6" };
-const tall = (i) => 0.7 + ((i * 0.618034) % 1) * 0.24; // each spine's height, a fixed pseudo-random share of the shelf
+const tall = (i) => 0.7 + ((i * 0.618034) % 1) * 0.24; // a fixed height for each spine
 const binding = (c, i) => { const t = [0, 10, -8, 5, -12, 8, -4][i % 7]; return `color-mix(in oklab, ${c}, ${t > 0 ? "white" : "black"} ${Math.abs(t)}%)`; };
 
-// Five books: a spine standing on the shelf (horizontal) or lying on the pile (vertical). The last one is thinner.
-// Hover a book and it slides half out. The Bar holds the book's place; the book is an element inside it, so it
-// can move and cast its shadow on its own time.
+// Five books. Hover a book and it slides half out (the book is an element inside the Bar, so it can move on its own).
 const SpineSlat = slat({
   css: `
     .spine { background: none; }
@@ -617,7 +593,7 @@ const MEN = [3.6, 4.2, 4.9, 5.5, 6.7, 7.3, 6.8, 5.7, 4.1]; // % of the populatio
 const SPINE = 1.7; // scale units kept clear each side of 0, for the age labels
 const CENSUS = { font: "system-ui, sans-serif", ink: "#1f2933", muted: "#687482", grid: "#e2ddd3", surface: "#f4f1ea" };
 
-// Men to the left of a spine of ages, women to the right: both Bars start SPINE away from 0 and run outward.
+// Men on the left and women on the right, both starting SPINE away from 0
 const AgeSlat = slat({
   thickness: { horizontal: 30 },
   inset: 0.13,
@@ -642,7 +618,7 @@ export function Pyramid(p) {
   const men = createMemo(() => (p.seed() ? MEN.map((v) => v * rand(0.88, 1.12)) : MEN));
   const women = createMemo(() => men().map((v, i) => v * (0.97 + i * 0.045)));
   const widest = createMemo(() => Math.max(9, Math.ceil(Math.max(...men(), ...women())))); // the scale fits the widest band
-  const oldestFirst = AGES.map((_, i) => AGES.length - 1 - i); // position of each row: order is data
+  const oldestFirst = AGES.map((_, i) => AGES.length - 1 - i); // the oldest on top
   return (
     <Poster look="census" kicker="Census · share of the population" title="An ageing country"
       dek={<span class="keys"><span><i style={{ background: "#1d6fa5" }} />Men</span><span><i style={{ background: "#d9694c" }} />Women</span><span>% in each age band</span></span>}
@@ -659,7 +635,7 @@ export function Pyramid(p) {
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const NIGHT = { font: "system-ui, sans-serif", ink: "#e8ecf2", muted: "#8b93a1", grid: "#262d39", surface: "#0d1117" };
 const degrees = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1) + "°";
-// °C from normal on a diverging ramp: blue below, a neutral gray at 0, red above.
+// Blue below normal, gray at 0 and red above
 const HEAT = [[-2.5, [44, 123, 182]], [-1.2, [120, 177, 214]], [0, [140, 147, 160]], [1.2, [245, 128, 88]], [2.5, [200, 40, 50]]];
 const heat = (t) => {
   const k = Math.max(1, HEAT.findIndex(([x]) => x >= t)), [x0, c0] = HEAT[Math.min(k, HEAT.length - 1) - 1], [x1, c1] = HEAT[Math.min(k, HEAT.length - 1)];
@@ -669,7 +645,7 @@ const heat = (t) => {
 
 // The month's band is tinted with its own color, like a warming stripe.
 const MonthSlat = slat({
-  thickness: { horizontal: 32 }, // the Chart's height is for its vertical form; horizontal rows keep their size
+  thickness: { horizontal: 32 }, // horizontal rows keep their size
   inset: 0.22,
   room: { horizontal: { start: 40, end: 44 }, vertical: { start: 26, end: 12, after: 14 } },
   css: `
@@ -685,7 +661,7 @@ const MonthSlat = slat({
   </div>
 ));
 
-// The scale: hairlines each degree, and the 0 line, the normal, drawn brighter.
+// The scale: a line each degree, and 0 (the normal) brighter
 const NormalSlat = slat({
   room: { horizontal: { after: 28 }, vertical: { before: 56 } },
   css: `
@@ -717,7 +693,7 @@ export function Diverging(p) {
 
 /*<show histogram>*/
 const COAST = { font: "system-ui, sans-serif", ink: "#1f2a37", muted: "#6b7686", grid: "#e1e7ee", surface: "#f7f9fb" };
-// A bin's own temperature as its color: cool blue through sand to hot red (a heat scale, shown in the key).
+// Each bin is colored by its own temperature
 const WARMTH = [[4, [59, 130, 196]], [14, [120, 181, 196]], [20, [233, 196, 106]], [27, [238, 129, 72]], [34, [196, 52, 44]]];
 const warmth = (t) => {
   const k = Math.min(WARMTH.length - 1, Math.max(1, WARMTH.findIndex(([x]) => x >= t))), [x0, c0] = WARMTH[k - 1], [x1, c1] = WARMTH[k];
@@ -764,9 +740,8 @@ export function Histogram(p) {
 /*<show stem>*/
 const MIDNIGHT = { font: "system-ui, sans-serif", ink: "#f4f1ff", muted: "#8f89a8", grid: "#2a2638", surface: "#0e0c14" };
 
-// One sample: a stem from rest, glowing at its tip, fading as the ring dies away (--fade).
-// A new strike reaches the samples one after another (--k, 8 ms apart), so it runs down the wave like the sound does.
-// A delay adds to the transition rhp gives a block without replacing it. (The JS version moves every sample at once.)
+// One sample: a stem and a glowing tip that fade as the ring dies away. A new strike reaches the samples one after
+// another (--k, 8ms apart).
 const SampleSlat = slat({
   thickness: { horizontal: 12 },
   room: { start: 12, end: 12 },
@@ -782,7 +757,7 @@ const SampleSlat = slat({
   </div>
 ));
 
-// The resting line, the only scale a waveform needs.
+// The resting line
 const RestSlat = slat({ css: `.rest { background: var(--rhp-grid); --rhp-tick-width: 1px; }` }, () => <div><Tick at={0} thick={1} class="rest" /></div>);
 
 export function Stem(p) {
@@ -815,13 +790,11 @@ const HALL = { font: "system-ui, sans-serif", ink: "#f3e9d2", muted: "#a89a80", 
 const black = (m) => [1, 3, 6, 8, 10].includes(((m % 12) + 12) % 12);
 const noteName = (m) => ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"][((m % 12) + 12) % 12] + (Math.floor(m / 12) - 1);
 
-// The pitch scale is a keyboard: a Scale with a key per semitone, each drawn from d.at to d.next, and every C named.
-// d.low, d.high and d.tint come from the instrument under the pointer: the keys it reaches light up in its varnish,
-// and the names mark its lowest and highest notes instead.
+// The pitch scale is a keyboard (a Scale with a key per semitone). The keys the instrument under the pointer reaches light up.
 const KeySlat = slat({
   room: { horizontal: { after: 50 }, vertical: { before: 60 } },
   css: `
-    .key { border-radius: 0 0 3px 3px; background: #efe6d2; } /* a key's four corners: border-radius (--rhp-radius takes one length) */
+    .key { border-radius: 0 0 3px 3px; background: #efe6d2; } /* --rhp-radius takes one length, so border-radius here */
     .black .key { background: #1b1916; box-shadow: inset 0 0 0 1px #3a342b; }
     .key:horizontal { top: calc(100% + 6px); height: 24px; translate: none; clip-path: inset(0 .5px); }
     .key:vertical { left: auto; right: calc(100% + 6px); width: 24px; translate: none; clip-path: inset(.5px 0); border-radius: 3px 0 0 3px; }
@@ -870,9 +843,9 @@ const InstrumentSlat = slat({
 
 export function Violin(p) {
   const notes = createMemo(() => (p.seed(), TESSITURA.map(([lo, hi, mid, sd]) => normalsIn(80, lo, hi, mid, sd))));
-  // One peak for every instrument, so their widths compare: a value shared by all slats, not a list.
+  // One peak for every instrument so their widths compare
   const peak = createMemo(() => Math.max(...notes().flatMap((s) => density(s, { points: 48 }).map((q) => q[1]))));
-  // The instrument under the pointer (when it moves), and the keys it reaches (a note is on the key it falls in).
+  // The instrument under the pointer, and the keys it reaches
   const [pick, setPick] = createSignal(null);
   const point = (e) => { const i = e.target.closest("[data-instrument]")?.dataset.instrument; setPick(i == null ? null : +i); };
   const reach = createMemo(() => (pick() == null ? {} : {
@@ -908,7 +881,7 @@ const HourCell = (day) => (h) => {
 
 const DayRow = slat({
   thickness: { horizontal: 26 },
-  // day names at the start; hour numbers over the first row (horizontal) or left of the first column (vertical)
+  // room for the day names and the hour numbers
   room: { horizontal: { start: 40, before: 18 }, vertical: { start: 24, before: 30 } },
   css: `
     .cell { --rhp-cell-gap: 1px; --rhp-radius: 2px; }
@@ -1047,7 +1020,7 @@ const GLYPH = { // 24 × 24 icons
   Water: "M12 2.5s-6.5 7.5-6.5 12a6.5 6.5 0 0 0 13 0c0-4.5-6.5-12-6.5-12z",
   Mindful: "M5 19C5 10 11 4 20 4c0 9-6 15-15 15z",
 };
-// What a share of each goal comes to, in the goal's own unit.
+// What a share of each goal comes to
 const AMOUNT = {
   Move: (f) => Math.round(600 * f) + " kcal",
   Sleep: (f) => { const m = Math.round(480 * f); return `${Math.floor(m / 60)}h ${m % 60}m`; },
@@ -1057,8 +1030,7 @@ const AMOUNT = {
 };
 const WATCH = { font: "system-ui, sans-serif", ink: "#f5f5f7", muted: "#8e8e93", grid: "#1f1f24", surface: "#0a0a0c" };
 
-// A goal: the track to 120%, the day's progress glowing along it, and a white line at the goal (100%).
-// Hover a goal and its progress burns brighter, with a bubble at its tip saying what it comes to.
+// A goal: the track, the day's progress and a white line at the goal. Hover it for what the progress comes to.
 const GoalSlat = slat({
   thickness: { horizontal: 62 },
   room: { horizontal: { start: 134, end: 58 }, vertical: { start: 70, end: 30 } },
@@ -1116,9 +1088,7 @@ const FINTECH = { font: "system-ui, sans-serif", ink: "#1c2433", muted: "#6b7385
 const STEP = { in: "#12b886", out: "#f25f5c", total: "#1c2433" }; // money in, money out, what is left
 const pounds = (v) => (v < 0 ? "−" : "") + "£" + Math.abs(Math.round(v)).toLocaleString("en-GB");
 
-// A step from the running total before it to the one after; a hairline links it to the next step.
-// An expense is a button: click it (its name or its bar) to cut it from the month. A cut step has no length, and a
-// dashed outline keeps its place, so the steps after it and the savings move up by what it cost.
+// A step from the running total before it to the one after. Click an expense to cut it from the month.
 const StepSlat = slat({
   thickness: { horizontal: 46 },
   room: { horizontal: { start: 100, end: 66 }, vertical: { start: 40, end: 26, after: 18 } },
@@ -1161,7 +1131,7 @@ const StepSlat = slat({
 
 export function Waterfall(p) {
   const month = createMemo(() => (p.seed() ? [rand(3800, 4600), -rand(1300, 1600), -rand(400, 650), -rand(100, 260), -rand(180, 300), -rand(150, 500)] : MONTH));
-  const [cut, setCut] = createSignal([]); // the rows of the expenses cut; new data brings them all back
+  const [cut, setCut] = createSignal([]); // the expenses that were cut
   createComputed(on(month, () => setCut([])));
   const toggle = (e) => {
     const i = e.target.closest("[data-line]")?.dataset.line;
@@ -1190,7 +1160,7 @@ const MONTH_NAMES = ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"];
 const TODAY = 14;
 const DRAWING = { font: "system-ui, sans-serif", ink: "#141414", muted: "#77736d", grid: "#e7e4de", surface: "#fbfaf7" };
 
-// The months are a Scale of intervals: a slat per 4 weeks, from d.at to d.next, every other one shaded.
+// The months: a Scale of 4-week intervals, every other one shaded
 const MonthBandSlat = slat({
   room: { horizontal: { before: 26 }, vertical: { before: 40 } },
   css: `
@@ -1209,8 +1179,7 @@ const MonthBandSlat = slat({
   </div>
 ));
 
-// A trade on site: the whole job as a thin gray bar, the part done by today in site orange.
-// Hover a trade and the drawing dimensions it: a line with end marks alongside the bar, and its length in weeks.
+// A trade: the whole job in gray and the part done by today in orange. Hover it to see it measured.
 const TradeSlat = slat({
   thickness: { horizontal: 44 },
   room: { horizontal: { start: 116, end: 16 }, vertical: { start: 40, end: 10 } },
@@ -1247,7 +1216,7 @@ const TradeSlat = slat({
   </div>
 ));
 
-// Today: a line across the plot, named below it (horizontal; the months are above) or at its end (vertical).
+// Today: a line across the plot
 const TodaySlat = slat({
   room: { horizontal: { after: 24 } },
   css: `.now { background: #ff5a1f; --rhp-tick-width: 2px; } .now-label { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; color: #ff5a1f; padding: 0; }
@@ -1261,7 +1230,7 @@ export function Gantt(p) {
       <Chart orientation={p.o()} scale={[0, 32]} height={340} animate={p.js()} theme={DRAWING}>
         <Scale ticks={every(4)}>{MonthBandSlat}</Scale>
         <Plot trade={TRADES} start={plan().map((w) => w[0])} end={plan().map((w) => w[1])} key="trade" order={sortBy("start")}>{TradeSlat}</Plot>
-        {/* today, over the trades; the pointer passes through it to them */}
+        {/* today's line lets the pointer through to the trades */}
         <Plot overlap slats={1} style={{ "pointer-events": "none" }}>{TodaySlat}</Plot>
       </Chart>
     </Poster>
@@ -1273,11 +1242,10 @@ export function Gantt(p) {
 const SALMON = { font: "system-ui, sans-serif", ink: "#33302e", muted: "#66605c", grid: "#eadbcc", surface: "#fff1e5" };
 const dollars = (v) => "$" + v.toFixed(v < 100 ? 2 : 0);
 
-// A day: the wick over the day's range, the body from the open to the close; teal up, claret down.
-// Its root carries data-day, so the poster knows which day is under the pointer; that day's band is shaded.
+// A day: the wick over its range and the body from the open to the close
 const DaySlat = slat({
   thickness: { horizontal: 15 },
-  room: { horizontal: { start: 24, end: 64 }, vertical: { start: 10, end: 30 } }, // the axis numbers read "$42.5"; vertical, the last price's badge can stand 28px above the top
+  room: { horizontal: { start: 24, end: 64 }, vertical: { start: 10, end: 30 } }, // room for the axis numbers and the last price
   css: `
     .day:hover { background: rgb(51 48 46 / .07); }
     .wick { background: #807973; }
@@ -1296,8 +1264,7 @@ const DaySlat = slat({
   );
 });
 
-// The day under the pointer: a dashed line across the chart at its close, and its price over the axis numbers.
-// It draws in the axis gutter, so it asks for no room of its own (a top-level Plot whose slat gives none gets the default gutters).
+// The day under the pointer: a dashed line at its close, and its price over the axis numbers
 const CrossSlat = slat({
   room: {},
   css: `
@@ -1325,8 +1292,7 @@ export function Candles(p) {
     });
   });
   const range = createMemo(() => nice(Math.min(...days().map((d) => d.low)), Math.max(...days().map((d) => d.high)), 4)); // fitted to the month
-  // The day under the pointer (when it moves: the readout's height may change under a still one); the readout shows it,
-  // or the latest day.
+  // The day under the pointer (the readout shows it, or the latest day)
   const [day, setDay] = createSignal(null);
   const point = (e) => { const i = e.target.closest("[data-day]")?.dataset.day; setDay(i == null ? null : +i); };
   const read = createMemo(() => {

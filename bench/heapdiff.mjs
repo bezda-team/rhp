@@ -1,4 +1,4 @@
-// What a library's objects are: two heap snapshots, before and after mounting, grouped by constructor (or closure name).
+// What a library's objects are, from heap snapshots before and after mounting, grouped by constructor
 //   node heapdiff.mjs rhp-css mount '{"n":1000,"band":8}'
 import fs from "node:fs"; import http from "node:http"; import path from "node:path"; import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";

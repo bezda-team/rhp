@@ -1,6 +1,5 @@
-// test/ssr.jsx on a page that links rhp's core stylesheet itself (dist/rhp.css): linkedCss() before anything draws, on
-// the server (this module, in Node) and in the browser (the same module, as the page's script: it hydrates, or with
-// #fresh draws from nothing; ?unlinked is a page that says it links the stylesheet but doesn't).
+// test/ssr.jsx with linkedCss, on a page that links dist/rhp.css itself (page(false) leaves the link out).
+// In Node this module writes the page, and in the browser it hydrates it (#fresh and ?wait work as in ssr-client.jsx).
 import { isServer, renderToString, generateHydrationScript, hydrate, render } from "solid-js/web";
 import { linkedCss } from "../src/index.js";
 import App from "./ssr.jsx";

@@ -1,6 +1,6 @@
-// Builds test/vite's app with Vite and vite-plugin-solid, as a SolidStart or Astro app is built: for the server and for
-// the browser. rhp is the package itself (node_modules/@bezda/rhp links to this repository), so Vite resolves it by
-// its exports, as for an app. Prints where Vite resolves @bezda/rhp, for the server and for the browser, as JSON.
+// Builds the app with Vite for the server and the browser, like a SolidStart or Astro app.
+// node_modules/@bezda/rhp links to this repository, so Vite resolves rhp by its exports like it would for any app.
+// Prints where @bezda/rhp resolved to on each side, as JSON.
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";

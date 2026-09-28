@@ -1,4 +1,4 @@
-// npm run gallery: examples/gallery/out/slat-gallery.html, one self-contained page (the core, Solid, the page and its images inlined).
+// npm run gallery builds examples/gallery/out/slat-gallery.html, one self-contained page with everything inlined
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";

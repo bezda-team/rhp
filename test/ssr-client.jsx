@@ -1,5 +1,5 @@
-// The browser's side of test/ssr.jsx: takes over the server's HTML, or with #fresh draws the app from nothing.
-// ?wait holds the script back until the test calls window.go(), so the server's HTML can be looked at alone.
+// The browser side of test/ssr.jsx. It hydrates the server's HTML, or draws the app from scratch with #fresh.
+// ?wait holds it back until the test calls window.go().
 import { hydrate, render } from "solid-js/web";
 import App from "./ssr.jsx";
 const root = document.getElementById("root");

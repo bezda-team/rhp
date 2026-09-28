@@ -1,5 +1,5 @@
-// npm test: builds the test pages and the gallery, then checks them in Chromium (Playwright).
-// CHROMIUM=/path/to/chrome picks the browser; otherwise Playwright's own.
+// npm test builds the test pages and the gallery and checks them in Chromium with Playwright.
+// Set CHROMIUM=/path/to/chrome to use a browser other than Playwright's.
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -17,27 +17,25 @@ await standalone(path.join(here, "../src/standalone.js"), at("out/standalone.js"
 await build({ entryPoints: [at("react.js")], outfile: at("out/react.js"), bundle: true, format: "iife", minify: true, logLevel: "warning",
   alias: { "@bezda/rhp/standalone": at("out/standalone.js") }, define: { "process.env.NODE_ENV": '"production"' } });
 fs.writeFileSync(at("out/react.html"), '<!doctype html><html><head><meta charset=utf-8></head><body><script src="react.js"></script></body></html>');
-// test/ssr.jsx: the app's HTML from a server (Node), and the script that takes it over in the browser
-// (from src), and the same with the published package: Node picks dist/server.js through package.json's exports,
-// and the page script is built from dist/index.js, the browser's pick
+// The server rendering app (test/ssr.jsx), built from src and from the published package
 await ssrServer(at("ssr-server.jsx"), at("out/ssr-server.mjs"));
 await ssrClient(at("ssr-client.jsx"), at("out/ssr-client.js"));
 execFileSync("node", [path.join(here, "../scripts/build.mjs")], { stdio: "ignore" });
 await ssrPackage(at("ssr-server.jsx"), at("out/ssr-dist-server.mjs"), "server");
 await ssrPackage(at("ssr-client.jsx"), at("out/ssr-dist-client.js"), "browser");
 const SSR = await import("file://" + at("out/ssr-server.mjs") + "?" + Date.now());
-// a Solid app built by Vite with vite-plugin-solid (test/vite), which takes rhp's source by its "solid" condition
+// A Solid app built by Vite (test/vite)
 const VITE = JSON.parse(execFileSync("node", [at("vite/build.mjs")], { encoding: "utf8" }).trim().split("\n").at(-1));
 const SSRD = await import("file://" + at("out/ssr-dist-server.mjs") + "?" + Date.now());
 fs.writeFileSync(at("out/ssr.html"), SSR.page());
 fs.writeFileSync(at("out/ssr-dist.html"), SSRD.page("ssr-dist-client.js"));
-// the same app on a page that links dist/rhp.css itself (linkedCss), and on one that says so but doesn't
+// The app with linkedCss, on a page that links dist/rhp.css and on one that forgets to
 await ssrServer(at("ssr-linked.jsx"), at("out/ssr-linked-server.mjs"));
 await ssrClient(at("ssr-linked.jsx"), at("out/ssr-linked-client.js"));
 const SSRL = await import("file://" + at("out/ssr-linked-server.mjs") + "?" + Date.now());
 fs.writeFileSync(at("out/ssr-linked.html"), SSRL.page());
 fs.writeFileSync(at("out/ssr-unlinked.html"), SSRL.page(false));
-// rhp's gallery, every plot three ways, drawn on a server
+// The gallery drawn on a server
 await ssrServer(at("ssr-gallery.jsx"), at("out/ssr-gallery-server.mjs"));
 await ssrClient(at("ssr-gallery.jsx"), at("out/ssr-gallery-client.js"));
 const SSRG = await import("file://" + at("out/ssr-gallery-server.mjs") + "?" + Date.now());
@@ -150,7 +148,7 @@ const open = async (url, opts = {}) => {
   await p.close();
 }
 
-// No build step (src/standalone.js): a plain page imports one module and writes slats with html templates.
+// No build step: a plain page that imports standalone.js and writes slats with html templates
 {
   const p = await browser.newPage();
   p.errors = []; p.on("pageerror", (e) => p.errors.push(e.message));
@@ -181,7 +179,7 @@ const open = async (url, opts = {}) => {
   await p.close();
 }
 
-// @bezda/rhp-react (test/react.js): toReact makes an rhp chart a React component.
+// React charts with @bezda/rhp-react (test/react.js)
 {
   const p = await open("file://" + at("out/react.html"));
   const rows = () => p.evaluate(() => [...document.querySelectorAll(".row")].map((r) => r.dataset.fruit + ":" + r.querySelector(".rhp-bar").style.getPropertyValue("--rhp-to")).join(" "));
@@ -222,13 +220,13 @@ const open = async (url, opts = {}) => {
   await p.close();
 }
 
-// Mount cost (test/mount.jsx): 50 charts of 7 slats; and a page's view-transition-name on a slat class
+// Mount cost (test/mount.jsx): 50 charts of 7 slats
 {
   const p = await open("file://" + at("out/mount.html"));
   const ms = await p.evaluate(() => T.mount());
   const vt = await p.evaluate(async () => {
     const s = document.createElement("style");
-    s.textContent = ".slat { view-transition-name: card }"; // 350 slat roots with one name: a duplicate aborts the transition
+    s.textContent = ".slat { view-transition-name: card }"; // 350 slats with one name (a duplicate name aborts a view transition)
     document.head.append(s);
     const t = document.startViewTransition(() => {});
     try { await t.finished; return "ran"; } catch (e) { return e.message; }
@@ -239,15 +237,15 @@ const open = async (url, opts = {}) => {
   await p.close();
 }
 
-// The gallery: 20 charts, both orientations, both animation versions, light and dark, desktop and phone
+// The gallery in both orientations and animation versions, light and dark, on desktop and phone
 {
   const p = await open(gallery, { viewport: { width: 1280, height: 900 } });
   await p.click("label:has(#motion-js)"); await p.waitForTimeout(200);
   const gaps = () => p.evaluate(() => {
     let worst = 0;
     for (const plot of document.querySelectorAll("#stacked .rhp-plot .rhp-plot")) {
-      const r = [...plot.querySelectorAll(".rhp-bar")].map((e) => e.getBoundingClientRect()).filter((b) => b.width).sort((a, b) => a.left - b.left); // hidden (empty) segments aside
-      for (let i = 1; i < r.length; i++) worst = Math.max(worst, Math.abs(r[i].left - r[i - 1].right - 2)); // the layers' --rhp-gap: 2px
+      const r = [...plot.querySelectorAll(".rhp-bar")].map((e) => e.getBoundingClientRect()).filter((b) => b.width).sort((a, b) => a.left - b.left); // empty segments are skipped
+      for (let i = 1; i < r.length; i++) worst = Math.max(worst, Math.abs(r[i].left - r[i - 1].right - 2)); // the gap is 2px (--rhp-gap)
     }
     return worst;
   });
@@ -271,10 +269,9 @@ const open = async (url, opts = {}) => {
           for (const e of ch.querySelectorAll("*")) {
             const b = e.getBoundingClientRect();
             if (!b.width && !b.height) continue;
-            // What shows only on hover (a tag, a bubble, a dimension) is there, invisible, at rest: it doesn't count.
+            // Things that only show on hover (tags, bubbles) are invisible at rest, so they don't count
             if (!e.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue;
-            // What shows: the box cut by each clipping ancestor inside the chart. A slat may hide what it draws
-            // (the dots past their window, a photo zoomed in its circle); only what is left counts.
+            // Only the part that shows counts, since a slat can clip what it draws (a photo zoomed in its circle)
             let { left, top, right, bottom } = b;
             for (let a = e.parentElement; a !== ch; a = a.parentElement) {
               const s = getComputedStyle(a);
@@ -287,7 +284,7 @@ const open = async (url, opts = {}) => {
             const name = e.localName + [...e.classList].map((x) => "." + x).join("");
             const past = { right: right - c.right, left: c.left - left, bottom: bottom - c.bottom, top: c.top - top };
             const side = Object.keys(past).reduce((a, k) => (past[k] > past[a] ? k : a));
-            if (past[side] > 0.5) { // how far, where, and both boxes, so a rare failure can be read from the log
+            if (past[side] > 0.5) { // with enough detail to debug a rare failure from the log
               out.push(`${o}: ${ch.closest(".card").id} ${name} sticks out ${past[side].toFixed(1)}px on the ${side} (${[left, top, right, bottom].map(Math.round)} in ${[c.left, c.top, c.right, c.bottom].map(Math.round)})`);
               break;
             }
@@ -302,8 +299,7 @@ const open = async (url, opts = {}) => {
   }
 }
 
-// The gallery's interactions: pointer and click handlers on the posters feed signals into the Plots' data, in both
-// animation versions; and an overlay Plot with pointer-events: none lets the pointer through to the Plot under it.
+// The gallery's interactions (pointer, clicks and keys) in both animation versions
 for (const motion of ["css", "js"]) {
   const p = await open(gallery, { viewport: { width: 1280, height: 900 } });
   if (motion === "js") { await p.click("label:has(#motion-js)"); await p.waitForTimeout(100); }
@@ -369,8 +365,7 @@ for (const motion of ["css", "js"]) {
   await p.close();
 }
 
-// The v1 replicas in the gallery (fruit bars, box and whisker, animated dots): v1's assets and geometry,
-// and a dots window that stays full while the rows move
+// The v1 replicas in the gallery (fruit bars, box and whisker, animated dots)
 {
   const p = await open(gallery, { viewport: { width: 1280, height: 900 } });
   check("v1 replicas: all 14 images load", await p.evaluate(async () => {
@@ -379,8 +374,8 @@ for (const motion of ["css", "js"]) {
     return [imgs.length, imgs.filter((i) => !i.naturalWidth).map((i) => i.alt)];
   }), [14, []]);
 
-  // Where master's demos draw the top row and the scale, measured in Chromium at 1088px wide: [x, y, width, height]
-  // from the plot's corner (the box plot's card), or [x, y] where a text starts.
+  // Where v1's demos draw the top row and the scale, measured in Chromium at 1088px wide.
+  // Each is [x, y, width, height] from the plot's corner, or [x, y] where a text starts.
   const V1 = {
     fruit: { bar: [112, 48, 944, 62.84], img: [112, -70.58, 300, 300], value: [1064, 69.67], name: [31.75, 67.42, 48.5, 24],
       "mark 0": [108, 24, 4], "mark 5": [300.8, 24, 4], "mark 25": [1056, 24, 4], "num 5": [308.8, 20] },
@@ -394,7 +389,7 @@ for (const motion of ["css", "js"]) {
     const got = await p.evaluate((root) => {
       const o = document.querySelector(root).getBoundingClientRect();
       const box = (e) => { const b = e.getBoundingClientRect(); return [b.left - o.left, b.top - o.top, b.width, b.height]; };
-      // a text: where its glyphs start and how wide they are, and the top and height of its line (v1 measured fit-content boxes)
+      // For text we measure the glyphs, since v1 measured fit-content boxes
       const text = (e) => { const r = document.createRange(); r.selectNodeContents(e); const t = r.getBoundingClientRect(), b = box(e); return [t.left - o.left, b[1], t.width, b[3]]; };
       const [scale, rows] = document.querySelectorAll(root + " .rhp-body > .rhp-plot");
       const top = [...rows.children].find((s) => s.style.getPropertyValue("--rhp-position") === "0");
@@ -414,8 +409,7 @@ for (const motion of ["css", "js"]) {
   }
   check("v1 replicas: the top rows and scales sit where v1 draws them, within 1px", off, []);
 
-  // The scale's end line stays at the end of the track in every frame while the max changes, also when the new max
-  // lands on a tick (that tick must not become the end and slide there), in both animation versions.
+  // The scale's end line stays at the end while the max changes, also when the new max lands on a tick
   for (const motion of ["css", "js"]) {
     if (motion === "js") await p.click("label:has(#motion-js)");
     const drift = await p.evaluate(async () => {
@@ -439,8 +433,7 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
-  // While the JS version moves the scale, its lines appear when the moving end reaches them and go when it passes
-  // them: none drawn past the end, none missing inside the scale on screen (fruit: a Scale; medals, coffee: the axis).
+  // While the JS version moves the scale, no line is drawn past the end and none is missing inside it
   await p.click("label:has(#motion-js)");
   const lines = await p.evaluate(async () => {
     const input = document.querySelector("#fruit .slider input"), chart = document.querySelector("#fruit .rhp-chart");
@@ -473,8 +466,7 @@ for (const motion of ["css", "js"]) {
   });
   check("JS version, while the scale moves: frames with a line past the end, with a line missing, with an axis line outside", [lines.past, lines.missing, lines.axis], [0, 0, 0]);
 
-  // A steady drag moves a bar steadily in the JS version: a change mid-move adds to the motion, so the speed never
-  // collapses and recovers at each step (restarting an ease-in-out at every input made the bar pulse).
+  // A steady drag moves a bar steadily in the JS version (restarting the easing at every input made it pulse)
   const pulses = await p.evaluate(async () => {
     const input = document.querySelector("#fruit .slider input");
     const set = (v) => { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); };
@@ -492,8 +484,7 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
-  // v1's scale on a narrow chart (as on a page with the code beside it): a number next to the end hides only when it
-  // would touch the end mark, and a number that shows never does, in either orientation.
+  // On a narrow chart, a number on v1's scale hides only when it would touch the end mark
   const narrow = await p.addStyleTag({ content: "#fruit .rhp-chart { width: 560px !important; }" });
   for (const o of ["horizontal", "vertical"]) {
     await p.click(`label:has(#orient-${o})`); await p.waitForTimeout(400);
@@ -506,12 +497,11 @@ for (const motion of ["css", "js"]) {
         const end = chart.querySelector(".rhp-scale .end .mark").getBoundingClientRect();
         for (const n of chart.querySelectorAll(".rhp-scale :is(.line, .tick) > .num")) {
           const range = document.createRange(); range.selectNodeContents(n);
-          // shown: visible, and with room for its text (a crowded number gets none: its size is 0 and its text is clipped)
+          // A crowded number is clipped to no size, so it counts as hidden
           const t = range.getBoundingClientRect(), box = n.getBoundingClientRect(), cs = getComputedStyle(n);
           const inner = h ? box.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) : box.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
           const shown = n.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && inner > 0.5 ? 1 : 0;
-          // px between the number's text and the end mark, where it would be if it showed (a clipped number's text sits
-          // lower: its box is only as tall as its padding, and its text starts at the box's top)
+          // The room between the number's text and the end mark, where the text would be if it showed
           const room = h ? end.left - t.right : box.bottom - n.scrollHeight - end.bottom;
           if (shown > 0 && room < 0) out.touching.push(`${v}: ${n.textContent}`);
           if (shown < 1 && room > 12) out.hiddenWithRoom.push(`${v}: ${n.textContent}`);
@@ -525,8 +515,7 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#orient-horizontal)"); await p.waitForTimeout(400);
   await narrow.evaluate((e) => e.remove());
 
-  // A value takes as long to move in the JS version as in the CSS version (150 ms, ease-out, by default): the time from
-  // a change to the last frame in which Fruit A's bar still moves.
+  // A value takes as long to move in the JS version as in the CSS version (150 ms by default)
   const settle = {};
   for (const motion of ["css", "js"]) {
     await p.click(`label:has(#motion-${motion})`); await p.waitForTimeout(400);
@@ -554,8 +543,7 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
-  // The dots: each row's whole dots in the window, lit or not, and whether the window shows a hole anywhere in the row:
-  // a gap wider than the 8px between dots (counting the dots just past its ends), or no dot within 4px of an end.
+  // Each row's whole dots (lit or not), and whether its window shows a hole wider than the 8px between dots
   const look = () => p.evaluate(() => [...document.querySelectorAll("#dots .rhp-body > .rhp-plot > *")].map((row) => {
     const w = row.getBoundingClientRect();
     const d = [...row.querySelectorAll(".rhp-dot")].map((e) => ({ b: e.getBoundingClientRect(), lit: getComputedStyle(e).backgroundColor === "rgb(242, 204, 143)" }))
@@ -565,12 +553,12 @@ for (const motion of ["css", "js"]) {
     const shown = d.filter((x) => x.b.right > w.left && x.b.left < w.right), whole = shown.filter((x) => x.b.left >= w.left - 0.5 && x.b.right <= w.right + 0.5);
     return { lit: whole.map((x) => (x.lit ? "#" : ".")).join(""), hole, x: shown[0]?.b.left - w.left, size: [shown[0]?.b.width, shown[1]?.b.left - shown[0]?.b.left] };
   }));
-  await p.hover("#dots .dots-window"); await p.waitForTimeout(600); // hovering holds v1's logo, whatever the 5 s cycle is doing
+  await p.hover("#dots .dots-window"); await p.waitForTimeout(600); // hovering holds the logo still
   const rest = await look();
   await p.mouse.move(0, 0); // leaving starts the cycle again
   check("v1 dots: v1's logo, 11 whole dots by 9 rows, 52px dots 60px apart", [rest.map((r) => r.lit), rest[0].size.map((v) => +v.toFixed(2))],
     [["...........", "....#......", "....#......", ".##.##..##.", "#...#.#.#.#", "#...#.#.##.", "........#..", "........#..", "..........."], [52, 60]]);
-  // Every 5 s the rows scatter or come back. Sample the window through one change in each animation version.
+  // The rows scatter or come back every 5 s, so we sample one change in each animation version
   for (const motion of ["css", "js"]) {
     if (motion === "js") await p.click("label:has(#motion-js)");
     const still = JSON.stringify((await look()).map((r) => Math.round(r.x)));
@@ -586,10 +574,9 @@ for (const motion of ["css", "js"]) {
   check("no page errors", p.errors, []);
   await p.close();
 }
-// A page's charts as a string that two drawings of the same app share: elements with their attributes and styles sorted,
-// their text (adjacent text nodes as one: HTML from a server has "20%" where a browser made "20" and "%"), no hydration
-// keys or markers and no server CSS, and rhp's generated row ids (which differ between a server's render and a
-// browser's) as a pattern. Two elements matched out of order, or one left over, change it.
+
+// The page's charts as a string, to compare two drawings of the same app. It sorts attributes, merges adjacent text
+// and leaves out what differs between a server and a browser (hydration keys, server CSS, generated ids).
 const dom = (p, charts) => p.evaluate((charts) => {
   const ids = (v) => v.replace(/rhp-[\w-]+?-(\d+)(?=\s|$)/g, "rhp-#-$1");
   const out = (n) => {
@@ -606,12 +593,11 @@ const dom = (p, charts) => p.evaluate((charts) => {
   return charts ? [...document.querySelectorAll(".rhp-chart")].map(out).join("") : out(document.querySelector("main"));
 }, charts);
 
-// Drawn on a server (test/ssr.jsx): the server's HTML alone draws the charts, the browser takes them over without
-// drawing them again, and both look exactly like the same app drawn in the browser alone.
+// Server rendering (test/ssr.jsx): the server's HTML and the hydrated page look exactly like the browser's drawing
 {
   const url = "file://" + at("out/ssr.html"), shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
-  // (text merged, as for the gallery below, only on pages no update follows: merging would cut Solid's text nodes)
-  const server = await open(url + "?wait"); // the script held back: what the server sent, and nothing else
+  // NOTE: Text isn't merged here like in the gallery test below, since merging breaks Solid's text nodes for updates
+  const server = await open(url + "?wait"); // ?wait holds the script back, so the page shows the server's HTML only
   const count = (p) => p.evaluate(() => ["main *", ".rhp-bar", ".rhp-plot > *", "style[data-rhp-server]"].map((q) => document.querySelectorAll(q).length));
   const before = await count(server), serverShot = await shot(server);
   check("server: each chart brings its slats' CSS, and rhp's core comes once per page", await server.evaluate(() => {
@@ -633,7 +619,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   for (const p of [server, fresh]) await p.close();
 }
 
-// On a server, in Node: the published package, the other ways of rendering, and the browser build.
+// Server rendering in Node: the published package and the other ways to render
 {
   check("server package: Node loads @bezda/rhp's server build, and it writes the same HTML as the source", SSRD.html() === SSR.html(), true);
   check("server package: the browser build carries no server code, and the server build no browser blocks",
@@ -648,9 +634,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   check("server: a slat that returns text is an error that says so", err, "rhp: a slat must return one element");
 }
 
-// The server's HTML alone, in the details a screenshot can't show: CSS with &, > and quotes arrives intact, a slat
-// root keeps its own style next to rhp's, hidden rows are hidden, a backward bar is marked, and move puts the page's
-// order in display order.
+// Details of the server's HTML that a screenshot can't show
 {
   const p = await open("file://" + at("out/ssr.html") + "?wait");
   check("server HTML: slat CSS with &, > and quotes applies as written", await p.evaluate(() => {
@@ -675,7 +659,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   await p.close();
 }
 
-// The published package end to end: its server's HTML taken over by its browser build, like the source.
+// The published package end to end
 {
   const url = "file://" + at("out/ssr-dist.html"), shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
   const server = await open(url + "?wait"), serverShot = await shot(server), n = await server.evaluate(() => document.querySelectorAll("main *:not(style)").length);
@@ -689,21 +673,17 @@ const dom = (p, charts) => p.evaluate((charts) => {
   for (const p of [server, fresh]) await p.close();
 }
 
-// rhp's whole gallery drawn on a server (test/ssr-gallery.jsx): every plot, horizontal, vertical and in the JS version,
-// looks the same from the server's HTML alone, taken over, and drawn in the browser alone, with the same elements.
+// The whole gallery drawn on a server (test/ssr-gallery.jsx), compared plot by plot with the browser's drawing
 {
   const url = "file://" + at("out/ssr-gallery.html");
-  // Text is merged first: a server's HTML has "86%" as one text node where a browser made "86" and "%", and Chromium
-  // shapes the two apart (a pixel of kerning). The DOM check below merges it too. The pointer waits outside the plots
-  // (scrolling to each would otherwise leave it over one, hovered), and the examples' own timers are held (the logo's
-  // dots scatter every 5 s): rhp uses none.
+  // NOTE: A server writes "86%" as one text node where a browser makes "86" and "%", and Chromium kerns the two a
+  // pixel apart, so we merge the text first. The pointer stays outside the plots, and the examples' timers are stopped.
   const shots = async (p) => {
     await p.mouse.move(795, 5);
     await p.evaluate(() => document.body.normalize());
     const out = {}; for (const el of await p.locator("section.plot").all()) out[await el.getAttribute("data-plot")] = await el.screenshot({ animations: "disabled" }); return out;
   };
-  // Each view on a page of its own, scrolled through once (a page scrolled through twice rasterizes a dotted underline a
-  // shade apart, 3/255).
+  // Each view gets its own page, since a page scrolled through twice draws a dotted underline a shade off
   const still = { viewport: { width: 800, height: 900 } };
   const alone = await browser.newPage(still), server = await browser.newPage(still), fresh = await browser.newPage(still);
   for (const p of [alone, server, fresh]) { p.errors = []; p.on("pageerror", (e) => p.errors.push(e.message)); await p.addInitScript(() => { window.setInterval = () => 0; }); }
@@ -723,8 +703,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   for (const p of [alone, server, fresh]) await p.close();
 }
 
-// Gutters sized by their labels (room "auto"), the room to the end in CSS, and slat roots of every kind, on the server's
-// HTML alone (the pixel checks above compare all of it with the browser's drawing).
+// Auto gutters, the room to the end, and slat roots of every kind, in the server's HTML
 {
   const p = await open("file://" + at("out/ssr.html") + "?wait");
   const g = (id) => p.evaluate((id) => {
@@ -760,8 +739,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   await p.close();
 }
 
-// A page that links rhp's core stylesheet itself (linkedCss): the server leaves the core out of the charts' HTML, the
-// browser adopts it nowhere, and the charts look the same; a page that says so but doesn't link it is warned and fixed.
+// linkedCss, on a page that links rhp's stylesheet and on one that forgets to
 {
   const shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
   const fresh = await open("file://" + at("out/ssr.html") + "#fresh"), want = await shot(fresh);
@@ -780,8 +758,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   for (const p of [fresh, server, unlinked]) await p.close();
 }
 
-// An app built by Vite (test/vite): rhp's source, compiled with the app for its server and its browser, draws the same
-// charts from the server's HTML alone, taken over, and in the browser alone.
+// An app built by Vite from rhp's source (test/vite)
 {
   const url = "file://" + at("vite/out/page.html"), shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
   check("vite: an app's build takes rhp's source, for its server and for its browser", VITE, { server: "dist/source/index.js", browser: "dist/source/index.js" });
@@ -796,9 +773,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   for (const p of [alone, server, fresh]) await p.close();
 }
 
-// What a screen reader gets (Chromium's accessibility tree): a named chart is a figure, a Plot a list of its rows in the
-// order they are shown (sorted rows slide but keep their place in the page), a slat root with a role of its own keeps
-// it, and the axis and a Scale are left out.
+// What a screen reader gets, from Chromium's accessibility tree
 {
   const p = await open("file://" + at("out/ssr.html") + "#fresh");
   const cdp = await p.context().newCDPSession(p);
@@ -808,7 +783,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
     const { node: { backendNodeId } } = await cdp.send("DOM.describeNode", { objectId: (await cdp.send("Runtime.evaluate", { expression: `document.querySelector(${JSON.stringify(sel)})` })).result.objectId });
     const text = (n) => (n.ignored ? (n.childIds ?? []).map((c) => text(byId.get(c))).join(" ") : n.role?.value === "StaticText" ? n.name?.value ?? "" : (n.childIds ?? []).map((c) => text(byId.get(c))).join(" ")).replace(/\s+/g, " ").trim();
     const root = nodes.find((n) => n.backendDOMNodeId === backendNodeId);
-    // a node's children as a screen reader gets them: ignored and generic nodes (plain divs) give their children instead
+    // Ignored and generic nodes (plain divs) are skipped, and their children take their place
     const walk = (n) => n.ignored || n.role?.value === "generic" ? (n.childIds ?? []).flatMap((c) => walk(byId.get(c))) : [n];
     const shown = (n) => (n.childIds ?? []).flatMap((c) => walk(byId.get(c)));
     return { root, byId, text, shown };

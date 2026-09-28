@@ -9,14 +9,14 @@ import { transformAsync } from "@babel/core";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
 
-// rhp's slats are Solid JSX; the React libraries' views are React JSX.
+// rhp's slats are Solid JSX, and the React libraries use React JSX
 const solid = { name: "solid", setup(b) {
   b.onLoad({ filter: /\.solid\.jsx$|[\\/]src[\\/].*\.jsx$/ }, async (a) => {
     const r = await transformAsync(await fs.promises.readFile(a.path, "utf8"), { presets: [["babel-preset-solid", {}]], filename: a.path, babelrc: false, configFile: false });
     return { contents: r.code, loader: "js" };
   });
 }};
-// CSS: rhp embeds its own as text; a library's stylesheet (Charts.css) is injected as a <style> by the bundle.
+// rhp embeds its CSS as text, and a library's stylesheet (Charts.css) is added as a <style> by its bundle
 const css = { name: "css", setup(b) {
   b.onLoad({ filter: /\.css$/ }, async (a) => {
     const min = (await transform(await fs.promises.readFile(a.path, "utf8"), { loader: "css", minify: true })).code.trim();
@@ -35,7 +35,7 @@ for (const name of LIBS) {
   fs.writeFileSync(entry, `import lib from "../libs/${file(name)}";\nimport { install } from "../harness.js";\ninstall(lib);\n`);
   await build({ ...common, entryPoints: [entry], outfile: at(`out/${name}.js`), format: "iife" });
   fs.writeFileSync(at(`out/${name}.html`), `<!doctype html><html><head><meta charset="utf-8"><title>${name}</title></head><body style="margin:0"><script src="${name}.js"></script></body></html>`);
-  // Size: the adapter alone (the chart code an app ships), and without React, Solid or Chart.js's own framework-free core counted twice.
+  // The size of the adapter alone (the chart code an app ships), with and without its framework
   const gz = async (external) => {
     const r = await build({ ...common, entryPoints: [at(`libs/${file(name)}`)], write: false, format: "esm", external });
     return zlib.gzipSync(r.outputFiles[0].contents, { level: 9 }).length;

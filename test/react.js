@@ -1,4 +1,4 @@
-// @bezda/rhp-react (react/index.js): a chart as a React component, in StrictMode.
+// A chart as a React component (react/index.js), in StrictMode
 import { createElement as h, StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";

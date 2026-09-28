@@ -1,3 +1,3 @@
-// Whether rhp is drawing on a server. Solid says so; rhp's own builds put the answer in its place (true in
-// dist/server.js, false elsewhere), so a browser's build carries no server code and a server's no browser code.
+// Whether rhp is drawing on a server. rhp's own builds replace this with true or false, so the browser build carries
+// no server code and the server build no browser code.
 export { isServer } from "solid-js/web";
