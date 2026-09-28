@@ -2,7 +2,7 @@
 
 Website, with the guides and a gallery of live charts: https://rhp.vercel.app
 
-rhp builds plots out of HTML and CSS with [SolidJS](https://www.solidjs.com). A plot is a stack of **slats**. A slat is one component, the template for every row or column, and it is made of **blocks**: Bar, Dot, Tick, Label, Cell and Area. rhp creates one slat per data row and places it. When a value changes, only the expressions that read it re-run, and a block writes only the CSS variables that changed. There is no render loop and no virtual DOM.
+rhp builds plots out of HTML and CSS with [SolidJS](https://www.solidjs.com). A plot is a stack of **slats**. A slat is one component, the template for every row or column, and it is made of **blocks**: Bar, Dot, Tick, Label, Cell, Area and Line. rhp creates one slat per data row and places it. When a value changes, only the expressions that read it re-run, and a block writes only the CSS variables that changed. There is no render loop and no virtual DOM.
 
 Version 2 started as a simplification of v1's design, then improved on its performance and functionality. v1 ("react html plots") was a React library in three packages (`rhp-core`, `rhp-base`, `rhp`); its code is on the `v1` branch.
 
@@ -87,6 +87,32 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
 - A tick at either end of the scale is keyed as that end, so the end line never slides when the max changes.
 - A Chart with a Scale in it draws no axis of its own.
 
+## A second axis
+
+`cross={[min, max]}` on a Chart adds a second scale that runs across the rows, for scatter plots and line charts.
+It is optional: a Chart without it draws as it always has, and the CSS for it is added the first time a chart has one.
+
+```jsx
+import { Chart, Plot, Dot, Label, Line } from "@bezda/rhp";
+
+<Chart scale={[1, 12]} cross={[0, 30]} height={240} crossFormat={(v) => v + "°"}>
+  <Plot overlap month={months} temp={temps()}>
+    {(d) => <div><Dot at={d.month} cross={d.temp} /><Label at={d.month} cross={d.temp}>{d.temp}</Label></div>}
+  </Plot>
+  <Plot overlap points={[trend()]}>{(d) => <div><Line points={d.points} /></div>}</Plot>
+</Chart>
+```
+
+- An overlap Plot's rows all share the whole plot, so a Dot or Label with `cross` sits at its `at` on the scale and its `cross` on the cross scale.
+  In a horizontal Chart the scale runs left to right and the cross scale bottom to top; in a vertical Chart, the other way round.
+- `Line` draws a line through `[x, y]` points, with x on the scale and y on the cross scale.
+  `fill` fills under it, down to `base` (0 by default).
+  Points out of x's order make a connected scatter plot.
+- Without a cross scale, a Line in a row is a sparkline: its y runs across the row's band, up to `peak` (the largest y by default).
+- The Chart draws the cross axis from `crossTicks` and `crossFormat`, like `ticks` and `format`, and makes room for its numbers.
+  A horizontal Chart with a cross scale is 240px tall unless `height` says otherwise.
+  An overlap Plot on a cross scale gets no room for names, since its points have none.
+
 ## Styling a slat
 
 A slat's `css` is plain CSS for the classes you put in the slat.
@@ -156,18 +182,19 @@ Charts are plain DOM, with no shadow root. `querySelector`, Testing Library, pag
 |---|---|
 | `npm run build` | `dist/index.js`, the package: one ES module, Solid left to the app; `dist/server.js`, the same for a server; `dist/standalone.js`, rhp and Solid in one module for pages with no build step. |
 | `npm run gallery` | `examples/gallery/out/slat-gallery.html`: 20 plots, each one slat, in both orientations and both animation versions. The first three replicate v1's demos with v1's assets (`examples/gallery/assets`); the others are magazine-style pieces. |
-| `npm test` | Builds the test pages and the gallery, then checks them in Chromium with Playwright. Set `CHROMIUM=/path/to/chrome` to pick a browser. |
+| `npm test` | Builds the test pages and the gallery, then checks them in Chromium with Playwright, and checks the types with `tsc`. Set `BROWSER=webkit` or `BROWSER=firefox` for the other engines (GitHub Actions runs all three on every push), or `CHROMIUM=/path/to/chrome` to pick a Chromium. |
 | `bench/` | rhp against eleven other chart setups (Chart.js, ECharts, Recharts, D3, Charts.css…): mount, update, drag, size and memory in Chrome, Safari, Firefox and WebKit. Results in `bench/RESULTS.md`, how to run in `bench/README.md`. |
 
 ## Layout
 
 - `src/plot.jsx`: Plot, Scale, Chart, Axis, Theme.
-- `src/blocks.jsx`: Bar, Dot, Tick, Label, Cell, Area.
+- `src/blocks.jsx`: Bar, Dot, Tick, Label, Cell, Area, Line.
 - `src/style.js`: CSS injection, `slat()`, the scoping of slat CSS, `linkedCss()` and the CSS a server writes.
 - `src/rhp.css`: the core CSS, including the guard.
 - `src/gutters.css`: gutters sized by their labels (`room: "auto"`), added the first time a chart asks for them.
+- `src/cross.css`: the second axis (`cross`), added the first time a chart has one.
 - `src/env.js`: whether rhp draws on a server (Solid's `isServer`); rhp's own builds make it a constant.
 - `src/animate.js`: the JS version's page clock.
 - `src/data.js`: `sortBy`, `cycle`, `every`, `nice`, `extent`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`.
 
-Tests: `test/run.mjs` builds the pages, including an app rendered on a server and taken over in the browser (`test/ssr*.jsx`), rhp's whole gallery drawn the same way, and a Vite app that takes rhp's source (`test/vite`), then checks them in Chromium.
+Tests: `test/run.mjs` builds the pages, including an app rendered on a server and taken over in the browser (`test/ssr*.jsx`), rhp's whole gallery drawn the same way, and a Vite app that takes rhp's source (`test/vite`), then checks them in Chromium (or in WebKit or Firefox, with `BROWSER`).

@@ -77,7 +77,7 @@
     grid-template-columns: 100%; /* and as wide, so a column's left is too */
   }
 
-  [data-rhp-gutters]>.rhp-body>.rhp-plot> :not(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+  [data-rhp-gutters]>.rhp-body>.rhp-plot> :not(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
     position: relative;
     display: grid;
   }
@@ -100,21 +100,21 @@
     justify-self: start;
   }
 
-  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot> :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot> :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
     grid-area: 1 / track;
   }
 
-  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot> :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot> :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
     grid-area: track / 1;
   }
 
   [data-rhp-gutters="h"] .rhp-plot .rhp-bar, [data-rhp-gutters="h"] .rhp-plot .rhp-dot, [data-rhp-gutters="h"] .rhp-plot .rhp-tick, [data-rhp-gutters="h"] .rhp-plot .rhp-label,
-  [data-rhp-gutters="h"] .rhp-plot .rhp-cell, [data-rhp-gutters="h"] .rhp-plot .rhp-area, [data-rhp-gutters="h"] .rhp-plot .rhp-plot {
+  [data-rhp-gutters="h"] .rhp-plot .rhp-cell, [data-rhp-gutters="h"] .rhp-plot .rhp-area, [data-rhp-gutters="h"] .rhp-plot .rhp-line, [data-rhp-gutters="h"] .rhp-plot .rhp-plot {
     grid-column: track;
   }
 
   [data-rhp-gutters="v"] .rhp-plot .rhp-bar, [data-rhp-gutters="v"] .rhp-plot .rhp-dot, [data-rhp-gutters="v"] .rhp-plot .rhp-tick, [data-rhp-gutters="v"] .rhp-plot .rhp-label,
-  [data-rhp-gutters="v"] .rhp-plot .rhp-cell, [data-rhp-gutters="v"] .rhp-plot .rhp-area, [data-rhp-gutters="v"] .rhp-plot .rhp-plot {
+  [data-rhp-gutters="v"] .rhp-plot .rhp-cell, [data-rhp-gutters="v"] .rhp-plot .rhp-area, [data-rhp-gutters="v"] .rhp-plot .rhp-line, [data-rhp-gutters="v"] .rhp-plot .rhp-plot {
     grid-row: track;
   }
 

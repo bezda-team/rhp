@@ -101,6 +101,12 @@ export interface ChartProps {
   theme?: ThemeValues;
   /** For data that doesn't change: each row is drawn once and keeps no signals. */
   static?: boolean;
+  /** A second axis across the band, [min, max]: an overlap Plot's rows share the whole plot, and a Dot, Label or Line takes
+   * a cross value on it (scatter plots, lines). */
+  cross?: readonly [number, number];
+  /** The cross axis' ticks (5 round values by default, false for none). */
+  crossTicks?: Ticks;
+  crossFormat?: Format;
   /** Names the chart for screen readers, which then read it as a figure. */
   label?: string;
   id?: string;
@@ -182,6 +188,8 @@ export interface DotProps extends BlockProps {
   size?: number | string;
   /** Where it sits across the band, 0 to 1 (0.5 by default). */
   across?: number;
+  /** Its value on the Chart's cross scale (a scatter plot's y), instead of across. */
+  cross?: number;
   color?: Color;
 }
 
@@ -204,6 +212,22 @@ export interface LabelProps extends BlockProps {
   side?: "after" | "before";
   /** Outside the track, in the chart's gutter: names at the start, totals at the end. */
   edge?: "start" | "end";
+  /** Its value on the Chart's cross scale (a point's label). */
+  cross?: number;
+}
+
+export interface LineProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "color" | "style" | "fill"> {
+  /** [x, y] pairs: x on the value axis, y across the band (or on the Chart's cross scale). In any order: out of x's order, a
+   * connected scatter plot. */
+  points?: readonly (readonly [number, number])[];
+  /** Across the band, the y that fills it (the largest y by default). Not used on a cross scale. */
+  peak?: number;
+  /** Also fill what is under the line, down to the band's edge or, on a cross scale, down to base. */
+  fill?: boolean;
+  /** Where the fill ends on a cross scale (0 by default). */
+  base?: number;
+  color?: Color;
+  style?: JSX.CSSProperties | string;
 }
 
 export interface AreaProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "color" | "style"> {
@@ -229,6 +253,8 @@ export const Tick: (props: TickProps) => JSX.Element;
 export const Cell: (props: CellProps) => JSX.Element;
 export const Label: (props: LabelProps) => JSX.Element;
 export function Area(props: AreaProps): JSX.Element;
+/** A line through points: a sparkline in a row, or on a Chart's cross scale a line chart. */
+export function Line(props: LineProps): JSX.Element;
 
 /** A slat type: the slat function with its own CSS and layout, so it looks and lays out the same in any app. */
 export function slat<T extends object = Record<string, any>>(fn: (d: Row<T>) => JSX.Element): Slat<T>;

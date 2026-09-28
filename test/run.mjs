@@ -162,6 +162,23 @@ const open = async (url, opts = {}) => {
     T.edges(T.Wrapped); T.edges(T.Wrapped);
     console.warn = warn; return [before, count()];
   }), [0, 1]);
+  check("cross: a Dot sits at its x on the scale and its y on the cross scale, and a Label with it, each way", await p.evaluate(() => ["h", "v"].map((o) => {
+    const body = document.querySelector(`.xy-${o} .rhp-body`).getBoundingClientRect();
+    const at = (e) => { const b = e.getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2;
+      return o === "h" ? [(x - body.left) / body.width, (body.bottom - y) / body.height] : [(body.bottom - y) / body.height, (x - body.left) / body.width]; };
+    const r = (v) => Math.round(v * 100) / 100;
+    return [...document.querySelectorAll(`.xy-${o} .pt`)].map((e) => at(e).map(r)).concat([[...document.querySelectorAll(`.xy-${o} .pl`)].every((l, i) => Math.abs(at(l)[1] - [0, 0.5, 1][i]) < 0.03)]);
+  })), [[[0, 0], [0.5, 0.5], [1, 1], true], [[0, 0], [0.5, 0.5], [1, 1], true]]);
+  check("cross: a Line's box spans its points on both scales, and the chart draws the cross axis' ticks", await p.evaluate(() => ["h", "v"].map((o) => {
+    const body = document.querySelector(`.xy-${o} .rhp-body`).getBoundingClientRect(), line = document.querySelector(`.xy-${o} .tl`).getBoundingClientRect();
+    const cross = [...document.querySelectorAll(`.xy-${o} .rhp-axis[data-rhp-cross] .rhp-gridline`)].map((g) => g.textContent);
+    return [Math.round(line.width - body.width), Math.round(line.height - body.height), cross];
+  })), [[0, 0, ["0", "50", "100"]], [0, 0, ["0", "50", "100"]]]);
+  check("cross: a chart without one has no cross attribute, variables or axis, and a Line in a row fits its band", await p.evaluate(() => {
+    const plain = document.querySelector(".paced"), row = document.querySelector(".sp").getBoundingClientRect(), line = document.querySelector(".sl").getBoundingClientRect();
+    return [plain.hasAttribute("data-rhp-cross"), plain.style.getPropertyValue("--rhp-cross-min"), plain.querySelectorAll(".rhp-axis[data-rhp-cross]").length,
+      line.top >= row.top && line.bottom <= row.bottom && line.height > 0, document.querySelector(".sl .rhp-stroke").getAttribute("d").split("L").length];
+  }), [false, "", 0, true, 3]);
   check("a horizontal chart with a height fits rows without a thickness; without one, rows are 32px; a thickness stays", await p.evaluate(() =>
     [".fits .fit", ".grows .fit", ".keeps .fix"].map((q) => Math.round(document.querySelector(q).getBoundingClientRect().height))), [50, 32, 20]);
   const still = () => p.evaluate(() => [...document.querySelectorAll(".st .sr")].map((e) => e.dataset.n + e.querySelector(".rhp-label").textContent + "@" + e.style.getPropertyValue("--rhp-position") + ":" + e.querySelectorAll(".sd").length).join(" "));

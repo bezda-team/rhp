@@ -1,5 +1,5 @@
 export { Plot, Scale, Chart, Theme, Axis, at, useOrientation, THEME, series } from "./plot.jsx";
 export { slat, restyle, linkedCss } from "./style.js";
-export { Bar, Dot, Tick, Label, Cell, Area } from "./blocks.jsx";
+export { Bar, Dot, Tick, Label, Cell, Area, Line } from "./blocks.jsx";
 export { sortBy, cycle, every, extent, nice, stackUp, shares, running, summary, bins, density } from "./data.js";
 export { animated, curve } from "./animate.js";

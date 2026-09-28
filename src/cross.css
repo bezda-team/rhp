@@ -1,0 +1,64 @@
+/* A second axis (a Chart with cross={[min, max]}). style.js only adds these rules once a chart has a cross scale, so a
+   page without one never has to match them. The plot has the chart's height, and a Dot, Label or Line with a cross value
+   sits on it, --rhp-q of the way across (0 to 1); a Dot or Label without one stays where it would be. */
+
+@layer rhp.core {
+
+  .rhp-chart[data-rhp-cross] {
+    --rhp-cross: initial;
+  }
+
+  .rhp-chart[data-rhp-cross][data-rhp-o="h"]>.rhp-body {
+    height: var(--rhp-height, 240px);
+  }
+
+  .rhp-chart[data-rhp-cross] :is(.rhp-dot, .rhp-label[data-rhp-at]) {
+    --rhp-q: calc((var(--rhp-cross) - var(--rhp-cross-min)) / (var(--rhp-cross-max) - var(--rhp-cross-min)));
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-dot[data-rhp-o="h"] {
+    top: auto;
+    bottom: calc(var(--rhp-q, (1 - var(--rhp-across, .5))) * 100%);
+    translate: -50% 50%;
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-dot[data-rhp-o="v"] {
+    left: calc(var(--rhp-q, var(--rhp-across, .5)) * 100%);
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-label[data-rhp-at][data-rhp-o="h"] {
+    top: auto;
+    bottom: calc(var(--rhp-q, .5) * 100%);
+    translate: 0 50%;
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-label[data-rhp-at][data-rhp-o="h"][data-rhp-side="before"] {
+    translate: -100% 50%;
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-label[data-rhp-at][data-rhp-o="v"] {
+    left: calc(var(--rhp-q, .5) * 100%);
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-line {
+    --rhp-q0: calc((var(--rhp-cross-from) - var(--rhp-cross-min)) / (var(--rhp-cross-max) - var(--rhp-cross-min)));
+    --rhp-q1: calc((var(--rhp-cross-to) - var(--rhp-cross-min)) / (var(--rhp-cross-max) - var(--rhp-cross-min)));
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-line[data-rhp-o="h"] {
+    top: auto;
+    bottom: calc(var(--rhp-q0) * 100%);
+    height: calc((var(--rhp-q1) - var(--rhp-q0)) * 100%);
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-line[data-rhp-o="v"] {
+    left: calc(var(--rhp-q0) * 100%);
+    width: calc((var(--rhp-q1) - var(--rhp-q0)) * 100%);
+  }
+
+  /* The cross axis draws its lines on the cross scale */
+  .rhp-axis[data-rhp-cross] {
+    --rhp-min: var(--rhp-cross-min);
+    --rhp-max: var(--rhp-cross-max);
+  }
+}

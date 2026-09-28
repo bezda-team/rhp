@@ -4,7 +4,7 @@
 import { createMemo, createRenderEffect, splitProps } from "solid-js";
 import { insert, style } from "solid-js/web";
 import { isServer } from "./env.js";
-import { useOrientation, short } from "./plot.jsx";
+import { useOrientation, useCrossed, short } from "./plot.jsx";
 import { write } from "./frame.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
@@ -167,10 +167,12 @@ export const Bar = block("rhp-bar", ["from", "to", "thick", "color"], (p) => ({
 }), (v) => v["--rhp-to"] < v["--rhp-from"]);
 
 // A round point at value `at`. `size` is its diameter (10px by default) and `across` places it across the band (0..1).
-export const Dot = block("rhp-dot", ["at", "size", "across", "color"], (p) => ({
+// In a Chart with a cross scale, `cross` places it on that scale instead (a scatter plot's y).
+export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color"], (p) => ({
   "--rhp-at": p.at,
   "--rhp-size": length(p.size),
   "--rhp-across": p.across,
+  "--rhp-cross": p.cross,
   "--rhp-color": tok(p.color),
 }));
 
@@ -188,9 +190,10 @@ export const Cell = block("rhp-cell", ["value", "color"], (p) => ({
 }));
 
 // Text on the value axis. at={v} puts it just after the value v (side="before" puts it just before), and
-// edge="start" or "end" puts it outside the track, in the chart's gutter (names, totals).
-const LABEL = new Set([...MINE, "at", "side", "edge"]);
-export const Label = (props) => blockElement(props, LABEL, "rhp-label", () => ({ "--rhp-at": props.at }), () => ({
+// edge="start" or "end" puts it outside the track, in the chart's gutter (names, totals). In a Chart with a cross scale,
+// `cross` places it on that scale too (a point's label).
+const LABEL = new Set([...MINE, "at", "side", "edge", "cross"]);
+export const Label = (props) => blockElement(props, LABEL, "rhp-label", () => ({ "--rhp-at": props.at, "--rhp-cross": props.cross }), () => ({
   "data-rhp-edge": props.edge,
   "data-rhp-side": props.side,
   "data-rhp-at": props.edge == null ? "" : undefined,
@@ -243,6 +246,83 @@ export function Area(props) {
     <svg {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-area", p.class)} data-rhp-o={short(orientation())}
       viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : p.style}>
       <path d={path()} vector-effect="non-scaling-stroke" />
+    </svg>
+  );
+  writeVars(el, vars);
+
+  return node;
+}
+
+// A line through `points`, a list of [x, y]: x on the value axis, and y across the band, scaled so that `peak` (the
+// largest y by default) fills it, as a sparkline in a row. In a Chart with a cross scale, y is on that scale: a line
+// chart, or with points out of x's order, a connected scatter plot. With `fill`, what is under the line is filled too,
+// down to the band's edge, or on a cross scale down to `base` (0 by default).
+// NOTE: Like an Area, the line is drawn in its own box, which CSS places from the smallest x to the largest (and on a
+// cross scale from the smallest y to the largest), so a scale that changes moves the box and the path stays as it is.
+export function Line(props) {
+
+  const orientation = useOrientation();
+  const crossed = useCrossed();
+  const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "fill", "base", "color"]);
+
+  // [smallest x, largest x, smallest y, largest y], y on the cross scale (a flat line still gets a box to be drawn in)
+  const box = createMemo(() => {
+    const pts = p.points ?? [];
+    if (!pts.length) return [0, 0, 0, 1];
+
+    const xs = pts.map((q) => q[0]);
+    const ys = pts.map((q) => q[1]);
+    if (p.fill) ys.push(p.base ?? 0);
+    let y0 = Math.min(...ys);
+    let y1 = Math.max(...ys);
+    if (y0 === y1) {
+      y0 -= 0.5;
+      y1 += 0.5;
+    }
+
+    return [Math.min(...xs), Math.max(...xs), y0, y1];
+  });
+
+  // The line, and the shape under it when filled
+  const paths = createMemo(() => {
+    const pts = p.points ?? [];
+    if (pts.length < 2) return ["", ""];
+
+    const [x0, x1, y0, y1] = box();
+    const w = x1 - x0 || 1;
+    const peak = p.peak ?? Math.max(...pts.map((q) => q[1]));
+    const vertical = orientation() === "vertical";
+    // up is y's place across, 0 to 1: on the cross scale within the box, or in the band
+    const up = crossed() ? (y) => (y - y0) / (y1 - y0) : (y) => Math.min(1, y / (peak || 1));
+    // u runs along the value axis and t across (from the top when horizontal), both from 0 to 1000 in the line's box
+    const xy = (u, t) => (vertical ? `${(1000 - t).toFixed(1)},${(1000 - u).toFixed(1)}` : `${u.toFixed(1)},${t.toFixed(1)}`);
+    const ut = pts.map(([x, y]) => [((x - x0) / w) * 1000, 1000 - up(y) * 1000]);
+    const line = "M" + ut.map(([u, t]) => xy(u, t)).join("L");
+    if (!p.fill) return [line, ""];
+
+    const floor = crossed() ? 1000 - up(p.base ?? 0) * 1000 : 1000;
+    const under = line + "L" + xy(ut[ut.length - 1][0], floor) + "L" + xy(ut[0][0], floor) + "Z";
+
+    return [line, under];
+  });
+
+  // The paths are also given in CSS (d: var(--rhp-d)) so a page's "all: revert" can't remove them
+  const vars = () => ({
+    "--rhp-from": box()[0],
+    "--rhp-to": box()[1],
+    "--rhp-cross-from": crossed() ? box()[2] : undefined,
+    "--rhp-cross-to": crossed() ? box()[3] : undefined,
+    "--rhp-color": tok(p.color),
+    "--rhp-d": paths()[0] ? `path("${paths()[0]}")` : undefined,
+    "--rhp-d-under": paths()[1] ? `path("${paths()[1]}")` : undefined,
+  });
+
+  let el;
+  const node = (
+    <svg {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-line", p.class)} data-rhp-o={short(orientation())}
+      viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : p.style}>
+      <path class="rhp-under" d={paths()[1]} />
+      <path class="rhp-stroke" d={paths()[0]} vector-effect="non-scaling-stroke" />
     </svg>
   );
   writeVars(el, vars);

@@ -1,5 +1,5 @@
 // Chart, Plot and Scale. A Plot stacks slats (one per row of data), and a Chart holds the scale, the orientation and the axis.
-import { useCore, useGutters, useSlatCss, useRoot, watchRoot, serverSheets, checkLinked } from "./style.js";
+import { useCore, useGutters, useCross, useSlatCss, useRoot, watchRoot, serverSheets, checkLinked } from "./style.js";
 import {
   createMemo, createComputed, createRenderEffect, createContext, useContext, getOwner, runWithOwner, onMount, onCleanup,
   createSignal, createRoot, createUniqueId, mergeProps, splitProps, untrack, sharedConfig, Index, For, Show,
@@ -31,6 +31,12 @@ export const at = (group, i) => {
 // (nested) and whether the Chart is static (still).
 const Around = createContext({ orientation: () => "horizontal", motion: () => undefined, frame: null, nested: false, still: false });
 export const useOrientation = () => useContext(Around).orientation;
+
+// Whether the Chart around has a cross scale (a Line then draws its y on it)
+export const useCrossed = () => {
+  const frame = useContext(Around).frame;
+  return () => frame?.crossed() ?? false;
+};
 export const short = (o) => (o === "vertical" ? "v" : "h");
 
 // Plot settings. Every other prop of a Plot is a data group.
@@ -415,9 +421,11 @@ function makePlot(props, role) {
   };
 
   // Gutters: the Chart pads each side for the largest room its Plots ask for. A top-level Plot whose slat gives no room
-  // gets the defaults (names at the start and values at the end).
+  // gets the defaults (names at the start and values at the end), except an overlap Plot on a cross scale (its points
+  // have no names).
   if (frame && (layout.room || (!nested && role === "Plot"))) {
-    const want = () => pick(layout.room, frame.orientation()) ?? (nested || role !== "Plot" ? null : DEFAULT_ROOM[frame.orientation()]);
+    const defaults = () => (nested || role !== "Plot" || (props.overlap && frame.crossed()) ? null : DEFAULT_ROOM[frame.orientation()]);
+    const want = () => pick(layout.room, frame.orientation()) ?? defaults();
     frame.need(want);
     onCleanup(() => frame.drop(want));
   }
@@ -732,11 +740,23 @@ export function Chart(props) {
   const length = () => (orientation() === "vertical" ? size().h : size().w);
   const slats = new Set(); // on a server, the slat types drawn inside (their CSS goes into the page with the chart)
 
+  // A second axis, across the band (cross={[min, max]}): an overlap Plot's rows then share the whole plot, and a Dot,
+  // Label or Line takes a cross value on it, for scatter plots and lines. Without it, nothing of this is made.
+  const crossed = () => props.cross != null;
+  let crossMoves;
+  const crossShown = () => {
+    if (!anim()) return props.cross;
+    crossMoves ??= [animated(() => props.cross[0], timing), animated(() => props.cross[1], timing)];
+    return [crossMoves[0](), crossMoves[1]()];
+  };
+  const crossAxis = () => crossed() && tickValues(props.crossTicks, props.cross).length > 0;
+
   const frame = {
     orientation,
     domain,
     shown,
     length,
+    crossed,
     sheet: (fn) => fn?.scope && slats.add(fn),
     need: (want) => setWants((list) => [...list, want]),
     drop: (want) => setWants((list) => list.filter((x) => x !== want)),
@@ -778,9 +798,18 @@ export function Chart(props) {
       }
     }
 
+    // The cross axis' numbers go where the other orientation's value axis would put them
+    if (crossAxis()) {
+      const other = o === "vertical" ? "horizontal" : "vertical";
+      for (const [s, n] of [AXIS[other], AXIS_END[other], AXIS_START[other]]) {
+        out[s] = Math.max(out[s], n);
+      }
+    }
+
     const vars = { "--rhp-room-start": room.start + "px", "--rhp-room-end": room.end + "px" };
     const gutters = !!(auto.start || auto.end);
     if (gutters && !isServer) useGutters(); // their rules come with the first chart that uses them
+    if (crossed() && !isServer) useCross(); // and so do the cross scale's
 
     if (gutters) {
       // Both ends of the value axis move from the padding into the grid (at least as wide as the padding would be)
@@ -847,20 +876,26 @@ export function Chart(props) {
       <div ref={(e) => { el = e; props.ref?.(e); }} id={props.id} role={figure()} aria-label={name()} aria-labelledby={props["aria-labelledby"]}
         aria-describedby={props["aria-describedby"]} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined} data-rhp-sized={arranged().sized ? "" : undefined}
-        data-rhp-gutters={arranged().gutters ? short(orientation()) : undefined} style={{ ...KNOBS, ...theme(), ...arranged().vars, ...props.style, "--rhp-height": px(props.height ?? 240) }}>
+        data-rhp-gutters={arranged().gutters ? short(orientation()) : undefined} data-rhp-cross={crossed() ? "" : undefined} style={{ ...KNOBS, ...theme(), ...arranged().vars, ...props.style, "--rhp-height": px(props.height ?? 240) }}>
         <div class="rhp-body">
           {props.children}
           {/* after the children, so that a Scale among them has registered first */}
           <Show when={axis()}><Axis ticks={ticks()} format={props.format} /></Show>
+          <Show when={crossAxis()}><Axis cross ticks={tickValues(props.crossTicks, crossShown(), props.cross)} format={props.crossFormat} /></Show>
         </div>
         {/* after the body, since a server only knows the slat types once they are drawn */}
-        {isServer && <style data-rhp-server="" innerHTML={serverSheets(slats, sharedConfig.context?.assets, arranged().gutters)} />}
+        {isServer && <style data-rhp-server="" innerHTML={serverSheets(slats, sharedConfig.context?.assets, arranged().gutters, crossed())} />}
       </div>
     </Around.Provider>
   );
 
   // The scale is written like a block's numbers (now at first, then in the next frame)
-  writeVars(el, () => ({ "--rhp-min": min(), "--rhp-max": max() }));
+  const scaleVars = () => {
+    if (!crossed()) return { "--rhp-min": min(), "--rhp-max": max() };
+    const [a, b] = crossShown();
+    return { "--rhp-min": min(), "--rhp-max": max(), "--rhp-cross-min": a, "--rhp-cross-max": b };
+  };
+  writeVars(el, scaleVars);
 
   if (!isServer && moreAria().length) {
     createRenderEffect(() => {
@@ -876,7 +911,7 @@ export function Chart(props) {
     const { vars, sized, gutters } = arranged();
     return onRoot(node, {
       ...Object.fromEntries(moreAria().map((key) => [key, props[key] ?? null])),
-      style: withVars(undefined, { ...KNOBS, ...theme(), ...vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-min": min(), "--rhp-max": max() }),
+      style: withVars(undefined, { ...KNOBS, ...theme(), ...vars, ...props.style, "--rhp-height": px(props.height ?? 240), ...scaleVars() }),
       "data-rhp-sized": sized ? true : null,
       "data-rhp-gutters": gutters ? short(orientation()) : null,
     });
@@ -896,13 +931,15 @@ for (const name of ["color", "thick", "size", "across", "radius", "start-radius"
   KNOBS["--rhp-" + name] = "initial";
 }
 
-// The value axis: one grid line per tick (keyed by value), and the numbers in the axis gutter
+// The value axis: one grid line per tick (keyed by value), and the numbers in the axis gutter. The cross axis (cross)
+// draws its lines as the other orientation's value axis would, on the cross scale.
 export function Axis(props) {
 
-  const orientation = useOrientation();
+  const along = useOrientation();
+  const orientation = () => (!props.cross ? along() : along() === "vertical" ? "horizontal" : "vertical");
 
   return (
-    <div class="rhp-axis" aria-hidden="true">
+    <div class="rhp-axis" data-rhp-cross={props.cross ? "" : undefined} aria-hidden="true">
       <For each={props.ticks}>
         {(t) => {
           // On a server the number is made inside the line, as in a browser, so the browser finds each element where

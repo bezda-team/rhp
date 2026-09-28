@@ -1,7 +1,7 @@
 // The app for the server rendering tests. ssr-server.jsx renders it to HTML in Node, and ssr-client.jsx hydrates
 // that HTML in the browser (or draws the app from scratch with #fresh). It uses every part of rhp that draws.
 import { createSignal } from "solid-js";
-import { Chart, Plot, Scale, Theme, Bar, Dot, Tick, Label, Cell, Area, slat, sortBy, every, density } from "../src/index.js";
+import { Chart, Plot, Scale, Theme, Bar, Dot, Tick, Label, Cell, Area, Line, slat, sortBy, every, density } from "../src/index.js";
 
 const Fruit = slat({
   css: `
@@ -137,6 +137,10 @@ export default function App() {
         <Plot v={[2]}>{(d) => <svg class="svgroot" viewBox="0 0 10 10" preserveAspectRatio="none"><rect width={d.v} height="10" fill="rgb(200, 0, 0)" /></svg>}</Plot>
         <Plot v={[7]}>{() => <img class="imgroot" alt="" src={PIXEL} />}</Plot>
         <Plot v={[1, 2]} order={[null, 0]}>{(d) => <div hidden data-h={d.v}><Bar to={d.v} /></div>}</Plot>
+      </Chart>
+      <Chart id="cross" scale={[0, 12]} cross={[0, 40]} height={160} crossFormat={(v) => v + "°"}>
+        <Plot overlap x={[2, 5, 8, 11]} y={[10, 30, 22, 35]}>{(d) => <div><Dot at={d.x} cross={d.y} /><Label at={d.x} cross={d.y}>{d.y}</Label></div>}</Plot>
+        <Plot overlap pts={[[[0, 5], [4, 20], [8, 15], [12, 38]]]}>{(d) => <div><Line points={d.pts} fill /></div>}</Plot>
       </Chart>
       <Chart id="own" scale={[0, 10]}>
         <Plot name={["a", "b"]} v={[3, 8]}>{Own}</Plot>

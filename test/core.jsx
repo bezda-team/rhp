@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 import { createSignal, batch } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Plot, Scale, Chart, Bar, Dot, Label, sortBy, cycle, every, slat, restyle } from "../src/index.js";
+import { Plot, Scale, Chart, Bar, Dot, Label, Line, sortBy, cycle, every, slat, restyle } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/animate.js";
 const T = (window.T = {});
 // Keyed and unkeyed removal
@@ -47,6 +47,10 @@ const [paced, setPaced] = createSignal(1);
 const Direct = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Label><Bar to={d.v} /></div>);
 const Wrapped = slat({ room: "auto" }, (d) => <div><span><Label edge="start">{d.n}</Label></span><Bar to={d.v} /></div>);
 const Inner = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Label><Plot overlap part={[1, 2]}>{(q) => <div><Label edge="start">{q.part}</Label></div>}</Plot></div>);
+// A second axis: Dots at (x, y), a Label at a point and a Line on a cross scale, each way; and a Line in a plain row
+const Point = (d) => <div><Dot at={d.x} cross={d.y} size="6px" class="pt" /><Label at={d.x} cross={d.y} class="pl">{d.y}</Label></div>;
+const Trend = (d) => <div><Line points={d.pts} class="tl" /></div>;
+const Spark = (d) => <div class="sp"><Line points={d.pts} class="sl" /></div>;
 const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
@@ -74,6 +78,13 @@ render(() => (
     <Chart class="grows" ticks={false}><Plot v={[1, 2, 3, 4]}>{Fit}</Plot></Chart>
     <Chart class="keeps" height={200} ticks={false}><Plot v={[1, 2, 3, 4]}>{Fixed}</Plot></Chart>
     <Chart class="paced" scale={[0, 100]}><Plot v={[paced()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+    {["horizontal", "vertical"].map((o) => (
+      <Chart class={"xy xy-" + o[0]} orientation={o} scale={[0, 10]} cross={[0, 100]} height={200} ticks={[0, 5, 10]} crossTicks={[0, 50, 100]}>
+        <Plot overlap x={[0, 5, 10]} y={[0, 50, 100]}>{Point}</Plot>
+        <Plot overlap pts={[[[0, 0], [10, 100]]]}>{Trend}</Plot>
+      </Chart>
+    ))}
+    <Chart class="spark" scale={[0, 10]} ticks={false}><Plot pts={[[[0, 1], [5, 4], [10, 2]]]}>{Spark}</Plot></Chart>
   </div>
 ), document.body);
 Object.assign(T, { setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

@@ -5,6 +5,7 @@
 // The page reaches a chart only through the theme and props.
 import CORE from "./rhp.css";
 import GUTTERS from "./gutters.css";
+import CROSS from "./cross.css";
 
 const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";
 
@@ -443,6 +444,7 @@ function update(entry, css) {
 
 let coreText;
 let guttersText;
+let crossText;
 
 // rhp's core stylesheet (its layers first, then every declaration made !important)
 export const coreSheet = () => (coreText ??= LAYERS + "\n" + important(CORE));
@@ -450,8 +452,11 @@ export const coreSheet = () => (coreText ??= LAYERS + "\n" + important(CORE));
 // The rules for gutters sized by their labels (room "auto"), added when a chart first asks for them
 export const gutterSheet = () => (guttersText ??= important(GUTTERS));
 
+// The rules for a second axis (cross), added when a chart first has one
+export const crossSheet = () => (crossText ??= important(CROSS));
+
 // What a page can link itself (dist/rhp.css)
-export const pageSheet = () => coreSheet() + "\n" + gutterSheet();
+export const pageSheet = () => coreSheet() + "\n" + gutterSheet() + "\n" + crossSheet();
 
 // A page that links rhp's stylesheet itself (@bezda/rhp/rhp.css) calls linkedCss() where the app starts, on the server
 // and in the browser. The server then leaves the core out of each chart's HTML (it would come with every island), and
@@ -482,7 +487,7 @@ export function checkLinked(body) {
 // room "auto", and the sheets of its slat types. Each sheet goes into a page once per render (`render` is an object that
 // the whole render shares). A chart rendered on its own (an island) brings everything it needs.
 const written = new WeakMap(); // render -> the sheets already in its page
-export function serverSheets(slats, render, gutters) {
+export function serverSheets(slats, render, gutters, crossed) {
 
   const seen = render ? written.get(render) ?? written.set(render, new Set()).get(render) : new Set();
   let out = "";
@@ -495,6 +500,11 @@ export function serverSheets(slats, render, gutters) {
   if (!linked && gutters && !seen.has("gutters")) {
     seen.add("gutters");
     out += "\n" + gutterSheet();
+  }
+
+  if (!linked && crossed && !seen.has("cross")) {
+    seen.add("cross");
+    out += "\n" + crossSheet();
   }
 
   for (const fn of slats) {
@@ -513,6 +523,15 @@ export function useGutters() {
 
   gutters = true;
   add(gutterSheet(), true);
+}
+
+let cross = false;
+export function useCross() {
+
+  if (cross || typeof document === "undefined") return;
+
+  cross = true;
+  add(crossSheet(), true);
 }
 
 let core = false;

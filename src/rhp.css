@@ -10,7 +10,7 @@
   /* The guard: resets what a page might set on any div, span or svg, so a page's CSS can't bend a chart out of shape.
      It has zero specificity so everything below (and a slat's CSS) still applies. We leave opacity, cursor, filter and
      transform to the page on purpose. */
-  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-area path) {
+  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path) {
     display: revert;
     box-sizing: border-box;
     margin: 0;
@@ -68,7 +68,7 @@
   }
 
   /* display: revert skips the hidden attribute, so it is set again here */
-  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area)[hidden] {
+  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line)[hidden] {
     display: none;
   }
 
@@ -236,7 +236,7 @@
   /* Blocks. --rhp-p is where a point sits along the track (0 to 1), and a span runs from --rhp-lo to --rhp-hi (spans are
      clipped to the scale, points are not). A Label's room to the end of the scale is calc((1 - var(--rhp-p)) * 100%)
      in its max-width (or max-height when vertical). */
-  :is(.rhp-bar, .rhp-area) {
+  :is(.rhp-bar, .rhp-area, .rhp-line) {
     --rhp-lo: clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
     --rhp-hi: clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
   }
@@ -245,16 +245,16 @@
     --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)));
   }
 
-  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
     position: absolute;
   }
 
-  .rhp-area[data-rhp-o="h"] {
+  :is(.rhp-area, .rhp-line)[data-rhp-o="h"] {
     left: calc(var(--rhp-lo) * 100%);
     width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%);
   }
 
-  .rhp-area[data-rhp-o="v"] {
+  :is(.rhp-area, .rhp-line)[data-rhp-o="v"] {
     bottom: calc(var(--rhp-lo) * 100%);
     height: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%);
   }
@@ -467,18 +467,66 @@
     d: var(--rhp-d, none);
   }
 
-  .rhp-area[data-rhp-o="h"] {
+  :is(.rhp-area, .rhp-line)[data-rhp-o="h"] {
     top: calc(var(--rhp-inset) / 2);
     height: calc(100% - var(--rhp-inset));
   }
 
-  .rhp-area[data-rhp-o="v"] {
+  :is(.rhp-area, .rhp-line)[data-rhp-o="v"] {
     left: calc(var(--rhp-inset) / 2);
     width: calc(100% - var(--rhp-inset));
   }
 
+  /* A Line: a stroke through its points and, with fill, the shape under it. Page rules on svg and path can't reach it. */
+  .rhp-line {
+    overflow: visible;
+    fill: none;
+    stroke: var(--rhp-color, var(--rhp-series-1));
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    stroke-miterlimit: 4;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    paint-order: normal;
+    shape-rendering: auto;
+    filter: none;
+    pointer-events: inherit;
+    --rhp-d-under: none;
+  }
+
+  .rhp-line path {
+    stroke-width: inherit;
+    stroke-linejoin: inherit;
+    stroke-linecap: inherit;
+    stroke-dasharray: inherit;
+    stroke-dashoffset: inherit;
+    stroke-miterlimit: inherit;
+    stroke-opacity: inherit;
+    fill-opacity: inherit;
+    paint-order: inherit;
+    shape-rendering: inherit;
+    vector-effect: non-scaling-stroke;
+    filter: none;
+    pointer-events: inherit;
+  }
+
+  .rhp-line .rhp-stroke {
+    fill: none;
+    stroke: inherit;
+    d: var(--rhp-d, none);
+  }
+
+  .rhp-line .rhp-under {
+    fill: color-mix(in srgb, var(--rhp-color, var(--rhp-series-1)) 22%, transparent);
+    stroke: none;
+    d: var(--rhp-d-under, none);
+  }
+
   /* CSS version: positions and lengths move with transitions */
-  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-area, .rhp-gridline) {
+  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-area, .rhp-line, .rhp-gridline) {
     transition-property: left, width, bottom, height, background-color;
     transition-duration: var(--rhp-length-time, .15s);
     transition-timing-function: var(--rhp-length-ease, ease-out);
@@ -531,7 +579,7 @@
   }
 
   /* JS version: the numbers themselves move, so nothing is transitioned */
-  [data-rhp-animate="js"] :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-gridline, .rhp-cell) {
+  [data-rhp-animate="js"] :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
     transition: none;
   }
 
@@ -540,7 +588,7 @@
   }
 
   /* overlap: every slat shares one band (stacked segments, strips of dots, layers) */
-  .rhp-plot[data-rhp-overlap]> :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+  .rhp-plot[data-rhp-overlap]> :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
     inset: 0;
   }
 
@@ -549,7 +597,7 @@
       transition: none;
     }
 
-    .rhp-chart :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-gridline, .rhp-cell) {
+    .rhp-chart :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
       transition: none;
     }
   }

@@ -3,7 +3,7 @@
 import { createSignal } from "solid-js";
 import {
   Chart, Plot, Scale, Theme, Bar, Dot, Tick, Label, Cell, Area, slat, restyle, linkedCss, sortBy, cycle, every, nice,
-  stackUp, shares, running, summary, bins, density, extent, series, animated, curve, at, THEME, type Row,
+  stackUp, shares, running, summary, bins, density, extent, series, animated, curve, at, THEME, Line, type Row,
 } from "../../src/index.js";
 
 type Fruit = { fruit: string; sold: number };
@@ -43,6 +43,12 @@ export function App() {
         <Plot v={running([1, -2]).to} color={series(3)} static>{(d) => <div><Area points={density(samples)} mirror /><Bar to={d.v as number} /></div>}</Plot>
         <Plot slats={bins(samples).tally.length} rows={[{ a: 1 }]}>{(d) => <div data-i={d.index} data-p={d.position ?? -1} />}</Plot>
       </Chart>
+      <Chart scale={[0, 10]} cross={[0, 50]} crossTicks={every(10)} crossFormat={(v) => v + "%"}>
+        <Plot overlap x={[1, 2]} y={[10, 40]}>{(d) => <div><Dot at={d.x as number} cross={d.y as number} /><Label at={d.x as number} cross={d.y as number}>{String(d.y)}</Label></div>}</Plot>
+        <Plot overlap pts={[[[0, 5], [10, 45]]]}>{(d) => <div><Line points={d.pts as [number, number][]} fill base={0} color="series-3" /></div>}</Plot>
+      </Chart>
+      {/* @ts-expect-error: a cross scale is [min, max] too */}
+      <Chart cross={50} />
       {/* @ts-expect-error: a scale is [min, max] */}
       <Chart scale={30} />
       {/* @ts-expect-error: a Plot needs a slat */}
