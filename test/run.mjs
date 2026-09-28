@@ -613,8 +613,28 @@ for (const motion of ["css", "js"]) {
       const input = document.querySelector("#fruit .slider input"), chart = document.querySelector("#fruit .rhp-chart");
       const set = (v) => { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); };
       const out = { touching: [], hiddenWithRoom: [] };
+
+      // The scale slides to its new end, and a number appears as soon as it has the room, so between the two there are
+      // frames where a number shows over an end mark still on its way. We read the scale once it has stopped moving:
+      // the same geometry two frames running (a busy machine takes longer, it doesn't make the wait too short).
+      const where = () => [...chart.querySelectorAll(".rhp-scale .mark, .rhp-scale .num")]
+        .map((e) => { const b = e.getBoundingClientRect(); return `${b.left},${b.right},${b.top},${b.bottom}`; }).join(" ");
+
+      const settled = async () => {
+        let before = "";
+
+        for (let f = 0; f < 150; f++) {
+          await new Promise((r) => requestAnimationFrame(r));
+          const now = where();
+          if (now === before) return;
+
+          before = now;
+        }
+      };
+
       for (let v = 21; v <= 62; v++) {
-        set(v); await new Promise((r) => setTimeout(r, 220)); // the CSS version settles in .15s
+        set(v);
+        await settled();
         const end = chart.querySelector(".rhp-scale .end .mark").getBoundingClientRect();
         for (const n of chart.querySelectorAll(".rhp-scale :is(.line, .tick) > .num")) {
           const range = document.createRange(); range.selectNodeContents(n);
@@ -624,8 +644,9 @@ for (const motion of ["css", "js"]) {
           const shown = n.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && inner > 0.5 ? 1 : 0;
           // The room between the number's text and the end mark, where the text would be if it showed
           const room = h ? end.left - t.right : box.bottom - n.scrollHeight - end.bottom;
-          if (shown > 0 && room < 0) out.touching.push(`${v}: ${n.textContent}`);
-          if (shown < 1 && room > 12) out.hiddenWithRoom.push(`${v}: ${n.textContent}`);
+          // Both carry their numbers, so a failure anywhere says by how much and how wide the text was
+          if (shown > 0 && room < 0) out.touching.push(`${v}: ${n.textContent} over the end by ${(-room).toFixed(2)}px, text ${t.width.toFixed(2)}px`);
+          if (shown < 1 && room > 12) out.hiddenWithRoom.push(`${v}: ${n.textContent} with ${room.toFixed(2)}px free, text ${t.width.toFixed(2)}px`);
         }
       }
       set(1);
