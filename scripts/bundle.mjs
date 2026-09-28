@@ -18,6 +18,7 @@ const jsx = (options = {}) => ({
         babelrc: false,
         configFile: false,
       });
+
       return { contents: r.code, loader: "js" };
     });
   },
@@ -36,12 +37,15 @@ const cssText = {
 
 // A CSS file minified, as style.js embeds it
 export const minifiedCss = async (file) => {
+
   const r = await transform(await fs.promises.readFile(file, "utf8"), { loader: "css", minify: true });
+
   return r.code.trim();
 };
 
 // The stylesheet a page can link itself (dist/rhp.css): pageSheet() from style.js
 export const coreStylesheet = async () => {
+
   const r = await build({
     stdin: { contents: 'import { pageSheet } from "./src/style.js"; export default pageSheet();', resolveDir: process.cwd(), loader: "js" },
     bundle: true,
@@ -52,6 +56,7 @@ export const coreStylesheet = async () => {
     logLevel: "warning",
   });
   const module = await import("data:text/javascript;base64," + Buffer.from(r.outputFiles[0].text).toString("base64"));
+
   return module.default;
 };
 
@@ -139,6 +144,7 @@ export const ssrClient = (entry, outfile) => build({
 // The same test app with the published package ("@bezda/rhp"), which picks dist/server.js or dist/index.js by its
 // exports. On the server side, Node resolves it (as an app's server would).
 export const ssrPackage = (entry, outfile, side) => {
+
   const serverOptions = { format: "esm", platform: "node", external: ["@bezda/rhp", "solid-js", "solid-js/*"] };
   const browserOptions = { format: "iife", platform: "browser", define: { "process.env.NODE_ENV": '"production"' } };
   const usePackage = {
@@ -150,6 +156,7 @@ export const ssrPackage = (entry, outfile, side) => {
       });
     },
   };
+
   return build({
     entryPoints: [entry],
     outfile,

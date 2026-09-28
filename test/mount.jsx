@@ -10,7 +10,11 @@ const S = slat({ thickness: 32, room: { horizontal: { start: 104, end: 44 } }, c
 useCore();
 const core = document.adoptedStyleSheets[0], v = location.hash.slice(1);
 const guard = [];
-const walk = (rs) => { for (const r of rs) r.cssRules && !r.selectorText ? walk(r.cssRules) : r.selectorText?.startsWith(":where(") && guard.push(r); };
+const walk = (rs) => {
+  for (const r of rs) {
+    r.cssRules && !r.selectorText ? walk(r.cssRules) : r.selectorText?.startsWith(":where(") && guard.push(r);
+  }
+};
 walk(core.cssRules);
 const drop = (rules, test) => {
   for (let i = rules.length - 1; i >= 0; i--) {

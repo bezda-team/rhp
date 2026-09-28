@@ -4,7 +4,15 @@ const PORT = 4468;
 export async function withSafari(fn) {
   const driver = spawn("safaridriver", ["-p", String(PORT)], { stdio: "ignore" });
   const base = `http://127.0.0.1:${PORT}`;
-  for (let i = 0; ; i++) { try { await fetch(base + "/status"); break; } catch { if (i > 50) throw new Error("safaridriver didn't start"); await new Promise((r) => setTimeout(r, 100)); } }
+  for (let i = 0; ; i++) {
+    try {
+      await fetch(base + "/status");
+      break;
+    } catch {
+      if (i > 50) throw new Error("safaridriver didn't start");
+      await new Promise((r) => setTimeout(r, 100));
+    }
+  }
   const call = async (method, path, body) => {
     const r = await fetch(base + path, { method, headers: { "Content-Type": "application/json" }, body: body && JSON.stringify(body) });
     const j = await r.json();

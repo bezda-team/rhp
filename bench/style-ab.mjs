@@ -47,8 +47,21 @@ for (const [name, test] of Object.entries(VARIANTS)) {
       const [t, edit] = Array.isArray(test) ? test : [test, null];
       const f = new Function("s", "return " + t), change = edit && new Function("return " + edit)();
       let k = 0;
-      const walk = (list) => { for (let j = list.length - 1; j >= 0; j--) { const r = list[j]; if (r.cssRules && !(r instanceof CSSStyleRule)) walk(r.cssRules); else if (f(r.cssText)) { const owner = r.parentRule ?? r.parentStyleSheet, text = change && change(r.cssText); owner.deleteRule(j); if (text) owner.insertRule(text, j); k++; } } };
-      for (const sh of document.adoptedStyleSheets) walk(sh.cssRules);
+      const walk = (list) => {
+        for (let j = list.length - 1; j >= 0; j--) {
+          const r = list[j];
+          if (r.cssRules && !(r instanceof CSSStyleRule)) walk(r.cssRules);
+          else if (f(r.cssText)) {
+            const owner = r.parentRule ?? r.parentStyleSheet, text = change && change(r.cssText);
+            owner.deleteRule(j);
+            if (text) owner.insertRule(text, j);
+            k++;
+          }
+        }
+      };
+      for (const sh of document.adoptedStyleSheets) {
+        walk(sh.cssRules);
+      }
       return k;
     }, test);
     const cdp = await p.context().newCDPSession(p); await cdp.send("Performance.enable");

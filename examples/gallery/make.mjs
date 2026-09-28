@@ -7,7 +7,9 @@ const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join
 fs.mkdirSync(at("out"), { recursive: true });
 // the code shown under each chart: the parts of gallery.jsx between /*<show id>*/ and /*</show>*/
 const src = fs.readFileSync(at("gallery.jsx"), "utf8"), code = {};
-for (const m of src.matchAll(/\/\*<show (\w+)>\*\/\n([\s\S]*?)\/\*<\/show>\*\//g)) code[m[1]] = m[2].trimEnd();
+for (const m of src.matchAll(/\/\*<show (\w+)>\*\/\n([\s\S]*?)\/\*<\/show>\*\//g)) {
+  code[m[1]] = m[2].trimEnd();
+}
 fs.writeFileSync(at("out/code.json"), JSON.stringify(code));
 await page(at("page.jsx"), at("out/page.js"));
 const js = fs.readFileSync(at("out/page.js"), "utf8");

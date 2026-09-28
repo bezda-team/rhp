@@ -26,24 +26,32 @@ const data = ({ className, style, children, ...rest }) => rest;
 // draw(props) returns the chart. Read the props inside functions (${() => props.sold}) so the chart follows them.
 // The component renders a <div> that the chart draws into, and className and style go on it.
 export function toReact(draw) {
+
   function RhpChart(props) {
+
     const box = useRef(null);
     const set = useRef(null);
+
     useBeforePaint(() => {
       const [state, setState] = createStore(data(props));
       set.current = setState;
       const dispose = render(() => draw(state), box.current);
+
       return () => {
         set.current = null;
         dispose();
       };
     }, []);
+
     // After every render, only what changed notifies (reconcile compares lists item by item)
     useBeforePaint(() => {
       set.current?.(reconcile(data(props)));
     });
+
     return createElement("div", { ref: box, className: props.className, style: props.style });
   }
+
   RhpChart.displayName = `rhp(${draw.name || "chart"})`;
+
   return RhpChart;
 }

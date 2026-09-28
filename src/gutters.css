@@ -2,47 +2,137 @@
    page whose charts give their room in px never has to match them. The chart root carries data-rhp-gutters ("h" or "v"). */
 
 @layer rhp.core {
+
   /* Both ends of the value axis are tracks of the body's grid, as wide as their widest edge label, and everything else
      sits in the track between them */
-  [data-rhp-gutters="h"] > .rhp-body {
+  [data-rhp-gutters="h"]>.rhp-body {
     grid-template-columns: [start-start] var(--rhp-gutter-start) [start-end track-start] minmax(0, 1fr) [track-end end-start] var(--rhp-gutter-end) [end-end];
   }
-  .rhp-chart[data-rhp-gutters="v"] > .rhp-body { /* as specific as the core's height rule for a vertical body */
+
+  .rhp-chart[data-rhp-gutters="v"]>.rhp-body {
+    /* as specific as the core's height rule for a vertical body */
     height: auto;
     grid-template-rows: [end-start] var(--rhp-gutter-end) [end-end track-start] var(--rhp-height, 240px) [track-end start-start] var(--rhp-gutter-start) [start-end];
   }
-  [data-rhp-gutters="h"] > .rhp-body > * { grid-area: 1 / track; }
-  [data-rhp-gutters="v"] > .rhp-body > * { grid-area: track / 1; }
+
+  [data-rhp-gutters="h"]>.rhp-body>* {
+    grid-area: 1 / track;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>* {
+    grid-area: track / 1;
+  }
+
   /* An edge label is as wide as its text, up to --rhp-gutter-max (40% of the chart). A slat's CSS can size it and the
      gutter follows. */
-  [data-rhp-gutters] > .rhp-body > .rhp-plot > * > [data-rhp-edge] { inset: auto; translate: none; width: auto; min-width: 0; min-height: 0; }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot > * > [data-rhp-edge] { align-self: center; max-width: var(--rhp-gutter-max, 40cqw); }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="start"] { justify-self: end; }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="end"] { justify-self: start; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot > * > [data-rhp-edge] { justify-self: stretch; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="start"] { align-self: start; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="end"] { align-self: end; }
+  [data-rhp-gutters]>.rhp-body>.rhp-plot>*>[data-rhp-edge] {
+    inset: auto;
+    translate: none;
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot>*>[data-rhp-edge] {
+    align-self: center;
+    max-width: var(--rhp-gutter-max, 40cqw);
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="start"] {
+    justify-self: end;
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="end"] {
+    justify-self: start;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot>*>[data-rhp-edge] {
+    justify-self: stretch;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="start"] {
+    align-self: start;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="end"] {
+    align-self: end;
+  }
 }
 
 @layer rhp.place {
+
   /* A top-level Plot and its rows share the body's tracks (subgrid). The rows sit in one cell and still move by
      --rhp-position. Edge labels go in the gutters, and blocks and Plots inside a row stay in the track. */
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; }
-  [data-rhp-gutters] > .rhp-body > .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) { position: relative; display: grid; }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot > * { grid-area: 1 / 1 / auto / -1; grid-template-columns: subgrid; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot > * { grid-area: 1 / 1 / -1; grid-template-rows: subgrid; }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot:not([data-rhp-overlap]) > * { align-self: start; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot:not([data-rhp-overlap]) > * { justify-self: start; }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot > :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) { grid-area: 1 / track; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot > :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) { grid-area: track / 1; }
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot {
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-rows: subgrid;
+  }
+
+  [data-rhp-gutters]>.rhp-body>.rhp-plot> :not(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+    position: relative;
+    display: grid;
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot>* {
+    grid-area: 1 / 1 / auto / -1;
+    grid-template-columns: subgrid;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot>* {
+    grid-area: 1 / 1 / -1;
+    grid-template-rows: subgrid;
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot:not([data-rhp-overlap])>* {
+    align-self: start;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot:not([data-rhp-overlap])>* {
+    justify-self: start;
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot> :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+    grid-area: 1 / track;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot> :is(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area) {
+    grid-area: track / 1;
+  }
+
   [data-rhp-gutters="h"] .rhp-plot .rhp-bar, [data-rhp-gutters="h"] .rhp-plot .rhp-dot, [data-rhp-gutters="h"] .rhp-plot .rhp-tick, [data-rhp-gutters="h"] .rhp-plot .rhp-label,
-  [data-rhp-gutters="h"] .rhp-plot .rhp-cell, [data-rhp-gutters="h"] .rhp-plot .rhp-area, [data-rhp-gutters="h"] .rhp-plot .rhp-plot { grid-column: track; }
+  [data-rhp-gutters="h"] .rhp-plot .rhp-cell, [data-rhp-gutters="h"] .rhp-plot .rhp-area, [data-rhp-gutters="h"] .rhp-plot .rhp-plot {
+    grid-column: track;
+  }
+
   [data-rhp-gutters="v"] .rhp-plot .rhp-bar, [data-rhp-gutters="v"] .rhp-plot .rhp-dot, [data-rhp-gutters="v"] .rhp-plot .rhp-tick, [data-rhp-gutters="v"] .rhp-plot .rhp-label,
-  [data-rhp-gutters="v"] .rhp-plot .rhp-cell, [data-rhp-gutters="v"] .rhp-plot .rhp-area, [data-rhp-gutters="v"] .rhp-plot .rhp-plot { grid-row: track; }
-  [data-rhp-gutters] > .rhp-body > .rhp-plot > * > [data-rhp-edge] { position: relative; }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="start"] { grid-area: 1 / start; }
-  [data-rhp-gutters="h"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="end"] { grid-area: 1 / end; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="start"] { grid-area: start / 1; }
-  [data-rhp-gutters="v"] > .rhp-body > .rhp-plot > * > [data-rhp-edge="end"] { grid-area: end / 1; }
+  [data-rhp-gutters="v"] .rhp-plot .rhp-cell, [data-rhp-gutters="v"] .rhp-plot .rhp-area, [data-rhp-gutters="v"] .rhp-plot .rhp-plot {
+    grid-row: track;
+  }
+
+  [data-rhp-gutters]>.rhp-body>.rhp-plot>*>[data-rhp-edge] {
+    position: relative;
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="start"] {
+    grid-area: 1 / start;
+  }
+
+  [data-rhp-gutters="h"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="end"] {
+    grid-area: 1 / end;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="start"] {
+    grid-area: start / 1;
+  }
+
+  [data-rhp-gutters="v"]>.rhp-body>.rhp-plot>*>[data-rhp-edge="end"] {
+    grid-area: end / 1;
+  }
 }

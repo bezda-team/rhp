@@ -30,7 +30,12 @@ const a = await snap();
 await p.evaluate(([fn, arg]) => window.bench[fn](JSON.parse(arg)), [fn, arg]); await p.waitForTimeout(1500);
 const z = await snap();
 const rows = Object.keys(z).map((k) => [k, z[k].count - (a[k]?.count ?? 0), z[k].size - (a[k]?.size ?? 0)]).filter((r) => r[2] > 0).sort((x, y) => y[2] - x[2]);
-let total = 0; for (const r of rows) total += r[2];
+let total = 0;
+for (const r of rows) {
+  total += r[2];
+}
 console.log("total added", (total / 1024).toFixed(0), "kB");
-for (const [k, c, sz] of rows.slice(0, 28)) console.log(String((sz / 1024).toFixed(1)).padStart(8), "kB", String(c).padStart(7), k);
+for (const [k, c, sz] of rows.slice(0, 28)) {
+  console.log(String((sz / 1024).toFixed(1)).padStart(8), "kB", String(c).padStart(7), k);
+}
 await b.close(); server.close();

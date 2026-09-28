@@ -78,7 +78,10 @@ for (const lib of LIBS) {
     } finally { await p.close(); }
   };
   const rep = async (n, fn, arg) => {
-    const a = []; for (let i = 0; i < n; i++) a.push(await fresh(fn, arg));
+    const a = [];
+    for (let i = 0; i < n; i++) {
+      a.push(await fresh(fn, arg));
+    }
     const t = a.map((x) => x.total).filter((x) => x != null);
     return { frame: +median(a.map((x) => x.frame)).toFixed(1), total: t.length ? +median(t).toFixed(1) : null };
   };

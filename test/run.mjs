@@ -245,13 +245,18 @@ const open = async (url, opts = {}) => {
     let worst = 0;
     for (const plot of document.querySelectorAll("#stacked .rhp-plot .rhp-plot")) {
       const r = [...plot.querySelectorAll(".rhp-bar")].map((e) => e.getBoundingClientRect()).filter((b) => b.width).sort((a, b) => a.left - b.left); // empty segments are skipped
-      for (let i = 1; i < r.length; i++) worst = Math.max(worst, Math.abs(r[i].left - r[i - 1].right - 2)); // the gap is 2px (--rhp-gap)
+      for (let i = 1; i < r.length; i++) {
+        worst = Math.max(worst, Math.abs(r[i].left - r[i - 1].right - 2)); // the gap is 2px (--rhp-gap)
+      }
     }
     return worst;
   });
   let worst = 0;
   await p.click("#new-data");
-  for (let t = 0; t < 12; t++) { await p.waitForTimeout(40); worst = Math.max(worst, await gaps()); }
+  for (let t = 0; t < 12; t++) {
+    await p.waitForTimeout(40);
+    worst = Math.max(worst, await gaps());
+  }
   check("JS version: stacked segments keep their 2px gap while they move (px off)", +worst.toFixed(2), (w) => w < 0.5);
   check("no page errors", p.errors, []);
   await p.close();
@@ -397,9 +402,14 @@ for (const motion of ["css", "js"]) {
       const name = top.querySelector(".name"), img = top.querySelector(".bar > img");
       if (name) out.name = text(name);
       if (img) out.img = box(img);
-      for (const c of ["bar", "box", "circle"]) if (top.querySelector("." + c)) out[c] = box(top.querySelector("." + c));
+      for (const c of ["bar", "box", "circle"]) {
+        if (top.querySelector("." + c)) out[c] = box(top.querySelector("." + c));
+      }
       top.querySelectorAll(".cap").forEach((e, i) => (out["cap " + i] = box(e)));
-      for (const s of scale.children) { out["mark " + s.textContent] = box(s.querySelector(".mark")); out["num " + s.textContent] = text(s.querySelector(".num")); }
+      for (const s of scale.children) {
+        out["mark " + s.textContent] = box(s.querySelector(".mark"));
+        out["num " + s.textContent] = text(s.querySelector(".num"));
+      }
       return out;
     }, root);
     for (const [k, want] of Object.entries(V1[id])) {
@@ -448,7 +458,12 @@ for (const motion of ["css", "js"]) {
         const max = +chart.style.getPropertyValue("--rhp-max"), end = chart.querySelector(".rhp-body").getBoundingClientRect().right;
         const marks = [...chart.querySelectorAll(".rhp-scale > :not(.end)")].map((s) => ({ v: +s.querySelector(".num").textContent, x: s.querySelector(".mark").getBoundingClientRect().left }));
         if (marks.some((m) => m.x > end + 0.5)) out.past++;
-        for (let v = 5; v < max - 0.5; v += 5) if (!marks.some((m) => m.v === v)) { out.missing++; break; }
+        for (let v = 5; v < max - 0.5; v += 5) {
+          if (!marks.some((m) => m.v === v)) {
+            out.missing++;
+            break;
+          }
+        }
       }
     }
     set(1);
@@ -473,10 +488,18 @@ for (const motion of ["css", "js"]) {
     const bar = document.querySelector("#fruit .rhp-body > .rhp-plot:last-child > * .bar");
     set(12); await new Promise((r) => setTimeout(r, 900));
     const w = [];
-    for (let v = 12; v <= 24; v++) for (let k = 0; k < 3; k++) { set(v); await new Promise((r) => requestAnimationFrame(r)); w.push(bar.getBoundingClientRect().width); }
+    for (let v = 12; v <= 24; v++) {
+      for (let k = 0; k < 3; k++) {
+        set(v);
+        await new Promise((r) => requestAnimationFrame(r));
+        w.push(bar.getBoundingClientRect().width);
+      }
+    }
     const speed = w.slice(1).map((x, i) => x - w[i]);
     let n = 0;
-    for (let i = 2; i < speed.length; i++) if (speed[i - 1] < speed[i - 2] * 0.25 && speed[i] > Math.max(0.5, speed[i - 1] * 2)) n++;
+    for (let i = 2; i < speed.length; i++) {
+      if (speed[i - 1] < speed[i - 2] * 0.25 && speed[i] > Math.max(0.5, speed[i - 1] * 2)) n++;
+    }
     set(1);
     return n;
   });
@@ -549,7 +572,9 @@ for (const motion of ["css", "js"]) {
     const d = [...row.querySelectorAll(".rhp-dot")].map((e) => ({ b: e.getBoundingClientRect(), lit: getComputedStyle(e).backgroundColor === "rgb(242, 204, 143)" }))
       .sort((a, b) => a.b.left - b.b.left);
     let hole = !d.length || d[0].b.left - w.left > 4.5 || w.right - d.at(-1).b.right > 4.5;
-    for (let i = 1; i < d.length; i++) if (d[i].b.left > w.left && d[i - 1].b.right < w.right) hole ||= d[i].b.left - d[i - 1].b.right > 8.5;
+    for (let i = 1; i < d.length; i++) {
+      if (d[i].b.left > w.left && d[i - 1].b.right < w.right) hole ||= d[i].b.left - d[i - 1].b.right > 8.5;
+    }
     const shown = d.filter((x) => x.b.right > w.left && x.b.left < w.right), whole = shown.filter((x) => x.b.left >= w.left - 0.5 && x.b.right <= w.right + 0.5);
     return { lit: whole.map((x) => (x.lit ? "#" : ".")).join(""), hole, x: shown[0]?.b.left - w.left, size: [shown[0]?.b.width, shown[1]?.b.left - shown[0]?.b.left] };
   }));
@@ -563,7 +588,9 @@ for (const motion of ["css", "js"]) {
     if (motion === "js") await p.click("label:has(#motion-js)");
     const still = JSON.stringify((await look()).map((r) => Math.round(r.x)));
     let samples = 0, between = 0, holes = 0;
-    for (const end = Date.now() + 6000; Date.now() < end && !samples; ) if (JSON.stringify((await look()).map((r) => Math.round(r.x))) !== still) samples = 1;
+    for (const end = Date.now() + 6000; Date.now() < end && !samples; ) {
+      if (JSON.stringify((await look()).map((r) => Math.round(r.x))) !== still) samples = 1;
+    }
     for (const end = Date.now() + 700; Date.now() < end; samples++) {
       const rows = await look();
       if (rows.some((r) => r.hole)) holes++;
@@ -686,7 +713,11 @@ const dom = (p, charts) => p.evaluate((charts) => {
   // Each view gets its own page, since a page scrolled through twice draws a dotted underline a shade off
   const still = { viewport: { width: 800, height: 900 } };
   const alone = await browser.newPage(still), server = await browser.newPage(still), fresh = await browser.newPage(still);
-  for (const p of [alone, server, fresh]) { p.errors = []; p.on("pageerror", (e) => p.errors.push(e.message)); await p.addInitScript(() => { window.setInterval = () => 0; }); }
+  for (const p of [alone, server, fresh]) {
+    p.errors = [];
+    p.on("pageerror", (e) => p.errors.push(e.message));
+    await p.addInitScript(() => { window.setInterval = () => 0; });
+  }
   await alone.goto(url + "?wait"); await alone.waitForTimeout(300);
   const fromServer = await shots(alone);
   await server.goto(url + "?wait"); await server.waitForTimeout(300);

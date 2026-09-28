@@ -23,7 +23,12 @@ import cirrocumulus from "./assets/cirrocumulus.jpg";
 const rand = (a, b) => a + Math.random() * (b - a);
 const normal = (m, s) => m + s * Math.sqrt(-2 * Math.log(1 - Math.random())) * Math.cos(2 * Math.PI * Math.random());
 // n samples of a normal distribution, kept inside lo..hi
-const normalsIn = (n, lo, hi, m, s) => Array.from({ length: n }, () => { for (;;) { const v = normal(m, s); if (v >= lo && v <= hi) return v; } });
+const normalsIn = (n, lo, hi, m, s) => Array.from({ length: n }, () => {
+  for (;;) {
+    const v = normal(m, s);
+    if (v >= lo && v <= hi) return v;
+  }
+});
 const sum = (a) => a.reduce((x, y) => x + y, 0);
 
 // A magazine-style panel around a chart (kicker, headline, dek, the chart and a note). The page's CSS styles it.

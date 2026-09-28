@@ -10,16 +10,20 @@ let direct = 0;
 const canWait = typeof requestAnimationFrame === "function" && typeof document !== "undefined";
 
 const put = (el, key, value) => {
+
   if (value == null) return el.style.removeProperty(key);
+
   return el.style.setProperty(key, value);
 };
 
 // Sets a CSS variable on an element in the next frame (or right away while drawing)
 export function write(el, key, value) {
+
   if (direct || !canWait) {
     queue.get(el)?.delete(key); // a value written now replaces one that is waiting
     return put(el, key, value);
   }
+
   let own = queue.get(el);
   if (!own) queue.set(el, (own = new Map()));
   own.set(key, value);
@@ -28,6 +32,7 @@ export function write(el, key, value) {
 
 // Runs f with writes going straight to the elements
 export function drawing(f) {
+
   direct++;
   try {
     return f();
@@ -37,23 +42,32 @@ export function drawing(f) {
 }
 
 function arm() {
+
   if (armed) return;
+
   armed = true;
   requestAnimationFrame(flush);
 }
 
 function flush() {
+
   armed = false;
+
   if (!queue.size) {
     // We stay registered for a few quiet frames so an app's own animation loop doesn't have to wait a frame
     if (++idle < 3) arm();
     return;
   }
+
   idle = 0;
   const current = queue;
   queue = new Map();
+
   for (const [el, own] of current) {
-    for (const [key, value] of own) put(el, key, value);
+    for (const [key, value] of own) {
+      put(el, key, value);
+    }
   }
+
   arm();
 }

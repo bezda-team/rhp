@@ -26,7 +26,10 @@ for (const lib of libs) {
     rows.push({ frame, task: d("TaskDuration"), script: d("ScriptDuration"), style: d("RecalcStyleDuration"), layout: d("LayoutDuration"), nodes: z.Nodes - a.Nodes, styleCount: z.RecalcStyleCount - a.RecalcStyleCount, layoutCount: z.LayoutCount - a.LayoutCount });
     await p.close();
   }
-  const o = {}; for (const k of Object.keys(rows[0])) o[k] = +med(rows.map((r) => r[k])).toFixed(1);
+  const o = {};
+  for (const k of Object.keys(rows[0])) {
+    o[k] = +med(rows.map((r) => r[k])).toFixed(1);
+  }
   o.other = +(o.task - o.script - o.style - o.layout).toFixed(1);
   console.log(lib.padEnd(10), JSON.stringify(o));
 }

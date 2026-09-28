@@ -14,7 +14,10 @@ for (let i = 0; i < 5; i++) {
   await p.evaluate((n) => window.bench.mount({ n: +n, band: 8 }), n);
   const { profile } = await cdp.send("Profiler.stop");
   const dt = {}; profile.samples.forEach((id, k) => (dt[id] = (dt[id] ?? 0) + (profile.timeDeltas[k] ?? 0)));
-  for (const node of profile.nodes) { const f = node.callFrame, key = `${f.functionName || "(anon)"} :${f.lineNumber}`; if (dt[node.id]) self[key] = (self[key] ?? 0) + dt[node.id] / 1000 / 5; }
+  for (const node of profile.nodes) {
+    const f = node.callFrame, key = `${f.functionName || "(anon)"} :${f.lineNumber}`;
+    if (dt[node.id]) self[key] = (self[key] ?? 0) + dt[node.id] / 1000 / 5;
+  }
   await p.close();
 }
 Object.entries(self).sort((a, b) => b[1] - a[1]).slice(0, 30).forEach(([k, v]) => console.log(v.toFixed(2).padStart(7), "ms", k));
