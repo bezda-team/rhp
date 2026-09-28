@@ -6,6 +6,7 @@
 // so no page rule wins, whatever its specificity, order or own !important. The page reaches a chart
 // only through the theme object and props (and inline !important, which nothing writes by accident).
 import CORE from "./rhp.css";
+import GUTTERS from "./gutters.css";
 
 const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";
 
@@ -161,6 +162,7 @@ const hash = (t) => { let h = 5381; for (let i = 0; i < t.length; i++) h = (h * 
 // An entry is one stylesheet's text; each root holds its own copy of it, which update() rewrites in place.
 const roots = new Map(), entries = []; // root -> Map(entry -> the sheet adopted there, or its <style>)
 function adoptInto(root, entry) {
+  if (entry.core && linked && root === document) return; // the page links it (linkedCss): the core and the gutters
   const doc = root.ownerDocument ?? root;
   if (!Array.isArray(root.adoptedStyleSheets)) { // jsdom, older browsers: a <style> element instead
     const el = doc.createElement("style");
@@ -214,9 +216,9 @@ function addRoot(root) {
   declareLayers(root);
   for (const e of entries) adoptInto(root, e);
 }
-function add(css) {
+function add(css, core = false) {
   if (!roots.size) addRoot(document);
-  const entry = { css };
+  const entry = { css, core };
   entries.push(entry);
   for (const r of roots.keys()) adoptInto(r, entry);
   return entry;
@@ -229,24 +231,57 @@ function update(entry, css) {
   }
 }
 
-// On a server: the CSS a chart's first paint needs, written into the page with it: rhp's core and the sheets of the slat
-// types drawn in it. Each goes into a page once per render (`render`: an object the render shares, its assets list); a chart rendered
+/** rhp's core stylesheet: its layers declared first, then every declaration made !important. */
+let coreText, guttersText;
+export const coreSheet = () => (coreText ??= LAYERS + "\n" + important(CORE));
+/** The rules of gutters sized by their labels (room "auto"), added when a chart first asks for them. */
+export const gutterSheet = () => (guttersText ??= important(GUTTERS));
+/** What a page links once itself (dist/rhp.css): the core and the gutters. */
+export const pageSheet = () => coreSheet() + "\n" + gutterSheet();
+
+// A page that links rhp's stylesheet itself (@bezda/rhp/rhp.css: the core and the gutters), once for all its charts, says
+// so with linkedCss(): a server then leaves them out of each chart's HTML (they would come once per island, or once per
+// render of many charts), and a browser doesn't adopt them into the document (a shadow root still gets its own). Called where the
+// app starts, on the server and in the browser. The first chart a browser shows checks that the page has it, and if
+// not, says so and adopts it after all.
+let linked = false, checked = false;
+export function linkedCss() { linked = true; }
+export function checkLinked(body) {
+  if (!linked || checked) return;
+  checked = true;
+  if (getComputedStyle(body).display === "grid") return;
+  console.warn("rhp: linkedCss() was called, but this page doesn't link @bezda/rhp/rhp.css: rhp adds its core stylesheet itself");
+  linked = false;
+  const own = roots.get(document);
+  if (own) for (const entry of entries) if (entry.core && !own.has(entry)) adoptInto(document, entry);
+}
+
+// On a server: the CSS a chart's first paint needs, written into the page with it: rhp's core and, for a chart whose
+// gutters are sized by their labels, those rules (unless the page links them), and the sheets of the slat types drawn in
+// it. Each goes into a page once per render (`render`: an object the render shares, its assets list); a chart rendered
 // on its own (an island) brings all it needs.
-let coreText;
 const written = new WeakMap(); // render -> the sheets already in its page
-export function serverSheets(slats, render) {
+export function serverSheets(slats, render, gutters) {
   const seen = render ? written.get(render) ?? written.set(render, new Set()).get(render) : new Set();
   let out = "";
-  if (!seen.has("core")) { seen.add("core"); out += (coreText ??= LAYERS + "\n" + important(CORE)); }
+  if (!linked && !seen.has("core")) { seen.add("core"); out += coreSheet(); }
+  if (!linked && gutters && !seen.has("gutters")) { seen.add("gutters"); out += "\n" + gutterSheet(); }
   for (const fn of slats) if (!seen.has(fn.scope)) { seen.add(fn.scope); out += "\n" + slatSheet(fn); }
   return out;
+}
+
+let gutters = false;
+export function useGutters() {
+  if (gutters || typeof document === "undefined") return;
+  gutters = true;
+  add(gutterSheet(), true);
 }
 
 let core = false;
 export function useCore() {
   if (core || typeof document === "undefined") return;
   core = true;
-  add(LAYERS + "\n" + important(CORE));
+  add(coreSheet(), true);
 }
 // Called by a Chart once it is in the page, and again whenever its size changes: a chart in another document or in a
 // shadow root brings the sheets along, also when it is moved there after mount (a popup, Document Picture-in-Picture)
@@ -308,7 +343,8 @@ const made = new Map(); // CSS hash -> how many slat types were made with that C
  *   inset  empty share of the band on each side of a Bar, Tick or Area: 0..0.5 (default 0.18), or a CSS length
  *   room   px the slat's labels need outside the plot: { start, end, before, after }, or per orientation
  *          { horizontal: {…}, vertical: {…} }. start/end are the ends of the value axis (category names go
- *          at start); before/after are the two ends of the stack.
+ *          at start); before/after are the two ends of the stack. "auto" for start or end (or room: "auto" for
+ *          both) sizes that side to its widest edge label, in CSS (gutters.css).
  */
 export function slat(def, fn) {
   if (typeof def === "function") return def;

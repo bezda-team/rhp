@@ -25,13 +25,15 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "solid": "./dist/source/index.js",
       "worker": "./dist/server.js",
       "browser": "./dist/index.js",
       "deno": "./dist/server.js",
       "node": "./dist/server.js",
       "default": "./dist/index.js"
     },
-    "./standalone": "./dist/standalone.js"
+    "./standalone": "./dist/standalone.js",
+    "./rhp.css": "./dist/rhp.css"
   },
   "module": "./dist/index.js",
   "files": [
@@ -49,10 +51,12 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "babel-preset-solid": "^1.9.15",
-    "esbuild": "^0.25.12",
+    "esbuild": "^0.28.2",
     "playwright": "^1.56.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "solid-js": "^1.9.15"
+    "solid-js": "^1.9.15",
+    "vite": "^8.3.1",
+    "vite-plugin-solid": "^2.11.14"
   }
 }

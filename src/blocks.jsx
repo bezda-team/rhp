@@ -85,10 +85,10 @@ function browserBlock(props, mine, base, vars, attrs, back) {
 
 // On a server: the element as the browser will first draw it, from the values of now.
 function serverBlock(props, mine, base, vars, attrs, back) {
-  const o = useOrientation(), v = vars();
+  const o = useOrientation(), v = vars(), css = withVars(props.style, v);
   return (
     <div {...(others(props, mine) ? splitProps(props, [...mine])[1] : {})} class={cls(base, props.class)} data-rhp-o={short(o())}
-      {...(attrs ? attrs() : {})} data-rhp-back={back?.(v) ? "" : undefined} style={withVars(props.style, v)}>
+      {...(attrs ? attrs() : {})} data-rhp-back={back?.(v) ? "" : undefined} {...(css ? { style: css } : {})}>
       {props.children}
     </div>
   );

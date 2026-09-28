@@ -1,5 +1,5 @@
 // rhp core: Plot stacks slats; Chart holds the scale, the orientation and the axis.
-import { useCore, useSlatCss, useRoot, watchRoot, serverSheets } from "./style.js";
+import { useCore, useGutters, useSlatCss, useRoot, watchRoot, serverSheets, checkLinked } from "./style.js";
 import {
   createMemo, createComputed, createRenderEffect, createContext, useContext, getOwner, runWithOwner, onMount, onCleanup,
   createSignal, createRoot, createUniqueId, mergeProps, splitProps, untrack, sharedConfig, Index, For, Show,
@@ -65,30 +65,63 @@ const warnBare = (el) => {
 };
 
 // On a server a slat is HTML text ({ t }), not an element. What the browser sets on a slat's root (its scope, direction,
-// position, role…) is written into its first tag instead: attrs are set (null removes one; a function of the attribute's
-// value now, or undefined, decides from it), and vars are added to its style. Solid writes every attribute value in
-// double quotes, with " escaped, so the tag is read attribute by attribute.
-const ATTR = /\s([^\s="'>\/]+)(?:="([^"]*)")?/g;
+// position, role…) is written into that text's first tag instead. The tag is read as HTML reads it, attribute by
+// attribute: a value in double quotes, in single quotes, bare, or none. Each attribute is written back as it came, and
+// the rest of the HTML is left untouched.
+const SPACE = /\s/;
+function readTag(node) {
+  while (typeof node === "function") node = node(); // what a component, <Show> or a context provider gives
+  const t = node?.t, one = () => new Error("rhp: a slat must return one element");
+  if (typeof t !== "string") throw one();
+  let i = 0;
+  while (SPACE.test(t[i] ?? "")) i++;
+  if (t[i] !== "<" || !/[a-zA-Z]/.test(t[i + 1] ?? "")) throw one();
+  let j = i + 1;
+  while (j < t.length && !SPACE.test(t[j]) && t[j] !== ">" && t[j] !== "/") j++;
+  const tag = { head: t.slice(0, i), name: t.slice(i + 1, j), attrs: [], end: "", rest: "" };
+  for (;;) {
+    while (SPACE.test(t[j] ?? "")) j++;
+    if (j >= t.length) throw one();
+    if (t[j] === ">" || (t[j] === "/" && t[j + 1] === ">")) { tag.end = t[j] === ">" ? ">" : "/>"; tag.rest = t.slice(j + tag.end.length); return tag; }
+    if (t[j] === "/") { j++; continue; }
+    let k = j;
+    while (k < t.length && !SPACE.test(t[k]) && t[k] !== "=" && t[k] !== ">" && !(t[k] === "/" && t[k + 1] === ">")) k++;
+    const name = t.slice(j, k);
+    j = k;
+    while (SPACE.test(t[j] ?? "")) j++;
+    if (t[j] !== "=") { tag.attrs.push([name]); continue; }
+    j++;
+    while (SPACE.test(t[j] ?? "")) j++;
+    const q = t[j] === '"' || t[j] === "'" ? t[j] : "";
+    let e = q ? t.indexOf(q, j + 1) : j;
+    if (e < 0) throw one();
+    if (!q) while (e < t.length && !SPACE.test(t[e]) && t[e] !== ">") e++;
+    tag.attrs.push([name, t.slice(q ? j + 1 : j, e), q]);
+    j = q ? e + 1 : e;
+  }
+}
 const quote = (v) => String(v).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
-function onRoot(node, attrs, vars) {
-  while (typeof node === "function") node = node(); // a context provider's children come as functions
-  const t = node?.t;
-  const m = typeof t === "string" && t.match(/^(\s*<([a-zA-Z][^\s/>]*))((?:\s+[^\s="'>\/]+(?:="[^"]*")?)*)\s*(\/?>)/);
-  if (!m) throw new Error("rhp: a slat must return one element");
-  const list = [...m[3].matchAll(ATTR)].map(([, k, v]) => [k, v]);
-  const get = (k) => list.find((a) => a[0] === k);
+/** The tag as HTML again: its attributes as they came, and those set here in double quotes. */
+const writeTag = (tag) => tag.head + "<" + tag.name + tag.attrs.map(([k, v, q]) => " " + k + (v === undefined ? "" : "=" + (q ?? '"') + v + (q ?? '"'))).join("") + tag.end + tag.rest;
+// Sets attrs on a slat's root tag (null removes one; a function of the attribute's value now, or undefined, decides from
+// it; undefined leaves it as it is), and adds vars to its style.
+function onRoot(tag, attrs, vars) {
+  if (!tag.attrs) tag = readTag(tag);
+  const get = (k) => tag.attrs.find((a) => a[0] === k);
   for (const k in attrs) {
     const now = get(k), v = typeof attrs[k] === "function" ? attrs[k](now?.[1]) : attrs[k];
     if (v === undefined) continue;
-    if (now) list.splice(list.indexOf(now), 1);
-    if (v !== null) list.push([k, v === true ? undefined : quote(v)]);
+    if (now) tag.attrs.splice(tag.attrs.indexOf(now), 1);
+    if (v !== null) tag.attrs.push([k, v === true ? undefined : quote(v), '"']);
   }
   const css = withVars(undefined, vars);
-  if (css) { const st = get("style"); st ? (st[1] = (st[1] ? st[1].replace(/;?$/, ";") : "") + quote(css)) : list.push(["style", quote(css)]); }
-  return { t: m[1] + list.map(([k, v]) => " " + k + (v === undefined ? "" : `="${v}"`)).join("") + m[4] + t.slice(m[0].length) };
+  if (css) {
+    const st = get("style");
+    if (!st) tag.attrs.push(["style", quote(css), '"']);
+    else { const q = st[2] || '"', add = q === "'" ? css.replace(/&/g, "&amp;").replace(/'/g, "&#39;") : quote(css); st[1] = (st[1] ? st[1].replace(/;?\s*$/, ";") : "") + add; st[2] = q; }
+  }
+  return { t: writeTag(tag) };
 }
-/** The id attribute a server wrote on a slat's root, if any. */
-const rootId = (node) => node?.t?.match(/^\s*<[^>]*?\sid="([^"]*)"/)?.[1];
 
 export function Plot(props) {
   return makePlot(props, "Plot");
@@ -232,11 +265,14 @@ function makePlot(props, role) {
   const shown = later(() => byPosition(positions()), { equals: same }); // rows in display order (Move, Refill, aria-owns)
   const extent = createMemo(() => positions().reduce((m, p) => (p == null ? m : Math.max(m, p + 1)), 0));
 
-  // Accessibility. A Plot is a list and each slat root a list item (unless the slat gives its root a role of its own); a
+  // Accessibility. A chart's rows are a list: a top-level Plot is a list and each slat root a list item (unless the slat
+  // gives its root a role of its own). A Plot inside a slat (a heatmap's cells), and an overlap Plot (dots in one band,
+  // an overlay) are part of what their rows show, not lists of their own: announced as lists they only add noise. A
   // Scale is hidden from screen readers, as the axis is. Sorted rows slide on screen but keep their place in the page,
   // so a screen reader would read them in data order: the Plot then lists its rows in display order in aria-owns,
   // which is the order it reads them in, and each row gets an id for it (its own, if the slat gives one).
   const scale = role === "Scale";
+  const asList = () => !nested && !scale && !props.overlap;
   const uid = createUniqueId(); // the same on a server and in the browser that hydrates its HTML
   // row -> its root's own id, for the rows whose slat gives one (few do: a Map in a signal, made on first use)
   const [rowIds, setRowIds] = createSignal(null);
@@ -272,7 +308,7 @@ function makePlot(props, role) {
     if (isServer) return serverRow(props.children(datum(row, id)), row(), pos[row()]);
     const el = props.children(datum(row, id));
     if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
-    if (!scale && !el.hasAttribute("role")) el.setAttribute("role", "listitem");
+    if (asList() && !el.hasAttribute("role")) el.setAttribute("role", "listitem");
     const ownId = el.id.startsWith(`rhp-${uid}-`) ? "" : el.id; // the slat's own id (not one a server gave it for aria-owns)
     if (!props.overlap && BLOCK.test(el.getAttribute("class"))) warnBare(el);
     if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope); // the slat's CSS applies inside its own slats only (an attribute: Solid's class={…} rewrites className)
@@ -291,11 +327,11 @@ function makePlot(props, role) {
   // A row on a server: its root's first tag gets what slat() sets on it in a browser. (Made only there, so a browser's
   // build leaves it and what it uses out.)
   const serverRow = isServer && ((node, r, p) => {
-    const own = rootId(node), id = own ?? (reordered() ? `rhp-${uid}-${r}` : undefined);
+    const tag = readTag(node), own = tag.attrs.find((a) => a[0] === "id")?.[1], id = own ?? (reordered() ? `rhp-${uid}-${r}` : undefined);
     if (own) ownIdAt(r, own);
-    return onRoot(node, {
-      "data-rhp-slat": props.children.scope ?? undefined, "data-rhp-o": short(orientation()), hidden: p == null ? true : undefined,
-      role: scale ? undefined : (v) => (v === undefined ? "listitem" : undefined), id: own ? undefined : id,
+    return onRoot(tag, {
+      "data-rhp-slat": props.children.scope ?? undefined, "data-rhp-o": short(orientation()), hidden: p == null ? true : null,
+      role: asList() ? (v) => (v === undefined ? "listitem" : undefined) : undefined, id: own ? undefined : id,
     }, { "--rhp-position": p });
   });
   // A static row: drawn in a root that is disposed right after, so its elements keep their values and nothing else stays.
@@ -306,7 +342,7 @@ function makePlot(props, role) {
       el = props.children(datum(() => i, null));
       if (typeof Element !== "undefined" && !(el instanceof Element)) throw new Error("rhp: a slat must return one element");
       if (props.children.scope) el.setAttribute("data-rhp-slat", props.children.scope);
-      if (!scale && !el.hasAttribute("role")) el.setAttribute("role", "listitem");
+      if (asList() && !el.hasAttribute("role")) el.setAttribute("role", "listitem");
       if (!el.id && reordered()) el.id = `rhp-${uid}-${i}`;
       el.setAttribute("data-rhp-o", short(orientation()));
       el.hidden = p == null;
@@ -342,7 +378,7 @@ function makePlot(props, role) {
   return (
     <Around.Provider value={{ orientation, motion: () => undefined, frame, nested: true, still }}>
       <div ref={props.ref} class={props.class ? "rhp-plot " + props.class : "rhp-plot"}
-        role={scale ? undefined : "list"} aria-hidden={scale ? "true" : undefined} aria-owns={owns()}
+        role={asList() ? "list" : undefined} aria-hidden={scale ? "true" : undefined} aria-owns={owns()}
         data-rhp-o={short(orientation())} data-rhp-reorder={action()} data-rhp-overlap={props.overlap ? "" : undefined}
         data-rhp-animate={js() ? "js" : undefined}
         style={{
@@ -366,7 +402,8 @@ function makePlot(props, role) {
  * end is one slat whose value moves with the scale, so it never leaves the end (a tick that becomes the end
  * would otherwise slide there, in both versions). Each tick's slat sees d.at (its value), d.next (the next tick; the
  * scale's max after the last one), d.first and d.last, d.toEnd (px from the tick to the scale's end on screen, measured,
- * so a slat can leave out a number with no room), and any other data group given to the Scale.
+ * so a slat can leave out a number with no room; Infinity until measured, and on a server: in CSS, a Label's
+ * calc((1 - var(--rhp-p)) * 100%) is that room in its max-width or max-height), and any other data group given to the Scale.
  * A slat can mark a value (lines, ticks, numbers at d.at) or fill an interval (bands or segments from d.at to d.next).
  * ticks: a list of values; a number (about that many round values, 5 by default); or a function of the
  * Chart's [min, max] that returns a list, such as every(5). A Chart with a Scale in it draws no axis of its own.
@@ -464,7 +501,6 @@ export function Chart(props) {
   // Whether it is drawn (and its room) depends on where the scale is going, not on the ticks passing by.
   const [scales, setScales] = createSignal(0);
   const [fitters, setFitters] = createSignal([]); // Plots whose rows have no thickness
-  const sized = () => props.height != null && orientation() === "horizontal" && fitters().some((f) => f());
   const hasTicks = createMemo(() => tickValues(props.ticks, domain()).length > 0);
   const axis = () => scales() === 0 && hasTicks();
   // The plot's size on screen, measured (a Scale gives each tick its distance to the end in px). 0 until measured.
@@ -482,20 +518,31 @@ export function Chart(props) {
     unfit: (f) => setFitters((l) => l.filter((x) => x !== f)),
     dropScale: () => setScales((n) => n - 1),
   };
-  // (A server's memo is worked out once, when it's made, before the Plots have asked: there, it's worked out when read.)
-  const padding = () => {
-    const o = orientation(), side = SIDES[o], out = { top: 2, right: 2, bottom: 2, left: 2 }, room = { start: 0, end: 0 };
+  // What the Plots inside ask of the chart, worked out together: its gutters and whether their rows fit its height.
+  // Gutters are the chart's padding, sized by the room the Plots ask for (px, the largest wins), or with room "auto" on a
+  // side, a column of the body's grid (horizontal; a row, vertical) as wide as that side's widest edge label: the rows
+  // then lay their edge labels in it (rhp.css, [data-rhp-gutters]). Everything that depends on what the Plots registered
+  // is in here, and nowhere else: a browser keeps it as a memo that follows them, and a server works it out when it
+  // writes the chart's element, once they have drawn (a server's memo is worked out once, when it's made, before they ask).
+  const arrange = () => {
+    const o = orientation(), side = SIDES[o], out = { top: 2, right: 2, bottom: 2, left: 2 }, room = { start: 0, end: 0 }, auto = {};
     for (const w of wants()) {
-      const r = w();
-      if (r) for (const k in side) if (r[k] != null) { out[side[k]] = Math.max(out[side[k]], r[k]); if (k in room) room[k] = Math.max(room[k], r[k]); }
+      const r = w() === "auto" ? { start: "auto", end: "auto" } : w();
+      if (r) for (const k in side) {
+        if (r[k] === "auto") { if (k in room) auto[k] = true; }
+        else if (r[k] != null) { out[side[k]] = Math.max(out[side[k]], r[k]); if (k in room) room[k] = Math.max(room[k], r[k]); }
+      }
     }
     if (axis()) for (const [s, n] of [AXIS[o], AXIS_END[o], AXIS_START[o]]) out[s] = Math.max(out[s], n);
-    return {
-      "--rhp-pad-top": out.top + "px", "--rhp-pad-right": out.right + "px", "--rhp-pad-bottom": out.bottom + "px", "--rhp-pad-left": out.left + "px",
-      "--rhp-room-start": room.start + "px", "--rhp-room-end": room.end + "px",
-    };
+    const vars = { "--rhp-room-start": room.start + "px", "--rhp-room-end": room.end + "px" }, gutters = !!(auto.start || auto.end);
+    if (gutters && !isServer) useGutters(); // its rules come with the first chart that asks for them
+    // With a grid, both value-axis ends move from the padding into it: at least as wide as the padding would be.
+    if (gutters) for (const k of ["start", "end"]) { const n = out[side[k]]; out[side[k]] = 0; vars["--rhp-gutter-" + k] = auto[k] ? `minmax(${n}px, max-content)` : n + "px"; }
+    for (const s in out) vars["--rhp-pad-" + s] = out[s] + "px";
+    return { vars, gutters, sized: props.height != null && o === "horizontal" && fitters().some((f) => f()) };
   };
-  const pad = isServer ? padding : createMemo(padding, undefined, { equals: (a, b) => Object.keys(a).every((k) => a[k] === b[k]) });
+  const sameArrangement = (a, b) => a.gutters === b.gutters && a.sized === b.sized && Object.keys(a.vars).length === Object.keys(b.vars).length && Object.keys(a.vars).every((k) => a.vars[k] === b.vars[k]);
+  const arranged = isServer ? arrange : createMemo(arrange, undefined, { equals: sameArrangement });
   // Turning the chart is a jump, not a slide: nothing inside transitions for the two frames after a change.
   // (A transition across the turn also left Chromium with stale overflow: a phone page scrolled sideways by 670px.)
   const [turning, setTurning] = createSignal(false);
@@ -514,6 +561,7 @@ export function Chart(props) {
     useRoot(el);
     onCleanup(watchRoot(el));
     const body = el.querySelector(".rhp-body");
+    if (body) checkLinked(body);
     if (!body || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(([e]) => setSize({ w: e.contentRect.width, h: e.contentRect.height })); // delivered before the first paint
     ro.observe(body);
@@ -529,28 +577,30 @@ export function Chart(props) {
     <Around.Provider value={{ orientation, motion: () => props.animate, frame, nested: false, still: props.static === true }}>
       <div ref={(e) => { el = e; props.ref?.(e); }} id={props.id} role={figure()} aria-label={name()} aria-labelledby={props["aria-labelledby"]}
         aria-describedby={props["aria-describedby"]} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
-        data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined} data-rhp-sized={sized() ? "" : undefined}
-        style={{ ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240) }}>
+        data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined} data-rhp-sized={arranged().sized ? "" : undefined}
+        data-rhp-gutters={arranged().gutters ? short(orientation()) : undefined} style={{ ...KNOBS, ...theme(), ...arranged().vars, ...props.style, "--rhp-height": px(props.height ?? 240) }}>
         <div class="rhp-body">
           {props.children}
           {/* after the children, so a Scale among them has registered first; plots paint above it (z-index) */}
           <Show when={axis()}><Axis ticks={ticks()} format={props.format} /></Show>
         </div>
         {/* after the body: the CSS of every slat type drawn in it, which a server knows only once they're drawn */}
-        {isServer && <style data-rhp-server="" innerHTML={serverSheets(slats, sharedConfig.context?.assets)} />}
+        {isServer && <style data-rhp-server="" innerHTML={serverSheets(slats, sharedConfig.context?.assets, arranged().gutters)} />}
       </div>
     </Around.Provider>
   );
   // The scale is written like a block's numbers: now at first, then in the next frame (frame.js).
   writeVars(el, () => ({ "--rhp-min": min(), "--rhp-max": max() }));
   if (!isServer && moreAria().length) createRenderEffect(() => { for (const k of moreAria()) props[k] == null ? el.removeAttribute(k) : el.setAttribute(k, props[k]); });
-  // A server writes the chart's style once its Plots have drawn: the room they ask for, and whether they fit its
-  // height, are known only then (a browser updates them as they come).
-  if (isServer) return onRoot(node, {
-    ...Object.fromEntries(moreAria().map((k) => [k, props[k] ?? null])),
-    style: withVars(undefined, { ...KNOBS, ...theme(), ...pad(), ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-min": min(), "--rhp-max": max() }),
-    "data-rhp-sized": sized() ? true : null,
-  });
+  // A server writes what depends on the Plots (arrange) once they have drawn (a browser updates it as they come).
+  if (isServer) {
+    const { vars, sized, gutters } = arranged();
+    return onRoot(node, {
+      ...Object.fromEntries(moreAria().map((k) => [k, props[k] ?? null])),
+      style: withVars(undefined, { ...KNOBS, ...theme(), ...vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-min": min(), "--rhp-max": max() }),
+      "data-rhp-sized": sized ? true : null, "data-rhp-gutters": gutters ? short(orientation()) : null,
+    });
+  }
   return node;
 }
 

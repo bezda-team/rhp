@@ -7,8 +7,9 @@ import fs from "fs";
 // isServer (src/env.js) becomes a constant in each file, so the build drops the code for the other side.
 const jsx = (options = {}) => ({ name: "solid", setup(b) {
   b.onLoad({ filter: /\.jsx$/ }, async (a) => {
-    const src = (await fs.promises.readFile(a.path, "utf8"))
-      .replace(/^import \{ isServer \} from "\.\/env\.js";\n/m, "").replace(/\bisServer\b/g, String(options.generate === "ssr"));
+    let src = await fs.promises.readFile(a.path, "utf8");
+    const env = /^import \{ isServer \} from "\.\/env\.js";\n/m; // rhp's own files; an app's keep Solid's isServer
+    if (env.test(src)) src = src.replace(env, "").replace(/\bisServer\b/g, String(options.generate === "ssr"));
     const r = await transformAsync(src, { presets: [["babel-preset-solid", options]], filename: a.path, babelrc: false, configFile: false });
     return { contents: r.code, loader: "js" };
   });
@@ -20,6 +21,16 @@ const cssText = { name: "css-text", setup(b) {
     return { contents: r.code.trim(), loader: "text" };
   });
 }};
+
+// rhp.css as the text style.js embeds: minified.
+export const minifiedCss = async (file) => (await transform(await fs.promises.readFile(file, "utf8"), { loader: "css", minify: true })).code.trim();
+
+// rhp's stylesheet for a page to link (pageSheet in style.js: the core and the gutters): the text of dist/rhp.css.
+export const coreStylesheet = async () => {
+  const r = await build({ stdin: { contents: 'import { pageSheet } from "./src/style.js"; export default pageSheet();', resolveDir: process.cwd(), loader: "js" },
+    bundle: true, write: false, format: "esm", platform: "node", plugins: [cssText], logLevel: "warning" });
+  return (await import("data:text/javascript;base64," + Buffer.from(r.outputFiles[0].text).toString("base64"))).default;
+};
 
 // A page bundle (examples, tests): Solid included, one IIFE. Imported images become data URLs, so a page stays one file.
 export const page = (entry, outfile) => build({
@@ -48,11 +59,11 @@ export const server = (entry, outfile) => build({
 // Solid's server build in it, and the browser's as a page script that hydrates.
 export const ssrServer = (entry, outfile) => build({
   entryPoints: [entry], outfile, bundle: true, format: "esm", platform: "node", target: "es2020",
-  plugins: [jsx({ generate: "ssr", hydratable: true }), cssText], logLevel: "warning",
+  plugins: [jsx({ generate: "ssr", hydratable: true }), cssText], loader: { ".svg": "dataurl", ".jpg": "dataurl" }, logLevel: "warning",
 });
 export const ssrClient = (entry, outfile) => build({
   entryPoints: [entry], outfile, bundle: true, format: "iife", platform: "browser", target: "es2020",
-  plugins: [jsx({ hydratable: true }), cssText], define: { "process.env.NODE_ENV": '"production"' }, logLevel: "warning",
+  plugins: [jsx({ hydratable: true }), cssText], loader: { ".svg": "dataurl", ".jpg": "dataurl" }, define: { "process.env.NODE_ENV": '"production"' }, logLevel: "warning",
 });
 // The same test app with the published package: rhp as the package itself ("@bezda/rhp"), which picks dist/server.js
 // or dist/index.js by its exports. The server's is left for Node to resolve, as an app's server would; the browser's

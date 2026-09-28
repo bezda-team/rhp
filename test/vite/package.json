@@ -1,0 +1,6 @@
+{
+  "name": "rhp-vite-fixture",
+  "private": true,
+  "type": "module",
+  "dependencies": { "@bezda/rhp": "file:../.." }
+}

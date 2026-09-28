@@ -94,7 +94,9 @@
 
   /* Blocks. p(v) = (v - min) / (max - min) is where v sits along the track, 0..1.
      Spans are clipped to the scale; points are not. p is --rhp-p on a point, and a span runs from --rhp-lo to --rhp-hi:
-     a slat's CSS can place things by them too. */
+     a slat's CSS can place things by them too. A Label's room from its value to the scale's end is
+     calc((1 - var(--rhp-p)) * 100%) in its max-width (horizontal) or max-height (vertical), where a percentage is of the
+     track: a length CSS can size it by, the same on a server. */
   :is(.rhp-bar, .rhp-area) {
     --rhp-lo: clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
     --rhp-hi: clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);

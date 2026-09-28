@@ -14,6 +14,8 @@ npm install @bezda/rhp solid-js
 
 This is one package with one import. Solid is its only peer dependency. The CSS is injected by the package when the first chart mounts, so there is no stylesheet to import.
 
+The package picks its build where it is used: a Solid app's own build (SolidStart, Astro, Vite with vite-plugin-solid) takes its source and compiles it with the app, for the server and for the browser; elsewhere, Node, Deno and workers get its server build, and a browser its browser build.
+
 In a React app, `@bezda/rhp-react` (in `react/`) turns an rhp chart into a React component: `` toReact((props) => html`…`) ``, where `props` follows the component's props item by item. See its README.
 
 With no build step, a page can import `@bezda/rhp/standalone`, one module with Solid included (29 kB gzipped), from a CDN. Slats are then written with Solid's `html` template tag instead of JSX, and a value that changes is wrapped in a function:
@@ -40,7 +42,7 @@ import { Chart, Plot, Bar, Label, slat, sortBy, series } from "@bezda/rhp";
 
 const Row = slat({
   thickness: 32,                     // px per slat along the stack
-  room: { start: 104, end: 44 },     // px its labels need outside the plot
+  room: { start: 104, end: 44 },     // px its labels need outside the plot, or "auto"
   css: `.slat:hover { background: color-mix(in srgb, var(--rhp-ink) 6%, transparent); }`,
 }, (d) => (
   <div class="slat">
@@ -61,6 +63,7 @@ const Row = slat({
 - `order` is a list of positions, or a function that returns one (`sortBy` is one such function). The slats slide to their positions and no DOM node moves.
 - `key` gives rows an identity, so a removed row takes its own slat with it.
 - `animate` on a Chart or Plot switches from CSS transitions to the JS version, where the numbers themselves move on one page clock.
+- `room` is the space outside the plot, in px, for what a slat draws there: names at the start, values at the end, and before and after the stack. With `room: "auto"` (or `start: "auto"`, `end: "auto"`), a side is as wide as its widest edge label, in CSS, the same on a server; a slat's CSS sizes those labels (`max-width`, wrapping) and the gutter follows, up to `--rhp-gutter-max` (40% of the chart). A side given in px stays as it is. Auto gutters lay rows out as a grid that spans the gutters (a row's background reaches under its name), and cost more layout than px: fine for charts of tens of rows, slower for hundreds. In Firefox, a name that wraps onto more lines under a column (vertical) needs `room` in px: Firefox sizes that gutter for one line.
 - `static` on a Chart is for data that doesn't change: each row is drawn once and keeps no signals, memos or effects, so a chart of 1,000 rows holds a sixth of the memory. If the Plot's data, order or direction does change, every row is drawn again, without animation. Hover styles, themes, resizing and the scale still work. A Plot can set `static` on its own, for a still layer under a live one.
 
 ## Scales
@@ -80,7 +83,7 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
 
 - `ticks` is a list, a count of round values, or a function of the Chart's `[min, max]` such as `every(5)`.
 - Each tick's slat sees `d.at`, `d.next` (the next tick), `d.first` and `d.last`. A slat can mark values or fill the intervals between them: bands, a ruler, a keyboard.
-- `d.toEnd` is the tick's distance to the scale's end on screen, in px, measured. A slat can leave out a number that would run into the end: `class={d.toEnd < 30 ? "crowded" : ""}`. It works the same in every browser, where CSS arithmetic on container units does not (Safari).
+- A number can be left out when it would run into the scale's end, in CSS: a Label's room from its value to the end is `calc((1 - var(--rhp-p)) * 100%)` in its `max-width` (vertical: `max-height`), so `max-width: calc(((1 - var(--rhp-p)) * 100% - 30px) * 1000); overflow: hidden` gives a number with less than 30px no size at all. It is the same on a server and in every browser. `d.toEnd` is the same distance in px, measured on screen, for code; it is `Infinity` until the browser has measured it.
 - A tick at either end of the scale is keyed as that end, so the end line never slides when the max changes.
 - A Chart with a Scale in it draws no axis of its own.
 
@@ -119,7 +122,7 @@ Theme colors are `var(--rhp-ink)`, `var(--rhp-muted)`, `var(--rhp-series-1)` and
 A chart reads as what it shows, with nothing to set up:
 
 - **A Chart with a `label` is a figure with that name**: `<Chart label="Fruit sold this week">`. It also takes `aria-labelledby`, `aria-describedby` and any other `aria-*` prop, and `id`.
-- **A Plot is a list, and each row a list item**, read in the order the rows are shown. Sorted rows slide on screen but keep their place in the page, so a sorted Plot lists them in display order in `aria-owns`, and gives each row an id for it (a slat's own id, if it sets one).
+- **A chart's rows are a list**, each row a list item, read in the order the rows are shown. Sorted rows slide on screen but keep their place in the page, so a sorted Plot lists them in display order in `aria-owns`, and gives each row an id for it (a slat's own id, if it sets one). A Plot inside a row (a heatmap's cells) and an overlap Plot (dots in one band, an overlay) are part of their rows, not lists of their own.
 - **A row reads its text**: its Labels and anything else the slat writes. A row that shows only shapes (a bar with no value) needs words: add a Label, or text a screen reader reads but the page doesn't show (a visually hidden class, in the slat's CSS).
 - **A slat root with a role of its own keeps it** (`role="group"`, a button). The axis and a Scale are left out: their numbers are for the eye.
 
@@ -127,9 +130,11 @@ A chart reads as what it shows, with nothing to set up:
 
 rhp draws charts on a server too, as HTML, with Solid's `renderToString` (SolidStart, Astro, or your own server). The page then shows the charts before any script runs, and the browser takes them over (`hydrate`) without drawing them again.
 
-- **Nothing to change in the app.** `@bezda/rhp` resolves to its server build where Solid resolves to its own (Node, Deno, workers), and to its browser build in a browser.
+- **Nothing to change in the app.** A Solid app's build compiles rhp's source with the app; otherwise `@bezda/rhp` resolves to its server build where Solid resolves to its own (Node, Deno, workers), and to its browser build in a browser.
 - **The CSS comes with the charts.** Each chart writes the CSS it needs into the page (rhp's core once per render, and its slat types' CSS), and the browser swaps it for its own sheets when it takes over.
-- **What a server can't know** it leaves to the browser: a Scale's `d.toEnd` (px measured on screen) is `Infinity` until then, and animations start from the first values the browser sees.
+- **Many charts, or islands (Astro): link the stylesheet once.** Each island is its own render, so each would bring rhp's core CSS. Link `@bezda/rhp/rhp.css` in the page's head instead (`import "@bezda/rhp/rhp.css"` with a bundler), and call `linkedCss()` where the app starts, on the server and in the browser: charts then leave the core out of their HTML, and the browser uses the page's copy. If the page doesn't link it after all, the first chart says so in the console and brings its own.
+- **Charts with no JavaScript at all.** Render them without hydration (an Astro component with no `client:` directive, or `renderToString(() => <NoHydration><App /></NoHydration>)`), and the HTML and its CSS are the chart: for static pages and for PDFs printed from a browser. Email clients drop most of the CSS rhp uses (custom properties, layers), so it isn't for email.
+- **What a server can't know** it leaves to the browser: `d.toEnd` (px measured on screen) is `Infinity` until then (the CSS above does the same job on the server), and animations start in the browser, from the values the page shows, as they do when the browser draws the chart itself.
 
 ## Same look in any app
 
@@ -158,9 +163,11 @@ Charts are plain DOM, with no shadow root. `querySelector`, Testing Library, pag
 
 - `src/plot.jsx`: Plot, Scale, Chart, Axis, Theme.
 - `src/blocks.jsx`: Bar, Dot, Tick, Label, Cell, Area.
-- `src/style.js`: CSS injection, `slat()`, and the scoping of slat CSS.
+- `src/style.js`: CSS injection, `slat()`, the scoping of slat CSS, `linkedCss()` and the CSS a server writes.
 - `src/rhp.css`: the core CSS, including the guard.
+- `src/gutters.css`: gutters sized by their labels (`room: "auto"`), added the first time a chart asks for them.
+- `src/env.js`: whether rhp draws on a server (Solid's `isServer`); rhp's own builds make it a constant.
 - `src/animate.js`: the JS version's page clock.
 - `src/data.js`: `sortBy`, `cycle`, `every`, `nice`, `extent`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`.
 
-Server rendering is not supported yet. The package is browser-only for now.
+Tests: `test/run.mjs` builds the pages, including an app rendered on a server and taken over in the browser (`test/ssr*.jsx`), rhp's whole gallery drawn the same way, and a Vite app that takes rhp's source (`test/vite`), then checks them in Chromium.

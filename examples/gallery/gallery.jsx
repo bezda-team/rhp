@@ -71,20 +71,19 @@ const V1Scale = slat({
     .zero > .num { --rhp-label-gap: 4px; }
     .num:horizontal { top: -20px; }
     .num:vertical { left: -20px; }
-    .num.crowded { visibility: hidden; }`,
-}, (t) => {
-  // A number just before the end would run into the end mark, so it's left out, and only then: horizontal, when its
-  // text (8px past its mark, about 8px a digit) would come within 3px of the end mark; vertical, when its line
-  // (19.5px tall, 8px above its mark) would. t.toEnd is the tick's distance to the end, in px.
-  const o = useOrientation();
-  const crowded = () => !t.first && !t.last && t.toEnd < (o() === "vertical" ? 31 : 11 + 8 * String(Math.round(t.at)).length);
-  return (
-    <div class={t.first ? "zero" : t.last ? "end" : t.marks}>
-      <Tick at={t.at} thick={1} class="mark" />
-      <Label at={t.at} class={crowded() ? "num crowded" : "num"}>{Math.round(t.at)}</Label>
-    </div>
-  );
-});
+    /* A number just before the end would run into the end mark, so it's left out, and only then: horizontal, when its
+       text (8px past its mark, about 8px a digit: --need) would come within 3px of the end mark; vertical, when its line
+       (19.5px tall, 8px above its mark) would. Its room to the end is (1 - p) of the track, a percentage in its max
+       size, so this is CSS, the same on a server: with less room than it needs, its size is 0 and it shows nothing. */
+    :is(.line, .tick) > .num { overflow: hidden; }
+    :is(.line, .tick) > .num:horizontal { max-width: calc(((1 - var(--rhp-p)) * 100% - var(--need)) * 1000); }
+    :is(.line, .tick) > .num:vertical { max-height: calc(((1 - var(--rhp-p)) * 100% - 31px) * 1000); }`,
+}, (t) => (
+  <div class={t.first ? "zero" : t.last ? "end" : t.marks}>
+    <Tick at={t.at} thick={1} class="mark" />
+    <Label at={t.at} class="num" style={{ "--need": 11 + 8 * String(Math.round(t.at)).length + "px" }}>{Math.round(t.at)}</Label>
+  </div>
+));
 /*</show>*/
 
 /*<show fruit>*/
