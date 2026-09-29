@@ -597,21 +597,27 @@ for (const motion of ["css", "js"]) {
         w.push([t, bar.getBoundingClientRect().width]);
       }
     }
-    // Each speed with the time it was measured over. Across a frame as long as a move itself (MOVE_MS, 150ms) the bar
-    // reaches its value and sets off again on the next one, which is a busy machine, not the pulse this looks for.
+    // Each speed is measured over at least 25ms: longer than the ~17ms the browser takes to paint a frame, and shorter
+    // than the 50ms a restarting bar would pulse with. Read over less than a paint, the width alternates between frames
+    // that caught one and frames that did not, which reads as the bar stopping and starting although it never did.
+    // An interval as long as a move itself (MOVE_MS, 150ms) is left out too: across one the bar reaches its value and
+    // sets off again, which is a busy machine rather than a pulse.
     const speed = [];
+    let from = 0;
 
     for (let i = 1; i < w.length; i++) {
-      const dt = w[i][0] - w[i - 1][0];
-      if (dt >= 1) speed.push([(w[i][1] - w[i - 1][1]) / dt, dt]);
+      const dt = w[i][0] - w[from][0];
+      if (dt < 25) continue;
+
+      if (dt < 150) speed.push((w[i][1] - w[from][1]) / dt);
+
+      from = i;
     }
 
     let n = 0;
 
     for (let i = 2; i < speed.length; i++) {
-      if (speed[i - 1][1] >= 150 || speed[i][1] >= 150) continue;
-
-      if (speed[i - 1][0] < speed[i - 2][0] * 0.25 && speed[i][0] > Math.max(0.03, speed[i - 1][0] * 2)) n++;
+      if (speed[i - 1] < speed[i - 2] * 0.25 && speed[i] > Math.max(0.03, speed[i - 1] * 2)) n++;
     }
     set(1);
     return n;
