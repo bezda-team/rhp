@@ -477,12 +477,13 @@ for (const motion of ["css", "js"]) {
 
   // Where v1's demos draw the top row and the scale, measured in Chromium at 1088px wide.
   // Each is [x, y, width, height] from the plot's corner, or [x, y] where a text starts.
-  // The fruit card's name gutter is 82px, 30px narrower than v1's 112px (asked for), so everything the gutter places
-  // starts 30px earlier, its bar is 30px longer and its scale is spread over those extra 30px. Every other number here,
-  // and the whole clouds card, is v1's own.
+  // The fruit card's name gutter is 62px, 50px narrower than v1's 112px, and its names are left aligned rather than
+  // centred (both asked for), so everything the gutter places starts 50px earlier, its bar is 50px longer, its scale is
+  // spread over those extra 50px and its name begins at the plot's edge. Every other number here, and the whole clouds
+  // card, is v1's own.
   const V1 = {
-    fruit: { bar: [82, 48, 974, 62.84], img: [82, -70.58, 300, 300], value: [1064, 69.67], name: [16.75, 67.42, 48.5, 24],
-      "mark 0": [78, 24, 4], "mark 5": [276.8, 24, 4], "mark 25": [1056, 24, 4], "num 5": [284.8, 20] },
+    fruit: { bar: [62, 48, 994, 62.84], img: [62, -70.58, 300, 300], value: [1064, 69.67], name: [0, 67.42, 48.5, 24],
+      "mark 0": [58, 24, 4], "mark 5": [260.8, 24, 4], "mark 25": [1056, 24, 4], "num 5": [268.8, 20] },
     clouds: { box: [803.53, 48, 212.27, 62.84], "cap 0": [626.66, 70, 4, 18.84], "cap 1": [1051.17, 70, 4, 18.84], circle: [16.58, 48, 62.84, 62.84],
       value: [1059.17, 68.67], "mark 0": [92, 24, 4], "mark 5": [272.88, 24, 4, 13], "mark 27": [1051.2, 24, 4], "num 5": [280.88, 20] },
   };

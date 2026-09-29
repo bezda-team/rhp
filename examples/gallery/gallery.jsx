@@ -88,10 +88,10 @@ const COLORS = ["pink", "#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "
 const FruitSlat = slat({
   thickness: { horizontal: 79 }, // seven rows in 552px, like v1
   inset: "8px",
-  room: { horizontal: { start: 82, end: 32 }, vertical: { start: 32, end: 30 } }, // for the names and values
+  room: { horizontal: { start: 62, end: 32 }, vertical: { start: 32, end: 30 } }, // for the names and values
   css: `
     .name { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--rhp-muted); }
-    .name:horizontal { text-align: center; --rhp-label-gap: 0px; }
+    .name:horizontal { text-align: start; --rhp-label-gap: 0px; }
     .bar { display: flex; align-items: center; overflow: hidden; --rhp-start-radius: 0px; --rhp-end-radius: 16px; }
     .bar:vertical { flex-direction: column-reverse; }
     .bar:hover { border: 4px solid var(--rhp-ink); }
