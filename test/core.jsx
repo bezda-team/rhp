@@ -1,5 +1,5 @@
 import { render } from "solid-js/web";
-import { createSignal, batch } from "solid-js";
+import { createSignal, createSelector, batch, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Plot, Scale, Chart, Bar, Dot, Label, Line, sortBy, cycle, every, slat, restyle } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/animate.js";
@@ -58,6 +58,12 @@ const [kbRefill, setKbRefill] = createSignal([3, 1, 2]);
 const [kbStill, setKbStill] = createSignal([3, 1, 2]);
 const Key = (d) => <div data-n={d.n}><Bar to={d.v} /></div>;
 const Typed = (d) => <div data-n={d.n}><Bar to={d.v} /><input class="kbi" /></div>;
+// One element for the row the reader is on (the pattern in the README): the tip is drawn for that row and for no other
+const [onRow, setOnRow] = createSignal(null);
+const isOnRow = createSelector(onRow);
+const rowAt = (e) => { const el = e.target.closest("[data-row]"); return el ? +el.dataset.row : null; };
+T.drawn = 0;
+const Tip = slat({ thickness: 24, room: { start: 60, end: 30 } }, (d) => <div data-row={d.index} data-n={d.n}><Label edge="start" class="one-name">{d.n}</Label><Bar to={d.v} /><Show when={(T.drawn++, isOnRow(d.index))}><Label at={d.v} class="one-tip">{d.v}</Label></Show></div>);
 const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
@@ -97,6 +103,11 @@ render(() => (
     <Chart class="kb-move" scale={[0, 10]}><Plot keyboard reorder="move" key="n" rows={kbMove()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-refill" scale={[0, 10]}><Plot keyboard reorder="refill" n={["a", "b", "c"]} v={kbRefill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-still" static scale={[0, 10]}><Plot keyboard n={["a", "b", "c"]} v={kbStill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
+    <div class="one-around" onPointerMove={(e) => setOnRow(rowAt(e))} onPointerDown={(e) => setOnRow(rowAt(e))}
+      onPointerLeave={(e) => e.pointerType !== "touch" && setOnRow(null)}
+      onFocusIn={(e) => setOnRow(rowAt(e))} onFocusOut={(e) => !e.currentTarget.contains(e.relatedTarget) && setOnRow(null)}>
+      <Chart class="one" scale={[0, 10]} ticks={false}><Plot keyboard n={["a", "b", "c"]} v={[3, 7, 5]}>{Tip}</Plot></Chart>
+    </div>
   </div>
 ), document.body);
 Object.assign(T, { setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

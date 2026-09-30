@@ -234,6 +234,24 @@ const open = async (url, opts = {}) => {
   });
   check("keyboard: a static Plot's row keeps its focus when it is drawn again, and the keys move the tab stop",
     [drawnAgain, await keys(".kb-still"), await press("ArrowUp"), (await keys(".kb-still"))[0]], [true, ["a-1 b-1 c0", "c"], ["b"], "a-1 b0 c-1"]);
+  // One element for the row the reader is on: the pattern the README documents, which rhp needs no state of its own for
+  const tip = () => p.evaluate(() => { const t = document.querySelectorAll(".one-tip"); return [t.length, t[0]?.closest("[data-row]")?.dataset.n ?? null]; });
+  check("one element: no row draws a tip until the reader is on it", await tip(), [0, null]);
+  await p.hover(".one [data-n=b] .rhp-bar");
+  check("one element: the row under the pointer draws it, and it is the only one in the page", await tip(), [1, "b"]);
+  const drawn = await p.evaluate(() => T.drawn);
+  await p.hover(".one [data-n=c] .rhp-bar");
+  check("one element: moving to the next row draws those two rows again, not all of them",
+    [await tip(), (await p.evaluate(() => T.drawn)) - drawn], [[1, "c"], 2]);
+  await p.hover(".one [data-n=a] .one-name");
+  check("one element: an edge label in the gutter counts as pointing at its row", await tip(), [1, "a"]);
+  await p.mouse.move(0, 0);
+  check("one element: the pointer leaving the chart takes it away", await tip(), [0, null]);
+  await p.focus(".one [data-n=b]");
+  check("one element: focus draws it too, so a keyboard reader gets the same tip", await tip(), [1, "b"]);
+  check("one element: the arrow keys move it", [await press("ArrowDown"), await tip()], [["c"], [1, "c"]]);
+  await p.evaluate(() => document.activeElement.blur());
+  check("one element: focus leaving takes it away", await tip(), [0, null]);
   check("no page errors", p.errors, []);
   await p.close();
 }

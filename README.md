@@ -2,7 +2,7 @@
 
 Website, with the guides and a gallery of live charts: https://rhp.vercel.app
 
-rhp builds plots out of ordinary elements placed by CSS with [SolidJS](https://www.solidjs.com), rather than drawing them into an SVG or a canvas. A plot is a stack of **slats**. A slat is one component, the template for every row or column, and it is made of **blocks**: Bar, Dot, Tick, Label, Cell, Area and Line. rhp creates one slat per data row and places it. When a value changes, only the expressions that read it re-run, and a block writes only the CSS variables that changed. There is no render loop and no virtual DOM.
+rhp builds plots out of HTML elements placed by CSS with [SolidJS](https://www.solidjs.com), rather than drawing them into an SVG or a canvas. You never write HTML: you write Solid components, and rhp puts the elements in the page. A plot is a stack of **slats**. A slat is one component, the template for every row or column, and it is made of **blocks**: Bar, Dot, Tick, Label, Cell, Area and Line. rhp creates one slat per data row and places it. When a value changes, only the expressions that read it re-run, and a block writes only the CSS variables that changed. There is no render loop and no virtual DOM.
 
 Version 2 started as a simplification of v1's design, then improved on its performance and functionality. v1 ("react html plots") was a React library in three packages (`rhp-core`, `rhp-base`, `rhp`); its code is on the `v1` branch.
 
@@ -24,13 +24,13 @@ With no build step, a page can import `@bezda/rhp/standalone`, one module with S
 <script type="module">
   import { Chart, Plot, Bar, Label, slat, html, render } from "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js";
 
-  const Row = slat({}, (d) => html`<div>
+  const Fruit = slat({}, (d) => html`<div>
     <${Label} edge="start">${() => d.name}<//>
     <${Bar} to=${() => d.value} />
   </div>`);
 
   render(() => html`<${Chart} scale=${[0, 30]}>
-    <${Plot} name=${["Apple", "Kiwi"]} value=${[12, 18]}>${Row}<//>
+    <${Plot} name=${["Apple", "Kiwi"]} value=${[12, 18]}>${Fruit}<//>
   <//>`, document.body);
 </script>
 ```
@@ -40,7 +40,7 @@ With no build step, a page can import `@bezda/rhp/standalone`, one module with S
 ```jsx
 import { Chart, Plot, Bar, Label, slat, sortBy, series } from "@bezda/rhp";
 
-const Row = slat({
+const Fruit = slat({
   thickness: 32,                     // px per slat along the stack
   room: { start: 104, end: 44 },     // px its labels need outside the plot, or "auto"
   css: `.slat:hover { background: color-mix(in srgb, var(--rhp-ink) 6%, transparent); }`,
@@ -54,17 +54,17 @@ const Row = slat({
 
 <Chart scale={[0, 30]} orientation="horizontal">
   <Plot name={["Apple", "Kiwi", "Lemon"]} value={values()} color={series()} order={sortBy("value", "desc")}>
-    {Row}
+    {Fruit}
   </Plot>
 </Chart>
 ```
 
-- Any Plot prop that is not a setting is a **data group**. Item i of each list goes to slat i as `d.name`, `d.value` and so on, and the longest list sets the slat count. A function of `d` is computed per slat and cached.
+- Any Plot prop that is not a setting is a **data group**. Item `i` of each list goes to slat `i` as `d.name`, `d.value` and so on, and the longest list sets the slat count. A function of `d` is computed per slat and cached.
 - `order` is a list of positions, or a function that returns one (`sortBy` is one such function). The slats slide to their positions and no DOM node moves.
 - `key` gives rows an identity, so a removed row takes its own slat with it.
 - `animate` on a Chart or Plot switches from CSS transitions to the JS version, where the numbers themselves move on one page clock.
-- `room` is the space outside the plot, in px, for what a slat draws there: names at the start, values at the end, and before and after the stack. With `room: "auto"` (or `start: "auto"`, `end: "auto"`), a side is as wide as its widest edge label, in CSS, the same on a server; a slat's CSS sizes those labels (`max-width`, wrapping) and the gutter follows, up to `--rhp-gutter-max` (40% of the chart). A side given in px stays as it is. Only an edge label that is a child of the slat's root element is measured, and rhp warns about one inside another element. When the widest label changes, the gutter and the track resize at once, without animating. Auto gutters lay rows out as a grid that spans the gutters (a row's background reaches under its name), and every change to an edge label lays out all the rows again, which Safari is slowest at. Give `room` in px for hundreds of rows, for names that change often (new data, or `reorder="refill"`), or when many of your readers use Safari. In Firefox, a name that wraps onto more lines under a column (vertical) needs `room` in px: Firefox sizes that gutter for one line.
-- `static` on a Chart is for data that doesn't change: each row is drawn once and keeps no signals, memos or effects, so a chart of 1,000 rows holds a sixth of the memory. If the Plot's data, order or direction does change, every row is drawn again, without animation. Hover styles, themes, resizing and the scale still work. A Plot can set `static` on its own, for a still layer under a live one.
+- `room` is the space outside the plot, in px, for what a slat draws there: names at the start, values at the end, and before and after the stack. With `room: "auto"` (or `start: "auto"`, `end: "auto"`), a side is as wide as its widest edge label, in CSS, the same on a server; a slat's CSS sizes those labels (`max-width`, wrapping) and the gutter follows, up to `--rhp-gutter-max` (40% of the chart). A side given in px stays as it is. Only an edge label that is a child of the slat's root element is measured, and rhp warns about one inside another element. When the widest label changes, the gutter and the track resize at once, without animating. Auto gutters lay slats out as a grid that spans the gutters (a slat's background reaches under its name), and every change to an edge label lays out all the slats again, which Safari is slowest at. Give `room` in px for hundreds of slats, for names that change often (new data, or `reorder="refill"`), or when many of your readers use Safari. In Firefox, a name that wraps onto more lines under a column (vertical) needs `room` in px: Firefox sizes that gutter for one line.
+- `static` on a Chart is for data that doesn't change: each slat is drawn once and keeps no signals, memos or effects, so a chart of 1,000 slats holds a sixth of the memory. If the Plot's data, order or direction does change, every slat is drawn again, without animation. Hover styles, themes, resizing and the scale still work. A Plot can set `static` on its own, for a still layer under a live one.
 
 ## Scales
 
@@ -77,7 +77,7 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
   <Scale ticks={every(5, { ends: true })}>
     {(t) => <div><Tick at={t.at} thick={1} /><Label at={t.at}>{t.at}</Label></div>}
   </Scale>
-  <Plot name={names} value={values()}>{Row}</Plot>
+  <Plot name={names} value={values()}>{Slat}</Plot>
 </Chart>
 ```
 
@@ -89,7 +89,7 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
 
 ## A second axis
 
-`cross={[min, max]}` on a Chart adds a second scale that runs across the rows, for scatter plots and line charts.
+`cross={[min, max]}` on a Chart adds a second scale that runs across the slats, for scatter plots and line charts.
 It is optional: a Chart without it draws as it always has, and the CSS for it is added the first time a chart has one.
 
 ```jsx
@@ -103,12 +103,12 @@ import { Chart, Plot, Dot, Label, Line } from "@bezda/rhp";
 </Chart>
 ```
 
-- An overlap Plot's rows all share the whole plot, so a Dot or Label with `cross` sits at its `at` on the scale and its `cross` on the cross scale.
+- An overlap Plot's slats all share the whole plot, so a Dot or Label with `cross` sits at its `at` on the scale and its `cross` on the cross scale.
   In a horizontal Chart the scale runs left to right and the cross scale bottom to top; in a vertical Chart, the other way round.
 - `Line` draws a line through `[x, y]` points, with x on the scale and y on the cross scale.
   `fill` fills under it, down to `base` (0 by default).
   Points out of x's order make a connected scatter plot.
-- Without a cross scale, a Line in a row is a sparkline: its y runs across the row's band, up to `peak` (the largest y by default).
+- Without a cross scale, a Line in a slat is a sparkline: its y runs across the slat's band, up to `peak` (the largest y by default).
 - The Chart draws the cross axis from `crossTicks` and `crossFormat`, like `ticks` and `format`, and makes room for its numbers.
   A horizontal Chart with a cross scale is 240px tall unless `height` says otherwise.
   An overlap Plot on a cross scale gets no room for names, since its points have none.
@@ -118,7 +118,7 @@ import { Chart, Plot, Dot, Label, Line } from "@bezda/rhp";
 A slat's `css` is plain CSS for the classes you put in the slat.
 Two additions cover what changes with the orientation:
 
-- **`:horizontal` and `:vertical`** match a slat root or a block drawn in that orientation: `.bar:vertical { … }`, `.row:horizontal .name { … }`.
+- **`:horizontal` and `:vertical`** match a slat root or a block drawn in that orientation: `.bar:vertical { … }`, `.slat:horizontal .name { … }`.
 - **Knobs** are CSS variables rhp reads, named along the value axis, so one rule fits both orientations. The start is the scale's start side of a bar (its `from`), the end is its value (its `to`), also for a bar that runs backward.
 
 | Knob | What it sets |
@@ -136,25 +136,80 @@ Theme colors are `var(--rhp-ink)`, `var(--rhp-muted)`, `var(--rhp-series-1)` and
 
 ## Interaction
 
-- **Hover states are slat CSS.** `.row:hover .tip { opacity: 1 }` shows a value, lifts a mark or lights a band, with no state at all.
+- **Hover states are slat CSS.** `.slat:hover .tip { opacity: 1 }` shows a value, lifts a mark or lights a band, with no state at all.
 - **Put your own transitions on elements inside blocks.** rhp transitions a block's position and length (CSS version) or moves its numbers (JS version). A `transition` set on a block replaces rhp's, so the block would jump to new values. A medal's face inside a Dot, or a tag inside a Bar, can move and fade on its own time. `transition-delay` on a block is safe: it delays rhp's transition without replacing it.
 - **Elements inside blocks meet the page's CSS.** The guard covers rhp's blocks and slat roots, not what a slat puts in them, so give inner elements class names a page won't use.
-- **Handlers go on blocks or around the chart.** Blocks take `onClick`, `data-*` and `aria-*` like plain elements. A handler on an element around the chart can read `e.target.closest("[data-app]")`. Whatever it decides goes back into the Plot as data (`focus={app()}`), and the slats restyle from `d.focus`.
+- **Handlers go on blocks or around the chart.**
+  Blocks take `onClick`, `data-*` and `aria-*` like plain elements, and a slat's root is an ordinary element, so a slat wires its own handlers and already knows its row: `(d) => <div onClick={() => pick(d.index)}>`.
+  A handler on an element around the chart reads the row from the event instead (`e.target.closest("[data-row]")`).
+  Whatever it decides goes back into the Plot as data (`focus={app()}`), and the slats restyle from `d.focus`.
 - **A Plot drawn over another takes the pointer.** Its box covers the chart. Give an overlay (a today line, a crosshair) `style={{ "pointer-events": "none" }}` so the pointer reaches the Plot under it.
-- **Keyboard: `keyboard` on a Plot makes its rows take focus.**
-  Tab stops at one row (the row focused last, or else the first shown), the arrow keys go to the row shown before or after it, and Home and End to the first and the last.
-  What a hover shows can show on focus too: `.row:is(:hover, :focus-visible) .tip { opacity: 1 }` in the slat's CSS, or an `onFocus` handler on the row.
-  A row keeps its focus when the rows are sorted, moved in the page or drawn again.
-  A key that something inside the row handles (a field, or a handler that calls `preventDefault`) stays with it.
-- **Follow the pointer with `pointermove`, not `pointerover`.** When a hover changes the layout (a badge appears), the browser fires `pointerover` under a pointer that hasn't moved, and the choice can flip back.
+- **Keyboard: `keyboard` on a Plot makes its slats take focus.**
+  Tab stops at one slat (the slat focused last, or else the first shown), the arrow keys go to the slat shown before or after it, and Home and End to the first and the last.
+  What a hover shows can show on focus too: `.slat:is(:hover, :focus-visible) .tip { opacity: 1 }` in the slat's CSS, or an `onFocus` handler on the slat.
+  A slat keeps its focus when the rows are sorted, moved in the page or drawn again.
+  A key that something inside the slat handles (a field, or a handler that calls `preventDefault`) stays with it.
+
+**One element for the slat the reader is on.**
+A tip, a callout, a menu or a readout shows for one slat at a time, so only one of them belongs in the page.
+One in every slat, hidden until the reader is on it, puts a node per slat in the DOM tree to show a single node.
+Holding the row the reader is on in a signal draws it in that slat alone, and rhp needs nothing of its own for it: the row is in the event, and a slat is an ordinary element.
+
+```jsx
+import { createSignal, createSelector, Show } from "solid-js";
+
+const [on, setOn] = createSignal(null);   // the row the reader is on
+const isOn = createSelector(on);          // only the slats that change are drawn again
+const rowAt = (e) => { const el = e.target.closest("[data-row]"); return el ? +el.dataset.row : null; };
+
+const Slat = slat({ thickness: 32, room: { start: 80, end: 40 } }, (d) => (
+  <div data-row={d.index}>
+    <Label edge="start">{d.name}</Label>
+    <Bar to={d.value} />
+    <Show when={isOn(d.index)}><Label at={d.value} class="tip">{d.value}</Label></Show>
+  </div>
+));
+
+<div onPointerMove={(e) => setOn(rowAt(e))} onPointerDown={(e) => setOn(rowAt(e))}
+  onPointerLeave={(e) => e.pointerType !== "touch" && setOn(null)}
+  onFocusIn={(e) => setOn(rowAt(e))} onFocusOut={(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+  <Chart scale={[0, 30]}>
+    <Plot name={names} value={values()} keyboard>{Slat}</Plot>
+  </Chart>
+</div>
+```
+
+- **The row comes from the event.**
+  `data-row={d.index}` on the slat root names its row, and `closest` finds it from whatever the pointer is actually on, a block or an element inside one.
+  An edge label is drawn outside the plot, in the gutter, and is still inside the slat root, so pointing at a name counts as pointing at its row.
+  When rows come and go, hold the row's key rather than its number (`data-row={d.name}`, and drop the `+`), because removing a row moves the numbers of the rows after it.
+- **`Show` is what saves the nodes.**
+  The tip exists in the slat the reader is on and nothing is in the page for the others, so a chart of 500 slats holds one tip instead of 500.
+  It is also where anything expensive belongs: an image, a sparkline, a menu, a panel of numbers.
+- **`createSelector` keeps the work to two slats.**
+  Moving from one slat to the next draws those two again, not all of them.
+  The state passed in as a value (`on={on()}`) is read by every slat instead, which is the cost this pattern is here to avoid.
+  A data group that is a function of the row (`on={(d) => isOn(d.index)}`) is worked out per slat and cached, so it stays at two.
+- **Follow the pointer with `pointermove`, not `pointerover`.**
+  When a hover changes the layout (a badge appears), the browser fires `pointerover` under a pointer that hasn't moved, and the choice can flip back.
+  `pointerdown` covers a tap, and letting a `pointerleave` whose `pointerType` is `"touch"` pass keeps what the tap chose once the finger lifts.
+- **`focusin` and `focusout` give a keyboard the same tip.**
+  With `keyboard` on the Plot the slats take focus, so Tab and the arrow keys move the tip exactly as the pointer does.
+  A tip that only follows `:hover` is nothing to a reader who doesn't use a pointer.
+- **The state is yours.**
+  A legend key, a click that pins a row (`on() ?? pinned()`), another chart or a timer can all write it, and rhp has no interaction state of its own to get in the way.
+  It reaches anything outside the chart too, like a readout above it.
+- **What isn't per slat is a Plot of its own.**
+  A crosshair, a today line or a band across the plot is one Plot over the other, fed with the picked row's values: `<Plot overlap slats={on() == null ? 0 : 1} close={rows()[on()]?.close} style={{ "pointer-events": "none" }}>`.
+  It draws nothing at all while nothing is picked.
 
 ## Screen readers
 
 A chart reads as what it shows, with nothing to set up:
 
 - **A Chart with a `label` is a figure with that name**: `<Chart label="Fruit sold this week">`. It also takes `aria-labelledby`, `aria-describedby` and any other `aria-*` prop, and `id`.
-- **A chart's rows are a list**, each row a list item, read in the order the rows are shown. Sorted rows slide on screen but keep their place in the page, so a sorted Plot lists them in display order in `aria-owns`, and gives each row an id for it (a slat's own id, if it sets one). A Plot inside a row (a heatmap's cells) and an overlap Plot (dots in one band, an overlay) are part of their rows, not lists of their own.
-- **A row reads its text**: its Labels and anything else the slat writes. A row that shows only shapes (a bar with no value) needs words: add a Label, or text a screen reader reads but the page doesn't show (a visually hidden class, in the slat's CSS).
+- **A chart's slats are a list**, each slat a list item, read in the order the slats are shown. Sorted slats slide on screen but keep their place in the page, so a sorted Plot lists them in display order in `aria-owns`, and gives each slat an id for it (a slat's own id, if it sets one). A Plot inside a slat (a heatmap's cells) and an overlap Plot (dots in one band, an overlay) are part of their slats, not lists of their own.
+- **A slat reads its text**: its Labels and anything else the slat writes. A slat that shows only shapes (a bar with no value) needs words: add a Label, or text a screen reader reads but the page doesn't show (a visually hidden class, in the slat's CSS).
 - **A slat root with a role of its own keeps it** (`role="group"`, a button). The axis and a Scale are left out: their numbers are for the eye.
 
 ## On a server
@@ -172,7 +227,7 @@ rhp draws charts on a server too, as HTML, with Solid's `renderToString` (SolidS
 Slats are meant to be shared, so a slat looks and lays out the same in every app:
 
 - **The slat owns its CSS and its sizes.** Its `css` applies to that slat type's own slats only (the slat root included). It never reaches the page or another slat type. `thickness`, `inset` and `room` are its layout.
-- **A style editor can change a slat type's CSS live.** `restyle(Row, css)` rewrites that type's one stylesheet, and every slat of the type restyles in place without being made again. Half-typed CSS still stays inside the slat.
+- **A style editor can change a slat type's CSS live.** `restyle(Slat, css)` rewrites that type's one stylesheet, and every slat of the type restyles in place without being made again. Half-typed CSS still stays inside the slat.
 - **The app passes a theme object.** The keys are `series` (a list), `positive`, `negative`, `ink`, `muted`, `grid`, `surface`, `low`, `high` and `font`. Pass it with `<Theme value={…}>` around the app, or with `theme` on a Chart. Every `color` prop takes a theme key (`"series-3"`, `"positive"`) or any CSS color.
 - **No page stylesheet changes a chart.** Every declaration rhp or a slat makes is `!important` inside `@layer rhp.place, rhp.slat, rhp.core`, and that layer order is declared first in the document. A zero-specificity guard covers the box, text and paint properties of rhp's elements, and the chart body inherits nothing from the page.
 - **The page still controls the chart root's box**: width, margin, display, background and border, everything except its padding, which holds the gutters. It also controls opacity, cursor, filter and transform on any element.
