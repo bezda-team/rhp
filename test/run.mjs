@@ -252,6 +252,18 @@ const open = async (url, opts = {}) => {
   check("one element: the arrow keys move it", [await press("ArrowDown"), await tip()], [["c"], [1, "c"]]);
   await p.evaluate(() => document.activeElement.blur());
   check("one element: focus leaving takes it away", await tip(), [0, null]);
+  // A shape a block wears: the clip it compiles to, which way it turns, and the curve it keeps
+  const clip = (q) => p.evaluate((q) => getComputedStyle(document.querySelector(q)).clipPath, q);
+  check("shape: a block wears it as a clip, in px where it was written in px", await clip(".shape-h .sh"),
+    (v) => /^polygon/.test(v) && v.includes("26px") && v.split(",").length === 5);
+  check("shape: the same shape turns with the chart", await Promise.all([clip(".shape-h .sh"), clip(".shape-v .sh")]),
+    ([h, v]) => h !== v && v.includes("26px") && v.split(",").length === 5);
+  check("shape: a bar that runs backward wears it the other way round", [await clip(".shape-h .shb") !== await clip(".shape-h .sh"), (await clip(".shape-h .shb")).includes("26px")], [true, true]);
+  check("shape: a curve becomes clip-path: shape() where the browser takes it, and lines where it doesn't", await clip(".shape-h .shc"),
+    (v) => (v.startsWith("shape(") && v.includes("curve")) || (v.startsWith("polygon(") && v.split(",").length > 8));
+  check("smooth: Area joins its points with curves, and without it with lines", await p.evaluate(() => [
+    document.querySelector(".shape-h .sm path").getAttribute("d").includes("C"),
+    document.querySelector(".shape-h .st path").getAttribute("d").includes("C")]), [true, false]);
   // Place: a point with no size of its own, at its value, in both directions and on a cross scale
   const spot = (chart) => p.evaluate((chart) => {
     const el = document.querySelector(chart + " .spot"), track = el.closest(".rhp-plot").getBoundingClientRect();

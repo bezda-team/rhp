@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 import { createSignal, createSelector, batch, Show } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Plot, Scale, Chart, Bar, Dot, Label, Line, Place, sortBy, cycle, every, slat, restyle } from "../src/index.js";
+import { Plot, Scale, Chart, Bar, Dot, Label, Line, Place, Area, shape, sortBy, cycle, every, slat, restyle } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/animate.js";
 const T = (window.T = {});
 // Keyed and unkeyed removal
@@ -75,6 +75,18 @@ const Relisted = slat({ css: [LOOK, null, OWN] }, (d) => <div><Bar to={d.v} clas
 // A look reaches a chart through what rhp writes on every block, not through the class names one chart happens to use
 const Looked = slat({ css: `.rhp-label[data-rhp-edge=start] { color: rgb(1, 1, 1); } .rhp-bar { background: rgb(4, 5, 6); } .rhp-label[data-rhp-at] { color: rgb(7, 8, 9); }` },
   (d) => <div><Label edge="start">n</Label><Bar to={d.v} /><Label at={d.v}>{d.v}</Label></div>);
+// A shape a block wears instead of its rectangle: a gable 26px in from the block's end, and one with a curve in it
+const GABLE = shape(["M", 0, 0], ["L", "-26px", 0], ["L", 1, 0.5], ["L", "-26px", 1], ["L", 0, 1], ["Z"]);
+const CURVY = shape(["M", 0, 0], ["C", 0.4, 0, 0.6, 1, 1, 0.5], ["L", 0, 1], ["Z"]);
+const Shaped = slat({}, (d) => (
+  <div>
+    <Bar to={d.v} shape={GABLE} class="sh" />
+    <Bar from={9} to={2} shape={GABLE} class="shb" />
+    <Bar to={d.v} shape={CURVY} class="shc" />
+    <Area points={[[0, 1], [4, 3], [8, 2]]} smooth class="sm" />
+    <Area points={[[0, 1], [4, 3], [8, 2]]} class="st" />
+  </div>
+));
 const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
@@ -114,6 +126,8 @@ render(() => (
     <Chart class="kb-move" scale={[0, 10]}><Plot keyboard reorder="move" key="n" rows={kbMove()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-refill" scale={[0, 10]}><Plot keyboard reorder="refill" n={["a", "b", "c"]} v={kbRefill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-still" static scale={[0, 10]}><Plot keyboard n={["a", "b", "c"]} v={kbStill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
+    <Chart class="shape-h" scale={[0, 10]} ticks={false}><Plot v={[6]}>{Shaped}</Plot></Chart>
+    <Chart class="shape-v" orientation="vertical" scale={[0, 10]} ticks={false} height={200}><Plot v={[6]}>{Shaped}</Plot></Chart>
     <Chart class="spot-h" scale={[0, 100]} ticks={false}><Plot v={[40]}>{Hung}</Plot></Chart>
     <Chart class="spot-v" orientation="vertical" scale={[0, 100]} ticks={false} height={200}><Plot v={[40]}>{Hung}</Plot></Chart>
     <Chart class="spot-x" scale={[0, 10]} cross={[0, 100]} height={200} ticks={false}><Plot overlap v={[5]}>{(d) => <div><Place at={d.v} cross={25} class="spot"><i /></Place></div>}</Plot></Chart>

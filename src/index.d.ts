@@ -24,6 +24,26 @@ export type Color =
   | "high"
   | (string & {});
 
+/** A coordinate of a shape: a share of the block's box (0 to 1), or a CSS length. A length that starts with a minus
+ * is measured back from the far end ("-26px" is 26px in from the block's end), which is what a cap wants. */
+export type Coord = number | string;
+
+/** One step of a shape, in SVG's commands: move, line, a quadratic curve, a cubic curve, or close. */
+export type ShapeCommand =
+  | ["M", Coord, Coord]
+  | ["L", Coord, Coord]
+  | ["Q", Coord, Coord, Coord, Coord]
+  | ["C", Coord, Coord, Coord, Coord, Coord, Coord]
+  | ["Z"];
+
+/** A shape a block can wear instead of its rectangle: made by shape(), given to a block's `shape`. */
+export interface Shape {
+  /** Whether it holds a curve (and so needs clip-path: shape(), with lines as the fallback). */
+  readonly curved: boolean;
+  /** Its clip for a chart drawn this way, made once per direction and kept. */
+  clip(vertical: boolean, backward: boolean): string;
+}
+
 /** A timing curve: a CSS name, cubic-bezier numbers, or a function of 0..1. */
 export type Ease = "linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out" | [number, number, number, number] | ((t: number) => number);
 
@@ -177,6 +197,8 @@ type BlockProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "color" | "style"> & 
 };
 
 export interface BarProps extends BlockProps {
+  /** An outline to wear instead of its rectangle, from shape(). */
+  shape?: Shape;
   /** Where the bar starts on the value axis (0 by default). */
   from?: number;
   /** Where it ends. */
@@ -187,6 +209,8 @@ export interface BarProps extends BlockProps {
 }
 
 export interface DotProps extends BlockProps {
+  /** An outline to wear instead of its circle, from shape(). */
+  shape?: Shape;
   /** Its value on the value axis. */
   at?: number;
   /** Its diameter: a CSS length (10px by default), or a share of the band. */
@@ -199,6 +223,8 @@ export interface DotProps extends BlockProps {
 }
 
 export interface TickProps extends BlockProps {
+  /** An outline to wear instead of its rectangle, from shape(). */
+  shape?: Shape;
   at?: number;
   /** Its length across the band: a CSS length, or a share of the band. */
   thick?: number | string;
@@ -215,12 +241,16 @@ export interface PlaceProps extends BlockProps {
 }
 
 export interface CellProps extends BlockProps {
+  /** An outline to wear instead of its rectangle, from shape(). */
+  shape?: Shape;
   /** Colored on the scale, from the theme's low to its high. */
   value?: number;
   color?: Color;
 }
 
 export interface LabelProps extends BlockProps {
+  /** An outline to wear instead of its box, from shape(). */
+  shape?: Shape;
   /** Just after this value (or before it, with side="before"). */
   at?: number;
   side?: "after" | "before";
@@ -240,6 +270,8 @@ export interface LineProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "co
   fill?: boolean;
   /** Where the fill ends on a cross scale (0 by default). */
   base?: number;
+  /** Join the points with curves instead of straight lines. */
+  smooth?: boolean;
   color?: Color;
   style?: JSX.CSSProperties | string;
 }
@@ -251,6 +283,8 @@ export interface AreaProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "co
   peak?: number;
   /** Drawn both ways from the middle of the band (violins), not up from its edge (ridgelines). */
   mirror?: boolean;
+  /** Join the points with curves instead of straight lines. */
+  smooth?: boolean;
   color?: Color;
   style?: JSX.CSSProperties | string;
 }
@@ -271,6 +305,16 @@ export const Label: (props: LabelProps) => JSX.Element;
 export function Area(props: AreaProps): JSX.Element;
 /** A line through points: a sparkline in a slat, or on a Chart's cross scale a line chart. */
 export function Line(props: LineProps): JSX.Element;
+
+/** An outline for a block to wear instead of its rectangle, drawn in the block's own box: the first coordinate of
+ * each point runs along the value axis, from the block's start to its end, and the second across the band. rhp turns
+ * it for a vertical chart and for a bar that runs backward, so one shape is written once.
+ *
+ *     const gable = shape(["M", 0, 0], ["L", "-26px", 0], ["L", 1, .5], ["L", "-26px", 1], ["L", 0, 1], ["Z"]);
+ *     <Bar to={d.roof} shape={gable} />
+ */
+export function shape(...commands: ShapeCommand[]): Shape;
+export function shape(commands: readonly ShapeCommand[]): Shape;
 
 /** A slat type: the slat function with its own CSS and layout, so it looks and lays out the same in any app. */
 export function slat<T extends object = Record<string, any>>(fn: (d: Row<T>) => JSX.Element): Slat<T>;

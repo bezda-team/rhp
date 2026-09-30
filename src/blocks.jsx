@@ -24,6 +24,26 @@ export const tok = (c) => {
 // 0.6 -> "60%", and "2px" stays "2px"
 const length = (v) => (typeof v === "number" ? v * 100 + "%" : v);
 
+// A point of a path, and the run of points between two of them. With `smooth`, each pair is joined by a curve that
+// leans on its neighbours (a Catmull-Rom spline as cubics), so a shape drawn from data can be round without anyone
+// writing a path. Without it they are joined by straight lines, as before.
+const fmt = ([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`;
+const trace = (pts, smooth) => {
+
+  if (!smooth || pts.length < 3) return pts.map(fmt).join("L");
+
+  let d = fmt(pts[0]);
+
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1];
+    const before = pts[i - 1] ?? a, after = pts[i + 2] ?? b;
+    d += "C" + fmt([a[0] + (b[0] - before[0]) / 6, a[1] + (b[1] - before[1]) / 6]) + " "
+      + fmt([b[0] - (after[0] - a[0]) / 6, b[1] - (after[1] - a[1]) / 6]) + " " + fmt(b);
+  }
+
+  return d;
+};
+
 // Writes an element's CSS variables, and only the ones that changed (the first ones now, the rest in the next frame).
 // back(v) is for a Bar: whether it runs backward.
 export function writeVars(el, vars, back) {
@@ -91,7 +111,7 @@ function browserBlock(props, mine, base, vars, attrs, back) {
         {props.children}
       </div>
     );
-    writeVars(el, vars, back);
+    writeVars(el, (v) => vars(v ?? orientation() === "vertical"), back);
     return el;
   }
 
@@ -103,7 +123,7 @@ function browserBlock(props, mine, base, vars, attrs, back) {
     const dir = short(orientation());
     const st = props.style;
     const a = attrs?.();
-    const v = vars();
+    const v = vars(orientation() === "vertical");
 
     if (c !== prev?.c) el.setAttribute("class", c);
     if (dir !== prev?.dir) el.setAttribute("data-rhp-o", dir);
@@ -136,7 +156,7 @@ function browserBlock(props, mine, base, vars, attrs, back) {
 function serverBlock(props, mine, base, vars, attrs, back) {
 
   const orientation = useOrientation();
-  const v = vars();
+  const v = vars(orientation() === "vertical");
   const css = withVars(props.style, v);
 
   return (
@@ -154,26 +174,28 @@ function block(base, own, vars, back) {
 
   const mine = new Set([...MINE, ...own]);
 
-  return (props) => blockElement(props, mine, base, () => vars(props), null, back);
+  return (props) => blockElement(props, mine, base, (vertical) => vars(props, vertical), null, back);
 }
 
 // A span along the value axis from `from` (0 by default) to `to`: bars, boxes, whiskers, stems, Gantt tasks.
 // `thick` is its size across the band, a CSS length ("2px") or a share of the band (0.6).
-export const Bar = block("rhp-bar", ["from", "to", "thick", "color"], (p) => ({
+export const Bar = block("rhp-bar", ["from", "to", "thick", "color", "shape"], (p, vertical) => ({
   "--rhp-from": p.from ?? 0,
   "--rhp-to": p.to ?? 0,
   "--rhp-thick": length(p.thick),
   "--rhp-color": tok(p.color),
+  "--rhp-clip": p.shape?.clip(vertical, (p.to ?? 0) < (p.from ?? 0)),
 }), (v) => v["--rhp-to"] < v["--rhp-from"]);
 
 // A round point at value `at`. `size` is its diameter (10px by default) and `across` places it across the band (0..1).
 // In a Chart with a cross scale, `cross` places it on that scale instead (a scatter plot's y).
-export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color"], (p) => ({
+export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color", "shape"], (p, vertical) => ({
   "--rhp-at": p.at,
   "--rhp-size": length(p.size),
   "--rhp-across": p.across,
   "--rhp-cross": p.cross,
   "--rhp-color": tok(p.color),
+  "--rhp-clip": p.shape?.clip(vertical, false),
 }));
 
 // A place on the chart and nothing else: no size, no color, nothing drawn. Whatever a slat puts inside it sits at
@@ -186,23 +208,25 @@ export const Place = block("rhp-place", ["at", "across", "cross"], (p) => ({
 }));
 
 // A short line across the band at value `at` (medians, targets). `thick` is its length across the band.
-export const Tick = block("rhp-tick", ["at", "thick", "color"], (p) => ({
+export const Tick = block("rhp-tick", ["at", "thick", "color", "shape"], (p, vertical) => ({
   "--rhp-at": p.at,
   "--rhp-thick": length(p.thick),
   "--rhp-color": tok(p.color),
+  "--rhp-clip": p.shape?.clip(vertical, false),
 }));
 
 // A cell that fills its slat, colored by `value` on the scale (from --rhp-low to --rhp-high), for heatmaps
-export const Cell = block("rhp-cell", ["value", "color"], (p) => ({
+export const Cell = block("rhp-cell", ["value", "color", "shape"], (p, vertical) => ({
   "--rhp-value": p.value,
   "--rhp-color": tok(p.color),
+  "--rhp-clip": p.shape?.clip(vertical, false),
 }));
 
 // Text on the value axis. at={v} puts it just after the value v (side="before" puts it just before), and
 // edge="start" or "end" puts it outside the track, in the chart's gutter (names, totals). In a Chart with a cross scale,
 // `cross` places it on that scale too (a point's label).
-const LABEL = new Set([...MINE, "at", "side", "edge", "cross"]);
-export const Label = (props) => blockElement(props, LABEL, "rhp-label", () => ({ "--rhp-at": props.at, "--rhp-cross": props.cross }), () => ({
+const LABEL = new Set([...MINE, "at", "side", "edge", "cross", "shape"]);
+export const Label = (props) => blockElement(props, LABEL, "rhp-label", (vertical) => ({ "--rhp-at": props.at, "--rhp-cross": props.cross, "--rhp-clip": props.shape?.clip(vertical, false) }), () => ({
   "data-rhp-edge": props.edge,
   "data-rhp-side": props.side,
   "data-rhp-at": props.edge == null ? "" : undefined,
@@ -216,7 +240,7 @@ export const Label = (props) => blockElement(props, LABEL, "rhp-label", () => ({
 export function Area(props) {
 
   const orientation = useOrientation();
-  const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "mirror", "color"]);
+  const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "mirror", "color", "smooth"]);
 
   const span = createMemo(() => {
     const pts = p.points ?? [];
@@ -233,13 +257,16 @@ export function Area(props) {
     const peak = p.peak ?? Math.max(...pts.map((q) => q[1]));
     const vertical = orientation() === "vertical";
     // u runs along the value axis and t across the band, both from 0 to 1000 in the shape's box
-    const xy = (u, t) => (vertical ? `${(1000 - t).toFixed(1)},${(1000 - u).toFixed(1)}` : `${u.toFixed(1)},${t.toFixed(1)}`);
+    const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
     const ut = pts.map(([x, y]) => [((x - x0) / w) * 1000, Math.min(1, y / (peak || 1))]);
-    const line = p.mirror
-      ? [...ut.map(([u, y]) => xy(u, 500 - y * 500)), ...ut.slice().reverse().map(([u, y]) => xy(u, 500 + y * 500))]
-      : [xy(ut[0][0], 1000), ...ut.map(([u, y]) => xy(u, 1000 - y * 1000)), xy(ut[ut.length - 1][0], 1000)];
+    // The outline: the top edge (both edges when mirrored), and the base under it, which is never curved
+    if (p.mirror) {
+      return "M" + trace(ut.map(([u, y]) => xy(u, 500 - y * 500)), p.smooth)
+        + "L" + trace(ut.slice().reverse().map(([u, y]) => xy(u, 500 + y * 500)), p.smooth) + "Z";
+    }
 
-    return "M" + line.join("L") + "Z";
+    return "M" + fmt(xy(ut[0][0], 1000)) + "L" + trace(ut.map(([u, y]) => xy(u, 1000 - y * 1000)), p.smooth)
+      + "L" + fmt(xy(ut[ut.length - 1][0], 1000)) + "Z";
   });
 
   // The path is also given in CSS (d: var(--rhp-d)) so a page's "all: revert" can't remove the shape
@@ -272,7 +299,7 @@ export function Line(props) {
 
   const orientation = useOrientation();
   const crossed = useCrossed();
-  const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "fill", "base", "color"]);
+  const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "fill", "base", "color", "smooth"]);
 
   // [smallest x, largest x, smallest y, largest y], y on the cross scale (a flat line still gets a box to be drawn in)
   const box = createMemo(() => {
@@ -304,13 +331,13 @@ export function Line(props) {
     // up is y's place across, 0 to 1: on the cross scale within the box, or in the band
     const up = crossed() ? (y) => (y - y0) / (y1 - y0) : (y) => Math.min(1, y / (peak || 1));
     // u runs along the value axis and t across (from the top when horizontal), both from 0 to 1000 in the line's box
-    const xy = (u, t) => (vertical ? `${(1000 - t).toFixed(1)},${(1000 - u).toFixed(1)}` : `${u.toFixed(1)},${t.toFixed(1)}`);
+    const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
     const ut = pts.map(([x, y]) => [((x - x0) / w) * 1000, 1000 - up(y) * 1000]);
-    const line = "M" + ut.map(([u, t]) => xy(u, t)).join("L");
+    const line = "M" + trace(ut.map(([u, t]) => xy(u, t)), p.smooth);
     if (!p.fill) return [line, ""];
 
     const floor = crossed() ? 1000 - up(p.base ?? 0) * 1000 : 1000;
-    const under = line + "L" + xy(ut[ut.length - 1][0], floor) + "L" + xy(ut[0][0], floor) + "Z";
+    const under = line + "L" + fmt(xy(ut[ut.length - 1][0], floor)) + "L" + fmt(xy(ut[0][0], floor)) + "Z";
 
     return [line, under];
   });

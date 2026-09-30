@@ -249,6 +249,11 @@
     position: absolute;
   }
 
+  /* A block wears the shape it was given (see shape()). A slat's own CSS can clip it differently: its layer wins. */
+  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell) {
+    clip-path: var(--rhp-clip, none);
+  }
+
   :is(.rhp-area, .rhp-line)[data-rhp-o="h"] {
     left: calc(var(--rhp-lo) * 100%);
     width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%);
