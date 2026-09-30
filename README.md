@@ -119,8 +119,8 @@ A slat's `css` is plain CSS for the classes you put in the slat.
 Two additions cover what changes with the orientation:
 
 - **`:horizontal` and `:vertical`** match a slat root or a block drawn in that orientation: `.bar:vertical { … }`, `.slat:horizontal .name { … }`.
-- **`part` names a piece of a slat**, so CSS written for one chart finds the same piece in another: `name`, `value`, `mark`, `track`, `note`, or a name of your own. A look then targets `[part=mark]` rather than whatever class that chart happened to use.
 - **A look is a list of CSS.** `css: [WEATHER, own]` takes someone else's look as it is and adds to it, and the pieces are joined in order, so yours wins. A look with its layout is an ordinary object to export and import: `slat(WEATHER, (d) => …)`.
+- **A look aims at what rhp writes**, not at the class names one chart happens to use: `.rhp-bar`, `.rhp-dot`, `.rhp-tick`, `.rhp-cell`, `.rhp-label[data-rhp-edge="start"]` (the name beside a slat) and `.rhp-label[data-rhp-at]` (a value on the scale). Those are on every chart, so a look fits charts written before it. What is particular to one chart stays in that chart's own CSS.
 - **Knobs** are CSS variables rhp reads, named along the value axis, so one rule fits both orientations. The start is the scale's start side of a bar (its `from`), the end is its value (its `to`), also for a bar that runs backward.
 
 | Knob | What it sets |

@@ -72,9 +72,9 @@ const LOOK = `.lk { background: rgb(1, 2, 3); }`;
 const OWN = `.lk { --rhp-radius: 4px; }`;
 const Listed = slat({ css: [LOOK, OWN] }, (d) => <div><Bar to={d.v} class="lk" /></div>);
 const Relisted = slat({ css: [LOOK, null, OWN] }, (d) => <div><Bar to={d.v} class="lk twin" /></div>);
-// A look written against the parts a slat names, not against its class names
-const Parted = slat({ css: `[part=mark] { background: rgb(4, 5, 6); } [part=value] { color: rgb(7, 8, 9); }` },
-  (d) => <div><Bar to={d.v} part="mark" /><Label at={d.v} part="value">{d.v}</Label></div>);
+// A look reaches a chart through what rhp writes on every block, not through the class names one chart happens to use
+const Looked = slat({ css: `.rhp-label[data-rhp-edge=start] { color: rgb(1, 1, 1); } .rhp-bar { background: rgb(4, 5, 6); } .rhp-label[data-rhp-at] { color: rgb(7, 8, 9); }` },
+  (d) => <div><Label edge="start">n</Label><Bar to={d.v} /><Label at={d.v}>{d.v}</Label></div>);
 const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
@@ -119,7 +119,7 @@ render(() => (
     <Chart class="spot-x" scale={[0, 10]} cross={[0, 100]} height={200} ticks={false}><Plot overlap v={[5]}>{(d) => <div><Place at={d.v} cross={25} class="spot"><i /></Place></div>}</Plot></Chart>
     <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Listed}</Plot></Chart>
     <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Relisted}</Plot></Chart>
-    <Chart class="parts" scale={[0, 10]}><Plot v={[6]}>{Parted}</Plot></Chart>
+    <Chart class="looked" scale={[0, 10]}><Plot v={[6]}>{Looked}</Plot></Chart>
     <div class="one-around" onPointerMove={(e) => setOnRow(rowAt(e))} onPointerDown={(e) => setOnRow(rowAt(e))}
       onPointerLeave={(e) => e.pointerType !== "touch" && setOnRow(null)}
       onFocusIn={(e) => setOnRow(rowAt(e))} onFocusOut={(e) => !e.currentTarget.contains(e.relatedTarget) && setOnRow(null)}>

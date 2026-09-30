@@ -11,10 +11,6 @@ export type Row<T extends object = Record<string, any>> = Readonly<T> & {
   readonly position: number | null;
 };
 
-/** What an element is in its slat, so CSS written for one chart finds the same piece in another: the name beside it,
- * the value it shows, the mark that shows it, the track behind the mark, or a note. Any other name is your own. */
-export type Part = "name" | "value" | "mark" | "track" | "note" | (string & {});
-
 /** A theme key or any CSS color. A theme key follows the page's theme: "series-1", "positive", "muted"... */
 export type Color =
   | `series-${number}`
@@ -175,10 +171,8 @@ export interface ScaleProps {
   children: Slat<ScaleTick> | ((t: Row<ScaleTick>) => JSX.Element);
 }
 
-type BlockProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "color" | "style" | "part"> & {
+type BlockProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "color" | "style"> & {
   style?: JSX.CSSProperties | string;
-  /** What this element is in the slat: see Part. */
-  part?: Part;
   children?: JSX.Element;
 };
 

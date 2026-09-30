@@ -272,10 +272,10 @@ const open = async (url, opts = {}) => {
     return [getComputedStyle(own).backgroundColor, getComputedStyle(own).borderRadius, getComputedStyle(twin).backgroundColor,
       own.closest("[data-rhp-slat]").dataset.rhpSlat === twin.closest("[data-rhp-slat]").dataset.rhpSlat];
   }), ["rgb(1, 2, 3)", "4px", "rgb(1, 2, 3)", false]);
-  check("a look can be written against the parts a slat names", await p.evaluate(() => [
-    getComputedStyle(document.querySelector(".parts .rhp-bar")).backgroundColor,
-    getComputedStyle(document.querySelector(".parts .rhp-label")).color,
-    document.querySelector(".parts .rhp-bar").getAttribute("part")]), ["rgb(4, 5, 6)", "rgb(7, 8, 9)", "mark"]);
+  check("a look reaches a chart through what rhp writes: its blocks, its edge labels and its labels at a value", await p.evaluate(() => [
+    getComputedStyle(document.querySelector(".looked .rhp-label[data-rhp-edge=start]")).color,
+    getComputedStyle(document.querySelector(".looked .rhp-bar")).backgroundColor,
+    getComputedStyle(document.querySelector(".looked .rhp-label[data-rhp-at]")).color]), ["rgb(1, 1, 1)", "rgb(4, 5, 6)", "rgb(7, 8, 9)"]);
   check("no page errors", p.errors, []);
   await p.close();
 }
