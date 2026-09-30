@@ -11,6 +11,10 @@ export type Row<T extends object = Record<string, any>> = Readonly<T> & {
   readonly position: number | null;
 };
 
+/** What an element is in its slat, so CSS written for one chart finds the same piece in another: the name beside it,
+ * the value it shows, the mark that shows it, the track behind the mark, or a note. Any other name is your own. */
+export type Part = "name" | "value" | "mark" | "track" | "note" | (string & {});
+
 /** A theme key or any CSS color. A theme key follows the page's theme: "series-1", "positive", "muted"... */
 export type Color =
   | `series-${number}`
@@ -46,8 +50,9 @@ export interface Room {
 
 /** A slat type's own CSS and layout. */
 export interface SlatLayout {
-  /** CSS scoped to this type's slats. Theme colors are var(--rhp-<key>); :horizontal and :vertical match an orientation. */
-  css?: string;
+  /** CSS scoped to this type's slats. Theme colors are var(--rhp-<key>); :horizontal and :vertical match an orientation.
+   * A list is joined, so a look someone else wrote is taken as it is and added to: css: [WEATHER, own]. */
+  css?: string | readonly (string | null | undefined)[];
   /** px per slat along the stack: a row's height, or a column's width. Without one, slats share what the chart has: a
    * vertical chart's width, a horizontal chart's height (one with no height gives its slats 32px each and grows with them). */
   thickness?: PerOrientation<number>;
@@ -170,8 +175,10 @@ export interface ScaleProps {
   children: Slat<ScaleTick> | ((t: Row<ScaleTick>) => JSX.Element);
 }
 
-type BlockProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "color" | "style"> & {
+type BlockProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "color" | "style" | "part"> & {
   style?: JSX.CSSProperties | string;
+  /** What this element is in the slat: see Part. */
+  part?: Part;
   children?: JSX.Element;
 };
 
@@ -202,6 +209,15 @@ export interface TickProps extends BlockProps {
   /** Its length across the band: a CSS length, or a share of the band. */
   thick?: number | string;
   color?: Color;
+}
+
+export interface PlaceProps extends BlockProps {
+  /** Its value on the value axis. */
+  at?: number;
+  /** Where it sits across the band, 0 to 1 (0.5 by default). */
+  across?: number;
+  /** Its value on the Chart's cross scale, instead of across. */
+  cross?: number;
 }
 
 export interface CellProps extends BlockProps {
@@ -255,6 +271,8 @@ export const Bar: (props: BarProps) => JSX.Element;
 export const Dot: (props: DotProps) => JSX.Element;
 export const Tick: (props: TickProps) => JSX.Element;
 export const Cell: (props: CellProps) => JSX.Element;
+/** A place on the chart and nothing else: no size and nothing drawn, so whatever you put inside it sits at its value. */
+export const Place: (props: PlaceProps) => JSX.Element;
 export const Label: (props: LabelProps) => JSX.Element;
 export function Area(props: AreaProps): JSX.Element;
 /** A line through points: a sparkline in a slat, or on a Chart's cross scale a line chart. */
@@ -264,7 +282,7 @@ export function Line(props: LineProps): JSX.Element;
 export function slat<T extends object = Record<string, any>>(fn: (d: Row<T>) => JSX.Element): Slat<T>;
 export function slat<T extends object = Record<string, any>>(layout: SlatLayout, fn: (d: Row<T>) => JSX.Element): Slat<T>;
 /** New CSS for a slat type (made with css): its slats restyle in place. For style editors and live previews. */
-export function restyle(type: { scope?: string; css?: string }, css: string): void;
+export function restyle(type: { scope?: string; css?: unknown }, css: string | readonly (string | null | undefined)[]): void;
 /** Call where the app starts, on the server and in the browser, when the page links @bezda/rhp/rhp.css itself. */
 export function linkedCss(): void;
 

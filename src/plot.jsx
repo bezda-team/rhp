@@ -72,7 +72,7 @@ const ROW = {
 
 // A block returned as a slat (in a Plot without overlap) gets placed as the row, which overrides part of its own
 // placing (a Bar starts at 0 and fills the band). We warn about it once per page.
-const BLOCK = /(^|\s)rhp-(bar|dot|tick|label|cell|area)(\s|$)/;
+const BLOCK = /(^|\s)rhp-(bar|dot|tick|label|cell|place|area)(\s|$)/;
 let warned = false;
 const warnBare = (el) => {
 

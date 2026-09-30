@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 import { createSignal, createSelector, batch, Show } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Plot, Scale, Chart, Bar, Dot, Label, Line, sortBy, cycle, every, slat, restyle } from "../src/index.js";
+import { Plot, Scale, Chart, Bar, Dot, Label, Line, Place, sortBy, cycle, every, slat, restyle } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/animate.js";
 const T = (window.T = {});
 // Keyed and unkeyed removal
@@ -64,6 +64,17 @@ const isOnRow = createSelector(onRow);
 const rowAt = (e) => { const el = e.target.closest("[data-row]"); return el ? +el.dataset.row : null; };
 T.drawn = 0;
 const Tip = slat({ thickness: 24, room: { start: 60, end: 30 } }, (d) => <div data-row={d.index} data-n={d.n}><Label edge="start" class="one-name">{d.n}</Label><Bar to={d.v} /><Show when={(T.drawn++, isOnRow(d.index))}><Label at={d.v} class="one-tip">{d.v}</Label></Show></div>);
+// Place: no size, nothing drawn, and what a slat hangs inside it sits at its value
+const Hung = slat({ css: `.spot > i { position: absolute; width: 9px; height: 9px; background: rgb(9, 9, 9); }` },
+  (d) => <div><Bar to={d.v} /><Place at={d.v} class="spot"><i /></Place></div>);
+// A look given as a list: both halves apply, and a type made from the same list shares its sheet
+const LOOK = `.lk { background: rgb(1, 2, 3); }`;
+const OWN = `.lk { --rhp-radius: 4px; }`;
+const Listed = slat({ css: [LOOK, OWN] }, (d) => <div><Bar to={d.v} class="lk" /></div>);
+const Relisted = slat({ css: [LOOK, null, OWN] }, (d) => <div><Bar to={d.v} class="lk twin" /></div>);
+// A look written against the parts a slat names, not against its class names
+const Parted = slat({ css: `[part=mark] { background: rgb(4, 5, 6); } [part=value] { color: rgb(7, 8, 9); }` },
+  (d) => <div><Bar to={d.v} part="mark" /><Label at={d.v} part="value">{d.v}</Label></div>);
 const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
@@ -103,6 +114,12 @@ render(() => (
     <Chart class="kb-move" scale={[0, 10]}><Plot keyboard reorder="move" key="n" rows={kbMove()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-refill" scale={[0, 10]}><Plot keyboard reorder="refill" n={["a", "b", "c"]} v={kbRefill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-still" static scale={[0, 10]}><Plot keyboard n={["a", "b", "c"]} v={kbStill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
+    <Chart class="spot-h" scale={[0, 100]} ticks={false}><Plot v={[40]}>{Hung}</Plot></Chart>
+    <Chart class="spot-v" orientation="vertical" scale={[0, 100]} ticks={false} height={200}><Plot v={[40]}>{Hung}</Plot></Chart>
+    <Chart class="spot-x" scale={[0, 10]} cross={[0, 100]} height={200} ticks={false}><Plot overlap v={[5]}>{(d) => <div><Place at={d.v} cross={25} class="spot"><i /></Place></div>}</Plot></Chart>
+    <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Listed}</Plot></Chart>
+    <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Relisted}</Plot></Chart>
+    <Chart class="parts" scale={[0, 10]}><Plot v={[6]}>{Parted}</Plot></Chart>
     <div class="one-around" onPointerMove={(e) => setOnRow(rowAt(e))} onPointerDown={(e) => setOnRow(rowAt(e))}
       onPointerLeave={(e) => e.pointerType !== "touch" && setOnRow(null)}
       onFocusIn={(e) => setOnRow(rowAt(e))} onFocusOut={(e) => !e.currentTarget.contains(e.relatedTarget) && setOnRow(null)}>

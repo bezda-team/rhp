@@ -176,6 +176,15 @@ export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color"], 
   "--rhp-color": tok(p.color),
 }));
 
+// A place on the chart and nothing else: no size, no color, nothing drawn. Whatever a slat puts inside it sits at
+// value `at`, so a bubble, a badge or a needle of your own needs no CSS to find its value. `across` (0 to 1) places
+// it across the band, and in a Chart with a cross scale `cross` places it on that scale.
+export const Place = block("rhp-place", ["at", "across", "cross"], (p) => ({
+  "--rhp-at": p.at,
+  "--rhp-across": p.across,
+  "--rhp-cross": p.cross,
+}));
+
 // A short line across the band at value `at` (medians, targets). `thick` is its length across the band.
 export const Tick = block("rhp-tick", ["at", "thick", "color"], (p) => ({
   "--rhp-at": p.at,

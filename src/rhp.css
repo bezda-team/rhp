@@ -10,7 +10,7 @@
   /* The guard: resets what a page might set on any div, span or svg, so a page's CSS can't bend a chart out of shape.
      It has zero specificity so everything below (and a slat's CSS) still applies. We leave opacity, cursor, filter and
      transform to the page on purpose. */
-  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path) {
+  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path) {
     display: revert;
     box-sizing: border-box;
     margin: 0;
@@ -68,7 +68,7 @@
   }
 
   /* display: revert skips the hidden attribute, so it is set again here */
-  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line)[hidden] {
+  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line)[hidden] {
     display: none;
   }
 
@@ -241,11 +241,11 @@
     --rhp-hi: clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
   }
 
-  :is(.rhp-dot, .rhp-tick, .rhp-label) {
+  :is(.rhp-dot, .rhp-tick, .rhp-label, .rhp-place) {
     --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)));
   }
 
-  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
+  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line) {
     position: absolute;
   }
 
@@ -329,6 +329,22 @@
     bottom: calc(var(--rhp-p) * 100%);
     left: calc(var(--rhp-across, .5) * 100%);
     translate: -50% 50%;
+  }
+
+  /* A Place has no size and draws nothing, so what a slat hangs inside it sits at its value. */
+  .rhp-place {
+    width: 0;
+    height: 0;
+  }
+
+  .rhp-place[data-rhp-o="h"] {
+    left: calc(var(--rhp-p) * 100%);
+    top: calc(var(--rhp-across, .5) * 100%);
+  }
+
+  .rhp-place[data-rhp-o="v"] {
+    bottom: calc(var(--rhp-p) * 100%);
+    left: calc(var(--rhp-across, .5) * 100%);
   }
 
   .rhp-tick {
@@ -526,7 +542,7 @@
   }
 
   /* CSS version: positions and lengths move with transitions */
-  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-area, .rhp-line, .rhp-gridline) {
+  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-place, .rhp-area, .rhp-line, .rhp-gridline) {
     transition-property: left, width, bottom, height, background-color;
     transition-duration: var(--rhp-length-time, .15s);
     transition-timing-function: var(--rhp-length-ease, ease-out);
@@ -579,7 +595,7 @@
   }
 
   /* JS version: the numbers themselves move, so nothing is transitioned */
-  [data-rhp-animate="js"] :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
+  [data-rhp-animate="js"] :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-place, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
     transition: none;
   }
 
@@ -588,7 +604,7 @@
   }
 
   /* overlap: every slat shares one band (stacked segments, strips of dots, layers) */
-  .rhp-plot[data-rhp-overlap]> :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
+  .rhp-plot[data-rhp-overlap]> :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line) {
     inset: 0;
   }
 
@@ -597,7 +613,7 @@
       transition: none;
     }
 
-    .rhp-chart :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
+    .rhp-chart :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-place, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
       transition: none;
     }
   }

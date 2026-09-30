@@ -12,7 +12,7 @@
     height: var(--rhp-height, 240px);
   }
 
-  .rhp-chart[data-rhp-cross] :is(.rhp-dot, .rhp-label[data-rhp-at]) {
+  .rhp-chart[data-rhp-cross] :is(.rhp-dot, .rhp-label[data-rhp-at], .rhp-place) {
     --rhp-q: calc((var(--rhp-cross) - var(--rhp-cross-min)) / (var(--rhp-cross-max) - var(--rhp-cross-min)));
   }
 
@@ -23,6 +23,15 @@
   }
 
   .rhp-chart[data-rhp-cross] .rhp-dot[data-rhp-o="v"] {
+    left: calc(var(--rhp-q, var(--rhp-across, .5)) * 100%);
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-place[data-rhp-o="h"] {
+    top: auto;
+    bottom: calc(var(--rhp-q, (1 - var(--rhp-across, .5))) * 100%);
+  }
+
+  .rhp-chart[data-rhp-cross] .rhp-place[data-rhp-o="v"] {
     left: calc(var(--rhp-q, var(--rhp-across, .5)) * 100%);
   }
 

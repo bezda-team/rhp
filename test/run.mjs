@@ -252,6 +252,30 @@ const open = async (url, opts = {}) => {
   check("one element: the arrow keys move it", [await press("ArrowDown"), await tip()], [["c"], [1, "c"]]);
   await p.evaluate(() => document.activeElement.blur());
   check("one element: focus leaving takes it away", await tip(), [0, null]);
+  // Place: a point with no size of its own, at its value, in both directions and on a cross scale
+  const spot = (chart) => p.evaluate((chart) => {
+    const el = document.querySelector(chart + " .spot"), track = el.closest(".rhp-plot").getBoundingClientRect();
+    const box = el.getBoundingClientRect(), child = el.querySelector("i").getBoundingClientRect(), cs = getComputedStyle(el);
+    return { size: [Math.round(box.width), Math.round(box.height)], paint: cs.backgroundColor,
+      alongTrack: Math.round(((chart === ".spot-v" ? track.bottom - box.bottom : box.left - track.left) / (chart === ".spot-v" ? track.height : track.width)) * 100),
+      acrossTrack: Math.round(((chart === ".spot-v" ? box.left - track.left : track.bottom - box.bottom) / (chart === ".spot-v" ? track.width : track.height)) * 100),
+      childOn: Math.abs(child.left - box.left) < 1 && Math.abs(child.top - box.top) < 1 };
+  }, chart);
+  check("Place: no size, nothing drawn, and it sits at its value with what it holds", await spot(".spot-h"),
+    { size: [0, 0], paint: "rgba(0, 0, 0, 0)", alongTrack: 40, acrossTrack: 50, childOn: true });
+  check("Place: the same in a vertical chart", await spot(".spot-v"),
+    { size: [0, 0], paint: "rgba(0, 0, 0, 0)", alongTrack: 40, acrossTrack: 50, childOn: true });
+  check("Place: on a cross scale it sits at its cross value across the band", (await spot(".spot-x")).acrossTrack, 25);
+  // A look is a list of CSS, and two types made from the same list still own their look: a restyle changes one, not both
+  check("a look given as a list applies both halves, and a type made from the same list is still its own type", await p.evaluate(() => {
+    const own = document.querySelector(".look .lk"), twin = document.querySelector(".look .lk.twin");
+    return [getComputedStyle(own).backgroundColor, getComputedStyle(own).borderRadius, getComputedStyle(twin).backgroundColor,
+      own.closest("[data-rhp-slat]").dataset.rhpSlat === twin.closest("[data-rhp-slat]").dataset.rhpSlat];
+  }), ["rgb(1, 2, 3)", "4px", "rgb(1, 2, 3)", false]);
+  check("a look can be written against the parts a slat names", await p.evaluate(() => [
+    getComputedStyle(document.querySelector(".parts .rhp-bar")).backgroundColor,
+    getComputedStyle(document.querySelector(".parts .rhp-label")).color,
+    document.querySelector(".parts .rhp-bar").getAttribute("part")]), ["rgb(4, 5, 6)", "rgb(7, 8, 9)", "mark"]);
   check("no page errors", p.errors, []);
   await p.close();
 }

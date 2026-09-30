@@ -625,6 +625,7 @@ export function restyle(fn, css) {
 
   if (!fn?.scope) throw new Error("rhp: restyle takes a slat type made by slat() with css");
 
+  css = joinCss(css);
   checkRadii(css);
   fn.css = css;
   const entry = sheets.get(fn.scope);
@@ -637,18 +638,21 @@ export function restyle(fn, css) {
 //   inset      the empty share of the band on each side of a Bar, Tick or Area (0.18 by default), or a CSS length
 //   room       px its labels need outside the plot: { start, end, before, after } (or per orientation).
 //              "auto" for start or end (or room: "auto") sizes that side to its widest edge label.
+// A slat type's CSS can be a list, so a look someone else wrote is taken as it is and added to: css: [WEATHER, own]
+const joinCss = (css) => (Array.isArray(css) ? css.filter((c) => c != null).join("\n") : css);
+
 const made = new Map(); // CSS hash -> how many slat types were made with that CSS
 export function slat(def, fn) {
 
   if (typeof def === "function") return def;
 
   fn.layout = def;
-  fn.css = def.css;
+  fn.css = joinCss(def.css);
 
-  if (def.css != null) {
+  if (fn.css != null) {
     // The scope is the hash of its CSS (numbered when another type has the same CSS) so each type has its own
-    checkRadii(def.css);
-    const h = hash(def.css);
+    checkRadii(fn.css);
+    const h = hash(fn.css);
     const n = (made.get(h) ?? 0) + 1;
     made.set(h, n);
     fn.scope = "rhp-s" + h + (n > 1 ? "-" + n : "");
