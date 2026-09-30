@@ -2,7 +2,7 @@
 
 Website, with the guides and a gallery of live charts: https://rhp.vercel.app
 
-rhp builds plots out of HTML elements placed by CSS with [SolidJS](https://www.solidjs.com), rather than drawing them into an SVG or a canvas. You never write HTML: you write Solid components, and rhp puts the elements in the page. A plot is a stack of **slats**. A slat is one component, the template for every row or column, and it is made of **blocks**: Bar, Dot, Tick, Label, Cell, Area and Line. rhp creates one slat per data row and places it. When a value changes, only the expressions that read it re-run, and a block writes only the CSS variables that changed. There is no render loop and no virtual DOM.
+rhp builds plots out of HTML elements placed by CSS with [SolidJS](https://www.solidjs.com), rather than drawing them into an SVG or a canvas. You never write HTML: you write Solid components, and rhp puts the elements in the page. A plot is a stack of **slats**. A slat is one component, the template for every row or column, and it is made of **blocks**: Bar, Dot, Tick, Label, Cell, Place, Area and Line. rhp creates one slat per data row and places it. When a value changes, only the expressions that read it re-run, and a block writes only the CSS variables that changed. There is no render loop and no virtual DOM.
 
 Version 2 started as a simplification of v1's design, then improved on its performance and functionality. v1 ("react html plots") was a React library in three packages (`rhp-core`, `rhp-base`, `rhp`); its code is on the `v1` branch.
 
@@ -119,6 +119,8 @@ A slat's `css` is plain CSS for the classes you put in the slat.
 Two additions cover what changes with the orientation:
 
 - **`:horizontal` and `:vertical`** match a slat root or a block drawn in that orientation: `.bar:vertical { … }`, `.slat:horizontal .name { … }`.
+- **`part` names a piece of a slat**, so CSS written for one chart finds the same piece in another: `name`, `value`, `mark`, `track`, `note`, or a name of your own. A look then targets `[part=mark]` rather than whatever class that chart happened to use.
+- **A look is a list of CSS.** `css: [WEATHER, own]` takes someone else's look as it is and adds to it, and the pieces are joined in order, so yours wins. A look with its layout is an ordinary object to export and import: `slat(WEATHER, (d) => …)`.
 - **Knobs** are CSS variables rhp reads, named along the value axis, so one rule fits both orientations. The start is the scale's start side of a bar (its `from`), the end is its value (its `to`), also for a bar that runs backward.
 
 | Knob | What it sets |
@@ -133,6 +135,16 @@ Two additions cover what changes with the orientation:
 | `--rhp-toward-end` | read it: the direction from a Bar's start to its end, for gradients: `linear-gradient(var(--rhp-toward-end), …)` |
 
 Theme colors are `var(--rhp-ink)`, `var(--rhp-muted)`, `var(--rhp-series-1)` and so on, and a block's `color` is `var(--rhp-color)`.
+
+## Hanging your own elements on the chart
+
+A `Place` draws nothing. It has no size and no color, and whatever a slat puts inside it sits at its value, so an element of your own needs no CSS to find where it goes.
+
+```jsx
+<Place at={d.value} part="note"><span class="bubble">{d.value} kg</span></Place>
+```
+
+`at` is the value axis, `across` (0 to 1) places it across the band, and on a Chart with a cross scale `cross` places it on that scale. It is the block for a bubble, a badge, a needle or a photo: the ones that are yours to draw, where rhp only has to say where.
 
 ## Interaction
 
