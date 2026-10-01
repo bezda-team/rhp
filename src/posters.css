@@ -1,0 +1,197 @@
+/* rhp's poster looks: the gallery's, for <Poster look="…">. Optional, and not in rhp's own CSS: a page that wants them
+   imports this file once (import "@bezda/rhp/posters.css", or a <link> to dist/posters.css).
+
+   A Poster is a magazine-style panel around a chart: kicker, headline, dek, the chart, a note. These rules are the
+   panel's paper, type and spacing, and each look's own (.poster.day, .poster.ai, ...), some of them reaching into the
+   example drawn inside it. They are plain page CSS, outside rhp's layers, so a page's own rules can change any of it.
+
+   The looks name their fonts and fall back to the system's when a font isn't on the page: Bricolage Grotesque, Fraunces,
+   Barlow Condensed and IBM Plex Mono. */
+
+.poster {
+  --poster-display: "Bricolage Grotesque Variable", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --poster-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.poster { margin: 0; padding: 20px 20px 14px; border-radius: 16px; background: #ffffff; color: #1c2433; overflow: hidden; line-height: 1.5; }
+.poster figcaption { display: grid; gap: 5px; margin-bottom: 16px; }
+.poster .kicker { font: 600 10.5px/1.3 var(--poster-mono); letter-spacing: .16em; text-transform: uppercase; opacity: .72; }
+.poster .headline { font: 800 32px/1 var(--poster-display); letter-spacing: -0.02em; text-wrap: balance; }
+.poster .dek { font-size: 14px; line-height: 1.45; opacity: .82; max-width: 46ch; }
+.poster .note { display: block; margin-top: 12px; font-size: 11px; line-height: 1.4; opacity: .62; }
+.poster .keys { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; }
+.poster .keys i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+/* A choice inside a poster (a year, an order): joined buttons, the one in use filled. Each look gives its colors. */
+.poster .choice { display: inline-flex; width: fit-content; }
+.poster .choice button { font: inherit; color: inherit; background: none; cursor: pointer; border: 1.5px solid currentColor; margin-left: -1.5px; }
+.poster .choice button:first-child { margin-left: 0; border-radius: 6px 0 0 6px; }
+.poster .choice button:last-child { border-radius: 0 6px 6px 0; }
+.poster .choice button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; position: relative; }
+@media (max-width: 480px) { .poster { padding: 16px 14px 12px; } .poster .headline { font-size: 26px; } }
+/* Gold rush: a sports-page medal table on warm white. */
+.poster.medals { background: #f7f3ec; color: #111214; }
+.poster.medals .kicker { color: #8a6412; opacity: 1; }
+.poster.medals .headline { font: 800 46px/.92 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .01em; text-transform: uppercase; }
+.poster.medals .keys i.gold { background: radial-gradient(circle at 30% 26%, #fff4c4, #e0b43f 46%, #a87a14); }
+.poster.medals .keys i.silver { background: radial-gradient(circle at 30% 26%, #fff, #bfc5cb 46%, #858d95); }
+.poster.medals .keys i.bronze { background: radial-gradient(circle at 30% 26%, #ffe2c9, #cf8a55 46%, #8a4b23); }
+/* Anatomy of a coffee: a café menu on warm cream. */
+.poster.coffee { background: #f3ebe0; color: #2b1b12; }
+.poster.coffee .kicker { color: #9a5a2a; opacity: 1; }
+.poster.coffee .headline { font: 800 38px/1 "Fraunces Variable", Georgia, serif; letter-spacing: -0.02em; }
+.poster.coffee .keys i.espresso { background: linear-gradient(90deg, #24150c, #8d5b33); }
+.poster.coffee .keys i.milk { background: #e9dac4; box-shadow: inset 0 0 0 1px #d8c6ac; }
+.poster.coffee .keys i.foam { background: #fff; box-shadow: inset 0 0 0 1px #d8c6ac; }
+/* Where the battery goes: a phone's settings screen. */
+/* Multiple: a cream page and navy ink, after a printed infographic. The chart grows with the poster, so the pie's
+   square stays about as tall as it is wide. */
+.poster.ai { background: #f4f1e9; color: #273149; container-type: inline-size; padding: 26px 24px 16px; }
+.poster.ai :is(.kicker, .dek) { display: none; }
+.poster.ai .headline { font: 650 clamp(24px, 5.6cqw, 48px)/1.08 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; letter-spacing: -0.03em; }
+.poster.ai .note { color: #69718a; opacity: 1; }
+.poster.ai .rhp-chart[data-rhp-o="v"] { --rhp-height: clamp(230px, 55cqw, 520px) !important; }
+/* The paragraph and heading over the tubes, a plain element in the Chart, as wide as the tubes. */
+.poster.ai .side { position: absolute; top: 0; right: 0; width: var(--bars); pointer-events: none; }
+.poster.ai .side p { margin: 0; font-size: clamp(11px, 2.3cqw, 15px); line-height: 1.4; color: var(--rhp-muted); }
+.poster.ai .side b { display: block; margin-top: .9em; font-size: clamp(12px, 2.2cqw, 19px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; text-align: center; }
+.poster.ai .rhp-chart[data-rhp-o="h"] .side { display: none; }
+/* A narrow poster stacks them: the pie, then the paragraph and the tubes across the whole width. The chart is the
+   poster less 4px of padding, so 444px here is the slats' 440px. */
+@container (max-width: 444px) {
+  .poster.ai .rhp-chart { --pitch: 25cqw !important; }
+  .poster.ai .rhp-chart[data-rhp-o="v"] { --rhp-height: calc(100cqw + var(--side) + 40cqw + 110px) !important; }
+}
+@container (max-width: 440px) {
+  .poster.ai .side { top: calc(100cqw + 22px); }
+  .poster.ai .side p { font-size: 13px; }
+  .poster.ai .side b { font-size: 15px; }
+}
+
+.poster.battery { background: #f5f5f7; color: #1d1d1f; }
+.poster.battery .kicker { font-family: system-ui, sans-serif; letter-spacing: .08em; opacity: .6; }
+.poster.battery .headline { font: 800 34px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+.poster.battery .keys button { font: inherit; color: inherit; background: none; border: 0; border-radius: 99px; padding: 2px 8px 2px 4px; margin: 0 -8px 0 -4px; cursor: pointer; }
+.poster.battery .keys button:hover { background: rgb(29 29 31 / .07); }
+.poster.battery .keys button.off { opacity: .35; }
+/* A year in books: a bookshop's shelf card. */
+.poster.books { background: #f7f1e6; color: #2a2118; }
+.poster.books .kicker { color: #8a5a3a; opacity: 1; }
+.poster.books .headline { font: 800 38px/1 "Fraunces Variable", Georgia, serif; letter-spacing: -0.02em; }
+.poster.books .dek { font-style: italic; }
+/* Where the wind blows from: a harbour's weather board. */
+.poster.wind { background: linear-gradient(165deg, #eef6f9, #d4e8f1); color: #0b2a3c; }
+.poster.wind .kicker { color: #ff6b4a; opacity: 1; }
+.poster.wind .headline { font: 800 34px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+/* An ageing country: a census poster. */
+.poster.census { background: #f4f1ea; color: #1f2933; }
+.poster.census .headline { font-size: 36px; }
+.poster.census .keys { align-items: center; }
+.poster.census .choice { margin-right: 4px; }
+.poster.census .choice button { padding: 3px 10px; font-weight: 700; font-variant-numeric: tabular-nums; border-color: rgb(31 41 51 / .35); }
+.poster.census .choice button[aria-pressed="true"] { background: #1f2933; border-color: #1f2933; color: #f4f1ea; }
+.poster.census .choice button:not([aria-pressed="true"]):hover { background: rgb(31 41 51 / .07); }
+/* Hotter than normal: climate stripes at night. */
+.poster.climate { background: #0d1117; color: #e8ecf2; }
+.poster.climate .kicker { color: #f58058; opacity: 1; }
+.poster.climate .headline { font: 800 36px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em;
+  background: linear-gradient(90deg, #78b1d6, #e8ecf2 45%, #f58058); -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* Where the salary goes: a banking app's month summary. */
+.poster.budget { background: #fff; color: #1c2433; box-shadow: inset 0 0 0 1px #e6e9ef; }
+.poster.budget .kicker { color: #0b8a63; opacity: 1; }
+.poster.budget .headline { font: 800 32px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+.poster.budget .dek b { font-size: 20px; letter-spacing: -0.02em; color: #0b8a63; }
+/* Today's goals: a watch face at night. */
+.poster.watch { background: #0a0a0c; color: #f5f5f7; }
+.poster.watch .kicker { color: #f43f5e; opacity: 1; }
+.poster.watch .headline { font: 800 36px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
+/* 365 afternoons: a weather feature, cool to warm. */
+.poster.weather { background: linear-gradient(170deg, #fbf4ea, #eef4fa 70%); color: #1f2a37; }
+.poster.weather .kicker { color: #c4342c; opacity: 1; }
+.poster.weather .headline { font: 800 40px/.95 "Barlow Condensed", "Arial Narrow", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.poster.weather .heat-key { display: inline-flex; align-items: center; gap: 6px; margin-left: 4px; font-size: 12px; opacity: .85; }
+.poster.weather .heat-key i { width: 96px; height: 8px; border-radius: 99px;
+  background: linear-gradient(90deg, rgb(59 130 196), rgb(120 181 196), rgb(233 196 106), rgb(238 129 72), rgb(196 52 44)); }
+/* The string section: a concert programme. */
+.poster.strings { background: #121110; color: #f3e9d2; }
+.poster.strings .kicker { color: #d08a3c; opacity: 1; }
+.poster.strings .headline { font: 800 38px/1 "Fraunces Variable", Georgia, serif; letter-spacing: -0.02em; }
+.poster.strings .dek { font-style: italic; }
+/* Back on your feet sooner: a clinical trial's result card. */
+.poster.clinic { background: #f3faf8; color: #0f3d3a; }
+.poster.clinic .kicker { color: #0e9f8a; opacity: 1; }
+.poster.clinic .headline { font: 800 32px/1.02 system-ui, -apple-system, sans-serif; letter-spacing: -0.035em; }
+/* The dek reads out the capsule under the pointer: one line, so the chart under it never moves */
+.poster.clinic .dek { max-width: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 480px) { .poster.clinic .dek { font-size: 13px; } }
+/* The sound of a bell: a music app's waveform. */
+.poster.sound { background: radial-gradient(120% 90% at 50% 0%, #2a1d48, #0e0c14 62%); color: #f4f1ff; }
+.poster.sound .kicker { color: #ec4899; opacity: 1; }
+.poster.sound .headline { font: 800 36px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
+.poster.sound .strike { cursor: pointer; border-radius: 10px; }
+.poster.sound .strike:focus-visible { outline: 2px solid #ec4899; outline-offset: 6px; }
+/* Base camp to summit: an alpine poster at dawn. */
+.poster.alpine { background: linear-gradient(180deg, #dce9f4, #f4ede3); color: #13293d; }
+.poster.alpine .kicker { color: #c96524; opacity: 1; }
+.poster.alpine .headline { font: 800 44px/.92 "Barlow Condensed", "Arial Narrow", sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.poster.alpine .choice { display: flex; margin-top: 10px; }
+.poster.alpine .choice button { padding: 5px 12px 4px; font: 700 13px/1.1 "Barlow Condensed", "Arial Narrow", sans-serif; text-transform: uppercase;
+  letter-spacing: .07em; color: #13293d; border-color: #13293d; }
+.poster.alpine .choice button[aria-pressed="true"] { background: #13293d; color: #fff; }
+.poster.alpine .choice button:not([aria-pressed="true"]):hover { background: rgb(19 41 61 / .08); }
+/* From plot to keys: an architect's drawing sheet. */
+.poster.drawing { color: #141414; background-color: #fbfaf7;
+  background-image: linear-gradient(#efece6 1px, transparent 1px), linear-gradient(90deg, #efece6 1px, transparent 1px); background-size: 16px 16px; }
+.poster.drawing .kicker { color: #ff5a1f; opacity: 1; }
+.poster.drawing .headline { font: 800 34px/1 system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
+/* A month on the market: the salmon pages. */
+.poster.market { background: #fff1e5; color: #33302e; }
+.poster.market .kicker { color: #990f3d; opacity: 1; }
+.poster.market .headline { font: 600 36px/1.05 "Fraunces Variable", Georgia, serif; letter-spacing: -0.015em; }
+.poster.market .ohlc { display: flex; flex-wrap: wrap; gap: 2px 14px; margin: -4px 0 14px; padding: 7px 0; border-block: 1px solid #eadbcc;
+  font-size: 12px; font-variant-numeric: tabular-nums; }
+.poster.market .ohlc .up { color: #0d7680; }
+.poster.market .ohlc .down { color: #990f3d; }
+
+/* One in ten: hatched paper. No hue of its own, so the rings keep theirs. A pool of white puts the circle on clean paper. */
+.poster.trials {
+  color: #141a2e;
+  background:
+    radial-gradient(56% 50% at 50% 58%, #ffffff 0 40%, rgb(255 255 255 / 0) 100%),
+    repeating-linear-gradient(-45deg, rgb(19 24 42 / .05) 0 1.2px, transparent 1.2px 9px),
+    linear-gradient(165deg, #f5f6fa, #dcdfe8);
+}
+/* The chart's box follows the circle in it, so no empty band is left above and below. The poster is the container the
+   height is measured against, and the slat's CSS sizes the circle from the same width. */
+.poster.trials { container-type: inline-size; }
+.poster.trials .rhp-chart { --rhp-height: clamp(286px, calc(103cqw - 86px), 542px) !important; }
+.poster.trials .kicker { color: #46506e; opacity: 1; }
+.poster.trials .headline { font: 800 40px/1 var(--poster-display); letter-spacing: -0.03em; }
+.poster.trials .keys { margin: -4px 0 2px; font-weight: 600; }
+/* The readout lives in the chart, so it stays on the middle of the circle whatever the rings do. Text and nothing else.
+   --on is the color of the ring being read, darkened so the words hold up on white. */
+.poster.trials .hub { position: relative; z-index: 2; display: grid; place-items: center; pointer-events: none; }
+.poster.trials .hub > div { width: clamp(84px, calc(28cqw - 36px), 150px); display: grid; gap: 2px; text-align: center;
+  color: color-mix(in oklab, var(--on, #2c3555) 76%, #0b1026); transition: color .2s; }
+.poster.trials .hub b { font: 800 clamp(20px, 6.2cqw, 38px)/1 var(--poster-display); letter-spacing: -.035em; }
+.poster.trials .hub span { font-size: clamp(9px, 1.9cqw, 12px); line-height: 1.25; opacity: .72; text-wrap: balance; }
+.poster.trials .rhp-chart[data-rhp-o="h"] .hub { display: none; }
+@container (max-width: 380px) {
+  .poster.trials .hub span { display: none; }
+}
+
+/* Four hours to yourself: dotted paper after dark. The wedges are the light in it, and their labels are punched out
+   of them in the paper's own color. */
+.poster.day {
+  container-type: inline-size;
+  color: #eef1f8;
+  background:
+    radial-gradient(58% 52% at 50% 54%, rgb(120 134 214 / .22), transparent 72%),
+    radial-gradient(rgb(226 233 255 / .085) 1px, transparent 1.4px) 0 0 / 15px 15px,
+    linear-gradient(168deg, #171b2c, #0b0e18);
+}
+/* The chart's box follows the pie in it, so no empty band is left above and below. */
+.poster.day .rhp-chart { --rhp-height: clamp(260px, calc(100cqw - 40px), 540px) !important; }
+.poster.day .kicker { color: #ff7a8c; opacity: 1; }
+.poster.day .headline { font: 800 40px/1 var(--poster-display); letter-spacing: -0.03em; }
+.poster.day .dek { opacity: .74; }
+.poster.day .note { opacity: .5; }

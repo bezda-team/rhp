@@ -8,7 +8,7 @@
     --rhp-cross: initial;
   }
 
-  .rhp-chart[data-rhp-cross][data-rhp-o="h"]>.rhp-body {
+  .rhp-chart[data-rhp-cross][data-rhp-o="h"]:not([data-rhp-aspect])>.rhp-body {
     height: var(--rhp-height, 240px);
   }
 

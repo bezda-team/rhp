@@ -181,6 +181,39 @@ const open = async (url, opts = {}) => {
   }), [false, "", 0, true, 3]);
   check("a horizontal chart with a height fits rows without a thickness; without one, rows are 32px; a thickness stays", await p.evaluate(() =>
     [".fits .fit", ".grows .fit", ".keeps .fix"].map((q) => Math.round(document.querySelector(q).getBoundingClientRect().height))), [50, 32, 20]);
+  // aspect: the whole chart's shape, held by CSS at any width
+  const ratios = () => p.evaluate(() => ["v", "h", "auto", "x"].map((c) => { const r = document.querySelector(".asp-" + c).getBoundingClientRect(); return +(r.width / r.height).toFixed(3); }));
+  check("aspect: the whole chart keeps its width over its height, room and axis included", await ratios(), [2, 2, 1, 2]);
+  check("aspect: a flat chart's rows without a thickness share its height", await p.evaluate(() => {
+    const body = document.querySelector(".asp-h .rhp-body").getBoundingClientRect().height;
+    return [...document.querySelectorAll(".asp-h .fit")].every((r) => Math.abs(r.getBoundingClientRect().height - body / 4) < 0.5);
+  }), true);
+  check("aspect: with room auto, the bars' track takes what the label rows leave", await p.evaluate(() => {
+    const body = document.querySelector(".asp-auto .rhp-body");
+    const [top, track, bottom] = getComputedStyle(body).gridTemplateRows.match(/[\d.]+px/g).map(parseFloat);
+    const label = document.querySelector(".asp-auto [data-rhp-edge]").getBoundingClientRect();
+    const bars = [...document.querySelectorAll(".asp-auto .rhp-bar")].map((b) => b.getBoundingClientRect());
+    return Math.abs(top + track + bottom - body.getBoundingClientRect().height) < 0.5 && Math.abs(bottom - label.height) < 0.5
+      && bars.every((b) => b.bottom <= label.top + 0.5) && Math.abs(bars[1].height - 0.7 * track) < 1;
+  }), true);
+  await p.evaluate(() => { document.querySelector(".asp").style.width = "260px"; });
+  await p.waitForTimeout(100);
+  check("aspect: and keeps it at another width", await ratios(), [2, 2, 1, 2]);
+  check("aspect: what doesn't go with it gets one warning each", await p.evaluate(async () => {
+    const seen = []; const warn = console.warn; console.warn = (m) => seen.push(m);
+    T.setAsked(true); await new Promise((r) => setTimeout(r, 50));
+    console.warn = warn; return seen.filter((m) => /aspect/.test(m)).length;
+  }), 3);
+  check("aspect: it wins over height, a flat chart's rows with a thickness keep it, and one that isn't a number is left out", await p.evaluate(() => {
+    const ratio = (q) => { const r = document.querySelector(q).getBoundingClientRect(); return +(r.width / r.height).toFixed(3); };
+    return [ratio(".asp-both"), ratio(".asp-thick"), [...document.querySelectorAll(".asp-thick .fix")].map((r) => Math.round(r.getBoundingClientRect().height)),
+      document.querySelector(".asp-bad").hasAttribute("data-rhp-aspect")];
+  }), [4, 2, [20, 20], false]);
+  check("Poster: its markup, its look added to its class, and any other prop on the figure", await p.evaluate(() => {
+    const f = document.querySelector("figure.pst"), b = document.querySelector("figure.pst-bare");
+    return [f.className, ...[".kicker", ".headline", ".dek", ".note"].map((q) => f.querySelector(q)?.textContent), f.dataset.x, !!f.querySelector(".rhp-chart"),
+      b.className, !!b.querySelector(".note")];
+  }), ["poster test pst", "K", "T", "D", "N", "y", true, "poster pst-bare", false]);
   const still = () => p.evaluate(() => [...document.querySelectorAll(".st .sr")].map((e) => e.dataset.n + e.querySelector(".rhp-label").textContent + "@" + e.style.getPropertyValue("--rhp-position") + ":" + e.querySelectorAll(".sd").length).join(" "));
   check("static: rows are drawn sorted, nested Plots included", await still(), "a5@1:2 b9@0:2");
   await p.evaluate(() => T.setStill([12, 3])); await p.waitForTimeout(50);
@@ -872,6 +905,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   const core = (h) => h.split("@layer rhp.place, rhp.slat, rhp.core;").length - 1;
   check("server: two renders (two islands) each bring rhp's core, once", [core(SSR.html()), core(SSR.html())], [1, 1]);
   check("server: renderToStringAsync writes the same HTML", await SSR.htmlAsync(), SSR.html());
+  check("server: a chart's aspect is written for the page's CSS", ((h) => /data-rhp-aspect/.test(h) && /--rhp-aspect:2/.test(h))(SSR.aspect()), true);
   const plain = SSR.plain();
   check("server: without hydration keys, the charts are all there", [/data-hk/.test(plain), (plain.match(/class="rhp-bar/g) ?? []).length], [false, (SSR.html().match(/class="rhp-bar/g) ?? []).length]);
   let err = "";

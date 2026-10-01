@@ -3,7 +3,7 @@
 import { createSignal } from "solid-js";
 import {
   Chart, Plot, Scale, Theme, Bar, Dot, Tick, Label, Cell, Area, slat, restyle, linkedCss, sortBy, cycle, every, nice,
-  stackUp, shares, running, summary, bins, density, extent, series, animated, curve, at, THEME, Line, type Row,
+  stackUp, shares, running, summary, bins, density, extent, series, animated, curve, at, THEME, Line, Poster, type Row,
 } from "../../src/index.js";
 
 type Fruit = { fruit: string; sold: number };
@@ -48,6 +48,11 @@ export function App() {
         <Plot overlap pts={[[[0, 5], [10, 45]]]}>{(d) => <div><Line points={d.pts as [number, number][]} fill base={0} color="series-3" /></div>}</Plot>
       </Chart>
       <Chart scale={[0, 10]}><Plot keyboard fruit={["Apples"]}>{(d) => <div onFocus={() => d.index}>{String(d.fruit)}</div>}</Plot></Chart>
+      <Poster look="day" kicker="A day" title="Four hours" dek={<em>Sleep first</em>} note="Illustrative" id="p" onClick={() => {}}>
+        <Chart scale={[0, 100]} orientation="vertical" aspect={16 / 9}><Plot v={[1]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+      </Poster>
+      {/* @ts-expect-error: an aspect is a number, the chart's width over its height */}
+      <Chart aspect="16 / 9" />
       {/* @ts-expect-error: a cross scale is [min, max] too */}
       <Chart cross={50} />
       {/* @ts-expect-error: a scale is [min, max] */}

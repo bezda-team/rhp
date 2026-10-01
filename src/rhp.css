@@ -86,7 +86,8 @@
     text-shadow: none;
   }
 
-  /* The chart root belongs to the page (margin, width, display, background...) except its padding, which is the gutters */
+  /* The chart root belongs to the page (margin, width, display, background...) except its padding, which is the gutters,
+     and, when it has an aspect, its height */
   .rhp-chart {
     --rhp-min: 0;
     --rhp-max: 100;
@@ -112,17 +113,30 @@
     print-color-adjust: exact;
   }
 
-  .rhp-chart[data-rhp-o="h"]>.rhp-body {
+  .rhp-chart[data-rhp-o="h"]:not([data-rhp-aspect])>.rhp-body {
     height: auto;
   }
 
-  .rhp-chart[data-rhp-o="v"]>.rhp-body {
+  .rhp-chart[data-rhp-o="v"]:not([data-rhp-aspect])>.rhp-body {
     height: var(--rhp-height, 240px);
   }
 
   /* A horizontal chart with a height fits rows without a thickness into it. Otherwise it grows with its rows. */
-  .rhp-chart[data-rhp-o="h"][data-rhp-sized]>.rhp-body {
+  .rhp-chart[data-rhp-o="h"][data-rhp-sized]:not([data-rhp-aspect])>.rhp-body {
     height: var(--rhp-height);
+  }
+
+  /* aspect={16 / 9}: at any width the whole chart, its padding included, is that many times as wide as it is tall, and
+     nothing inside can stretch it (min-height: 0 drops the minimum CSS gives a box's content). The body takes the height
+     inside the padding. */
+  .rhp-chart[data-rhp-aspect] {
+    box-sizing: border-box;
+    aspect-ratio: var(--rhp-aspect);
+    min-height: 0;
+  }
+
+  .rhp-chart[data-rhp-aspect]>.rhp-body {
+    height: 100%;
   }
 
   .rhp-body>* {

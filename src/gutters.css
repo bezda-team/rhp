@@ -9,10 +9,15 @@
     grid-template-columns: [start-start] var(--rhp-gutter-start) [start-end track-start] minmax(0, 1fr) [track-end end-start] var(--rhp-gutter-end) [end-end];
   }
 
-  .rhp-chart[data-rhp-gutters="v"]>.rhp-body {
+  .rhp-chart[data-rhp-gutters="v"]:not([data-rhp-aspect])>.rhp-body {
     /* as specific as the core's height rule for a vertical body */
     height: auto;
     grid-template-rows: [end-start] var(--rhp-gutter-end) [end-end track-start] var(--rhp-height, 240px) [track-end start-start] var(--rhp-gutter-start) [start-end];
+  }
+
+  /* With an aspect the body's height is set, and the plot's row takes what the label rows leave */
+  .rhp-chart[data-rhp-gutters="v"][data-rhp-aspect]>.rhp-body {
+    grid-template-rows: [end-start] var(--rhp-gutter-end) [end-end track-start] minmax(0, 1fr) [track-end start-start] var(--rhp-gutter-start) [start-end];
   }
 
   [data-rhp-gutters="h"]>.rhp-body>* {

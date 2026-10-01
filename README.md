@@ -113,6 +113,32 @@ import { Chart, Plot, Dot, Label, Line } from "@bezda/rhp";
   A horizontal Chart with a cross scale is 240px tall unless `height` says otherwise.
   An overlap Plot on a cross scale gets no room for names, since its points have none.
 
+## A fixed shape
+
+`aspect={16 / 9}` on a Chart fixes its shape: at any width, the whole chart, its room included, is that many times as wide as it is tall.
+It is CSS's `aspect-ratio`, so the shape holds from the first paint and on a server, with nothing measured.
+The chart's height then comes from its width, so `height` is ignored.
+A horizontal chart's slats without a thickness share that height, and slats with one keep theirs.
+Without `aspect`, a chart lays out as it always has: its width from the page, its height from `height` or its slats.
+
+## Posters
+
+`<Poster>` is the panel the gallery's examples sit in: a kicker, a headline, a dek, the chart and a note.
+It is markup only. `look` adds a class for its look, and any other prop goes on its `<figure>`.
+
+```jsx
+import { Poster, Chart } from "@bezda/rhp";
+import "@bezda/rhp/posters.css"; // the gallery's looks, if you want them
+
+<Poster look="day" kicker="A day" title="Four hours to yourself" dek="…" note="Illustrative.">
+  <Chart …>…</Chart>
+</Poster>
+```
+
+The looks are a stylesheet of their own, so a page that doesn't import it pays nothing for them.
+They are plain page CSS, outside rhp's layers, so a page's own rules can change any of them.
+They name their fonts (Bricolage Grotesque, Fraunces, Barlow Condensed and IBM Plex Mono) and fall back to the system's.
+
 ## Styling a slat
 
 A slat's `css` is plain CSS for the classes you put in the slat.
@@ -242,7 +268,7 @@ Slats are meant to be shared, so a slat looks and lays out the same in every app
 - **A style editor can change a slat type's CSS live.** `restyle(Slat, css)` rewrites that type's one stylesheet, and every slat of the type restyles in place without being made again. Half-typed CSS still stays inside the slat.
 - **The app passes a theme object.** The keys are `series` (a list), `positive`, `negative`, `ink`, `muted`, `grid`, `surface`, `low`, `high` and `font`. Pass it with `<Theme value={…}>` around the app, or with `theme` on a Chart. Every `color` prop takes a theme key (`"series-3"`, `"positive"`) or any CSS color.
 - **No page stylesheet changes a chart.** Every declaration rhp or a slat makes is `!important` inside `@layer rhp.place, rhp.slat, rhp.core`, and that layer order is declared first in the document. A zero-specificity guard covers the box, text and paint properties of rhp's elements, and the chart body inherits nothing from the page.
-- **The page still controls the chart root's box**: width, margin, display, background and border, everything except its padding, which holds the gutters. It also controls opacity, cursor, filter and transform on any element.
+- **The page still controls the chart root's box**: width, margin, display, background and border, everything except its padding, which holds the gutters, and its height when it has an `aspect`. It also controls opacity, cursor, filter and transform on any element.
 
 A change reaches a chart's elements in the next frame, the one that shows it (Safari's transitions stall when a value changes outside a frame). Code that measures a block right after changing data, in a test for example, waits for a frame first: `await new Promise(requestAnimationFrame)`.
 
@@ -261,6 +287,8 @@ Charts are plain DOM, with no shadow root. `querySelector`, Testing Library, pag
 
 - `src/plot.jsx`: Plot, Scale, Chart, Axis, Theme.
 - `src/blocks.jsx`: Bar, Dot, Tick, Label, Cell, Area, Line.
+- `src/poster.jsx`: Poster.
+- `src/posters.css`: the gallery's poster looks, copied to `dist/posters.css` for a page that imports them. Not part of rhp's own CSS.
 - `src/style.js`: CSS injection, `slat()`, the scoping of slat CSS, `linkedCss()` and the CSS a server writes.
 - `src/rhp.css`: the core CSS, including the guard.
 - `src/gutters.css`: gutters sized by their labels (`room: "auto"`), added the first time a chart asks for them.

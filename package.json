@@ -40,7 +40,8 @@
       "types": "./dist/standalone.d.ts",
       "default": "./dist/standalone.js"
     },
-    "./rhp.css": "./dist/rhp.css"
+    "./rhp.css": "./dist/rhp.css",
+    "./posters.css": "./dist/posters.css"
   },
   "module": "./dist/index.js",
   "files": [

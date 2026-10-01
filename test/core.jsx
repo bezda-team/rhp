@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 import { createSignal, createSelector, batch, Show } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Plot, Scale, Chart, Bar, Dot, Label, Line, Place, Area, shape, sortBy, cycle, every, slat, restyle } from "../src/index.js";
+import { Plot, Scale, Chart, Bar, Dot, Label, Line, Place, Area, Poster, shape, sortBy, cycle, every, slat, restyle } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/animate.js";
 const T = (window.T = {});
 // Keyed and unkeyed removal
@@ -48,6 +48,8 @@ const Direct = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Lab
 const Wrapped = slat({ room: "auto" }, (d) => <div><span><Label edge="start">{d.n}</Label></span><Bar to={d.v} /></div>);
 const Inner = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Label><Plot overlap part={[1, 2]}>{(q) => <div><Label edge="start">{q.part}</Label></div>}</Plot></div>);
 // A second axis: Dots at (x, y), a Label at a point and a Line on a cross scale, each way; and a Line in a plain row
+// aspect: what doesn't go with it is drawn when the test asks, so it can listen for the warnings first
+const [asked, setAsked] = createSignal(false);
 const Point = (d) => <div><Dot at={d.x} cross={d.y} size="6px" class="pt" /><Label at={d.x} cross={d.y} class="pl">{d.y}</Label></div>;
 const Trend = (d) => <div><Line points={d.pts} class="tl" /></div>;
 const Spark = (d) => <div class="sp"><Line points={d.pts} class="sl" /></div>;
@@ -134,6 +136,19 @@ render(() => (
     <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Listed}</Plot></Chart>
     <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Relisted}</Plot></Chart>
     <Chart class="looked" scale={[0, 10]}><Plot v={[6]}>{Looked}</Plot></Chart>
+    <div class="asp" style={{ width: "400px" }}>
+      <Chart class="asp-v" orientation="vertical" aspect={2} scale={[0, 10]}><Plot v={[3, 6]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+      <Chart class="asp-h" aspect={2} scale={[0, 10]} ticks={false}><Plot v={[1, 2, 3, 4]}>{Fit}</Plot></Chart>
+      <Chart class="asp-auto" orientation="vertical" aspect={1} scale={[0, 10]} ticks={false}><Plot n={["a", "b"]} v={[3, 7]}>{Direct}</Plot></Chart>
+      <Chart class="asp-x" aspect={2} scale={[0, 10]} cross={[0, 100]} ticks={false}><Plot overlap x={[0, 10]} y={[0, 100]}>{Point}</Plot></Chart>
+      <Show when={asked()}>
+        <Chart class="asp-both" orientation="vertical" aspect={4} height={300} ticks={false}><Plot v={[5]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+        <Chart class="asp-thick" aspect={2} ticks={false}><Plot v={[1, 2]}>{Fixed}</Plot></Chart>
+        <Chart class="asp-bad" aspect={"16 / 9"} ticks={false}><Plot v={[5]}>{Fit}</Plot></Chart>
+      </Show>
+    </div>
+    <Poster class="pst" look="test" kicker="K" title="T" dek="D" note="N" data-x="y"><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></Poster>
+    <Poster class="pst-bare" title="Only a title"><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></Poster>
     <div class="one-around" onPointerMove={(e) => setOnRow(rowAt(e))} onPointerDown={(e) => setOnRow(rowAt(e))}
       onPointerLeave={(e) => e.pointerType !== "touch" && setOnRow(null)}
       onFocusIn={(e) => setOnRow(rowAt(e))} onFocusOut={(e) => !e.currentTarget.contains(e.relatedTarget) && setOnRow(null)}>
@@ -141,4 +156,4 @@ render(() => (
     </div>
   </div>
 ), document.body);
-Object.assign(T, { setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
+Object.assign(T, { setAsked, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

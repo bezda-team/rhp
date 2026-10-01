@@ -87,6 +87,23 @@ const warnBare = (el) => {
 // Room "auto" only measures an edge label that is a child of the slat's root. One inside another element gets no room,
 // so we warn about it once per page. The labels of a Plot inside the row belong to that Plot and are left alone.
 const autoRoom = (r) => r === "auto" || r?.start === "auto" || r?.end === "auto";
+// aspect fixes a chart's shape: a height beside it does nothing, and a flat chart's rows with a thickness keep it
+let warnedAspect = false, warnedHeight = false, warnedThick = false;
+const warnAspect = (bad, height, thick) => {
+  if (bad && !warnedAspect) {
+    warnedAspect = true;
+    console.warn("rhp: aspect takes a number above 0, the chart's width over its height (aspect={16 / 9}), so this one is ignored.");
+  }
+  if (height && !warnedHeight) {
+    warnedHeight = true;
+    console.warn("rhp: a Chart with an aspect takes its height from its width, so its height is ignored.");
+  }
+  if (thick && !warnedThick) {
+    warnedThick = true;
+    console.warn("rhp: a flat Chart with an aspect has rows with a thickness here, and they keep it rather than share the chart's height. Leave their thickness out to let them fill it.");
+  }
+};
+
 let warnedWrapped = false;
 const warnWrapped = (el) => {
 
@@ -818,12 +835,15 @@ const AXIS_START = { horizontal: ["left", 14], vertical: ["bottom", 8] }; // and
 // gives them its orientation and theme, makes room for what they draw outside the plot and draws the value axis.
 // animate={true | { duration, ease, slide }} moves the scale with the JS version and is the default for its Plots.
 // height is the plot's height in px (a vertical chart is 240px tall by default). A horizontal chart with a height fits
-// rows without a thickness into it. static: the Plots inside draw their rows once.
+// rows without a thickness into it. aspect={16 / 9} fixes the whole chart's shape instead: at any width it is that
+// many times as wide as it is tall, room included (rhp.css), and a horizontal chart's rows share that height the
+// same way. static: the Plots inside draw their rows once.
 export function Chart(props) {
 
   useCore();
 
   const orientation = () => props.orientation ?? "horizontal";
+  const aspect = () => (typeof props.aspect === "number" && props.aspect > 0 && Number.isFinite(props.aspect) ? props.aspect : undefined);
   const pageTheme = useContext(ThemeContext);
   const theme = createMemo(() => themeVars({ ...THEME, ...pageTheme?.(), ...props.theme }));
   const domain = createMemo(() => props.scale ?? [0, 100], undefined, { equals: same });
@@ -933,7 +953,7 @@ export function Chart(props) {
       vars["--rhp-pad-" + s] = out[s] + "px";
     }
 
-    return { vars, gutters, sized: props.height != null && o === "horizontal" && fitters().some((f) => f()) };
+    return { vars, gutters, sized: (props.height != null || aspect() != null) && o === "horizontal" && fitters().some((f) => f()) };
   };
 
   const sameArrangement = (a, b) => {
@@ -943,6 +963,10 @@ export function Chart(props) {
   };
 
   const arranged = isServer ? arrange : createMemo(arrange, undefined, { equals: sameArrangement });
+
+  // What doesn't go with an aspect, said once in the browser's console
+  createEffect(() => warnAspect(props.aspect != null && aspect() == null, aspect() != null && props.height != null,
+    aspect() != null && orientation() === "horizontal" && fitters().some((f) => !f())));
 
   // Turning the chart is a jump: nothing inside transitions for the two frames after a change
   const [turning, setTurning] = createSignal(false);
@@ -985,7 +1009,8 @@ export function Chart(props) {
       <div ref={(e) => { el = e; props.ref?.(e); }} id={props.id} role={figure()} aria-label={name()} aria-labelledby={props["aria-labelledby"]}
         aria-describedby={props["aria-describedby"]} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined} data-rhp-sized={arranged().sized ? "" : undefined}
-        data-rhp-gutters={arranged().gutters ? short(orientation()) : undefined} data-rhp-cross={crossed() ? "" : undefined} style={{ ...KNOBS, ...theme(), ...arranged().vars, ...props.style, "--rhp-height": px(props.height ?? 240) }}>
+        data-rhp-aspect={aspect() != null ? "" : undefined}
+        data-rhp-gutters={arranged().gutters ? short(orientation()) : undefined} data-rhp-cross={crossed() ? "" : undefined} style={{ ...KNOBS, ...theme(), ...arranged().vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-aspect": aspect() }}>
         <div class="rhp-body">
           {props.children}
           {/* after the children, so that a Scale among them has registered first */}
@@ -1020,8 +1045,9 @@ export function Chart(props) {
     const { vars, sized, gutters } = arranged();
     return onRoot(node, {
       ...Object.fromEntries(moreAria().map((key) => [key, props[key] ?? null])),
-      style: withVars(undefined, { ...KNOBS, ...theme(), ...vars, ...props.style, "--rhp-height": px(props.height ?? 240), ...scaleVars() }),
+      style: withVars(undefined, { ...KNOBS, ...theme(), ...vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-aspect": aspect(), ...scaleVars() }),
       "data-rhp-sized": sized ? true : null,
+      "data-rhp-aspect": aspect() != null ? true : null,
       "data-rhp-gutters": gutters ? short(orientation()) : null,
     });
   }

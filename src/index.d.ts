@@ -114,6 +114,9 @@ export interface ChartProps {
   orientation?: Orientation;
   /** The plot's height in px (240 by default when vertical). A horizontal chart with a height fits slats without a thickness into it. */
   height?: number;
+  /** The whole chart's width over its height (16 / 9), kept at any width, room included. Its height then comes from its width,
+   * so `height` is ignored, and a horizontal chart's slats without a thickness share it. */
+  aspect?: number;
   /** The axis' ticks (5 round values by default); a Scale inside draws its own instead. */
   ticks?: Ticks;
   format?: Format;
@@ -290,6 +293,21 @@ export interface AreaProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "co
 }
 
 export function Chart(props: ChartProps): JSX.Element;
+
+/** A Poster's own props. Any other prop or attribute goes on its <figure>. */
+export interface PosterProps extends Omit<JSX.HTMLAttributes<HTMLElement>, "title"> {
+  /** A class for its look, added to "poster": the looks in @bezda/rhp/posters.css, or one of the page's own. */
+  look?: string;
+  kicker?: JSX.Element;
+  title?: JSX.Element;
+  dek?: JSX.Element;
+  note?: JSX.Element;
+  children?: JSX.Element;
+}
+
+/** A magazine-style panel around a chart: kicker, headline, dek, the chart, a note. Markup only; its look is the page's
+ * CSS, and @bezda/rhp/posters.css has the gallery's looks to start from. */
+export function Poster(props: PosterProps): JSX.Element;
 export function Plot<T extends object = Record<string, any>>(props: PlotProps<T>): JSX.Element;
 export function Scale(props: ScaleProps): JSX.Element;
 export function Theme(props: { value: ThemeValues; children?: JSX.Element }): JSX.Element;
