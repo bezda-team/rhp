@@ -81,3 +81,33 @@ E.sameFrame = () => new Promise((resolve) => {
     }
   }));
 });
+
+// A slat type made inside a component, so a new one on every mount; and one made once, shown again
+E.remount = async (n) => {
+  const el = box();
+  const Card = () => {
+    const Row = slat({ css: ".card { color: rgb(0, 128, 0); }" }, (d) => <div class="card"><Bar to={d.v} /></div>);
+    return <Chart scale={[0, 10]} ticks={false}><Plot v={[3]}>{Row}</Plot></Chart>;
+  };
+  render(() => <Card />, el)();
+  const before = document.adoptedStyleSheets.length;
+  for (let i = 0; i < n; i++) render(() => <Card />, el)();
+  const added = document.adoptedStyleSheets.length - before;
+  const dispose = render(() => <Card />, el);
+  await frame();
+  const color = getComputedStyle(el.querySelector(".card")).color;
+  dispose();
+  return [added, color];
+};
+E.again = async () => {
+  const el = box();
+  const Once = slat({ css: ".once { color: rgb(0, 0, 255); }" }, (d) => <div class="once"><Bar to={d.v} /></div>);
+  const show = () => render(() => <Chart scale={[0, 10]} ticks={false}><Plot v={[3]}>{Once}</Plot></Chart>, el);
+  show()();
+  const n = document.adoptedStyleSheets.length;
+  const dispose = show();
+  await frame();
+  const out = [document.adoptedStyleSheets.length - n, getComputedStyle(el.querySelector(".once")).color];
+  dispose();
+  return out;
+};

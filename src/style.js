@@ -430,6 +430,19 @@ function add(css, core = false) {
   return entry;
 }
 
+function remove(entry) {
+
+  entries.splice(entries.indexOf(entry), 1);
+
+  for (const [root, own] of roots) {
+    const sheet = own.get(entry);
+    own.delete(entry);
+    if (!sheet) continue;
+    if (sheet.replaceSync) root.adoptedStyleSheets = root.adoptedStyleSheets.filter((s) => s !== sheet);
+    else sheet.remove();
+  }
+}
+
 function update(entry, css) {
 
   entry.css = css;
@@ -585,13 +598,39 @@ export function watchRoot(el) {
 }
 
 const sheets = new Map(); // a slat type's scope -> its sheet's entry
+const users = new Map(); // a slat type's scope -> how many Plots draw it now
+// Sheets no Plot draws wait here, newest last, so a chart shown again (a tab, a modal) finds its sheet still there.
+// Past 8 the oldest goes, so slat types made anew on every mount can't pile up.
+const idle = new Set();
+const release = (scope) => {
+  idle.add(scope);
+  if (idle.size <= 8) return;
+  const [old] = idle;
+  idle.delete(old);
+  const entry = sheets.get(old);
+  sheets.delete(old);
+  if (entry) remove(entry);
+};
+
+// Takes a slat type's sheet into the page, and returns what lets it go when the Plot is gone
 export function useSlatCss(fn) {
 
-  if (!fn?.scope || typeof document === "undefined") return;
-  if (sheets.has(fn.scope)) return;
+  if (!fn?.scope || typeof document === "undefined") return () => {};
 
-  useCore();
-  sheets.set(fn.scope, add(slatSheet(fn)));
+  const scope = fn.scope;
+  users.set(scope, (users.get(scope) ?? 0) + 1);
+  idle.delete(scope);
+  if (!sheets.has(scope)) {
+    useCore();
+    sheets.set(scope, add(slatSheet(fn)));
+  }
+
+  return () => {
+    const n = users.get(scope) - 1;
+    if (n > 0) return users.set(scope, n);
+    users.delete(scope);
+    release(scope);
+  };
 }
 
 // --rhp-radius sets all four corners of a Bar to one length. Several lengths (like border-radius takes) make it invalid.

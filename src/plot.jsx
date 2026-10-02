@@ -245,7 +245,7 @@ function makePlot(props, role) {
 
   if (typeof props.children !== "function") throw new Error(`rhp: a ${role}'s child must be a slat function, (d) => <div>…</div>`);
 
-  useSlatCss(props.children);
+  onCleanup(useSlatCss(props.children));
   const layout = props.children.layout ?? {}; // the slat type's thickness, inset and room
   const { nested, frame, orientation: inherited, motion: inheritedMotion, still: stillAround } = useContext(Around);
   if (isServer) frame?.sheet(props.children); // on a server, the slat's CSS goes into the page with its Chart

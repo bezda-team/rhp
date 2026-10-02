@@ -478,6 +478,13 @@ const open = async (url, opts = {}) => {
     check("drawing(): a value set in the app's own frame callback reaches the bar in that frame", await p.evaluate(() => E.sameFrame()), "8");
     await p.close();
   }
+  {
+    const p = await open(edges);
+    check("slat types made on every mount: the page keeps at most 8 sheets of types no longer drawn, and a new one still gets its look",
+      await p.evaluate(() => E.remount(30)), (g) => g[0] <= 8 && g[1] === "rgb(0, 128, 0)");
+    check("a slat type drawn again finds its sheet still there", await p.evaluate(() => E.again()), [0, "rgb(0, 0, 255)"]);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone
