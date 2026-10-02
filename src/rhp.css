@@ -261,30 +261,30 @@
   /* Blocks. --rhp-p is where a point sits along the track (0 to 1), and a span runs from --rhp-lo to --rhp-hi (spans are
      clipped to the scale, points are not). A Label's room to the end of the scale is calc((1 - var(--rhp-p)) * 100%)
      in its max-width (or max-height when vertical). */
-  :is(.rhp-bar, .rhp-area, .rhp-line) {
+  .rhp-bar, .rhp-area, .rhp-line {
     --rhp-lo: clamp(0, (min(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
     --rhp-hi: clamp(0, (max(var(--rhp-from), var(--rhp-to)) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)), 1);
   }
 
-  :is(.rhp-dot, .rhp-tick, .rhp-label, .rhp-place) {
+  .rhp-dot, .rhp-tick, .rhp-label, .rhp-place {
     --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)));
   }
 
-  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line) {
+  .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line {
     position: absolute;
   }
 
   /* A block wears the shape it was given (see shape()). A slat's own CSS can clip it differently: its layer wins. */
-  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell) {
+  .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell {
     clip-path: var(--rhp-clip, none);
   }
 
-  :is(.rhp-area, .rhp-line)[data-rhp-o="h"] {
+  .rhp-area[data-rhp-o="h"], .rhp-line[data-rhp-o="h"] {
     left: calc(var(--rhp-lo) * 100%);
     width: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%);
   }
 
-  :is(.rhp-area, .rhp-line)[data-rhp-o="v"] {
+  .rhp-area[data-rhp-o="v"], .rhp-line[data-rhp-o="v"] {
     bottom: calc(var(--rhp-lo) * 100%);
     height: calc((var(--rhp-hi) - var(--rhp-lo)) * 100%);
   }
@@ -537,12 +537,12 @@
     d: var(--rhp-d, none);
   }
 
-  :is(.rhp-area, .rhp-line)[data-rhp-o="h"] {
+  .rhp-area[data-rhp-o="h"], .rhp-line[data-rhp-o="h"] {
     top: calc(var(--rhp-inset) / 2);
     height: calc(100% - var(--rhp-inset));
   }
 
-  :is(.rhp-area, .rhp-line)[data-rhp-o="v"] {
+  .rhp-area[data-rhp-o="v"], .rhp-line[data-rhp-o="v"] {
     left: calc(var(--rhp-inset) / 2);
     width: calc(100% - var(--rhp-inset));
   }
@@ -613,11 +613,11 @@
 
 @layer rhp.core {
   @media (forced-colors: active) {
-    :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell, .rhp-area, .rhp-line) {
+    .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell, .rhp-area, .rhp-line {
       forced-color-adjust: none;
     }
 
-    :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) {
+    .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell {
       outline: 1px solid CanvasText;
       outline-offset: -1px;
     }
@@ -670,7 +670,15 @@
   }
 
   /* JS version: the numbers themselves move, so nothing is transitioned */
-  [data-rhp-animate="js"] :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-place, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
+  [data-rhp-animate="js"] .rhp-bar,
+  [data-rhp-animate="js"] .rhp-dot,
+  [data-rhp-animate="js"] .rhp-tick,
+  [data-rhp-animate="js"] .rhp-label,
+  [data-rhp-animate="js"] .rhp-place,
+  [data-rhp-animate="js"] .rhp-area,
+  [data-rhp-animate="js"] .rhp-line,
+  [data-rhp-animate="js"] .rhp-gridline,
+  [data-rhp-animate="js"] .rhp-cell {
     transition: none;
   }
 
@@ -688,7 +696,15 @@
       transition: none;
     }
 
-    .rhp-chart :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-place, .rhp-area, .rhp-line, .rhp-gridline, .rhp-cell) {
+    .rhp-chart .rhp-bar,
+    .rhp-chart .rhp-dot,
+    .rhp-chart .rhp-tick,
+    .rhp-chart .rhp-label,
+    .rhp-chart .rhp-place,
+    .rhp-chart .rhp-area,
+    .rhp-chart .rhp-line,
+    .rhp-chart .rhp-gridline,
+    .rhp-chart .rhp-cell {
       transition: none;
     }
   }
