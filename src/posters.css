@@ -151,6 +151,15 @@
   font-size: 12px; font-variant-numeric: tabular-nums; }
 .poster.market .ohlc .up { color: #0d7680; }
 .poster.market .ohlc .down { color: #990f3d; }
+/* Lunch break is rush hour: a shop's week through a heat camera, its scanlines on a dark screen. No hue of its own, so
+   the heat keeps all of it. */
+.poster.heat { color: #f3f1ed;
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / .035) 0 1px, transparent 1px 4px), radial-gradient(120% 90% at 50% 35%, #1e1e1e, #0f0f0f); }
+.poster.heat .kicker { color: #ffb94c; opacity: 1; }
+.poster.heat .headline { letter-spacing: -0.03em; }
+/* The dek reads out the hour under the pointer: one line, so the chart under it never moves */
+.poster.heat .dek { max-width: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.poster.heat .note { opacity: .5; }
 
 /* One in ten: hatched paper. No hue of its own, so the rings keep theirs. A pool of white puts the circle on clean paper. */
 .poster.trials {
