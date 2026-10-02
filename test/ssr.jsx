@@ -35,7 +35,7 @@ const Band = slat({ css: `.band { background: rgb(0 0 0 / .05); } .num { color: 
 
 const spread = [2, 3, 3, 4, 4, 4, 5, 5, 6, 7, 7, 8];
 const Violin = slat({ thickness: 60, css: `.shape { fill: #7b5cd6; }` }, (d) => (
-  <div><Area points={density(d.values, [0, 10])} mirror class="shape" /><Tick at={d.mid} thick={0.5} /></div>
+  <div><Area points={density(d.values, { domain: [0, 10] })} mirror class="shape" /><Tick at={d.mid} thick={0.5} /></div>
 ));
 
 // A root with its own id and role, and a block with its own props

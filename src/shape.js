@@ -5,7 +5,7 @@
 // rhp does the two parts that are easy to get wrong by hand: the turn from a horizontal chart to a vertical one, and
 // a bar that runs backward along the scale.
 //
-//   const gable = shape(["M", 0, 0], ["L", "26px", 0], ["L", "26px", .5], ["L", 0, 1], ["Z"]);  // hmm: see below
+//   const arrow = shape(["M", 0, 0], ["L", "-26px", 0], ["L", 1, .5], ["L", "-26px", 1], ["L", 0, 1], ["Z"]);  // a pointed end
 //
 // Commands are SVG's, with the same coordinates: M (move), L (line), Q and C (curves) and Z (close).
 // A shape of straight lines becomes clip-path: polygon(), which every browser takes. One with a curve becomes
