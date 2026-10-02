@@ -430,6 +430,14 @@ const open = async (url, opts = {}) => {
       (g) => g.page <= 0 && g.h <= 0.5 && g.v <= 0.5 && g.x <= 0.5);
     await p.close();
   }
+  {
+    const p = await open(edges);
+    await p.emulateMedia({ forcedColors: "active" });
+    const bar = await p.evaluate(() => E.forced());
+    if (bar[0]) check("forced colors: a bar keeps its own color and gets an outline", bar.slice(1), ["rgb(0, 0, 128)", "solid"]);
+    else console.log(`skip forced colors (${ENGINE} doesn't emulate them)`);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone

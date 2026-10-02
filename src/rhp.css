@@ -572,6 +572,19 @@
   }
 }
 
+@layer rhp.core {
+  @media (forced-colors: active) {
+    :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell, .rhp-area, .rhp-line) {
+      forced-color-adjust: none;
+    }
+
+    :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) {
+      outline: 1px solid CanvasText;
+      outline-offset: -1px;
+    }
+  }
+}
+
 /* Placement: every slat sits in its band by --rhp-position, and a slat's own CSS can't move it off its band.
    The JS version, reduced motion and turning are here too, so a slat's own transition can't undo them. */
 @layer rhp.place {

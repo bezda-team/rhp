@@ -30,3 +30,11 @@ E.past = async () => {
     x: mid(r(".past-x .rhp-label")) - r(".past-x .rhp-plot").bottom,
   };
 };
+
+// A bar in forced colors (Windows contrast themes)
+E.forced = async () => {
+  render(() => <Chart class="fc" scale={[0, 10]} ticks={false}><Plot v={[6]}>{(d) => <div><Bar to={d.v} color="rgb(0, 0, 128)" /></div>}</Plot></Chart>, box());
+  await frame();
+  const s = getComputedStyle(document.querySelector(".fc .rhp-bar"));
+  return [matchMedia("(forced-colors: active)").matches, s.backgroundColor, s.outlineStyle];
+};
