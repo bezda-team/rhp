@@ -485,6 +485,11 @@ const open = async (url, opts = {}) => {
     check("a slat type drawn again finds its sheet still there", await p.evaluate(() => E.again()), [0, "rgb(0, 0, 255)"]);
     await p.close();
   }
+  {
+    const p = await open(edges);
+    check("slat(): two slat types made from one row function keep their own thickness", await p.evaluate(() => E.twoTypes()), [20, 40]);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone

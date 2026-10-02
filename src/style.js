@@ -682,10 +682,12 @@ export function restyle(fn, css) {
 const joinCss = (css) => (Array.isArray(css) ? css.filter((c) => c != null).join("\n") : css);
 
 const made = new Map(); // CSS hash -> how many slat types were made with that CSS
-export function slat(def, fn) {
+export function slat(def, row) {
 
   if (typeof def === "function") return def;
 
+  // A new function, so the row function given stays as it was and can make other slat types too
+  const fn = (d) => row(d);
   fn.layout = def;
   fn.css = joinCss(def.css);
 

@@ -336,6 +336,7 @@ export function shape(commands: readonly ShapeCommand[]): Shape;
 
 /** A slat type: the slat function with its own CSS and layout, so it looks and lays out the same in any app. */
 export function slat<T extends object = Record<string, any>>(fn: (d: Row<T>) => JSX.Element): Slat<T>;
+/** A slat type with these settings: a new function that calls fn, so fn stays as it was and can make other slat types too. */
 export function slat<T extends object = Record<string, any>>(layout: SlatLayout, fn: (d: Row<T>) => JSX.Element): Slat<T>;
 /** New CSS for a slat type (made with css): its slats restyle in place. For style editors and live previews. */
 export function restyle(type: { scope?: string; css?: unknown }, css: string | readonly (string | null | undefined)[]): void;

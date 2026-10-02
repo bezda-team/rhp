@@ -111,3 +111,16 @@ E.again = async () => {
   dispose();
   return out;
 };
+
+// Two slat types made from one row function
+E.twoTypes = async () => {
+  const row = (d) => <div class="tt"><Bar to={d.v} /></div>;
+  const Thin = slat({ thickness: 20 }, row);
+  const Thick = slat({ thickness: 40 }, row);
+  render(() => <>
+    <Chart class="tt-thin" scale={[0, 10]} ticks={false}><Plot v={[3]}>{Thin}</Plot></Chart>
+    <Chart class="tt-thick" scale={[0, 10]} ticks={false}><Plot v={[3]}>{Thick}</Plot></Chart>
+  </>, box());
+  await frame();
+  return [".tt-thin .tt", ".tt-thick .tt"].map((q) => Math.round(document.querySelector(q).getBoundingClientRect().height));
+};

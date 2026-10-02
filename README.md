@@ -269,6 +269,10 @@ rhp draws charts on a server too, as HTML, with Solid's `renderToString` (SolidS
 Slats are meant to be shared, so a slat looks and lays out the same in every app:
 
 - **The slat owns its CSS and its sizes.** Its `css` applies to that slat type's own slats only (the slat root included). It never reaches the page or another slat type. `thickness`, `inset` and `room` are its layout.
+- **Making a slat type leaves your function as it was.**
+  `slat(settings, fn)` returns a new function, the slat type, which carries the settings and calls `fn` for each slat; it never writes onto `fn`.
+  So one row function can make several slat types, each with its own thickness and CSS, and a row function from another package stays as its author wrote it.
+  Give a Plot the type that `slat()` returns: `fn` itself is still a plain function, with no layout and no CSS.
 - **A style editor can change a slat type's CSS live.** `restyle(Slat, css)` rewrites that type's one stylesheet, and every slat of the type restyles in place without being made again. Half-typed CSS still stays inside the slat.
 - **The app passes a theme object.** The keys are `series` (a list), `positive`, `negative`, `ink`, `muted`, `grid`, `surface`, `low`, `high` and `font`. Pass it with `<Theme value={…}>` around the app, or with `theme` on a Chart. Every `color` prop takes a theme key (`"series-3"`, `"positive"`) or any CSS color.
 - **No page stylesheet changes a chart.** Every declaration rhp or a slat makes is `!important` inside `@layer rhp.place, rhp.slat, rhp.core`, and that layer order is declared first in the document. A zero-specificity guard covers the box, text and paint properties of rhp's elements, and the chart body inherits nothing from the page.
