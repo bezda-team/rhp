@@ -310,7 +310,7 @@ function makePlot(props, role) {
       if (key === "index") return t.row();
       if (key === "position") return pos[t.row()];
       const g = isGroup.has(key) ? group[key]() : undefined;
-      if (typeof g === "function") return ((t.memos ??= {})[key] ??= runWithOwner(t.owner, () => createMemo(() => g(t.self))))();
+      if (typeof g === "function") return ((t.memos ??= {})[key] ??= runWithOwner(t.owner, () => createMemo(() => { const f = group[key](); return typeof f === "function" ? f(t.self) : undefined; })))();
       if (t.id && js() && isMoving(key)) return moving(key, t.id())(t.ahead);
       return raw(key, t.row());
     },

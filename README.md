@@ -59,7 +59,7 @@ const Fruit = slat({
 </Chart>
 ```
 
-- Any Plot prop that is not a setting is a **data group**. Item `i` of each list goes to slat `i` as `d.name`, `d.value` and so on, and the longest list sets the slat count. A function of `d` is computed per slat and cached.
+- Any Plot prop that is not a setting is a **data group**. Item `i` of each list goes to slat `i` as `d.name`, `d.value` and so on, and the longest list sets the slat count. A function of `d` is computed per slat and cached, and computed again when the group is given a new function.
 - `order` is a list of positions, or a function that returns one (`sortBy` is one such function). The slats slide to their positions and no DOM node moves.
 - `key` gives rows an identity, so a removed row takes its own slat with it.
 - `animate` on a Chart or Plot switches from CSS transitions to the JS version, where the numbers themselves move on one page clock.

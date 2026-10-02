@@ -38,3 +38,13 @@ E.forced = async () => {
   const s = getComputedStyle(document.querySelector(".fc .rhp-bar"));
   return [matchMedia("(forced-colors: active)").matches, s.backgroundColor, s.outlineStyle];
 };
+
+// A data group that is a function, given a new function
+E.fn = () => {
+  const [fmt, setFmt] = createSignal((d) => d.v + " kg");
+  render(() => <Chart class="fn" scale={[0, 10]} ticks={false}><Plot v={[3, 7]} text={fmt()}>{(d) => <div><Bar to={d.v} /><Label at={d.v}>{d.text}</Label></div>}</Plot></Chart>, box());
+  const texts = () => [...document.querySelectorAll(".fn .rhp-label")].map((e) => e.textContent).join(" ");
+  const before = texts();
+  setFmt(() => (d) => d.v + " lb");
+  return [before, texts()];
+};

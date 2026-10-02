@@ -438,6 +438,11 @@ const open = async (url, opts = {}) => {
     else console.log(`skip forced colors (${ENGINE} doesn't emulate them)`);
     await p.close();
   }
+  {
+    const p = await open(edges);
+    check("a function data group: a new function runs again on the slats already drawn", await p.evaluate(() => E.fn()), ["3 kg 7 kg", "3 lb 7 lb"]);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone
