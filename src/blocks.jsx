@@ -65,6 +65,35 @@ export function writeVars(el, vars, back) {
   });
 }
 
+// Whether a CSS value has a ; or ! outside its strings and brackets, or brackets that don't close: in a style attribute
+// that would start a declaration of its own. A browser setting the same value with setProperty rejects it, so a server
+// leaves it out too. (Balanced braces are kept, as a browser keeps them in a custom property.)
+const loose = (v) => {
+
+  let quote = null;
+  let depth = 0;
+
+  for (let i = 0; i < v.length; i++) {
+    const ch = v[i];
+    if (ch === "\\") {
+      i++;
+      continue;
+    }
+    if (quote) {
+      if (ch === quote) quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") quote = ch;
+    else if (ch === "(" || ch === "[" || ch === "{") depth++;
+    else if (ch === ")" || ch === "]" || ch === "}") {
+      if (--depth < 0) return true;
+    } else if (depth === 0 && (ch === ";" || ch === "!")) return true;
+  }
+
+  return quote !== null || depth !== 0;
+};
+const safe = (v) => v != null && !(typeof v === "string" && /[;!{}]/.test(v) && loose(v));
+
 // On a server, the style attribute of an element: its style prop (an object or a string) and its CSS variables
 export function withVars(st, vars) {
 
@@ -72,12 +101,12 @@ export function withVars(st, vars) {
 
   if (st && typeof st === "object") {
     for (const key in st) {
-      if (st[key] != null) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + st[key];
+      if (safe(st[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + st[key];
     }
   }
 
   for (const key in vars) {
-    if (vars[key] != null) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + vars[key];
+    if (safe(vars[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + vars[key];
   }
 
   return css || undefined;

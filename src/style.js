@@ -513,7 +513,8 @@ export function serverSheets(slats, render, gutters, crossed) {
     out += "\n" + slatSheet(fn);
   }
 
-  return out;
+  // The CSS goes into a <style>, which a "</style" anywhere in it (even in a string) would end: "\/" is "/" to CSS
+  return out.replace(/<\/(style)/gi, "<\\/$1");
 }
 
 let gutters = false;

@@ -938,6 +938,18 @@ const dom = (p, charts) => p.evaluate((charts) => {
   await p.close();
 }
 
+// Server HTML carrying text from users (untrusted in test/ssr-server.jsx)
+{
+  fs.writeFileSync(at("out/ssr-untrusted.html"), `<!doctype html><html><head><meta charset=utf-8></head><body>${SSR.untrusted()}</body></html>`);
+  const p = await open("file://" + at("out/ssr-untrusted.html"));
+  check("server HTML: text from users can't end the <style> a server writes, or add a declaration of its own", await p.evaluate(() => {
+    const label = document.querySelector(".u .rhp-label");
+    return [window.ran ?? 0, document.querySelectorAll("img").length, getComputedStyle(document.querySelector(".rhp-chart")).position,
+      [...document.querySelectorAll(".rhp-bar")].some((b) => /evil|fixed/.test(b.getAttribute("style") ?? "")), label.style.getPropertyValue("--note"), label.style.getPropertyValue("--mix")];
+  }), (g) => g[0] === 0 && g[1] === 0 && g[2] !== "fixed" && g[3] === false && g[4] === '"a;b"' && g[5] === "{a:1}");
+  await p.close();
+}
+
 // The published package end to end
 {
   const url = "file://" + at("out/ssr-dist.html"), shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
