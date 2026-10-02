@@ -473,6 +473,11 @@ const open = async (url, opts = {}) => {
     check("a Chart on a scale too narrow for its numbers draws its ticks", ticks, (n) => n >= 1 && n <= 1001);
     await p.close();
   }
+  {
+    const p = await open(edges);
+    check("drawing(): a value set in the app's own frame callback reaches the bar in that frame", await p.evaluate(() => E.sameFrame()), "8");
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone

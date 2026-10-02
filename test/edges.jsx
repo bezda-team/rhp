@@ -66,3 +66,18 @@ E.narrow = () => {
   render(() => <Chart class="narrow" scale={[1e17, 1e17 + 20]}><Plot v={[1e17 + 10]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>, box());
   return document.querySelectorAll(".narrow .rhp-gridline").length;
 };
+
+// A value set in the app's own frame callback, inside drawing()
+E.sameFrame = () => new Promise((resolve) => {
+  const [v, setV] = createSignal(2);
+  const el = box();
+  render(() => <Chart class="sf" scale={[0, 10]} ticks={false}><Plot v={[v()]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>, el);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    try {
+      rhp.drawing(() => setV(8));
+      resolve(el.querySelector(".rhp-bar").style.getPropertyValue("--rhp-to"));
+    } catch (e) {
+      resolve(e.message);
+    }
+  }));
+});

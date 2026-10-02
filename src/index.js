@@ -5,3 +5,4 @@ export { Bar, Dot, Tick, Label, Cell, Place, Area, Line } from "./blocks.jsx";
 export { Poster } from "./poster.jsx";
 export { sortBy, cycle, every, extent, nice, stackUp, shares, running, summary, bins, density } from "./data.js";
 export { animated, curve } from "./animate.js";
+export { drawing } from "./frame.js";

@@ -275,7 +275,9 @@ Slats are meant to be shared, so a slat looks and lays out the same in every app
 - **Marks stay visible in forced colors** (Windows contrast themes): bars, dots, ticks, cells, areas and lines keep their own colors, and bars, dots, ticks and cells get a 1px outline in the system's text color.
 - **The page still controls the chart root's box**: width, margin, display, background and border, everything except its padding, which holds the gutters, and its height when it has an `aspect`. It also controls opacity, cursor, filter and transform on any element.
 
-A change reaches a chart's elements in the next frame, the one that shows it (Safari's transitions stall when a value changes outside a frame). Code that measures a block right after changing data, in a test for example, waits for a frame first: `await new Promise(requestAnimationFrame)`.
+A change reaches a chart's elements in the next frame, the one that shows it (Safari's transitions stall when a value changes outside a frame).
+A change made inside the app's own `requestAnimationFrame` callback can come after rhp's callback in that frame, and then shows a frame late; made inside `drawing()`, it reaches the elements at once: `requestAnimationFrame(() => drawing(() => setValue(v)))`.
+Code that measures a block right after changing data, in a test for example, waits for a frame first: `await new Promise(requestAnimationFrame)`.
 
 Charts are plain DOM, with no shadow root. `querySelector`, Testing Library, page click listeners and app classes for properties rhp doesn't set all keep working.
 
