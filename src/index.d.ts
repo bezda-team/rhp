@@ -380,7 +380,8 @@ export function summary(samples: readonly number[]): {
   mean: number;
   outliers: number[];
 };
-/** Histogram bins: bin k covers x0[k]..x1[k] and holds tally[k] samples. */
+/** Histogram bins: bin k covers x0[k]..x1[k] and holds tally[k] samples. Samples all alike get a scale one wide around
+ * them, and no samples a scale from 0 to 1. */
 export function bins(samples: readonly number[], options?: { domain?: [number, number]; count?: number }): { x0: number[]; x1: number[]; tally: number[] };
 /** A Gaussian kernel density estimate: points pairs of [x, density] (for Area). */
 export function density(samples: readonly number[], options?: { domain?: [number, number]; points?: number; bandwidth?: number }): [number, number][];

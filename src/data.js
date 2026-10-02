@@ -169,7 +169,10 @@ export function summary(samples) {
 // Returns { x0, x1, tally }: bin k covers x0[k]..x1[k] and holds tally[k] samples.
 export function bins(samples, { domain = extent(samples), count = 10 } = {}) {
 
-  const [lo, hi] = domain;
+  let [lo, hi] = domain;
+  // No samples: an empty scale from 0 to 1. Samples all alike: a scale one wide around them, so they land in a bin.
+  if (!Number.isFinite(lo) || !Number.isFinite(hi)) [lo, hi] = [0, 1];
+  if (lo === hi) [lo, hi] = [lo - 0.5, hi + 0.5];
   const width = (hi - lo) / count;
   const x0 = [];
   const x1 = [];

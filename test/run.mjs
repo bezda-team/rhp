@@ -490,6 +490,11 @@ const open = async (url, opts = {}) => {
     check("slat(): two slat types made from one row function keep their own thickness", await p.evaluate(() => E.twoTypes()), [20, 40]);
     await p.close();
   }
+  {
+    const { bins } = await import("../src/data.js");
+    check("bins(): samples all alike land in a bin, and no samples give bins on a scale from 0 to 1",
+      [bins([5, 5, 5], { count: 4 }).tally, bins([], { count: 4 }).x0], [[0, 0, 3, 0], [0, 0.25, 0.5, 0.75]]);
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone
