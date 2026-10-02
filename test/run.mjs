@@ -10,7 +10,7 @@ import { page as bundle, standalone, ssrServer, ssrClient, ssrPackage } from "..
 import { build } from "esbuild";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
-for (const t of ["core", "cost", "mount"]) {
+for (const t of ["core", "cost", "mount", "edges"]) {
   await bundle(at(t + ".jsx"), at(`out/${t}.js`));
   fs.writeFileSync(at(`out/${t}.html`), `<!doctype html><html><head><meta charset=utf-8></head><body><script src="${t}.js"></script></body></html>`);
 }
@@ -418,6 +418,18 @@ const open = async (url, opts = {}) => {
   check("no page errors", p.errors, []);
   console.log(`     mount, 50 charts x 7 slats, with style and layout: ${ms.toFixed(1)} ms`);
   await p.close();
+}
+
+// Inputs at the edges (test/edges.jsx), each on a page of its own
+{
+  const edges = "file://" + at("out/edges.html");
+  {
+    const p = await open(edges);
+    const where = await p.evaluate(() => E.past());
+    check("a value past the scale: its Label stays at the end the page would grow toward, and the page keeps its width", where,
+      (g) => g.page <= 0 && g.h <= 0.5 && g.v <= 0.5 && g.x <= 0.5);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone

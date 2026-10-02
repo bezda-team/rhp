@@ -37,7 +37,7 @@
 
   .rhp-chart[data-rhp-cross] .rhp-label[data-rhp-at][data-rhp-o="h"] {
     top: auto;
-    bottom: calc(var(--rhp-q, .5) * 100%);
+    bottom: calc(max(var(--rhp-q, .5), 0) * 100%);
     translate: 0 50%;
   }
 
@@ -46,7 +46,7 @@
   }
 
   .rhp-chart[data-rhp-cross] .rhp-label[data-rhp-at][data-rhp-o="v"] {
-    left: calc(var(--rhp-q, .5) * 100%);
+    left: calc(min(var(--rhp-q, .5), 1) * 100%);
   }
 
   .rhp-chart[data-rhp-cross] .rhp-line {

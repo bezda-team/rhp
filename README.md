@@ -86,6 +86,9 @@ import { Chart, Scale, Plot, Tick, Label, every } from "@bezda/rhp";
 - A number can be left out when it would run into the scale's end, in CSS: a Label's room from its value to the end is `calc((1 - var(--rhp-p)) * 100%)` in its `max-width` (vertical: `max-height`), so `max-width: calc(((1 - var(--rhp-p)) * 100% - 30px) * 1000); overflow: hidden` gives a number with less than 30px no size at all. It is the same on a server and in every browser. `d.toEnd` is the same distance in px, measured on screen, for code; it is `Infinity` until the browser has measured it.
 - A tick at either end of the scale is keyed as that end, so the end line never slides when the max changes.
 - A Chart with a Scale in it draws no axis of its own.
+- A value past the scale: a Bar stops at the scale's end.
+  A value Label stays at the end on the side where the page would grow (past the end of a horizontal chart, below the start of a vertical one), still showing its value, and on the other side it is drawn where its value is.
+  A Dot, Tick or Place is always drawn where its value is, so one far past the end can widen the page: give the slat's root `overflow: clip` to keep them inside the plot.
 
 ## A second axis
 
