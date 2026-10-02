@@ -23,6 +23,8 @@ const extentOf = (list) => {
   return [lo, hi];
 };
 
+const warnedColors = new Set(); // each page-variable color is warned about once
+
 // A color is a theme key ("series-2", "positive", "muted"...) or a CSS color.
 // A slat that reads a page's CSS variable would look different in every app, so that gets a warning.
 const KEY = /^(series-\d+|positive|negative|ink|muted|grid|surface|low|high)$/;
@@ -30,7 +32,10 @@ export const tok = (c) => {
 
   if (typeof c !== "string") return c;
   if (KEY.test(c)) return "var(--rhp-" + c + ")";
-  if (/var\(--(?!rhp-)/.test(c)) console.warn("rhp: " + c + " reads a page variable; use a theme key");
+  if (/var\(--(?!rhp-)/.test(c) && !warnedColors.has(c)) {
+    warnedColors.add(c);
+    console.warn("rhp: " + c + " reads a page variable; use a theme key");
+  }
 
   return c;
 };

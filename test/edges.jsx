@@ -124,3 +124,10 @@ E.twoTypes = async () => {
   await frame();
   return [".tt-thin .tt", ".tt-thick .tt"].map((q) => Math.round(document.querySelector(q).getBoundingClientRect().height));
 };
+
+// A color from a page variable on 50 slats, changed 3 times
+E.pageColor = () => {
+  const [v, setV] = createSignal(Array.from({ length: 50 }, (_, i) => i % 10));
+  render(() => <Chart class="pc" scale={[0, 10]} ticks={false}><Plot v={v()}>{(d) => <div><Bar to={d.v} color="var(--brand)" /></div>}</Plot></Chart>, box());
+  for (let k = 1; k <= 3; k++) setV(v().map((x) => (x + 1) % 10));
+};

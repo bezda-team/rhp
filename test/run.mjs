@@ -495,6 +495,15 @@ const open = async (url, opts = {}) => {
     check("bins(): samples all alike land in a bin, and no samples give bins on a scale from 0 to 1",
       [bins([5, 5, 5], { count: 4 }).tally, bins([], { count: 4 }).x0], [[0, 0, 3, 0], [0, 0.25, 0.5, 0.75]]);
   }
+  {
+    const p = await open(edges);
+    const warned = [];
+    p.on("console", (m) => m.type() === "warning" && m.text().includes("reads a page variable") && warned.push(m.text()));
+    await p.evaluate(() => E.pageColor());
+    await p.waitForTimeout(100);
+    check("a color from a page variable is warned about once, not once per slat per change", warned.length, 1);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone
