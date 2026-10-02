@@ -9,6 +9,20 @@ import { write } from "./frame.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
 
+// The smallest and largest of a list, in a loop: spreading 150,000 numbers into Math.min overflows V8's stack
+const extentOf = (list) => {
+
+  let lo = Infinity;
+  let hi = -Infinity;
+
+  for (const v of list) {
+    if (v < lo) lo = v;
+    if (v > hi) hi = v;
+  }
+
+  return [lo, hi];
+};
+
 // A color is a theme key ("series-2", "positive", "muted"...) or a CSS color.
 // A slat that reads a page's CSS variable would look different in every app, so that gets a warning.
 const KEY = /^(series-\d+|positive|negative|ink|muted|grid|surface|low|high)$/;
@@ -283,7 +297,7 @@ export function Area(props) {
 
     const [x0, x1] = span();
     const w = x1 - x0 || 1;
-    const peak = p.peak ?? Math.max(...pts.map((q) => q[1]));
+    const peak = p.peak ?? extentOf(pts.map((q) => q[1]))[1];
     const vertical = orientation() === "vertical";
     // u runs along the value axis and t across the band, both from 0 to 1000 in the shape's box
     const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
@@ -338,14 +352,13 @@ export function Line(props) {
     const xs = pts.map((q) => q[0]);
     const ys = pts.map((q) => q[1]);
     if (p.fill) ys.push(p.base ?? 0);
-    let y0 = Math.min(...ys);
-    let y1 = Math.max(...ys);
+    let [y0, y1] = extentOf(ys);
     if (y0 === y1) {
       y0 -= 0.5;
       y1 += 0.5;
     }
 
-    return [Math.min(...xs), Math.max(...xs), y0, y1];
+    return [...extentOf(xs), y0, y1];
   });
 
   // The line, and the shape under it when filled
@@ -355,7 +368,7 @@ export function Line(props) {
 
     const [x0, x1, y0, y1] = box();
     const w = x1 - x0 || 1;
-    const peak = p.peak ?? Math.max(...pts.map((q) => q[1]));
+    const peak = p.peak ?? extentOf(pts.map((q) => q[1]))[1];
     const vertical = orientation() === "vertical";
     // up is y's place across, 0 to 1: on the cross scale within the box, or in the band
     const up = crossed() ? (y) => (y - y0) / (y1 - y0) : (y) => Math.min(1, y / (peak || 1));

@@ -48,3 +48,15 @@ E.fn = () => {
   setFmt(() => (d) => d.v + " lb");
   return [before, texts()];
 };
+
+// A Line of 700,000 points, more than any engine takes as the arguments of one call
+E.long = () => {
+  const pts = Array.from({ length: 700000 }, (_, i) => [i, i % 100]);
+  const el = box();
+  try {
+    render(() => <Chart class="long" scale={[0, 700000]} ticks={false}><Plot overlap points={[pts]}>{(d) => <div><Line points={d.points} /></div>}</Plot></Chart>, el);
+  } catch (e) {
+    return e.message;
+  }
+  return el.querySelectorAll(".rhp-line path").length;
+};

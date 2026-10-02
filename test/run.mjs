@@ -443,6 +443,11 @@ const open = async (url, opts = {}) => {
     check("a function data group: a new function runs again on the slats already drawn", await p.evaluate(() => E.fn()), ["3 kg 7 kg", "3 lb 7 lb"]);
     await p.close();
   }
+  {
+    const p = await open(edges);
+    check("a Line of 700,000 points draws", await p.evaluate(() => E.long()), 2);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone
