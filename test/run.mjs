@@ -448,6 +448,31 @@ const open = async (url, opts = {}) => {
     check("a Line of 700,000 points draws", await p.evaluate(() => E.long()), 2);
     await p.close();
   }
+  {
+    // A loop that never ends fails instead of hanging the checks: in a worker in Node, and with a time limit in the page
+    const { Worker } = await import("worker_threads");
+    const inWorker = (code, ms) => new Promise((resolve) => {
+      const w = new Worker(code, { eval: true, resourceLimits: { maxOldGenerationSizeMb: 256 } });
+      const timer = setTimeout(() => (w.terminate(), resolve(`took over ${ms} ms`)), ms);
+      w.once("message", (m) => (clearTimeout(timer), w.terminate(), resolve(m)));
+      w.once("error", (e) => (clearTimeout(timer), resolve("error: " + e.message)));
+    });
+    const data = "file://" + path.join(here, "../src/data.js");
+    check("nice() ends on a scale too narrow for its numbers, and every() refuses a step that is not above 0", await inWorker(`
+      const { parentPort } = require("worker_threads");
+      import(${JSON.stringify(data)}).then(({ nice, every }) => {
+        const out = [nice(1e17, 1e17 + 20).ticks.length];
+        for (const step of [-1, 0]) {
+          try { every(step)([0, 10]); out.push("no error"); } catch (e) { out.push(e.message); }
+        }
+        parentPort.postMessage(out);
+      });`, 5000), (g) => Array.isArray(g) && g[0] >= 1 && g[0] <= 1001 && g[1] === "rhp: every() takes a step above 0" && g[2] === g[1]);
+    const p = await open(edges);
+    const drawn = p.evaluate(() => E.narrow()).catch((e) => "error: " + e.message);
+    const ticks = await Promise.race([drawn, new Promise((r) => setTimeout(() => r("took over 5000 ms"), 5000))]);
+    check("a Chart on a scale too narrow for its numbers draws its ticks", ticks, (n) => n >= 1 && n <= 1001);
+    await p.close();
+  }
 }
 
 // The gallery in both orientations and animation versions, light and dark, on desktop and phone

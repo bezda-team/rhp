@@ -60,3 +60,9 @@ E.long = () => {
   }
   return el.querySelectorAll(".rhp-line path").length;
 };
+
+// A scale too narrow for its numbers: a span of 20 at 1e17, where adding a step of 5 changes nothing
+E.narrow = () => {
+  render(() => <Chart class="narrow" scale={[1e17, 1e17 + 20]}><Plot v={[1e17 + 10]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>, box());
+  return document.querySelectorAll(".narrow .rhp-gridline").length;
+};

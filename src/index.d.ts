@@ -357,7 +357,7 @@ export function sortBy(key: string | ((d: Row) => unknown), direction?: "asc" | 
 export function cycle<T>(list: readonly T[]): (d: Row) => T;
 /** [smallest, largest]. */
 export function extent(values: Iterable<number>): [number, number];
-/** Ticks at every multiple of step in the scale; with ends, its min and max too. */
+/** Ticks at every multiple of step in the scale; with ends, its min and max too. A step that is not above 0 throws. */
 export function every(step: number, options?: { ends?: boolean }): (range: [number, number]) => number[];
 /** A round scale covering lo..hi with about count ticks. */
 export function nice(lo: number, hi: number, count?: number): { min: number; max: number; step: number; ticks: number[] };
