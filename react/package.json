@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp-react",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "rhp (reactive html plots) charts as React components",
   "keywords": [
     "react",
@@ -35,7 +35,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@bezda/rhp": "^2.0.0"
+    "@bezda/rhp": "^2.0.1"
   },
   "peerDependencies": {
     "react": ">=18"
