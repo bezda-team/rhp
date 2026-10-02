@@ -67,3 +67,6 @@ export function App() {
     </Theme>
   );
 }
+
+// thickness takes a CSS length as well as px
+export const Pitched = slat({ thickness: "var(--pitch)" }, () => <div><Bar to={1} /></div>);

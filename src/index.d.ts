@@ -71,7 +71,7 @@ export interface SlatLayout {
   css?: string | readonly (string | null | undefined)[];
   /** px per slat along the stack: a row's height, or a column's width. Without one, slats share what the chart has: a
    * vertical chart's width, a horizontal chart's height (one with no height gives its slats 32px each and grows with them). */
-  thickness?: PerOrientation<number>;
+  thickness?: PerOrientation<number | string>;
   /** The empty share of the band on each side of a Bar, Tick or Area (0.18 by default), or a CSS length. */
   inset?: PerOrientation<number | string>;
   /** Room for what the slat draws outside the plot. "auto" sizes start or end to the widest edge label. */
