@@ -76,6 +76,13 @@ export const page = (entry, outfile) => build({
 });
 
 // rhp and Solid in one minified module, for pages with no build step
+// Solid's MIT license asks for its notice in every copy, and this file has Solid in it
+const solidNotice = () => {
+  const dir = new URL("../node_modules/solid-js/", import.meta.url);
+  const { version } = JSON.parse(fs.readFileSync(new URL("package.json", dir), "utf8"));
+  return `/*! Includes Solid ${version} (https://github.com/solidjs/solid):\n\n${fs.readFileSync(new URL("LICENSE", dir), "utf8").trim()}\n*/`;
+};
+
 export const standalone = (entry, outfile) => build({
   entryPoints: [entry],
   outfile,
@@ -86,6 +93,7 @@ export const standalone = (entry, outfile) => build({
   target: "es2020",
   plugins: [solid, cssText],
   define: { "process.env.NODE_ENV": '"production"' },
+  banner: { js: solidNotice() },
   logLevel: "warning",
 });
 

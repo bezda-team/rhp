@@ -16,7 +16,7 @@ Solid is its only peer dependency, and there is no stylesheet to import: rhp add
 A Solid app's build (Vite, SolidStart, Astro) compiles rhp's source with the app.
 Anywhere else the package picks a ready build: one for browsers, and one for Node, Deno and workers that draws charts on a server.
 
-- **No build step:** import `@bezda/rhp/standalone` from a CDN, one module with Solid included (35 kB gzipped); [Install](https://rhp.vercel.app/start/install/#in-a-plain-html-page) shows a whole page.
+- **No build step:** import `@bezda/rhp/standalone` from a CDN, one module with Solid included (36 kB gzipped); [Install](https://rhp.vercel.app/start/install/#in-a-plain-html-page) shows a whole page.
 - **React:** `@bezda/rhp-react`, in [`react/`](react/), turns an rhp chart into a React component.
 
 ## Example
