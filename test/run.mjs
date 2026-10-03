@@ -789,6 +789,25 @@ for (const motion of ["css", "js"]) {
   });
   check("JS version, while the scale moves: frames with a line past the end, with a line missing, with an axis line outside", [lines.past, lines.missing, lines.axis], [0, 0, 0]);
 
+  // TEMPORARY: frame gaps on the gallery page, idle and during a change, in both versions, to compare commits on CI
+  for (const motion of ["css", "js"]) {
+    await p.click(`label:has(#motion-${motion})`); await p.waitForTimeout(400);
+    const g = await p.evaluate(async () => {
+      const raf = () => new Promise((r) => requestAnimationFrame(r));
+      const gaps = async (ms) => { const ts = []; const end = performance.now() + ms; while (performance.now() < end) ts.push(await raf()); return ts.slice(1).map((t, i) => t - ts[i]); };
+      const idle = await gaps(2000);
+      const input = document.querySelector("#fruit .slider input");
+      const set = (v) => { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); };
+      set(5); await new Promise((r) => setTimeout(r, 500));
+      set(60);
+      const moving = await gaps(600);
+      set(1);
+      const sum = (a) => { const s = [...a].sort((x, y) => x - y); return { n: s.length, med: Math.round(s[Math.floor(s.length / 2)]), p90: Math.round(s[Math.floor(s.length * 0.9)]), max: Math.round(s[s.length - 1]), over25: s.filter((x) => x > 25).length }; };
+      return { idle: sum(idle), moving: sum(moving) };
+    });
+    console.log(`GAPS ${motion}: idle ${JSON.stringify(g.idle)} | during a change ${JSON.stringify(g.moving)}`);
+  }
+
   // A steady drag moves a bar steadily in the JS version (restarting the easing at every input made it pulse)
   const pulses = await p.evaluate(async () => {
     const input = document.querySelector("#fruit .slider input");
