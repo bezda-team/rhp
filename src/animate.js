@@ -203,13 +203,13 @@ export function animated(read, settings = () => ({})) {
     if (!movable(v) || reduce.matches) return v;
 
     if (to === undefined || !same(to, v)) {
-      // The value changed: add a move of the difference (the first value, a new shape, or a duration of 0 jumps)
+      // The value changed: add a move of the difference (the first value, or a new shape, jumps)
       const target = snapshot(v);
       const d = to === undefined ? undefined : diff(target, to);
-      const s = d === undefined ? undefined : untrack(settings);
-      if (s === undefined || s.duration === 0) {
+      if (d === undefined) {
         moves = [];
       } else {
+        const s = untrack(settings);
         const start = performance.now();
         const dur = Math.max(1, s.duration ?? MOVE_MS);
         moves.push({ d, start, dur, ease: s.ease ?? easeOut });
@@ -243,5 +243,56 @@ export function animated(read, settings = () => ({})) {
     }
 
     return x;
+  };
+}
+
+// A CSS transition run on rhp's clock, for a value the browser can't transition itself (Safari has no CSS d). It follows
+// CSS's rules, not animated()'s: a change starts a new transition from the value drawn now to the new one, over the
+// whole duration, after the delay. A change back to where the running transition started is shortened by how far that
+// one got, as CSS shortens a reversed transition. settings() is read on each change and gives { duration, delay, ease };
+// with no duration, or a new shape, the value jumps.
+export function transitioned(read, settings) {
+
+  let to;
+  let run = null; // { to, d (to minus where it started), back (where a reversal goes), factor, start, dur, ease }
+
+  const at = (r, t) => {
+    const p = (t - r.start) / r.dur;
+    return p >= 1 ? r.to : less(r.to, r.d, 1 - r.ease(Math.max(0, p)));
+  };
+
+  return () => {
+    const v = read();
+    if (!movable(v) || reduce.matches) return v;
+
+    if (to === undefined || !same(to, v)) {
+      const target = snapshot(v);
+      const now = performance.now();
+      const running = run !== null && now < run.start + run.dur;
+      const from = running ? at(run, now) : to;
+      const d = from === undefined ? undefined : diff(target, from);
+      const s = d === undefined ? undefined : untrack(settings);
+
+      const reversed = running && s !== undefined && same(run.back, target);
+      const factor = reversed ? Math.min(1, Math.abs(run.ease(Math.max(0, (now - run.start) / run.dur)) * run.factor + 1 - run.factor)) : 1;
+      const dur = (s?.duration ?? 0) * factor;
+
+      if (!(dur > 0)) {
+        run = null;
+      } else {
+        const delay = s.delay ?? 0;
+        run = { to: target, d, back: reversed ? run.to : from, factor, start: now + (delay < 0 ? delay * factor : delay), dur, ease: s.ease ?? easeOut };
+        runUntil(run.start + dur);
+      }
+      to = target;
+    }
+
+    if (run === null) return to;
+    if (frameAt >= run.start + run.dur) {
+      run = null;
+      return to;
+    }
+
+    return at(run, clock());
   };
 }

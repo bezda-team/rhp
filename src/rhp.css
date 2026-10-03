@@ -610,14 +610,17 @@
     transition-behavior: normal;
   }
 
-  /* An Area's or a Line's outline moves with its box. Safari has no d property: there the block reads this and moves
-     the outline itself (blocks.jsx). */
-  .rhp-area path, .rhp-line path {
-    transition-property: d;
-    transition-duration: var(--rhp-length-time, .15s);
-    transition-timing-function: var(--rhp-length-ease, ease-out);
-    transition-delay: 0s;
-    transition-behavior: normal;
+  /* CSS version: an Area's or a Line's outline moves with its box. The JS version moves the outline by counting, so
+     this rule leaves it out, and a slat's own transitions on a path (for interaction) run in either version. Safari has
+     no d property: there the block reads this rule and runs the transition itself (blocks.jsx). */
+  @media (prefers-reduced-motion: no-preference) {
+    .rhp-area:not([data-rhp-animate="js"] *) path, .rhp-line:not([data-rhp-animate="js"] *) path {
+      transition-property: d;
+      transition-duration: var(--rhp-length-time, .15s);
+      transition-timing-function: var(--rhp-length-ease, ease-out);
+      transition-delay: 0s;
+      transition-behavior: normal;
+    }
   }
 }
 
@@ -686,9 +689,7 @@
   [data-rhp-animate="js"] .rhp-label,
   [data-rhp-animate="js"] .rhp-place,
   [data-rhp-animate="js"] .rhp-area,
-  [data-rhp-animate="js"] .rhp-area path,
   [data-rhp-animate="js"] .rhp-line,
-  [data-rhp-animate="js"] .rhp-line path,
   [data-rhp-animate="js"] .rhp-gridline,
   [data-rhp-animate="js"] .rhp-cell {
     transition: none;
@@ -714,9 +715,7 @@
     .rhp-chart .rhp-label,
     .rhp-chart .rhp-place,
     .rhp-chart .rhp-area,
-    .rhp-chart .rhp-area path,
     .rhp-chart .rhp-line,
-    .rhp-chart .rhp-line path,
     .rhp-chart .rhp-gridline,
     .rhp-chart .rhp-cell {
       transition: none;

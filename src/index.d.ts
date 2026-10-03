@@ -389,7 +389,7 @@ export function density(samples: readonly number[], options?: { domain?: [number
 /** Runs f with rhp's style writes going to the page at once instead of in the next frame: for an app that changes
  * chart data inside its own requestAnimationFrame callback, so the change shows in that frame. */
 export function drawing<T>(f: () => T): T;
-/** A value that moves to each new value over time: the reader gives the value to draw now, or ms ahead. A duration of 0 jumps. */
+/** A value that moves to each new value over time: the reader gives the value to draw now, or ms ahead. */
 export function animated<T>(read: () => T, settings?: () => { duration?: number; ease?: Ease }): (ahead?: number) => T;
 /** A timing curve as a function of 0..1. */
 export function curve(ease?: Ease): (t: number) => number;

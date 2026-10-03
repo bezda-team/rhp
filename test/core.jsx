@@ -57,6 +57,10 @@ const Spark = (d) => <div class="sp"><Line points={d.pts} class="sl" /></div>;
 const [outline, setOutline] = createSignal([[0, 1], [5, 4], [10, 2]]);
 const [outlineO, setOutlineO] = createSignal("horizontal");
 const Outlined = (d) => <div><Area points={d.pts} mirror class="oa" /><Line points={d.pts} fill class="ol" /></div>;
+// In the JS version, a slat's own transition on a path, for interaction (here its fill), still runs
+const OutlinedJs = slat({ css: ".oa path { transition-property: fill; transition-duration: .2s; }" }, Outlined);
+// A change in the middle of an outline's transition: its middle point goes up to m, against a fixed peak of 10
+const [retarget, setRetarget] = createSignal(2);
 // Keyboard: sorted rows that slide, move in the page or refill their slots, and a static Plot's rows
 const [kbSlide, setKbSlide] = createSignal([3, 1, 2]);
 const [kbMove, setKbMove] = createSignal([{ n: "a", v: 3 }, { n: "b", v: 1 }, { n: "c", v: 2 }]);
@@ -135,7 +139,11 @@ render(() => (
     <Chart class="outline-css" orientation={outlineO()} scale={[0, 10]} ticks={false} height={120} style={{ "--rhp-length-time": "1s", "--rhp-length-ease": "linear" }}>
       <Plot pts={[outline()]}>{Outlined}</Plot>
     </Chart>
-    <Chart class="outline-js" animate scale={[0, 10]} ticks={false}><Plot pts={[outline()]}>{Outlined}</Plot></Chart>
+    <Chart class="outline-js" animate scale={[0, 10]} ticks={false}><Plot pts={[outline()]}>{OutlinedJs}</Plot></Chart>
+    <Chart class="outline-end" scale={[0, 10]} ticks={false} height={120}><Plot pts={[[[0, 4], [5, 1], [10, 3]]]}>{Outlined}</Plot></Chart>
+    <Chart class="outline-retarget" scale={[0, 10]} ticks={false} height={120} style={{ "--rhp-length-time": "1s", "--rhp-length-ease": "linear" }}>
+      <Plot m={[retarget()]}>{(d) => <div><Area points={[[0, 1], [5, d.m], [10, 1]]} peak={10} mirror class="ra" /></div>}</Plot>
+    </Chart>
     <Chart class="shape-h" scale={[0, 10]} ticks={false}><Plot v={[6]}>{Shaped}</Plot></Chart>
     <Chart class="shape-v" orientation="vertical" scale={[0, 10]} ticks={false} height={200}><Plot v={[6]}>{Shaped}</Plot></Chart>
     <Chart class="spot-h" scale={[0, 100]} ticks={false}><Plot v={[40]}>{Hung}</Plot></Chart>
@@ -164,4 +172,4 @@ render(() => (
     </div>
   </div>
 ), document.body);
-Object.assign(T, { setAsked, setOutline, setOutlineO, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
+Object.assign(T, { setAsked, setOutline, setOutlineO, setRetarget, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

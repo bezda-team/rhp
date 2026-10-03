@@ -6,7 +6,7 @@ import { insert, style } from "solid-js/web";
 import { isServer } from "./env.js";
 import { useOrientation, useCrossed, short } from "./plot.jsx";
 import { write } from "./frame.js";
-import { animated, cssEase } from "./animate.js";
+import { transitioned, cssEase } from "./animate.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
 
@@ -65,11 +65,12 @@ const trace = (pts, smooth) => {
 };
 
 // The outline of an Area or a Line moves with a CSS transition of d (rhp.css), but Safari has no d property, so there
-// the block moves it on rhp's clock instead, with the duration and curve that the path's CSS asks for.
+// the block runs the transition that the path's CSS asks for itself, on rhp's clock and by CSS's rules.
 const noCssD = !isServer && typeof CSS !== "undefined" && !CSS.supports("d", "path('M0,0')");
 
-// The transition of d that a path's CSS asks for, as animated() settings. The JS version and a chart that is turning
-// turn it off, and they are found without reading the style, because there the outline changes every frame.
+// The transition of d that a path's CSS asks for, as transitioned() settings. In the JS version (where rhp counts the
+// outline) and while the chart turns there is none, and those are found without reading the style, because there the
+// outline changes every frame.
 function cssTransition(path) {
 
   if (!path || path.closest("[data-rhp-animate='js'], [data-rhp-turning]")) return { duration: 0 };
@@ -83,13 +84,13 @@ function cssTransition(path) {
     const parts = list.split(/\s*,\s*(?![^(]*\))/);
     return parts[i % parts.length];
   };
-  const time = nth(c.transitionDuration);
+  const ms = (time) => parseFloat(time) * (time.endsWith("ms") ? 1 : 1000);
 
-  return { duration: parseFloat(time) * (time.endsWith("ms") ? 1 : 1000), ease: cssEase(nth(c.transitionTimingFunction)) };
+  return { duration: ms(nth(c.transitionDuration)), delay: ms(nth(c.transitionDelay)), ease: cssEase(nth(c.transitionTimingFunction)) };
 }
 
 // An outline's points as they should be drawn now: in Safari moving to each new outline, elsewhere as they are
-const drawn = (read, path) => (noCssD ? animated(read, () => cssTransition(path())) : read);
+const drawn = (read, path) => (noCssD ? transitioned(read, () => cssTransition(path())) : read);
 
 // Writes an element's CSS variables, and only the ones that changed (the first ones now, the rest in the next frame).
 // back(v) is for a Bar: whether it runs backward.
