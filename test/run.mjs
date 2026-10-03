@@ -886,7 +886,11 @@ for (const motion of ["css", "js"]) {
   await p.click("label:has(#orient-horizontal)"); await p.waitForTimeout(400);
   await narrow.evaluate((e) => e.remove());
 
-  // A value takes as long to move in the JS version as in the CSS version (150 ms by default)
+  // Each version moves a value over its own time: the CSS version's transition (--rhp-length-time) and the JS version's
+  // move (animate's duration), each 150 ms by default. A slow machine draws frames far apart (CI's come 33 to 83 ms
+  // apart), so the check reads which frames show the value still on its way and which show it there, measured from the
+  // change, rather than when a frame happens to come: the last frame on its way can come no later than the move's end,
+  // and the first frame that shows it there no earlier.
   const settle = {};
   for (const motion of ["css", "js"]) {
     await p.click(`label:has(#motion-${motion})`); await p.waitForTimeout(400);
@@ -896,21 +900,24 @@ for (const motion of ["css", "js"]) {
       const frame = () => new Promise((r) => requestAnimationFrame(r));
       const bar = [...document.querySelectorAll("#fruit .slat")].find((s) => s.querySelector(".name")?.textContent === "Fruit A").querySelector(".bar");
       set(5); await new Promise((r) => setTimeout(r, 500));
-      let last = bar.getBoundingClientRect().width, moved = 0;
       set(60);
       const t0 = performance.now();
+      const frames = [];
       for (let f = 0; f < 45; f++) {
-        await frame();
-        const w = bar.getBoundingClientRect().width;
-        if (Math.abs(w - last) > 0.01) { last = w; moved = performance.now() - t0; }
+        const t = await frame();
+        frames.push([t - t0, bar.getBoundingClientRect().width]);
       }
       set(1);
-      return Math.round(moved);
+      const end = frames[frames.length - 1][1];
+      const onItsWay = frames.filter(([, w]) => Math.abs(w - end) > 0.01).map(([t]) => t);
+      const there = frames.find(([t, w]) => Math.abs(w - end) <= 0.01 && t > Math.min(...onItsWay));
+      return { onItsWay: Math.round(Math.max(...onItsWay)), there: there ? Math.round(there[0]) : null };
     });
   }
-  check("JS version: a value moves as fast as in the CSS version (ms until it settles)", settle,
-    (t) => t.css >= 100 && t.css <= 220 && t.js >= 100 && t.js <= 220 && Math.abs(t.js - t.css) <= 40);
-  console.log(`     a value settles in: CSS version ${settle.css} ms, JS version ${settle.js} ms`);
+  const inTime = (t) => t.onItsWay <= 170 && t.there >= 100;
+  check("CSS version: a value moves for as long as its transition (ms after the change: last frame on its way, first frame there)", settle.css, inTime);
+  check("JS version: a value moves for as long as its own move (ms after the change: last frame on its way, first frame there)", settle.js, inTime);
+  console.log(`     a value is last on its way at, and first there at: CSS version ${settle.css.onItsWay} and ${settle.css.there} ms, JS version ${settle.js.onItsWay} and ${settle.js.there} ms`);
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
