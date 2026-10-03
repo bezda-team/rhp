@@ -303,12 +303,18 @@ const open = async (url, opts = {}) => {
     const b = document.querySelector(chart + " " + q).getBBox();
     return [Math.round(b.x), Math.round(b.y), Math.round(b.width), Math.round(b.height)];
   }), chart);
+  // A slow machine draws a transition's last frames late, so the end is waited for (up to 3 s), not given a fixed time
+  const until = async (read, want) => {
+    let got = await read();
+    for (const end = Date.now() + 3000; JSON.stringify(got) !== JSON.stringify(want) && Date.now() < end; got = await read()) await p.waitForTimeout(50);
+    return got;
+  };
+  const twoFrames = () => p.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
   const before = await outlines();
   await p.evaluate(() => T.setOutline([[0, 4], [5, 1], [10, 3]]));
   await p.waitForTimeout(500);
   const midway = await outlines();
-  await p.waitForTimeout(800);
-  const after = await outlines();
+  const after = await until(outlines, await outlines(".outline-end"));
   check("outline: halfway through the CSS version's transition, an Area and a Line are between their two outlines",
     midway.map((m, k) => [before[k], after[k]].every((end) => end.join() !== m.join())), [true, true]);
   check("outline: and they end on the outline a chart drawn from the new data has", after, await outlines(".outline-end"));
@@ -316,22 +322,31 @@ const open = async (url, opts = {}) => {
   check("outline: the JS version gives a path no CSS transition of d: rhp's count moves the outline", jsPaths.map((t) => t.split(", ").includes("d")), [false, false]);
   check("outline: and a slat's own transition on a path, for interaction, still runs in the JS version", jsPaths[0], "fill");
   await p.evaluate(() => T.setOutlineO("vertical"));
-  await p.waitForTimeout(60);
+  await twoFrames();
   const soon = await outlines();
   await p.waitForTimeout(1100);
   check("outline: turning the chart draws the turned outline at once", [soon.join() !== after.join(), soon.join() === (await outlines()).join()], [true, true]);
-  // A change in the middle of the transition starts a new one from where the outline is drawn, over the whole time, as
-  // CSS does, so Safari, whose transition rhp runs, moves as the others do. The outline's height is 100 x its middle.
+  // A change in the middle of the transition starts a new one from where the outline is drawn, as CSS does, so Safari,
+  // whose transition rhp runs, moves as the others do. The outline's height is 100 x its middle point: 2 grows toward 8,
+  // and half way it is sent to 4. By CSS's rules it shrinks from there on; added moves (the JS version's logic) would
+  // carry on growing to 6 first. Every frame after the change is read, so how far apart frames come doesn't matter.
   const tall = () => p.evaluate(() => Math.round(document.querySelector(".outline-retarget .ra path").getBBox().height));
   const start = await tall();
   await p.evaluate(() => T.setRetarget(8));
   await p.waitForTimeout(500);
-  await p.evaluate(() => T.setRetarget(4));
-  await p.waitForTimeout(250);
-  const retargeted = await tall();
-  await p.waitForTimeout(1100);
-  check("outline: a change mid-way starts a new transition from where the outline is, as CSS does (about 475; added moves give 550)",
-    [start, Math.abs(retargeted - 475) <= 40, await tall()], [200, true, 400]);
+  const sent = await p.evaluate(async () => {
+    const path = document.querySelector(".outline-retarget .ra path");
+    T.setRetarget(4);
+    const heights = [];
+    for (const end = performance.now() + 1400; performance.now() < end; ) {
+      await new Promise((r) => requestAnimationFrame(r));
+      heights.push(Math.round(path.getBBox().height));
+    }
+    return heights;
+  });
+  const grew = Math.max(...sent) - sent[0];
+  check("outline: a change mid-way starts a new transition from where the outline is, as CSS does (it never grows again; added moves would)",
+    [start, sent[0] > 400 && sent[0] < 800, grew <= 5, await until(tall, 400)], [200, true, true, 400]);
   // Place: a point with no size of its own, at its value, in both directions and on a cross scale
   const spot = (chart) => p.evaluate((chart) => {
     const el = document.querySelector(chart + " .spot"), track = el.closest(".rhp-plot").getBoundingClientRect();
@@ -789,7 +804,9 @@ for (const motion of ["css", "js"]) {
   });
   check("JS version, while the scale moves: frames with a line past the end, with a line missing, with an axis line outside", [lines.past, lines.missing, lines.axis], [0, 0, 0]);
 
-  // A steady drag moves a bar steadily in the JS version (restarting the easing at every input made it pulse)
+  // A steady drag moves a bar steadily in the JS version (restarting the easing at every input made it pulse). The drag
+  // follows the clock, a step every 50 ms as a hand would, not the frames: a slow machine draws frames far apart, and a
+  // drag that stepped with them stopped between its steps, which read as the bar pulsing.
   const pulses = await p.evaluate(async () => {
     const input = document.querySelector("#fruit .slider input");
     const set = (v) => { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); };
@@ -798,12 +815,15 @@ for (const motion of ["css", "js"]) {
     // The bar's width at each frame's time: speed is px per ms, so a frame that comes early or late (a busy machine)
     // isn't taken for the bar slowing down or speeding up
     const w = [];
-    for (let v = 12; v <= 24; v++) {
-      for (let k = 0; k < 3; k++) {
-        set(v);
-        const t = await new Promise((r) => requestAnimationFrame(r));
-        w.push([t, bar.getBoundingClientRect().width]);
-      }
+    const start = performance.now();
+    for (let v = 12; v < 24; ) {
+      const t = await new Promise((r) => requestAnimationFrame(r));
+      v = Math.min(24, 12 + Math.floor((performance.now() - start) / 50));
+      set(v);
+      w.push([t, bar.getBoundingClientRect().width]);
+    }
+    for (let k = 0; k < 3; k++) {
+      w.push([await new Promise((r) => requestAnimationFrame(r)), bar.getBoundingClientRect().width]);
     }
     // Each speed is measured over at least 25ms: longer than the ~17ms the browser takes to paint a frame, and shorter
     // than the 50ms a restarting bar would pulse with. Read over less than a paint, the width alternates between frames
@@ -887,10 +907,10 @@ for (const motion of ["css", "js"]) {
   await narrow.evaluate((e) => e.remove());
 
   // Each version moves a value over its own time: the CSS version's transition (--rhp-length-time) and the JS version's
-  // move (animate's duration), each 150 ms by default. A slow machine draws frames far apart (CI's come 33 to 83 ms
-  // apart), so the check reads which frames show the value still on its way and which show it there, measured from the
-  // change, rather than when a frame happens to come: the last frame on its way can come no later than the move's end,
-  // and the first frame that shows it there no earlier.
+  // move (animate's duration), each 150 ms by default. A slow machine draws frames far apart (CI's Chromium up to 133 ms),
+  // so the check reads which frames show the value on its way, not when a frame happens to come: there is one (it didn't
+  // jump), and the last comes no later than the move's end, counted from the first frame after the change, the latest a
+  // browser starts it. (No earlier limit: Firefox starts a transition from its last refresh, which can be before it.)
   const settle = {};
   for (const motion of ["css", "js"]) {
     await p.click(`label:has(#motion-${motion})`); await p.waitForTimeout(400);
@@ -909,15 +929,14 @@ for (const motion of ["css", "js"]) {
       }
       set(1);
       const end = frames[frames.length - 1][1];
-      const onItsWay = frames.filter(([, w]) => Math.abs(w - end) > 0.01).map(([t]) => t);
-      const there = frames.find(([t, w]) => Math.abs(w - end) <= 0.01 && t > Math.min(...onItsWay));
-      return { onItsWay: Math.round(Math.max(...onItsWay)), there: there ? Math.round(there[0]) : null };
+      const onItsWay = frames.filter(([, w]) => Math.abs(w - end) > 0.01).map(([t]) => t - frames[0][0]);
+      return onItsWay.length ? Math.round(Math.max(...onItsWay)) : null;
     });
   }
-  const inTime = (t) => t.onItsWay <= 170 && t.there >= 100;
-  check("CSS version: a value moves for as long as its transition (ms after the change: last frame on its way, first frame there)", settle.css, inTime);
-  check("JS version: a value moves for as long as its own move (ms after the change: last frame on its way, first frame there)", settle.js, inTime);
-  console.log(`     a value is last on its way at, and first there at: CSS version ${settle.css.onItsWay} and ${settle.css.there} ms, JS version ${settle.js.onItsWay} and ${settle.js.there} ms`);
+  const inTime = (t) => t !== null && t <= 170;
+  check("CSS version: a value moves no longer than its transition (ms from the first frame after the change to the last on its way)", settle.css, inTime);
+  check("JS version: a value moves no longer than its own move (ms from the first frame after the change to the last on its way)", settle.js, inTime);
+  console.log(`     a value is last on its way at: CSS version ${settle.css} ms, JS version ${settle.js} ms`);
   await p.click("label:has(#motion-css)");
   await p.waitForTimeout(600);
 
@@ -955,19 +974,26 @@ for (const motion of ["css", "js"]) {
         await frame();
       }
 
-      const still = at();
-      let moved = false;
-      for (const end = performance.now() + 7000; !moved && performance.now() < end; moved = at() !== still) {
-        await frame();
-      }
-
+      // The frame that first shows the rows moving is read too: on a slow machine it can be the only one before they rest
       let between = 0;
       let holes = 0;
-      for (const end = performance.now() + 700; performance.now() < end; ) {
-        await frame();
+      const read = () => {
         const now = rows();
         if (now.some((r) => r.hole)) holes++;
         if (now.some((r) => Math.abs(r.x - 4) > 0.5)) between++;
+      };
+
+      const still = at();
+      let moved = false;
+      for (const end = performance.now() + 7000; !moved && performance.now() < end; ) {
+        await frame();
+        moved = at() !== still;
+      }
+      if (moved) read();
+
+      for (const end = performance.now() + 700; performance.now() < end; ) {
+        await frame();
+        read();
       }
 
       return [moved, between > 0, holes];
