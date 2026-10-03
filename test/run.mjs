@@ -297,6 +297,41 @@ const open = async (url, opts = {}) => {
   check("smooth: Area joins its points with curves, and without it with lines", await p.evaluate(() => [
     document.querySelector(".shape-h .sm path").getAttribute("d").includes("C"),
     document.querySelector(".shape-h .st path").getAttribute("d").includes("C")]), [true, false]);
+  // An Area's and a Line's outline move with their box in the CSS version (in Safari, which has no CSS d, the block
+  // runs that transition), and jump while the chart turns
+  const outlines = (chart = ".outline-css") => p.evaluate((chart) => [".oa path", ".ol .rhp-stroke"].map((q) => {
+    const b = document.querySelector(chart + " " + q).getBBox();
+    return [Math.round(b.x), Math.round(b.y), Math.round(b.width), Math.round(b.height)];
+  }), chart);
+  const before = await outlines();
+  await p.evaluate(() => T.setOutline([[0, 4], [5, 1], [10, 3]]));
+  await p.waitForTimeout(500);
+  const midway = await outlines();
+  await p.waitForTimeout(800);
+  const after = await outlines();
+  check("outline: halfway through the CSS version's transition, an Area and a Line are between their two outlines",
+    midway.map((m, k) => [before[k], after[k]].every((end) => end.join() !== m.join())), [true, true]);
+  check("outline: and they end on the outline a chart drawn from the new data has", after, await outlines(".outline-end"));
+  const jsPaths = await p.evaluate(() => [".oa path", ".ol .rhp-stroke"].map((q) => getComputedStyle(document.querySelector(".outline-js " + q)).transitionProperty));
+  check("outline: the JS version gives a path no CSS transition of d: rhp's count moves the outline", jsPaths.map((t) => t.split(", ").includes("d")), [false, false]);
+  check("outline: and a slat's own transition on a path, for interaction, still runs in the JS version", jsPaths[0], "fill");
+  await p.evaluate(() => T.setOutlineO("vertical"));
+  await p.waitForTimeout(60);
+  const soon = await outlines();
+  await p.waitForTimeout(1100);
+  check("outline: turning the chart draws the turned outline at once", [soon.join() !== after.join(), soon.join() === (await outlines()).join()], [true, true]);
+  // A change in the middle of the transition starts a new one from where the outline is drawn, over the whole time, as
+  // CSS does, so Safari, whose transition rhp runs, moves as the others do. The outline's height is 100 x its middle.
+  const tall = () => p.evaluate(() => Math.round(document.querySelector(".outline-retarget .ra path").getBBox().height));
+  const start = await tall();
+  await p.evaluate(() => T.setRetarget(8));
+  await p.waitForTimeout(500);
+  await p.evaluate(() => T.setRetarget(4));
+  await p.waitForTimeout(250);
+  const retargeted = await tall();
+  await p.waitForTimeout(1100);
+  check("outline: a change mid-way starts a new transition from where the outline is, as CSS does (about 475; added moves give 550)",
+    [start, Math.abs(retargeted - 475) <= 40, await tall()], [200, true, 400]);
   // Place: a point with no size of its own, at its value, in both directions and on a cross scale
   const spot = (chart) => p.evaluate((chart) => {
     const el = document.querySelector(chart + " .spot"), track = el.closest(".rhp-plot").getBoundingClientRect();
