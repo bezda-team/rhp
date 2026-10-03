@@ -297,6 +297,28 @@ const open = async (url, opts = {}) => {
   check("smooth: Area joins its points with curves, and without it with lines", await p.evaluate(() => [
     document.querySelector(".shape-h .sm path").getAttribute("d").includes("C"),
     document.querySelector(".shape-h .st path").getAttribute("d").includes("C")]), [true, false]);
+  // An Area's and a Line's outline move with their box in the CSS version (in Safari, which has no CSS d, the block
+  // moves it), and have no transition of their own in the JS version or while the chart turns
+  const outlines = (chart = ".outline-css") => p.evaluate((chart) => [".oa path", ".ol .rhp-stroke"].map((q) => {
+    const b = document.querySelector(chart + " " + q).getBBox();
+    return [Math.round(b.x), Math.round(b.y), Math.round(b.width), Math.round(b.height)];
+  }), chart);
+  const before = await outlines();
+  await p.evaluate(() => T.setOutline([[0, 4], [5, 1], [10, 3]]));
+  await p.waitForTimeout(500);
+  const midway = await outlines();
+  await p.waitForTimeout(800);
+  const after = await outlines();
+  check("outline: halfway through the CSS version's transition, an Area and a Line are between their two outlines",
+    midway.map((m, k) => [before[k], after[k]].every((end) => end.join() !== m.join())), [true, true]);
+  check("outline: and they end on the new outline, as the JS version draws it", after, await outlines(".outline-js"));
+  check("outline: the JS version gives the path no transition of its own", await p.evaluate(() =>
+    [".oa path", ".ol .rhp-stroke"].map((q) => getComputedStyle(document.querySelector(".outline-js " + q)).transitionDuration)), ["0s", "0s"]);
+  await p.evaluate(() => T.setOutlineO("vertical"));
+  await p.waitForTimeout(60);
+  const soon = await outlines();
+  await p.waitForTimeout(1100);
+  check("outline: turning the chart draws the turned outline at once", [soon.join() !== after.join(), soon.join() === (await outlines()).join()], [true, true]);
   // Place: a point with no size of its own, at its value, in both directions and on a cross scale
   const spot = (chart) => p.evaluate((chart) => {
     const el = document.querySelector(chart + " .spot"), track = el.closest(".rhp-plot").getBoundingClientRect();

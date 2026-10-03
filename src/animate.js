@@ -59,6 +59,15 @@ export const curve = (c) => {
 // The same curve as a CSS timing function (undefined for a JS function, which CSS can't express)
 export const cssCurve = (c) => (Array.isArray(c) ? `cubic-bezier(${c.join(",")})` : typeof c === "string" ? c : undefined);
 
+// A computed CSS timing function as a curve: a name or cubic-bezier(), and anything else (steps, linear()) as linear
+export const cssEase = (s) => {
+
+  const m = /^cubic-bezier\(([^)]*)\)$/.exec(s);
+  if (m) return bezier(...m[1].split(",").map(Number));
+
+  return NAMED[s] ?? NAMED.linear;
+};
+
 const reduce = typeof matchMedia === "function" ? matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
 
 // One clock for the whole page: a signal that is set once per frame, and only while something is moving
@@ -194,13 +203,13 @@ export function animated(read, settings = () => ({})) {
     if (!movable(v) || reduce.matches) return v;
 
     if (to === undefined || !same(to, v)) {
-      // The value changed: add a move of the difference (the first value, or a new shape, jumps)
+      // The value changed: add a move of the difference (the first value, a new shape, or a duration of 0 jumps)
       const target = snapshot(v);
       const d = to === undefined ? undefined : diff(target, to);
-      if (d === undefined) {
+      const s = d === undefined ? undefined : untrack(settings);
+      if (s === undefined || s.duration === 0) {
         moves = [];
       } else {
-        const s = untrack(settings);
         const start = performance.now();
         const dur = Math.max(1, s.duration ?? MOVE_MS);
         moves.push({ d, start, dur, ease: s.ease ?? easeOut });

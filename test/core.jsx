@@ -53,6 +53,10 @@ const [asked, setAsked] = createSignal(false);
 const Point = (d) => <div><Dot at={d.x} cross={d.y} size="6px" class="pt" /><Label at={d.x} cross={d.y} class="pl">{d.y}</Label></div>;
 const Trend = (d) => <div><Line points={d.pts} class="tl" /></div>;
 const Spark = (d) => <div class="sp"><Line points={d.pts} class="sl" /></div>;
+// An Area's and a Line's outline, in the same box (x from 0 to 10) while their y changes
+const [outline, setOutline] = createSignal([[0, 1], [5, 4], [10, 2]]);
+const [outlineO, setOutlineO] = createSignal("horizontal");
+const Outlined = (d) => <div><Area points={d.pts} mirror class="oa" /><Line points={d.pts} fill class="ol" /></div>;
 // Keyboard: sorted rows that slide, move in the page or refill their slots, and a static Plot's rows
 const [kbSlide, setKbSlide] = createSignal([3, 1, 2]);
 const [kbMove, setKbMove] = createSignal([{ n: "a", v: 3 }, { n: "b", v: 1 }, { n: "c", v: 2 }]);
@@ -128,6 +132,10 @@ render(() => (
     <Chart class="kb-move" scale={[0, 10]}><Plot keyboard reorder="move" key="n" rows={kbMove()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-refill" scale={[0, 10]}><Plot keyboard reorder="refill" n={["a", "b", "c"]} v={kbRefill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
     <Chart class="kb-still" static scale={[0, 10]}><Plot keyboard n={["a", "b", "c"]} v={kbStill()} order={sortBy("v", "desc")}>{Key}</Plot></Chart>
+    <Chart class="outline-css" orientation={outlineO()} scale={[0, 10]} ticks={false} height={120} style={{ "--rhp-length-time": "1s", "--rhp-length-ease": "linear" }}>
+      <Plot pts={[outline()]}>{Outlined}</Plot>
+    </Chart>
+    <Chart class="outline-js" animate scale={[0, 10]} ticks={false}><Plot pts={[outline()]}>{Outlined}</Plot></Chart>
     <Chart class="shape-h" scale={[0, 10]} ticks={false}><Plot v={[6]}>{Shaped}</Plot></Chart>
     <Chart class="shape-v" orientation="vertical" scale={[0, 10]} ticks={false} height={200}><Plot v={[6]}>{Shaped}</Plot></Chart>
     <Chart class="spot-h" scale={[0, 100]} ticks={false}><Plot v={[40]}>{Hung}</Plot></Chart>
@@ -156,4 +164,4 @@ render(() => (
     </div>
   </div>
 ), document.body);
-Object.assign(T, { setAsked, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
+Object.assign(T, { setAsked, setOutline, setOutlineO, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

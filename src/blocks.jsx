@@ -6,6 +6,7 @@ import { insert, style } from "solid-js/web";
 import { isServer } from "./env.js";
 import { useOrientation, useCrossed, short } from "./plot.jsx";
 import { write } from "./frame.js";
+import { animated, cssEase } from "./animate.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
 
@@ -62,6 +63,33 @@ const trace = (pts, smooth) => {
 
   return d;
 };
+
+// The outline of an Area or a Line moves with a CSS transition of d (rhp.css), but Safari has no d property, so there
+// the block moves it on rhp's clock instead, with the duration and curve that the path's CSS asks for.
+const noCssD = !isServer && typeof CSS !== "undefined" && !CSS.supports("d", "path('M0,0')");
+
+// The transition of d that a path's CSS asks for, as animated() settings. The JS version and a chart that is turning
+// turn it off, and they are found without reading the style, because there the outline changes every frame.
+function cssTransition(path) {
+
+  if (!path || path.closest("[data-rhp-animate='js'], [data-rhp-turning]")) return { duration: 0 };
+
+  const c = getComputedStyle(path);
+  const i = c.transitionProperty.split(/\s*,\s*/).findIndex((name) => name === "d" || name === "all");
+  if (i < 0) return { duration: 0 };
+
+  // The lists repeat to the length of transition-property, and a curve's own commas are inside its brackets
+  const nth = (list) => {
+    const parts = list.split(/\s*,\s*(?![^(]*\))/);
+    return parts[i % parts.length];
+  };
+  const time = nth(c.transitionDuration);
+
+  return { duration: parseFloat(time) * (time.endsWith("ms") ? 1 : 1000), ease: cssEase(nth(c.transitionTimingFunction)) };
+}
+
+// An outline's points as they should be drawn now: in Safari moving to each new outline, elsewhere as they are
+const drawn = (read, path) => (noCssD ? animated(read, () => cssTransition(path())) : read);
 
 // Writes an element's CSS variables, and only the ones that changed (the first ones now, the rest in the next frame).
 // back(v) is for a Bar: whether it runs backward.
@@ -296,17 +324,27 @@ export function Area(props) {
     return [pts[0][0], pts[pts.length - 1][0]];
   });
 
-  const path = createMemo(() => {
+  // The outline's points in the shape's box: along the value axis from 0 to 1000, and across as a share of the peak
+  const points = () => {
     const pts = p.points ?? [];
-    if (pts.length < 2) return "";
+    if (pts.length < 2) return null;
 
     const [x0, x1] = span();
     const w = x1 - x0 || 1;
     const peak = p.peak ?? extentOf(pts.map((q) => q[1]))[1];
+
+    return pts.map(([x, y]) => [((x - x0) / w) * 1000, Math.min(1, y / (peak || 1))]);
+  };
+  let pathEl;
+  const shown = drawn(points, () => pathEl);
+
+  const path = createMemo(() => {
+    const ut = shown();
+    if (!ut) return "";
+
     const vertical = orientation() === "vertical";
     // u runs along the value axis and t across the band, both from 0 to 1000 in the shape's box
     const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
-    const ut = pts.map(([x, y]) => [((x - x0) / w) * 1000, Math.min(1, y / (peak || 1))]);
     // The outline: the top edge (both edges when mirrored), and the base under it, which is never curved
     if (p.mirror) {
       return "M" + trace(ut.map(([u, y]) => xy(u, 500 - y * 500)), p.smooth)
@@ -329,7 +367,7 @@ export function Area(props) {
   const node = (
     <svg {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-area", p.class)} data-rhp-o={short(orientation())}
       viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : p.style}>
-      <path d={path()} vector-effect="non-scaling-stroke" />
+      <path ref={pathEl} d={path()} vector-effect="non-scaling-stroke" />
     </svg>
   );
   writeVars(el, vars);
@@ -366,24 +404,37 @@ export function Line(props) {
     return [...extentOf(xs), y0, y1];
   });
 
-  // The line, and the shape under it when filled
-  const paths = createMemo(() => {
+  // The line's points in its box, u along the value axis and t across (from the top when horizontal), both from 0 to
+  // 1000, and the t where the fill under it ends
+  const points = () => {
     const pts = p.points ?? [];
-    if (pts.length < 2) return ["", ""];
+    if (pts.length < 2) return null;
 
     const [x0, x1, y0, y1] = box();
     const w = x1 - x0 || 1;
     const peak = p.peak ?? extentOf(pts.map((q) => q[1]))[1];
-    const vertical = orientation() === "vertical";
     // up is y's place across, 0 to 1: on the cross scale within the box, or in the band
     const up = crossed() ? (y) => (y - y0) / (y1 - y0) : (y) => Math.min(1, y / (peak || 1));
-    // u runs along the value axis and t across (from the top when horizontal), both from 0 to 1000 in the line's box
+
+    return {
+      ut: pts.map(([x, y]) => [((x - x0) / w) * 1000, 1000 - up(y) * 1000]),
+      floor: !p.fill ? 1000 : crossed() ? 1000 - up(p.base ?? 0) * 1000 : 1000,
+    };
+  };
+  let pathEl;
+  const shown = drawn(points, () => pathEl);
+
+  // The line, and the shape under it when filled
+  const paths = createMemo(() => {
+    const pts = shown();
+    if (!pts) return ["", ""];
+
+    const { ut, floor } = pts;
+    const vertical = orientation() === "vertical";
     const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
-    const ut = pts.map(([x, y]) => [((x - x0) / w) * 1000, 1000 - up(y) * 1000]);
     const line = "M" + trace(ut.map(([u, t]) => xy(u, t)), p.smooth);
     if (!p.fill) return [line, ""];
 
-    const floor = crossed() ? 1000 - up(p.base ?? 0) * 1000 : 1000;
     const under = line + "L" + fmt(xy(ut[ut.length - 1][0], floor)) + "L" + fmt(xy(ut[0][0], floor)) + "Z";
 
     return [line, under];
@@ -405,7 +456,7 @@ export function Line(props) {
     <svg {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-line", p.class)} data-rhp-o={short(orientation())}
       viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : p.style}>
       <path class="rhp-under" d={paths()[1]} />
-      <path class="rhp-stroke" d={paths()[0]} vector-effect="non-scaling-stroke" />
+      <path ref={pathEl} class="rhp-stroke" d={paths()[0]} vector-effect="non-scaling-stroke" />
     </svg>
   );
   writeVars(el, vars);
