@@ -58,7 +58,7 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 
 | Code | Level | What triggers it | Fix it gives |
 |---|---|---|---|
-| `missing-export` | error | A name imported from `@bezda/rhp/standalone` that it doesn't export, so the module fails to load. | What to use instead (a per-row data group for `createSelector`, `createMemo` for `createComputed`...), or the closest export. |
+| `missing-export` | error | A name imported from `@bezda/rhp/standalone` that it doesn't export, so the module fails to load. | What to use instead (a function returning the template for `Dynamic`, `render()` into the other element for `Portal`...), or the closest export. |
 | `two-solids` | error | `@bezda/rhp/standalone` and `solid-js` imported in the same code: two copies of Solid, and the signals of one are not tracked by the other. | Import everything from the standalone module. |
 | `bare-boolean` | error | `overlap`, `static`, `keyboard`, `animate`, `mirror`, `smooth`, `fill` or `keyed` written bare on a component in an html template: it passes `""`, which is false. | `name=${true}`. |
 | `handler-at-render` | error | An `on...` prop on a component in an html template given a function with no parameter (inline, or a function named in the file): it is read as a value, runs at render and is never attached. | Give the handler a parameter: `(e) => ...`. |

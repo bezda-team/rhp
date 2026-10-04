@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- createSelector imported from the standalone module, which has none. expect: missing-export -->
+<!-- Dynamic imported from the standalone module, which has none. expect: missing-export -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -14,7 +14,7 @@
 <body>
 <div id="chart"></div>
 <script type="module">
-import { Chart, Plot, Bar, Label, slat, html, render, createSelector } from "@bezda/rhp/standalone";
+import { Chart, Plot, Bar, Label, slat, html, render, Dynamic } from "@bezda/rhp/standalone";
 
 const fruit = ["Apples", "Bananas", "Cherries"];
 const sold = [12, 18, 7];

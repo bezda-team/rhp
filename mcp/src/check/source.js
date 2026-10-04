@@ -28,16 +28,9 @@ const BLOCKS = new Set(["Bar", "Dot", "Tick", "Label", "Cell", "Place", "Area", 
 
 // What to use for what the standalone module doesn't have
 const INSTEAD = {
-  createSelector: "a per-row data group instead: on=${(d) => on() === d.index} on the Plot, read in the slat as ${() => d.on}",
-  on: "createEffect, reading the signals it depends on (and untrack() around the rest)",
-  createComputed: "createMemo for a value worked out from signals, or createEffect for a side effect",
   createRenderEffect: "createEffect",
-  Switch: "a function that returns one template or another: ${() => (mode() === \"a\" ? html`...` : html`...`)}, or Show with a fallback",
-  Match: "a function that returns one template or another: ${() => (mode() === \"a\" ? html`...` : html`...`)}, or Show with a fallback",
   Dynamic: "a function that returns the template for the current choice",
   Portal: "render() into the other element",
-  mergeProps: "plain reads with a default (props.size ?? 12), inside a function where they must follow changes",
-  splitProps: "the props you need, read by name (props.title), inside functions where they must follow changes",
   createResource: "fetch in onMount, and keep the result in a signal",
   ErrorBoundary: "a check of the data before it is drawn (standalone has no error boundary)",
   createContext: "values passed as props, or kept in a signal at the top of the module",
