@@ -53,6 +53,16 @@ Each prop of the Plot is a column of data, and each slat reads its row's values 
 - `slat(settings, fn)` returns a new function, the slat type, and leaves `fn` as it was, so one function can make several slat types with different settings.
   Give the Plot what `slat()` returns: `fn` itself carries no settings.
 
+## Make charts with an AI agent
+
+rhp comes with an Agent Skill and a checker, so an AI coding agent that has never seen rhp can make an rhp chart in one go.
+
+- **The skill** ([`skills/rhp/`](skills/rhp/)) teaches the agent how a chart is built, gives it 30 tested chart pages to start from, and makes it check its work. `npx skills add bezda-team/rhp` installs it into Claude Code, Codex, Cursor, Copilot, Gemini CLI and other agents.
+- **The checker** ([`mcp/`](mcp/)) renders a chart in a browser at desktop and phone widths and reports what a reader would hit, with a fix for each: `npx -y @bezda/rhp-mcp check chart.html`. With no arguments it is an MCP server with the same check.
+- **Claude Code** installs both with `/plugin marketplace add bezda-team/rhp`, then `/plugin install rhp@rhp`.
+
+[Build with AI](https://rhp.vercel.app/ai/) on the website has the setup for each tool and a prompt for chat apps.
+
 ## What's in the package
 
 | File | |
@@ -94,6 +104,8 @@ The code:
 | `src/data.js`, `src/shape.js` | the data helpers and `shape()` |
 | `src/poster.jsx`, `src/posters.css` | Poster and its looks |
 | `test/run.mjs` | every check, including an app drawn on a server and taken over in the browser, and a Vite app built from rhp's source |
+
+The AI kit has its own checks: `npm install` and `npm test` in `mcp/` run the checker against a set of broken charts, the gallery's examples and every recipe in `skills/rhp/recipes/`.
 
 ### Releasing
 
