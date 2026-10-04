@@ -194,9 +194,20 @@ function TrafficBoard() {
   const say = () => REGIONS.map((r, i) => `${r.name}: ${rate.format(rps()[i])} requests a second`);
 
   const [picked, setPicked] = createSignal(null);
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    setPicked(el ? +el.dataset.row : null);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the board: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   const readout = () => {
     const i = picked();
@@ -220,9 +231,8 @@ function TrafficBoard() {
         <button type="button" class="pause" aria-label="Pause" aria-pressed=${() => String(!live())} onClick=${toggle}><i></i><span>Pause</span></button>
       </div>
       <div class="board"
-        onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+        onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
         <${Chart} scale=${[-WINDOW, 0]} ticks=${[1, 0.75, 0.5, 0.25, 0].map((k) => -k * WINDOW)} format=${(v) => (v === 0 ? "now" : `${-v}s`)}
           label="Requests per second by region over the last minute"
           theme=${{ font: '"Martian Mono", ui-monospace, Menlo, monospace', ink: "#e9ece9", muted: "#8f9799", grid: "rgb(255 255 255 / .08)" }}>

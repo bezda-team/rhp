@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>When the code gets written</title>
-<meta name="description" content="Heatmap: a value over two categories (weekday by hour), one colored cell each, with a readout of the cell under the pointer or finger and of the day in keyboard focus. It turns its days into columns on a phone. Use it for activity by day and hour, or any grid of counts.">
+<meta name="description" content="Heatmap: a value over two categories (weekday by hour), one colored cell each, with a readout of the cell the reader points at or taps and of the day in keyboard focus. It turns its days into columns on a phone. Use it for activity by day and hour, or any grid of counts.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500..800&family=JetBrains+Mono:wght@400..700&display=swap">
@@ -33,6 +33,12 @@
   .readout .key i { width: 88px; height: 10px; border-radius: 3px; background: linear-gradient(90deg in oklab, #f7f6f3, #3730a3); box-shadow: inset 0 0 0 1px rgb(28 27 34 / .14); }
   /* The keyboard's case around the keys */
   .chart { border-radius: 14px; background: #d9d8d3; box-shadow: inset 0 1px 3px rgb(30 29 26 / .25), 0 1px 0 #fff; } /* its padding is the chart's room, set by the slat types */
+  /* Where the days turn into columns, the chart is taller than half a phone's screen: the readout stays at the top of
+     the screen while the chart scrolls under it (the poster is a flex column there: a sticky grid item can't leave its row) */
+  @media (max-width: 639px) {
+    .poster { display: flex; flex-direction: column; }
+    .readout { position: sticky; top: 0; z-index: 2; margin: -8px 0 4px; padding: 8px 0; background: #f0efeb; }
+  }
   @media (max-width: 520px) {
     body { padding: 24px 16px 32px; }
     .poster { padding: 30px 18px 20px; }
@@ -101,7 +107,7 @@ const Day = slat({
     </div>`;
 });
 
-// Chart component: the readout follows the hour under the pointer or finger, or the day in keyboard focus. On a
+// Chart component: the readout follows the hour the reader points at or taps, or the day in keyboard focus. On a
 // narrow screen the days turn into columns, so the hours run down the page.
 function Commits() {
   const wide = matchMedia("(min-width: 640px)");
@@ -111,15 +117,29 @@ function Commits() {
   onCleanup(() => wide.removeEventListener("change", turn));
 
   const [at, setAt] = createSignal(null); // [day, hour], or [day] for a whole day
+  // A mouse or a pen picks as it moves, a tap or a click picks; between the keys the pick stays
   const pick = (e) => {
     const hour = e.target.closest("[data-hour]");
     const day = e.target.closest("[data-row]");
-    setAt(hour ? [+hour.dataset.day, +hour.dataset.hour] : day ? [+day.dataset.row] : null);
+    if (hour) setAt([+hour.dataset.day, +hour.dataset.hour]);
+    else if (day) setAt([+day.dataset.row]);
   };
+  // What the day with focus holds: the whole day the keyboard reached, or the hour a click or a tap picked in it
+  let held = null;
   // Focus reads a whole day, unless an hour of that day is already picked (a tap on an hour also focuses its day)
   const focusDay = (e) => {
     const day = e.target.closest("[data-row]");
     if (day && at()?.[0] !== +day.dataset.row) setAt([+day.dataset.row]);
+    held = at();
+  };
+  const click = (e) => {
+    pick(e);
+    held = at();
+  };
+  // Leaving the poster: back to what the day with focus holds (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setAt(e.currentTarget.contains(document.activeElement) ? held : null);
   };
   const readout = () => {
     const [day, hour] = at() ?? [1, 15];
@@ -136,9 +156,8 @@ function Commits() {
       title="More than half of all commits land on weekday afternoons"
       dek="One team's commits over a year, by weekday and hour. The keys darken from 2 to 5 pm on every working day, the lunch hour dips, and weekends barely move."
       note="Illustrative data, in local time. Point at a key or tap it to read its hour; Tab into the chart and use the arrow keys to read a day."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${focusDay}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setAt(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setAt(null)}>
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${click} onFocusIn=${focusDay}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setAt(null)}>
       <div class="readout">
         <output aria-live="polite">${readout}</output>
         <span class="key" aria-hidden="true">0<i></i>${count.format(SCALE.max)}</span>

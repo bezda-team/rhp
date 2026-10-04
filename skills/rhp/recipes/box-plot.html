@@ -106,14 +106,25 @@ const Mode = slat({
     <span class="say">${() => `: half of all trips take ${minutes.format(d.q1)} to ${minutes.format(d.q3)} minutes, usually ${minutes.format(d.low)} to ${minutes.format(d.high)}`}</span>
   </div>`);
 
-// Chart component: the picked mode (pointer, finger or arrow keys) is read out above the chart and the others fade
+// Chart component: the picked mode (pointer, tap or arrow keys) is read out above the chart and the others fade
 function CommuteTimes() {
   const [picked, setPicked] = createSignal(null);
   const story = Math.max(0, MODES.findIndex((m) => m.mode === STORY));
   const shown = () => MODES[picked() ?? story];
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    if (el) setPicked(+el.dataset.row);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
@@ -121,9 +132,8 @@ function CommuteTimes() {
       title="Bikes beat cars, and keep to time"
       dek=${`One-way commutes timed over a month, ${MODES.reduce((n, m) => n + m.trips, 0)} trips in all. A cyclist's trips stay within a few minutes of each other; a driver's can take twice as long on a bad day.`}
       note="Illustrative data. Point at a mode or tap it for its numbers, or Tab into the chart and use the arrow keys."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <ul class="key">
         <li><i class="box"></i>Middle half of trips</li>
         <li><i class="stop"></i>Typical trip (median)</li>

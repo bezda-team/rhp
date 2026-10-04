@@ -70,13 +70,20 @@ const twh = new Intl.NumberFormat("en-US");
 const total = (d) => KEYS.reduce((sum, k) => sum + d[k], 0);
 const scale = nice(0, Math.max(...COUNTRIES.map(total)), 5); // 0 to 600 TWh
 
-// Slat types: one source's segment, and a country holding its segments in one band (an overlap Plot) and its number
+// Slat types: one source's segment, and a country holding its segments in one band (an overlap Plot) and its number.
+// A segment starts 2px after the one before it, and the first starts on the baseline. A segment too thin to show at
+// this width keeps a 2px sliver, drawn over its neighbor, so it shows at every width.
+const thin = (value) => value > 0 && value / scale.max < 0.03;
 const Layer = slat({
   css: `
-    .layer { --rhp-radius: 0px; --rhp-gap: 2px; cursor: pointer; }
+    .layer { --rhp-radius: 0px; cursor: pointer; }
+    .after { --rhp-gap: 2px; }
+    .thin { min-width: 2px; z-index: 1; }
     .off { opacity: .22; }
   `,
-}, (s) => html`<${Bar} from=${() => s.from} to=${() => s.to} color=${() => s.color} data-source=${() => s.source} class=${() => (s.pick && s.pick !== s.source ? "layer off" : "layer")} />`);
+}, (s) => html`
+  <${Bar} from=${() => s.from} to=${() => s.to} color=${() => s.color} data-source=${() => s.source}
+    class=${() => ["layer", s.from > 0 && "after", thin(s.to - s.from) && "thin", s.pick && s.pick !== s.source && "off"].filter(Boolean).join(" ")} />`);
 
 const Country = slat({
   thickness: 46,

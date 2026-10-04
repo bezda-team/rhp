@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Richer since 1990</title>
-<meta name="description" content="Sparkline table: one small line per item, each scaled to its own peak, with the start level dashed, and a scrub through the years (pointer, finger or arrow keys) that moves a dot along every line and updates each item's value and its change since the start. Use it for many series side by side, a table of trends.">
+<meta name="description" content="Sparkline table: one small line per item, each scaled to its own peak, with the start level dashed, and a scrub through the years (pointer, tap, a sideways drag or arrow keys) that moves a dot along every line and updates each item's value and its change since the start. Use it for many series side by side, a table of trends.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Libre+Franklin:wght@400..800&display=swap">
@@ -28,12 +28,14 @@
   .head b { font: 700 26px/1 "Libre Caslon Text", Georgia, serif; letter-spacing: 0; color: #1f1c17; font-variant-numeric: tabular-nums; }
   .head b:focus-visible { outline: 2px solid #c2410c; outline-offset: 4px; border-radius: 2px; }
   .plot { touch-action: pan-y; } /* a finger dragging sideways moves through the years; up and down still scrolls */
+  /* On a phone the table is taller than half the screen: its head, with the year, stays at the top of the screen while
+     the lines scroll under it */
   @media (max-width: 600px) {
     body { padding: 16px 16px 32px; }
     .poster { padding: 30px 16px 18px; background-position: 16px 8px, 0 0; background-size: calc(100% - 32px) 1px, auto; }
     .poster .headline { font-size: 32px; }
     .poster .dek { font-size: 15px; }
-    .head { font-size: 11px; }
+    .head { position: sticky; top: 0; z-index: 2; background: #f7f3ea; font-size: 11px; }
     .head b { font-size: 22px; }
   }
 </style>
@@ -105,12 +107,14 @@ const Country = slat({
 const Crosshair = slat({ room: {}, css: `.hair { --rhp-tick-width: 1px; background: #c2410c; opacity: .55; }` }, (d) => html`
   <div><${Tick} at=${() => d.year} thick=${1} class="hair" /></div>`);
 
-// Chart component: the year under the pointer or a finger, or picked with the arrow keys, is read in every slat, and
+// Chart component: the year the reader points at or taps, or picks with the arrow keys, is read in every slat, and
 // the latest otherwise. The year in the table's head is a slider for the keyboard and screen readers.
 function RicherSince1990() {
   const [picked, setPicked] = createSignal(null);
   const i = () => picked() ?? YEARS.length - 1;
-  // The year under the pointer, measured on a line (every line runs from the first year to the last)
+  let slider;
+  // The year under the pointer, measured on a line (every line runs from the first year to the last). A mouse or a pen
+  // picks as it moves, and so does a finger dragging sideways; a tap or a click picks; beside the lines the pick stays
   const point = (e) => {
     const r = e.currentTarget.querySelector(".spark").getBoundingClientRect();
     const k = Math.round(((e.clientX - r.left) / r.width) * (YEARS.length - 1));
@@ -122,6 +126,12 @@ function RicherSince1990() {
     e.preventDefault();
     setPicked(Math.max(0, Math.min(YEARS.length - 1, i() + STEPS[e.key])));
   };
+  let start = [0, 0]; // where the last finger went down
+  // A finger that moves more sideways than up or down scrubs; one that moves up or down scrolls the page
+  const sideways = (e) => Math.abs(e.clientX - start[0]) > Math.abs(e.clientY - start[1]);
+  // Leaving the lines: the year stays while the slider has focus (the keyboard's pick), or clears. The slider clears it
+  // when it loses focus.
+  const leave = (e) => e.pointerType !== "touch" && document.activeElement !== slider && setPicked(null);
   const said = () => `${YEARS[i()]}: ` + COUNTRIES.map((c) => `${c.name} ${dollars.format(c.gdp[i()])}`).join(", ");
   return html`
     <${Poster}
@@ -130,11 +140,12 @@ function RicherSince1990() {
       dek=${html`<span>GDP per person in ten countries, adjusted for prices. Each line rises from zero, the hairline under it, to its own peak, and its dashes <i></i> mark its ${FIRST} level: Ukraine is still below it, and Japan and Italy barely rose above it.</span>`}
       note="Source: World Bank, GDP per person in constant 2021 international dollars (purchasing power parity), via Our World in Data, retrieved 2026. Point at a year, tap or drag across the lines, or Tab to the year and use the arrow keys.">
       <p class="head">
-        <b tabindex="0" role="slider" aria-label="Year read on every line" aria-valuemin=${FIRST} aria-valuemax=${LAST}
-          aria-valuenow=${() => YEARS[i()]} aria-valuetext=${said} onKeyDown=${key}>${() => YEARS[i()]}</b>
+        <b ref=${(el) => (slider = el)} tabindex="0" role="slider" aria-label="Year read on every line" aria-valuemin=${FIRST} aria-valuemax=${LAST}
+          aria-valuenow=${() => YEARS[i()]} aria-valuetext=${said} onKeyDown=${key} onFocusOut=${() => setPicked(null)}>${() => YEARS[i()]}</b>
         <span aria-hidden="true">GDP per person · × its ${FIRST} level</span>
       </p>
-      <div class="plot" onPointerMove=${point} onPointerDown=${point} onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}>
+      <div class="plot" onPointerDown=${(e) => (start = [e.clientX, e.clientY])}
+        onPointerMove=${(e) => (e.pointerType !== "touch" || sideways(e)) && point(e)} onClick=${point} onPointerLeave=${leave}>
         <!-- half a year past each end, so each year's column is centered on it -->
         <${Chart} scale=${[FIRST - 0.5, LAST + 0.5]} ticks=${YEARS.filter((y) => y % 10 === 0)}
           label=${`GDP per person in ten countries, ${FIRST} to ${LAST}, each line scaled to its own peak`}

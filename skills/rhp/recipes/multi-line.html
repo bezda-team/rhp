@@ -28,6 +28,7 @@
   .readout span { white-space: nowrap; }
   .readout i { display: inline-block; width: 14px; height: 3px; margin-right: 6px; border-radius: 2px; vertical-align: 3px; }
   .readout strong { display: inline-block; min-width: 2.2em; font-weight: 700; color: #1b1d22; font-variant-numeric: tabular-nums; }
+  /* The chart's box: a finger dragging sideways moves through the years, up and down still scrolls */
   .plot { touch-action: pan-y; border-radius: 4px; }
   .plot:has(:focus-visible) { outline: 2px solid #1b1d22; outline-offset: 8px; }
   @media (max-width: 600px) {
@@ -157,9 +158,24 @@ const Year = slat({
 function LifeChart() {
   const [picked, setPicked] = createSignal(null);
   const i = () => picked() ?? YEARS.length - 1;
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-i]");
+    return root ? +root.dataset.i : null;
+  };
+  // A mouse or a pen picks as it moves, and so does a finger dragging sideways; a tap or a click picks, the keyboard
+  // picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-i]");
-    if (el) setPicked(+el.dataset.i);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  let start = [0, 0]; // where the last finger went down
+  // A finger that moves more sideways than up or down scrubs; one that moves up or down scrolls the page
+  const sideways = (e) => Math.abs(e.clientX - start[0]) > Math.abs(e.clientY - start[1]);
+  // Leaving the chart: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
@@ -171,10 +187,9 @@ function LifeChart() {
         <b class="year">${() => YEARS[i()]}</b>
         ${COUNTRIES.map((c) => html`<span><i style=${{ background: c.color }}></i>${c.name + " "}<strong>${() => years.format(c.values[i()])}</strong></span>`)}
       </p>
-      <div class="plot"
-        onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="plot" onPointerDown=${(e) => (start = [e.clientX, e.clientY])}
+        onPointerMove=${(e) => (e.pointerType !== "touch" || sideways(e)) && pick(e)} onClick=${pick} onFocusIn=${pick}
+        onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
         <!-- half a year past each end, so the year columns are centered on their years -->
         <${Chart} scale=${[FIRST - 0.5, LAST + 0.5]} cross=${[y.min, y.max]} crossTicks=${y.ticks} height=${HEIGHT}
           label=${`Life expectancy at birth in ${COUNTRIES.map((c) => c.name).join(", ")}, ${FIRST} to ${LAST}`}

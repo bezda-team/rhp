@@ -28,13 +28,15 @@
   .readout::before { content: "\201C" / ""; display: block; height: 72px; font: 400 200px/1 "Instrument Serif", Georgia, serif; color: #de4a24; }
   .readout b { display: block; margin-bottom: 14px; font: 400 92px/.9 "Instrument Serif", Georgia, serif; color: #161412; }
   .readout strong { display: block; font-size: 22px; font-weight: 600; color: #b8321a; }
+  /* On a phone the chart is taller than half the screen, so the readout stays at the top of the screen while the
+     chart scrolls under it (the poster is a flex column there: a sticky grid item can't leave its own row) */
   @media (max-width: 760px) {
     body { padding: 16px 16px 32px; }
-    .poster { grid-template-columns: minmax(0, 1fr); padding: 26px 18px 18px; }
+    .poster { display: flex; flex-direction: column; padding: 26px 18px 18px; }
     .poster figcaption { margin-bottom: 18px; }
     .poster .headline { font-size: 42px; }
     .poster .dek { font-size: 15px; }
-    .readout { grid-column: 1; grid-row: auto; display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; margin-bottom: 18px; padding: 10px 0; border-block: 1px solid #d6d0c4; }
+    .readout { position: sticky; top: 0; z-index: 2; align-self: stretch; display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; margin-bottom: 18px; padding: 10px 0; border-block: 1px solid #d6d0c4; background: inherit; }
     .readout::before { display: none; }
     .readout b { grid-row: span 2; margin: 0; font-size: 56px; }
     .readout strong { font-size: 18px; }
@@ -94,9 +96,20 @@ const Language = slat({
 function SpokenLanguages() {
   const [picked, setPicked] = createSignal(null);
   const lit = () => picked() ?? leader;
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    setPicked(el ? +el.dataset.row : null);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
@@ -104,9 +117,8 @@ function SpokenLanguages() {
       title=${html`<em>English</em> is the world's most spoken language`}
       dek="Total speakers in millions, counting everyone who speaks it as a first or a second language. Mandarin has more native speakers; English has more learners."
       note="Source: Ethnologue, 2023 (speakers); United Nations, 2023 (world population, 8.05 billion). Point at a language, tap it, or Tab into the chart and use the arrow keys."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout" aria-live="polite">
         <b>${() => percent.format(LANGUAGES[lit()].millions / WORLD)}</b>
         <span>of people on Earth speak</span>

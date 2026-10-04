@@ -134,9 +134,20 @@ const City = slat({
 function CitiesChart() {
   const [picked, setPicked] = createSignal(null);
   const shown = () => CITIES[picked() ?? STORY];
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-i]");
+    return root ? +root.dataset.i : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-i]");
-    setPicked(el ? +el.dataset.i : null);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the chart: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
@@ -146,9 +157,8 @@ function CitiesChart() {
       note="Source: Demographia World Urban Areas, 20th edition (2025), built-up urban areas. Point at a city, tap it, or Tab into the chart and use the arrow keys.">
       <p class="readout"><b>${() => shown().name}</b><span>${() => `: ${millions.format(shown().people / 1e6)} million people on ${count.format(shown().km2)} km², ${count.format(shown().density)} per km²`}</span></p>
       <p class="axis">People per km², log scale</p>
-      <div class="plot" onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="plot" onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+        onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
         <${Chart} scale=${X} cross=${Y} crossTicks=${[500, 1000, 3000, 10000, 30000].map(Math.log10)} crossFormat=${(v) => count.format(Math.round(10 ** v))} height=${360}
           label="Twelve megacities by land area and density, bubble area for population"
           theme=${{ font: 'Sora, "Helvetica Neue", Arial, sans-serif', ink: "#ece8df", muted: "#9aa1aa", grid: "rgb(255 255 255 / .1)" }}>

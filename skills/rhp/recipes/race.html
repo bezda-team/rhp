@@ -175,9 +175,20 @@ function GdpRace() {
   // takes rhp's 150 ms, to keep up with a drag.
   const motion = () => (playing() ? { duration: STEP * 1.2, ease: "linear", slide: 300 } : { slide: 300 });
 
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    setPicked(el ? +el.dataset.row : null);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the chart: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   const readout = () => {
     const i = picked() ?? STORY;
@@ -202,9 +213,8 @@ function GdpRace() {
       </div>
       <p class="readout" aria-live=${() => (playing() ? "off" : "polite")}>${readout}</p>
       <div class="stage" ref=${(el) => (stage = el)}
-        onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+        onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
         <${Chart} scale=${() => [0, top() * 1.1]} ticks=${4} animate=${motion}
           label=${() => `GDP of the ten largest economies of 2024, in ${year()}, in trillions of US dollars`}
           theme=${{ font: 'Jost, "Avenir Next", "Century Gothic", sans-serif', ink: "#17201b", muted: "#5b645e", grid: "#dde1db" }}>

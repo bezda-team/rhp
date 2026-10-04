@@ -26,7 +26,7 @@
   .poster::after { content: ""; display: block; width: min(260px, 70%); height: 46px; margin: 18px auto 0;
     background: repeating-linear-gradient(90deg, #1d1d1b 0 2px, transparent 2px 5px, #1d1d1b 5px 6px, transparent 6px 9px, #1d1d1b 9px 12px, transparent 12px 13px),
       repeating-linear-gradient(90deg, transparent 0 17px, #fdfdfb 17px 20px); }
-  .plot { touch-action: pan-y; border-radius: 4px; }
+  .plot { border-radius: 4px; }
   .plot:has(:focus-visible) { outline: 2px solid #1d1d1b; outline-offset: 6px; }
   @media (max-width: 600px) {
     body { padding: 16px 12px 32px; }
@@ -148,17 +148,34 @@ function GroceryChart() {
     });
     return best;
   };
-  const point = (e) => setPicked(nearest(e));
+  // The item an element is in (the item the keyboard focuses), or null
+  const rowOf = (el) => {
+    const root = el.closest("[data-i]");
+    return root ? +root.dataset.i : null;
+  };
+  // A mouse or a pen picks the nearest line as it moves, a tap or a click picks it; with no line in reach the pick stays
+  const point = (e) => {
+    const i = nearest(e);
+    if (i != null) setPicked(i);
+  };
+  // The keyboard picks the item it focuses
+  const focus = (e) => {
+    const i = rowOf(e.target);
+    if (i != null) setPicked(i);
+  };
+  // Leaving the chart: back to the item that has focus (the keyboard's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
   return html`
     <${Poster}
       kicker="Price check, US city average"
       title="A dozen eggs cost twice as much in 2024 as in 2020"
       dek="Six staples, each at its average price in 2020 and in 2024. Coffee went up 43%, bread 36%, beef 31% and milk 20%; bananas went up 4 cents."
       note="Source: US Bureau of Labor Statistics, average price data for 2020 and 2024 (the mean of each year's twelve monthly prices). Point at a line, tap it, or Tab into the chart and use the arrow keys.">
-      <div class="plot" onPointerMove=${point} onPointerDown=${point}
-        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-        onFocusIn=${(e) => { const el = e.target.closest("[data-i]"); if (el) setPicked(+el.dataset.i); }}
-        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="plot" onPointerMove=${(e) => e.pointerType !== "touch" && point(e)} onClick=${point} onFocusIn=${focus}
+        onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
         <${Chart} scale=${[0, 1]} cross=${[0, TOP]} crossTicks=${false} height=${HEIGHT}
           label=${`Average US prices of six groceries in ${YEARS[0]} and ${YEARS[1]}`}
           theme=${{ font: '"Azeret Mono", ui-monospace, Menlo, monospace', ink: "#1d1d1b", muted: "#55534e" }}>

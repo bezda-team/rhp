@@ -63,27 +63,31 @@ const CITIES = [
 const KEYS = MODES.map((m) => m.key);
 const percent = (v) => Math.round(v) + "%";
 
-// Slat types: one mode's share of a city (its number inside it when it fits), and a city holding its shares in one band
-const size = (share) => (share < 9 ? "small" : share < 15 ? "mid" : "");
+// Slat types: one mode's share of a city (its number inside it when it fits), and a city holding its shares in one band.
+// A share starts 2px after the one before it, and the first starts on the baseline. A share too thin to show at this
+// width keeps a 2px sliver, drawn over its neighbor, so it shows at every width.
+const size = (share) => (share < 3 ? "thin small" : share < 9 ? "small" : share < 15 ? "mid" : "");
 const Share = slat({
   inset: 0,
   css: `
-    .share { --rhp-radius: 0px; --rhp-gap: 2px; display: grid; place-items: center; cursor: pointer; }
-    .share:first-child { --rhp-start-radius: 14px; }
+    .share { --rhp-radius: 0px; display: grid; place-items: center; cursor: pointer; }
+    .after { --rhp-gap: 2px; }
+    .first { --rhp-start-radius: 14px; }
     .share:last-child { --rhp-end-radius: 14px; }
+    .thin { min-width: 2px; z-index: 1; }
     .share > span { font-size: 13px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
     .share:is(.bike, .walk) > span { color: #1d1b17; } /* ink on the light colors, white on the dark ones */
     .small > span, .off > span { display: none; }
     .off { opacity: .2; }
-    .on { z-index: 1; }
+    .on { z-index: 2; }
     .on:is(.small, .mid) > span { display: block; position: absolute; left: 50%; top: 50%; translate: -50% -50%; padding: 4px 8px; border-radius: 99px; background: var(--rhp-color); box-shadow: 0 0 0 2px #fbfbf9; }
-    .on.share:first-child:is(.small, .mid) > span { left: 2px; translate: 0 -50%; }
+    .on.first:is(.small, .mid) > span { left: 2px; translate: 0 -50%; }
     .on.share:last-child:is(.small, .mid) > span { left: auto; right: 2px; translate: 0 -50%; }
     @container (max-width: 420px) { .mid:not(.on) > span { display: none; } }
   `,
 }, (s) => html`
   <${Bar} from=${() => s.from} to=${() => s.to} color=${() => s.color} data-mode=${() => s.mode}
-    class=${() => ["share", s.mode, size(s.to - s.from), s.lit && (s.lit === s.mode ? "on" : "off")].filter(Boolean).join(" ")}>
+    class=${() => ["share", s.mode, s.from > 0 ? "after" : "first", s.to > s.from && size(s.to - s.from), s.lit && (s.lit === s.mode ? "on" : "off")].filter(Boolean).join(" ")}>
     <span>${() => percent(s.to - s.from)}</span>
   <//>`);
 
@@ -105,29 +109,38 @@ const City = slat({
     </div>`;
 });
 
-// Chart component: the mode pointed at or focused (else the one clicked) lights up in every city
+// Chart component: the mode pointed at or reached with the keyboard (else the one clicked or tapped) lights up in every
+// city
 function Commutes() {
   const [hovered, setHovered] = createSignal(null);
   const [pinned, setPinned] = createSignal(null);
   const lit = () => hovered() ?? pinned();
-  const modeAt = (e) => e.target.closest?.("[data-mode]")?.dataset.mode ?? null;
+  const modeOf = (el) => el?.closest("[data-mode]")?.dataset.mode ?? null;
+  // A mouse or a pen lights the mode it moves over; between the bars the mode stays lit
+  const hover = (e) => e.pointerType !== "touch" && modeOf(e.target) && setHovered(modeOf(e.target));
+  // The keyboard lights the mode it reaches. A click or a tap focuses its button too, so only a focus ring counts.
+  const focus = (e) => e.target.matches(":focus-visible") && setHovered(modeOf(e.target));
+  // Leaving the poster: back to the mode the keyboard is on, or none, so the kept mode shows
+  const leave = (e) => e.pointerType !== "touch" && setHovered(modeOf(e.currentTarget.querySelector(":focus-visible")));
+  // A click or a tap keeps a mode lit, and another on it lets it go
+  const keep = (e) => setPinned((p) => (modeOf(e.target) === p ? null : modeOf(e.target)));
   return html`
     <${Poster}
       kicker="The commute in six cities"
       title="Only in Riverton do most people drive to work"
-      dek="How commuters usually get to work, as a share of all of them. Point at a mode on the line or in a bar to follow it through every city; click it to keep it lit."
+      dek="How commuters usually get to work, as a share of all of them. Point at a mode on the line or in a bar to follow it through every city; click or tap it to keep it lit."
       note="Illustrative data for six invented cities. Shares are rounded to whole percents."
-      onPointerMove=${(e) => setHovered(modeAt(e))} onPointerLeave=${(e) => setHovered(null)}
-      onFocusIn=${(e) => setHovered(modeAt(e))} onFocusOut=${(e) => setHovered(null)}
-      onClick=${(e) => setPinned((p) => (modeAt(e) === p ? null : modeAt(e)))}
-      onKeyDown=${(e) => e.key === "Escape" && setPinned(null)}>
+      onPointerMove=${hover} onPointerLeave=${leave} onFocusIn=${focus}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setHovered(null)}
+      onClick=${keep} onKeyDown=${(e) => e.key === "Escape" && setPinned(null)}>
       <div class="route" role="group" aria-label="Modes of transport">
         ${MODES.map((m) => html`
           <button type="button" data-mode=${m.key} style=${"--c: " + m.color} aria-pressed=${() => pinned() === m.key} class=${() => (lit() === m.key ? "on" : "")}><i></i>${m.name}</button>`)}
       </div>
-      <${Chart} scale=${[0, 100]} ticks=${[0, 50, 100]} format=${(v) => v + "%"}
+      <!-- no axis: every bar runs from 0% to 100%, and the shares are written in the bars -->
+      <${Chart} scale=${[0, 100]} ticks=${false}
         label="How commuters get to work in six cities, as a share of all commuters"
-        theme=${{ font: 'Jost, "Futura", "Century Gothic", system-ui, sans-serif', ink: "#1d1b17", muted: "#6b675e", grid: "#e4e1da" }}>
+        theme=${{ font: 'Jost, "Futura", "Century Gothic", system-ui, sans-serif', ink: "#1d1b17", muted: "#6b675e" }}>
         <${Plot} rows=${CITIES} order=${sortBy("car", "desc")} lit=${lit}>${City}<//>
       <//>
     <//>`;

@@ -106,8 +106,8 @@ const Person = slat({
 const TenPeople = slat({ room: { start: 0, end: 0 } }, (d) => html`
   <div><${Plot} orientation="across" type=${() => d.people} active=${() => d.active}>${Person}<//></div>`);
 
-// Chart component: a type picked with its button or by tapping a drop (or previewed under the mouse) lights everyone
-// its red cells can be given to
+// Chart component: a type picked with its button or by tapping a drop (or previewed under a mouse or a pen) lights
+// everyone its red cells can be given to
 function BloodTypes() {
   const [picked, setPicked] = createSignal(null);
   const [preview, setPreview] = createSignal(null);
@@ -117,6 +117,13 @@ function BloodTypes() {
     return el ? +el.dataset.type : null;
   };
   const pick = (i) => setPicked(picked() === i ? null : i);
+  // A mouse or a pen previews the type under it; between the drops the preview stays, and off the chart (on the
+  // buttons) it ends, so the picked type shows
+  const hover = (e) => {
+    if (e.pointerType === "touch") return;
+    if (typeAt(e) != null) setPreview(typeAt(e));
+    else if (!e.target.closest(".chart")) setPreview(null);
+  };
   const readout = () => {
     const i = active();
     if (i == null) return "Pick a type to see who can receive it.";
@@ -129,7 +136,7 @@ function BloodTypes() {
       title="Seven in 100 Americans have the blood anyone can receive"
       dek="Each drop is one person, colored by blood group, and a hollow drop is Rh-negative. Only O− red cells can be given to every type, so its donors are always in demand."
       note="Source: Stanford Blood Center, shares of the US population (from the AABB Technical Manual, 18th edition, 2014), rounded to whole people. Compatibility of red cells. Point at a drop, tap it, or pick a type."
-      onPointerMove=${(e) => e.pointerType === "mouse" && setPreview(typeAt(e))}
+      onPointerMove=${hover}
       onPointerLeave=${(e) => setPreview(null)}
       onClick=${(e) => typeAt(e) != null && pick(typeAt(e))}>
       <div class="types" role="group" aria-label="Blood type">

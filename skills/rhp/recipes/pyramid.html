@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Japan's population by age</title>
-<meta name="description" content="Population pyramid: two sides of one population (men and women) by age band, oldest on top, with an age picked by pointer, finger or keyboard that lights everyone that age or older and reads out their share. Use it for any two groups compared across ordered bands.">
+<meta name="description" content="Population pyramid: two sides of one population (men and women) by age band, oldest on top, with an age picked by pointer, tap or keyboard that lights everyone that age or older and reads out their share. Use it for any two groups compared across ordered bands.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
@@ -41,12 +41,15 @@
     .poster .chart { grid-column: 2; grid-row: 1 / span 4; align-self: center; }
     .poster .note { grid-column: 1; grid-row: 4; align-self: end; }
   }
+  /* On a phone the chart is taller than half the screen: the readout stays at the top of the screen while the chart
+     scrolls under it (the poster is a flex column there: a sticky grid item can't leave its own row) */
   @media (max-width: 560px) {
     body { padding: 24px 16px 32px; }
-    .poster { padding: 34px 34px 20px 16px; }
+    .poster { display: flex; flex-direction: column; padding: 34px 34px 20px 16px; }
     .poster::after { top: 34px; right: 10px; font-size: 10px; }
     .poster .headline { font-size: 31px; }
     .poster .dek { font-size: 15px; }
+    .readout { position: sticky; top: 0; z-index: 2; background: inherit; }
     .readout b { font-size: 46px; }
     .readout span { font-size: 14px; }
   }
@@ -101,14 +104,25 @@ const Band = slat({
     <//>
   </div>`);
 
-// Chart component: the band under the pointer, a finger or the keyboard sets the age, and the readout counts
-// everyone that age or older
+// Chart component: the band the reader points at, taps or reaches with the keyboard sets the age, and the readout
+// counts everyone that age or older
 function AgeingJapan() {
   const [picked, setPicked] = createSignal(null);
   const from = () => picked() ?? FROM;
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    if (el) setPicked(+el.dataset.row);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   const older = () => MEN.slice(from()).concat(WOMEN.slice(from())).reduce((sum, v) => sum + v, 0);
   return html`
@@ -117,9 +131,8 @@ function AgeingJapan() {
       title="Nearly three in ten people in Japan are 65 or older"
       dek="Men to the left, women to the right, in millions, the oldest at the top. Two bulges show the baby booms of the late 1940s and early 1970s; the base keeps shrinking."
       note="Source: Statistics Bureau of Japan, population estimates for October 1, 2023 (124.35 million people), rounded to the nearest 10,000. Point at an age band, tap it, or Tab into the chart and use the arrow keys."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout" aria-live="polite">
         <b>${() => percent.format(older() / TOTAL)}</b>
         <span>${() => (from() ? `are ${parseInt(AGES[from()])} or older` : "of all ages")}</span>

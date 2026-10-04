@@ -76,7 +76,10 @@ const agree = (a) => a[3] + a[4];
 // Texts that change with the question, all in the same place (see .same-place), the one for question current() shown
 const samePlace = (texts, current) => html`<span class="same-place">${texts.map((text, i) => html`<span class=${() => (current() === i ? "on" : "")}>${text}</span>`)}</span>`;
 
-// Slat type: a department's name over its bar, which runs left of zero for disagree and right of it for agree
+// Slat type: a department's name over its bar, which runs left of zero for disagree and right of it for agree.
+// A strong part starts 2px after the plain part before it, and on zero when there is none; one too thin to show at
+// this width keeps a 2px sliver, drawn over its neighbor.
+const strong = (side, plain, share) => ["part", side, "strong", plain > 0 && "after", share > 0 && share < 3 && "thin"].filter(Boolean).join(" ");
 const Department = slat({
   thickness: 64,
   inset: "21px",
@@ -87,8 +90,10 @@ const Department = slat({
     .part { --rhp-radius: 0px; }
     .part.no { background: radial-gradient(circle, #e0384f 1.7px, transparent 2.1px) 0 0 / 5px 5px; }
     .part.yes { background: radial-gradient(circle, #2756b0 1.7px, transparent 2.1px) 0 0 / 5px 5px; }
-    .part.no.strong { background: #e0384f; --rhp-gap: 2px; --rhp-end-radius: 3px; }
-    .part.yes.strong { background: #2756b0; --rhp-gap: 2px; --rhp-end-radius: 3px; }
+    .part.no.strong { background: #e0384f; --rhp-end-radius: 3px; }
+    .part.yes.strong { background: #2756b0; --rhp-end-radius: 3px; }
+    .after { --rhp-gap: 2px; }
+    .thin { min-width: 2px; z-index: 1; }
     .zero { background: #1f1d1a; }
     .total { font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
     .total.no { color: #c02a40; }
@@ -99,9 +104,9 @@ const Department = slat({
     <span class="name" aria-hidden="true">${() => d.name}</span>
     <span class="neither" aria-hidden="true">${() => d.answers[2] + "% neither"}</span>
     <${Bar} to=${() => -d.answers[1]} class="part no" />
-    <${Bar} from=${() => -d.answers[1]} to=${() => -disagree(d.answers)} class="part no strong" />
+    <${Bar} from=${() => -d.answers[1]} to=${() => -disagree(d.answers)} class=${() => strong("no", d.answers[1], d.answers[0])} />
     <${Bar} to=${() => d.answers[3]} class="part yes" />
-    <${Bar} from=${() => d.answers[3]} to=${() => agree(d.answers)} class="part yes strong" />
+    <${Bar} from=${() => d.answers[3]} to=${() => agree(d.answers)} class=${() => strong("yes", d.answers[3], d.answers[4])} />
     <${Tick} at=${0} thick="34px" class="zero" />
     <${Label} at=${() => -disagree(d.answers)} side="before" class="total no" aria-hidden="true">${() => disagree(d.answers) + "%"}<//>
     <${Label} at=${() => agree(d.answers)} class="total yes" aria-hidden="true">${() => agree(d.answers) + "%"}<//>

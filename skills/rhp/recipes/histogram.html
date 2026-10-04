@@ -140,13 +140,28 @@ const Bin = slat({
     <span class="say">${() => `${clock(d.x0)} to ${clock(d.x1 - 1)}: ${count.format(d.tally)} runners`}</span>
   </div>`);
 
-// Chart component: the column the reader picks (pointer, finger or arrow keys) feeds the readout and pales the ones after it
+// Chart component: the column the reader picks (pointer, tap or arrow keys) feeds the readout and pales the ones after it
 function FinishTimes() {
   const [picked, setPicked] = createSignal(null);
   const shown = () => picked() ?? opening;
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, and so does a finger dragging sideways; a tap or a click picks, the keyboard
+  // picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    if (el) setPicked(+el.dataset.row);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  let start = [0, 0]; // where the last finger went down
+  // A finger that moves more sideways than up or down scrubs; one that moves up or down scrolls the page
+  const sideways = (e) => Math.abs(e.clientX - start[0]) > Math.abs(e.clientY - start[1]);
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
@@ -155,9 +170,9 @@ function FinishTimes() {
       dek=${html`<span>Runners per 5 minutes of finish time. The <i></i> red columns are the last 5 minutes before a round time: ${count.format(tally[opening])} runners
         finished between ${clock(FOCUS)} and ${clock(FOCUS + BIN - 1)}, and only ${count.format(tally[opening + 1])} in the 5 minutes after.</span>`}
       note="Illustrative data. Point at a column, tap it or drag across the chart, or Tab into it and use the arrow keys."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      onPointerDown=${(e) => (start = [e.clientX, e.clientY])}
+      onPointerMove=${(e) => (e.pointerType !== "touch" || sideways(e)) && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <div class="board">
         <div><b>${() => `${clock(x0[shown()])} to ${clock(x1[shown()] - 1)}`}</b><span>Finish time</span></div>
         <div><b>${() => count.format(tally[shown()])}</b><span>Runners</span></div>

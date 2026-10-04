@@ -35,13 +35,15 @@
   .readout strong { font-weight: 400; }
   .readout .late { color: #ff8a80; font-weight: 700; }
   .readout .after { color: #b9bcc2; }
+  /* On a phone the chart is taller than half the screen: the readout stays at the top of the screen while the chart
+     scrolls under it */
   @media (max-width: 600px) {
     body { padding: 40px 16px 16px; }
     .poster { padding: 30px 16px 18px; }
     .poster .kicker { font-size: 11px; letter-spacing: .1em; }
     .poster .headline { font-size: 32px; }
     .poster .dek { font-size: 14.5px; }
-    .readout { min-height: 4.6em; font-size: 14px; }
+    .readout { position: sticky; top: 8px; z-index: 2; min-height: 4.6em; font-size: 14px; }
   }
 </style>
 </head>
@@ -139,13 +141,24 @@ const Today = slat({
   `,
 }, () => html`<div><${Tick} at=${now} thick=${1} class="now" /><${Label} at=${now} class="flag">Today<//></div>`);
 
-// Chart component: the picked task (pointer, finger or arrow keys) is read out, with the tasks it waits on and that wait on it
+// Chart component: the picked task (pointer, tap or arrow keys) is read out, with the tasks it waits on and that wait on it
 function LaunchPlan() {
   const [picked, setPicked] = createSignal(null);
   const shown = () => ROWS[picked() ?? opening];
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    if (el) setPicked(+el.dataset.row);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
@@ -153,9 +166,8 @@ function LaunchPlan() {
       title="The build is a week behind, and testing waits on it"
       dek=${html`<span>Twelve weeks from scope to launch day, as of ${long.format(dateOf(now))}. Each bar is a task: <i class="done"></i>done, <i class="late"></i>should be done by now, <i class="todo"></i>still to do.</span>`}
       note="Illustrative data. Point at a task or tap it to see what it waits on, or Tab into the chart and use the arrow keys."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout">
         <b>${() => shown().task}</b>, ${() => span(shown())}: <strong class=${() => (shown().late >= 0.5 ? "late" : "")}>${() => statusOf(shown())}</strong>${() => (shown().after.length ? html`<span class="after"> · after ${shown().after.join(" and ")}</span>` : "")}
       </p>

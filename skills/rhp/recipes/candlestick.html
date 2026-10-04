@@ -123,14 +123,25 @@ const Crosshair = slat({
     <${Label} at=${() => c.close} class="price">${() => dollars.format(c.close)}<//>
   </div>`);
 
-// Chart component: the day the reader picks (pointer, finger or arrow keys) is read out and marked by the crosshair
+// Chart component: the day the reader picks (pointer, tap or arrow keys) is read out and marked by the crosshair
 function SharePrice() {
   const [picked, setPicked] = createSignal(null);
   const index = () => picked() ?? opening;
   const shown = () => ROWS[index()];
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    if (el) setPicked(+el.dataset.row);
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
@@ -138,9 +149,8 @@ function SharePrice() {
       title="A 15% drop on earnings day erased the month's gains"
       dek="Each candle is a trading day. Its body runs from the opening price to the closing price, hollow when the price rose and filled when it fell; its wick spans the day's low to its high."
       note="Illustrative data. Point at a day, tap it, or Tab into the chart and use the arrow keys."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="ticker">
         <b>${() => day.format(new Date(shown().date))}</b>
         <span>Open ${() => dollars.format(shown().open)}</span>
