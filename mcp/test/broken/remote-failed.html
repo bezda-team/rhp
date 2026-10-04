@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- A stylesheet on a host that doesn't exist (a note, not an error). expect: remote-failed -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>remote-failed</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<link rel="stylesheet" href="https://rhp-check-test.invalid/style.css">
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const sold = [12, 18, 7];
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+render(() => html`
+  <${Chart} scale=${[0, 20]} label="Fruit sold today">
+    <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

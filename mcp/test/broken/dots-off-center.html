@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- Dots that sit away from their slats' centers (an overlap Plot), whose pointer handler throws: only pointing at a dot reaches it. expect: interaction-error -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dots-off-center</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Dot, slat, html, render } from "@bezda/rhp/standalone";
+
+const city = ["Lyon", "Nantes", "Lille"];
+const rain = [2, 17, 4];
+const across = [0.2, 0.3, 0.8];
+
+// (the slats of an overlap Plot are stacked boxes, so they take no pointer and their dots do)
+const City = slat({ thickness: 160, css: ".city { pointer-events: none; } .spot { pointer-events: auto; }" }, (d) => html`
+  <div class="city"><${Dot} at=${() => d.rain} across=${() => d.across} size="16px" class="spot" data-city=${() => d.city} /></div>`);
+
+const point = (e) => {
+  const el = e.target.closest("[data-city]");
+  if (el) showCity(el.dataset.city);
+};
+
+render(() => html`
+  <div onPointerOver=${point}>
+    <${Chart} scale=${[0, 20]} label="Rain in mm, by city">
+      <${Plot} overlap=${true} city=${city} rain=${rain} across=${across}>${City}<//>
+    <//>
+  </div>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

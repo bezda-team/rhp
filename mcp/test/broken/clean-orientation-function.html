@@ -1,0 +1,58 @@
+<!doctype html>
+<!-- Columns on a wide screen and bars on a phone (orientation follows matchMedia), on a page taller than the window: the report's screenshots picture the chart as drawn. expect: none -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>orientation function</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff radial-gradient(rgb(0 0 0 / .05) .6px, transparent .9px) 0 0 / 3px 3px; color: #222; }
+  #chart { max-width: 760px; margin: 0 auto; }
+  h2 { font-size: 20px; margin: 40px 0 16px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries", "Dates", "Figs", "Grapes", "Kiwis", "Lemons", "Limes", "Mangoes", "Pears", "Plums"];
+const sold = [12, 18, 7, 9, 4, 15, 11, 6, 8, 13, 10, 5];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const rain = [12, 18, 40, 76, 120, 160, 210, 190, 140, 80, 30, 14];
+
+const Fruit = slat({ thickness: 40, room: { start: 90, end: 40 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const Month = slat({ thickness: { horizontal: 26 }, room: { start: 40, end: 36 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.month}<//>
+    <${Bar} to=${() => d.rain} />
+    <${Label} at=${() => d.rain}>${() => d.rain}<//>
+  </div>`);
+
+const wide = matchMedia("(min-width: 640px)");
+const [desktop, setDesktop] = createSignal(wide.matches);
+wide.addEventListener("change", (e) => setDesktop(e.matches));
+
+render(() => html`
+  <h2>Fruit sold today</h2>
+  <${Chart} scale=${[0, 20]} label="Fruit sold today">
+    <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+  <//>
+  <h2>Rain in mm, by month</h2>
+  <${Chart} orientation=${() => (desktop() ? "vertical" : "horizontal")} height=${360} scale=${[0, 250]} label="Rain in mm, by month">
+    <${Plot} month=${months} rain=${rain}>${Month}<//>
+  <//>
+  <h2>Fruit sold yesterday</h2>
+  <${Chart} scale=${[0, 20]} label="Fruit sold yesterday">
+    <${Plot} fruit=${fruit} sold=${[...sold].reverse()}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

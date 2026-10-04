@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- An Area whose points run past the scale is squeezed into it. expect: points-past-scale -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>points-past-scale</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Area, Label, slat, html, render } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas"];
+const ripeness = [[[0, 1], [15, 3], [30, 1]], [[0, 1], [15, 3], [60, 1]]];
+
+const Fruit = slat({ thickness: 48, room: { start: 90, end: 20 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Area} points=${() => d.ripeness} />
+  </div>`);
+
+render(() => html`
+  <${Chart} scale=${[0, 30]} label="Days to ripen">
+    <${Plot} fruit=${fruit} ripeness=${ripeness}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- A readout above the buttons that takes a second line for one choice: the buttons below it and the chart move down. expect: layout-jump -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>layout-jump</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  .readout { max-width: 320px; margin: 0 0 12px; font-size: 16px; line-height: 1.4; }
+  .days { display: flex; gap: 8px; margin-bottom: 16px; }
+  .days button { padding: 6px 12px; border: 1px solid #555; border-radius: 4px; background: #fff; color: #222; font: inherit; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const days = { Monday: [12, 18, 7], Tuesday: [9, 14, 11] };
+const say = { Monday: "Monday: bananas sold best.", Tuesday: "Tuesday: bananas again, though cherries came closer than on any other day this month." };
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const [day, setDay] = createSignal("Monday");
+
+render(() => html`
+  <p class="readout">${() => say[day()]}</p>
+  <div class="days">
+    <button onClick=${() => setDay("Monday")}>Monday</button>
+    <button onClick=${() => setDay("Tuesday")}>Tuesday</button>
+  </div>
+  <${Chart} scale=${[0, 20]} label="Fruit sold">
+    <${Plot} fruit=${fruit} sold=${() => days[day()]}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

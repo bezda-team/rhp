@@ -1,0 +1,64 @@
+{
+  "name": "@bezda/rhp-mcp",
+  "version": "0.1.0",
+  "description": "Make charts with rhp from any AI agent: an MCP server with rhp's guide, references and recipes, and a checker that renders a chart in a browser and reports what is wrong, with screenshots",
+  "keywords": [
+    "rhp",
+    "charts",
+    "data-visualization",
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "ai",
+    "agent",
+    "solidjs",
+    "checker"
+  ],
+  "author": {
+    "name": "Bouzid Anas",
+    "email": "anas.bouzid@bezda.net"
+  },
+  "license": "MIT",
+  "homepage": "https://rhp.vercel.app/ai/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bezda-team/rhp.git",
+    "directory": "mcp"
+  },
+  "type": "module",
+  "bin": {
+    "rhp-mcp": "bin/rhp-mcp.js"
+  },
+  "exports": {
+    ".": "./src/check/index.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "skill",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "prepack": "npm run build",
+    "test": "node test/mcp.js && node test/run.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.29.7",
+    "@bezda/rhp": "file:..",
+    "@modelcontextprotocol/sdk": "^1.32.0",
+    "babel-preset-solid": "^1.9.15",
+    "esbuild": "^0.28.2",
+    "playwright-core": "^1.63.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "solid-js": "^1.9.15",
+    "zod": "^4.6.5"
+  }
+}
