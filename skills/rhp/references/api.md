@@ -43,8 +43,9 @@ Both `@bezda/rhp` and `@bezda/rhp/standalone` export rhp's whole API:
 - functions: `slat`, `restyle`, `linkedCss`, `shape`, `at`, `useOrientation`, `series`, `cycle`, `sortBy`, `extent`, `every`, `nice`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`, `animated`, `curve`, `drawing`
 - the object `THEME` (the default theme)
 
-`@bezda/rhp/standalone` adds these from Solid, and nothing else: `render`, `html`, `createSignal`, `createMemo`, `createEffect`, `createRoot`, `onMount`, `onCleanup`, `batch`, `untrack`, `For`, `Index`, `Show`, `createStore`, `reconcile`, `produce`, `unwrap`.
-It has no `createSelector`, `on`, `createComputed`, `Switch`, `Match`, `Dynamic`, `Portal`, `mergeProps`, `splitProps`, `createResource` or `ErrorBoundary`.
+`@bezda/rhp/standalone` adds these from Solid, and nothing else: `render`, `html`, `createSignal`, `createMemo`, `createEffect`, `createRoot`, `createSelector`, `createComputed`, `on`, `onMount`, `onCleanup`, `batch`, `untrack`, `mergeProps`, `splitProps`, `For`, `Index`, `Show`, `Switch`, `Match`, `createStore`, `reconcile`, `produce`, `unwrap`.
+`createSelector`, `createComputed`, `on`, `mergeProps`, `splitProps`, `Switch` and `Match` are there from rhp 2.0.2; 2.0.1 lacks them.
+It has no `Dynamic`, `Portal`, `createResource` or `ErrorBoundary`.
 Never import `solid-js` next to it: the module carries its own copy of Solid, and a signal from another copy is not tracked.
 
 rhp adds its own CSS to the page when the first chart is drawn, so there is no stylesheet to link.
@@ -1165,13 +1166,17 @@ What always jumps: text, a Dot's or Place's `across` in a horizontal chart, a tu
 
 **Which version to use.**
 Data that changes now and then (a click that switches a year, a sort) keeps the CSS version: it costs almost nothing.
-Data that changes rapidly or continuously (a live feed, a timer or play button stepping through data, a slider or a drag that drives the data, a bar chart race) uses the JS version for the elements that react to it: give the Plot `animate` with the groups that change (`animate=${["sold"]}`), or the Chart when the scale follows the data, so the axis moves with the marks.
+Data that changes rapidly or continuously (a live feed, a play button that moves through the data, a slider or a drag that drives the data, a bar chart race) uses the JS version for the elements that react to it: give the Plot `animate` with the groups that change (`animate=${["sold"]}`), or the Chart when the scale follows the data, so the axis moves with the marks.
 In the CSS version each new value restarts a transition from where the mark is, so under steady change marks trail the data (and Safari can stall transitions that input events retarget); the JS version carries each move into the next value, and labels stay exactly on their bars.
 Interaction effects (a hover highlight) stay CSS transitions on elements inside blocks in both versions.
 
+How to time the JS version depends on whether the next value is known:
+- **Playing back data you have** (a bar chart race, a year slider with Play): move a playhead `t`, a step with a fraction, on every frame (`requestAnimationFrame`), give the Plot the values at `t` (each on the straight line between the steps around it), and keep the default 150 ms. The marks glide through the steps without stopping at each one, and Pause leaves them between two steps (the example below; interaction.md section 10 adds the slider). Never step through the data with a timer: each mark would ease into a step and wait there.
+- **A live feed**, whose next value is not known yet: ease linear into each new reading over a little more than one interval (`ease: "linear"`, `duration` 1.5 intervals in the `live` recipe). With the default ease-out, or a shorter duration, the marks stop between readings.
+
 Measured in Chromium, for the JS version under steady change:
-- Give the changing numbers as lists (`gdp=${() => valuesIn(year())}`), a single value or a field of `rows`: a group given as a function of the row (`(d) => ...`) is never moved by the JS version, it jumps.
-- For a timer or a feed, use `ease: "linear"` and a duration a little longer than the step: 1.2 steps for your own timer, 1.5 intervals for a network feed. The default ease-out, or a duration shorter than the step, makes the marks stop between steps.
+- Give the changing numbers as lists (`gdp=${() => gdpAt(t())}`), a single value or a field of `rows`: a group given as a function of the row (`(d) => ...`) is never moved by the JS version, it jumps.
+- Played back by a playhead, the `race` recipe's bars changed width on every frame and ran about 66 ms (2 px) behind the playhead.
 - For moves driven by a slider or a drag, keep the default 150 ms: with 300 ms the JS version trailed a drag as much as the CSS version (10.4 against 10.1 points of 100); with 150 ms it trailed 6.2.
 - When the scale follows the data, `animate` goes on the Chart: on the Plot alone the scale jumps every step and the bars with it.
 - For a history that scrolls (a live sparkline), animate one time value (`now`) and cut the window from it (`x = t - now`, kept inside the scale); animating the point arrays makes each vertex take its neighbor's value, so the line morphs in place instead of scrolling.
@@ -1185,9 +1190,16 @@ import { Chart, Plot, Bar, Label, sortBy, html, render, createSignal, onCleanup 
 // Data: a vote counted in three rounds
 const name = ["Maya", "Leo", "Ivy", "Omar"];
 const ROUNDS = [[34, 21, 45, 12], [38, 30, 41, 22], [40, 44, 39, 25]];
-const STEP = 1000; // ms between rounds while the count plays
+const LAST = ROUNDS.length - 1;
+const ROUND_MS = 1000; // how long a round takes while the count plays
+// The votes at t, a round with a fraction: each on the straight line between the rounds around t
+const votesAt = (t) => {
+  const r = Math.min(Math.floor(t), LAST - 1);
+  const f = t - r;
+  return ROUNDS[r].map((v, i) => v * (1 - f) + ROUNDS[r + 1][i] * f);
+};
 
-// Slat types: the JS version moves the numbers themselves, so the label rounds them
+// Slat types: the votes are fractional between rounds, so the label rounds them
 const Candidate = (d) => html`
   <div>
     <${Label} edge="start">${() => d.name}<//>
@@ -1195,22 +1207,29 @@ const Candidate = (d) => html`
     <${Label} at=${() => d.votes}>${() => Math.round(d.votes)}<//>
   </div>`;
 
-// Chart component: a timer steps through the rounds, so the bars move by the JS version, linear and over 1.2 steps;
-// the timer stops at the last round, and when the chart is removed
+// Chart component: while the count plays, each frame moves the playhead t on by the time since the last frame (at most
+// 250 ms, so a hidden tab resumes where it was). The votes change on every frame, so the bars move by the JS version
+// with its default 150 ms. The frame loop stops at the last round, and when the chart is removed.
 const VoteChart = () => {
-  const [round, setRound] = createSignal(0);
-  let timer;
+  const [t, setT] = createSignal(0);
+  let frame;
   const play = () => {
-    clearInterval(timer);
-    setRound(0);
-    timer = setInterval(() => (round() < ROUNDS.length - 1 ? setRound(round() + 1) : clearInterval(timer)), STEP);
+    cancelAnimationFrame(frame);
+    setT(0);
+    let last = null;
+    const move = (now) => {
+      setT(Math.min(LAST, t() + Math.min(now - (last ?? now), 250) / ROUND_MS));
+      last = now;
+      if (t() < LAST) frame = requestAnimationFrame(move);
+    };
+    frame = requestAnimationFrame(move);
   };
-  onCleanup(() => clearInterval(timer));
+  onCleanup(() => cancelAnimationFrame(frame));
   return html`
     <div>
       <button onClick=${play}>Play the count</button>
-      <${Chart} scale=${[0, 50]} animate=${{ duration: STEP * 1.2, ease: "linear", slide: 400 }}>
-        <${Plot} name=${name} votes=${() => ROUNDS[round()]} order=${sortBy("votes", "desc")}>${Candidate}<//>
+      <${Chart} scale=${[0, 50]} animate=${{ slide: 400 }}>
+        <${Plot} name=${name} votes=${() => votesAt(t())} order=${sortBy("votes", "desc")}>${Candidate}<//>
       <//>
     </div>`;
 };
@@ -1419,8 +1438,8 @@ Every one of these was found by running rhp 2.0.1.
 26. **In the JS version `d.sold` is fractional while it moves**: round what you print.
 27. **`animated()` takes `ease` only as a function**: `{ ease: curve("ease-in-out") }`.
     A name throws `d.ease is not a function`; `animate` on a Chart or Plot takes names.
-28. **`standalone` has no `createSelector`.**
-    For "is this the row the reader is on", use a per-row data group: `on=${(d) => on() === d.index}`.
+28. **`standalone` has `createSelector` only from rhp 2.0.2** (with `createComputed`, `on`, `mergeProps`, `splitProps`, `Switch` and `Match`).
+    For the slat the reader is on, a per-row data group works with every rhp 2: `on=${(d) => on() === d.index}`; `createSelector` saves work when a chart has hundreds of slats.
 29. **A Plot outside a Chart draws nothing usable**, and a Scale outside one throws.
 30. **A slat must return one element.**
     Two top-level elements or text throw "rhp: a slat must return one element"; a block as the root outside an `overlap` Plot warns and loses its placing.

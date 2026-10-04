@@ -466,7 +466,7 @@ Each of these was checked in both formats:
 6. `For` takes the signal as it is in the template (`each=${list}`) or a function (`each=${() => list()}`); both follow it.
 7. In TypeScript, the template's `${...}` values have no types, so give every function parameter inside it a type: `(e: PointerEvent) =>`, `(d: TowerRow) =>`, `(t: () => TowerRow) =>`.
    Strict mode (TypeScript 6's default) rejects them untyped (TS7006), and so does TSX for a Plot's data props: `on={(d: TowerRow) => ...}`.
-8. The template module has no `createSelector`, `Switch`, `Match`, `splitProps` or `mergeProps` (api.md, section 2): compare in a function (`on=${(d) => on() === d.name}`) and use `Show`.
+8. The template module has no `Dynamic` or `Portal`, and before rhp 2.0.2 no `createSelector`, `Switch`, `Match`, `splitProps` or `mergeProps` (api.md, section 2): compare in a function (`on=${(d) => on() === d.name}`) and use `Show`, which work with every rhp 2.
 
 ## 6. The chart module and the mount helper
 

@@ -54,6 +54,7 @@ The page's CSS styles what sits around the chart (the poster, the readout, butto
   .control { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 12px 0; font-size: 14px; font-variant-numeric: tabular-nums; }
   .control input[type="range"] { flex: 1 1 160px; accent-color: #1d232b; }
   .control button { min-width: 5.5em; } /* Play and Pause take the same width, so the slider beside them stays put */
+  .control output { min-width: 4.5em; } /* "Round 1" to "Round 10" take the same width too */
   /* Focus for buttons and sliders; a slat's focus style goes in its slat css (section 9) */
   :focus-visible { outline: 2px solid #b6421e; outline-offset: 2px; }
   @media (max-width: 480px) { .poster { padding: 18px 14px 12px; } }
@@ -290,7 +291,7 @@ render(() => html`<${Cafe} />`, document.getElementById("chart"));
 - **The CSS version**, rhp's default (no `animate`): bars, dots and outlines glide over 0.15s and slats slide over 0.3s; printed numbers jump to their new text.
   A switch the reader clicks now and then keeps it.
 - **The JS version** (`animate` on the Chart or a Plot) counts every number from its old value to its new one, so the printed numbers count along with the bars and slats pass each other when their values cross.
-  It is for data that changes rapidly or continuously: a pointer, a slider or a drag that drives the data (sections 6 and 7), or a timer (section 10).
+  It is for data that changes rapidly or continuously: a pointer, a slider or a drag that drives the data (sections 6 and 7), or a playhead that plays it back (section 10).
   The numbers are fractional while they move: round what you print (`Math.round(d.cups)`).
   Colors jump in the JS version.
 - When the switch changes the range of the values, change the scale with it (`scale=${() => [0, top()]}`): the axis moves too.
@@ -627,7 +628,13 @@ In an `overlap` Plot of points at x 30, 10 and 20 (in that row order), Tab and A
 ## 10. Play and pause over time
 
 Use it when the story is how a ranking or a set of values changed over many periods (a bar chart race).
-Never start it by itself: the reader presses Play.
+Do not start it by itself: the reader presses Play.
+A race is the one exception: it may start once by itself when half of it scrolls into view (the race recipe does), never under reduced motion, and never again after the reader has used a control.
+
+The app holds a playhead `t`, a period with a fraction, and the Plot gets the values at `t`: each one on the straight line between its values in the two periods around `t`.
+While it plays, every frame moves `t` on by the time since the last frame, so the bars glide through the periods without stopping at each one.
+Pause leaves `t` where it is, between two periods too, so the reader can read the values in between.
+The slider is the playhead's handle: its value follows `t` while it plays, and with `step="any"` a drag or a key puts `t` wherever the handle stops.
 
 ```js
 import { Chart, Plot, Bar, Label, Poster, slat, sortBy, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
@@ -638,10 +645,16 @@ const RESULTS = [
   [3, 0, 1, 1, 3, 0], [3, 3, 0, 1, 1, 0], [3, 1, 3, 0, 0, 1], [1, 3, 3, 0, 1, 0], [0, 3, 3, 1, 1, 0],
   [1, 3, 3, 0, 0, 1], [0, 1, 3, 3, 1, 0], [1, 3, 3, 0, 1, 0], [0, 1, 3, 3, 1, 0], [3, 0, 3, 1, 0, 1],
 ];
-const TABLE = RESULTS.map((_, r) => TEAMS.map((_, t) => RESULTS.slice(0, r + 1).reduce((sum, round) => sum + round[t], 0)));
+const TABLE = RESULTS.map((_, r) => TEAMS.map((_, i) => RESULTS.slice(0, r + 1).reduce((sum, round) => sum + round[i], 0)));
 const LAST = RESULTS.length - 1;
+// The points at t, a round with a fraction: each team's on the straight line between the rounds around t
+const pointsAt = (t) => {
+  const r = Math.min(Math.floor(t), LAST - 1);
+  const f = t - r;
+  return TABLE[r].map((p, i) => p * (1 - f) + TABLE[r + 1][i] * f);
+};
 
-// Slat type: the JS version counts the points, so the label rounds them
+// Slat type: the points are fractional between rounds, so the label rounds them
 const Team = slat({ thickness: 36, room: { start: 84, end: 40 } }, (d) => html`
   <div>
     <${Label} edge="start">${() => d.team}<//>
@@ -649,33 +662,51 @@ const Team = slat({ thickness: 36, room: { start: 84, end: 40 } }, (d) => html`
     <${Label} at=${() => d.points}>${() => Math.round(d.points)}<//>
   </div>`);
 
-// Chart component: Play steps through the rounds on a timer, the slider picks one, and the timer stops with the chart
+// Chart component: the playhead t, a round with a fraction, is the app's state. Play moves it on with time, Pause
+// leaves it where it is, the slider puts it where the handle is, and the frame loop stops with the chart.
 function League() {
-  const [round, setRound] = createSignal(LAST); // the final table, which the headline is about
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const roundMs = still ? 2000 : 1000; // under reduced motion the values jump, so each round stays longer
+  const [t, setT] = createSignal(LAST); // the final table, which the headline is about
   const [playing, setPlaying] = createSignal(false);
-  let timer;
+  const round = () => Math.round(t()); // the nearest whole round, whose figures the bars are closest to
+  let frame;
   const pause = () => {
-    clearInterval(timer);
+    cancelAnimationFrame(frame);
     setPlaying(false);
   };
+  // Each frame moves t on by the time since the last frame (at most 250 ms, so a hidden tab resumes where it was).
+  // Under reduced motion t moves only when it reaches a whole round.
   const play = () => {
-    if (round() === LAST) setRound(0);
+    if (t() === LAST) setT(0); // from the last round, it starts again
+    let p = t();
+    let last = null;
+    const move = (now) => {
+      p = Math.min(LAST, p + Math.min(now - (last ?? now), 250) / roundMs);
+      last = now;
+      setT(still ? Math.max(t(), Math.floor(p)) : p);
+      if (p < LAST) frame = requestAnimationFrame(move);
+      else pause();
+    };
     setPlaying(true);
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches; // values jump then: give each round longer
-    timer = setInterval(() => (round() < LAST ? setRound(round() + 1) : pause()), still ? 2000 : 1000);
+    frame = requestAnimationFrame(move);
   };
-  onCleanup(() => clearInterval(timer));
+  // A drag, a tap or a key on the slider pauses, and t goes where the handle is, between two rounds too
+  const seek = (e) => {
+    pause();
+    setT(+e.currentTarget.value);
+  };
+  onCleanup(() => cancelAnimationFrame(frame));
+  const where = () => (Number.isInteger(t()) ? `Round ${t() + 1} of ${LAST + 1}` : `Between rounds ${Math.floor(t()) + 1} and ${Math.ceil(t()) + 1}`);
   return html`
     <${Poster} title="United climbed from fifth to win the league by seven points" note="Illustrative data.">
       <div class="control">
         <button type="button" onClick=${() => (playing() ? pause() : play())}>${() => (playing() ? "Pause" : "Play")}</button>
-        <input type="range" min="0" max=${LAST} value=${round} aria-label="Round" aria-valuetext=${() => `Round ${round() + 1} of ${LAST + 1}`}
-          onInput=${(e) => { pause(); setRound(+e.currentTarget.value); }}>
+        <input type="range" min="0" max=${LAST} step="any" value=${t} aria-label="Round" aria-valuetext=${where} onInput=${seek}>
         <output>Round ${() => round() + 1}</output>
       </div>
-      <${Chart} scale=${[0, 25]} ticks=${[0, 5, 10, 15, 20, 25]} label="League points after each round"
-        animate=${() => (playing() ? { duration: 1200, ease: "linear", slide: 400 } : { slide: 400 })}>
-        <${Plot} team=${TEAMS} points=${() => TABLE[round()]} order=${sortBy("points", "desc")}>${Team}<//>
+      <${Chart} scale=${[0, 25]} ticks=${[0, 5, 10, 15, 20, 25]} label="League points after each round" animate=${{ slide: 400 }}>
+        <${Plot} team=${TEAMS} points=${() => pointsAt(t())} order=${sortBy("points", "desc")}>${Team}<//>
       <//>
     <//>`;
 }
@@ -683,16 +714,53 @@ function League() {
 render(() => html`<${League} />`, document.getElementById("chart"));
 ```
 
-- The timer is `setInterval`, stopped by Pause, by the slider, at the last round, and by `onCleanup` when the chart is removed (a page change in an app); without `onCleanup` it would keep running.
-- The JS version makes the steps one continuous movement, and the slats pass each other as the points cross.
-  While it plays, `ease: "linear"` and a duration a little longer than the step (1.2 steps: 1,200 ms for a round a second) keep the bars moving between rounds; for the slider, the default 150 ms lets the bars follow the thumb (the `race` recipe does the same).
+- The playhead moves in a `requestAnimationFrame` loop, stopped by Pause, by the slider, at the last round, and by `onCleanup` when the chart is removed (a page change in an app); without `onCleanup` it would keep running.
+- The points change on every frame, so the Chart moves them by the JS version (`animate`) with its default 150 ms: the bars follow the playhead a few pixels behind it, and the slats pass each other as the points cross.
+  Do not step through the rounds with a timer and a long transition instead: each bar would ease into a round and wait there, and Pause could only stop on a round.
+- The slider's `value` follows `t`, so the handle moves while it plays and stays where Pause leaves `t`.
+  A drag or a tap on the slider pauses and puts `t` where the handle is.
+  The slider's own keys move `t` too, by the browser's step: an arrow moves a hundredth of the range in Chrome and Safari and one round in Firefox, and Home and End go to the first and the last round.
+- The labels round the points, which are fractional between rounds; the output names the nearest round, and `aria-valuetext` says where `t` is ("Round 4 of 10", or "Between rounds 4 and 5").
+  The output keeps one width (`min-width` in the page's CSS): when "Round 9" became "Round 10", a wider output would shorten the slider and the handle would jump back.
 - The button's text says what it will do (Play or Pause), so it has no `aria-pressed`.
-- **Reduced motion:** rhp stops its own motion when the reader asks for less (values jump), and the race keeps each round on screen longer; your own CSS animations need `@media (prefers-reduced-motion: reduce) { … }`.
+- **Reduced motion:** rhp stops its own motion when the reader asks for less (values jump), and the playhead moves a whole round at a time, each round kept on screen for two seconds; your own CSS animations need `@media (prefers-reduced-motion: reduce) { … }`.
 
-Checked: the checker clicked Play and moved the slider (which paused it).
-Playwright saw a new round about once a second with a whole number in every label, Pause stop it, and the slider pause it and pick round 5.
-Removing the chart while it played left no timer running; with `onCleanup` taken out, one was left.
-Under reduced motion a round came every 2 seconds, and Harbour's bar jumped from one length to the next with no widths in between.
+**Option: snap the slider to important points.**
+Snap only when the timeline has points worth reading exactly all along it: the `race` recipe snaps to its years, because each year is a measured value and the values between them are interpolated.
+A drag or a tap then lands on the nearest point, and the keys move from the point nearest to `t`, so a reader can pause and move the handle to a point to read its exact figures.
+Play and Pause stay the same: the bars still glide, and Pause still stops between points.
+Replace `seek` with these lines, and give the slider `onKeyDown=${key}`:
+
+```js
+// The slider's keys: how many rounds each one moves
+const KEYS = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -3, PageUp: 3, Home: -Infinity, End: Infinity };
+// A drag or a tap lands on the nearest round. The handle is set here too, because t does not change (and so does not
+// move the handle) when it was that round already.
+const seek = (e) => {
+  pause();
+  setT(Math.round(+e.currentTarget.value));
+  e.currentTarget.value = t();
+};
+// The keys move from the nearest round, handled here so that every browser moves the same
+const key = (e) => {
+  const by = KEYS[e.key];
+  if (by === undefined || e.altKey || e.ctrlKey || e.metaKey) return;
+  e.preventDefault();
+  pause();
+  setT(Math.min(LAST, Math.max(0, round() + by)));
+};
+```
+
+A timeline with no such points keeps the continuous slider.
+
+Checked: the checker clicked Play, moved the slider and pressed an arrow key on it, and reported no errors and no warnings.
+Playwright saw Play start again from round 1, `t` rise on every frame at one round a second with a whole number in every label, and Rovers' bar change width on every frame for 2 seconds, about 3 px (66 ms) behind the playhead.
+Pause between rounds 3 and 4 left the handle there and every bar at the points interpolated at the paused `t` (none at either round's points), and nothing moved in the next 1.5 seconds.
+A drag of the handle left `t` where it was dropped (5.11, between rounds 6 and 7), ArrowRight moved it on by 0.09, and a key pressed while it played paused it; it played to round 10 and stopped there, and Play started it again from round 1.
+The slider kept its length when "Round 9" became "Round 10", at 1280px and at 390px; without the output's `min-width` it lost 8.6px.
+Removing the chart while it played left no frame loop running; with `onCleanup` taken out, the loop kept asking for frames.
+Under reduced motion a round came every 2 seconds, Harbour's bar jumped from one length to the next with no widths in between, and Play from between two rounds kept `t` there until the next round.
+With the option's lines in place of `seek`, Pause still stopped between rounds, and every drag and key landed on a whole round with every bar at its points.
 
 ## 11. The rules
 
@@ -710,7 +778,7 @@ Under reduced motion a round came every 2 seconds, and Harbour's bar jumped from
 8. **Readouts are one line of fixed height**, short enough for 390px, with tabular figures, so nothing jumps.
    On a phone, a chart taller than about half the screen shows the reading next to the picked slat (section 2).
 9. **Toggles and choices are `<button type="button">`s with `aria-pressed`,** in a `role="group"` with an `aria-label`; a button whose text changes (Play, Pause) has no `aria-pressed`.
-10. **Motion:** never start it by itself; stop timers in `onCleanup`; rhp's own motion stops under reduced motion, and yours must check `matchMedia("(prefers-reduced-motion: reduce)")` or `@media (prefers-reduced-motion: reduce)`.
-11. **html template traps:** a handler on a component (`<${Poster}>`, a block) takes its event, `(e) => …`, or it runs once while drawing; booleans are written `keyboard=${true}`; standalone has no `createSelector`, so compare in a per-row function; a value that changes is a function.
+10. **Motion:** do not start playback by itself (a race may, once, when half of it is in view; never under reduced motion or after the reader used a control); stop timers and frame loops in `onCleanup`; rhp's own motion stops under reduced motion, and yours must check `matchMedia("(prefers-reduced-motion: reduce)")` or `@media (prefers-reduced-motion: reduce)`.
+11. **html template traps:** a handler on a component (`<${Poster}>`, a block) takes its event, `(e) => …`, or it runs once while drawing; booleans are written `keyboard=${true}`; compare in a per-row function (`on=${(d) => on() === d.index}`), which works with every rhp 2 (`createSelector` is there from 2.0.2); a value that changes is a function.
 12. **Interactive charts are never `static`:** a static chart reads each signal once.
 13. **Rows that come and go need `key`**, and handlers name the row by that key.

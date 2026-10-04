@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>China's economy caught up</title>
-<meta name="description" content="Bar chart race: ten economies ranked by GDP every year from 1990 to 2024, the bars sliding past each other as ranks change, with a play button and a year slider, and a readout on hover, focus and tap. The bars move by rhp's JS version (animate) because the data changes every step. Use it for a ranking that changes over time.">
+<meta name="description" content="Bar chart race: ten economies ranked by GDP from 1990 to 2024, the bars gliding from year to year and sliding past each other as ranks change, with a play button, a year slider that lands on whole years, and a readout on hover, focus and tap. A playhead moves on every frame and each value is interpolated between the years around it, so the bars move by rhp's JS version (animate). Use it for a ranking that changes over time.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Jost:wght@400;500;600&display=swap">
@@ -25,7 +25,8 @@
   .poster .dek { max-width: 54ch; font-size: 17px; line-height: 1.5; color: #434b46; }
   .waves { height: 14px; margin: 30px 0 22px;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14'%3E%3Cg fill='none' stroke='%23a3ada5' stroke-width='.6'%3E%3Cpath id='w' d='M-24 7Q-18-1-12 7T0 7T12 7T24 7T36 7T48 7'/%3E%3Cuse href='%23w' x='8'/%3E%3Cuse href='%23w' x='16'/%3E%3C/g%3E%3C/svg%3E") repeat-x center / 24px 14px; }
-  /* The controls: play, the year slider, and the year in big engraved numerals */
+  /* The controls: play, the year slider, and the year in big engraved numerals. The year keeps the width of the widest
+     year, so the slider beside it keeps its length while the handle moves. */
   .controls { display: flex; align-items: center; gap: 18px; }
   .play { flex: none; display: grid; place-items: center; width: 50px; height: 50px; padding: 0; border: 0; border-radius: 50%; color: #f2f3ee; background: #1d5b44; cursor: pointer; }
   .play svg { width: 18px; height: 18px; fill: currentColor; }
@@ -36,7 +37,7 @@
   .scrub::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -9px; border: 2px solid #17201b; border-radius: 50%; background: #f2f3ee; -webkit-appearance: none; }
   .scrub::-moz-range-thumb { width: 16px; height: 16px; border: 2px solid #17201b; border-radius: 50%; background: #f2f3ee; }
   .scrub:focus-visible { outline: 2px solid #1d5b44; outline-offset: 4px; border-radius: 2px; }
-  .year { flex: none; font: italic 500 92px/.8 "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif; font-variant-numeric: lining-nums tabular-nums; color: #1d5b44; }
+  .year { flex: none; min-width: 2.4em; text-align: right; font: italic 500 92px/.8 "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif; font-variant-numeric: lining-nums tabular-nums; color: #1d5b44; }
   /* One line that reads out the country in focus; its height is fixed, so nothing below it moves */
   .readout { height: 24px; margin: 18px 0 12px; font-size: 16px; line-height: 24px; white-space: nowrap; color: #434b46; }
   .readout b { font-weight: 600; color: #17201b; }
@@ -79,9 +80,15 @@ const ECONOMIES = [
 ];
 const STORY = ECONOMIES.findIndex((e) => e.kind === "story");
 const INK = { lead: "#1d5b44", story: "#c4962a", other: "#7f8b84" };
-const STEP = 700; // ms per year while playing
+const YEAR_MS = 700; // how long a year takes while playing
 
-const gdpIn = (year) => ECONOMIES.map((e) => e.byYear[year - FIRST]);
+// GDP at t, a year with a fraction: each value on the straight line between the years around t, and at a whole year
+// that year's own figures
+const gdpAt = (t) => {
+  const k = Math.min(Math.floor(t), LAST - 1) - FIRST;
+  const f = t - FIRST - k;
+  return ECONOMIES.map((e) => e.byYear[k] * (1 - f) + e.byYear[k + 1] * f);
+};
 const cents = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const tenths = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const trillions = (v) => (v < 9.995 ? cents : tenths).format(v); // 0.36, 5.96, 29.2: in-between values print the same way
@@ -115,43 +122,76 @@ const Economy = slat({
 
 const PLAY = () => html`<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2l12 7-12 7z" /></svg>`;
 const PAUSE = () => html`<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 2h4v14H3zM11 2h4v14h-4z" /></svg>`;
+// The slider's keys: how many years each one moves from the nearest whole year
+const KEYS = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -5, PageUp: 5, Home: -Infinity, End: Infinity };
 
-// Chart component: the year is the app's state. A timer steps it while playing, the slider sets it, and the bars follow.
+// Chart component: the playhead t, a year with a fraction, is the app's state, and the bars show the values at t.
+// Play moves t on with time, Pause leaves it where it is (between two years too), and the slider sets it to whole years.
 function GdpRace() {
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const [year, setYear] = createSignal(still ? LAST : FIRST);
+  const [t, setT] = createSignal(still ? LAST : FIRST);
   const [playing, setPlaying] = createSignal(false);
   const [picked, setPicked] = createSignal(null);
-  const gdp = createMemo(() => gdpIn(year()));
+  const gdp = createMemo(() => gdpAt(t()));
   const top = () => Math.max(...gdp());
-  const say = () => gdp().map((v, i) => `${ECONOMIES[i].name}, ${year()}: ${trillions(v)} trillion dollars`);
+  // The year shown: the whole year nearest to t, whose figures the bars are closest to. It turns halfway between two
+  // years, and the slider's keys move from it.
+  const year = () => Math.round(t());
+  // What screen readers get: while playing, that year (so their text changes once a year, not every frame); when
+  // paused, t itself, which may be between two years
+  const told = createMemo(() => (playing() ? year() : t()));
+  const when = () => (Number.isInteger(told()) ? `${told()}` : `between ${Math.floor(told())} and ${Math.ceil(told())}`);
+  const say = () => gdpAt(told()).map((v, i) => `${ECONOMIES[i].name}, ${when()}: ${trillions(v)} trillion dollars`);
 
-  let timer;
+  let frame;
   let autoplay;
   let auto = !still; // the race may start by itself until the reader uses a control
-  const step = () => (year() < LAST ? setYear(year() + 1) : pause());
   const pause = () => {
-    clearInterval(timer);
+    cancelAnimationFrame(frame);
     setPlaying(false);
   };
+  // Each frame moves the playhead on by the time since the last frame, and the race stops at the last year. A frame
+  // counts at most 250 ms, so a race in a tab the reader left resumes where it was. Under reduced motion t takes whole
+  // years only: the bars step from year to year without gliding.
   const play = () => {
+    let p = t() < LAST ? t() : FIRST; // from the last year, the race starts again from the first
+    let last = null;
+    const move = (now) => {
+      p = Math.min(LAST, p + Math.min(now - (last ?? now), 250) / YEAR_MS);
+      last = now;
+      setT(still ? Math.floor(p) : p);
+      if (p < LAST) frame = requestAnimationFrame(move);
+      else pause();
+    };
     setPlaying(true);
-    if (year() === LAST) setYear(FIRST);
-    else step();
-    timer = setInterval(step, STEP);
+    frame = requestAnimationFrame(move);
   };
   const toggle = () => {
     auto = false;
     if (playing()) pause();
     else play();
   };
-  const scrub = (e) => {
+  // A drag or a tap on the slider pauses on the nearest whole year, and the handle shows that year at once (also when t
+  // was that year already, so a drag never leaves the handle between years)
+  const seek = (e) => {
     auto = false;
     pause();
-    setYear(+e.currentTarget.value);
+    // Whole years, because each year is a measured value (the values between are interpolated); a timeline with no
+    // such points keeps a continuous slider: setT(+e.currentTarget.value)
+    setT(Math.round(+e.currentTarget.value));
+    e.currentTarget.value = t();
+  };
+  // Its keys move from the nearest whole year, handled here so that every browser moves the same
+  const key = (e) => {
+    const by = KEYS[e.key];
+    if (by === undefined || e.altKey || e.ctrlKey || e.metaKey) return;
+    e.preventDefault();
+    auto = false;
+    pause();
+    setT(Math.min(LAST, Math.max(FIRST, year() + by)));
   };
   onCleanup(() => {
-    clearInterval(timer);
+    cancelAnimationFrame(frame);
     clearTimeout(autoplay);
   });
 
@@ -168,12 +208,11 @@ function GdpRace() {
     onCleanup(() => seen.disconnect());
   });
 
-  // JS version: the data changes every step, so rhp counts each value on its own clock instead of restarting a CSS
-  // transition each time. The scale follows the leader, so animate goes on the Chart: the axis and the bars move
-  // together (the Plot takes the Chart's animate). While playing, a move runs at an even speed and lasts a little longer
-  // than a step, so each year's move runs into the next and the bars never stop between years. From the slider a move
-  // takes rhp's 150 ms, to keep up with a drag.
-  const motion = () => (playing() ? { duration: STEP * 1.2, ease: "linear", slide: 300 } : { slide: 300 });
+  // JS version: while playing, the values change on every frame, so rhp moves each one on its own clock instead of
+  // restarting a CSS transition each frame. Its default 150 ms keeps the bars a few pixels behind the playhead, rounds
+  // off the change of speed at each year, and makes a jump of the slider a short move. The scale follows the leader, so
+  // animate goes on the Chart: the axis and the bars move together (the Plot takes the Chart's animate).
+  const motion = { slide: 300 };
 
   // The row of the slat an element is in, or null (between slats, on the axis or the text)
   const rowOf = (el) => {
@@ -208,7 +247,8 @@ function GdpRace() {
       <div class="waves" aria-hidden="true"></div>
       <div class="controls">
         <button type="button" class="play" aria-label="Play" aria-pressed=${() => String(playing())} onClick=${toggle}>${() => (playing() ? PAUSE() : PLAY())}</button>
-        <input type="range" class="scrub" aria-label="Year" min=${FIRST} max=${LAST} step="1" value=${year} onInput=${scrub}>
+        <input type="range" class="scrub" aria-label="Year" min=${FIRST} max=${LAST} step="any" value=${t}
+          aria-valuetext=${when} onInput=${seek} onKeyDown=${key}>
         <span class="year" aria-hidden="true">${year}</span>
       </div>
       <p class="readout" aria-live=${() => (playing() ? "off" : "polite")}>${readout}</p>
@@ -216,7 +256,7 @@ function GdpRace() {
         onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
         onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
         <${Chart} scale=${() => [0, top() * 1.1]} ticks=${4} animate=${motion}
-          label=${() => `GDP of the ten largest economies of 2024, in ${year()}, in trillions of US dollars`}
+          label=${() => `GDP of the ten largest economies of 2024, in ${when()}, in trillions of US dollars`}
           theme=${{ font: 'Jost, "Avenir Next", "Century Gothic", sans-serif', ink: "#17201b", muted: "#5b645e", grid: "#dde1db" }}>
           <${Plot} keyboard=${true} rows=${ECONOMIES} gdp=${gdp} say=${say} on=${(d) => d.index === picked()}
             order=${sortBy("gdp", "desc")}>${Economy}<//>
