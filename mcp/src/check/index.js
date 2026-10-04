@@ -25,7 +25,7 @@
 //   ok            no finding is an error
 //   findings      [{ level: "error" | "warning" | "info", code, message, fix, width, widths }], errors first
 //   charts        [{ width, slats, blocks: { bar: 3, label: 6 }, box: { width, height } }]
-//   interactions  [{ width, kind, target, changed, how, error, moved }]
+//   interactions  [{ width, kind, target, changed, how, error, moved, unseen }]
 //   screenshots   [{ width, dark, hover, path }]
 //   text          the report as plain text (what the CLI prints)
 import fs from "fs";
@@ -357,6 +357,10 @@ export async function check(options = {}) {
     for (const j of jumps.values()) {
       findings.push({ ...fromProbe(j, {}), width: r.width });
     }
+
+    // taps whose every change lies outside the window: one finding, on the last of them (the furthest slat)
+    const unseen = r.interactions.filter((x) => x.unseen);
+    if (unseen.length) findings.push({ ...fromProbe({ code: "out-of-view", target: unseen.at(-1).target, ...unseen.at(-1).unseen, more: unseen.length - 1 }, {}), width: r.width });
   }
 
   const charts = results.flatMap((r) => r.seen.charts.map((c) => ({ width: r.width, ...c })));

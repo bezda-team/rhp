@@ -95,16 +95,16 @@ export function fromProbe(f, context) {
       };
     }
     case "value-past-scale": {
-      const point = f.block === "Dot" || f.block === "Tick" || f.block === "Place";
-      const where = f.cross ? "the Chart's cross scale" : "the Chart's scale";
+      const where = `${f.cross ? "the Chart's cross scale" : "the Chart's scale"} [${f.min}, ${f.max}]`;
       const count = f.count > 1 ? ` (${f.count} values)` : "";
+      let message = `A ${f.block} sits at ${f.value}, outside ${where}, so it is drawn outside the plot${count}.`;
+      if (f.kept) message = `A ${f.block} sits at ${f.value}, outside ${where}: rhp keeps it at the ${f.value < f.min ? "start" : "end"} of the scale, away from its value${count}.`;
+      if (f.block === "Bar") message = `A Bar reaches ${f.value}, outside ${where}: rhp cuts a bar at the ends of the scale, so this one ${f.gone ? "draws nothing" : "shows the wrong value"}${count}.`;
       return {
         level: "error",
         code: f.code,
-        message: point
-          ? `A ${f.block} sits at ${f.value}, outside ${where} [${f.min}, ${f.max}], so it is drawn outside the plot${count}.`
-          : `A ${f.block} reaches ${f.value}, past ${where} [${f.min}, ${f.max}]: rhp cuts it at the end of the scale, so it shows the wrong value${count}.`,
-        fix: `Make the scale cover the data: ${f.cross ? "cross" : "scale"}=\${[${Math.min(f.min, f.value)}, ${Math.max(f.max, f.value)}]} or wider (nice(lo, hi).min and .max give round ends).`,
+        message,
+        fix: `Make the scale cover the data: ${f.cross ? "cross" : "scale"}=\${[${Math.min(f.min, f.value)}, ${Math.max(f.max, f.value)}]} or wider (nice(lo, hi).min and .max give round ends)${f.block === "Label" ? ", or place the Label at the value its mark shows" : ""}.`,
       };
     }
     case "sticks-out": {
@@ -169,6 +169,13 @@ export function fromProbe(f, context) {
         fix: "Keep what the interaction changes in a box that keeps its size: a readout or a headline on one line (white-space: nowrap; overflow: hidden; text-overflow: ellipsis) or with a min-height for its longest text, and buttons that keep their width when their label or weight changes.",
       };
     }
+    case "out-of-view":
+      return {
+        level: "warning",
+        code: f.code,
+        message: `Tapping ${f.target} changes only what lies outside the screen (${f.what}, ${f.by}px ${f.side} it)${f.more ? `, and so does tapping ${f.more} more slat${f.more > 1 ? "s" : ""}` : ""}: the reader cannot see what the tap changed.`,
+        fix: "Put the readout next to the slat (in the slat, or in a Label of it), or keep it in view on a phone (position: sticky; top: 0).",
+      };
     default:
       return { level: "error", code: f.code, message: JSON.stringify(f), fix: "" };
   }

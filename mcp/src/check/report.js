@@ -65,7 +65,13 @@ export function report(r) {
     if (passed.length) lines.push("", `Passed: ${passed.join(", ")}.`);
   }
 
-  if (r.interactions?.length) {
+  // a chart with no controls whose slats change nothing when pointed at or tapped has no interaction: one line, since
+  // that is right for a chart asked to have none
+  const none = r.interactions?.length && r.interactions.every((x) => (x.kind === "hover" || x.kind === "tap") && !x.changed && !x.error);
+
+  if (none) {
+    lines.push("", "Interactions: no interaction found (fine when none was asked for).");
+  } else if (r.interactions?.length) {
     // pointing at slats (and tapping them) that changes nothing is no failure when buttons or a slider carry the
     // interaction: one line
     const still = (kind) => r.interactions.filter((x) => x.kind === kind).every((x) => !x.changed && !x.error);

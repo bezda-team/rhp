@@ -16,7 +16,8 @@ const USAGE = `rhp-mcp: make charts with rhp from an AI agent.
       --no-interact           skip the interaction pass
       --format <format>       html, solid, react or module (found from the file when left out)
       --json                  print the whole result as JSON
-      --out <dir>             where the screenshots go
+      --out <dir>             where the screenshots go (left out: a folder in the system's temp dir, so nothing is
+                              written next to the chart; the report gives each screenshot's path)
   rhp-mcp guide               print the rhp skill's guide (SKILL.md), for an agent with no skill installed
   rhp-mcp install-browser     download Chromium's headless shell for checking (when no Chrome, Edge or Chromium is found)
   rhp-mcp --version           print this package's version

@@ -414,36 +414,42 @@ export function install() {
       }
     }
 
-    // (only what clipping leaves visible: a slat may show a window of its marks, and clip the rest)
+    // Values outside the Chart's scale (or cross scale), Labels placed with at included. They are compared whatever
+    // the block's size: a Bar the scale cuts to nothing has none. Left out: a block with no box (display: none), and
+    // one with a size that clipping hides (a slat may show a window of its marks, and clip the rest).
     const past = new Map();
-    for (const el of document.querySelectorAll(".rhp-bar, .rhp-dot, .rhp-tick, .rhp-place, .rhp-area, .rhp-line")) {
-      if (el.closest("[hidden], .rhp-scale")) continue;
+    const outside = (key, f) => {
+      const off = (p) => Math.abs(p.value - (p.value > p.max ? p.max : p.min));
+      const had = past.get(key);
+      past.set(key, { ...(had && off(had) >= off(f) ? had : f), count: (had?.count ?? 0) + 1 });
+    };
+    for (const el of document.querySelectorAll(".rhp-bar, .rhp-dot, .rhp-tick, .rhp-place, .rhp-area, .rhp-line, .rhp-label[data-rhp-at]")) {
+      if (el.closest("[hidden], .rhp-scale") || !el.getClientRects().length) continue;
       const c = el.closest(".rhp-chart");
       if (!c) continue;
       const box = el.getBoundingClientRect();
-      const point = !/rhp-(bar|area|line)/.test(el.className.baseVal ?? el.className);
-      if (point ? clipped(box, el.parentElement, null).empty : box.width * box.height === 0 || clipped(box, el.parentElement, null).empty) continue;
+      if (box.width * box.height > 0 && clipped(box, el.parentElement, null).empty) continue;
       const num = (e, k) => parseFloat(e.style.getPropertyValue(k));
+      const block = BLOCK[[...el.classList].find((k) => BLOCK[k])];
+      const vertical = el.dataset.rhpO === "v";
+      // (a reversed or equal scale is reported as bad-scale, and no value is inside it)
       const min = num(c, "--rhp-min");
       const max = num(c, "--rhp-max");
-      if (!Number.isFinite(min) || !Number.isFinite(max)) continue;
-      const eps = Math.abs(max - min) * 1e-6;
-      const block = BLOCK[[...el.classList].find((k) => BLOCK[k])];
-      const values = ["--rhp-from", "--rhp-to", "--rhp-at"].map((k) => num(el, k)).filter(Number.isFinite);
-      for (const v of values) {
-        if (v < min - eps || v > max + eps) {
-          const key = block;
-          const had = past.get(key);
-          const worst = !had ? v : Math.abs(v - (v > max ? max : min)) > Math.abs(had.value - (had.value > max ? max : min)) ? v : had.value;
-          past.set(key, { block, value: worst, min, max, count: (had?.count ?? 0) + 1 });
-        }
+      if (!(min < max)) continue;
+      const eps = (max - min) * 1e-6;
+      // (a Bar wholly past one end of the scale is cut to nothing; a Label is kept at the end a horizontal chart ends
+      // at, or a vertical one starts at, and runs out of the plot at the other)
+      const ends = [num(el, "--rhp-from"), num(el, "--rhp-to")];
+      const gone = block === "Bar" && (Math.max(...ends) <= min + eps || Math.min(...ends) >= max - eps);
+      for (const v of ["--rhp-from", "--rhp-to", "--rhp-at"].map((k) => num(el, k)).filter(Number.isFinite)) {
+        if (v < min - eps || v > max + eps) outside(block, { block, value: v, min, max, gone, kept: block === "Label" && (vertical ? v < min : v > max) });
       }
       const cmin = num(c, "--rhp-cross-min");
       const cmax = num(c, "--rhp-cross-max");
-      if (Number.isFinite(cmin) && Number.isFinite(cmax)) {
-        const ceps = Math.abs(cmax - cmin) * 1e-6;
+      if (cmin < cmax) {
+        const ceps = (cmax - cmin) * 1e-6;
         for (const v of ["--rhp-cross", "--rhp-cross-from", "--rhp-cross-to"].map((k) => num(el, k)).filter(Number.isFinite)) {
-          if (v < cmin - ceps || v > cmax + ceps) past.set(block + " cross", { block, value: v, min: cmin, max: cmax, cross: true, count: (past.get(block + " cross")?.count ?? 0) + 1 });
+          if (v < cmin - ceps || v > cmax + ceps) outside(block + " cross", { block, value: v, min: cmin, max: cmax, cross: true, kept: block === "Label" && (vertical ? v > cmax : v < cmin) });
         }
       }
     }
@@ -534,7 +540,16 @@ export function install() {
       }
     }
 
-    // Text over other text: the glyph boxes of two elements, neither inside the other
+    // The block a text's lines belong to: its nearest ancestor that is not inline (a heading, a paragraph, a label). Two
+    // texts of one block are its lines, which a tight line-height brings close without the letters touching.
+    const blocks = new Map();
+    const blockOf = (el) => {
+      if (!blocks.has(el)) blocks.set(el, !el.parentElement || !/^(inline|ruby|contents)/.test(getComputedStyle(el).display) ? el : blockOf(el.parentElement));
+      return blocks.get(el);
+    };
+    const apart = (a, b) => a !== b && !inside(a, b) && blockOf(a) !== blockOf(b);
+
+    // Text over other text: the glyph boxes of two blocks' texts
     const boxes = [];
     for (const t of list) {
       for (const f of t.shown) {
@@ -548,7 +563,7 @@ export function install() {
       const a = boxes[i];
       for (let j = i + 1; j < boxes.length && boxes[j].g.left < a.g.right; j++) {
         const b = boxes[j];
-        if (a.t.el === b.t.el || inside(a.t.el, b.t.el) || inCollapsed(a.t.el) || inCollapsed(b.t.el)) continue;
+        if (!apart(a.t.el, b.t.el) || inCollapsed(a.t.el) || inCollapsed(b.t.el)) continue;
         const x = Math.min(a.g.right, b.g.right) - Math.max(a.g.left, b.g.left);
         const y = Math.min(a.g.bottom, b.g.bottom) - Math.max(a.g.top, b.g.top);
         if (x <= 1 || y <= 1) continue;
@@ -565,7 +580,7 @@ export function install() {
       // the labels' glyph boxes, each with the slat of the chart's own Plot it is in (stacked parts are slats of a Plot
       // inside it)
       const labels = boxes.filter((x) => c.contains(x.t.el) && x.t.el.closest(".rhp-label")).map((x) => ({ ...x, slat: x.t.el.closest(".rhp-body > .rhp-plot > *") }));
-      const crowded = labels.some((a, i) => labels.some((b, j) => j > i && a.slat && a.slat === b.slat && a.t.el !== b.t.el
+      const crowded = labels.some((a, i) => labels.some((b, j) => j > i && a.slat && a.slat === b.slat && apart(a.t.el, b.t.el)
         && Math.min(a.g.right, b.g.right) - Math.max(a.g.left, b.g.left) > 1 && Math.min(a.g.bottom, b.g.bottom) - Math.max(a.g.top, b.g.top) > 1));
       if (crowded) add({ code: "cramped", vertical: true, chart: describe(c) });
     }
@@ -1020,43 +1035,68 @@ export function install() {
     return out;
   }
 
-  // A change recorder for one interaction: what changed in the DOM (text, attributes, inline styles, elements)
+  // A change recorder for one interaction: what changed in the DOM (text, attributes, inline styles, elements), and the
+  // elements it changed (kept until the next interaction, for unseen())
   let recorder = null;
+  let changed = new Set();
   function record() {
 
     const seen = { text: 0, attributes: 0, styles: 0, elements: 0 };
-    recorder = new MutationObserver((list) => {
-      for (const m of list) {
-        if (m.type === "characterData") {
-          seen.text++;
-        } else if (m.type === "childList") {
-          seen.elements += m.addedNodes.length + m.removedNodes.length;
-        } else if (m.attributeName === "style") {
-          seen.styles++;
-        } else {
-          seen.attributes++;
-        }
+    changed = new Set();
+    const count = (m) => {
+      if (m.type === "characterData") {
+        seen.text++;
+      } else if (m.type === "childList") {
+        seen.elements += m.addedNodes.length + m.removedNodes.length;
+      } else if (m.attributeName === "style") {
+        seen.styles++;
+      } else {
+        seen.attributes++;
       }
-    });
+      changed.add(m.type === "characterData" ? m.target.parentElement : m.target);
+      for (const node of m.addedNodes) {
+        if (node.nodeType === 1) changed.add(node);
+      }
+    };
+    recorder = new MutationObserver((list) => list.forEach(count));
     recorder.observe(document.body, { subtree: true, childList: true, attributes: true, characterData: true });
     recorder.seen = seen;
+    recorder.count = count;
   }
 
   function stop() {
 
     if (!recorder) return null;
 
-    for (const m of recorder.takeRecords()) {
-      recorder.seen.attributes += m.type === "attributes" && m.attributeName !== "style" ? 1 : 0;
-      recorder.seen.styles += m.attributeName === "style" ? 1 : 0;
-      recorder.seen.text += m.type === "characterData" ? 1 : 0;
-      recorder.seen.elements += m.type === "childList" ? m.addedNodes.length + m.removedNodes.length : 0;
-    }
+    recorder.takeRecords().forEach(recorder.count);
     recorder.disconnect();
     const seen = recorder.seen;
     recorder = null;
 
     return seen;
+  }
+
+  // After a tap on a slat (a target) that is in the window: when every element the tap changed that the reader could
+  // see lies outside the window, the nearest of them and how far it is; else null
+  function unseen(n) {
+
+    const slat = window.__rhpTargets[n];
+    const inView = (r) => r.right > 0 && r.bottom > 0 && r.left < innerWidth && r.top < innerHeight;
+    if (!slat?.isConnected || !inView(slat.getBoundingClientRect())) return null;
+
+    let nearest = null;
+
+    for (const el of changed) {
+      if (!el?.isConnected || !visible(el)) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) continue;
+      if (inView(r)) return null;
+      const away = [[-r.bottom, "above"], [r.top - innerHeight, "below"], [-r.right, "left of"], [r.left - innerWidth, "right of"]].find(([by]) => by >= 0);
+      const text = textOf(el);
+      if (!nearest || away[0] < nearest.by) nearest = { what: text ? `"${snippet(text)}"` : describe(el), by: Math.round(away[0]), side: away[1] };
+    }
+
+    return nearest;
   }
 
   // Where the focus is: which slat of which Plot, if it is on one
@@ -1070,5 +1110,5 @@ export function install() {
     return { slat: true, index: [...plot.children].indexOf(el) + 1, name: snippet([...el.querySelectorAll(".rhp-label")].map(textOf).find((x) => x) ?? "") };
   }
 
-  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, pointAt, place, moved, record, stop, focused };
+  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, pointAt, place, moved, record, stop, unseen, focused };
 }

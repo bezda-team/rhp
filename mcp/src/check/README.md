@@ -17,11 +17,12 @@ The CLI (`rhp-mcp check`) and the MCP tool (`rhp_check`) print the same report.
    A slat's own transition on a block is read last, with motion asked for again (with reduced motion rhp turns every block's transition off).
 6. **Interact** (interact.js), on a fresh page with motion on, as a reader gets it.
    At the first width: point at a mark of the first, middle and last slat of the largest chart (in its first Plot that takes the pointer), click each button and toggle, change each range and select, press an arrow key on a slider (`role=slider` first, else a range), and press Tab and the arrow keys when slats take focus.
-   At a phone's width: tap a mark of the first and the middle slat.
+   At a phone's width: tap a mark of the first and the last slat, and note when everything a tap changed lies outside the window while the tapped slat is in it, and the window looks as it did (the reader cannot see what the tap changed).
    After each step the guard reads again what the slats read once (stale values, static charts), and the pass notes what moved on the page (the layout jumps).
    Controls go by their accessible name.
 7. **Report** (findings.js turns probe results into findings, report.js writes the text): errors first, then warnings, then notes, what passed, the interactions and the screenshots.
    When pointing at slats (and tapping them) changes nothing but buttons or a slider change the chart, the report says so in one line.
+   When nothing changes and the page has no controls, it says "no interaction found (fine when none was asked for)" in one line, instead of a line per slat.
 
 ### Screenshots, and the page they move
 
@@ -100,13 +101,13 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 | `small-plot` | error | A plot under 40px along its value axis, or slats under 2px thick (3px slats are fine: a histogram's many bins, a line chart's slats for pointing). | A height or an aspect, a thickness, or fewer rows. |
 | `collapsed-chart` | error | A chart whose plot is under 2px wide: it sits in a flex row, an inline-block or a float that shrinks it to its room. | `flex: 1; min-width: 0`, or a box with a width. |
 | `plot-outside-chart` | error | A `.rhp-plot` with no `.rhp-chart` around it: no scale and none of rhp's CSS. | Put the Plot in a Chart. |
-| `cramped` | warning | A horizontal chart whose slats are under 18px thick while most of them hold text, or a vertical chart at the default 240px whose labels in one slat overlap. | A thickness of 24px or more; a height or an aspect. |
-| `value-past-scale` | error | A Bar, Dot, Tick or Place value outside the Chart's scale (or cross scale): a Bar is cut at the end, a point is drawn outside the plot. | A scale that covers the data, built with `nice()`. |
+| `cramped` | warning | A horizontal chart whose slats are under 18px thick while most of them hold text, or a vertical chart at the default 240px whose labels in one slat overlap (lines of one label don't count). | A thickness of 24px or more; a height or an aspect. |
+| `value-past-scale` | error | A value of a Bar, Dot, Tick, Place or Label (placed with `at`) outside the Chart's scale (or cross scale), whatever the block's size: a Bar is cut at the end of the scale (to nothing when all of it is past one end, so it draws nothing), a point is drawn outside the plot, a Label is kept at one end of the scale or drawn outside the plot. Left out: a block with no box (display: none), and one with a size that clipping hides (a slat that shows a window of its marks). A reversed or equal scale is `bad-scale`'s, so nothing is compared with it. | A scale that covers the data, built with `nice()`; for a Label, the value its mark shows. |
 | `points-past-scale` | error | An Area's or a Line's points outside the scale: rhp squeezes the whole outline into it, so every point is drawn in the wrong place. | A scale that covers the points, or points cut to the scale (`density()` and `bins()` take a domain). |
 | `sticks-out` | error | An element, or the glyphs of a text (axis numbers included), visible more than 1px outside its chart's box. | By what sticks out: room for names (`room: { start }` or `"auto"`), room at the end for values, thickness, shorter axis numbers. |
 | `text-outside-poster` | error | Text more than 1px outside its `.poster`. | Let it wrap, or make it smaller at narrow widths. |
 | `text-cut-off` | warning or error | Text partly hidden by an ancestor's overflow (not by a box that scrolls that way; text with no part shown is hidden on purpose, such as screen-reader text). With `text-overflow: ellipsis` a warning (the reader loses the rest of the name); clipped with no sign of it, an error. | Room for names, wrapping, a shorter label, or a horizontal chart on narrow screens (a vertical chart's names are as wide as their columns). |
-| `text-overlap` | error | The glyphs of two texts overlap by more than 1px both ways (neither inside the other; invisible text ignored). | Room or thickness, a smaller font, shorter text. |
+| `text-overlap` | error | The glyphs of two texts in different blocks overlap by more than 1px both ways (neither inside the other; invisible text ignored). Texts that share their nearest block-level ancestor are lines of one heading, paragraph or label: a tight line-height (a headline set at .9) brings their glyph boxes together without the letters touching, so they are not reported. | Room or thickness, a smaller font, shorter text. |
 | `page-scrolls-sideways` | error | The page is wider than the window. | `max-width: 100%`, and no fixed width wider than a phone. |
 | `tiny-text` | error | Text under 9px as drawn (transforms counted). | 9px at least, data labels 11px or more. |
 | `font-not-loaded` | info | A web font the text asks for none of whose faces loaded, or a font named in a stack that the machine doesn't have. (A family split by unicode-range, as Google Fonts serves CJK ones, loads only the faces its text needs, so one face loaded is enough; `document.fonts.check()` says false there.) | Load it with a Google Fonts link, or drop it from the stack. |
@@ -125,6 +126,7 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 |---|---|---|---|
 | `unnamed-control` | warning | A button, input, select or control with a role (slider, switch, tab...) that has no accessible name: no text, aria-label, aria-labelledby or label, so a screen reader says only what kind of control it is. | Visible text, an aria-label on an icon button, or a `<label>` around an input or a select. |
 | `layout-jump` | warning | An interaction of the pass moves a control other than the one it used, or a chart's top, by more than 2px (a readout that takes a second line, a button whose label changes its width). Fixed and sticky elements are left out. | A box that keeps its size: a readout on one line with an ellipsis, or a min-height for its longest text; buttons that keep their width. |
+| `out-of-view` | warning | At a phone's width, a tap on a slat that is in the window changes only elements outside the window (every changed element the reader could see is above, below or beside it), and the window looks as it did (no CSS effect such as a `:hover` style shows in it either): a readout above a tall chart, when the last slat is tapped. | A readout next to the slat (in the slat, or in a Label of it), or one kept in view (`position: sticky`). |
 
 ### Colors (read from screenshots)
 
@@ -147,6 +149,7 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 GitHub Actions runs them on every pull request and push to master (the `checker` job in `.github/workflows/test.yml`), with rhp built from the commit; the gallery part needs the documentation checkout, so it is skipped there.
 
 - **broken**: each chart in `test/broken/` reports exactly the codes it expects, and nothing else; a `clean*` chart (and `expect: none`) reports nothing at all, notes included.
+  A chart whose first lines also say `says: <text>` must have that line in its report (`clean.html` pins the one line of a chart with no interaction).
   A folder there is a small project (its own package.json), and the file in it whose first lines say what it expects is the chart: `react-project/` is a React app's chart checked as React because of its package.json.
   When pointing at slats changes nothing, the report's screenshot must match the one taken while pointing (each channel within 32 of 255: two drawings of a page differ a little at anti-aliased edges), so a probe that leaves the chart drawn wrong fails the test.
 - **gallery**: the site's examples (from `RHP_DOCS`, the documentation checkout), each horizontal and in its best orientation, with the interaction pass.

@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- A clean chart: no finding at all, and no interaction. expect: none; says: Interactions: no interaction found (fine when none was asked for). -->
+<!-- A Bar at -7 on a scale from 0 (built from the largest value only): rhp cuts it to nothing, so it draws nothing. expect: value-past-scale -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>none</title>
+<title>value-below-scale</title>
 <script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
 <style>
   body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
@@ -17,18 +17,17 @@
 import { Chart, Plot, Bar, Label, slat, html, render } from "@bezda/rhp/standalone";
 
 const fruit = ["Apples", "Bananas", "Cherries"];
-const sold = [12, 18, 7];
+const change = [3, -7, 5];
 
 const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
   <div>
     <${Label} edge="start">${() => d.fruit}<//>
-    <${Bar} to=${() => d.sold} />
-    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+    <${Bar} to=${() => d.change} />
   </div>`);
 
 render(() => html`
-  <${Chart} scale=${[0, 20]} label="Fruit sold today">
-    <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+  <${Chart} scale=${[0, 10]} label="Change in crates sold">
+    <${Plot} fruit=${fruit} change=${change}>${Fruit}<//>
   <//>`, document.getElementById("chart"));
 </script>
 </body>

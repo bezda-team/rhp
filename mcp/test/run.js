@@ -1,9 +1,9 @@
 // The checker's tests (npm test). Fixed data only: no chart here draws anything random.
 //   broken   each file in test/broken/ (or in a project folder there) is a chart broken in one way, and must report
 //            exactly the codes its first lines name ("expect: code" or "code:level"; "none" for a clean chart, which
-//            then reports no notes either). Every code in src/check/README.md has a file, so a probe that stops firing
-//            fails the suite. When pointing at slats changes nothing, the report's screenshot must equal the one taken
-//            while pointing.
+//            then reports no notes either), and a line of the report when they name one ("says: text"). Every code in
+//            src/check/README.md has a file, so a probe that stops firing fails the suite. When pointing at slats
+//            changes nothing, the report's screenshot must equal the one taken while pointing.
 //   gallery  the site's gallery examples check with no errors but the known ones (real problems the owner has been
 //            told about); warnings are listed
 //   recipes  each recipe in skills/rhp/recipes is checked and its findings listed (the recipes' authors fix them, so
@@ -70,7 +70,7 @@ function documentedCodes() {
   return new Set([...text.matchAll(/^\|\s*`([a-z-]+)`\s*\|/gm)].map((m) => m[1]));
 }
 
-// What a broken file expects: its codes (with a level or not), the widths and whether to interact
+// What a broken file expects: its codes (with a level or not), a line of its report, the widths and whether to interact
 function expectation(file) {
 
   const head = fs.readFileSync(file, "utf8").split("\n").slice(0, 3).join("\n");
@@ -79,6 +79,7 @@ function expectation(file) {
 
   return {
     codes: expect === "none" ? [] : expect.split(/\s+/).filter(Boolean).map((x) => ({ code: x.split(":")[0], level: x.split(":")[1] ?? null })),
+    says: head.match(/says:\s*([^;\n]*?)\s*(?:;|-->|$)/m)?.[1] ?? null,
     widths,
     interact: !/interact:\s*false/.test(head),
   };
@@ -130,6 +131,7 @@ async function brokenPart(browser) {
     const still = r.interactions.filter((x) => x.kind === "hover").every((x) => !x.changed);
     const pictured = !hover || !still || samePixels(plain.path, hover.path, 32);
     const ok = codes.size === wanted.size && [...wanted].every((c) => codes.has(c)) && !levels.length;
+    const said = !want.says || r.text.split("\n").includes(want.says);
 
     for (const c of want.codes) {
       if (ok) covered.add(c.code);
@@ -138,7 +140,7 @@ async function brokenPart(browser) {
       seen.add(f.code);
     }
 
-    console.log(`  ${ok && pictured ? "ok  " : "FAIL"} ${name.padEnd(32)} ${want.codes.length ? want.codes.map((c) => c.code + (c.level ? ":" + c.level : "")).join(" ") : "no findings"}  ${seconds(r.timings.total)}`);
+    console.log(`  ${ok && pictured && said ? "ok  " : "FAIL"} ${name.padEnd(32)} ${want.codes.length ? want.codes.map((c) => c.code + (c.level ? ":" + c.level : "")).join(" ") : "no findings"}  ${seconds(r.timings.total)}`);
     if (!ok) {
       fail(`broken/${name}: expected ${want.codes.map((c) => c.code + (c.level ? ":" + c.level : "")).join(" ") || "no findings"}, got ${[...codes].join(" ") || "none"}`);
       for (const f of r.findings) {
@@ -146,6 +148,7 @@ async function brokenPart(browser) {
       }
     }
     if (!pictured) fail(`broken/${name}: pointing at slats changed nothing, but the report's screenshot differs from the one taken while pointing (${plain.path} vs ${hover.path})`);
+    if (!said) fail(`broken/${name}: the report has no line "${want.says}":\n${r.text}`);
   }
 
   // A file that doesn't exist

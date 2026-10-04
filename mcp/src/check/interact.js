@@ -1,7 +1,8 @@
 // The interaction pass: point at a mark of the first, middle and last slat, click each button and toggle (up to 12),
 // change each range and select, press an arrow key on a slider, and press Tab and the arrow keys when slats take focus.
-// On a phone (taps), tap a mark of the first and the middle slat. For each, what changed (the DOM, or only the look),
-// what threw, and what moved: a control other than the one used, or a chart's top (the layout jumps).
+// On a phone (taps), tap a mark of the first and the last slat. For each, what changed (the DOM, or only the look),
+// what threw, and what moved: a control other than the one used, or a chart's top (the layout jumps); for a tap, also
+// whether the reader sees none of it (unseen): all it changed lies outside the window, which looks as it did.
 
 const changes = (seen) => {
 
@@ -16,7 +17,7 @@ const changes = (seen) => {
   return parts.join(", ");
 };
 
-// interact(page, { events, capture, shoot, taps }) -> interactions [{ kind, target, changed, how, error, moved }]
+// interact(page, { events, capture, shoot, taps }) -> interactions [{ kind, target, changed, how, error, moved, unseen }]
 //   events   the page's list of errors, which this tags with the interaction that raised them
 //   capture  takes a screenshot of the page (and lets it come to rest after)
 //   shoot    saves the report's screenshot of the page as it is ("hover")
@@ -70,15 +71,25 @@ export async function interact(page, { events, capture, shoot, taps = false }) {
   const slatName = (s) => `slat ${s.index} of ${s.of}${s.name ? ` (${s.name})` : ""}`;
 
   // (two taps in a row, with no rest between them as a pointer gets: one left of the middle, one right of it, so a
-  // chart that reads the value under the finger shows another)
+  // chart that reads the value under the finger shows another. The last slat is the one furthest from a readout above
+  // the chart.)
   if (taps) {
     let point = null;
-    for (const [k, s] of t.slats.slice(0, 2).entries()) {
-      await step("tap", slatName(s), {
-        ready: async () => (point = await pointAt(s.target, k ? 0.7 : 0.3)),
+    let screen = null;
+    for (const [k, s] of [...new Set([t.slats[0], t.slats.at(-1)])].filter(Boolean).entries()) {
+      const entry = await step("tap", slatName(s), {
+        ready: async () => {
+          point = await pointAt(s.target, k ? 0.7 : 0.3);
+          screen = await page.screenshot().catch(() => null);
+        },
         act: () => page.touchscreen.tap(point.x, point.y),
         compareLook: true,
       });
+      // a tap the reader sees nothing of: the window looks as it did (no CSS effect either), and all the tap changed
+      // lies outside it
+      const same = entry.changed && screen && (await page.screenshot().catch(() => null))?.equals(screen);
+      entry.unseen = same ? await page.evaluate((n) => window.__rhpProbe.unseen(n), s.target).catch(() => null) : null;
+      if (entry.unseen) entry.how += ", all of it out of view";
     }
     return list.map(({ could, ...rest }) => rest);
   }
