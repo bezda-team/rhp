@@ -347,7 +347,9 @@ export const contentType = (name) => ({
 // rhp's standalone module with the guard in it, for html pages: built once per rhp, Solid and guard, and kept on disk
 export async function guardedStandalone(pkgs) {
 
-  const key = hash(pkgs.rhp.root, pkgs.rhp.version, pkgs.solid.root, pkgs.solid.version, esbuild.version, guardHash());
+  // rhp's own build is in the key too, so a rebuilt rhp of the same version (a working copy) is never served stale
+  const built = ["dist/index.js", "dist/standalone.d.ts"].map((f) => fs.readFileSync(path.join(pkgs.rhp.root, f), "utf8"));
+  const key = hash(pkgs.rhp.root, pkgs.rhp.version, ...built, pkgs.solid.root, pkgs.solid.version, esbuild.version, guardHash());
   const file = path.join(cacheDir(), `standalone-${pkgs.rhp.version}-${key}.js`);
   if (fs.existsSync(file)) return file;
 
