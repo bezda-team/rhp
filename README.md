@@ -112,7 +112,8 @@ The AI kit has its own checks: `npm install` and `npm test` in `mcp/` run the ch
 1. Set the new version in `package.json` and `react/package.json` (and the `@bezda/rhp` version that `react/` depends on).
 2. Run `npm test`, `BROWSER=webkit npm test` and `BROWSER=firefox npm test`.
 3. `npm publish`, then `npm publish` in `react/` (each builds first).
-4. In [rhp-documentation](https://github.com/bezda-team/rhp-documentation), `npm run sync-rhp` takes the new build for the website.
+4. In `mcp/`, publish the checker with the new rhp ("Publishing" in [mcp/README.md](mcp/README.md)), so it checks charts against the rhp that jsDelivr now serves.
+5. In [rhp-documentation](https://github.com/bezda-team/rhp-documentation), `npm run sync-rhp` takes the new build for the website, and `npm run sync-skill` the skill.
 
 ## History
 

@@ -205,10 +205,12 @@ The report or the screenshots would then never reach the agent, so `rhp_check` r
 
 **Publishing.**
 `@bezda/rhp` is `file:..` here, so that the tests check charts against this repository's build; an install from npm cannot resolve it.
-To publish, set it to a range, publish, and put it back:
+Publish this package after every rhp release, with the range set to that release and a new version of its own.
+The checker carries its own copy of rhp, and a page loads the latest rhp 2 from jsDelivr, so this keeps the two the same rhp; a new version also makes `npx` fetch the new pair:
 
 ```sh
-npm pkg set dependencies.@bezda/rhp=^2.0.1
+npm pkg set dependencies.@bezda/rhp=^2.0.1   # the rhp version just published
+npm version patch --no-git-tag-version
 npm publish
 git checkout package.json
 ```
