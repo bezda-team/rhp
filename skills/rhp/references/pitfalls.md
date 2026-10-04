@@ -12,7 +12,7 @@ Every cause here was reproduced with rhp 2.0.1; the numbers in brackets point to
 - Text sticks out, is cut off or overlaps
 - The chart is tiny, squashed or the wrong size
 - Values never update, or the chart jumps
-- A click, hover or key does nothing
+- A click, hover, tap or key does nothing, or the wrong thing
 - The layout jumps when the reader interacts
 - Styles or colors do not apply
 - Console warnings rhp prints
@@ -41,8 +41,10 @@ Start from a recipe, never from what another library does.
 
 ## Bars, dots or labels in the wrong place
 
-1. **The scale does not hold the data** [13]: bars are cut at the end, dots and ticks land outside the plot. Build it from the data: `const s = nice(0, Math.max(...values))`, then `scale=${[s.min, s.max]} ticks=${s.ticks}`.
-2. **Negative values on a scale that starts at 0**: give the scale a min below 0; a Bar whose `to` is below its `from` runs backward.
+1. **The scale does not hold the data** [13]: bars are cut at the end, dots and ticks land outside the plot.
+   Build it from the data: `const s = nice(Math.min(0, ...values), Math.max(0, ...values))`, then `scale=${[s.min, s.max]} ticks=${s.ticks}`.
+2. **Negative values on a scale that starts at 0**: a value below the scale's min draws nothing; the scale above takes its min below 0.
+   A Bar whose `to` is below its `from` runs backward.
 3. **Area or Line points past the scale squeeze the whole outline** [14]: keep every x inside the scale; give `density()` a `domain` inside it.
 4. **A reversed or equal scale** (`[100, 0]`, `[5, 5]`) draws nothing [15]. For bars that run the other way, use negative values and print them with `format=${(v) => Math.abs(v)}`.
 5. **NaN, undefined or null** draw at the scale's start and print "NaN" [16]: clean or filter the data first.
@@ -85,19 +87,19 @@ Start from a recipe, never from what another library does.
 8. **Marks stop between steps of a timer or a feed**: use `ease: "linear"` and a duration a little longer than the step (1.2 steps, or 1.5 intervals for a network feed); with ease-out or a shorter duration the marks rest between steps.
 9. **Marks trail behind data that changes rapidly or continuously** (a live feed, a slider or drag that drives the data, a play button, a bar chart race): in the default CSS version every new value restarts a CSS transition from wherever the mark is, so under steady change the marks always lag, and Safari can stall transitions that input events retarget. Give the Plot `animate` for the data groups that change (`animate=${["value"]}`, or `animate=${true}`), or the Chart when the scale moves with the data: rhp's JS clock carries each move into the next value. Measured with a slider changing the data every frame: the CSS version trailed the data by 10 points of 100, the JS version by 6.
 
-## A click, hover or key does nothing
+## A click, hover, tap or key does nothing, or the wrong thing
 
 1. **A handler on a component has no parameter** [2]: `onClick=${() => pick()}` runs while drawing and is never attached. Write `onClick=${(e) => pick()}`. This holds for blocks and the Poster; plain elements are fine, and the Chart takes no handler at all (next item).
 2. **The handler is on the Chart** [6]: the Chart drops handlers, `data-*` and `title`. Put them on the Poster or a wrapper element.
 3. **A bare boolean** [1]: `<${Plot} keyboard>` passes an empty string, which is false. Write `keyboard=${true}` (also `overlap`, `static`, `animate`, `mirror`, `fill`, `smooth`).
 4. **An overlay Plot covers the slats under it**: give it `style=${{ "pointer-events": "none" }}` (an object: a string is dropped on Chart and Plot [4]).
 5. **The row is lost**: put `data-row=${() => d.index}` on the slat's root and find it with `e.target.closest("[data-row]")` from one handler on the poster.
-6. **Touch shows nothing**: hover does not exist on touch. Set the same state on `pointerdown`, and ignore `pointerleave` from touch (`e.pointerType !== "touch"`).
+6. **A scroll on a phone changes the pick, or the readout flickers between slats**: the pick runs on `pointerdown` or on a finger's `pointermove` (every scroll starts with both), or it clears when the pointer is on no slat.
+   Pick on `pointermove` only for a mouse or a pen (`e.pointerType !== "touch"`), on `click` for a tap or a click, and on `focusin` for the keyboard; leave the pick as it is on no slat, and clear it on `pointerleave` and `focusout` (interaction.md, section 2).
 7. **The keyboard cannot reach it**: add `keyboard=${true}` to the Plot whose slats are interactive, and handle `focusin` like `pointermove`.
-8. **A tap picks the wrong thing**: a tap on a focusable slat fires `focusin` after `pointerdown`, so a focus handler that picks something coarser (the day) undoes the tap's finer pick (the hour). Keep the current pick when it lies inside the focused slat.
-9. **A focus handler throws on some elements**: `e.target.closest("[data-row]")` can return null; check it before reading `dataset`.
-10. **The chart vanished for screen readers**: `role="slider"` makes everything inside it presentational, so it must never wrap the chart; put it on its own element.
-11. **A slider has no name for screen readers**: an `<output>` inside the `<label>` takes the label from the input, because an output is labelable too. Show the value in a `<span>` or `<b>` with `aria-hidden="true"` and give the input `aria-valuetext`.
+8. **A focus handler throws on some elements**: `e.target.closest("[data-row]")` can return null; check it before reading `dataset`.
+9. **The chart vanished for screen readers**: `role="slider"` makes everything inside it presentational, so it must never wrap the chart; put it on its own element.
+10. **A slider has no name for screen readers**: an `<output>` inside the `<label>` takes the label from the input, because an output is labelable too. Show the value in a `<span>` or `<b>` with `aria-hidden="true"` and give the input `aria-valuetext`.
 
 ## The layout jumps when the reader interacts
 
@@ -122,6 +124,7 @@ The checker warns (`layout-jump`) when a control or the chart moves after one of
 11. **A white label is unreadable on some segments**: a label needs 4.5:1 on each segment's color. Darkening a segment can break the color-blind check against its neighbor, so switch that label to the ink color instead.
 12. **A transition on the slat's root does nothing** [22]: rhp keeps the root's own transition (its slide). Transition an element inside a block instead.
 13. **A rule in the slat's CSS matches nothing**: the class is on a different element than you think. Classes you put on blocks go on the block's own element (`.rhp-bar.bar`); `:horizontal` and `:vertical` go on the slat or a block, not on an element inside a block.
+14. **A pinned readout or a menu over the chart is drawn under the bars** [36]: give it `z-index: 2` or more.
 
 ## Console warnings rhp prints
 
@@ -145,6 +148,7 @@ These are not rhp errors, but they decide whether the user gets what they asked 
 
 - **Dropping or changing a request**: every explicit request in the brief is in the result, exactly (their colors, their title, their sort order, "no poster"). A warning is fixed without removing a requested feature.
 - **Invented numbers presented as fact**: data you supplied names its source and year, or the note says "Illustrative data".
+- **A series the user did not ask for**: what is left when their parts do not reach 100% is a quiet, unlabeled remainder explained in the note, not a new series with its own color and key entry; the brief lists it under Asked as a deviation.
 - **A headline that is not true for the data**: recompute every number in the headline, the dek and the note from the final data ("four in ten" was false for 52%).
 - **A real name on invented numbers**: never put a real country, city, company or person on illustrative data; use real figures with their source, or plain invented names ("Riverton", "a monsoon city", "Team A") and say "invented" in the note.
 - **A magazine poster dropped into an app**: inside an existing app, use the app's fonts and colors (design.md).

@@ -19,7 +19,7 @@ Contents:
 11. [The rules](#11-the-rules)
 
 Every example is a complete module script for the page in section 0.
-Each one was run in Chromium at 1280px and 390px: the kit's checker reported no errors and no warnings, and a Playwright script hovered, tapped, clicked and pressed keys on it.
+Each one was run in Chromium at 1280px and 390px: the kit's checker reported no errors and no warnings (except in the cut example, section 8), and a Playwright script hovered, tapped, scrolled, clicked and pressed keys on it.
 The "Checked" line under each example says what was tested.
 
 ## 0. The page skeleton
@@ -41,7 +41,7 @@ The page's CSS styles what sits around the chart (the poster, the readout, butto
   .poster { max-width: 760px; margin: 0 auto; padding: 24px 24px 16px; background: #fbfaf7; }
   .poster figcaption { display: grid; gap: 6px; margin-bottom: 16px; }
   .poster .kicker:empty, .poster .dek:empty { display: none; }
-  .poster .headline { font: 700 28px/1.1 Georgia, serif; text-wrap: balance; }
+  .poster .headline { font: 700 clamp(23px, 3.7vw, 28px)/1.1 Georgia, serif; text-wrap: balance; }
   .poster .note { display: block; margin-top: 12px; font-size: 12px; line-height: 1.45; color: #5d6470; }
   /* The readout: one line, always the same height, so the chart under it never moves */
   .readout { height: 1.5em; margin: 0 0 10px; font-size: 15px; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
@@ -53,9 +53,10 @@ The page's CSS styles what sits around the chart (the poster, the readout, butto
   /* A line of controls: its name or a button, a slider, a value */
   .control { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 12px 0; font-size: 14px; font-variant-numeric: tabular-nums; }
   .control input[type="range"] { flex: 1 1 160px; accent-color: #1d232b; }
+  .control button { min-width: 5.5em; } /* Play and Pause take the same width, so the slider beside them stays put */
   /* Focus for buttons and sliders; a slat's focus style goes in its slat css (section 9) */
   :focus-visible { outline: 2px solid #b6421e; outline-offset: 2px; }
-  @media (max-width: 480px) { .poster { padding: 18px 14px 12px; } .poster .headline { font-size: 23px; } }
+  @media (max-width: 480px) { .poster { padding: 18px 14px 12px; } }
 </style>
 </head>
 <body>
@@ -103,6 +104,7 @@ const CITY = ["City A", "City B", "City C", "City D", "City E", "City F"];
 const RAIN = [184, 124, 81, 56, 37, 5];
 const DAYS = [19, 17, 13, 11, 6, 2];
 const say = (i) => `${CITY[i]}: ${RAIN[i]} mm of rain on ${DAYS[i]} days`;
+const LEAD = RAIN.indexOf(Math.max(...RAIN)); // the city the headline names: lit until the reader picks one
 
 // Slat type: the slat the reader is on is lit, and the others dim at once (no transition on a block)
 const City = slat({
@@ -121,23 +123,32 @@ const City = slat({
     <${Label} at=${() => d.rain} class="value">${() => d.rain} mm<//>
   </div>`);
 
-// Chart component: one signal holds the row the reader is on, and one handler finds it from any event
+// Chart component: one signal holds the row the reader picked, and three handlers keep it
 function RainChart() {
   const [on, setOn] = createSignal(null);
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    setOn(el ? +el.dataset.row : null);
+    const row = rowOf(e.target);
+    if (row != null) setOn(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
-    <${Poster} title="City A gets more than three times City D's October rain"
-      note="Illustrative data. Point at a city, tap it, or Tab into the chart and use the arrow keys."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
-      <p class="readout" aria-hidden="true">${() => (on() == null ? "Point at a city or tap it." : say(on()))}</p>
+    <${Poster} title="City A gets more than three times City D's October rain" note="Illustrative data."
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <p class="readout" aria-hidden="true">${() => (on() == null ? "Tap or point at a city." : say(on()))}</p>
       <${Chart} scale=${[0, 200]} ticks=${[0, 50, 100, 150, 200]} label="Rain in October, in mm">
         <${Plot} keyboard=${true} city=${CITY} rain=${RAIN} days=${DAYS}
-          on=${(d) => on() === d.index} dim=${(d) => on() != null && on() !== d.index}>${City}<//>
+          on=${(d) => (on() ?? LEAD) === d.index} dim=${(d) => on() != null && on() !== d.index}>${City}<//>
       <//>
     <//>`;
 }
@@ -145,19 +156,29 @@ function RainChart() {
 render(() => html`<${RainChart} />`, document.getElementById("chart"));
 ```
 
-- **One signal, one handler.** `pick` reads the row from whatever the event landed on, with `closest("[data-row]")`, so a bar, a number or the name all count.
-  It runs on `pointermove` (mouse and pen), `pointerdown` (a tap) and `focusin` (the keyboard).
-- **Clearing.** `pointerleave` clears for a mouse but not for a finger: after a tap the finger lifts and the browser sends `pointerleave`, which must not undo the tap.
-  A tap anywhere else in the poster finds no slat and clears; a tap outside it moves focus away from the slat, and `focusout` clears.
+- **One signal, three handlers.** `pick` finds the slat from whatever the event landed on, with `closest("[data-row]")`, so a bar, a number or the name all count.
+  An event on no slat (a gap, the axis, the headline) leaves the pick as it is, so the readout never flickers on its way from one slat to the next.
+- **Who picks.** A mouse or a pen picks on `pointermove`, so the readout follows it; a finger does not, because a finger that moves is scrolling the page.
+  A tap or a click picks on `click`, which a scroll never fires, so scrolling a phone never changes the pick.
+  Never pick on `pointerdown`: every scroll starts with one.
+  The keyboard picks on `focusin`.
+- **Clearing.** `pointerleave` hands the pick back to the slat that has focus (the keyboard's pick, or a click's, since a click focuses the slat), or clears it when no slat in the poster has focus.
+  It ignores a finger, whose `pointerleave` comes as it lifts after a tap.
+  `focusout` clears when focus leaves the poster: a tap anywhere else takes focus from the slat.
+- **At rest**, the city the headline names is lit (`on() ?? LEAD`), and the readout gives the hint, in words that fit every device.
 - **Lit and dimmed.** The Plot turns the signal into two per-row groups, `on` and `dim`; the slat turns them into classes, and its css does the rest.
   rhp fades the Bar's `color` itself; the opacity changes at once, because a `transition` on a block would replace rhp's own (rule 7 in section 11).
 - **The readout** is one line of fixed height, so the chart under it never moves; keep its text short enough for 390px.
   It is `aria-hidden` because each slat's `aria-label` says the same to a screen reader.
-- **In place of a line**, the readout can sit in the slat itself: `<${Show} when=${() => d.on}><${Label} at=…>…<//><//>` draws it in that one slat only (the pyramid and histogram recipes).
+- **Next to the slat.** The readout can sit in the slat itself: `<${Show} when=${() => d.on}><${Label} at=…>…<//><//>` draws it in that one slat only (the pyramid and histogram recipes).
+  Do that when the chart is taller than about half a phone's screen, or pin the readout to the screen while the chart is in view: `position: sticky; bottom: 0` on a readout after the chart (or `top: 0` on one above it), with `z-index: 2` and the paper as its background.
+  A readout above a tall chart is out of sight when the reader taps a low slat, and without `z-index: 2` the slats cover a pinned one (rhp's plot is at `z-index: 1`).
 
-Checked: the checker reported a change for each slat it pointed at (City A, City C, City F); its Tab reached City A and ArrowDown moved focus to City B.
-Playwright with a mouse: on City C's bar the readout named City C, City C was lit, the five others were at opacity .3 with rhp's transition still on their bars, and leaving the poster cleared it all.
-At 390px with touch: a tap on City B kept the readout after the finger lifted, a tap on City E's number picked City E, and a tap on the headline or below the poster cleared it.
+Checked: the checker reported a change for each slat it pointed at (City A, City C, City F) and tapped (City A, City F); its Tab reached City A and ArrowDown moved focus to City B.
+Playwright with a mouse: at rest City A was lit and the readout gave the hint; on City C's bar the readout named City C, City C was lit, and the five others were at opacity .3 with rhp's transition still on their bars; from City F down onto the axis the readout stayed on City F; leaving the poster cleared it all.
+With focus on City A, the mouse over City D took the readout, and leaving the poster gave it back to City A.
+At 390px with touch: a tap on City B kept the readout after the finger lifted, a scroll that started on City E moved the page and left the readout on City B, a tap on City E's number picked City E, and a tap on the headline or below the poster cleared it.
+With slats 110px thick (a chart taller than a 390 × 664 screen), a readout pinned with `position: sticky` and `z-index: 2`, after the chart or above it, showed City B on screen, and City E after a scroll; without `z-index: 2` the slats covered it.
 The chart's top stayed at the same y in every state.
 
 ## 3. Sort toggle
@@ -250,8 +271,7 @@ const Drink = slat({ thickness: 34, room: { start: "auto", end: 44 } }, (d) => h
 function Cafe() {
   const [season, setSeason] = createSignal(2);
   return html`
-    <${Poster} title="In summer, iced coffee outsells the latte two to one"
-      note="Illustrative data. Pick a season.">
+    <${Poster} title="In summer, iced coffee outsells the latte two to one" note="Illustrative data.">
       <div class="choices" role="group" aria-label="Season">
         ${SEASONS.map((s, k) => html`
           <button type="button" aria-pressed=${() => season() === k} onClick=${() => setSeason(k)}>${s.name}</button>`)}
@@ -321,7 +341,7 @@ function ScreenTime() {
   const flip = (key) => setShown((now) => (!now.includes(key) ? [...now, key] : now.length > 1 ? now.filter((k) => k !== key) : now));
   return html`
     <${Poster} title="From 30 to 64, work takes more screen time than anything else"
-      note="Illustrative data. Press a series to hide it or show it again.">
+      dek="Hours a week on screens outside school and work. Press a series to hide it or show it again." note="Illustrative data.">
       <div class="choices" role="group" aria-label="Series shown">
         ${KINDS.map((k) => html`
           <button type="button" aria-pressed=${() => shown().includes(k.key)} onClick=${() => flip(k.key)}><i style=${"--c: " + k.color}></i>${k.name}</button>`)}
@@ -376,11 +396,15 @@ function Visitors() {
     setI(WEEKS.reduce((best, w, k) => (Math.abs(w - week) < Math.abs(WEEKS[best] - week) ? k : best), 0));
   };
   const say = () => `Week ${WEEKS[i()]}: ${VISITORS[i()]},000 visitors`;
+  let start = [0, 0]; // where the last finger went down
+  // A finger that moves more sideways than up or down scrubs; one that moves up or down scrolls the page
+  const sideways = (e) => Math.abs(e.clientX - start[0]) > Math.abs(e.clientY - start[1]);
   return html`
     <${Poster} title="Summer brings seven times the visitors of winter"
-      note="Illustrative data. Point at the chart, drag along it, or use the slider.">
+      dek="Visitors a week. Tap or point at the chart, or drag along it." note="Illustrative data.">
       <p class="readout" aria-hidden="true">${say}</p>
-      <div style="touch-action: pan-y; cursor: crosshair" onPointerMove=${point} onPointerDown=${point}>
+      <div style="touch-action: pan-y; cursor: crosshair" onPointerDown=${(e) => (start = [e.clientX, e.clientY])}
+        onPointerMove=${(e) => (e.pointerType !== "touch" || sideways(e)) && point(e)} onClick=${point}>
         <${Chart} scale=${X} ticks=${[1, 13, 26, 39, 52]} format=${(v) => (v === 1 ? "Week 1" : v)} cross=${[0, 30]} crossTicks=${[0, 10, 20, 30]}
           crossFormat=${(v) => v + "k"} height=${220} label="Visitors a week, in thousands">
           <${Plot} overlap=${true} points=${[WEEKS.map((w, k) => [w, VISITORS[k]])]} ref=${(el) => (plot = el)}>${Trend}<//>
@@ -400,13 +424,16 @@ render(() => html`<${Visitors} />`, document.getElementById("chart"));
 - **The overlay** is a second `overlap` Plot with one slat (`slats=${1}`) fed with the picked point; `pointer-events: none` lets the pointer through to the chart.
   A `Tick` with `thick=${1}` runs the full height of the plot; a `Place` can hold a callout of your own (the line recipe keeps its callout inside the plot with `translate: calc(var(--rhp-p) * -100%) 0`).
 - **Motion.** The picked point changes at every move of the pointer, so the overlay Plot moves by the JS version (`animate=${["week", "visitors"]}`): the hairline and the dot glide through each new week on rhp's clock instead of restarting a CSS transition at every move.
-- **Touch.** `touch-action: pan-y` on the wrapper lets a finger drag sideways along the chart to scrub while an up or down drag still scrolls the page.
+- **Touch.** `touch-action: pan-y` on the wrapper lets an up or down drag scroll the page, and a tap picks the week under it (`click`).
+  A finger scrubs only when it moves more sideways than up or down: the browser sends a few `pointermove`s before it takes over a scroll, and those must not move the pick.
+  `pointerdown` only notes where the finger started; picking there would move the pick at the start of every scroll.
 - **Keys.** The range input is the keyboard's way in (arrows, Home, End, Page Up and Down) and a screen reader's (`aria-valuetext` says the point); it also gives a finger a large target.
 - **Evenly spaced x (years):** the line and multi-line recipes catch the pointer with an invisible vertical Plot of one column per year with `keyboard=${true}`, so the arrows work on the chart itself and each column has its own text; use that up to a few hundred points.
 
 Checked: the checker pointed at the chart and changed the slider, and both moved the readout and the hairline.
 Playwright put the mouse at a quarter of the plot's width and read week 14 (1 + 0.25 × 51 = 13.75), with the hairline on week 14's x; on the slider, End then ArrowLeft gave week 51, Home week 1 (the same text in `aria-valuetext`), and Page Up moved on several weeks.
-At 390px with touch, a sideways drag from week 10 to week 40 moved the readout to week 40, and the page did not scroll sideways.
+At 390px with touch, a scroll that started on week 10 moved the page and left the readout on week 31, a tap on week 20 picked it, and a sideways drag from week 10 to week 40 moved the readout to week 40 without scrolling the page sideways.
+Chromium sent two or three `pointermove`s before it took over the scroll: without the check on the direction, they moved the pick to week 10.
 
 ## 7. What-if slider
 
@@ -441,7 +468,7 @@ function Loan() {
   const paid = createMemo(() => YEARS.map((y) => interest(rate(), y)));
   return html`
     <${Poster} title="A 30-year loan pays more than three times the interest of a 10-year one"
-      note="Interest on a $300,000 loan repaid monthly. Move the slider to try another rate.">
+      note="Interest on a $300,000 loan repaid monthly.">
       <label class="control">Interest rate
         <input type="range" min="0" max=${MAX_RATE} step="0.25" value="5" aria-valuetext=${() => rate().toFixed(2) + "%"} onInput=${(e) => setRate(+e.currentTarget.value)}>
         <b aria-hidden="true">${() => rate().toFixed(2)}%</b>
@@ -502,7 +529,7 @@ function RainChart() {
   };
   return html`
     <${Poster} title="City A gets 37 times as much October rain as City F"
-      note="Illustrative data. Pick a city (click it, tap it, or Tab to its name and press Enter) to compare the others with it."
+      dek="Tap or click a city to compare the others with it." note="Illustrative data."
       onClick=${choose} onKeyDown=${(e) => e.key === "Escape" && setPicked(null)}>
       <${Chart} scale=${[0, 200]} ticks=${[0, 50, 100, 150, 200]} label="Rain in October, in mm">
         <${Plot} city=${CITY} rain=${RAIN} picked=${(d) => picked() === d.index}
@@ -553,7 +580,8 @@ function RainChart() {
     next?.querySelector("button")?.focus(); // the focused button is gone: focus its neighbor
   };
   return html`
-    <${Poster} title="City A is the wettest of these cities in October" note="Illustrative data. Take a city out with its button." onClick=${cut}>
+    <${Poster} title="City A is the wettest of these cities in October"
+      dek="Take a city out with its button to see the others at a larger scale." note="Illustrative data." onClick=${cut}>
       <div class="choices"><button type="button" onClick=${() => setLeft(CITIES)}>Show all</button></div>
       <${Chart} scale=${() => [top().min, top().max]} ticks=${() => top().ticks} label="Rain in October, in mm">
         <${Plot} rows=${left} key="city">${City}<//>
@@ -565,6 +593,7 @@ render(() => html`<${RainChart} />`, document.getElementById("chart"));
 ```
 
 Checked: the checker clicked the six name buttons and each changed the chart; in the cut example its clicks took the cities out one by one, and the click on the last one changed nothing (one city always stays).
+In the cut example its only warnings are `layout-jump` ones for the name buttons below the city taken out: they move up with their slats, which is the interaction itself.
 Playwright clicked City F's bar and read City A at "36.8×", clicked it again to clear, went from City A's button with Tab twice and Enter to pick City C (City A read "2.3×"), and pressed Escape to clear; at 390px a tap on City D's bar picked City D.
 With `keyboard` on the Plot and no buttons, Tab, ArrowDown twice and Enter picked City C.
 In the cut example, Enter on "Take City A out" left five cities, moved the scale's end from 200 to 125 and focus to City B's button, and "Show all" brought City A back.
@@ -577,7 +606,7 @@ Give the keyboard what the pointer gets wherever slats are interactive: `keyboar
 - The arrow keys go to the slat shown before or after (Down and Right forward, Up and Left back, in either orientation), Home and End to the first and the last, in the order on screen.
 - A slat keeps its focus when a sort moves it.
 - Keys with Shift, Ctrl, Alt or Meta are left alone, and so are keys a handler inside the slat has already handled (`e.preventDefault()`).
-- `onFocusIn` on the Poster runs the same `pick` as the pointer, and `onFocusOut` clears it when focus leaves the poster (section 2).
+- `onFocusIn` on the Poster runs the same `pick` as the pointer, `onFocusOut` clears it when focus leaves the poster, and a mouse that leaves the poster hands the pick back to the focused slat (section 2).
 - Style focus in the slat's `css`: rhp resets the outline of a slat's root, so a page rule such as `:focus-visible { … }` does not reach it.
   Style `:focus-visible` next to `:hover` when there is a hover style:
 
@@ -637,8 +666,7 @@ function League() {
   };
   onCleanup(() => clearInterval(timer));
   return html`
-    <${Poster} title="United climbed from fifth to win the league by seven points"
-      note="Illustrative data. Press Play, or pick a round with the slider.">
+    <${Poster} title="United climbed from fifth to win the league by seven points" note="Illustrative data.">
       <div class="control">
         <button type="button" onClick=${() => (playing() ? pause() : play())}>${() => (playing() ? "Pause" : "Play")}</button>
         <input type="range" min="0" max=${LAST} value=${round} aria-label="Round" aria-valuetext=${() => `Round ${round() + 1} of ${LAST + 1}`}
@@ -671,13 +699,16 @@ Under reduced motion a round came every 2 seconds, and Harbour's bar jumped from
 1. **rhp keeps no interaction state.** Hold it in a signal, pass it to the Plot as a data group (`on=${(d) => on() === d.index}`), and let the slat show it with a class, a color or a value.
    An array every slat needs goes through a function of the row (`shown=${(d) => shown()}`): an array on a Plot is a column.
 2. **One handler for the chart.** Put `data-row` on each slat's root (or `data-city`, a key, when rows come and go), find it with `e.target.closest("[data-row]")`, and listen on the Poster or a wrapper `div`: a Chart drops handlers.
-3. **Follow the pointer with `pointermove`**, catch a tap with `pointerdown`, and ignore a `pointerleave` from a finger.
+3. **A mouse or a pen picks on `pointermove`; a tap or a click on `click`; the keyboard on `focusin`.**
+   Never pick on `pointerdown`, and on a finger's `pointermove` only when it moves sideways along a scrubber (section 6): a scroll on a phone starts with both.
+   An event on no slat keeps the pick, and `pointerleave` (never a finger's) hands it back to the focused slat or clears it.
 4. **Never hover only.** What a hover shows, a tap and the keyboard show too, and the slat's text or `aria-label` says it to a screen reader.
 5. **Keyboard wherever slats are interactive:** `keyboard=${true}` on the Plot, or real buttons and inputs; focus styles in the slat's css; never a clickable `div` as the only way in.
 6. **Overlay Plots** (a crosshair, a hairline, a today line, markers) get `style=${{ "pointer-events": "none" }}`, or they take the pointer from the Plot under them.
 7. **Effects are classes.** Never put a `transition` on a block (`.bar`, `.dot`, a Label) or on the slat's root: rhp moves them with its own, and yours would replace it or be ignored.
    Fade or grow an element inside a block (a `span` in a Label, a Bar's `::after`), or let the change happen at once.
 8. **Readouts are one line of fixed height**, short enough for 390px, with tabular figures, so nothing jumps.
+   On a phone, a chart taller than about half the screen shows the reading next to the picked slat (section 2).
 9. **Toggles and choices are `<button type="button">`s with `aria-pressed`,** in a `role="group"` with an `aria-label`; a button whose text changes (Play, Pause) has no `aria-pressed`.
 10. **Motion:** never start it by itself; stop timers in `onCleanup`; rhp's own motion stops under reduced motion, and yours must check `matchMedia("(prefers-reduced-motion: reduce)")` or `@media (prefers-reduced-motion: reduce)`.
 11. **html template traps:** a handler on a component (`<${Poster}>`, a block) takes its event, `(e) => …`, or it runs once while drawing; booleans are written `keyboard=${true}`; standalone has no `createSelector`, so compare in a per-row function; a value that changes is a function.

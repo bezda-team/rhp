@@ -38,6 +38,8 @@ Chosen (the user left these open):
 - Put under **Asked** every explicit request, quoting the user's words: the data and its numbers, the chart type, titles and text, colors, fonts, size, orientation, sort order, labels, legend, interactions, animation, framework, file name, and anything they said not to do.
 - Everything else goes under **Chosen**, filled with the defaults below.
 - A request is never dropped, swapped for something "better" or quietly reduced. If rhp cannot do something exactly, say so in the brief and do the closest thing.
+- A part of the data the user did not name (what is left when their parts do not reach 100%) is a quiet remainder: unlabeled, in the quiet color, with no key entry, and explained in the note, never a new series with its own color.
+  Write it under **Asked**, beside the request it changes, as a deviation.
 - An explicit request beats every default here: "no title", "no poster", "static", "no animation", "minimal", "dark", "use Chart.js colors" all win.
 - Ask a question only when the request cannot be built at all without the answer. Otherwise choose, build, and say what you chose.
 
@@ -47,7 +49,7 @@ Look at the project before you write anything: read package.json (dependencies a
 
 | What you find | Write the chart as | [environments.md](references/environments.md) |
 |---|---|---|
-| no project, an empty folder, a chatbot conversation, or "an HTML file" | one self-contained `.html` file, rhp from jsDelivr | section 3 |
+| no project, an empty folder, a chatbot conversation, or "an HTML file" | one `.html` file that loads rhp from jsDelivr (it needs a connection) | section 3 |
 | `astro` | a Solid island with `@astrojs/solid-js`, otherwise a custom element | section 12 |
 | `next` | a React component the server never renders (loaded with `next/dynamic` and `ssr: false`) | section 8 |
 | `nuxt` | a Vue component | section 9 |
@@ -119,12 +121,16 @@ The rhp MCP server's `rhp_recipe` tool (`rhp:rhp_recipe`) returns the same recip
 Unless the user gave a style, the chart is an original **editorial poster**: a magazine, advertisement or feature-article infographic designed for this subject.
 Read [design.md](references/design.md) and follow its procedure; in short:
 
-- The poster carries a **kicker** (the topic, a few words), a **headline that states the finding** ("Bananas outsell everything else", not "Fruit sales"), a **dek** (context and how to read the chart), the chart, and a **note** (source and year, or "Illustrative data").
-- Derive the look from the subject: a material or setting, a palette, a type pairing, how the marks are drawn, and one ornament. Make it your own, not a copy of the recipe's look or of another chart you made.
+- The poster carries a **kicker** (the topic, a few words), a **headline that states the finding** ("Bananas outsell everything else", not "Fruit sales"), a **dek** (context and how to read the chart), the chart, and a **note** (source and year, or "Illustrative data"; no source line when the user gave the data and no source).
+- Derive the look from the subject: a material or setting, a palette, a type pairing, how the marks are drawn, and one ornament.
+  Make it your own, not a copy of the recipe's look or of another chart you made: never reuse a recipe's headline formula, kicker wording or readout band as they are.
 - Color has a purpose: one accent for the story, quieter colors for the rest. Direct labels beat legends.
-- It must read on a phone (390px wide) as well as on a desktop.
+- The series or item the headline names leads at rest: lit, labeled and in the accent before the reader does anything.
+  When the user's color for it is weak on the background, keep the color and outline or label its marks.
+- It must read on a phone (390px wide) as well as on a desktop, with the chart in the phone's first screen.
 
-When the user gives a style, a brand, colors or fonts, use exactly those, and keep only the legibility rules from design.md.
+When the user gives a style, a brand, colors or fonts, use exactly those: the palette and the type are theirs.
+The layout, the frame, the marks and one idea from the subject are still yours to design, with design.md's legibility rules.
 
 Inside an existing app with a look of its own (its fonts, CSS variables, Tailwind theme or component library), the chart takes the app's fonts and colors instead of a poster's.
 Keep the editorial habits that help any chart: a title that states the finding, direct labels, a source line.
@@ -133,13 +139,25 @@ Keep the editorial habits that help any chart: a title that states the finding, 
 
 Unless the user said otherwise, the chart gets one interaction that serves its story, from [interaction.md](references/interaction.md): a readout on hover, focus and tap for comparing items, a sort or a switch between years for rankings, a crosshair for time, a toggle for series.
 It works with a mouse, a finger and the keyboard, and nothing is shown only on hover.
+A readout follows a mouse or a pen as it moves; a tap, a click or the keyboard picks a slat, and a scroll never does (pick on `click`, never on `pointerdown`); between slats the pick stays; leaving the poster gives the pick back to the slat that has focus, or clears it.
+The example below does all of it.
+The hint for an interaction sits beside its control, in words that fit every device ("Tap or point at a fruit"), never in the source note.
 When the user asks for a "static" chart, an image-like chart or no interaction, add none.
+A chart with fixed data and no interaction gets `static=${true}` on its Chart: rhp draws it once and keeps no signals.
 
 ### 6. Build it from the recipe
 
 - Keep the recipe's code format and section order: data, then slat types, then the chart component, then mounting.
 - Use the user's data exactly, every value, in their units.
-  With no data given: when the subject is factual and you know the figures well, use them and name the source and year in the note; otherwise use plausible figures and the note says "Illustrative data". Never present invented numbers as fact, and never put a real name (a country, a city, a company, a person) on them: give invented items plain invented names and say "invented" or "fictional" in the note.
+  With no data given: when the subject is factual, use real figures and name the source and year in the note; with network access, take them from the primary source (the agency or publisher that makes them) rather than from memory, and from memory use only figures you know well.
+  Otherwise use plausible figures and the note says "Illustrative data".
+  Never present invented numbers as fact, and never put a real name (a country, a city, a company, a person) on them: give invented items plain invented names and say "invented" or "fictional" in the note.
+- When an item was renamed recently, show the name most readers know beside the new one ("X (formerly Twitter)").
+- A request about the user's own data with none given ("chart my spending") gets illustrative numbers in one obvious data block at the top of the script, with the note's text in the same block, so the user changes both in one place.
+  The headline and the dek compute their numbers from that data, so they stay true for the user's own.
+  The handoff says exactly how to put their own numbers in, or offers to read a file they point to.
+- Compute the scale from the data: `nice(Math.min(0, ...values), Math.max(0, ...values))` (rule 2 below).
+- Compute the ranks, the leader and every number in the headline and the dek from a sorted copy of the data, never from its input order: a Plot's `order` sorts only what it draws.
 - Look up anything you are unsure of in [api.md](references/api.md) rather than guessing a prop.
 - Keep the code short and plain: comments at section heads and where a reader needs one.
 
@@ -154,7 +172,9 @@ A chart component that takes its data from the app cannot be drawn on its own: c
 
 It builds the chart, renders it in a browser at 1280px and 390px, tries its interaction, and reports runtime errors, props rhp does not have, data the slat reads but the Plot lacks, values past the scale, overlapping or cut-off text, marks sticking out, sideways scrolling, low contrast and tiny text, with a fix for each.
 Its screenshots show the page with reduced motion asked for, so a chart that animates on load is pictured at rest; its interactions run with motion on.
-Then open the screenshots it saved and look at them as a demanding art director would: hierarchy, spacing, alignment, color, legibility on the phone, and whether the headline is true for the data.
+They go to a folder in the system's temp directory, and the report gives their paths; `--out <dir>` puts them elsewhere.
+Keep screenshots, and any test files of your own, out of the user's project.
+Then open the screenshots and look at them as a demanding art director would: hierarchy, spacing, alignment, color, legibility on the phone, and whether the headline is true for the data.
 Fix what you see, and check again.
 
 Never make a warning go away by removing something the user asked for.
@@ -165,7 +185,11 @@ If the checker cannot run here (no Node, no browser, a chatbot without tools), g
 - Go through every **Asked** item of the brief against the final code and screenshots, and fix anything missing.
 - Recompute every number in the headline, the dek and the note from the final data: a claim must be true for the numbers shown.
 - Try every control once more and compare before and after: nothing else on the page may move (pitfalls.md, "The layout jumps").
-- Then tell the user, briefly: what you made, where it is and how to open or run it (an HTML file opens with a double-click), what you chose for them (form, look, interaction, data source or "illustrative"), and anything you could not do, with the reason.
+- Check once more at four widths (`--widths 1280,1024,768,390`, or `widths` in `rhp_check`): layouts that change between 390px and 1280px (a breakpoint, a turned chart, a panel beside the chart) are where most layout bugs are.
+- When the chart will take other data (the user's own, live or generated), check a copy with the hardest data it may get: the longest names, values ten times larger, twice as many rows.
+- Then tell the user, briefly: what you made, where it is and how to open or run it (an HTML file opens with a double-click, and needs a connection for rhp), what you chose for them (form, look, interaction, data source or "illustrative"), and anything you could not do, with the reason.
+  For a short request, those few lines are the whole handoff: no test logs, tool versions or local paths.
+  To name the checker, give the command anyone can run, `npx -y @bezda/rhp-mcp check <file>`.
 
 ## How an rhp chart is built
 
@@ -206,20 +230,22 @@ A complete chart in the plain HTML format (the format of every recipe), with a p
   .poster { max-width: 720px; margin: 0 auto; padding: 28px 28px 18px; background: #fbf8f1; color: #1f1a14; font-family: Inter, system-ui, sans-serif; }
   .poster figcaption { display: grid; gap: 6px; margin-bottom: 18px; }
   .poster .kicker { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #8a5a12; }
-  .poster .headline { font: 700 34px/1.05 Fraunces, Georgia, serif; text-wrap: balance; }
+  .poster .headline { font: 700 clamp(27px, 4.7vw, 34px)/1.05 Fraunces, Georgia, serif; text-wrap: balance; }
   .poster .dek { font-size: 15px; line-height: 1.45; color: #4d453b; max-width: 52ch; }
   .poster .note { display: block; margin-top: 14px; font-size: 11.5px; color: #6f665a; }
-  @media (max-width: 480px) { .poster { padding: 20px 16px 14px; } .poster .headline { font-size: 27px; } }
+  @media (max-width: 480px) { .poster { padding: 20px 16px 14px; } }
 </style>
 </head>
 <body>
 <div id="chart"></div>
 <script type="module">
-import { Chart, Plot, Bar, Label, Poster, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+import { Chart, Plot, Bar, Label, Poster, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
 
-// Data
+// Data, and what depends on it
 const fruit = ["Bananas", "Apples", "Cherries", "Pears", "Plums"];
 const sold = [18, 12, 7, 5, 3];
+const scale = nice(Math.min(0, ...sold), Math.max(0, ...sold)); // 0 to 20, ticks every 5
+const lead = sold.indexOf(Math.max(...sold)); // the fruit the headline names: lit until the reader picks another
 
 // Slat type: one slat per row; its CSS reaches only these slats
 const Fruit = slat({
@@ -238,25 +264,35 @@ const Fruit = slat({
     <${Label} at=${() => d.sold} class="value">${() => d.sold}<//>
   </div>`);
 
-// Chart component: the app holds the state (which slat the reader is on)
+// Chart component: the app holds the state (which slat the reader picked)
 function FruitChart() {
   const [on, setOn] = createSignal(null);
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    setOn(el ? +el.dataset.row : null);
+    const row = rowOf(e.target);
+    if (row != null) setOn(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
     <${Poster}
       kicker="Market stall, Saturday"
       title="Bananas outsell everything else"
-      dek=${() => (on() == null ? "Crates sold by midday. Point at a fruit." : `${fruit[on()]}: ${sold[on()]} crates by midday.`)}
+      dek=${() => (on() == null ? "Crates sold by midday. Tap or point at a fruit." : `${fruit[on()]}: ${sold[on()]} crates by midday.`)}
       note="Illustrative data."
-      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}
-      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
-      <${Chart} scale=${[0, 20]} ticks=${[0, 5, 10, 15, 20]} label="Crates of fruit sold by midday"
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} label="Crates of fruit sold by midday"
         theme=${{ font: "Inter, system-ui, sans-serif", ink: "#1f1a14", muted: "#6f665a", grid: "#e6dfd2" }}>
-        <${Plot} keyboard=${true} fruit=${fruit} sold=${sold} on=${(d) => on() === d.index}>${Fruit}<//>
+        <${Plot} keyboard=${true} fruit=${fruit} sold=${sold} on=${(d) => (on() ?? lead) === d.index}>${Fruit}<//>
       <//>
     <//>`;
 }
@@ -274,7 +310,8 @@ In a Solid app the same chart is JSX: `<Bar to={d.sold} />` instead of `<${Bar} 
 Data:
 
 1. **Data names must match.** A slat reads `d.sold` only if the Plot has a prop `sold`. A list of objects goes in `rows={[...]}`, never `data={...}`: `data` would just be a column named "data". Any prop a Plot does not know (`id`, `title`, `onClick`) is a column too, and an array is always a column, item i for row i: to give every slat the same list, pass a function of the row (`shown=${(d) => shown()}`).
-2. **The scale must hold the data.** `scale={[min, max]}` with min below max covers every value: a Bar past it is cut off, and Dots, Ticks, Places and the points of an Area or a Line past it land outside or squeeze the outline. Build it from the data with `nice(min, max)` and use its `ticks`; negative values need a min below 0.
+2. **The scale must hold the data.** `scale={[min, max]}` with min below max covers every value: a Bar past it is cut off, and Dots, Ticks, Places and the points of an Area or a Line past it land outside or squeeze the outline.
+   Build it from the data, `const s = nice(Math.min(0, ...values), Math.max(0, ...values))`, which keeps 0 and holds negative values too, and give the Chart `scale=${[s.min, s.max]} ticks=${s.ticks}`.
 3. **Rows that come and go need a `key`** on the Plot (`key="city"`), or slats swap data instead of leaving. `d.index` can change then, so read it in a function: `data-row=${() => d.index}`.
 4. **Format numbers** with `Intl.NumberFormat` (thousands, units, percentages, currency) and use `font-variant-numeric: tabular-nums` where numbers line up. In the JS version (`animate`), values in between are fractional: round what you print.
 

@@ -1270,7 +1270,8 @@ render(RainChart, document.getElementById("chart"));
 ```
 
 **Interaction state is the app's.** rhp keeps none: hold what the reader points at in a signal, feed it back to the Plot as data, and let the slat show it (interaction.md has the patterns).
-Listen on an element around the chart (the Chart takes no handlers), find the slat with `data-row` and `closest()`, and use `pointermove`, `pointerdown` (taps) and `focusin` together:
+Listen on an element around the chart (the Chart takes no handlers) and find the slat with `data-row` and `closest()`.
+A mouse or a pen picks on `pointermove`, a tap or a click on `click` (a scroll never fires one, so never pick on `pointerdown`), the keyboard on `focusin`; an event on no slat keeps the pick, and leaving clears it:
 
 ```js
 import { Chart, Plot, Bar, Label, Show, slat, html, render, createSignal } from "@bezda/rhp/standalone";
@@ -1297,16 +1298,26 @@ const City = slat({
     <//>
   </div>`);
 
-// Chart component: the row the reader is on is a signal; on=${(d) => …} is worked out per row
+// Chart component: the row the reader picked is a signal; on=${(d) => …} is worked out per row
 const RainChart = () => {
   const [on, setOn] = createSignal(null);
+  // The row of the slat an element is in, or null (between slats)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
   const pick = (e) => {
-    const el = e.target.closest("[data-row]");
-    setOn(el ? +el.dataset.row : null);
+    const row = rowOf(e.target);
+    if (row != null) setOn(row); // on no slat, the pick stays
+  };
+  // Leaving: back to the slat that has focus, or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   return html`
-    <div onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}>
+    <div onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <${Chart} scale=${[0, 200]} label="Rain in October, in mm">
         <${Plot} keyboard=${true} city=${city} rain=${rain} days=${days} on=${(d) => on() === d.index}>${City}<//>
       <//>
@@ -1423,3 +1434,5 @@ Every one of these was found by running rhp 2.0.1.
 35. **A space that stands alone between two tags is dropped** in the html template.
     `<b>${() => d.name}</b> <em>12</em>` renders "Name12".
     Write the space as `${" "}`, or keep it next to other text (`<b>Name</b>: <em>12</em>`).
+36. **A Plot sits at `z-index: 1`.**
+    A page element that overlaps a chart (a readout pinned with `position: sticky`, a menu that opens over the chart) is drawn under the slats unless its own `z-index` is 2 or more.

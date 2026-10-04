@@ -185,10 +185,21 @@ Its module script has the sections every recipe has: data, slat types, the chart
   // The chart: a poster with a one-line readout over the towers, ranked by height.
   // Its data comes in as props.rows, a list of { name, city, year, height }.
   function TowersChart(props) {
-    const [on, setOn] = createSignal(null); // the name of the tower the reader is on
+    const [on, setOn] = createSignal(null); // the name of the tower the reader picked
     const current = createMemo(() => props.rows.find((t) => t.name === on()));
     const tallest = createMemo(() => Math.max(...props.rows.map((t) => t.height)));
-    const nameAt = (e) => e.target.closest("[data-name]")?.dataset.name ?? null;
+    // The name of the tower an element is in, or null (between towers, on the text)
+    const nameOf = (el) => el.closest("[data-name]")?.dataset.name ?? null;
+    // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no tower the pick stays
+    const pick = (e) => {
+      const name = nameOf(e.target);
+      if (name != null) setOn(name);
+    };
+    // Leaving the poster: back to the tower that has focus (a keyboard's or a click's pick), or none
+    const leave = (e) => {
+      if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+      setOn(e.currentTarget.contains(document.activeElement) ? nameOf(document.activeElement) : null);
+    };
 
     return html`
       <${Poster} class="towers"
@@ -196,10 +207,10 @@ Its module script has the sections every recipe has: data, slat types, the chart
         title=${"Burj Khalifa still towers 149\u00a0m over the rest"}
         dek="The seven tallest finished buildings in the world, by height to their architectural top."
         note="Source: Council on Tall Buildings and Urban Habitat (CTBUH), 2025."
-        onPointerMove=${(e) => setOn(nameAt(e))}
-        onPointerDown=${(e) => setOn(nameAt(e))}
-        onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}
-        onFocusIn=${(e) => setOn(nameAt(e))}
+        onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)}
+        onClick=${pick}
+        onFocusIn=${pick}
+        onPointerLeave=${leave}
         onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
         <p class="readout">
           <${Show} when=${current} fallback="Point at a tower, tap it, or Tab to it.">
@@ -272,10 +283,21 @@ const Tower = slat({
 // The chart: a poster with a one-line readout over the towers, ranked by height.
 // Its data comes in as props.rows, a list of { name, city, year, height }.
 export function TowersChart(props) {
-  const [on, setOn] = createSignal(null); // the name of the tower the reader is on
+  const [on, setOn] = createSignal(null); // the name of the tower the reader picked
   const current = createMemo(() => props.rows.find((t) => t.name === on()));
   const tallest = createMemo(() => Math.max(...props.rows.map((t) => t.height)));
-  const nameAt = (e) => e.target.closest("[data-name]")?.dataset.name ?? null;
+  // The name of the tower an element is in, or null (between towers, on the text)
+  const nameOf = (el) => el.closest("[data-name]")?.dataset.name ?? null;
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no tower the pick stays
+  const pick = (e) => {
+    const name = nameOf(e.target);
+    if (name != null) setOn(name);
+  };
+  // Leaving the poster: back to the tower that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setOn(e.currentTarget.contains(document.activeElement) ? nameOf(document.activeElement) : null);
+  };
 
   return (
     <Poster class="towers"
@@ -283,10 +305,10 @@ export function TowersChart(props) {
       title={"Burj Khalifa still towers 149\u00a0m over the rest"}
       dek="The seven tallest finished buildings in the world, by height to their architectural top."
       note="Source: Council on Tall Buildings and Urban Habitat (CTBUH), 2025."
-      onPointerMove={(e) => setOn(nameAt(e))}
-      onPointerDown={(e) => setOn(nameAt(e))}
-      onPointerLeave={(e) => e.pointerType !== "touch" && setOn(null)}
-      onFocusIn={(e) => setOn(nameAt(e))}
+      onPointerMove={(e) => e.pointerType !== "touch" && pick(e)}
+      onClick={pick}
+      onFocusIn={pick}
+      onPointerLeave={leave}
       onFocusOut={(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <p class="readout">
         <Show when={current()} fallback="Point at a tower, tap it, or Tab to it.">
@@ -329,8 +351,13 @@ export default function App() {
 export type TowerRow = { name: string; city: string; year: number; height: number };
 const Tower = slat<TowerRow & { on: boolean }>({
 export function TowersChart(props: { rows: TowerRow[] }) {
-  const [on, setOn] = createSignal<string | null>(null); // the name of the tower the reader is on
-  const nameAt = (e: Event) => (e.target as Element).closest("[data-name]")?.getAttribute("data-name") ?? null;
+  const [on, setOn] = createSignal<string | null>(null); // the name of the tower the reader picked
+  const nameOf = (el: Element) => el.closest("[data-name]")?.getAttribute("data-name") ?? null;
+  const pick = (e: Event) => {
+    const name = nameOf(e.target as Element);
+  const leave = (e: PointerEvent) => {
+    const focused = document.activeElement;
+    setOn(focused && (e.currentTarget as Element).contains(focused) ? nameOf(focused) : null);
       onFocusOut={(e) => !e.currentTarget.contains(e.relatedTarget as Node | null) && setOn(null)}>
         <Plot rows={props.rows} key="name" order={sortBy("height", "desc")} on={(d: TowerRow) => on() === d.name} keyboard>{Tower}</Plot>
 ```
@@ -475,10 +502,21 @@ const Tower = slat({
 // The chart: a poster with a one-line readout over the towers, ranked by height.
 // Its data comes in as props.rows, a list of { name, city, year, height }.
 export function TowersChart(props) {
-  const [on, setOn] = createSignal(null); // the name of the tower the reader is on
+  const [on, setOn] = createSignal(null); // the name of the tower the reader picked
   const current = createMemo(() => props.rows.find((t) => t.name === on()));
   const tallest = createMemo(() => Math.max(...props.rows.map((t) => t.height)));
-  const nameAt = (e) => e.target.closest("[data-name]")?.dataset.name ?? null;
+  // The name of the tower an element is in, or null (between towers, on the text)
+  const nameOf = (el) => el.closest("[data-name]")?.dataset.name ?? null;
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no tower the pick stays
+  const pick = (e) => {
+    const name = nameOf(e.target);
+    if (name != null) setOn(name);
+  };
+  // Leaving the poster: back to the tower that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setOn(e.currentTarget.contains(document.activeElement) ? nameOf(document.activeElement) : null);
+  };
 
   return html`
     <${Poster} class="towers"
@@ -486,10 +524,10 @@ export function TowersChart(props) {
       title=${"Burj Khalifa still towers 149\u00a0m over the rest"}
       dek="The seven tallest finished buildings in the world, by height to their architectural top."
       note="Source: Council on Tall Buildings and Urban Habitat (CTBUH), 2025."
-      onPointerMove=${(e) => setOn(nameAt(e))}
-      onPointerDown=${(e) => setOn(nameAt(e))}
-      onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}
-      onFocusIn=${(e) => setOn(nameAt(e))}
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)}
+      onClick=${pick}
+      onFocusIn=${pick}
+      onPointerLeave=${leave}
       onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <p class="readout">
         <${Show} when=${current} fallback="Point at a tower, tap it, or Tab to it.">
@@ -574,10 +612,22 @@ const Tower = slat<TowerRow & { on: boolean }>({
 
 // The chart: a poster with a one-line readout over the towers, ranked by height. Its data comes in as props.rows.
 export function TowersChart(props: { rows: TowerRow[] }) {
-  const [on, setOn] = createSignal<string | null>(null); // the name of the tower the reader is on
+  const [on, setOn] = createSignal<string | null>(null); // the name of the tower the reader picked
   const current = createMemo(() => props.rows.find((t) => t.name === on()));
   const tallest = createMemo(() => Math.max(...props.rows.map((t) => t.height)));
-  const nameAt = (e: Event) => (e.target as Element).closest("[data-name]")?.getAttribute("data-name") ?? null;
+  // The name of the tower an element is in, or null (between towers, on the text)
+  const nameOf = (el: Element) => el.closest("[data-name]")?.getAttribute("data-name") ?? null;
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no tower the pick stays
+  const pick = (e: Event) => {
+    const name = nameOf(e.target as Element);
+    if (name != null) setOn(name);
+  };
+  // Leaving the poster: back to the tower that has focus (a keyboard's or a click's pick), or none
+  const leave = (e: PointerEvent) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    const focused = document.activeElement;
+    setOn(focused && (e.currentTarget as Element).contains(focused) ? nameOf(focused) : null);
+  };
 
   return html`
     <${Poster} class="towers"
@@ -585,10 +635,10 @@ export function TowersChart(props: { rows: TowerRow[] }) {
       title=${"Burj Khalifa still towers 149\u00a0m over the rest"}
       dek="The seven tallest finished buildings in the world, by height to their architectural top."
       note="Source: Council on Tall Buildings and Urban Habitat (CTBUH), 2025."
-      onPointerMove=${(e: PointerEvent) => setOn(nameAt(e))}
-      onPointerDown=${(e: PointerEvent) => setOn(nameAt(e))}
-      onPointerLeave=${(e: PointerEvent) => e.pointerType !== "touch" && setOn(null)}
-      onFocusIn=${(e: FocusEvent) => setOn(nameAt(e))}
+      onPointerMove=${(e: PointerEvent) => e.pointerType !== "touch" && pick(e)}
+      onClick=${pick}
+      onFocusIn=${pick}
+      onPointerLeave=${leave}
       onFocusOut=${(e: FocusEvent) => !(e.currentTarget as Element).contains(e.relatedTarget as Node | null) && setOn(null)}>
       <p class="readout">
         <${Show} when=${current} fallback="Point at a tower, tap it, or Tab to it.">
@@ -1497,6 +1547,9 @@ On 2026-10-03, on macOS 26.5 with Node 24.15.0 and npm 11.12.1, with `@bezda/rhp
 - the built app, served by its production server (`vite preview`, `next start`, `node .output/server/index.mjs`, or a static server for Astro's and Angular's output), opened in Playwright 1.63's Chromium at 1280px and 390px: no console error or warning, one chart with 7 slats, no sideways scroll, the readout on one line for every tower on hover, the readout cleared when the pointer leaves, Tab and the arrow keys, and a tap on a touch phone;
 - a test page where the app's state changes the data (one height changes and a tower is added, then back), changes a row in place where the framework allows it, and removes and adds the chart: each tower keeps its slat, the app's data stays unchanged, and nothing is left behind;
 - a look at the screenshots.
+
+On 2026-10-04 the chart's pointer handlers changed (a tap or a click picks on `click`, a scroll never picks, a pick stays between towers and on the focused tower).
+The plain page and the Solid component were checked again in Playwright's Chromium (mouse, keyboard, a tap and a scroll at 390px, and the kit's checker), and the TypeScript files with `tsc` in the Solid and Angular projects; every other environment draws the same chart module.
 
 | Environment | Versions | Also checked |
 |---|---|---|
