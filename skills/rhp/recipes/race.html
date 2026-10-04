@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>China's economy caught up</title>
+<meta name="description" content="Bar chart race: ten economies ranked by GDP every year from 1990 to 2024, the bars sliding past each other as ranks change, with a play button and a year slider, and a readout on hover, focus and tap. The bars move by rhp's JS version (animate) because the data changes every step. Use it for a ranking that changes over time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Jost:wght@400;500;600&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #cbcfc9; font-family: Jost, "Avenir Next", "Century Gothic", sans-serif; }
+  /* The poster: an engraved banknote. Cool cotton paper, a guilloche rosette in the corner, a double rule inside the edge,
+     dollar-green ink for the leader and gold for the story */
+  .poster { max-width: 960px; margin: 0 auto; padding: 58px 62px 36px; color: #17201b; border-radius: 2px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'%3E%3Cg fill='none' stroke='%239aa49c' stroke-width='.4'%3E%3Cg id='a'%3E%3Cellipse id='e' rx='98' ry='30'/%3E%3Cuse href='%23e' transform='rotate(6)'/%3E%3Cuse href='%23e' transform='rotate(12)'/%3E%3Cuse href='%23e' transform='rotate(18)'/%3E%3Cuse href='%23e' transform='rotate(24)'/%3E%3C/g%3E%3Cuse href='%23a' transform='rotate(30)'/%3E%3Cuse href='%23a' transform='rotate(60)'/%3E%3Cuse href='%23a' transform='rotate(90)'/%3E%3Cuse href='%23a' transform='rotate(120)'/%3E%3Cuse href='%23a' transform='rotate(150)'/%3E%3Ccircle r='30'/%3E%3Ccircle r='27'/%3E%3C/g%3E%3C/svg%3E") no-repeat right -170px top -170px / 340px 340px, #f2f3ee;
+    box-shadow: inset 0 0 0 10px #f2f3ee, inset 0 0 0 11px #9ba69e, inset 0 0 0 14px #f2f3ee, inset 0 0 0 15px #c3cac3, 0 30px 60px -30px rgb(36 44 40 / .55); }
+  .poster figcaption { display: grid; gap: 14px; }
+  .poster .kicker { font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #4c5650; }
+  .poster .headline { max-width: 15em; font: 600 62px/.98 "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif; letter-spacing: -.012em; text-wrap: balance; }
+  .poster .headline .cn { color: #8a6412; font-style: italic; }
+  .poster .headline .us { color: #1d5b44; font-style: italic; }
+  .poster .dek { max-width: 54ch; font-size: 17px; line-height: 1.5; color: #434b46; }
+  .waves { height: 14px; margin: 30px 0 22px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14'%3E%3Cg fill='none' stroke='%23a3ada5' stroke-width='.6'%3E%3Cpath id='w' d='M-24 7Q-18-1-12 7T0 7T12 7T24 7T36 7T48 7'/%3E%3Cuse href='%23w' x='8'/%3E%3Cuse href='%23w' x='16'/%3E%3C/g%3E%3C/svg%3E") repeat-x center / 24px 14px; }
+  /* The controls: play, the year slider, and the year in big engraved numerals */
+  .controls { display: flex; align-items: center; gap: 18px; }
+  .play { flex: none; display: grid; place-items: center; width: 50px; height: 50px; padding: 0; border: 0; border-radius: 50%; color: #f2f3ee; background: #1d5b44; cursor: pointer; }
+  .play svg { width: 18px; height: 18px; fill: currentColor; }
+  .play:focus-visible { outline: 2px solid #17201b; outline-offset: 3px; }
+  .scrub { flex: 1; min-width: 0; height: 30px; margin: 0; background: transparent; cursor: pointer; appearance: none; -webkit-appearance: none; }
+  .scrub::-webkit-slider-runnable-track { height: 2px; background: #17201b; }
+  .scrub::-moz-range-track { height: 2px; background: #17201b; }
+  .scrub::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -9px; border: 2px solid #17201b; border-radius: 50%; background: #f2f3ee; -webkit-appearance: none; }
+  .scrub::-moz-range-thumb { width: 16px; height: 16px; border: 2px solid #17201b; border-radius: 50%; background: #f2f3ee; }
+  .scrub:focus-visible { outline: 2px solid #1d5b44; outline-offset: 4px; border-radius: 2px; }
+  .year { flex: none; font: italic 500 92px/.8 "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif; font-variant-numeric: lining-nums tabular-nums; color: #1d5b44; }
+  /* One line that reads out the country in focus; its height is fixed, so nothing below it moves */
+  .readout { height: 24px; margin: 18px 0 12px; font-size: 16px; line-height: 24px; white-space: nowrap; color: #434b46; }
+  .readout b { font-weight: 600; color: #17201b; }
+  .unit { display: block; margin-top: 4px; font-size: 12px; text-align: right; color: #5b645e; }
+  .poster .note { display: block; margin-top: 22px; padding-top: 12px; border-top: 1px solid #c3cac3; font-size: 12px; line-height: 1.5; color: #5b645e; }
+  @media (max-width: 640px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 32px 22px 22px; background-position: right -70px top -70px, 0 0; background-size: 140px 140px, auto; }
+    .poster .headline { font-size: 37px; }
+    .poster .dek { font-size: 15px; }
+    .waves { margin: 22px 0 16px; }
+    .controls { gap: 12px; }
+    .play { width: 44px; height: 44px; }
+    .year { font-size: 54px; }
+    .readout { font-size: 14px; margin: 14px 0 8px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, sortBy, html, render, createSignal, createMemo, onMount, onCleanup } from "@bezda/rhp/standalone";
+
+// Data: GDP in trillions of current US dollars, one value per year from 1990 to 2024, for the ten largest economies
+// of 2024. World Bank, World Development Indicators, rounded to $10 billion; Brazil's 1991 to 1993 are interpolated.
+// Replace with your own: one row per item, one value per step.
+const FIRST = 1990;
+const LAST = 2024;
+const ECONOMIES = [
+  { name: "United States", short: "the US", kind: "lead", byYear: [5.96, 6.16, 6.52, 6.86, 7.29, 7.64, 8.07, 8.58, 9.06, 9.63, 10.25, 10.58, 10.94, 11.46, 12.22, 13.04, 13.82, 14.47, 14.77, 14.48, 15.05, 15.6, 16.25, 16.88, 17.61, 18.3, 18.8, 19.61, 20.66, 21.54, 21.35, 23.68, 26.01, 27.72, 29.18] },
+  { name: "China", kind: "story", byYear: [0.36, 0.38, 0.43, 0.44, 0.56, 0.73, 0.86, 0.96, 1.03, 1.09, 1.21, 1.34, 1.47, 1.66, 1.96, 2.29, 2.75, 3.55, 4.59, 5.1, 6.09, 7.55, 8.53, 9.57, 10.48, 11.06, 11.23, 12.31, 13.89, 14.28, 14.69, 17.82, 17.88, 18.27, 18.74] },
+  { name: "Germany", byYear: [1.77, 1.87, 2.13, 2.07, 2.21, 2.59, 2.5, 2.22, 2.24, 2.2, 1.95, 1.95, 2.08, 2.5, 2.81, 2.85, 2.99, 3.43, 3.75, 3.41, 3.4, 3.75, 3.53, 3.73, 3.89, 3.36, 3.47, 3.69, 3.97, 3.89, 3.89, 4.28, 4.16, 4.53, 4.66] },
+  { name: "Japan", byYear: [3.13, 3.58, 3.91, 4.45, 5, 5.55, 4.92, 4.49, 4.1, 4.64, 4.97, 4.37, 4.18, 4.52, 4.89, 4.83, 4.6, 4.58, 5.11, 5.29, 5.76, 6.23, 6.27, 5.21, 4.9, 4.44, 5, 4.93, 5.04, 5.12, 5.06, 5.03, 4.26, 4.21, 4.03] },
+  { name: "India", byYear: [0.32, 0.27, 0.29, 0.28, 0.33, 0.36, 0.39, 0.42, 0.42, 0.46, 0.47, 0.49, 0.51, 0.61, 0.71, 0.82, 0.94, 1.22, 1.2, 1.34, 1.68, 1.82, 1.83, 1.86, 2.04, 2.1, 2.29, 2.65, 2.7, 2.84, 2.67, 3.17, 3.35, 3.64, 3.91] },
+  { name: "United Kingdom", byYear: [1.09, 1.14, 1.18, 1.06, 1.14, 1.34, 1.42, 1.56, 1.65, 1.69, 1.67, 1.65, 1.79, 2.05, 2.42, 2.54, 2.71, 3.09, 2.93, 2.41, 2.49, 2.66, 2.71, 2.78, 3.06, 2.93, 2.69, 2.68, 2.87, 2.85, 2.7, 3.14, 3.11, 3.38, 3.64] },
+  { name: "France", byYear: [1.27, 1.27, 1.4, 1.32, 1.39, 1.6, 1.61, 1.45, 1.5, 1.49, 1.36, 1.38, 1.49, 1.84, 2.12, 2.2, 2.32, 2.66, 2.92, 2.69, 2.64, 2.86, 2.68, 2.81, 2.86, 2.44, 2.47, 2.6, 2.79, 2.73, 2.65, 2.96, 2.78, 3.05, 3.16] },
+  { name: "Italy", byYear: [1.18, 1.25, 1.32, 1.06, 1.1, 1.17, 1.31, 1.24, 1.27, 1.25, 1.14, 1.16, 1.27, 1.57, 1.8, 1.85, 1.94, 2.2, 2.39, 2.19, 2.13, 2.29, 2.09, 2.14, 2.16, 1.84, 1.88, 1.96, 2.09, 2.01, 1.9, 2.18, 2.1, 2.3, 2.37] },
+  { name: "Canada", byYear: [0.59, 0.61, 0.59, 0.58, 0.58, 0.6, 0.63, 0.65, 0.63, 0.68, 0.74, 0.74, 0.76, 0.9, 1.03, 1.17, 1.32, 1.47, 1.55, 1.37, 1.61, 1.79, 1.83, 1.85, 1.81, 1.56, 1.53, 1.65, 1.73, 1.74, 1.66, 2.01, 2.16, 2.14, 2.24] },
+  { name: "Brazil", byYear: [0.46, 0.49, 0.51, 0.54, 0.56, 0.77, 0.85, 0.88, 0.86, 0.6, 0.66, 0.56, 0.51, 0.56, 0.67, 0.89, 1.11, 1.4, 1.7, 1.67, 2.21, 2.62, 2.47, 2.47, 2.46, 1.8, 1.8, 2.06, 1.92, 1.87, 1.48, 1.67, 1.95, 2.19, 2.17] },
+];
+const STORY = ECONOMIES.findIndex((e) => e.kind === "story");
+const INK = { lead: "#1d5b44", story: "#c4962a", other: "#7f8b84" };
+const STEP = 700; // ms per year while playing
+
+const gdpIn = (year) => ECONOMIES.map((e) => e.byYear[year - FIRST]);
+const cents = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const tenths = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const trillions = (v) => (v < 9.995 ? cents : tenths).format(v); // 0.36, 5.96, 29.2: in-between values print the same way
+
+// Slat type: the country's name, an engraved bar, and its GDP, rounded while it moves (d.gdp is fractional then)
+const Economy = slat({
+  thickness: { horizontal: 38 },
+  inset: 0.2,
+  room: { start: "auto", end: 50 },
+  css: `
+    .economy { outline: none; }
+    .name { font-size: 15px; font-weight: 500; }
+    .lead .name, .story .name { font-weight: 600; }
+    .lead .name { color: #1d5b44; }
+    .story .name { color: #7c5a10; }
+    .bar { --rhp-radius: 1px; background: repeating-linear-gradient(to bottom, var(--tone) 0 1.5px, transparent 1.5px 3.5px); box-shadow: inset 0 0 0 1px var(--tone); }
+    .lead .bar, .story .bar { background: var(--tone); }
+    .value { --rhp-label-gap: 8px; font-size: 14px; font-weight: 500; }
+    .ring { position: absolute; inset: -4px; border: 1.5px solid #17201b; border-radius: 3px; opacity: 0; transition: opacity .2s; }
+    .on .ring, .economy:focus-visible .ring { opacity: 1; }
+    @container (max-width: 480px) { .name { font-size: 13px; } .value { font-size: 12px; } }
+    @media (prefers-reduced-motion: reduce) { .ring { transition: none; } }
+  `,
+}, (d) => html`
+  <div class=${() => `economy ${d.kind ?? "other"}${d.on ? " on" : ""}`} style=${() => ({ "--tone": INK[d.kind ?? "other"] })}
+    data-row=${() => d.index} aria-label=${() => d.say}>
+    <${Label} edge="start" class="name">${() => d.name}<//>
+    <${Bar} to=${() => d.gdp} class="bar"><i class="ring"></i><//>
+    <${Label} at=${() => d.gdp} class="value">${() => trillions(d.gdp)}<//>
+  </div>`);
+
+const PLAY = () => html`<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2l12 7-12 7z" /></svg>`;
+const PAUSE = () => html`<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 2h4v14H3zM11 2h4v14h-4z" /></svg>`;
+
+// Chart component: the year is the app's state. A timer steps it while playing, the slider sets it, and the bars follow.
+function GdpRace() {
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [year, setYear] = createSignal(still ? LAST : FIRST);
+  const [playing, setPlaying] = createSignal(false);
+  const [picked, setPicked] = createSignal(null);
+  const gdp = createMemo(() => gdpIn(year()));
+  const top = () => Math.max(...gdp());
+  const say = () => gdp().map((v, i) => `${ECONOMIES[i].name}, ${year()}: ${trillions(v)} trillion dollars`);
+
+  let timer;
+  let autoplay;
+  let auto = !still; // the race may start by itself until the reader uses a control
+  const step = () => (year() < LAST ? setYear(year() + 1) : pause());
+  const pause = () => {
+    clearInterval(timer);
+    setPlaying(false);
+  };
+  const play = () => {
+    setPlaying(true);
+    if (year() === LAST) setYear(FIRST);
+    else step();
+    timer = setInterval(step, STEP);
+  };
+  const toggle = () => {
+    auto = false;
+    if (playing()) pause();
+    else play();
+  };
+  const scrub = (e) => {
+    auto = false;
+    pause();
+    setYear(+e.currentTarget.value);
+  };
+  onCleanup(() => {
+    clearInterval(timer);
+    clearTimeout(autoplay);
+  });
+
+  // The race starts on its own once half the chart is in view, unless the reader asked for reduced motion
+  let stage;
+  onMount(() => {
+    if (!auto) return;
+    const seen = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      seen.disconnect();
+      autoplay = setTimeout(() => auto && play(), 1000);
+    }, { threshold: 0.5 });
+    seen.observe(stage);
+    onCleanup(() => seen.disconnect());
+  });
+
+  // JS version: the data changes every step, so rhp counts each value on its own clock instead of restarting a CSS
+  // transition each time. The scale follows the leader, so animate goes on the Chart: the axis and the bars move
+  // together (the Plot takes the Chart's animate). While playing, a move runs at an even speed and lasts a little longer
+  // than a step, so each year's move runs into the next and the bars never stop between years. From the slider a move
+  // takes rhp's 150 ms, to keep up with a drag.
+  const motion = () => (playing() ? { duration: STEP * 1.2, ease: "linear", slide: 300 } : { slide: 300 });
+
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    setPicked(el ? +el.dataset.row : null);
+  };
+  const readout = () => {
+    const i = picked() ?? STORY;
+    const all = gdp();
+    const lead = all.indexOf(top());
+    const share = Math.round((all[i] / all[lead]) * 100);
+    const leader = ECONOMIES[lead].short ?? ECONOMIES[lead].name;
+    return html`<b>${ECONOMIES[i].name}</b>: $${trillions(all[i])} trillion, ${i === lead ? "the largest" : `${share}% of ${leader}`}`;
+  };
+
+  return html`
+    <${Poster}
+      kicker="GDP, 1990 to 2024"
+      title=${html`<span class="cn">China</span>'s economy grew from 6% of <span class="us">America</span>'s to 64%`}
+      dek="The ten largest economies of 2024, in trillions of current US dollars, every year since 1990. The scale follows the leader, so every bar is measured against America's. Press play, drag through the years, or point at a country."
+      note="Source: World Bank, World Development Indicators, GDP in current US dollars (2025 release), rounded to $10 billion. Brazil's figures for 1991 to 1993 are interpolated between 1990 and 1994. Tab into the chart and use the arrow keys to read each country.">
+      <div class="waves" aria-hidden="true"></div>
+      <div class="controls">
+        <button type="button" class="play" aria-label="Play" aria-pressed=${() => String(playing())} onClick=${toggle}>${() => (playing() ? PAUSE() : PLAY())}</button>
+        <input type="range" class="scrub" aria-label="Year" min=${FIRST} max=${LAST} step="1" value=${year} onInput=${scrub}>
+        <span class="year" aria-hidden="true">${year}</span>
+      </div>
+      <p class="readout" aria-live=${() => (playing() ? "off" : "polite")}>${readout}</p>
+      <div class="stage" ref=${(el) => (stage = el)}
+        onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <${Chart} scale=${() => [0, top() * 1.1]} ticks=${4} animate=${motion}
+          label=${() => `GDP of the ten largest economies of 2024, in ${year()}, in trillions of US dollars`}
+          theme=${{ font: 'Jost, "Avenir Next", "Century Gothic", sans-serif', ink: "#17201b", muted: "#5b645e", grid: "#dde1db" }}>
+          <${Plot} keyboard=${true} rows=${ECONOMIES} gdp=${gdp} say=${say} on=${(d) => d.index === picked()}
+            order=${sortBy("gdp", "desc")}>${Economy}<//>
+        <//>
+        <span class="unit">Trillions of US dollars</span>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${GdpRace} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

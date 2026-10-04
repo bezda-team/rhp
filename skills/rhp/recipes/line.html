@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carbon dioxide is up a third</title>
+<meta name="description" content="Line chart of one series over time on a second axis (years along the scale, values across it), with a callout that follows the pointer, a tap or the arrow keys. Use it for one measure over time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #c7c9ca; font-family: Archivo, "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: basalt black, with the contour lines of a volcano seen from above in one corner */
+  .poster { max-width: 960px; margin: 0 auto; padding: 48px 52px 30px; border-radius: 4px; color: #f2efe9;
+    background: linear-gradient(transparent 40%, #121314) no-repeat top right / 62% 300px,
+      repeating-radial-gradient(ellipse 120% 90% at 100% 0%, transparent 0 25px, rgb(255 255 255 / .11) 25px 26px) no-repeat top right / 62% 300px, #121314;
+    box-shadow: 0 30px 60px -30px rgb(20 22 24 / .7); }
+  .poster figcaption { display: grid; gap: 14px; margin-bottom: 30px; }
+  .poster .kicker { font: 600 12px/1.3 "JetBrains Mono", ui-monospace, Menlo, monospace; letter-spacing: .12em; text-transform: uppercase; color: #ff8a5c; }
+  .poster .headline { max-width: 15em; font-size: 54px; font-weight: 800; font-stretch: 112%; line-height: .98; letter-spacing: -.02em; text-wrap: balance; }
+  .poster .dek { max-width: 56ch; font-size: 17px; line-height: 1.5; color: #b9b4ac; }
+  .poster .dek b { font-weight: 600; color: #f2efe9; }
+  .poster .note { display: block; margin-top: 22px; padding-top: 12px; border-top: 1px solid rgb(255 255 255 / .14); font-size: 12px; line-height: 1.5; color: #9c978f; }
+  /* The chart's box: scrubbing sideways on a phone moves the callout, scrolling up and down still scrolls */
+  .plot { touch-action: pan-y; border-radius: 4px; }
+  .plot:has(:focus-visible) { outline: 1px solid rgb(255 255 255 / .4); outline-offset: 10px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 18px 18px; background-size: 100% 260px, 100% 260px, auto; }
+    .poster .headline { font-size: 32px; }
+    .poster .dek { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Place, Poster, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: yearly mean CO2 at Mauna Loa in parts per million, NOAA GML. Replace with your own series (x values sorted).
+const PPM = [
+  316.91, 317.64, 318.45, 318.99, 319.62, 320.04, 321.37, 322.18, 323.05, 324.62, // 1960s
+  325.68, 326.32, 327.46, 329.68, 330.19, 331.13, 332.03, 333.84, 335.41, 336.84, // 1970s
+  338.76, 340.12, 341.48, 343.15, 344.87, 346.35, 347.61, 349.31, 351.69, 353.2, // 1980s
+  354.45, 355.7, 356.54, 357.21, 358.96, 360.97, 362.74, 363.88, 366.84, 368.54, // 1990s
+  369.71, 371.32, 373.45, 375.98, 377.7, 379.98, 382.09, 384.02, 385.83, 387.64, // 2000s
+  390.1, 391.85, 394.06, 396.74, 398.81, 401.01, 404.41, 406.76, 408.72, 411.65, // 2010s
+  414.21, 416.41, 418.53, 421.08, 424.61, // 2020 to 2024
+];
+const YEARS = PPM.map((_, i) => 1960 + i);
+const FIRST = YEARS[0];
+const LAST = YEARS.at(-1);
+
+const ppm = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const change = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: "always" });
+const theme = { font: '"JetBrains Mono", ui-monospace, Menlo, monospace', ink: "#f2efe9", muted: "#9c978f", grid: "rgb(255 255 255 / .12)", series: ["#ff7a45"] };
+
+// Slat types
+// The curve: one Line through every [year, ppm] point, on the Chart's second axis (cross)
+const Curve = slat({ css: `.curve { stroke-width: 2.5px; }` }, (d) => html`
+  <div><${Line} points=${() => d.points} class="curve" /></div>`);
+
+// The scale under the plot: a short mark and the year at each decade (every other decade on a phone)
+const Decade = slat({
+  room: { after: 28 },
+  css: `
+    .mark { top: 100%; height: 6px; translate: -50% 0; --rhp-tick-width: 1px; background: rgb(255 255 255 / .35); }
+    .year { top: calc(100% + 10px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+    @container (max-width: 480px) { .odd { display: none; } }
+  `,
+}, (t) => html`
+  <div>
+    <${Tick} at=${() => t.at} class="mark" />
+    <${Label} at=${() => t.at} class=${() => ((t.at / 10) % 2 ? "year odd" : "year")}>${() => t.at}<//>
+  </div>`);
+
+// One invisible column per year: what the pointer, a tap and the keyboard pick, and what a screen reader reads
+const Year = slat({
+  room: {},
+  css: `
+    .year { cursor: crosshair; outline: none; }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class="year" data-i=${() => d.index}><span class="say">${() => `${d.year}: ${ppm.format(d.ppm)} parts per million`}</span></div>`);
+
+// The year picked: a hairline, a dot on the curve, and a callout in the band above the plot (across 0 is the plot's top edge)
+const Reading = slat({
+  room: { before: 78, end: 12 },
+  css: `
+    .hair { --rhp-tick-width: 1px; background: rgb(255 255 255 / .3); }
+    .dot { background: #fff; box-shadow: 0 0 0 3px #121314, 0 0 0 5px var(--rhp-series-1); }
+    .callout { position: absolute; bottom: 0; left: 0; translate: calc(var(--rhp-p) * -100%) 0; display: grid; gap: 1px;
+      padding: 7px 11px 8px; border-radius: 6px; white-space: nowrap; background: #25272a; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .14); }
+    .callout small { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--rhp-muted); }
+    .callout b { font: 700 21px/1.1 Archivo, "Helvetica Neue", Arial, sans-serif; font-stretch: 105%; }
+    .callout span { font-size: 12px; color: var(--rhp-series-1); }
+  `,
+}, (d) => html`
+  <div>
+    <${Tick} at=${() => d.year} thick=${1} class="hair" />
+    <${Dot} at=${() => d.year} cross=${() => d.ppm} size="11px" class="dot" />
+    <${Place} at=${() => d.year} across=${0}>
+      <div class="callout">
+        <small>${() => d.year}</small>
+        <b>${() => ppm.format(d.ppm)} ppm</b>
+        <span>${() => (d.year === FIRST ? "where the record starts" : `${change.format(d.ppm - PPM[0])} since ${FIRST}`)}</span>
+      </div>
+    <//>
+  </div>`);
+
+// Chart component: the callout shows the year the pointer, a tap or the arrow keys are on, and the latest otherwise
+function CarbonChart() {
+  const [picked, setPicked] = createSignal(null);
+  const i = () => picked() ?? PPM.length - 1;
+  const pick = (e) => {
+    const el = e.target.closest("[data-i]");
+    if (el) setPicked(+el.dataset.i);
+  };
+  return html`
+    <${Poster}
+      kicker="Mauna Loa Observatory, Hawaii"
+      title="The air holds a third more carbon dioxide than in 1960"
+      dek=${html`<span>Yearly average CO₂ at 3,397 metres on Mauna Loa, in parts per million (ppm). It rose every single year, and <b>the yearly rise nearly tripled</b>, from 0.9 ppm in the 1960s to 2.4 in the 2010s.</span>`}
+      note="Source: NOAA Global Monitoring Laboratory, Mauna Loa annual means (Scripps Institution of Oceanography before 1974), retrieved 2026. Point at a year, tap it, or Tab into the chart and use the arrow keys.">
+      <div class="plot"
+        onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <!-- half a year past each end, so the year columns are centered on their years -->
+        <${Chart} scale=${[FIRST - 0.5, LAST + 0.5]} cross=${[300, 450]} crossTicks=${[300, 350, 400, 450]} height=${320} theme=${theme}
+          label=${`Yearly mean carbon dioxide at Mauna Loa, ${FIRST} to ${LAST}, in parts per million`}>
+          <${Scale} ticks=${YEARS.filter((y) => y % 10 === 0)}>${Decade}<//>
+          <${Plot} overlap=${true} points=${[YEARS.map((y, i) => [y, PPM[i]])]}>${Curve}<//>
+          <${Plot} overlap=${true} slats=${1} year=${() => YEARS[i()]} ppm=${() => PPM[i()]} style=${{ "pointer-events": "none" }}>${Reading}<//>
+          <${Plot} orientation="vertical" keyboard=${true} year=${YEARS} ppm=${PPM}>${Year}<//>
+        <//>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${CarbonChart} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

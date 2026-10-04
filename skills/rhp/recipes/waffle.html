@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blood types of 100 people</title>
+<meta name="description" content="Waffle chart: 100 units in a 10 by 10 grid, one per person, colored by group, with a picker that lights the units a chosen group relates to. Use it for counts out of 100 or shares of a population.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #dddbd6; font-family: "Public Sans", "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a donor card on white card stock, torn off along its perforated top edge */
+  .poster { position: relative; display: grid; max-width: 980px; margin: 0 auto; padding: 50px 48px 30px; color: #1b1d21;
+    background: repeating-linear-gradient(0deg, rgb(27 29 33 / .035) 0 1px, transparent 1px 28px), #fbfbf9;
+    border-radius: 4px 4px 14px 14px; box-shadow: 0 1px 2px rgb(40 38 34 / .16), 0 24px 44px -26px rgb(40 38 34 / .5); }
+  .poster > * { min-width: 0; }
+  .poster::before { content: ""; position: absolute; top: 18px; left: 22px; right: 22px; height: 6px;
+    background: radial-gradient(circle, #dddbd6 2.4px, transparent 2.9px) 0 50% / 14px 6px space no-repeat; }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 24px; }
+  .poster .kicker { font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #a3202f; }
+  .poster .headline { font-size: 46px; font-weight: 800; line-height: 1.02; letter-spacing: -.03em; text-wrap: balance; }
+  .poster .dek { max-width: 46ch; font-size: 16px; line-height: 1.5; color: #4a4d53; }
+  .poster .note { display: block; margin-top: 22px; font-size: 12px; line-height: 1.5; color: #62656b; }
+  /* The picker: one button per type, with its drop and how many of the 100 have it */
+  .types { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; max-width: 420px; }
+  .types button { display: flex; align-items: center; gap: 7px; padding: 8px 10px; border: 1.5px solid #d3d1cb; border-radius: 10px; background: #fff;
+    font: 700 15px/1 "Public Sans", Arial, sans-serif; color: #1b1d21; cursor: pointer; }
+  .types button span { margin-left: auto; font-weight: 500; font-size: 13px; color: #62656b; font-variant-numeric: tabular-nums; }
+  .types button[aria-pressed="true"] { border-color: #1b1d21; box-shadow: inset 0 0 0 1px #1b1d21; }
+  .types button:hover { border-color: #8d8f94; }
+  .types button:focus-visible { outline: 2px solid #1b1d21; outline-offset: 2px; }
+  .types svg { flex: none; width: 14px; height: 17px; fill: var(--c); fill-rule: evenodd; }
+  .readout { margin: 16px 0 8px; font-size: 16px; font-weight: 700; line-height: 1.3; min-height: 1.3em; }
+  .chart { width: 100%; max-width: 470px; justify-self: center; margin-top: 8px; }
+  @media (min-width: 860px) {
+    .poster { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; column-gap: 52px; }
+    .poster figcaption { grid-column: 1; grid-row: 1; }
+    .types { grid-column: 1; grid-row: 2; }
+    .readout { grid-column: 1; grid-row: 3; }
+    .poster .chart { grid-column: 2; grid-row: 1 / span 4; align-self: center; margin-top: 0; }
+    .poster .note { grid-column: 1; grid-row: 4; align-self: end; }
+  }
+  @media (max-width: 520px) {
+    body { padding: 24px 16px 32px; }
+    .poster { padding: 42px 18px 20px; }
+    .poster .headline { font-size: 33px; }
+    .poster .dek { font-size: 15px; }
+    .types button { padding: 8px 7px; gap: 5px; font-size: 14px; }
+    .readout { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Cell, Poster, slat, shape, html, render, createSignal, For } from "@bezda/rhp/standalone";
+
+// Data: the blood types of 100 people in the US, in the order they fill the grid: Stanford Blood Center's shares of the
+// US population (from the AABB Technical Manual, 18th edition, 2014), rounded to whole people that add up to 100.
+// Replace with your own counts; they must add up to 100.
+const TYPES = [
+  { type: "O+", people: 37 },
+  { type: "O−", people: 7 },
+  { type: "A+", people: 36 },
+  { type: "A−", people: 6 },
+  { type: "B+", people: 8 },
+  { type: "B−", people: 2 },
+  { type: "AB+", people: 3 },
+  { type: "AB−", people: 1 },
+];
+const GROUP = { O: "#c62a3a", A: "#3b6fd8", B: "#e39a13", AB: "#16a085" };
+const FADED = "#e4e2dc";
+const TOTAL = TYPES.reduce((sum, t) => sum + t.people, 0);
+const PEOPLE = TYPES.flatMap((t, i) => Array(t.people).fill(i)); // one type number per person
+const LINES = Array.from({ length: 10 }, (_, k) => PEOPLE.slice(k * 10, k * 10 + 10)); // ten people per line
+
+const colorOf = (t) => GROUP[t.type.slice(0, -1)];
+const negative = (t) => t.type.endsWith("−");
+// Red cells can go to anyone who has every antigen (A, B, Rh) the donor's cells have
+const canGive = (from, to) => ["A", "B", "+"].every((k) => !from.includes(k) || to.includes(k));
+const reach = (i) => TYPES.filter((t) => canGive(TYPES[i].type, t.type)).reduce((sum, t) => sum + t.people, 0);
+
+// A blood drop for a Cell, in the Cell's own box. The first number runs along the value axis, which in these
+// cells (a Plot across a flat chart) runs up, so the tip is at 0.92.
+// The same drop for the picker's buttons, as an SVG path (a hole for Rh-negative)
+const SWATCH = "M7 1C8.6 3.3 12.6 7 12.6 10.9A5.6 5.6 0 0 1 1.4 10.9C1.4 7 5.4 3.3 7 1Z";
+const HOLE = "M7 8.4A2.5 2.5 0 1 0 7 13.4A2.5 2.5 0 1 0 7 8.4Z";
+const DROP = shape(["M", 0.92, 0.5], ["C", 0.78, 0.6, 0.58, 0.8, 0.38, 0.8], ["C", 0.214, 0.8, 0.08, 0.666, 0.08, 0.5],
+  ["C", 0.08, 0.334, 0.214, 0.2, 0.38, 0.2], ["C", 0.58, 0.2, 0.78, 0.4, 0.92, 0.5], ["Z"]);
+
+// Slat types: a person is one drop, colored by group and hollow when Rh-negative; a line is ten people side by side
+const Person = slat({
+  css: `
+    .drop { --rhp-cell-gap: 0px; --rhp-radius: 0px; cursor: pointer; }
+    .neg { background: radial-gradient(circle closest-side at 50% 62%, #fbfbf9 50%, var(--rhp-color) 53%); }
+  `,
+}, (p) => html`
+  <div data-type=${() => p.type}>
+    <${Cell} shape=${DROP} class=${() => (negative(TYPES[p.type]) ? "drop neg" : "drop")}
+      color=${() => (p.active == null || canGive(TYPES[p.active].type, TYPES[p.type].type) ? colorOf(TYPES[p.type]) : FADED)} />
+  </div>`);
+
+const TenPeople = slat({ room: { start: 0, end: 0 } }, (d) => html`
+  <div><${Plot} orientation="across" type=${() => d.people} active=${() => d.active}>${Person}<//></div>`);
+
+// Chart component: a type picked with its button or by tapping a drop (or previewed under the mouse) lights everyone
+// its red cells can be given to
+function BloodTypes() {
+  const [picked, setPicked] = createSignal(null);
+  const [preview, setPreview] = createSignal(null);
+  const active = () => preview() ?? picked();
+  const typeAt = (e) => {
+    const el = e.target.closest("[data-type]");
+    return el ? +el.dataset.type : null;
+  };
+  const pick = (i) => setPicked(picked() === i ? null : i);
+  const readout = () => {
+    const i = active();
+    if (i == null) return "Pick a type to see who can receive it.";
+    const n = reach(i);
+    return `${TYPES[i].type} blood can go to ${n === TOTAL ? "all" : n + " of"} ${TOTAL} people`;
+  };
+  return html`
+    <${Poster}
+      kicker="Blood types · 100 people"
+      title="Seven in 100 Americans have the blood anyone can receive"
+      dek="Each drop is one person, colored by blood group, and a hollow drop is Rh-negative. Only O− red cells can be given to every type, so its donors are always in demand."
+      note="Source: Stanford Blood Center, shares of the US population (from the AABB Technical Manual, 18th edition, 2014), rounded to whole people. Compatibility of red cells. Point at a drop, tap it, or pick a type."
+      onPointerMove=${(e) => e.pointerType === "mouse" && setPreview(typeAt(e))}
+      onPointerLeave=${(e) => setPreview(null)}
+      onClick=${(e) => typeAt(e) != null && pick(typeAt(e))}>
+      <div class="types" role="group" aria-label="Blood type">
+        <${For} each=${TYPES}>${(t, i) => html`
+          <button type="button" aria-pressed=${() => picked() === i()} onClick=${() => pick(i())}>
+            <svg viewBox="0 0 14 17" aria-hidden="true" style=${{ "--c": colorOf(t) }}><path d=${negative(t) ? SWATCH + HOLE : SWATCH} /></svg>${t.type}<span>${t.people}</span>
+          </button>`}<//>
+      </div>
+      <p class="readout" aria-live="polite">${readout}</p>
+      <${Chart} class="chart" aspect=${1} ticks=${false} label="Blood types of 100 people in the US, one drop per person"
+        theme=${{ font: "'Public Sans', 'Helvetica Neue', Arial, sans-serif", ink: "#1b1d21", surface: "#fbfbf9" }}>
+        <${Plot} people=${LINES} active=${active}>${TenPeople}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${BloodTypes} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

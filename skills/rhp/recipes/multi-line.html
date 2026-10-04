@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thirty more years</title>
+<meta name="description" content="Multi-line chart of several series over time on a second axis, with labels at the line ends kept apart and a crosshair whose readout lists every series for the year under the pointer, a tap or the arrow keys. Use it to compare a few series over time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..700&family=Public+Sans:wght@400..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #e3e0d8; font-family: "Public Sans", "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: laid paper (fine horizontal lines), a report's serif headline, an hourglass by the kicker */
+  .poster { max-width: 980px; margin: 0 auto; padding: 46px 52px 28px; color: #1b1d22; border-radius: 2px;
+    background: repeating-linear-gradient(0deg, rgb(40 36 30 / .03) 0 1px, transparent 1px 5px), #faf8f3;
+    box-shadow: 0 1px 2px rgb(40 36 30 / .15), 0 24px 48px -24px rgb(40 36 30 / .45); }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 26px; }
+  .poster .kicker { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #a8401f; }
+  .poster .kicker svg { width: 11px; height: 16px; flex: none; }
+  .poster .headline { font: 700 50px/1.02 Newsreader, Georgia, serif; letter-spacing: -.015em; text-wrap: balance; }
+  .poster .dek { max-width: 60ch; font: 400 19px/1.45 Newsreader, Georgia, serif; color: #45474d; }
+  .poster .note { display: block; margin-top: 18px; padding-top: 10px; border-top: 1px solid #ddd8cc; font-size: 12px; line-height: 1.5; color: #686b72; }
+  /* The readout: the year, then every country with its color and its value that year */
+  .readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin: 0 0 18px; padding: 10px 0; border-block: 1px solid #ddd8cc; font-size: 13px; color: #45474d; }
+  .readout .year { min-width: 2.6em; font: 700 22px/1 Newsreader, Georgia, serif; color: #1b1d22; font-variant-numeric: tabular-nums; }
+  .readout span { white-space: nowrap; }
+  .readout i { display: inline-block; width: 14px; height: 3px; margin-right: 6px; border-radius: 2px; vertical-align: 3px; }
+  .readout strong { display: inline-block; min-width: 2.2em; font-weight: 700; color: #1b1d22; font-variant-numeric: tabular-nums; }
+  .plot { touch-action: pan-y; border-radius: 4px; }
+  .plot:has(:focus-visible) { outline: 2px solid #1b1d22; outline-offset: 8px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 18px 18px; }
+    .poster .headline { font-size: 34px; }
+    .poster .dek { font-size: 17px; }
+    .readout { gap: 4px 14px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: life expectancy at birth in years, 1960 to 2020, UN World Population Prospects 2024. Replace with your own
+// series (one value per year each). The colors passed the color-blind checks in this order.
+const FIRST = 1960;
+const COUNTRIES = [
+  { name: "Japan", color: "#2a78d6", values: [
+    67.7, 68.4, 68.7, 69.7, 70.2, 70.3, 71.1, 71.4, 71.7, 71.9, 72, 72.8, 73.3, 73.4, 73.8, 74.4, 74.8, 75.3, 75.7, 76.2, 76.1, 76.6, 77.1, 77.1, 77.5, 77.8, 78.2, 78.6, 78.5, 79, 79,
+    79.3, 79.3, 79.4, 79.8, 79.7, 80.4, 80.6, 80.6, 80.6, 81.2, 81.5, 81.8, 81.9, 82.1, 82, 82.4, 82.5, 82.6, 83, 82.9, 82.7, 83.2, 83.4, 83.6, 83.9, 84.1, 84.2, 84.3, 84.4, 84.7,
+  ] },
+  { name: "South Korea", color: "#e0522b", values: [
+    53.8, 54.4, 55, 55, 55.3, 55.8, 55.4, 60.9, 60.9, 61.4, 62.2, 62.7, 63.2, 63.8, 64.2, 64.7, 65, 64.6, 65, 66.1, 64.8, 67.1, 67.1, 66.7, 68.1, 68.4, 69, 69.3, 70.2, 70.7, 71,
+    71.4, 72.2, 72.7, 72.9, 73.4, 74, 74.5, 75, 75.6, 76.2, 76.9, 77.2, 77.5, 78, 78.4, 79, 79.4, 80, 80.6, 80.7, 81.2, 81.3, 81.8, 82.4, 82.5, 82.9, 83.3, 83.3, 83.7, 83.7,
+  ] },
+  { name: "United States", color: "#169e6e", values: [
+    69.8, 70.3, 70.1, 69.9, 70.2, 70.2, 70.2, 70.5, 70.2, 70.5, 70.7, 71.1, 71.2, 71.4, 72, 72.5, 72.8, 73.2, 73.4, 73.8, 73.7, 74.1, 74.5, 74.6, 74.7, 74.7, 74.7, 74.9, 74.8, 75.1, 75.4,
+    75.5, 75.8, 75.6, 75.7, 75.9, 76.2, 76.5, 76.7, 76.7, 76.8, 76.9, 77, 77.1, 77.5, 77.5, 77.8, 78, 78.1, 78.5, 78.7, 78.7, 78.8, 78.8, 78.9, 78.7, 78.7, 78.6, 78.8, 78.9, 77,
+  ] },
+  { name: "Brazil", color: "#8a5cd0", values: [
+    53.2, 53.6, 54, 54.5, 54.8, 55.2, 55.6, 56, 56.5, 56.9, 57.3, 57.8, 58.3, 58.7, 59.1, 59.6, 60, 60.5, 60.9, 61.4, 61.8, 62.3, 62.7, 63.1, 63.6, 64, 64.4, 64.8, 65.2, 65.5, 65.9,
+    66.2, 66.5, 66.9, 67.3, 67.7, 68.1, 68.5, 68.8, 69.2, 69.6, 70, 70.4, 70.9, 71.4, 71.8, 72.3, 72.7, 73.1, 73.5, 73.8, 74, 74.3, 74.6, 74.8, 75.1, 75.1, 75.4, 75.6, 75.8, 74.5,
+  ] },
+  { name: "Nigeria", color: "#b98400", values: [
+    37.2, 37.4, 37.6, 37.8, 38, 38.2, 38.4, 37.5, 38.6, 38.9, 40, 40.6, 41.3, 41.8, 42.5, 43.1, 44.2, 44.8, 45.3, 45.7, 46, 46.3, 46.4, 46.4, 46.3, 46.2, 46, 45.9, 45.8, 45.8, 45.7,
+    45.5, 45.6, 45.8, 45.7, 45.9, 45.8, 46, 46.1, 46.6, 47.1, 47.5, 48, 48.6, 49.1, 49.5, 49.9, 50.4, 50.7, 51.1, 51.3, 51.5, 51.7, 51.8, 51.9, 51.9, 52.2, 52.4, 52.7, 53, 53.1,
+  ] },
+];
+const STORY = "South Korea"; // its line is drawn thicker
+
+const YEARS = COUNTRIES[0].values.map((_, i) => FIRST + i);
+const LAST = YEARS.at(-1);
+const all = COUNTRIES.flatMap((c) => c.values);
+const y = nice(Math.min(...all), Math.max(...all), 6); // 30 to 90 years, a line every 10
+const HEIGHT = 340;
+const years = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+// Places for the end labels: in order, at least 17px apart, as near their line ends as that allows
+function dodge(values, gap) {
+  const order = values.map((_, i) => i).sort((a, b) => values[a] - values[b]);
+  const out = values.slice();
+  for (let pass = 0; pass < 50; pass++) {
+    let moved = false;
+    for (let k = 1; k < order.length; k++) {
+      const lo = order[k - 1], hi = order[k];
+      const push = gap - (out[hi] - out[lo]);
+      if (push > 1e-6) {
+        out[lo] -= push / 2;
+        out[hi] += push / 2;
+        moved = true;
+      }
+    }
+    if (!moved) break;
+  }
+  return out;
+}
+const labelAt = dodge(COUNTRIES.map((c) => c.values.at(-1)), (17 / HEIGHT) * (y.max - y.min));
+
+// Slat types
+// The scale under the plot: a short mark and the year at each decade (every other decade on a phone)
+const Decade = slat({
+  room: { after: 28 },
+  css: `
+    .mark { top: 100%; height: 6px; translate: -50% 0; --rhp-tick-width: 1px; background: #b9b3a6; }
+    .year { top: calc(100% + 10px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+    @container (max-width: 480px) { .odd { display: none; } }
+  `,
+}, (t) => html`
+  <div>
+    <${Tick} at=${() => t.at} class="mark" />
+    <${Label} at=${() => t.at} class=${() => ((t.at / 10) % 2 ? "year odd" : "year")}>${() => t.at}<//>
+  </div>`);
+
+// A country: its line, and its name at the line's end (a short stroke of its color leads to the name)
+const Country = slat({
+  room: { end: 112 },
+  css: `
+    .line { stroke-width: 2px; }
+    .story .line { stroke-width: 3.5px; }
+    .name { --rhp-label-gap: 4px; font-size: 13px; font-weight: 600; }
+    .name i { display: inline-block; width: 10px; height: 2px; margin-right: 5px; vertical-align: 4px; border-radius: 1px; }
+    .story .name { font-weight: 800; }
+  `,
+}, (d) => html`
+  <div class=${() => (d.name === STORY ? "story" : "")}>
+    <${Line} points=${() => d.values.map((v, i) => [FIRST + i, v])} color=${() => d.color} class="line" />
+    <${Label} at=${LAST} cross=${() => d.labelAt} class="name"><i style=${() => ({ background: d.color })}></i>${() => d.name}<//>
+  </div>`);
+
+// The year picked: a hairline across the plot, then a dot on each line
+const Crosshair = slat({ css: `.hair { --rhp-tick-width: 1px; background: #1b1d22; opacity: .45; }` }, (d) => html`
+  <div><${Tick} at=${() => d.year} thick=${1} class="hair" /></div>`);
+
+const Mark = slat({
+  css: `.dot { box-shadow: 0 0 0 2px #faf8f3; } .story .dot { z-index: 1; }`,
+}, (d) => html`
+  <div class=${() => (d.name === STORY ? "story" : "")}>
+    <${Dot} at=${() => d.year} cross=${() => d.values[d.i]} color=${() => d.color} size="9px" class="dot" />
+  </div>`);
+
+// One invisible column per year: what the pointer, a tap and the keyboard pick, and what a screen reader reads
+const Year = slat({
+  room: {},
+  css: `
+    .year { cursor: crosshair; outline: none; }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class="year" data-i=${() => d.index}>
+    <span class="say">${() => `${d.year}: ` + COUNTRIES.map((c) => `${c.name} ${years.format(c.values[d.index])}`).join(", ") + " years"}</span>
+  </div>`);
+
+// Chart component: the readout and the crosshair show the year under the pointer, a tap or the arrow keys, and the latest otherwise
+function LifeChart() {
+  const [picked, setPicked] = createSignal(null);
+  const i = () => picked() ?? YEARS.length - 1;
+  const pick = (e) => {
+    const el = e.target.closest("[data-i]");
+    if (el) setPicked(+el.dataset.i);
+  };
+  return html`
+    <${Poster}
+      kicker=${html`<span><svg viewBox="0 0 11 16" aria-hidden="true"><path d="M1 1h9M1 15h9M2 1c0 5 3.5 5 3.5 7S2 10 2 15M9 1c0 5-3.5 5-3.5 7S9 10 9 15" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Life expectancy at birth</span>`}
+      title="South Koreans can expect to live 30 years longer than in 1960"
+      dek="South Korea started level with Brazil and 16 years behind the United States. It caught the US in 2001 and has stayed ahead. Japan has topped all five since 1965; Nigeria gained 16 years and still trails it by three decades."
+      note="Source: UN World Population Prospects 2024, via Our World in Data. Point at a year, tap it, or Tab into the chart and use the arrow keys.">
+      <p class="readout">
+        <b class="year">${() => YEARS[i()]}</b>
+        ${COUNTRIES.map((c) => html`<span><i style=${{ background: c.color }}></i>${c.name + " "}<strong>${() => years.format(c.values[i()])}</strong></span>`)}
+      </p>
+      <div class="plot"
+        onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <!-- half a year past each end, so the year columns are centered on their years -->
+        <${Chart} scale=${[FIRST - 0.5, LAST + 0.5]} cross=${[y.min, y.max]} crossTicks=${y.ticks} height=${HEIGHT}
+          label=${`Life expectancy at birth in ${COUNTRIES.map((c) => c.name).join(", ")}, ${FIRST} to ${LAST}`}
+          theme=${{ font: '"Public Sans", "Helvetica Neue", Arial, sans-serif', ink: "#1b1d22", muted: "#686b72", grid: "#e1dccf" }}>
+          <${Scale} ticks=${YEARS.filter((year) => year % 10 === 0)}>${Decade}<//>
+          <${Plot} overlap=${true} rows=${COUNTRIES} labelAt=${labelAt}>${Country}<//>
+          <${Plot} overlap=${true} slats=${1} year=${() => YEARS[i()]} style=${{ "pointer-events": "none" }}>${Crosshair}<//>
+          <${Plot} overlap=${true} rows=${COUNTRIES} year=${() => YEARS[i()]} i=${i} style=${{ "pointer-events": "none" }}>${Mark}<//>
+          <${Plot} orientation="vertical" keyboard=${true} year=${YEARS}>${Year}<//>
+        <//>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${LifeChart} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bikes beat cars, and keep to time</title>
+<meta name="description" content="Box plot of commute times by mode of transport made with summary(): whiskers, the middle half as a box, the median and outliers, with a readout of the picked group. Use it to compare the spread of several groups at a glance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400..900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  /* The page is a tiled station wall; the poster is the enamel map board hung on it */
+  body { margin: 0; padding: 48px 16px; font-family: Overpass, "Helvetica Neue", Arial, sans-serif; color: #16171a;
+    background: #e3e3de url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='64'%3E%3Cpath d='M0 1H96M0 33H96M1 0V32M49 32V64' fill='none' stroke='%23cdcdc8' stroke-width='2'/%3E%3C/svg%3E"); }
+  .poster { max-width: 960px; margin: 0 auto; padding: 0 44px 26px; border-radius: 6px; line-height: 1.45; overflow: hidden;
+    background: linear-gradient(170deg, #fdfdfb, #f5f5f1) #f8f8f4;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / .08), 0 22px 40px -22px rgb(0 0 0 / .5); }
+  .poster figcaption { display: grid; gap: 10px; margin-bottom: 18px; }
+  /* The kicker is the station sign across the top */
+  .poster .kicker { display: block; margin: 0 -44px 18px; padding: 13px 44px 10px; background: #16171a; color: #fff;
+    font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  .poster .headline { font-size: 56px; font-weight: 900; line-height: .98; letter-spacing: -.025em; text-wrap: balance; }
+  .poster .dek { max-width: 58ch; font-size: 16px; color: #4a4c52; }
+  .poster .note { display: block; margin-top: 18px; font-size: 12px; color: #66686e; }
+  /* How to read a box, drawn with the chart's own marks */
+  .key { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0 0 14px; padding: 0; list-style: none; font-size: 13px; color: #4a4c52; }
+  .key li { display: flex; align-items: center; gap: 8px; }
+  .key i { display: inline-block; flex: none; }
+  .key .line { width: 26px; height: 3px; border-radius: 2px; background: #8d9097; }
+  .key .box { width: 26px; height: 12px; border-radius: 6px; background: #8d9097; }
+  .key .stop { width: 4px; height: 18px; border-radius: 2px; background: #16171a; box-shadow: 0 0 0 2px #fbfbf8; }
+  .key .ring { width: 9px; height: 9px; border-radius: 50%; box-shadow: inset 0 0 0 2px #8d9097; }
+  /* The readout: the picked mode in one sentence, two lines tall so the chart never moves */
+  .readout { min-height: 3.1em; margin: 0 0 6px; padding: 10px 0 0; border-top: 2px solid #16171a; font-size: 16px; line-height: 1.45; }
+  .readout b { font-weight: 800; }
+  .readout i { display: inline-block; width: 12px; height: 12px; margin-right: 7px; border-radius: 50%; vertical-align: -1px; }
+  .axis-name { margin: 4px 0 0; font-size: 12px; font-weight: 700; color: #66686e; text-align: right; }
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    .poster { padding: 0 16px 18px; }
+    .poster .kicker { margin: 0 -16px 14px; padding: 11px 16px 8px; font-size: 11px; letter-spacing: .12em; }
+    .poster .headline { font-size: 36px; }
+    .poster .dek { font-size: 14.5px; }
+    .key { gap: 4px 14px; font-size: 12px; }
+    .readout { min-height: 4.4em; font-size: 14.5px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Dot, Tick, Label, Poster, slat, summary, sortBy, every, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: one-way commute times in minutes, one per trip, by how people travel. Illustrative. Replace with your own.
+const TRIPS = {
+  Walk: [8, 19, 13, 25, 17, 10, 21, 14, 28, 6, 17, 11, 22, 14, 40, 8, 18, 12, 25, 16, 10, 21, 15, 31],
+  Bike: [14, 22, 34, 18, 24, 21, 28, 16, 23, 19, 25, 11, 21, 30, 16, 22, 19, 26, 14, 21, 17, 23, 20, 28, 16, 22, 19, 26],
+  Car: [19, 28, 46, 22, 33, 17, 58, 25, 38, 19, 29, 11, 50, 23, 34, 17, 85, 26, 42, 20, 31, 15, 55, 24, 37, 19, 29, 48, 23, 35, 18, 72, 27, 42, 21, 32, 15, 54, 25, 37],
+  Metro: [30, 40, 26, 33, 19, 29, 37, 24, 32, 49, 28, 35, 23, 31, 40, 27, 34, 18, 29, 37, 24, 31, 42, 27, 34, 21, 29, 38, 24, 31, 57, 27, 34, 22],
+  Bus: [29, 40, 60, 33, 45, 24, 37, 53, 30, 41, 17, 69, 34, 46, 26, 38, 56, 31, 43, 23, 36, 50, 29, 41, 62, 34, 46, 26, 38, 56, 32, 44, 22, 80, 36, 49],
+  Train: [55, 45, 32, 51, 42, 60, 48, 38, 54, 45, 67, 29, 51, 41, 58, 46, 34, 52, 42, 60, 48, 38],
+};
+const LINE_COLORS = ["#1baf7a", "#eb6834", "#4a3aa7", "#eda100", "#2a78d6", "#e34948"]; // one per mode, in TRIPS order
+const STORY = "Bike"; // the mode the readout opens on
+
+// One row per mode: its name, color, number of trips and its box-plot numbers ({ low, q1, median, q3, high, outliers })
+const MODES = Object.entries(TRIPS).map(([mode, trips], i) => ({ mode, color: LINE_COLORS[i], trips: trips.length, ...summary(trips) }));
+const longest = Math.max(...MODES.map((m) => m.max));
+const scaleMax = Math.ceil(longest / 15) * 15; // quarter hours
+const minutes = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+
+// Slat types: an unusually slow trip is a ring; a mode is a transit line, its box the thick stretch and its median a station named with its time
+const Outlier = slat({ css: `.slow { width: 9px; height: 9px; background: var(--rhp-surface); box-shadow: inset 0 0 0 2px var(--rhp-color); }` },
+  (o) => html`<${Dot} at=${() => o.at} color=${() => o.color} class="slow" />`);
+
+const Mode = slat({
+  thickness: 58,
+  room: { start: "auto", end: 16 },
+  css: `
+    .name { display: flex; align-items: center; gap: 9px; justify-self: stretch; font-size: 15px; font-weight: 800; --rhp-label-gap: 16px; }
+    .name i { width: 13px; height: 13px; border-radius: 50%; background: var(--line); }
+    .range { --rhp-radius: 2px; background: var(--line); }
+    .end { --rhp-tick-width: 3px; background: var(--line); border-radius: 2px; }
+    .middle { --rhp-radius: 99px; background: var(--line); }
+    .stop { --rhp-tick-width: 4px; border-radius: 2px; background: #16171a; box-shadow: 0 0 0 2px var(--rhp-surface); }
+    .time { top: calc(50% - 13px); translate: -50% -100%; padding: 0; font-size: 12.5px; font-weight: 800; }
+    .mode:focus-visible { outline: 2px solid #16171a; outline-offset: -2px; border-radius: 6px; }
+    .mode.on { background: rgb(22 23 26 / .05); border-radius: 6px; }
+    .dim > :not(.name, .time) { opacity: .28; }
+    .dim :is(.name, .time) { color: var(--rhp-muted); }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class=${() => (d.picked == null ? "mode" : d.picked === d.index ? "mode on" : "mode dim")} data-row=${() => d.index} style=${() => ({ "--line": d.color })}>
+    <${Label} edge="start" class="name"><i></i>${() => d.mode}<//>
+    <${Bar} from=${() => d.low} to=${() => d.high} thick="3px" class="range" />
+    <${Tick} at=${() => d.low} thick="12px" class="end" />
+    <${Tick} at=${() => d.high} thick="12px" class="end" />
+    <${Bar} from=${() => d.q1} to=${() => d.q3} thick="12px" class="middle" />
+    <${Plot} overlap=${true} at=${() => d.outliers} color=${() => d.color}>${Outlier}<//>
+    <${Tick} at=${() => d.median} thick="20px" class="stop" />
+    <${Label} at=${() => d.median} class="time">${() => `${minutes.format(d.median)} min`}<//>
+    <span class="say">${() => `: half of all trips take ${minutes.format(d.q1)} to ${minutes.format(d.q3)} minutes, usually ${minutes.format(d.low)} to ${minutes.format(d.high)}`}</span>
+  </div>`);
+
+// Chart component: the picked mode (pointer, finger or arrow keys) is read out above the chart and the others fade
+function CommuteTimes() {
+  const [picked, setPicked] = createSignal(null);
+  const story = Math.max(0, MODES.findIndex((m) => m.mode === STORY));
+  const shown = () => MODES[picked() ?? story];
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    if (el) setPicked(+el.dataset.row);
+  };
+  return html`
+    <${Poster}
+      kicker="Commute times, door to door"
+      title="Bikes beat cars, and keep to time"
+      dek=${`One-way commutes timed over a month, ${MODES.reduce((n, m) => n + m.trips, 0)} trips in all. A cyclist's trips stay within a few minutes of each other; a driver's can take twice as long on a bad day.`}
+      note="Illustrative data. Point at a mode or tap it for its numbers, or Tab into the chart and use the arrow keys."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <ul class="key">
+        <li><i class="box"></i>Middle half of trips</li>
+        <li><i class="stop"></i>Typical trip (median)</li>
+        <li><i class="line"></i>Usual range</li>
+        <li><i class="ring"></i>Unusually slow trip</li>
+      </ul>
+      <p class="readout">
+        <i style=${() => ({ background: shown().color })}></i><b>${() => shown().mode}</b>: the typical trip takes <b>${() => minutes.format(shown().median)} minutes</b>, and half of all trips take between ${() => minutes.format(shown().q1)} and ${() => minutes.format(shown().q3)}.
+      </p>
+      <${Chart} scale=${[0, scaleMax]} ticks=${every(15)} format=${(v) => minutes.format(v)}
+        label="Box plot of one-way commute times in minutes, by mode of transport"
+        theme=${{ font: 'Overpass, "Helvetica Neue", Arial, sans-serif', ink: "#16171a", muted: "#66686e", grid: "#e2e2dd", surface: "#fbfbf8" }}>
+        <${Plot} rows=${MODES} order=${sortBy("median")} picked=${picked} keyboard=${true}>${Mode}<//>
+      <//>
+      <p class="axis-name">Minutes, door to door</p>
+    <//>`;
+}
+
+render(() => html`<${CommuteTimes} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

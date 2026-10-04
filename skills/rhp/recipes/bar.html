@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The most spoken languages</title>
+<meta name="description" content="Horizontal bar chart, ranked, the top bar highlighted, with a readout on hover, focus and tap. Use it to rank categories by one value, especially with long names.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d8d4cc; font-family: "Instrument Sans", "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: warm paper with a fine grain, black type, one vermilion accent */
+  .poster { display: grid; grid-template-columns: minmax(0, 1fr) 230px; column-gap: 48px; max-width: 940px; margin: 0 auto; padding: 52px 56px 32px; color: #161412; border-radius: 3px;
+    background: #f4f1ea url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    box-shadow: 0 1px 2px rgb(60 55 48 / .2), 0 28px 50px -28px rgb(60 55 48 / .55); }
+  .poster > * { grid-column: 1 / -1; min-width: 0; }
+  .poster figcaption { grid-column: 1; display: grid; gap: 14px; margin-bottom: 34px; }
+  .poster .kicker { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
+  .poster .headline { font: 400 68px/.94 "Instrument Serif", Georgia, serif; letter-spacing: -.01em; text-wrap: balance; }
+  .poster .headline em { color: #c8391a; }
+  .poster .dek { max-width: 52ch; font-size: 17px; line-height: 1.5; color: #48433c; }
+  .poster .note { display: block; margin-top: 26px; padding-top: 12px; border-top: 1px solid #d6d0c4; font-size: 12px; line-height: 1.5; color: #6b655c; }
+  /* The readout: the share of the world that speaks the language in focus, under a big quotation mark */
+  .readout { grid-column: 2; grid-row: 1; align-self: end; margin: 0 0 34px; font-size: 15px; line-height: 1.35; color: #48433c; }
+  .readout::before { content: "\201C" / ""; display: block; height: 72px; font: 400 200px/1 "Instrument Serif", Georgia, serif; color: #de4a24; }
+  .readout b { display: block; margin-bottom: 14px; font: 400 92px/.9 "Instrument Serif", Georgia, serif; color: #161412; }
+  .readout strong { display: block; font-size: 22px; font-weight: 600; color: #b8321a; }
+  @media (max-width: 760px) {
+    body { padding: 16px 16px 32px; }
+    .poster { grid-template-columns: minmax(0, 1fr); padding: 26px 18px 18px; }
+    .poster figcaption { margin-bottom: 18px; }
+    .poster .headline { font-size: 42px; }
+    .poster .dek { font-size: 15px; }
+    .readout { grid-column: 1; grid-row: auto; display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; margin-bottom: 18px; padding: 10px 0; border-block: 1px solid #d6d0c4; }
+    .readout::before { display: none; }
+    .readout b { grid-row: span 2; margin: 0; font-size: 56px; }
+    .readout strong { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, sortBy, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: total speakers (first and second language) in millions, from Ethnologue, 2023. Replace with your own.
+const LANGUAGES = [
+  { name: "English", own: "English", millions: 1456 },
+  { name: "Mandarin Chinese", own: "普通话", millions: 1138 },
+  { name: "Hindi", own: "हिन्दी", millions: 610 },
+  { name: "Spanish", own: "Español", millions: 559 },
+  { name: "French", own: "Français", millions: 310 },
+  { name: "Standard Arabic", own: "العربية", millions: 274 },
+  { name: "Bengali", own: "বাংলা", millions: 273 },
+  { name: "Portuguese", own: "Português", millions: 264 },
+  { name: "Russian", own: "Русский", millions: 255 },
+  { name: "Urdu", own: "اردو", millions: 232 },
+];
+const WORLD = 8045; // world population in 2023, millions (UN)
+
+const count = new Intl.NumberFormat("en-US");
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumSignificantDigits: 2 });
+const scale = nice(0, Math.max(...LANGUAGES.map((d) => d.millions)), 3); // 0 to 1,500, ticks every 500
+const leader = LANGUAGES.reduce((best, d, i) => (d.millions > LANGUAGES[best].millions ? i : best), 0);
+
+// Slat type: a language's name over its own name for itself, a speech-bubble bar, and its total
+const Language = slat({
+  thickness: 46,
+  inset: "12px",
+  room: { start: "auto", end: 64 },
+  css: `
+    .name { font-size: 15px; font-weight: 600; line-height: 1.15; }
+    .name small { display: block; font-size: 12px; font-weight: 400; color: var(--rhp-muted); }
+    .bar { --fill: #8c867c; background: var(--fill); --rhp-radius: 10px; --rhp-start-radius: 4px; }
+    .bar::after { content: ""; position: absolute; left: 8px; top: calc(100% - 1px); border-top: 7px solid var(--fill); border-right: 9px solid transparent; transition: border-color .15s; }
+    .bar:vertical::after { display: none; }
+    .value { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; --rhp-label-gap: 8px; }
+    .lit .bar { --fill: #de4a24; }
+    .lit .name, .lit .value { color: #b8321a; }
+    .language:focus-visible { outline: 2px solid #161412; outline-offset: -2px; border-radius: 4px; }
+    @container (max-width: 420px) { .name { font-size: 13px; } .name small { font-size: 11px; } .value { font-size: 12px; } }
+  `,
+}, (d) => html`
+  <div class=${() => (d.lit ? "language lit" : "language")} data-row=${() => d.index} aria-label=${() => `${d.name}: ${count.format(d.millions)} million speakers`}>
+    <${Label} edge="start" class="name">${() => d.name}<small>${() => d.own}</small><//>
+    <${Bar} to=${() => d.millions} class="bar" />
+    <${Label} at=${() => d.millions} class="value">${() => count.format(d.millions)}<//>
+  </div>`);
+
+// Chart component: the language the reader points at, taps or reaches with the keyboard is lit and read out
+function SpokenLanguages() {
+  const [picked, setPicked] = createSignal(null);
+  const lit = () => picked() ?? leader;
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    setPicked(el ? +el.dataset.row : null);
+  };
+  return html`
+    <${Poster}
+      kicker="The world's languages"
+      title=${html`<em>English</em> is the world's most spoken language`}
+      dek="Total speakers in millions, counting everyone who speaks it as a first or a second language. Mandarin has more native speakers; English has more learners."
+      note="Source: Ethnologue, 2023 (speakers); United Nations, 2023 (world population, 8.05 billion). Point at a language, tap it, or Tab into the chart and use the arrow keys."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <p class="readout" aria-live="polite">
+        <b>${() => percent.format(LANGUAGES[lit()].millions / WORLD)}</b>
+        <span>of people on Earth speak</span>
+        <strong>${() => LANGUAGES[lit()].name}</strong>
+      </p>
+      <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} format=${(v) => count.format(v)}
+        label="The ten most spoken languages, total speakers in millions"
+        theme=${{ font: '"Instrument Sans", "Helvetica Neue", Arial, sans-serif', ink: "#161412", muted: "#6b655c", grid: "#ddd7cb" }}>
+        <${Plot} rows=${LANGUAGES} order=${sortBy("millions", "desc")} lit=${(d) => d.index === lit()} keyboard=${true}>${Language}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${SpokenLanguages} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

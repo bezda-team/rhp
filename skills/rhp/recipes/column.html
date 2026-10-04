@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A monsoon year</title>
+<meta name="description" content="Column chart of a value over twelve months, a season marked under its columns, with a scrub that reads out the running total by hover, focus and tap. Use it for values over periods (months, years) or a few categories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #cdd0d2; font-family: Archivo, "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a night sky of near-black paper with fine slanting rain, white type, the water in blue */
+  .poster { max-width: 960px; margin: 0 auto; padding: 48px 52px 30px; color: #eef2f5; border-radius: 6px;
+    background: repeating-linear-gradient(104deg, transparent 0 26px, rgb(255 255 255 / .035) 26px 27px), #141618;
+    box-shadow: 0 30px 60px -30px rgb(40 44 48 / .7); }
+  .poster figcaption { display: grid; gap: 14px; margin-bottom: 28px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #6cc3ff; }
+  .poster .headline { max-width: 13em; font-size: 54px; font-weight: 800; font-stretch: 125%; line-height: 1; letter-spacing: -.01em; text-wrap: balance; }
+  .poster .dek { max-width: 54ch; font-size: 16px; line-height: 1.5; color: #b5bdc4; }
+  .poster .note { display: block; margin-top: 24px; font-size: 12px; line-height: 1.5; color: #8d969e; }
+  /* The readout: how much rain has fallen by the month in focus */
+  .readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; min-height: 2lh; margin: 0 0 22px; padding-top: 16px; border-top: 1px solid #2c3135; font-size: 15px; line-height: 1.4; color: #b5bdc4; }
+  .readout b { font-size: 30px; font-weight: 700; font-stretch: 110%; color: #fff; font-variant-numeric: tabular-nums; }
+  @media (max-width: 560px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 16px 18px; }
+    .poster .headline { font-size: 32px; }
+    .poster .dek { font-size: 15px; }
+    .readout { min-height: 4lh; } /* the longest readout, so the chart never moves */
+    .readout b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, Show, slat, nice, html, render, createSignal, createMemo } from "@bezda/rhp/standalone";
+
+// Data: rainfall in mm per month, and the season marked under its months. Illustrative data; replace with your own.
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const RAIN = [1, 1, 0, 1, 14, 520, 840, 590, 340, 90, 18, 6];
+const SEASON = { name: "Monsoon", from: 5, to: 8 }; // June to September; null for no bracket
+
+const mm = new Intl.NumberFormat("en-US");
+const percent = new Intl.NumberFormat("en-US", { style: "percent" });
+const year = RAIN.reduce((a, b) => a + b, 0);
+const scale = nice(0, Math.max(...RAIN), 4); // 0 to 1,000 mm, a line every 250
+
+// Slat type: a month as a rain gauge, a glass tube up to the top of the scale with the month's rain in it.
+// The season's first month also draws the bracket under the season, as wide as its months.
+const Month = slat({
+  inset: { vertical: 0.24 },
+  room: { start: 64, end: 22 },
+  css: `
+    .tube { background: rgb(255 255 255 / .04); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .14); --rhp-radius: 3px; }
+    .water { background: linear-gradient(var(--rhp-toward-end), #1d5fae, #3d9be9); box-shadow: inset 0 2px 0 #9fd6ff; --rhp-radius: 2px; }
+    .mm { font-size: 12px; font-weight: 600; color: #e6ecf1; font-variant-numeric: tabular-nums; }
+    .name { font-size: 12px; font-weight: 600; color: #b5bdc4; text-transform: uppercase; letter-spacing: .06em; }
+    .now .tube { box-shadow: inset 0 0 0 1.5px #6cc3ff; }
+    .later .water { opacity: .3; }
+    .later .mm { opacity: .6; } /* faded, still readable */
+    .season { position: absolute; top: calc(100% + 30px); left: 24%; width: calc(var(--months) * 100% - 48%); height: 7px; border: 1.5px solid #6cc3ff; border-top: 0; }
+    .season b { position: absolute; top: 13px; left: 50%; translate: -50% 0; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #6cc3ff; white-space: nowrap; }
+    .month:focus-visible { outline: 2px solid #6cc3ff; outline-offset: -2px; border-radius: 4px; }
+    @container (max-width: 520px) { .name { font-size: 11px; font-stretch: 70%; letter-spacing: 0; } .mm { font-size: 11px; font-stretch: 80%; } }
+  `,
+}, (d) => html`
+  <div class=${() => "month " + d.step} data-row=${() => d.index} aria-label=${() => `${d.month}: ${mm.format(d.mm)} mm`}>
+    <${Bar} to=${scale.max} class="tube" />
+    <${Bar} to=${() => d.mm} class="water" />
+    <${Label} at=${() => d.mm} class="mm">${() => mm.format(d.mm)}<//>
+    <${Label} edge="start" class="name">${() => d.month.slice(0, 3)}<//>
+    <${Show} when=${() => d.index === SEASON?.from}>
+      <span class="season" style=${() => `--months: ${SEASON.to - SEASON.from + 1}`}><b>${() => SEASON.name}</b></span>
+    <//>
+  </div>`);
+
+// Chart component: the month the reader scrubs to splits the year, and the readout adds up the rain so far
+function MonsoonYear() {
+  const [at, setAt] = createSignal(null);
+  const end = () => at() ?? MONTHS.length - 1;
+  const sofar = createMemo(() => RAIN.slice(0, end() + 1).reduce((a, b) => a + b, 0));
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    setAt(el ? +el.dataset.row : null);
+  };
+  return html`
+    <${Poster}
+      kicker="A monsoon city · rain by month"
+      title="Four months bring nearly all of the year's rain"
+      dek="Each tube holds a month's rain in millimetres. From June to September the monsoon fills them; for the rest of the year they stay almost dry."
+      note="Illustrative data, shaped like a monsoon city's year. Point at a month, tap it, or Tab into the chart and use the arrow keys to add up the year."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setAt(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setAt(null)}>
+      <p class="readout" aria-live="polite">
+        <b>${() => mm.format(sofar()) + " mm"}</b>
+        <span>${() => (at() == null ? "in the whole year" : `by the end of ${MONTHS[end()]}, ${percent.format(sofar() / year)} of the year's rain`)}</span>
+      </p>
+      <${Chart} orientation="vertical" height=${300} scale=${[scale.min, scale.max]} ticks=${scale.ticks} format=${(v) => mm.format(v)}
+        label="Rainfall by month, in millimetres"
+        theme=${{ font: 'Archivo, "Helvetica Neue", Arial, sans-serif', ink: "#eef2f5", muted: "#8d969e", grid: "#2c3135" }}>
+        <${Plot} month=${MONTHS} mm=${RAIN} step=${(d) => (d.index > end() ? "later" : d.index === at() ? "now" : "")} keyboard=${true}>${Month}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${MonsoonYear} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

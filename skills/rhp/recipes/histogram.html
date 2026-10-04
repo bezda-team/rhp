@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Runners sprint to beat four hours</title>
+<meta name="description" content="Histogram of marathon finish times made with bins(), one column per 5-minute bin, with a readout of the picked bin and the share of runners ahead of it. Use it to show how one measure is distributed and where values bunch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  /* The page is a dark running vest; the poster is the race bib pinned to it */
+  body { margin: 0; padding: 48px 16px; font-family: Archivo, "Helvetica Neue", Arial, sans-serif; color: #141416;
+    background: #1d1e22 radial-gradient(rgb(255 255 255 / .05) 1px, transparent 1.5px) 0 0 / 7px 7px; }
+  .poster { position: relative; max-width: 1000px; margin: 0 auto; padding: 44px 52px 30px; border-radius: 14px; line-height: 1.45;
+    background:
+      radial-gradient(circle, #1d1e22 0 5px, #cfcfca 5.5px 7.5px, transparent 8px) left 10px top 10px / 26px 26px no-repeat,
+      radial-gradient(circle, #1d1e22 0 5px, #cfcfca 5.5px 7.5px, transparent 8px) right 10px top 10px / 26px 26px no-repeat,
+      radial-gradient(circle, #1d1e22 0 5px, #cfcfca 5.5px 7.5px, transparent 8px) left 10px bottom 10px / 26px 26px no-repeat,
+      radial-gradient(circle, #1d1e22 0 5px, #cfcfca 5.5px 7.5px, transparent 8px) right 10px bottom 10px / 26px 26px no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0 0 0 -.025'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+      #fcfcfa;
+    box-shadow: 0 24px 60px -20px rgb(0 0 0 / .6); }
+  .poster figcaption { display: grid; gap: 10px; margin-bottom: 26px; }
+  .poster .kicker { font-size: 13px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: #d9302a; }
+  .poster .headline { font-size: 84px; font-weight: 900; font-stretch: 62%; line-height: .9; letter-spacing: -.005em; text-transform: uppercase; text-wrap: balance; }
+  .poster .dek { max-width: 60ch; font-size: 16px; color: #45454b; }
+  .poster .dek i { display: inline-block; width: 11px; height: 11px; margin: 0 2px 0 1px; border-radius: 2px; background: #d9302a; vertical-align: -1px; }
+  .poster .note { display: block; margin-top: 20px; font-size: 12px; color: #6a6a70; }
+  /* The readout: a finish-line clock for the picked column */
+  .board { display: grid; grid-template-columns: 1.5fr 1fr 1.1fr; margin: 0 0 22px; border-block: 3px solid #141416; }
+  .board div { display: grid; padding: 10px 14px 9px; border-left: 1px solid #d4d4cf; }
+  .board div:first-child { padding-left: 0; border-left: 0; }
+  .board b { font-size: 44px; font-weight: 800; font-stretch: 62%; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .board span { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #6a6a70; }
+  .axis-name { margin: 0 0 6px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #6a6a70; }
+  .chart { touch-action: pan-y; } /* a finger dragging sideways moves through the columns; up and down still scrolls */
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    .poster { padding: 38px 18px 36px; border-radius: 10px; }
+    .poster figcaption { margin-bottom: 18px; }
+    .poster .kicker { font-size: 11px; letter-spacing: .16em; }
+    .poster .headline { font-size: 46px; }
+    .poster .dek { font-size: 14.5px; }
+    .board { grid-template-columns: 1fr 1fr; }
+    .board div:first-child { grid-column: 1 / -1; border-bottom: 1px solid #d4d4cf; }
+    .board div:nth-child(2) { padding-left: 0; border-left: 0; }
+    .board div { padding: 8px 8px 7px; }
+    .board b { font-size: 30px; }
+    .board span { font-size: 10.5px; letter-spacing: .08em; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, Show, slat, bins, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: finish times of a city marathon in minutes, one per runner, in finishing order. Illustrative. Replace with your own.
+const FINISH_TIMES = [
+  153, 156, 158, 160, 161, 163, 164, 165, 166, 167, 168, 169, 169, 170, 171, 172, 173, 173, 174, 175, 176, 176, 177, 177,
+  178, 178, 179, 179, 179, 181, 182, 183, 184, 185, 186, 186, 187, 188, 188, 189, 190, 190, 191, 192, 192, 193, 193, 194,
+  195, 195, 196, 196, 197, 197, 198, 198, 199, 199, 200, 200, 200, 201, 201, 202, 202, 203, 203, 203, 204, 204, 204, 205,
+  205, 206, 206, 206, 207, 207, 207, 207, 207, 208, 208, 208, 208, 209, 209, 209, 209, 209, 209, 210, 210, 211, 211, 212,
+  212, 212, 213, 213, 214, 214, 214, 215, 215, 215, 215, 216, 216, 216, 216, 217, 217, 217, 218, 218, 218, 218, 219, 219,
+  219, 219, 219, 220, 220, 220, 220, 221, 221, 221, 221, 222, 222, 222, 222, 222, 223, 223, 223, 223, 223, 224, 224, 224,
+  224, 225, 225, 225, 225, 225, 226, 226, 226, 226, 226, 227, 227, 227, 227, 227, 228, 228, 228, 228, 228, 229, 229, 229,
+  229, 229, 230, 230, 230, 230, 230, 230, 231, 231, 231, 231, 231, 232, 232, 232, 232, 232, 233, 233, 233, 233, 233, 233,
+  234, 234, 234, 234, 234, 234, 235, 235, 235, 235, 235, 236, 236, 236, 236, 236, 236, 236, 237, 237, 237, 237, 237, 237,
+  237, 237, 237, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 239, 239, 239, 239, 239, 239, 239, 239, 239, 239,
+  240, 240, 240, 241, 241, 241, 242, 242, 242, 242, 243, 243, 243, 243, 244, 244, 244, 244, 244, 245, 245, 245, 245, 245,
+  246, 246, 246, 246, 246, 246, 247, 247, 247, 247, 247, 248, 248, 248, 248, 248, 248, 248, 249, 249, 249, 249, 249, 249,
+  250, 250, 250, 250, 250, 250, 250, 251, 251, 251, 251, 251, 252, 252, 252, 252, 252, 252, 252, 252, 253, 253, 253, 253,
+  253, 253, 254, 254, 254, 254, 254, 254, 255, 255, 255, 255, 255, 255, 256, 256, 256, 256, 256, 256, 256, 257, 257, 257,
+  257, 257, 257, 258, 258, 258, 258, 258, 258, 259, 259, 259, 259, 259, 259, 259, 260, 260, 260, 260, 260, 260, 260, 261,
+  261, 261, 261, 261, 262, 262, 262, 262, 262, 262, 262, 263, 263, 263, 263, 263, 263, 264, 264, 264, 264, 264, 264, 264,
+  265, 265, 265, 265, 265, 266, 266, 266, 266, 266, 266, 266, 267, 267, 267, 267, 267, 267, 267, 267, 268, 268, 268, 268,
+  268, 268, 268, 268, 268, 269, 269, 269, 269, 269, 269, 269, 269, 270, 270, 270, 270, 271, 271, 271, 271, 271, 272, 272,
+  272, 272, 273, 273, 273, 273, 274, 274, 274, 274, 274, 274, 275, 275, 275, 275, 275, 276, 276, 276, 276, 276, 277, 277,
+  277, 277, 277, 278, 278, 278, 278, 278, 278, 278, 279, 279, 279, 279, 279, 280, 280, 280, 280, 280, 281, 281, 281, 281,
+  281, 282, 282, 282, 282, 282, 282, 283, 283, 283, 283, 283, 284, 284, 284, 284, 284, 285, 285, 285, 285, 285, 286, 286,
+  286, 286, 286, 287, 287, 287, 287, 287, 288, 288, 288, 288, 288, 289, 289, 289, 289, 290, 290, 290, 290, 290, 291, 291,
+  291, 291, 292, 292, 292, 292, 292, 293, 293, 293, 293, 293, 294, 294, 294, 294, 295, 295, 295, 295, 296, 296, 296, 296,
+  296, 297, 297, 297, 297, 297, 298, 298, 298, 298, 298, 298, 299, 299, 299, 299, 299, 299, 300, 300, 300, 301, 301, 302,
+  302, 302, 303, 303, 303, 304, 304, 304, 305, 305, 305, 306, 306, 306, 307, 307, 307, 308, 308, 308, 308, 309, 309, 309,
+  310, 310, 310, 311, 311, 311, 312, 312, 312, 313, 313, 313, 314, 314, 315, 315, 315, 315, 316, 316, 317, 317, 317, 318,
+  318, 319, 319, 319, 320, 320, 321, 321, 321, 322, 322, 323, 323, 324, 324, 325, 325, 325, 326, 326, 327, 327, 328, 328,
+  329, 329, 329, 330, 331, 331, 332, 333, 333, 334, 335, 335, 336, 337, 337, 338, 339, 339, 340, 341, 341, 342, 343, 344,
+  345, 345, 347, 347, 348, 349, 350, 351, 352, 353, 355, 356, 357, 359, 360, 361, 363, 364, 366, 368, 370, 372, 374, 377,
+  380, 383, 386,
+];
+const BIN = 5; // minutes per column
+const GOAL = 30; // round times runners aim for: every half hour
+const FOCUS = 235; // the column the poster opens on: 3:55 to 3:59
+
+// Bins on whole half hours around the data: { x0, x1, tally }, bin k from x0[k] up to (not including) x1[k]
+const start = Math.floor(Math.min(...FINISH_TIMES) / GOAL) * GOAL;
+const end = Math.ceil((Math.max(...FINISH_TIMES) + 1) / GOAL) * GOAL;
+const { x0, x1, tally } = bins(FINISH_TIMES, { domain: [start, end], count: (end - start) / BIN });
+const top = nice(0, Math.max(...tally) * 1.12); // room above the tallest column for its count
+const ahead = tally.map((_, k) => tally.slice(0, k).reduce((sum, n) => sum + n, 0)); // runners in the columns before
+const opening = Math.max(0, x0.indexOf(FOCUS));
+
+const clock = (minutes) => `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, "0")}`;
+const count = new Intl.NumberFormat("en-US");
+const percent = new Intl.NumberFormat("en-US", { style: "percent" });
+
+// Slat type: one column per bin; red for the last minutes before a round time, pale once past the picked column
+const Bin = slat({
+  inset: "1px",
+  room: { start: 26, end: 12, after: 12 }, // after: half of the count over the last column
+  css: `
+    .bar { --rhp-radius: 2px; --rhp-start-radius: 0px; background: #2c2c31; }
+    .goal .bar { background: #d9302a; }
+    .past .bar { background: #bfbfba; }
+    .past.goal .bar { background: #eda39d; }
+    .picked .bar { background: #141416; }
+    .picked.goal .bar { background: #b3221d; }
+    .count { z-index: 1; --rhp-label-gap: 5px; }
+    .count > span { display: block; padding: 2px 5px 1px; border-radius: 3px; background: #141416; color: #fff; font-size: 12px; font-weight: 800; }
+    .time { text-align: left; overflow: visible; text-overflow: clip; font-size: 11.5px; font-weight: 700; color: var(--rhp-muted); --rhp-label-gap: 7px; }
+    .time > span { display: inline-block; translate: -50% 0; }
+    .column:focus-visible { outline: 2px solid #141416; outline-offset: -1px; border-radius: 3px; }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    @container (max-width: 560px) { .half { display: none; } }
+  `,
+}, (d) => html`
+  <div class=${() => ["column", d.x1 % GOAL === 0 && "goal", d.index === d.shown && "picked", d.picked != null && d.index > d.picked && "past"].filter(Boolean).join(" ")}
+    data-row=${() => d.index}>
+    <${Bar} to=${() => d.tally} class="bar" />
+    <${Show} when=${() => d.index > 0 && d.x0 % GOAL === 0}>
+      <${Label} edge="start" class=${() => (d.x0 % 60 ? "time half" : "time")}><span>${() => clock(d.x0)}</span><//>
+    <//>
+    <${Show} when=${() => d.index === d.shown}>
+      <${Label} at=${() => d.tally} class="count"><span>${() => count.format(d.tally)}</span><//>
+    <//>
+    <span class="say">${() => `${clock(d.x0)} to ${clock(d.x1 - 1)}: ${count.format(d.tally)} runners`}</span>
+  </div>`);
+
+// Chart component: the column the reader picks (pointer, finger or arrow keys) feeds the readout and pales the ones after it
+function FinishTimes() {
+  const [picked, setPicked] = createSignal(null);
+  const shown = () => picked() ?? opening;
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    if (el) setPicked(+el.dataset.row);
+  };
+  return html`
+    <${Poster}
+      kicker=${`City marathon · ${count.format(FINISH_TIMES.length)} finishers`}
+      title="Runners sprint to beat four hours"
+      dek=${html`<span>Runners per 5 minutes of finish time. The <i></i> red columns are the last 5 minutes before a round time: ${count.format(tally[opening])} runners
+        finished between ${clock(FOCUS)} and ${clock(FOCUS + BIN - 1)}, and only ${count.format(tally[opening + 1])} in the 5 minutes after.</span>`}
+      note="Illustrative data. Point at a column, tap it or drag across the chart, or Tab into it and use the arrow keys."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="board">
+        <div><b>${() => `${clock(x0[shown()])} to ${clock(x1[shown()] - 1)}`}</b><span>Finish time</span></div>
+        <div><b>${() => count.format(tally[shown()])}</b><span>Runners</span></div>
+        <div><b>${() => percent.format(ahead[shown()] / FINISH_TIMES.length)}</b><span>Finished ahead</span></div>
+      </div>
+      <p class="axis-name">Runners</p>
+      <${Chart} class="chart" orientation="vertical" height=${300} scale=${[0, top.max]} ticks=${top.ticks} format=${(v) => count.format(v)}
+        label=${`Histogram of ${count.format(FINISH_TIMES.length)} marathon finish times in 5-minute bins`}
+        theme=${{ font: 'Archivo, "Helvetica Neue", Arial, sans-serif', ink: "#141416", muted: "#6a6a70", grid: "#e4e4e0", surface: "#fcfcfa" }}>
+        <${Plot} x0=${x0} x1=${x1} tally=${tally} shown=${shown} picked=${picked} keyboard=${true}>${Bin}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${FinishTimes} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

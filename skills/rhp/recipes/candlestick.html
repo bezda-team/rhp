@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A 15% drop erased the month's gains</title>
+<meta name="description" content="Candlestick chart of one month of daily share prices: a wick from each day's low to its high and a body from its open to its close (hollow when it rose, filled when it fell), with a crosshair and a price readout for the picked day. Use it for open, high, low and close prices over days.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500..700;1,500..600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #27292c; font-family: "Cormorant Garamond", Georgia, serif; color: #22201b; }
+  /* The poster: an engraved share certificate, ivory paper inside a double rule */
+  .poster { max-width: 960px; margin: 0 auto; padding: 50px 56px 34px; line-height: 1.4;
+    background: repeating-linear-gradient(45deg, rgb(80 64 32 / .028) 0 1px, transparent 1px 5px), #f5efe0;
+    box-shadow: inset 0 0 0 12px #f5efe0, inset 0 0 0 13px #8f7f5f, inset 0 0 0 17px #f5efe0, inset 0 0 0 19px #8f7f5f, 0 26px 50px -24px rgb(0 0 0 / .7); }
+  .poster figcaption { display: grid; gap: 8px; margin-bottom: 16px; text-align: center; }
+  .poster .kicker { font: 600 12px/1.3 "IBM Plex Mono", ui-monospace, Menlo, monospace; letter-spacing: .24em; text-transform: uppercase; color: #6b6252; }
+  .poster .headline { font-size: 60px; font-weight: 700; line-height: .98; letter-spacing: -.01em; text-wrap: balance; }
+  .poster .dek { max-width: 54ch; margin: 2px auto 0; font-size: 19px; font-style: italic; font-weight: 500; color: #4a4437; }
+  .poster .note { display: block; margin-top: 16px; font: 400 12px/1.5 "IBM Plex Mono", ui-monospace, Menlo, monospace; color: #6b6252; text-align: center; }
+  /* The readout: the picked day's prices on one ticker line (two on a phone), so the chart never moves */
+  .ticker { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 18px; min-height: 2.6em; margin: 0 0 14px; padding: 8px 0;
+    border-block: 1px solid #8f7f5f; font: 500 14px/1.6 "IBM Plex Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  .ticker b { font-weight: 600; }
+  .ticker span { color: #6b6252; }
+  .ticker .up { color: #16784f; font-weight: 600; }
+  .ticker .down { color: #b2352a; font-weight: 600; }
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    .poster { padding: 38px 24px 26px; box-shadow: inset 0 0 0 8px #f5efe0, inset 0 0 0 9px #8f7f5f, inset 0 0 0 12px #f5efe0, inset 0 0 0 13px #8f7f5f; }
+    .poster .kicker { font-size: 10.5px; letter-spacing: .16em; }
+    .poster .headline { font-size: 40px; }
+    .poster .dek { font-size: 17px; }
+    .ticker { gap: 0 12px; min-height: 4.4em; font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Tick, Label, Poster, Show, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: one share's daily prices in dollars, one row per trading day, with a note for days worth naming. Illustrative. Replace with your own.
+const DAYS = [
+  { date: "2026-03-02", open: 46.10, high: 47.10, low: 45.80, close: 46.85 },
+  { date: "2026-03-03", open: 46.90, high: 47.75, low: 46.55, close: 47.40 },
+  { date: "2026-03-04", open: 47.35, high: 47.80, low: 46.70, close: 47.05 },
+  { date: "2026-03-05", open: 47.10, high: 48.45, low: 46.95, close: 48.20 },
+  { date: "2026-03-06", open: 48.25, high: 49.20, low: 47.90, close: 48.90 },
+  { date: "2026-03-09", open: 48.80, high: 49.05, low: 47.85, close: 48.35 },
+  { date: "2026-03-10", open: 48.40, high: 49.85, low: 48.20, close: 49.60 },
+  { date: "2026-03-11", open: 49.65, high: 50.70, low: 49.30, close: 50.30 },
+  { date: "2026-03-12", open: 50.20, high: 51.70, low: 50.05, close: 51.45 },
+  { date: "2026-03-13", open: 51.50, high: 51.95, low: 50.60, close: 51.10 },
+  { date: "2026-03-16", open: 51.20, high: 52.60, low: 50.95, close: 52.35 },
+  { date: "2026-03-17", open: 52.40, high: 53.30, low: 52.05, close: 52.90 },
+  { date: "2026-03-18", open: 46.10, high: 46.50, low: 43.90, close: 44.80, note: "Earnings" },
+  { date: "2026-03-19", open: 44.70, high: 45.95, low: 44.10, close: 45.60 },
+  { date: "2026-03-20", open: 45.50, high: 45.85, low: 44.40, close: 44.95 },
+  { date: "2026-03-23", open: 45.10, high: 46.45, low: 44.85, close: 46.20 },
+  { date: "2026-03-24", open: 46.30, high: 47.40, low: 46.00, close: 47.10 },
+  { date: "2026-03-25", open: 47.05, high: 47.35, low: 46.20, close: 46.60 },
+  { date: "2026-03-26", open: 46.70, high: 48.10, low: 46.45, close: 47.85 },
+  { date: "2026-03-27", open: 47.90, high: 48.75, low: 47.55, close: 48.40 },
+  { date: "2026-03-30", open: 48.30, high: 48.60, low: 47.60, close: 47.95 },
+  { date: "2026-03-31", open: 48.10, high: 49.05, low: 47.85, close: 48.75 },
+];
+const FOCUS = "2026-03-18"; // the day the readout opens on
+
+// Each day's change from the close before it (the first day from its own open)
+const ROWS = DAYS.map((d, i) => ({ ...d, change: d.close / (i ? DAYS[i - 1].close : d.open) - 1 }));
+const range = nice(Math.min(...DAYS.map((d) => d.low)), Math.max(...DAYS.map((d) => d.high)), 6); // a round price scale around the month
+const opening = Math.max(0, DAYS.findIndex((d) => d.date === FOCUS));
+const dollars = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const whole = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const percent = new Intl.NumberFormat("en-US", { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: "exceptZero" });
+const day = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
+const date = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+const isMonday = (iso) => new Date(iso).getUTCDay() === 1;
+
+// Slat types: a trading day (wick and body), and the crosshair at the picked day's close
+const Candle = slat({
+  inset: 0.2,
+  room: { start: 28, end: 14 },
+  css: `
+    .wick { --rhp-radius: 0px; background: var(--move); }
+    .body { --rhp-radius: 1px; background: var(--move); }
+    .rose .body { background: var(--rhp-surface); box-shadow: inset 0 0 0 1.5px var(--move); }
+    .rose { --move: #16784f; }
+    .fell { --move: #c0392b; }
+    .day.on { background: rgb(80 64 32 / .08); }
+    .day:focus-visible { outline: 2px solid #22201b; outline-offset: -2px; }
+    .date { font: 500 11px/1.2 "IBM Plex Mono", ui-monospace, Menlo, monospace; color: var(--rhp-muted); white-space: nowrap; overflow: visible; text-overflow: clip; --rhp-label-gap: 8px; }
+    .note { padding: 0 0 6px; font: 600 11px/1 "IBM Plex Mono", ui-monospace, Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    @container (max-width: 480px) { .alt { display: none; } } /* every other Monday on a narrow chart */
+  `,
+}, (d) => html`
+  <div class=${() => ["day", d.close >= d.open ? "rose" : "fell", d.picked === d.index && "on"].filter(Boolean).join(" ")} data-row=${() => d.index}>
+    <${Bar} from=${() => d.low} to=${() => d.high} thick="1.5px" class="wick" />
+    <${Bar} from=${() => d.open} to=${() => d.close} thick=${0.62} class="body" />
+    <${Show} when=${() => isMonday(d.date)}>
+      <${Label} edge="start" class=${() => (Math.floor((new Date(d.date).getUTCDate() - 1) / 7) % 2 ? "date alt" : "date")}>${() => date.format(new Date(d.date))}<//>
+    <//>
+    <${Show} when=${() => d.note}><${Label} at=${() => d.high} class="note">${() => d.note}<//><//>
+    <span class="say">${() => `${day.format(new Date(d.date))}: open ${dollars.format(d.open)}, high ${dollars.format(d.high)}, low ${dollars.format(d.low)}, close ${dollars.format(d.close)}`}</span>
+  </div>`);
+
+const Crosshair = slat({
+  room: { after: 62 }, // a gutter right of the plot for the price
+  css: `
+    .level { --rhp-tick-width: 1px; background: #22201b; }
+    .price { left: 100%; translate: 6px 50%; padding: 2px 5px; border-radius: 2px; background: #22201b; color: #f5efe0;
+      font: 600 11px/1.3 "IBM Plex Mono", ui-monospace, Menlo, monospace; }
+  `,
+}, (c) => html`
+  <div>
+    <${Tick} at=${() => c.close} thick=${1} class="level" />
+    <${Label} at=${() => c.close} class="price">${() => dollars.format(c.close)}<//>
+  </div>`);
+
+// Chart component: the day the reader picks (pointer, finger or arrow keys) is read out and marked by the crosshair
+function SharePrice() {
+  const [picked, setPicked] = createSignal(null);
+  const index = () => picked() ?? opening;
+  const shown = () => ROWS[index()];
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    if (el) setPicked(+el.dataset.row);
+  };
+  return html`
+    <${Poster}
+      kicker="Share price · March 2026"
+      title="A 15% drop on earnings day erased the month's gains"
+      dek="Each candle is a trading day. Its body runs from the opening price to the closing price, hollow when the price rose and filled when it fell; its wick spans the day's low to its high."
+      note="Illustrative data. Point at a day, tap it, or Tab into the chart and use the arrow keys."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <p class="ticker">
+        <b>${() => day.format(new Date(shown().date))}</b>
+        <span>Open ${() => dollars.format(shown().open)}</span>
+        <span>High ${() => dollars.format(shown().high)}</span>
+        <span>Low ${() => dollars.format(shown().low)}</span>
+        <span>Close <b class=${() => (shown().change >= 0 ? "up" : "down")}>${() => `${dollars.format(shown().close)} ${percent.format(shown().change)}`}</b></span>
+      </p>
+      <${Chart} orientation="vertical" height=${320} scale=${[range.min, range.max]} ticks=${range.ticks} format=${(v) => whole.format(v)}
+        label="Candlestick chart of one share's daily prices in March 2026"
+        theme=${{ font: '"IBM Plex Mono", ui-monospace, Menlo, monospace', ink: "#22201b", muted: "#6b6252", grid: "#e2d9c4", surface: "#f5efe0" }}>
+        <${Plot} rows=${ROWS} picked=${index} keyboard=${true}>${Candle}<//>
+        <${Plot} overlap=${true} slats=${1} close=${() => shown().close} style=${{ "pointer-events": "none" }}>${Crosshair}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${SharePrice} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When the code gets written</title>
+<meta name="description" content="Heatmap: a value over two categories (weekday by hour), one colored cell each, with a readout of the cell under the pointer or finger and of the day in keyboard focus. It turns its days into columns on a phone. Use it for activity by day and hour, or any grid of counts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500..800&family=JetBrains+Mono:wght@400..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #c9c8c3; font-family: Sora, "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a keyboard on a desk, keys lit by how often they were pressed */
+  .poster { display: grid; max-width: 1000px; margin: 0 auto; padding: 44px 48px 30px; border-radius: 18px; color: #1c1b22;
+    background: linear-gradient(180deg, #f4f3f0, #e9e8e4); box-shadow: 0 1px 2px rgb(30 29 26 / .2), 0 26px 48px -28px rgb(30 29 26 / .6); }
+  .poster > * { min-width: 0; }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 22px; }
+  .poster .kicker { font: 600 12px/1.3 "JetBrains Mono", ui-monospace, Menlo, monospace; letter-spacing: .04em; color: #4f46c8; }
+  .poster .headline { font-size: 46px; font-weight: 750; line-height: 1.04; letter-spacing: -.035em; text-wrap: balance; }
+  /* A text cursor after the headline */
+  .poster .headline::after { content: ""; display: inline-block; width: .42em; height: .82em; margin-left: .12em; vertical-align: -.06em; background: #4f46c8; animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .poster .headline::after { animation: none; } }
+  .poster .dek { max-width: 60ch; font-size: 16px; line-height: 1.55; color: #4a4955; }
+  .poster .note { display: block; margin-top: 18px; font-size: 12px; line-height: 1.5; color: #5f5e69; }
+  /* One line above the keys: the hour or day being read, and the color key */
+  .readout { display: flex; align-items: center; gap: 8px 18px; flex-wrap: wrap; margin-bottom: 12px; font: 500 14px/1.4 "JetBrains Mono", ui-monospace, Menlo, monospace; }
+  .readout b { font-weight: 700; }
+  .readout output { flex: 1 1 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .readout .key { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #5f5e69; }
+  .readout .key i { width: 88px; height: 10px; border-radius: 3px; background: linear-gradient(90deg in oklab, #f7f6f3, #3730a3); box-shadow: inset 0 0 0 1px rgb(28 27 34 / .14); }
+  /* The keyboard's case around the keys */
+  .chart { border-radius: 14px; background: #d9d8d3; box-shadow: inset 0 1px 3px rgb(30 29 26 / .25), 0 1px 0 #fff; } /* its padding is the chart's room, set by the slat types */
+  @media (max-width: 520px) {
+    body { padding: 24px 16px 32px; }
+    .poster { padding: 30px 18px 20px; }
+    .poster .headline { font-size: 32px; }
+    .poster .dek { font-size: 15px; }
+    .readout { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Cell, Label, Poster, slat, nice, useOrientation, html, render, createSignal, onCleanup, Show } from "@bezda/rhp/standalone";
+
+// Data: commits made in one year in a team's repository, by weekday and by hour of the day (0 is midnight to 1 am),
+// in local time. Illustrative. Replace with your own: one list of 24 numbers per day.
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const COMMITS = [
+  [5, 8, 11, 6, 9, 5, 8, 13, 29, 123, 225, 218, 59, 102, 270, 346, 292, 157, 46, 22, 13, 41, 52, 22],
+  [10, 5, 8, 11, 7, 10, 6, 11, 44, 125, 258, 229, 55, 124, 285, 390, 309, 162, 63, 15, 27, 36, 48, 29],
+  [7, 10, 5, 8, 11, 7, 10, 8, 35, 134, 242, 234, 44, 112, 289, 370, 312, 148, 53, 27, 18, 47, 38, 25],
+  [11, 6, 9, 5, 8, 11, 7, 12, 25, 122, 247, 219, 55, 100, 272, 371, 294, 156, 43, 18, 30, 37, 49, 21],
+  [6, 9, 5, 8, 3, 6, 9, 7, 31, 87, 188, 184, 36, 90, 206, 285, 243, 115, 45, 6, 17, 41, 31, 21],
+  [5, 8, 11, 7, 10, 5, 9, 12, 6, 18, 13, 35, 59, 61, 76, 57, 51, 43, 17, 18, 2, 9, 17, 7],
+  [10, 5, 8, 11, 7, 10, 5, 8, 17, 5, 15, 8, 25, 46, 46, 59, 41, 38, 36, 27, 64, 72, 57, 26],
+];
+const SCALE = nice(0, Math.max(...COMMITS.flat())); // 0 to 400: the lightest key is 0, the darkest the top
+const count = new Intl.NumberFormat("en-US");
+const clock = (h) => String(h).padStart(2, "0") + ":00";
+const busiest = (day) => COMMITS[day].indexOf(Math.max(...COMMITS[day]));
+
+// Slat types: an hour is one key, its color from the theme's low to its high by commits. The first day's hours carry
+// the hour numbers, every third hour. A day is its name and its 24 hours, in a Plot across the day's slat.
+const Hour = slat({
+  css: `
+    .key { --rhp-cell-gap: 2px; --rhp-radius: 5px; box-shadow: inset 0 -3px 0 rgb(28 27 34 / .17), inset 0 1px 0 rgb(255 255 255 / .45); }
+    .hour:hover .key { box-shadow: inset 0 -1px 0 rgb(28 27 34 / .17), inset 0 2px 4px rgb(28 27 34 / .3); }
+    .clock { font: 500 11px/1 "JetBrains Mono", ui-monospace, Menlo, monospace; color: var(--rhp-muted); pointer-events: none; }
+    .clock:vertical { --rhp-label-gap: 6px; }
+    .clock:horizontal { width: auto; } /* an edge Label is as wide as the chart's start room, which a vertical chart doesn't have */
+  `,
+}, (h) => {
+  const o = useOrientation(); // the hours' own orientation: across the days'
+  return html`
+    <div class="hour" data-day=${() => h.day} data-hour=${() => h.index}>
+      <${Cell} value=${() => h.commits} class="key" />
+      <${Show} when=${() => h.day === 0 && h.index % 3 === 0}>
+        <${Label} edge=${() => (o() === "vertical" ? "end" : "start")} class="clock">${() => h.index}<//>
+      <//>
+    </div>`;
+});
+
+const Day = slat({
+  thickness: { horizontal: 32 },
+  room: { horizontal: { start: 44, before: 20 }, vertical: { end: 22, before: 26 } },
+  css: `
+    .name { font: 600 12px/1 "JetBrains Mono", ui-monospace, Menlo, monospace; }
+    .day:focus-visible { outline: 2px solid #4f46c8; outline-offset: 1px; border-radius: 7px; }
+  `,
+}, (d) => {
+  const o = useOrientation();
+  return html`
+    <div class="day" data-row=${() => d.index}>
+      <${Label} edge=${() => (o() === "vertical" ? "end" : "start")} class="name">${() => d.day.slice(0, 3)}<//>
+      <${Plot} orientation="across" day=${() => d.index} commits=${() => d.hours}>${Hour}<//>
+    </div>`;
+});
+
+// Chart component: the readout follows the hour under the pointer or finger, or the day in keyboard focus. On a
+// narrow screen the days turn into columns, so the hours run down the page.
+function Commits() {
+  const wide = matchMedia("(min-width: 640px)");
+  const [horizontal, setHorizontal] = createSignal(wide.matches);
+  const turn = (e) => setHorizontal(e.matches);
+  wide.addEventListener("change", turn);
+  onCleanup(() => wide.removeEventListener("change", turn));
+
+  const [at, setAt] = createSignal(null); // [day, hour], or [day] for a whole day
+  const pick = (e) => {
+    const hour = e.target.closest("[data-hour]");
+    const day = e.target.closest("[data-row]");
+    setAt(hour ? [+hour.dataset.day, +hour.dataset.hour] : day ? [+day.dataset.row] : null);
+  };
+  // Focus reads a whole day, unless an hour of that day is already picked (a tap on an hour also focuses its day)
+  const focusDay = (e) => {
+    const day = e.target.closest("[data-row]");
+    if (day && at()?.[0] !== +day.dataset.row) setAt([+day.dataset.row]);
+  };
+  const readout = () => {
+    const [day, hour] = at() ?? [1, 15];
+    const lead = at() ? "" : "Busiest hour: ";
+    if (hour == null) {
+      const total = COMMITS[day].reduce((sum, v) => sum + v, 0);
+      return html`<b>${DAYS[day]}</b> · ${count.format(total)} commits, most at ${clock(busiest(day))}`;
+    }
+    return html`${lead}<b>${DAYS[day].slice(0, 3) + " " + clock(hour)}</b> · ${count.format(COMMITS[day][hour])} commits`;
+  };
+  return html`
+    <${Poster}
+      kicker="$ git log --since=1.year"
+      title="More than half of all commits land on weekday afternoons"
+      dek="One team's commits over a year, by weekday and hour. The keys darken from 2 to 5 pm on every working day, the lunch hour dips, and weekends barely move."
+      note="Illustrative data, in local time. Point at a key or tap it to read its hour; Tab into the chart and use the arrow keys to read a day."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${focusDay}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setAt(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setAt(null)}>
+      <div class="readout">
+        <output aria-live="polite">${readout}</output>
+        <span class="key" aria-hidden="true">0<i></i>${count.format(SCALE.max)}</span>
+      </div>
+      <${Chart} class="chart" orientation=${() => (horizontal() ? "horizontal" : "vertical")} height=${24 * 19}
+        scale=${[SCALE.min, SCALE.max]} ticks=${false} label="Commits by weekday and hour of the day"
+        theme=${{ font: "Sora, 'Helvetica Neue', Arial, sans-serif", ink: "#1c1b22", muted: "#55545e", surface: "#d9d8d3", low: "#f7f6f3", high: "#3730a3" }}>
+        <${Plot} keyboard=${true} day=${DAYS} hours=${COMMITS}>${Day}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${Commits} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

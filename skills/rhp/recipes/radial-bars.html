@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A week of daily goals</title>
+<meta name="description" content="Radial bars: one ring per goal, its arc the share of the goal reached, with a day switch that sweeps the arcs to another day. Use it for progress toward a few goals or targets, in percent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:wght@400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 56px 16px 48px; background: #d6d4cf; font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a planner page on dotted paper, taped to the wall */
+  .poster { position: relative; display: grid; max-width: 980px; margin: 0 auto; padding: 46px 48px 30px; color: #1d1c1a;
+    background: radial-gradient(circle, rgb(29 28 26 / .16) 1px, transparent 1.3px) 0 0 / 18px 18px, #f6f5f1;
+    box-shadow: 0 1px 2px rgb(40 38 34 / .18), 0 24px 44px -26px rgb(40 38 34 / .55); }
+  .poster > * { min-width: 0; }
+  .poster::before { content: ""; position: absolute; top: -16px; left: 50%; width: 132px; height: 32px; translate: -50% 0; rotate: -2.5deg;
+    background: repeating-linear-gradient(-45deg, rgb(255 255 255 / .55) 0 6px, rgb(255 255 255 / .2) 6px 12px), rgb(222 219 210 / .82);
+    box-shadow: 0 1px 2px rgb(40 38 34 / .14); }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 24px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #6a665e; }
+  .poster .headline { font: 400 48px/1.02 "Young Serif", Georgia, serif; letter-spacing: -.015em; text-wrap: balance; }
+  .poster .dek { max-width: 44ch; font-size: 17px; line-height: 1.5; color: #4b4842; }
+  .poster .note { display: block; margin-top: 22px; font-size: 12px; line-height: 1.5; color: #6a665e; }
+  /* The day switch: each day with a dot for every goal it met */
+  .days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; max-width: 420px; margin-bottom: 8px; }
+  .days button { display: grid; justify-items: center; gap: 6px; padding: 8px 0 9px; border: 1.5px solid #1d1c1a; border-radius: 12px; background: #f6f5f1;
+    font: 700 13px/1 "Hanken Grotesk", Arial, sans-serif; color: #1d1c1a; cursor: pointer; }
+  .days button[aria-pressed="true"] { background: #1d1c1a; color: #f6f5f1; }
+  .days button:not([aria-pressed="true"]):hover { background: #e9e7e1; }
+  .days button:focus-visible { outline: 2px solid #1d1c1a; outline-offset: 2px; }
+  .days span { display: flex; gap: 2px; }
+  .days i { width: 5px; height: 5px; border-radius: 50%; box-shadow: inset 0 0 0 1px currentColor; opacity: .35; }
+  .days i.met { background: var(--c); box-shadow: none; opacity: 1; }
+  .chart { width: 100%; max-width: 500px; justify-self: center; }
+  /* The middle of the rings: how many goals the day met */
+  .hub { position: relative; z-index: 2; display: grid; place-content: center; gap: 4px; text-align: center; pointer-events: none; }
+  .hub b { font: 400 clamp(22px, 7cqw, 40px)/1 "Young Serif", Georgia, serif; }
+  .hub span { font-size: clamp(11px, 2.6cqw, 13px); font-weight: 600; color: #4b4842; }
+  @media (min-width: 860px) {
+    .poster { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); grid-template-rows: auto auto 1fr; column-gap: 44px; }
+    .poster figcaption { grid-column: 1; grid-row: 1; }
+    .days { grid-column: 1; grid-row: 2; }
+    .poster .chart { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+    .poster .note { grid-column: 1; grid-row: 3; align-self: end; }
+  }
+  @media (max-width: 520px) {
+    body { padding: 40px 16px 32px; }
+    .poster { padding: 34px 18px 20px; }
+    .poster .headline { font-size: 34px; }
+    .poster .dek { font-size: 15px; }
+    .days { margin-bottom: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Place, Poster, slat, html, render, createSignal, For } from "@bezda/rhp/standalone";
+
+// Data: a week against five daily goals, Monday first. Illustrative. Replace with your own.
+// The first goal is the outer ring.
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const GOALS = [
+  { goal: "Move", target: 600, unit: "kcal", color: "#eb6834", week: [520, 610, 480, 700, 650, 380, 560] },
+  { goal: "Exercise", target: 30, unit: "min", color: "#1baf7a", week: [25, 40, 30, 45, 20, 60, 35] },
+  { goal: "Stand", target: 12, unit: "hours", color: "#eda100", week: [10, 12, 9, 12, 11, 7, 10] },
+  { goal: "Water", target: 8, unit: "glasses", color: "#2a78d6", week: [6, 8, 5, 7, 8, 4, 6] },
+  { goal: "Sleep", target: 8, unit: "hours", color: "#4a3aa7", week: [6.5, 7.2, 6.1, 6.8, 7.5, 8.6, 6.9] },
+];
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+const share = (g, day) => g.week[day] / g.target;
+
+// Slat type: one goal, drawn as a ring around the plot's middle. rhp gives the CSS numbers from 0 to 1, and the CSS
+// spends them on angles: --rhp-hi (the Bar's end) sweeps the arc, --rhp-p (the Place's value) turns its round cap,
+// and --rhp-position (the slat's place) sets the ring's radius. A full arc is 270 degrees, which leaves the top left
+// quarter free for the names.
+const Goal = slat({
+  room: { start: 0, end: 0 },
+  css: `
+    @property --swept { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+    .goal {
+      --outer: calc(50cqw - 4px);
+      --band: calc(var(--outer) * .12);
+      --step: calc(var(--outer) * .155);
+      --r: calc(var(--outer) - var(--band) / 2 - var(--rhp-position) * var(--step));
+      --mid: calc((var(--rhp-n) / 2 - var(--rhp-position)) * 100%);
+      --tint: color-mix(in oklab, var(--c) 16%, #f6f5f1);
+      --ease: .7s cubic-bezier(.3, 0, .2, 1);
+    }
+    .ring, .arc, .end, .start, .name { position: absolute; left: var(--mid); top: 50%; bottom: auto; }
+    .ring, .arc { width: calc(var(--r) * 2 + var(--band)); height: calc(var(--r) * 2 + var(--band)); translate: -50% -50%; border-radius: 50%;
+      mask: radial-gradient(farthest-side, transparent calc(100% - var(--band) - .5px), #000 calc(100% - var(--band) + .5px)); }
+    .ring { background: conic-gradient(var(--tint) 0 270deg, transparent 0); }
+    .ring::after { content: ""; position: absolute; left: 0; top: 50%; width: var(--band); height: var(--band); translate: 0 -50%; border-radius: 50%; background: var(--tint); }
+    .arc { background: none; }
+    .arc i { position: absolute; inset: 0; --swept: calc(var(--rhp-hi) * 270deg); transition: --swept var(--ease);
+      background: conic-gradient(var(--c) 0 var(--swept), transparent 0); }
+    .start, .end i { width: var(--band); height: var(--band); border-radius: 50%; background: var(--c); }
+    .start { translate: -50% calc(-50% - var(--r)); }
+    .end { translate: none; }
+    .end i { position: absolute; left: calc(var(--band) / -2); top: calc(var(--band) / -2); transition: transform var(--ease);
+      transform: rotate(calc(var(--rhp-p) * 270deg)) translateY(calc(var(--r) * -1)); }
+    .name { translate: calc(-100% - var(--band) / 2 - 8px) calc(-50% - var(--r)); white-space: nowrap; font-size: clamp(11px, 2.9cqw, 14px); }
+    .name b { font-weight: 700; }
+    .name span { color: #4b4842; font-variant-numeric: tabular-nums; }
+  `,
+}, (d) => html`
+  <div class="goal" style=${() => ({ "--c": d.color })}>
+    <i class="ring"></i>
+    <${Bar} to=${() => Math.min(100, d.pct)} class="arc"><i></i><//>
+    <i class="start"></i>
+    <${Place} at=${() => Math.min(100, d.pct)} class="end"><i></i><//>
+    <span class="name"><b>${() => d.goal}</b><span>${() => (d.pct >= 100 ? " ✓ " : " ") + percent.format(d.pct / 100)}</span></span>
+  </div>`);
+
+// Chart component: the day switch picks a day, and the arcs sweep to it
+function DailyGoals() {
+  const [day, setDay] = createSignal(DAYS.length - 1);
+  const met = () => GOALS.filter((g) => share(g, day()) >= 1).length;
+  return html`
+    <${Poster}
+      kicker="Daily goals · one week"
+      title="Sleep is the goal that slips: met one night in seven"
+      dek="Each ring is a daily goal, and a full ring means it was met. Pick a day to see how close each one came."
+      note="Illustrative data. Goals: move 600 kcal, exercise 30 minutes, stand 12 hours, water 8 glasses, sleep 8 hours.">
+      <div class="days" role="group" aria-label="Day of the week">
+        <${For} each=${DAYS}>${(name, i) => html`
+          <button type="button" aria-pressed=${() => i() === day()} onClick=${() => setDay(i())}>
+            ${name}
+            <span aria-hidden="true">${GOALS.map((g) => html`<i class=${share(g, i()) >= 1 ? "met" : ""} style=${{ "--c": g.color }}></i>`)}</span>
+          </button>`}<//>
+      </div>
+      <${Chart} class="chart" orientation="vertical" aspect=${1} ticks=${false} label="Share of each daily goal reached"
+        theme=${{ font: "'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif", ink: "#1d1c1a", muted: "#6a665e", surface: "#f6f5f1" }}>
+        <div class="hub" aria-live="polite">
+          <b>${() => met()} of ${GOALS.length}</b>
+          <span>goals met</span>
+        </div>
+        <${Plot} rows=${GOALS} pct=${(d) => share(d, day()) * 100}>${Goal}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${DailyGoals} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

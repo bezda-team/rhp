@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Richer since 1990</title>
+<meta name="description" content="Sparkline table: one small line per item, each scaled to its own peak, with the start level dashed, and a scrub through the years (pointer, finger or arrow keys) that moves a dot along every line and updates each item's value and its change since the start. Use it for many series side by side, a table of trends.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Libre+Franklin:wght@400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d9d5cc; font-family: "Libre Franklin", "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a table page from a statistical yearbook, cream paper between a thick and a thin rule */
+  .poster { max-width: 900px; margin: 0 auto; padding: 40px 52px 28px; color: #1f1c17; border-top: 6px solid #1f1c17;
+    background: linear-gradient(#1f1c17 0 0) 52px 10px / calc(100% - 104px) 1px no-repeat, #f7f3ea;
+    box-shadow: 0 1px 2px rgb(50 44 34 / .18), 0 26px 50px -28px rgb(50 44 34 / .55); }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 22px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #a3360d; }
+  .poster .headline { max-width: 15em; font: 700 48px/1.05 "Libre Caslon Text", Georgia, serif; letter-spacing: -.015em; text-wrap: balance; }
+  .poster .dek { max-width: 58ch; font-size: 16px; line-height: 1.55; color: #4c463d; }
+  .poster .dek i { display: inline-block; width: 18px; margin: 0 3px; border-top: 1.5px dashed #6b645a; vertical-align: 4px; }
+  .poster .note { display: block; margin-top: 18px; padding-top: 10px; border-top: 1px solid #d9d2c4; font-size: 12px; line-height: 1.5; color: #6b645a; }
+  /* The table's head: the year being read, and what the two number columns hold */
+  .head { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; margin: 0 0 6px; padding: 8px 0;
+    border-block: 1px solid #1f1c17; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b645a; }
+  .head b { font: 700 26px/1 "Libre Caslon Text", Georgia, serif; letter-spacing: 0; color: #1f1c17; font-variant-numeric: tabular-nums; }
+  .head b:focus-visible { outline: 2px solid #c2410c; outline-offset: 4px; border-radius: 2px; }
+  .plot { touch-action: pan-y; } /* a finger dragging sideways moves through the years; up and down still scrolls */
+  @media (max-width: 600px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 30px 16px 18px; background-position: 16px 8px, 0 0; background-size: calc(100% - 32px) 1px, auto; }
+    .poster .headline { font-size: 32px; }
+    .poster .dek { font-size: 15px; }
+    .head { font-size: 11px; }
+    .head b { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Line, Dot, Tick, Label, Poster, slat, sortBy, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: GDP per person from 1990 to 2024, in constant 2021 international dollars (adjusted for prices and for what
+// money buys in each country), World Bank via Our World in Data. Replace with your own rows: one value per year each.
+const FIRST = 1990;
+const COUNTRIES = [
+  { name: "China", gdp: [1667, 1798, 2030, 2287, 2557, 2808, 3056, 3306, 3534, 3774, 4066, 4372, 4744, 5192, 5684, 6298, 7057, 8014, 8744, 9519, 10476, 11405, 12218, 13081, 13969, 14857, 15773, 16758, 17807, 18821, 19215, 20843, 21499, 22687, 23841] },
+  { name: "Vietnam", gdp: [2468, 2561, 2726, 2890, 3090, 3328, 3584, 3820, 3983, 4119, 4349, 4570, 4810, 5090, 5421, 5776, 6098, 6419, 6659, 6914, 7275, 7653, 7980, 8324, 8752, 9248, 9743, 10291, 10937, 11629, 11851, 12049, 12980, 13535, 14396] },
+  { name: "India", gdp: [2140, 2116, 2185, 2241, 2342, 2469, 2603, 2656, 2766, 2954, 3010, 3097, 3157, 3347, 3551, 3770, 4011, 4254, 4322, 4595, 4914, 5099, 5304, 5567, 5905, 6302, 6741, 7116, 7493, 7702, 7187, 7819, 8347, 8871, 9416] },
+  { name: "South Korea", gdp: [14378, 15784, 16613, 17596, 19052, 20698, 22140, 23311, 22000, 24382, 26404, 27441, 29395, 30142, 31580, 32886, 34430, 36257, 37064, 37176, 39574, 40719, 41538, 42710, 43807, 44849, 46088, 47537, 48834, 49791, 49374, 51718, 53229, 54029, 55071] },
+  { name: "Poland", gdp: [12821, 11880, 12141, 12563, 13200, 14228, 15083, 16032, 16767, 17556, 18566, 18801, 19167, 19856, 20879, 21569, 22921, 24484, 25554, 26204, 27112, 28522, 28953, 29169, 30335, 31700, 32675, 34355, 36500, 38182, 37853, 41060, 43405, 43673, 45153] },
+  { name: "Ethiopia", gdp: [874, 778, 681, 744, 741, 760, 827, 826, 773, 788, 810, 851, 838, 796, 877, 952, 1025, 1109, 1194, 1262, 1381, 1493, 1577, 1697, 1821, 1957, 2085, 2223, 2311, 2438, 2517, 2588, 2656, 2758, 2892] },
+  { name: "United States", gdp: [44384, 43748, 44665, 45293, 46543, 47227, 48442, 49991, 51626, 53481, 55046, 55024, 55443, 56505, 58139, 59612, 60684, 61314, 60806, 58722, 59797, 60253, 61142, 61967, 63027, 64368, 65026, 66164, 67728, 69121, 67407, 71441, 72829, 74352, 75698] },
+  { name: "Japan", gdp: [36138, 37226, 37403, 37089, 37353, 38138, 39222, 39662, 38853, 38647, 39732, 39749, 39690, 40152, 40987, 41740, 42359, 43042, 42519, 40000, 41647, 41641, 42395, 43304, 43754, 44589, 44927, 45693, 46133, 46055, 44213, 45999, 46819, 47387, 47480] },
+  { name: "Italy", gdp: [42657, 43283, 43614, 43216, 44137, 45410, 46008, 46869, 47701, 48494, 50353, 51332, 51369, 51126, 51495, 51586, 52304, 52747, 51806, 48774, 49302, 49473, 47796, 46833, 46826, 47312, 47988, 48849, 49356, 49691, 45505, 49825, 52333, 52843, 53285] },
+  { name: "Ukraine", gdp: [22816, 20784, 18672, 16012, 12411, 10983, 9970, 9754, 9646, 9704, 10364, 11379, 12093, 13343, 15021, 15611, 16902, 18374, 18884, 16093, 16812, 17784, 17849, 17889, 16979, 15404, 15857, 16310, 16979, 17637, 17093, 17846, 13787, 15917, 16371] },
+];
+
+const YEARS = COUNTRIES[0].gdp.map((_, i) => FIRST + i);
+const LAST = YEARS.at(-1);
+const INSET = 0.2; // the empty share of each slat's band, half above and half below its line
+const dollars = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const times = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+// Where a value sits across its slat: a Line in a slat draws 0 at the bottom of its band and the peak at the top
+const across = (value, peak) => INSET / 2 + (1 - INSET) * (1 - value / peak);
+
+// Slat types
+// A country: its name, its line (scaled to its own peak, over a hairline at zero), its 1990 level dashed, a dot at the
+// year being read, and that year's value with how many times its 1990 value it is
+const Country = slat({
+  thickness: 44,
+  inset: INSET,
+  room: "auto",
+  css: `
+    .country { background: linear-gradient(var(--rhp-grid) 0 0) 0 ${(1 - INSET / 2) * 100}% / 100% 1px no-repeat; }
+    .name { font-size: 14px; font-weight: 700; --rhp-label-gap: 14px; }
+    .spark { stroke-width: 1.75px; }
+    .start path { stroke-dasharray: 3 3; }
+    .now { background: #c2410c; box-shadow: 0 0 0 2px #f7f3ea; }
+    .numbers { display: flex; justify-content: flex-end; align-items: baseline; gap: 10px; justify-self: stretch; font-variant-numeric: tabular-nums; --rhp-label-gap: 14px; }
+    .numbers b { font-size: 14px; font-weight: 700; }
+    .numbers span { min-width: 3.2em; font-size: 13px; font-weight: 600; color: var(--rhp-muted); text-align: right; }
+    .poorer .numbers span { color: #b42318; }
+    @container (max-width: 520px) {
+      .name { font-size: 13px; --rhp-label-gap: 10px; }
+      .numbers { flex-direction: column; align-items: flex-end; gap: 1px; line-height: 1.15; --rhp-label-gap: 10px; }
+      .numbers b { font-size: 13px; }
+      .numbers span { font-size: 12px; }
+    }
+  `,
+}, (d) => html`
+  <div class=${() => (d.gdp[d.i] < d.gdp[0] ? "country poorer" : "country")}
+    aria-label=${() => `${d.name}: ${dollars.format(d.gdp[d.i])} a person in ${d.year}, ${times.format(d.gdp[d.i] / d.gdp[0])} times its ${FIRST} level`}>
+    <${Label} edge="start" class="name">${() => d.name}<//>
+    <${Line} points=${() => d.gdp.map((v, i) => [FIRST + i, v])} peak=${() => d.peak} color="ink" class="spark" />
+    <${Line} points=${() => [[FIRST, d.gdp[0]], [LAST, d.gdp[0]]]} peak=${() => d.peak} color="muted" class="start" />
+    <${Dot} at=${() => d.year} across=${() => across(d.gdp[d.i], d.peak)} size="7px" class="now" />
+    <${Label} edge="end" class="numbers"><b>${() => dollars.format(d.gdp[d.i])}</b><span>${() => times.format(d.gdp[d.i] / d.gdp[0]) + "×"}</span><//>
+  </div>`);
+
+// The year being read: a hairline down every slat
+const Crosshair = slat({ room: {}, css: `.hair { --rhp-tick-width: 1px; background: #c2410c; opacity: .55; }` }, (d) => html`
+  <div><${Tick} at=${() => d.year} thick=${1} class="hair" /></div>`);
+
+// Chart component: the year under the pointer or a finger, or picked with the arrow keys, is read in every slat, and
+// the latest otherwise. The year in the table's head is a slider for the keyboard and screen readers.
+function RicherSince1990() {
+  const [picked, setPicked] = createSignal(null);
+  const i = () => picked() ?? YEARS.length - 1;
+  // The year under the pointer, measured on a line (every line runs from the first year to the last)
+  const point = (e) => {
+    const r = e.currentTarget.querySelector(".spark").getBoundingClientRect();
+    const k = Math.round(((e.clientX - r.left) / r.width) * (YEARS.length - 1));
+    if (k >= 0 && k < YEARS.length) setPicked(k);
+  };
+  const STEPS = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -10, PageUp: 10, Home: -Infinity, End: Infinity };
+  const key = (e) => {
+    if (!(e.key in STEPS)) return;
+    e.preventDefault();
+    setPicked(Math.max(0, Math.min(YEARS.length - 1, i() + STEPS[e.key])));
+  };
+  const said = () => `${YEARS[i()]}: ` + COUNTRIES.map((c) => `${c.name} ${dollars.format(c.gdp[i()])}`).join(", ");
+  return html`
+    <${Poster}
+      kicker=${`Income per person, ${FIRST} to ${LAST}`}
+      title="China's income per person is 14 times what it was in 1990"
+      dek=${html`<span>GDP per person in ten countries, adjusted for prices. Each line rises from zero, the hairline under it, to its own peak, and its dashes <i></i> mark its ${FIRST} level: Ukraine is still below it, and Japan and Italy barely rose above it.</span>`}
+      note="Source: World Bank, GDP per person in constant 2021 international dollars (purchasing power parity), via Our World in Data, retrieved 2026. Point at a year, tap or drag across the lines, or Tab to the year and use the arrow keys.">
+      <p class="head">
+        <b tabindex="0" role="slider" aria-label="Year read on every line" aria-valuemin=${FIRST} aria-valuemax=${LAST}
+          aria-valuenow=${() => YEARS[i()]} aria-valuetext=${said} onKeyDown=${key}>${() => YEARS[i()]}</b>
+        <span aria-hidden="true">GDP per person · × its ${FIRST} level</span>
+      </p>
+      <div class="plot" onPointerMove=${point} onPointerDown=${point} onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}>
+        <!-- half a year past each end, so each year's column is centered on it -->
+        <${Chart} scale=${[FIRST - 0.5, LAST + 0.5]} ticks=${YEARS.filter((y) => y % 10 === 0)}
+          label=${`GDP per person in ten countries, ${FIRST} to ${LAST}, each line scaled to its own peak`}
+          theme=${{ font: '"Libre Franklin", "Helvetica Neue", Arial, sans-serif', ink: "#1f1c17", muted: "#6b645a", grid: "#e2dccf" }}>
+          <${Plot} rows=${COUNTRIES} peak=${(d) => Math.max(...d.gdp)} growth=${(d) => d.gdp.at(-1) / d.gdp[0]}
+            order=${sortBy("growth", "desc")} year=${() => YEARS[i()]} i=${i}>${Country}<//>
+          <${Plot} overlap=${true} slats=${1} year=${() => YEARS[i()]} style=${{ "pointer-events": "none" }}>${Crosshair}<//>
+        <//>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${RicherSince1990} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

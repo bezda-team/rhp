@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two ways to hold 20 million</title>
+<meta name="description" content="Bubble chart: two measures per item on a second axis (log scales) and a third as the bubble's area, with guide lines of equal size, labels for the story's items and a readout for the bubble under the pointer, a tap or the arrow keys. Use it for items with two measures and a size.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400..700&family=DM+Mono:wght@400;500&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #3a3d42; font-family: Sora, "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a city seen from orbit at night, with a map's scale bar under the kicker */
+  .poster { max-width: 920px; margin: 0 auto; padding: 44px 48px 26px; color: #ece8df; border-radius: 6px; background: #0e1116;
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / .8); }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 18px; }
+  .poster .kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font: 500 12px/1.3 "DM Mono", ui-monospace, Menlo, monospace; letter-spacing: .14em; text-transform: uppercase; color: #f5a524; }
+  .scalebar { display: inline-grid; grid-template-columns: repeat(2, 36px); row-gap: 3px; font-size: 10px; letter-spacing: .04em; color: #9aa1aa; }
+  .scalebar::before { content: ""; grid-column: 1 / -1; height: 5px; border: 1px solid #9aa1aa; background: linear-gradient(90deg, #9aa1aa 0 25%, transparent 0 50%, #9aa1aa 0 75%, transparent 0); }
+  .scalebar span:last-child { text-align: right; }
+  .poster .headline { max-width: 16em; font-size: 46px; font-weight: 700; line-height: 1.04; letter-spacing: -.03em; text-wrap: balance; }
+  .poster .dek { max-width: 60ch; font-size: 15px; line-height: 1.55; color: #b9bcc1; }
+  .poster .note { display: block; margin-top: 14px; font-size: 12px; line-height: 1.5; color: #9aa1aa; }
+  /* The readout: the city picked, one line tall (two on a phone) whatever the city, so the chart never moves */
+  .readout { box-sizing: content-box; min-height: 1.4em; margin: 0 0 8px; padding: 9px 0; border-block: 1px solid rgb(255 255 255 / .12);
+    font: 13px/1.4 "DM Mono", ui-monospace, monospace; color: #b9bcc1; }
+  .readout b { font-family: Sora, sans-serif; font-weight: 600; color: #ece8df; }
+  .axis { margin: 0; font-size: 11px; color: #9aa1aa; }
+  .axis.x { text-align: right; }
+  .plot { border-radius: 4px; }
+  .plot:has(:focus-visible) { outline: 2px solid #ece8df; outline-offset: 8px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 18px 18px; }
+    .poster .headline { font-size: 32px; }
+    .readout { min-height: 2.8em; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, html, render, createSignal, Show } from "@bezda/rhp/standalone";
+
+// Data: built-up urban areas from Demographia World Urban Areas, 20th edition (2025): people, land in km², people per
+// km². Replace with your own rows, largest first, so the small bubbles are drawn on top. `side` labels a bubble.
+const CITIES = [
+  { name: "Tokyo", people: 37325000, km2: 8775, density: 4254, side: "after" },
+  { name: "Jakarta", people: 36877000, km2: 3546, density: 10400 },
+  { name: "Delhi", people: 33224000, km2: 2344, density: 14174 },
+  { name: "Mumbai", people: 26237000, km2: 1067, density: 24588, side: "after" },
+  { name: "Cairo", people: 22684000, km2: 2696, density: 8413 },
+  { name: "São Paulo", people: 21747000, km2: 3649, density: 5959 },
+  { name: "New York", people: 20892000, km2: 11344, density: 1842, side: "before" },
+  { name: "Kinshasa", people: 13060000, km2: 518, density: 25212 },
+  { name: "London", people: 11360000, km2: 1738, density: 6537 },
+  { name: "Paris", people: 11282000, km2: 2854, density: 3953 },
+  { name: "Hong Kong", people: 7117000, km2: 290, density: 24535 },
+  { name: "Atlanta", people: 5495000, km2: 7151, density: 768, side: "after" },
+];
+const STORY = CITIES.findIndex((c) => c.name === "Mumbai"); // read out when nothing is picked
+
+// Both axes are log scales: the chart gets log10 of each value, and the ticks are turned back into numbers.
+// A bubble's area follows its population: its diameter is 8% of the chart's width (8cqw) for the largest city.
+const X = [2.2, 4.4]; // log10 of land area, about 160 to 25,000 km²
+const Y = [2.6, 4.7]; // log10 of people per km², about 400 to 50,000
+const MAX = Math.max(...CITIES.map((c) => c.people));
+const diameter = (people) => 8 * Math.sqrt(people / MAX); // in cqw
+const count = new Intl.NumberFormat("en-US");
+const millions = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+
+// Guide lines: on these log scales, the places where land times density gives the same number of people are diagonals
+const GUIDES = [10e6, 30e6].map((people) => {
+  const top = Math.log10(people) - Y[1]; // where the diagonal meets the top of the plot
+  return { people, top, points: [[top, Y[1]], [X[1], Math.log10(people) - X[1]]] };
+});
+
+// Slat types
+// The scale under the plot: a short mark and the land area at each tick. Its room also makes the left side wider than
+// the cross axis' default 42px, so its widest number (30,000) stays inside the chart.
+const Land = slat({
+  room: { start: 48, after: 26 },
+  css: `
+    .mark { top: 100%; height: 6px; translate: -50% 0; --rhp-tick-width: 1px; background: rgb(255 255 255 / .35); }
+    .amount { top: calc(100% + 10px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+  `,
+}, (t) => html`
+  <div>
+    <${Tick} at=${() => t.at} class="mark" />
+    <${Label} at=${() => t.at} class="amount">${() => count.format(Math.round(10 ** t.at))}<//>
+  </div>`);
+
+// A guide line, named at its top end (in millions on a phone)
+const Guide = slat({
+  css: `
+    .guide { stroke: rgb(255 255 255 / .28); stroke-width: 1px; }
+    .people { --rhp-label-gap: 7px; font-size: 11px; color: #9aa1aa; }
+    .short { display: none; }
+    @container (max-width: 520px) { .long { display: none; } .short { display: inline; } }
+  `,
+}, (d) => html`
+  <div>
+    <${Line} points=${() => d.points} class="guide" />
+    <${Label} at=${() => d.top} cross=${Y[1] - 0.08} class="people">
+      <span class="long">${() => `${millions.format(d.people / 1e6)} million people`}</span><span class="short">${() => `${millions.format(d.people / 1e6)}M`}</span>
+    <//>
+  </div>`);
+
+// A city: its bubble, its name when the data labels it, and a sentence for screen readers. Only the bubble takes the
+// pointer, since the slat itself covers the whole plot.
+const City = slat({
+  css: `
+    .city { pointer-events: none; outline: none; }
+    .bubble { pointer-events: auto; cursor: pointer; background: rgb(245 165 36 / .3); box-shadow: inset 0 0 0 1.5px #f5a524; }
+    .bubble::before { content: ""; position: absolute; inset: -6px; border-radius: 50%; }
+    .labeled .bubble { background: rgb(245 165 36 / .55); }
+    .on .bubble { z-index: 2; background: rgb(245 165 36 / .7); box-shadow: inset 0 0 0 1.5px #f5a524, 0 0 0 2px #0e1116, 0 0 0 4px #ece8df; }
+    .name { font-size: 13px; font-weight: 600; }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class=${() => ["city", d.side && "labeled", d.on && "on"].filter(Boolean).join(" ")} data-i=${() => d.index}>
+    <${Dot} at=${() => Math.log10(d.km2)} cross=${() => Math.log10(d.density)} size=${() => `${diameter(d.people)}cqw`} class="bubble" />
+    <${Show} when=${() => d.side}>
+      <${Label} at=${() => Math.log10(d.km2)} cross=${() => Math.log10(d.density)} side=${() => d.side}
+        style=${() => ({ "--rhp-label-gap": `calc(${diameter(d.people) / 2}cqw + 6px)` })} class="name">${() => d.name}<//>
+    <//>
+    <span class="say">${() => `${d.name}: ${millions.format(d.people / 1e6)} million people on ${count.format(d.km2)} square kilometres, ${count.format(d.density)} per square kilometre`}</span>
+  </div>`);
+
+// Chart component: the readout and the ring show the city under the pointer, a tap or the arrow keys, and Mumbai otherwise
+function CitiesChart() {
+  const [picked, setPicked] = createSignal(null);
+  const shown = () => CITIES[picked() ?? STORY];
+  const pick = (e) => {
+    const el = e.target.closest("[data-i]");
+    setPicked(el ? +el.dataset.i : null);
+  };
+  return html`
+    <${Poster}
+      kicker=${html`<span>Megacities from above <span class="scalebar" aria-hidden="true"><span>0</span><span>10 km</span></span></span>`}
+      title="Mumbai fits more people than New York on a tenth of the land"
+      dek="Twelve of the world's largest built-up areas by land and by crowding. Bubble area shows population; along each diagonal, cities hold the same number of people."
+      note="Source: Demographia World Urban Areas, 20th edition (2025), built-up urban areas. Point at a city, tap it, or Tab into the chart and use the arrow keys.">
+      <p class="readout"><b>${() => shown().name}</b><span>${() => `: ${millions.format(shown().people / 1e6)} million people on ${count.format(shown().km2)} km², ${count.format(shown().density)} per km²`}</span></p>
+      <p class="axis">People per km², log scale</p>
+      <div class="plot" onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <${Chart} scale=${X} cross=${Y} crossTicks=${[500, 1000, 3000, 10000, 30000].map(Math.log10)} crossFormat=${(v) => count.format(Math.round(10 ** v))} height=${360}
+          label="Twelve megacities by land area and density, bubble area for population"
+          theme=${{ font: 'Sora, "Helvetica Neue", Arial, sans-serif', ink: "#ece8df", muted: "#9aa1aa", grid: "rgb(255 255 255 / .1)" }}>
+          <${Scale} ticks=${[300, 1000, 3000, 10000].map(Math.log10)}>${Land}<//>
+          <${Plot} overlap=${true} rows=${GUIDES} style=${{ "pointer-events": "none" }}>${Guide}<//>
+          <${Plot} overlap=${true} keyboard=${true} rows=${CITIES} on=${(d) => d.index === picked()}>${City}<//>
+        <//>
+      </div>
+      <p class="axis x">Built-up land, km², log scale</p>
+    <//>`;
+}
+
+render(() => html`<${CitiesChart} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

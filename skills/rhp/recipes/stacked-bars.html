@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Europe's power mix</title>
+<meta name="description" content="Stacked bar chart of parts that add up to a total per category, with a key that moves one part to the start of every bar and ranks the bars by it. Use it for totals made of a few parts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500..700&family=Public+Sans:wght@400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d5d6d2; font-family: "Public Sans", "Segoe UI", system-ui, sans-serif; }
+  /* The poster: drafting paper with a faint grid, condensed headline type, a line of pylons under the headline */
+  .poster { max-width: 980px; margin: 0 auto; padding: 46px 52px 30px; color: #1b1d21; border-radius: 4px;
+    background: linear-gradient(rgb(27 29 33 / .03) 1px, transparent 1px) 0 0 / 100% 24px, linear-gradient(90deg, rgb(27 29 33 / .03) 1px, transparent 1px) 0 0 / 24px 100%, #f4f3ef;
+    box-shadow: 0 28px 56px -32px rgb(56 58 54 / .65); }
+  .poster figcaption { display: grid; gap: 14px; }
+  .poster .kicker { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: #5a3aa6; }
+  .poster .headline { max-width: 17em; font: 600 52px/1.02 Oswald, "Arial Narrow", sans-serif; letter-spacing: -.005em; text-wrap: balance; }
+  .poster .dek { max-width: 58ch; font-size: 16px; line-height: 1.55; color: #4a4d53; }
+  .poster .note { display: block; margin-top: 22px; font-size: 12px; line-height: 1.5; color: #686b72; }
+  .pylons { height: 48px; margin: 22px 0 18px; opacity: .7;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='48' fill='none' stroke='%231b1d21' stroke-width='1'%3E%3Cpath d='M4 48 10 14M20 48 14 14M10 14 12 3 14 14M2 10h20M4 18h16M6 38l12-10M18 38 6 28M8 26l8-6M16 26l-8-6M7 47h10'/%3E%3Cpath d='M22 10q90 16 180 0M20 18q92 16 184 0' stroke-width='.8'/%3E%3C/svg%3E") repeat-x 0 0 / 200px 48px; }
+  /* The key: one button per source, which also picks it */
+  .key { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+  .key button { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px 7px 9px; border: 1.5px solid #d3d2cc; border-radius: 4px; background: #f4f3ef; color: #1b1d21; font: 600 13px/1 "Public Sans", system-ui, sans-serif; cursor: pointer; }
+  .key button i { width: 12px; height: 12px; border-radius: 2px; }
+  .key button[aria-pressed="true"] { border-color: #1b1d21; background: #1b1d21; color: #f4f3ef; }
+  .key button:focus-visible { outline: 2px solid #5a3aa6; outline-offset: 2px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 16px 18px; }
+    .poster .headline { font-size: 34px; }
+    .poster .dek { font-size: 15px; }
+    .pylons { margin: 16px 0 14px; }
+    .key button { padding: 6px 10px 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, sortBy, nice, stackUp, html, render, createSignal, createMemo } from "@bezda/rhp/standalone";
+
+// Data: electricity generated in 2025 by source, in terawatt-hours (TWh) rounded to whole numbers, from Ember's yearly
+// electricity data. Replace with your own.
+const SOURCES = [
+  { key: "coal", name: "Coal", color: "#57493f" },
+  { key: "gas", name: "Gas", color: "#de7a36" },
+  { key: "nuclear", name: "Nuclear", color: "#5a3aa6" },
+  { key: "hydro", name: "Hydro", color: "#4ea6e6" },
+  { key: "wind", name: "Wind", color: "#2f8f55" },
+  { key: "solar", name: "Solar", color: "#e3b400" },
+];
+const COUNTRIES = [
+  { country: "France", coal: 2, gas: 17, nuclear: 392, hydro: 59, wind: 46, solar: 32 },
+  { country: "Germany", coal: 103, gas: 83, nuclear: 0, hydro: 20, wind: 136, solar: 90 },
+  { country: "Spain", coal: 1, gas: 62, nuclear: 54, hydro: 33, wind: 59, solar: 63 },
+  { country: "United Kingdom", coal: 0, gas: 91, nuclear: 36, hydro: 6, wind: 86, solar: 19 },
+  { country: "Italy", coal: 4, gas: 126, nuclear: 0, hydro: 42, wind: 21, solar: 45 },
+  { country: "Poland", coal: 87, gas: 25, nuclear: 0, hydro: 2, wind: 24, solar: 20 },
+  { country: "Norway", coal: 0, gas: 1, nuclear: 0, hydro: 145, wind: 14, solar: 1 },
+  { country: "Sweden", coal: 0, gas: 0, nuclear: 47, hydro: 68, wind: 39, solar: 4 },
+];
+
+const KEYS = SOURCES.map((s) => s.key);
+const twh = new Intl.NumberFormat("en-US");
+const total = (d) => KEYS.reduce((sum, k) => sum + d[k], 0);
+const scale = nice(0, Math.max(...COUNTRIES.map(total)), 5); // 0 to 600 TWh
+
+// Slat types: one source's segment, and a country holding its segments in one band (an overlap Plot) and its number
+const Layer = slat({
+  css: `
+    .layer { --rhp-radius: 0px; --rhp-gap: 2px; cursor: pointer; }
+    .off { opacity: .22; }
+  `,
+}, (s) => html`<${Bar} from=${() => s.from} to=${() => s.to} color=${() => s.color} data-source=${() => s.source} class=${() => (s.pick && s.pick !== s.source ? "layer off" : "layer")} />`);
+
+const Country = slat({
+  thickness: 46,
+  inset: "9px",
+  room: "auto",
+  css: `
+    .name { font-size: 15px; font-weight: 700; --rhp-label-gap: 12px; }
+    .twh { font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; --rhp-label-gap: 10px; }
+    .twh small { margin-left: 3px; font-size: 11px; font-weight: 600; color: var(--rhp-muted); }
+    @container (max-width: 420px) { .name { max-width: 6.5em; font-size: 13px; line-height: 1.1; white-space: normal; --rhp-label-gap: 8px; } .twh { font-size: 13px; --rhp-label-gap: 6px; } }
+  `,
+}, (d) => {
+  // The picked source first, so it starts at 0; then the others in the key's order
+  const stack = createMemo(() => {
+    const keys = d.pick ? [d.pick, ...KEYS.filter((k) => k !== d.pick)] : KEYS;
+    const { from, to } = stackUp(keys.map((k) => d[k]));
+    return Object.fromEntries(keys.map((k, i) => [k, [from[i], to[i]]]));
+  });
+  return html`
+    <div aria-label=${() => `${d.country}: ` + SOURCES.map((s) => `${s.name.toLowerCase()} ${twh.format(d[s.key])}`).join(", ") + " TWh"}>
+      <${Label} edge="start" class="name">${() => d.country}<//>
+      <${Plot} overlap=${true} source=${KEYS} color=${SOURCES.map((s) => s.color)} pick=${() => d.pick}
+        from=${() => KEYS.map((k) => stack()[k][0])} to=${() => KEYS.map((k) => stack()[k][1])}>${Layer}<//>
+      <${Label} edge="end" class="twh">${() => twh.format(d.pick ? d[d.pick] : total(d))}<small>TWh</small><//>
+    </div>`;
+});
+
+// Chart component: picking a source (in the key or on a bar) moves it to the start of every bar and ranks the countries by it
+function PowerMix() {
+  const [pick, setPick] = createSignal(null);
+  const choose = (e) => {
+    const key = e.target.closest("[data-source]")?.dataset.source;
+    if (key) setPick((p) => (p === key ? null : key));
+  };
+  return html`
+    <${Poster}
+      kicker="Europe's electricity, by source"
+      title="France runs on nuclear, Norway on water and Poland on coal"
+      dek="Electricity generated in 2025, in terawatt-hours. Pick a source to line it up at the start of every bar and rank the countries by it; pick it again to go back to the totals."
+      note="Source: Ember's yearly electricity data for 2025, rounded to whole terawatt-hours. Bioenergy, oil and other sources are left out."
+      onClick=${choose}>
+      <div class="pylons" aria-hidden="true"></div>
+      <div class="key" role="group" aria-label="Pick a source">
+        ${SOURCES.map((s) => html`
+          <button type="button" data-source=${s.key} aria-pressed=${() => pick() === s.key}><i style=${"background: " + s.color}></i>${s.name}</button>`)}
+      </div>
+      <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} format=${(v) => twh.format(v)}
+        label="Electricity generated by source in eight European countries in 2025, in terawatt-hours"
+        theme=${{ font: '"Public Sans", "Segoe UI", system-ui, sans-serif', ink: "#1b1d21", muted: "#686b72", grid: "#d2d0c8" }}>
+        <${Plot} rows=${COUNTRIES} key="country" pick=${pick} order=${() => sortBy((d) => (pick() ? d[pick()] : total(d)), "desc")}>${Country}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${PowerMix} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

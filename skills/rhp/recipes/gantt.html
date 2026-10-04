@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The build is a week behind</title>
+<meta name="description" content="Gantt chart of a twelve-week product launch: a bar per task from its start to its end, the part done, the work that is late, a milestone, a today line drawn by an overlay Plot and week ticks drawn by a Scale, with a readout of the picked task and what it depends on. Use it for tasks over time and a schedule's progress.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 56px 16px 48px; background: #3a3d42; font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif; color: #1c1f24; }
+  /* The poster: a sheet of dotted planner paper, held to the wall by a strip of tape */
+  .poster { position: relative; max-width: 1000px; margin: 0 auto; padding: 44px 48px 26px; border-radius: 3px; line-height: 1.45;
+    background: radial-gradient(circle, rgb(28 31 36 / .2) 1px, transparent 1.3px) 0 0 / 18px 18px, #fbfbf8;
+    box-shadow: 0 24px 44px -20px rgb(0 0 0 / .6); }
+  .poster::before { content: ""; position: absolute; top: -14px; left: 50%; width: 150px; height: 30px; translate: -50% 0; rotate: -2deg;
+    background: repeating-linear-gradient(135deg, rgb(255 255 255 / .35) 0 6px, transparent 6px 12px), rgb(214 212 200 / .85);
+    box-shadow: 0 1px 2px rgb(0 0 0 / .15); }
+  .poster figcaption { display: grid; gap: 10px; margin-bottom: 18px; }
+  .poster .kicker { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #5d6168; }
+  .poster .headline { font-size: 52px; font-weight: 700; line-height: 1.02; letter-spacing: -.035em; text-wrap: balance; }
+  .poster .dek { max-width: 62ch; font-size: 16px; color: #474b52; }
+  .poster .dek i { display: inline-block; width: 18px; height: 9px; margin: 0 4px 0 2px; border-radius: 5px; vertical-align: 0; }
+  .poster .dek i.done { background: #1c1f24; }
+  .poster .dek i.late { background: #d93a32; }
+  .poster .dek i.todo { background: #dcdad3; }
+  .poster .note { display: block; margin-top: 14px; font-size: 12px; color: #63676e; }
+  /* The readout: the picked task in one line (two on a phone), so the chart never moves */
+  .readout { min-height: 2.2em; margin: 0 0 18px; padding: 9px 12px; border-radius: 6px; background: #1c1f24; color: #f4f4f1; font-size: 15px; }
+  .readout b { font-weight: 700; }
+  .readout strong { font-weight: 400; }
+  .readout .late { color: #ff8a80; font-weight: 700; }
+  .readout .after { color: #b9bcc2; }
+  @media (max-width: 600px) {
+    body { padding: 40px 16px 16px; }
+    .poster { padding: 30px 16px 18px; }
+    .poster .kicker { font-size: 11px; letter-spacing: .1em; }
+    .poster .headline { font-size: 32px; }
+    .poster .dek { font-size: 14.5px; }
+    .readout { min-height: 4.6em; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Bar, Dot, Tick, Label, Poster, Show, slat, every, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: a product launch plan; weeks counted from START, the share of each task done, and the tasks it waits on. Illustrative. Replace with your own.
+const START = "2026-09-07"; // Monday of week 0
+const TODAY = "2026-10-21";
+const WEEKS = 12;
+const TASKS = [
+  { task: "Research & scope", team: "Product", start: 0, end: 2, done: 1, after: [] },
+  { task: "Design", team: "Design", start: 1, end: 4, done: 1, after: [] },
+  { task: "Build the app", team: "Engineering", start: 3, end: 8, done: 0.45, after: ["Design"] },
+  { task: "Website & docs", team: "Marketing", start: 5, end: 9, done: 0.35, after: ["Design"] },
+  { task: "Beta testing", team: "QA", start: 7, end: 10, done: 0, after: ["Build the app"] },
+  { task: "Launch campaign", team: "Marketing", start: 8, end: 12, done: 0, after: ["Website & docs"] },
+  { task: "Fix & polish", team: "Engineering", start: 8.5, end: 11, done: 0, after: ["Beta testing"] },
+  { task: "Launch day", team: "Everyone", start: 11.5, end: 11.5, done: 0, after: ["Fix & polish", "Launch campaign"] },
+];
+const FOCUS = "Build the app"; // the task the readout opens on
+
+const DAY = 864e5;
+const now = (Date.parse(TODAY) - Date.parse(START)) / (7 * DAY); // today, in weeks
+const dateOf = (week) => new Date(Date.parse(START) + week * 7 * DAY);
+const short = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+const long = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
+const percent = new Intl.NumberFormat("en-US", { style: "percent" });
+// Each task's progress: where its done part ends, and how many weeks of work should be done by today but aren't
+const ROWS = TASKS.map((t) => {
+  const reached = t.start + t.done * (t.end - t.start);
+  const late = t.end > t.start && t.start < now ? Math.max(0, Math.min(now, t.end) - reached) : 0;
+  return { ...t, reached, late };
+});
+const related = (a, b) => a.task === b.task || a.after.includes(b.task) || b.after.includes(a.task);
+const opening = Math.max(0, ROWS.findIndex((t) => t.task === FOCUS));
+const span = (t) => (t.end > t.start ? `${short.format(dateOf(t.start))} to ${short.format(dateOf(t.end - 1 / 7))}` : short.format(dateOf(t.start)));
+const statusOf = (t) => {
+  if (t.done === 1) return "done";
+  if (t.late >= 0.5) return `${percent.format(t.done)} done, ${Math.round(t.late)} week${Math.round(t.late) === 1 ? "" : "s"} behind`;
+  return t.start > now ? "not started" : `${percent.format(t.done)} done, on time`;
+};
+
+// Slat types: a week of the plan (from a Scale), a task, and the today line
+const Week = slat({
+  room: { before: 26 },
+  css: `
+    .line { --rhp-tick-width: 1px; background: var(--rhp-grid); }
+    .date { top: -22px; translate: -50% 0; padding: 0; font-size: 12px; font-weight: 600; color: var(--rhp-muted); }
+    @container (max-width: 520px) { .odd .date { display: none; } }
+  `,
+}, (w) => html`
+  <div class=${() => (w.at % 4 ? "week odd" : "week")}>
+    <${Tick} at=${() => w.at} thick=${1} class="line" />
+    <${Show} when=${() => w.at % 2 === 0 && !w.last}><${Label} at=${() => w.at} class="date">${() => short.format(dateOf(w.at))}<//><//>
+  </div>`);
+
+const Task = slat({
+  thickness: 48,
+  room: { start: "auto", end: 16 },
+  css: `
+    .name { font-size: 15px; font-weight: 700; line-height: 1.2; --rhp-label-gap: 16px; }
+    .name small { display: block; font-size: 12px; font-weight: 500; color: var(--rhp-muted); }
+    .plan { --rhp-radius: 99px; background: #dcdad3; }
+    .done { --rhp-radius: 99px; background: #1c1f24; }
+    .late { --rhp-start-radius: 0px; --rhp-end-radius: 99px; background: #d93a32; }
+    .milestone { border-radius: 2px; rotate: 45deg; background: #1c1f24; box-shadow: 0 0 0 3px var(--rhp-surface); }
+    .task:focus-visible { outline: 2px solid #1c1f24; outline-offset: -2px; border-radius: 6px; }
+    .task.on { background: rgb(28 31 36 / .06); border-radius: 6px; }
+    .task.off > :not(.name) { opacity: .25; }
+    .task.off .name { color: var(--rhp-muted); }
+    @container (max-width: 520px) { .name { font-size: 13px; } .name small { font-size: 11px; } }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class=${() => ["task", d.picked === d.index && "on", d.picked != null && !related(d, d.focus) && "off"].filter(Boolean).join(" ")} data-row=${() => d.index}>
+    <${Label} edge="start" class="name">${() => d.task}<small>${() => d.team}</small><//>
+    <${Show} when=${() => d.end > d.start}>
+      <${Bar} from=${() => d.start} to=${() => d.end} thick="14px" class="plan" />
+      <${Bar} from=${() => d.start} to=${() => d.reached} thick="14px" class="done" />
+      <${Bar} from=${() => d.reached} to=${() => d.reached + d.late} thick="14px" class="late" />
+    <//>
+    <${Show} when=${() => d.end === d.start}><${Dot} at=${() => d.start} size="15px" class="milestone" /><//>
+    <span class="say">${() => `: ${span(d)}, ${statusOf(d)}`}</span>
+  </div>`);
+
+const Today = slat({
+  room: { after: 30 },
+  css: `
+    .now { --rhp-tick-width: 2px; background: #d93a32; }
+    .flag { top: calc(100% + 8px); translate: -50% 0; padding: 3px 8px; border-radius: 99px; background: #d93a32; color: #fff;
+      font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  `,
+}, () => html`<div><${Tick} at=${now} thick=${1} class="now" /><${Label} at=${now} class="flag">Today<//></div>`);
+
+// Chart component: the picked task (pointer, finger or arrow keys) is read out, with the tasks it waits on and that wait on it
+function LaunchPlan() {
+  const [picked, setPicked] = createSignal(null);
+  const shown = () => ROWS[picked() ?? opening];
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    if (el) setPicked(+el.dataset.row);
+  };
+  return html`
+    <${Poster}
+      kicker=${`Launch plan · week ${Math.floor(now) + 1} of ${WEEKS}`}
+      title="The build is a week behind, and testing waits on it"
+      dek=${html`<span>Twelve weeks from scope to launch day, as of ${long.format(dateOf(now))}. Each bar is a task: <i class="done"></i>done, <i class="late"></i>should be done by now, <i class="todo"></i>still to do.</span>`}
+      note="Illustrative data. Point at a task or tap it to see what it waits on, or Tab into the chart and use the arrow keys."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <p class="readout">
+        <b>${() => shown().task}</b>, ${() => span(shown())}: <strong class=${() => (shown().late >= 0.5 ? "late" : "")}>${() => statusOf(shown())}</strong>${() => (shown().after.length ? html`<span class="after"> · after ${shown().after.join(" and ")}</span>` : "")}
+      </p>
+      <${Chart} scale=${[0, WEEKS]} label="Gantt chart of a twelve-week product launch plan, with today marked"
+        theme=${{ font: '"Space Grotesk", "Helvetica Neue", Arial, sans-serif', ink: "#1c1f24", muted: "#63676e", grid: "#e4e2dc", surface: "#fbfbf8" }}>
+        <${Scale} ticks=${every(1)}>${Week}<//>
+        <${Plot} rows=${ROWS} picked=${picked} focus=${shown} keyboard=${true}>${Task}<//>
+        <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${Today}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${LaunchPlan} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

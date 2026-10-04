@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who ships the world's phones</title>
+<meta name="description" content="Donut chart: a few parts of one whole, the total in the middle, and the slice under the pointer, finger or keyboard read out in its place. Use it for two to six parts of a total, one or two of them the story.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@500&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #cdd0d4; font-family: Geist, "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a phone's screen, white glass with a status bar, and two brands in color */
+  .poster { position: relative; display: grid; max-width: 1000px; margin: 0 auto; padding: 64px 52px 34px; border-radius: 36px; color: #16181b;
+    background: radial-gradient(120% 80% at 70% 0%, #ffffff, #f1f1ef 60%, #e6e7e8);
+    box-shadow: 0 0 0 1px #b9bdc3, 0 0 0 9px #23262b, 0 30px 60px -30px rgb(20 22 26 / .7); }
+  .poster > * { min-width: 0; }
+  .poster::before { content: "9:41"; position: absolute; top: 22px; left: 40px; font: 600 14px/1 Geist, Arial, sans-serif; }
+  .poster::after { content: ""; position: absolute; top: 22px; right: 40px; width: 62px; height: 13px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 62 13'%3E%3Cg fill='%2316181b'%3E%3Crect x='0' y='9' width='3' height='4' rx='1'/%3E%3Crect x='5' y='6' width='3' height='7' rx='1'/%3E%3Crect x='10' y='3' width='3' height='10' rx='1'/%3E%3Crect x='15' y='0' width='3' height='13' rx='1'/%3E%3Crect x='35' y='2.5' width='18' height='8' rx='2'/%3E%3Crect x='59' y='4.5' width='2' height='4' rx='1'/%3E%3C/g%3E%3Crect x='32.5' y='.5' width='25' height='12' rx='3.5' fill='none' stroke='%2316181b' opacity='.45'/%3E%3C/svg%3E") no-repeat; }
+  .poster figcaption { display: grid; gap: 14px; margin-bottom: 26px; }
+  .poster .kicker { font: 500 12px/1.3 "Geist Mono", ui-monospace, Menlo, monospace; letter-spacing: .12em; text-transform: uppercase; color: #5d636c; }
+  .poster .headline { font-size: 54px; font-weight: 800; line-height: .98; letter-spacing: -.04em; text-wrap: balance; }
+  .poster .headline em { font-style: normal; color: #cf3b20; }
+  .poster .headline em + em { color: #2954c8; }
+  .poster .dek { max-width: 40ch; font-size: 17px; line-height: 1.5; color: #4a4f57; }
+  .poster .note { display: block; margin-top: 22px; font-size: 12px; line-height: 1.5; color: #5d636c; }
+  .chart { width: 100%; max-width: 560px; justify-self: center; }
+  /* The middle of the ring: the total, or the company being read */
+  .hub { position: relative; z-index: 2; display: grid; place-content: center; text-align: center; pointer-events: none; }
+  .hub small { font-size: clamp(11px, 2.6cqw, 14px); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #5d636c; }
+  .hub b { font-size: clamp(34px, 12cqw, 72px); font-weight: 750; line-height: 1; letter-spacing: -.045em; }
+  .hub span { font-size: clamp(11px, 2.6cqw, 14px); color: #4a4f57; }
+  @media (min-width: 860px) {
+    .poster { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); grid-template-rows: auto 1fr; column-gap: 48px; }
+    .poster figcaption { grid-column: 1; grid-row: 1; }
+    .poster .chart { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+    .poster .note { grid-column: 1; grid-row: 2; align-self: end; }
+  }
+  @media (max-width: 520px) {
+    body { padding: 24px 16px 32px; }
+    .poster { padding: 54px 20px 22px; border-radius: 30px; }
+    .poster::before { left: 26px; }
+    .poster::after { right: 26px; }
+    .poster .headline { font-size: 36px; }
+    .poster .dek { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, shares, stackUp, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: smartphones shipped worldwide in 2024, in millions, by company (the parent of each company's brands), from
+// IDC's preliminary results of January 2025. Replace with your own.
+// A company with a `color` is part of the story; the others are drawn gray, and their names carry them.
+const COMPANIES = [
+  { company: "Apple", units: 232.1, color: "#cf3b20" },
+  { company: "Samsung", units: 223.4, color: "#2954c8" },
+  { company: "Xiaomi", units: 168.5 },
+  { company: "Transsion", units: 106.9 },
+  { company: "OPPO", units: 104.8 },
+  { company: "Others", units: 402.9, color: "#b9bdc3" },
+];
+const GRAY = "#7d848e";
+const TOTAL = COMPANIES.reduce((sum, c) => sum + c.units, 0);
+const { from, to } = stackUp(shares(COMPANIES.map((c) => c.units))); // each slice's start and end, 0 to 100
+const fill = COMPANIES.map((c) => c.color ?? GRAY);
+
+const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
+const percent = new Intl.NumberFormat("en-US", { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 });
+// White text on a dark fill, ink on a light one
+const textOn = (hex) => {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  return r * 0.299 + g * 0.587 + b * 0.114 > 128 ? "#16181b" : "#ffffff";
+};
+
+// A slice is an SVG path in a 100 x 100 box around the middle: a ring from radius 29.5 to 47.5 (2.5 left for a slice
+// to slide out), angles in turns from twelve o'clock. Each edge is pushed aside along its length, so the gap is as
+// wide at the hole as at the rim, and a stroke in the fill's color rounds the corners.
+const TAU = Math.PI * 2;
+const ROUND = 1.6, GAP = 1.6;
+const OUTER = 47.5 - ROUND, INNER = 29.5 + ROUND, PUSH = GAP / 2 + ROUND;
+const xy = (t, r) => `${r * Math.sin(t * TAU)},${-r * Math.cos(t * TAU)}`;
+const aside = (r) => Math.asin(Math.min(1, PUSH / r)) / TAU;
+const big = (turns) => (turns > 0.5 ? 1 : 0);
+const ring = (start, end) => {
+  const a = start / 100, b = end / 100, o = aside(OUTER), i = aside(INNER);
+  if (b - a <= 2 * o) return ""; // too thin to draw
+  const rim = `M${xy(a + o, OUTER)}A${OUTER},${OUTER} 0 ${big(b - a - 2 * o)} 1 ${xy(b - o, OUTER)}`;
+  // A slice too narrow to reach the hole ends where its two edges meet
+  if (b - a <= 2 * i) return `${rim}L${xy((a + b) / 2, PUSH / Math.sin((b - a) * Math.PI))}Z`;
+  return `${rim}L${xy(b - i, INNER)}A${INNER},${INNER} 0 ${big(b - a - 2 * i)} 0 ${xy(a + i, INNER)}Z`;
+};
+
+// Slat type: one company. The Bar keeps rhp's numbers and gives up its box to the SVG slice; --rhp-lo and --rhp-hi
+// (the Bar's ends, 0 to 1) give the angle a slice slides out along, and --rhp-p (the Label's value) its label's angle.
+const Company = slat({
+  room: { start: 0, end: 0 },
+  css: `
+    .slice { container-type: size; pointer-events: none; }
+    .slice:focus-visible { outline: none; }
+    .wedge { inset: 0; width: 100%; height: 100%; translate: none; background: none; --mid: calc((var(--rhp-lo) + var(--rhp-hi)) / 2); }
+    .wedge svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .wedge path { fill: var(--rhp-color); stroke: var(--rhp-color); stroke-width: 3.2; stroke-linejoin: round; pointer-events: auto; cursor: pointer; transition: translate .2s ease-out, filter .2s; }
+    .tag { left: 50%; top: 50%; translate: -50% -50%; padding: 0; text-align: center; color: var(--text); pointer-events: none;
+      transform: rotate(calc(var(--rhp-p) * 1turn)) translateY(-38.5cqmin) rotate(calc(var(--rhp-p) * -1turn)); }
+    .tag > span { display: block; transition: translate .2s ease-out; }
+    .tag i { display: block; font-size: 12px; font-style: normal; font-weight: 600; }
+    .tag b { display: block; font-size: 16px; font-weight: 750; letter-spacing: -.02em; }
+    /* Lengths on an SVG path are the viewBox's units: 2.4 is 2.4% of the donut */
+    .on .wedge path { translate: calc(sin(var(--mid) * 1turn) * 2.4px) calc(cos(var(--mid) * 1turn) * -2.4px); filter: drop-shadow(0 1.2px 1.6px rgb(22 24 27 / .3)); }
+    .on .tag > span { translate: calc(sin(var(--rhp-p) * 1turn) * 2.4cqmin) calc(cos(var(--rhp-p) * 1turn) * -2.4cqmin); }
+    @container (max-width: 400px) { .tag i { font-size: 11px; } .tag b { font-size: 14px; } }
+  `,
+}, (d) => html`
+  <div class=${() => (d.on ? "slice on" : "slice")} data-row=${() => d.index}>
+    <${Bar} from=${() => d.from} to=${() => d.to} color=${() => d.fill} class="wedge">
+      <svg viewBox="-50 -50 100 100" aria-hidden="true"><path d=${() => ring(d.from, d.to)} /></svg>
+    <//>
+    <${Label} at=${() => (d.from + d.to) / 2} class="tag" style=${() => ({ "--text": textOn(d.fill) })}>
+      <span><i>${() => d.company}</i><b>${() => percent.format(d.units / TOTAL)}</b></span>
+    <//>
+  </div>`);
+
+// Chart component: the slice under the pointer, a finger or the keyboard slides out, and the middle reads it
+function PhoneMakers() {
+  const [on, setOn] = createSignal(null);
+  const pick = (e) => {
+    const el = e.target.closest("[data-row]");
+    setOn(el ? +el.dataset.row : null);
+  };
+  const company = () => (on() == null ? null : COMPANIES[on()]);
+  return html`
+    <${Poster}
+      kicker="Smartphones · shipments in 2024"
+      title=${html`<em>Apple</em> and <em>Samsung</em> ship more than a third of all smartphones`}
+      dek="Of 1.24 billion smartphones shipped in 2024, the two biggest companies shipped 455.5 million. The next three together shipped 380.2 million."
+      note="Source: IDC Worldwide Quarterly Mobile Phone Tracker, preliminary results for 2024 (January 2025), in millions of phones. Point at a slice, tap it, or Tab into the chart and use the arrow keys."
+      onPointerMove=${pick} onPointerDown=${pick} onFocusIn=${pick}
+      onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}
+      onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <${Chart} class="chart" aspect=${1} ticks=${false} label="Smartphones shipped in 2024 by company, as shares of the total"
+        theme=${{ font: "Geist, 'Helvetica Neue', Arial, sans-serif", ink: "#16181b", muted: "#5d636c", surface: "#f1f1ef" }}>
+        <div class="hub" aria-live="polite">
+          <small>${() => company()?.company ?? "All companies"}</small>
+          <b>${() => number.format(company() ? company().units : TOTAL / 1000)}</b>
+          <span>${() => (company() ? "million phones" : "billion phones")}</span>
+        </div>
+        <${Plot} overlap=${true} keyboard=${true} rows=${COMPANIES} from=${from} to=${to} fill=${fill} on=${(d) => on() === d.index}>${Company}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${PhoneMakers} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eggs doubled</title>
+<meta name="description" content="Slope chart: each item's value at two dates joined by a line on a second axis, labels kept apart on both sides, the change written beside each item, and the line nearest the pointer, a tap or the arrow keys picked out. Use it to compare change between two dates across items.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #bfbcb5; font-family: "Azeret Mono", ui-monospace, Menlo, monospace; }
+  /* The poster: a till receipt, torn at the top and the bottom, its shadow following the tear */
+  #chart { filter: drop-shadow(0 18px 22px rgb(40 38 34 / .35)); }
+  .poster { max-width: 640px; margin: 0 auto; padding: 44px 40px 40px; color: #1d1d1b; background: #fdfdfb;
+    mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / 14px 51% repeat-x,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 51% repeat-x; }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 22px; padding-bottom: 20px; border-bottom: 1.5px dashed #1d1d1b; text-align: center; }
+  .poster .kicker { font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  .poster .headline { font-size: 34px; font-weight: 800; line-height: 1.05; letter-spacing: -.03em; text-transform: uppercase; text-wrap: balance; }
+  .poster .dek { font-size: 13px; line-height: 1.55; color: #55534e; text-wrap: pretty; }
+  .poster .note { display: block; margin-top: 22px; padding-top: 16px; border-top: 1.5px dashed #1d1d1b; font-size: 11px; line-height: 1.55; color: #55534e; }
+  /* The ornament: a barcode at the foot of the receipt */
+  .poster::after { content: ""; display: block; width: min(260px, 70%); height: 46px; margin: 18px auto 0;
+    background: repeating-linear-gradient(90deg, #1d1d1b 0 2px, transparent 2px 5px, #1d1d1b 5px 6px, transparent 6px 9px, #1d1d1b 9px 12px, transparent 12px 13px),
+      repeating-linear-gradient(90deg, transparent 0 17px, #fdfdfb 17px 20px); }
+  .plot { touch-action: pan-y; border-radius: 4px; }
+  .plot:has(:focus-visible) { outline: 2px solid #1d1d1b; outline-offset: 6px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 12px 32px; }
+    .poster { padding: 36px 16px 34px; }
+    .poster .headline { font-size: 25px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: US city average prices, the mean of each year's twelve monthly prices, Bureau of Labor Statistics. Replace with
+// your own items and two values each.
+const ITEMS = [
+  { name: "Coffee, lb", before: 4.433, after: 6.322 },
+  { name: "Ground beef, lb", before: 4.115, after: 5.393 },
+  { name: "Milk, gallon", before: 3.318, after: 3.984 },
+  { name: "Eggs, dozen", before: 1.506, after: 3.172 },
+  { name: "Bread, lb", before: 1.452, after: 1.970 },
+  { name: "Bananas, lb", before: 0.578, after: 0.620 },
+];
+const YEARS = [2020, 2024];
+const STORY = ITEMS.findIndex((d) => d.name.startsWith("Eggs")); // drawn in red until another item is picked
+
+const TOP = 7; // the scale runs from $0 to $7
+const HEIGHT = 380;
+const price = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+const change = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0, signDisplay: "always" });
+
+// Places for a column of labels: in order, at least `px` apart, as near their values as that allows
+function dodge(values, px) {
+  const gap = (px / HEIGHT) * TOP;
+  const order = values.map((_, i) => i).sort((a, b) => values[a] - values[b]);
+  const out = values.slice();
+  for (let pass = 0; pass < 50; pass++) {
+    let moved = false;
+    for (let k = 1; k < order.length; k++) {
+      const lo = order[k - 1], hi = order[k];
+      const push = gap - (out[hi] - out[lo]);
+      if (push > 1e-6) {
+        out[lo] -= push / 2;
+        out[hi] += push / 2;
+        moved = true;
+      }
+    }
+    if (!moved) break;
+  }
+  return out;
+}
+const LEFT = dodge(ITEMS.map((d) => d.before), 18);
+const RIGHT = dodge(ITEMS.map((d) => d.after), 36);
+
+// Slat types
+// The two dates: a rule down the plot and the year above it (the scale runs from 0, the first date, to 1, the second)
+const Year = slat({
+  room: { before: 30 },
+  css: `
+    .rule { --rhp-tick-width: 1px; background: #c9c6be; }
+    .year { top: auto; bottom: calc(100% + 10px); translate: -50% 0; --rhp-label-gap: 0px; font-size: 13px; font-weight: 700; letter-spacing: .1em; }
+  `,
+}, (t) => html`
+  <div>
+    <${Tick} at=${() => t.at} thick=${1} class="rule" />
+    <${Label} at=${() => t.at} class="year">${() => YEARS[t.at]}<//>
+  </div>`);
+
+// An item: its line from the first price to the second, a dot at each end, the first price on the left, and its
+// name, second price and change on the right (each label at its dodged place)
+const Item = slat({
+  room: { start: 52, end: 128 },
+  css: `
+    .item { pointer-events: none; outline: none; transition: opacity .2s; }
+    .dim { opacity: .2; }
+    .slope { stroke: #8f8b83; stroke-width: 2px; }
+    .end { background: #8f8b83; }
+    .story .slope, .on .slope { stroke-width: 3px; }
+    .story .slope { stroke: #d62828; }
+    .story .end { background: #d62828; }
+    .on .slope { stroke: #1d1d1b; }
+    .on .end { background: #1d1d1b; }
+    .first { --rhp-label-gap: 10px; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .second { --rhp-label-gap: 10px; font-size: 12px; line-height: 1.3; }
+    .second small { display: block; font-size: 11px; color: #55534e; }
+    .second b { font-size: 13px; }
+    .second em { margin-left: 6px; font-style: normal; font-weight: 700; color: #b21f1f; }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class=${() => ["item", d.index === STORY && !d.someone && "story", d.on && "on", d.someone && !d.on && "dim"].filter(Boolean).join(" ")} data-i=${() => d.index}>
+    <${Line} points=${() => [[0, d.before], [1, d.after]]} class="slope" />
+    <${Dot} at=${0} cross=${() => d.before} size="8px" class="end" />
+    <${Dot} at=${1} cross=${() => d.after} size="8px" class="end" />
+    <${Label} at=${0} cross=${() => d.left} side="before" class="first">${() => price.format(d.before)}<//>
+    <${Label} at=${1} cross=${() => d.right} class="second">
+      <small>${() => d.name}</small><b>${() => price.format(d.after)}</b><em>${() => change.format(d.after / d.before - 1)}</em>
+    <//>
+    <span class="say">${() => `${d.name}: ${price.format(d.before)} in ${YEARS[0]}, ${price.format(d.after)} in ${YEARS[1]}, ${change.format(d.after / d.before - 1)}`}</span>
+  </div>`);
+
+// Chart component: the item nearest the pointer (its line, or its labels beside the plot), a tap or the arrow keys is
+// picked out and the others fade
+function GroceryChart() {
+  const [picked, setPicked] = createSignal(null);
+  let plot;
+  const nearest = (e) => {
+    const r = plot.getBoundingClientRect();
+    const t = (e.clientX - r.left) / r.width; // 0 at the first date, 1 at the second
+    const y = (1 - (e.clientY - r.top) / r.height) * TOP; // the price under the pointer
+    let best = null;
+    let reach = (16 / HEIGHT) * TOP;
+    ITEMS.forEach((d, i) => {
+      const at = t < 0 ? LEFT[i] : t > 1 ? RIGHT[i] : d.before + (d.after - d.before) * t;
+      if (Math.abs(at - y) < reach) {
+        reach = Math.abs(at - y);
+        best = i;
+      }
+    });
+    return best;
+  };
+  const point = (e) => setPicked(nearest(e));
+  return html`
+    <${Poster}
+      kicker="Price check, US city average"
+      title="A dozen eggs cost twice as much in 2024 as in 2020"
+      dek="Six staples, each at its average price in 2020 and in 2024. Coffee went up 43%, bread 36%, beef 31% and milk 20%; bananas went up 4 cents."
+      note="Source: US Bureau of Labor Statistics, average price data for 2020 and 2024 (the mean of each year's twelve monthly prices). Point at a line, tap it, or Tab into the chart and use the arrow keys.">
+      <div class="plot" onPointerMove=${point} onPointerDown=${point}
+        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+        onFocusIn=${(e) => { const el = e.target.closest("[data-i]"); if (el) setPicked(+el.dataset.i); }}
+        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <${Chart} scale=${[0, 1]} cross=${[0, TOP]} crossTicks=${false} height=${HEIGHT}
+          label=${`Average US prices of six groceries in ${YEARS[0]} and ${YEARS[1]}`}
+          theme=${{ font: '"Azeret Mono", ui-monospace, Menlo, monospace', ink: "#1d1d1b", muted: "#55534e" }}>
+          <${Scale} ticks=${[0, 1]}>${Year}<//>
+          <${Plot} overlap=${true} keyboard=${true} rows=${ITEMS} left=${LEFT} right=${RIGHT} ref=${(el) => (plot = el)}
+            on=${(d) => d.index === picked()} someone=${() => picked() != null}>${Item}<//>
+        <//>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${GroceryChart} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

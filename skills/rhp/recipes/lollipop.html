@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The price of a Big Mac</title>
+<meta name="description" content="Lollipop chart: ranked values as a thin stem and a dot, with a reference line and a switch between the values and their difference from the reference. Use it for a ranked list of prices, scores or rates, lighter than bars.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: radial-gradient(90% 60% at 50% 30%, #4a4844, #2a2927); font-family: "Space Mono", ui-monospace, Menlo, Consolas, monospace; }
+  /* The poster: a till receipt with torn edges, printed in black and the register's red */
+  #chart { max-width: 760px; margin: 0 auto; filter: drop-shadow(0 22px 26px rgb(10 9 8 / .45)); }
+  .poster { --tooth: 9px; display: grid; margin: 0; padding: 46px 46px 34px; color: #232220; text-align: center; background: #fbfaf7;
+    mask: linear-gradient(#000 0 0) 0 var(--tooth) / 100% calc(100% - 2 * var(--tooth)) no-repeat,
+      conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(2 * var(--tooth)) var(--tooth) repeat-x,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(2 * var(--tooth)) var(--tooth) repeat-x; }
+  .poster > * { min-width: 0; }
+  .poster figcaption { display: grid; gap: 12px; padding-bottom: 20px; margin-bottom: 18px; border-bottom: 2px dashed #232220; }
+  .poster .kicker { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+  .poster .headline { font-size: 34px; font-weight: 700; line-height: 1.12; letter-spacing: -.03em; text-transform: uppercase; text-wrap: balance; }
+  .poster .headline em { font-style: normal; color: #c42f1d; }
+  .poster .dek { max-width: 54ch; margin: 0 auto; font-size: 14px; line-height: 1.55; color: #4c4a46; }
+  .poster .note { display: block; margin-top: 20px; padding-top: 16px; border-top: 2px dashed #232220; font-size: 11.5px; line-height: 1.55; color: #4c4a46; }
+  /* A barcode at the foot of the receipt */
+  .poster .note::after { content: ""; display: block; width: 190px; height: 34px; margin: 16px auto 0;
+    background: repeating-linear-gradient(90deg, #232220 0 2px, #0000 2px 4px, #232220 4px 5px, #0000 5px 8px, #232220 8px 11px, #0000 11px 12px, #232220 12px 13px, #0000 13px 17px); }
+  .switch { display: inline-flex; justify-self: center; margin-bottom: 12px; border: 2px solid #232220; border-radius: 6px; }
+  .switch button { padding: 7px 12px; border: 0; background: none; font: 700 12px/1.2 "Space Mono", ui-monospace, Menlo, monospace; letter-spacing: .04em; text-transform: uppercase; color: #232220; cursor: pointer; }
+  .switch button[aria-pressed="true"] { background: #232220; color: #fbfaf7; }
+  .switch button:focus-visible { outline: 2px solid #c42f1d; outline-offset: 2px; }
+  .legend { margin: 0 0 6px; font-size: 12px; color: #4c4a46; }
+  .legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; background: #c42f1d; vertical-align: -1px; }
+  @media (max-width: 520px) {
+    body { padding: 24px 16px 32px; }
+    .poster { padding: 36px 16px 26px; }
+    .poster .headline { font-size: 24px; }
+    .poster .dek { font-size: 13px; }
+    .switch button { padding: 7px 9px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Dot, Tick, Label, Poster, slat, sortBy, nice, html, render, createSignal, createMemo } from "@bezda/rhp/standalone";
+
+// Data: the price of a Big Mac in each country in US dollars, from The Economist's Big Mac index of July 2026
+// (local prices at that month's exchange rates), rounded to the cent. Replace with your own.
+// BASE is the country the others are compared with.
+const BURGERS = [
+  { country: "Switzerland", price: 9.04 },
+  { country: "Uruguay", price: 8.94 },
+  { country: "Norway", price: 8.05 },
+  { country: "Britain", price: 7.4 },
+  { country: "Mexico", price: 6.27 },
+  { country: "USA", price: 6.22 },
+  { country: "Brazil", price: 4.71 },
+  { country: "China", price: 3.91 },
+  { country: "South Africa", price: 3.49 },
+  { country: "Japan", price: 3.08 },
+  { country: "Taiwan", price: 2.42 },
+  { country: "Indonesia", price: 2.38 },
+];
+const BASE = "USA";
+const INK = "#232220", RED = "#c42f1d";
+
+const base = BURGERS.find((b) => b.country === BASE).price;
+const diff = (price) => (price / base - 1) * 100; // % above or below the base price
+const prices = BURGERS.map((b) => b.price), diffs = prices.map(diff);
+const dollars = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+const wholeDollars = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const signed = new Intl.NumberFormat("en-US", { style: "percent", signDisplay: "exceptZero", maximumFractionDigits: 0 });
+// The two views: a scale fitted to each with round ticks, and how its numbers read
+const VIEWS = {
+  price: { name: "Price in US$", scale: nice(0, Math.max(...prices), 5), value: (p) => p, text: dollars.format, tick: wholeDollars.format },
+  diff: { name: "Vs. the US price", scale: nice(Math.min(...diffs), Math.max(...diffs), 5), value: diff, text: (v) => signed.format(v / 100), tick: (v) => signed.format(v / 100) },
+};
+
+// Slat types: a country is its name, a dotted stem like a receipt's leader dots, a dot, and its value in the price
+// column; red is cheaper than the base. The base line is one slat on top of the others.
+const Country = slat({
+  thickness: 34,
+  room: { start: "auto", end: 64 },
+  css: `
+    .name { font-size: 13px; --rhp-label-gap: 14px; }
+    .stem { background: radial-gradient(circle, var(--rhp-color) 1.2px, transparent 1.7px) 0 50% / 7px 100% repeat-x; }
+    .pop { box-shadow: 0 0 0 3px #fbfaf7; }
+    .price { justify-self: end; font-size: 13px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+    .cheap .price { color: #c42f1d; }
+    .base .name, .base .price { font-weight: 700; }
+    @container (max-width: 420px) { .name, .price { font-size: 12px; } }
+  `,
+}, (d) => html`
+  <div class=${() => (d.country === BASE ? "base" : d.price < base ? "cheap" : "")}>
+    <${Label} edge="start" class="name">${() => d.country}<//>
+    <${Bar} to=${() => d.value} thick="4px" color=${() => d.ink} class="stem" />
+    <${Dot} at=${() => d.value} size="13px" color=${() => d.ink} class="pop" />
+    <${Label} edge="end" class="price">${() => d.text}<//>
+  </div>`);
+
+const BaseLine = slat({
+  room: { before: 24 },
+  css: `
+    .rule { --rhp-tick-width: 2px; background: repeating-linear-gradient(0deg, var(--rhp-color) 0 5px, transparent 5px 9px); }
+    .tag { top: 0; translate: -50% -100%; padding: 0 0 5px; font-size: 11px; font-weight: 700; letter-spacing: .06em; }
+  `,
+}, (d) => html`
+  <div>
+    <${Tick} at=${() => d.at} thick=${1} color=${INK} class="rule" />
+    <${Label} at=${() => d.at} class="tag">${() => d.text}<//>
+  </div>`);
+
+// Chart component: the switch moves every dot from its price to its difference from the base, on a new scale
+function BigMacs() {
+  const [view, setView] = createSignal("price");
+  const v = createMemo(() => VIEWS[view()]);
+  return html`
+    <${Poster}
+      kicker="The Big Mac index · 12 countries"
+      title=${html`<span>A Big Mac costs <em>nearly four times</em> as much in Switzerland as in Indonesia</span>`}
+      dek="The same burger, priced in each country and converted to US dollars. Where it is cheap, the local currency buys more than the exchange rate says."
+      note="Source: The Economist, Big Mac index, July 2026: local prices converted at that month's exchange rates, rounded to the cent. Switch the view to compare each price with the US price.">
+      <div class="switch" role="group" aria-label="View">
+        ${Object.keys(VIEWS).map((k) => html`<button type="button" aria-pressed=${() => view() === k} onClick=${() => setView(k)}>${VIEWS[k].name}</button>`)}
+      </div>
+      <p class="legend"><i></i>cheaper than in the US</p>
+      <${Chart} scale=${() => [v().scale.min, v().scale.max]} ticks=${() => v().scale.ticks} format=${(t) => v().tick(t)}
+        style=${{ "--rhp-length-time": ".5s", "--rhp-length-ease": "cubic-bezier(.3, 0, .2, 1)" }}
+        label="Price of a Big Mac by country, in US dollars"
+        theme=${{ font: "'Space Mono', ui-monospace, Menlo, monospace", ink: INK, muted: "#6b6964", grid: "#e3e1dc" }}>
+        <${Plot} rows=${BURGERS} order=${sortBy("price", "desc")} value=${(d) => v().value(d.price)} text=${(d) => v().text(v().value(d.price))}
+          ink=${(d) => (d.price < base ? RED : INK)}>${Country}<//>
+        <${Plot} overlap=${true} slats=${1} at=${() => v().value(base)} text=${() => (view() === "price" ? "US " + dollars.format(base) : "US PRICE")}
+          style=${{ "pointer-events": "none" }}>${BaseLine}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${BigMacs} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

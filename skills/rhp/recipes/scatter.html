@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wealth and health</title>
+<meta name="description" content="Scatter plot of two measures per item on a second axis, with a log scale, a few points labeled (short codes on phones) and a readout of the point nearest the pointer, a tap or the arrow keys. Use it to show how two measures relate across items.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500..800&family=Manrope:wght@400..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d9d7d0; font-family: Manrope, "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: banknote paper, with a quarter of an engraved seal in the corner: fine rays and rings in a band
+     (the top layer paints the paper back inside and outside the band) */
+  .poster { max-width: 900px; margin: 0 auto; padding: 46px 50px 26px; color: #191c1f; border-radius: 3px;
+    background: radial-gradient(circle at 100% 0%, #f2f0e9 0 64px, transparent 65px 150px, #f2f0e9 151px),
+      repeating-radial-gradient(circle at 100% 0%, transparent 0 9px, rgb(25 28 31 / .07) 9px 10px),
+      repeating-conic-gradient(from 0deg at 100% 0%, rgb(25 28 31 / .1) 0 .8deg, transparent .8deg 3deg), #f2f0e9;
+    box-shadow: 0 1px 2px rgb(25 28 31 / .15), 0 26px 50px -26px rgb(25 28 31 / .5); }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 20px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #2e6a50; }
+  .poster .headline { max-width: 14em; font: 700 50px/1.02 "Bodoni Moda", Didot, Georgia, serif; letter-spacing: -.01em; text-wrap: balance; }
+  .poster .dek { max-width: 58ch; font-size: 16px; line-height: 1.5; color: #4a4d52; }
+  .poster .note { display: block; margin-top: 16px; font-size: 12px; line-height: 1.5; color: #686b70; }
+  /* The readout: the country picked, on one line so the chart never moves */
+  .readout { margin: 0 0 10px; padding: 9px 0; border-block: 1px solid #dcd8cc; font-size: 14px; color: #4a4d52; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .readout b { color: #191c1f; }
+  .axis { margin: 0; font-size: 12px; color: #686b70; }
+  .axis.x { text-align: right; }
+  .plot { touch-action: pan-y; border-radius: 4px; }
+  .plot:has(:focus-visible) { outline: 2px solid #191c1f; outline-offset: 8px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 18px 18px; }
+    .poster { background: radial-gradient(circle at 100% 0%, #f2f0e9 0 40px, transparent 41px 92px, #f2f0e9 93px),
+      repeating-radial-gradient(circle at 100% 0%, transparent 0 7px, rgb(25 28 31 / .07) 7px 8px),
+      repeating-conic-gradient(from 0deg at 100% 0%, rgb(25 28 31 / .1) 0 .8deg, transparent .8deg 3deg), #f2f0e9; }
+    .poster .headline { font-size: 34px; }
+    .poster .dek { font-size: 15px; }
+    .readout { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Dot, Tick, Label, Poster, slat, html, render, createSignal, Show } from "@bezda/rhp/standalone";
+
+// Data: GDP per person (2021 international dollars, adjusted for prices; World Bank) and life expectancy at birth
+// (UN World Population Prospects 2024), 2023, via Our World in Data. Replace with your own rows, sorted by x.
+// `side` labels a point on the chart, before or after its dot.
+const COUNTRIES = [
+  { name: "DR Congo", code: "COD", gdp: 1559, life: 61.9 },
+  { name: "Niger", code: "NER", gdp: 1713, life: 61.2 },
+  { name: "Chad", code: "TCD", gdp: 2434, life: 55.1 },
+  { name: "Ethiopia", code: "ETH", gdp: 2758, life: 67.3 },
+  { name: "Pakistan", code: "PAK", gdp: 5419, life: 67.6 },
+  { name: "Nigeria", code: "NGA", gdp: 7843, life: 54.5, side: "after" },
+  { name: "Bangladesh", code: "BGD", gdp: 8242, life: 74.7 },
+  { name: "India", code: "IND", gdp: 8871, life: 72.0 },
+  { name: "Vietnam", code: "VNM", gdp: 13535, life: 74.6 },
+  { name: "South Africa", code: "ZAF", gdp: 13695, life: 66.1 },
+  { name: "Indonesia", code: "IDN", gdp: 13890, life: 71.1 },
+  { name: "Brazil", code: "BRA", gdp: 19080, life: 75.8 },
+  { name: "Mexico", code: "MEX", gdp: 21865, life: 75.1 },
+  { name: "China", code: "CHN", gdp: 22687, life: 78.0 },
+  { name: "Costa Rica", code: "CRI", gdp: 26379, life: 80.8, side: "before" },
+  { name: "Russia", code: "RUS", gdp: 39881, life: 73.2 },
+  { name: "Japan", code: "JPN", gdp: 47387, life: 84.7, side: "before" },
+  { name: "Germany", code: "DEU", gdp: 63140, life: 81.4 },
+  { name: "United States", code: "USA", gdp: 74352, life: 79.3, side: "before" },
+  { name: "Norway", code: "NOR", gdp: 94365, life: 83.3, side: "before" },
+];
+const STORY = COUNTRIES.findIndex((c) => c.code === "USA"); // drawn in the accent color, and read out when nothing is picked
+
+// The x axis is a log scale: the chart gets log10 of each value, and the ticks are turned back into dollars
+const X = [3, 5]; // log10 of $1,000 and of $100,000
+const Y = [50, 90];
+const X_TICKS = [1000, 2000, 5000, 10000, 20000, 50000, 100000].map(Math.log10);
+const dollars = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const short = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact" });
+const years = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+// Slat types
+// The scale under the plot: a short mark and the dollars at each tick (only $1K, $10K, $100K on a phone), the two
+// ends kept inside the chart
+const Money = slat({
+  room: { after: 26 },
+  css: `
+    .mark { top: 100%; height: 6px; translate: -50% 0; --rhp-tick-width: 1px; background: #a7a398; }
+    .amount { top: calc(100% + 10px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+    .first .amount { translate: 0 0; }
+    .last .amount { translate: -100% 0; }
+    @container (max-width: 520px) { .minor .amount { display: none; } }
+  `,
+}, (t) => html`
+  <div class=${() => (t.first ? "first" : t.last ? "last" : Number.isInteger(t.at) ? "" : "minor")}>
+    <${Tick} at=${() => t.at} class="mark" />
+    <${Label} at=${() => t.at} class="amount">${() => short.format(10 ** t.at)}<//>
+  </div>`);
+
+// A country: its dot, its name when the data labels it (its code on a phone), and a sentence for screen readers.
+// The slats let the pointer through: the chart finds the nearest dot itself.
+const Country = slat({
+  css: `
+    .country { pointer-events: none; outline: none; }
+    .dot { background: #2e6a50; box-shadow: 0 0 0 1.5px #f2f0e9; }
+    .story .dot { background: #c2362b; }
+    .on .dot { z-index: 2; box-shadow: 0 0 0 2px #f2f0e9, 0 0 0 4px #191c1f; }
+    .name { --rhp-label-gap: 10px; font-size: 12px; font-weight: 700; }
+    .code { display: none; }
+    @container (max-width: 520px) { .full { display: none; } .code { display: inline; } }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class=${() => ["country", d.index === STORY && "story", d.on && "on"].filter(Boolean).join(" ")} data-i=${() => d.index}>
+    <${Dot} at=${() => Math.log10(d.gdp)} cross=${() => d.life} size="11px" class="dot" />
+    <${Show} when=${() => d.side}>
+      <${Label} at=${() => Math.log10(d.gdp)} cross=${() => d.life} side=${() => d.side} class="name">
+        <span class="full">${() => d.name}</span><span class="code">${() => d.code}</span>
+      <//>
+    <//>
+    <span class="say">${() => `${d.name}: ${dollars.format(d.gdp)} a person, ${years.format(d.life)} years`}</span>
+  </div>`);
+
+// Chart component: the readout and the ring show the country nearest the pointer (within 40px), a tap or the arrow
+// keys, and the United States otherwise
+function WealthChart() {
+  const [picked, setPicked] = createSignal(null);
+  const shown = () => COUNTRIES[picked() ?? STORY];
+  let plot;
+  const nearest = (e) => {
+    const r = plot.getBoundingClientRect();
+    let best = null;
+    let reach = 40 ** 2;
+    COUNTRIES.forEach((c, i) => {
+      const dx = ((Math.log10(c.gdp) - X[0]) / (X[1] - X[0])) * r.width - (e.clientX - r.left);
+      const dy = (1 - (c.life - Y[0]) / (Y[1] - Y[0])) * r.height - (e.clientY - r.top);
+      if (dx * dx + dy * dy < reach) {
+        reach = dx * dx + dy * dy;
+        best = i;
+      }
+    });
+    return best;
+  };
+  const point = (e) => setPicked(nearest(e));
+  return html`
+    <${Poster}
+      kicker="Wealth and health of nations"
+      title="Life expectancy climbs fast with income, then levels off"
+      dek="Twenty countries in 2023. Above about $25,000 a person, higher income goes with little extra life: the United States, richer than all but Norway here, has a lower life expectancy than Costa Rica, with about a third of its income."
+      note="Sources: World Bank (GDP per person, 2021 international dollars) and UN World Population Prospects 2024 (life expectancy), via Our World in Data. Point at a dot, tap it, or Tab into the chart and use the arrow keys.">
+      <p class="readout"><b>${() => shown().name}</b><span>${() => `: ${dollars.format(shown().gdp)} a person, ${years.format(shown().life)} years`}</span></p>
+      <p class="axis">Life expectancy at birth, years</p>
+      <div class="plot"
+        onPointerMove=${point} onPointerDown=${point}
+        onPointerLeave=${(e) => e.pointerType !== "touch" && setPicked(null)}
+        onFocusIn=${(e) => { const el = e.target.closest("[data-i]"); if (el) setPicked(+el.dataset.i); }}
+        onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <${Chart} scale=${X} cross=${Y} crossTicks=${[50, 60, 70, 80, 90]} height=${340}
+          label="Life expectancy at birth against GDP per person, twenty countries, 2023"
+          theme=${{ font: 'Manrope, "Helvetica Neue", Arial, sans-serif', ink: "#191c1f", muted: "#686b70", grid: "#dfdbd0" }}>
+          <${Scale} ticks=${X_TICKS}>${Money}<//>
+          <${Plot} overlap=${true} keyboard=${true} rows=${COUNTRIES} on=${(d) => d.index === picked()} ref=${(el) => (plot = el)}>${Country}<//>
+        <//>
+      </div>
+      <p class="axis x">GDP per person, log scale</p>
+    <//>`;
+}
+
+render(() => html`<${WealthChart} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

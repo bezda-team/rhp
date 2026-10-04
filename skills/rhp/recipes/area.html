@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A summer day on the grid</title>
+<meta name="description" content="Area chart of one quantity over a day: a filled Line on a second axis, with its peak and low annotated, and a switch between two days that morphs the area while the other day stays as a thin reference line. Use it for one quantity over time, filled, or to compare two periods.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700..900&family=Work+Sans:wght@400..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d6d4cf; font-family: "Work Sans", "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: pale concrete, with Manhattan's street grid (turned 29 degrees) fading out under the headline */
+  .poster { max-width: 920px; margin: 0 auto; padding: 44px 48px 26px; color: #1c1d1f; border-radius: 3px;
+    background: linear-gradient(transparent, #f3f2ee 300px),
+      repeating-linear-gradient(29deg, transparent 0 52px, rgb(28 29 31 / .07) 52px 53px),
+      repeating-linear-gradient(119deg, transparent 0 15px, rgb(28 29 31 / .05) 15px 16px),
+      #f3f2ee;
+    box-shadow: 0 1px 2px rgb(28 29 31 / .15), 0 26px 50px -26px rgb(28 29 31 / .5); }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 22px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #a34210; }
+  .poster .headline { max-width: 14em; font: 900 62px/.9 "Big Shoulders Display", "Arial Narrow", sans-serif; text-transform: uppercase; letter-spacing: .005em; text-wrap: balance; }
+  .poster .dek { max-width: 58ch; font-size: 16px; line-height: 1.5; color: #48494c; }
+  .poster .note { display: block; margin-top: 16px; font-size: 12px; line-height: 1.5; color: #6e6b66; }
+  /* The switch: one button per day, the one shown filled in its own color */
+  .days { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .days button { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 10px; border: 1.5px solid #c9c6bf; border-radius: 99px;
+    font: 600 13px/1.2 "Work Sans", sans-serif; color: #48494c; background: #f9f8f5; cursor: pointer; }
+  .days button i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+  .days button[aria-pressed="true"] { border-color: var(--c); color: #1c1d1f; background: color-mix(in srgb, var(--c) 12%, #f9f8f5); }
+  .days button:focus-visible { outline: 2px solid #1c1d1f; outline-offset: 2px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 18px 18px; }
+    .poster .headline { font-size: 40px; }
+    .poster .dek { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Place, Poster, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: New York City's electricity demand in megawatts, the mean of each hour from midnight, NYISO real-time load
+// (zone N.Y.C.). Replace with your own: one list of numbers per period, the same length.
+const DAYS = [
+  { name: "16 Jul", label: "16 July", color: "#e8590c", mw: [
+    8174, 7822, 7548, 7354, 7268, 7328, 7646, 8243, 8736, 9089, 9348, 9566, 9774, 9941, 9971, 10033, 10118, 10242, 10121, 9688, 9397, 9419, 8965, 8373,
+  ] },
+  { name: "17 Jan", label: "17 January", color: "#1c7ed6", mw: [
+    5443, 5265, 5142, 5095, 5141, 5343, 5797, 6312, 6636, 6845, 6922, 6951, 6971, 6966, 6928, 6948, 7019, 7196, 7151, 7032, 6856, 6636, 6277, 5910,
+  ] },
+];
+
+const TOP = 12000; // the top of the scale, in megawatts
+const mw = new Intl.NumberFormat("en-US");
+const clock = (h) => (h % 24 === 0 ? "Midnight" : h === 12 ? "Noon" : `${h % 12} ${h < 12 ? "am" : "pm"}`);
+const points = (list) => list.map((v, h) => [h + 0.5, v]); // each hour's mean, drawn at the middle of its hour
+const extreme = (list, pick) => list.indexOf(pick(...list));
+
+// Slat types
+// The scale under the plot: a short mark and the time every six hours, the two ends kept inside the chart
+const Hour = slat({
+  room: { after: 28 },
+  css: `
+    .mark { top: 100%; height: 6px; translate: -50% 0; --rhp-tick-width: 1px; background: #a9a69f; }
+    .time { top: calc(100% + 10px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+    .first .time { translate: 0 0; }
+    .last .time { translate: -100% 0; }
+    @container (max-width: 420px) { .minor .time { display: none; } }
+  `,
+}, (t) => html`
+  <div class=${() => (t.first ? "first" : t.last ? "last" : t.at % 12 ? "minor" : "")}>
+    <${Tick} at=${() => t.at} class="mark" />
+    <${Label} at=${() => t.at} class="time">${() => clock(t.at)}<//>
+  </div>`);
+
+// Every day as a thin line with its name at the end: the day not shown stays as a reference
+const Outline = slat({
+  room: { end: 58 },
+  css: `
+    .outline { stroke: #8f8c86; stroke-width: 1.5px; }
+    .name { --rhp-label-gap: 8px; font-size: 12px; font-weight: 600; color: var(--rhp-muted); }
+    .on .name { font-weight: 700; color: var(--rhp-ink); }
+  `,
+}, (d) => html`
+  <div class=${() => (d.on ? "on" : "")}>
+    <${Line} points=${() => points(d.mw)} class="outline" />
+    <${Label} at=${() => d.mw.length - 0.5} cross=${() => d.mw.at(-1)} class="name">${() => d.name}<//>
+  </div>`);
+
+// The day shown: its filled area, then its peak and its low, each a dot with a line down to a tag at the foot of
+// the plot, where no line passes (the peak's tag sits higher so the two never meet; --rhp-p keeps them inside)
+const Demand = slat({
+  css: `
+    .area { --rhp-length-time: .6s; --rhp-length-ease: cubic-bezier(.3, .7, .2, 1); stroke-width: 2.5px; }
+    .point, .drop, .pin { --rhp-length-time: .6s; --rhp-length-ease: cubic-bezier(.3, .7, .2, 1); }
+    .point { box-shadow: 0 0 0 2px #f3f2ee; }
+    .drop { top: auto; bottom: 0; translate: -50% 0; --rhp-tick-width: 1px; background: rgb(28 29 31 / .4); }
+    .tag { position: absolute; left: 0; translate: calc(var(--rhp-p) * -100%) 0; padding: 3px 7px; border-radius: 4px; white-space: nowrap;
+      font-size: 12px; background: #fff; box-shadow: 0 0 0 1px rgb(28 29 31 / .14); }
+    .tag b { font-weight: 700; }
+    .peak { bottom: 38px; }
+    .low { bottom: 8px; }
+  `,
+}, (d) => html`
+  <div>
+    <${Line} points=${() => points(d.mw)} fill=${true} color=${() => d.color} class="area" />
+    <${Tick} at=${() => d.peak + 0.5} thick=${() => d.mw[d.peak] / TOP} class="drop" />
+    <${Tick} at=${() => d.low + 0.5} thick=${() => d.mw[d.low] / TOP} class="drop" />
+    <${Dot} at=${() => d.peak + 0.5} cross=${() => d.mw[d.peak]} color=${() => d.color} size="9px" class="point" />
+    <${Dot} at=${() => d.low + 0.5} cross=${() => d.mw[d.low]} color=${() => d.color} size="9px" class="point" />
+    <${Place} at=${() => d.peak + 0.5} across=${1} class="pin">
+      <span class="tag peak"><b>Peak ${() => mw.format(d.mw[d.peak])} MW</b>, ${() => clock(d.peak)}</span>
+    <//>
+    <${Place} at=${() => d.low + 0.5} across=${1} class="pin">
+      <span class="tag low"><b>Low ${() => mw.format(d.mw[d.low])} MW</b>, ${() => clock(d.low)}</span>
+    <//>
+  </div>`);
+
+// Chart component: the buttons pick the day that is filled and annotated
+function PowerChart() {
+  const [shown, setShown] = createSignal(0);
+  const day = () => DAYS[shown()];
+  return html`
+    <${Poster}
+      kicker="New York City power demand"
+      title="A July day used 40% more power than a January one"
+      dek="Demand on the city's grid, hour by hour, on Tuesday 16 July and Wednesday 17 January 2024. Both days peaked at 5 pm, and in July the 4 am low (7,268 megawatts) was higher than January's peak (7,196)."
+      note="Source: NYISO real-time actual load, zone N.Y.C., 2024, hourly means of five-minute readings. Pick a day with the buttons; the other day stays as a gray line.">
+      <div class="days" role="group" aria-label="Day shown">
+        ${DAYS.map((d, k) => html`
+          <button type="button" aria-pressed=${() => shown() === k} onClick=${() => setShown(k)} style=${{ "--c": d.color }}><i></i>${d.label}</button>`)}
+      </div>
+      <${Chart} scale=${[0, 24]} cross=${[0, TOP]} crossTicks=${[0, 3000, 6000, 9000, TOP]} crossFormat=${(v) => mw.format(v)} height=${300}
+        label=${() => `New York City electricity demand by hour on ${day().label} 2024, in megawatts`}
+        theme=${{ font: '"Work Sans", "Helvetica Neue", Arial, sans-serif', ink: "#1c1d1f", muted: "#6e6b66", grid: "#dddad3" }}>
+        <${Scale} ticks=${[0, 6, 12, 18, 24]}>${Hour}<//>
+        <${Plot} overlap=${true} rows=${DAYS} on=${(d) => d.index === shown()}>${Outline}<//>
+        <${Plot} overlap=${true} slats=${1} mw=${() => [day().mw]} color=${() => day().color}
+          peak=${() => extreme(day().mw, Math.max)} low=${() => extreme(day().mw, Math.min)}>${Demand}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${PowerChart} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

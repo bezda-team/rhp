@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales against target by region</title>
+<meta name="description" content="Bullet chart: actual against target for each item, over gray bands for poor, fair and good, with a switch that sorts by the actual value or by the share of target. Use it for performance against goals, budgets or quotas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d4d3cf; font-family: Archivo, "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: a page of an annual report, black on white with one orange, and the year on a tab under the top rule */
+  .poster { position: relative; display: grid; max-width: 960px; margin: 0 auto; padding: 48px 52px 30px; overflow: hidden; color: #141414;
+    background: linear-gradient(#141414 0 0) 52px 34px / calc(100% - 104px) 3px no-repeat, #fcfcfa; box-shadow: 0 1px 2px rgb(30 29 26 / .2), 0 26px 48px -28px rgb(30 29 26 / .55); }
+  .poster > * { min-width: 0; }
+  .poster::after { content: "FY 2025"; position: absolute; top: 37px; right: 52px; padding: 7px 10px 6px; background: #141414; color: #fcfcfa;
+    font: 800 12px/1 Archivo, Arial, sans-serif; font-stretch: 112%; letter-spacing: .14em; }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 20px; padding-top: 18px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #c4430c; }
+  .poster .headline { max-width: 15em; font-size: 50px; font-weight: 800; font-stretch: 112%; line-height: .98; letter-spacing: -.03em; text-wrap: balance; }
+  .poster .dek { max-width: 56ch; font-size: 16px; line-height: 1.5; color: #4b4a47; }
+  .poster .note { display: block; margin-top: 18px; padding-top: 12px; border-top: 1px solid #141414; font-size: 12px; line-height: 1.5; color: #5d5c58; }
+  /* The key and the sort switch, on one line above the chart */
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin-bottom: 18px; }
+  .key { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; font-size: 12px; color: #4b4a47; }
+  .key span { display: inline-flex; align-items: center; gap: 6px; }
+  .key i { display: inline-block; width: 16px; height: 12px; }
+  .switch { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .switch button { padding: 6px 11px; border: 1.5px solid #141414; border-radius: 99px; background: none; font: 700 13px/1 Archivo, Arial, sans-serif; color: #141414; cursor: pointer; }
+  .switch button[aria-pressed="true"] { background: #141414; color: #fcfcfa; }
+  .switch button:focus-visible { outline: 2px solid #e04e0e; outline-offset: 2px; }
+  @media (max-width: 560px) {
+    body { padding: 24px 16px 32px; }
+    .poster { padding: 38px 18px 20px; background-position: 18px 26px, 0 0; background-size: calc(100% - 36px) 3px, auto; }
+    .poster::after { top: 29px; right: 18px; padding: 6px 8px 5px; font-size: 11px; }
+    .poster figcaption { padding-top: 30px; }
+    .poster .headline { font-size: 34px; }
+    .poster .dek { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Tick, Label, Poster, slat, sortBy, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: a fictional company's sales and target for each region in a year, in millions of US dollars. Illustrative.
+// Replace with your own.
+const REGIONS = [
+  { region: "North America", sales: 12.4, target: 11 },
+  { region: "Europe", sales: 9.1, target: 10 },
+  { region: "Asia Pacific", sales: 10.6, target: 9.5 },
+  { region: "Latin America", sales: 3, target: 4 },
+  { region: "Middle East & Africa", sales: 2.1, target: 2 },
+];
+// The bands, as shares of each region's target: poor below 80%, fair to 100%, good to 120%
+const POOR = 0.8, GOOD = 1.2;
+const BANDS = { poor: "#928e86", fair: "#b4b1aa", good: "#e0ded8" };
+const ORANGE = "#e04e0e";
+
+const scale = nice(0, Math.max(...REGIONS.map((r) => Math.max(r.sales, r.target * GOOD))), 5);
+const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact", minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const tickMoney = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 1 });
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+
+// Slat type: a region's name and numbers over its bullet. The bands are three Bars end to end, the sales a thinner Bar
+// over them, the target a Tick across, and the share of target sits past the chart's end.
+const Region = slat({
+  thickness: 74,
+  room: { start: 4, end: 92 },
+  css: `
+    .head { position: absolute; top: 2px; left: 0; white-space: nowrap; font-size: 14px; }
+    .head b { font-weight: 750; }
+    .head span { color: #5d5c58; font-variant-numeric: tabular-nums; }
+    .band { --rhp-radius: 0px; }
+    .poor { --rhp-start-radius: 3px; }
+    .good { --rhp-end-radius: 3px; }
+    .sales { --rhp-radius: 1px; }
+    .target { --rhp-tick-width: 3px; border-radius: 2px; }
+    .pct { font-size: 20px; font-weight: 800; font-stretch: 110%; letter-spacing: -.02em; text-align: right; font-variant-numeric: tabular-nums; }
+    .pct small { font-size: 11px; vertical-align: 3px; margin-right: 3px; }
+    .short .pct { color: #5d5c58; }
+    @container (max-width: 480px) { .head { font-size: 13px; } .pct { font-size: 17px; } }
+  `,
+}, (d) => html`
+  <div class=${() => (d.sales >= d.target ? "region" : "region short")}>
+    <div class="head"><b>${() => d.region}</b><span>${() => ` ${money.format(d.sales * 1e6)} of ${money.format(d.target * 1e6)}`}</span></div>
+    <${Bar} to=${() => d.target * POOR} thick="22px" color=${BANDS.poor} class="band poor" />
+    <${Bar} from=${() => d.target * POOR} to=${() => d.target} thick="22px" color=${BANDS.fair} class="band fair" />
+    <${Bar} from=${() => d.target} to=${() => d.target * GOOD} thick="22px" color=${BANDS.good} class="band good" />
+    <${Bar} to=${() => d.sales} thick="8px" color="ink" class="sales" />
+    <${Tick} at=${() => d.target} thick="32px" color=${ORANGE} class="target" />
+    <${Label} edge="end" class="pct"><small>${() => (d.sales >= d.target ? "▲" : "▼")}</small>${() => percent.format(d.sales / d.target)}<//>
+  </div>`);
+
+// Chart component: the switch sorts the regions by sales or by their share of target, and the slats slide
+function SalesByRegion() {
+  const [by, setBy] = createSignal("sales");
+  const SORTS = { sales: "Sales", share: "% of target" };
+  return html`
+    <${Poster}
+      kicker="Sales by region"
+      title="Three of five regions beat their sales target"
+      dek="Each region against its own target. Latin America fell furthest short, at three quarters of its target; North America beat its target by the most."
+      note="Illustrative data for a fictional company, in millions of US dollars. Bands: poor is under 80% of target, fair is 80 to 100%, good is above it.">
+      <div class="bar">
+        <p class="key">
+          <span><i style=${{ background: BANDS.poor }}></i>Poor</span>
+          <span><i style=${{ background: BANDS.fair }}></i>Fair</span>
+          <span><i style=${{ background: BANDS.good }}></i>Good</span>
+          <span><i style=${{ height: "4px", background: "#141414" }}></i>Sales</span>
+          <span><i style=${{ width: "3px", height: "14px", background: ORANGE }}></i>Target</span>
+        </p>
+        <span class="switch" role="group" aria-label="Sort by">Sort
+          ${Object.keys(SORTS).map((k) => html`<button type="button" aria-pressed=${() => by() === k} onClick=${() => setBy(k)}>${SORTS[k]}</button>`)}
+        </span>
+      </div>
+      <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} format=${(v) => (v ? tickMoney.format(v * 1e6) : "$0")}
+        label="Sales against target by region, in millions of US dollars"
+        theme=${{ font: "Archivo, 'Helvetica Neue', Arial, sans-serif", ink: "#141414", muted: "#5d5c58", grid: "#e2e0db" }}>
+        <${Plot} rows=${REGIONS} rank=${(d) => (by() === "sales" ? d.sales : d.sales / d.target)} order=${sortBy("rank", "desc")}>${Region}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${SalesByRegion} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

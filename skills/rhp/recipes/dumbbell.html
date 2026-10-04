@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ethiopia gained 21 years of life</title>
+<meta name="description" content="Dumbbell chart of life expectancy in 1990 and 2020 for ten countries: a ring for the first value, a dot for the second and a bar between them, with a switch that re-sorts the countries by level or by change. Use it to compare two values per item and the gap between them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #e6e4de; font-family: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif; color: #18181b; }
+  /* The poster: a health report on warm white, black type, teal for years gained and red for years lost */
+  .poster { max-width: 900px; margin: 0 auto; padding: 40px 48px 26px; border-top: 8px solid #18181b; line-height: 1.45;
+    background: #f7f6f2; box-shadow: 0 18px 40px -26px rgb(40 36 30 / .55); }
+  .poster figcaption { display: grid; gap: 10px; margin-bottom: 8px; }
+  .poster .kicker { font-size: 12.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #006b58; }
+  .poster .headline { font-size: 54px; font-weight: 850; line-height: 1; letter-spacing: -.03em; text-wrap: balance; }
+  .poster .dek { max-width: 60ch; font-size: 16px; color: #4b4b52; }
+  .poster .dek i { display: inline-block; width: 11px; height: 11px; margin: 0 4px 0 2px; border-radius: 50%; vertical-align: -1px; }
+  .poster .dek i.then { box-shadow: inset 0 0 0 2px #18181b; }
+  .poster .dek i.now { background: #00836c; }
+  .poster .note { display: block; margin-top: 14px; font-size: 12px; color: #6b6b72; }
+  /* A pulse across the page: the one ornament */
+  .pulse { height: 28px; margin: 14px 0 12px; background: linear-gradient(#18181b, #18181b) 0 50% / 100% 1.5px no-repeat; }
+  .pulse svg { display: block; width: 120px; height: 28px; margin-left: 9%; background: #f7f6f2; }
+  /* The order switch */
+  .order { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 12px; font-size: 13px; font-weight: 600; color: #4b4b52; }
+  .order button { padding: 6px 12px 5px; border: 1.5px solid #18181b; border-radius: 99px; background: none; color: #18181b; cursor: pointer;
+    font: 700 13px/1.2 "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif; }
+  .order button[aria-pressed="true"] { background: #18181b; color: #f7f6f2; }
+  .order button:focus-visible { outline: 2px solid #00836c; outline-offset: 2px; }
+  .axis-name { margin: 4px 0 0; font-size: 12px; font-weight: 600; color: #6b6b72; text-align: right; }
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    .poster { padding: 26px 16px 18px; }
+    .poster .kicker { font-size: 11px; letter-spacing: .12em; }
+    .poster .headline { font-size: 34px; }
+    .poster .dek { font-size: 14.5px; }
+    .pulse svg { margin-left: 4%; }
+    .order span { flex-basis: 100%; } /* the label above, both buttons on one line */
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Dot, Label, Poster, slat, sortBy, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: life expectancy at birth in years, 1990 and 2020, from UN World Population Prospects 2024 via Our World in Data. Replace with your own.
+const COUNTRIES = [
+  { country: "Japan", y1990: 79.0, y2020: 84.7 },
+  { country: "South Korea", y1990: 71.0, y2020: 83.7 },
+  { country: "China", y1990: 68.2, y2020: 78.0 },
+  { country: "United States", y1990: 75.4, y2020: 77.0 },
+  { country: "Brazil", y1990: 65.9, y2020: 74.5 },
+  { country: "Bangladesh", y1990: 55.8, y2020: 71.4 },
+  { country: "India", y1990: 58.6, y2020: 70.2 },
+  { country: "Ethiopia", y1990: 45.1, y2020: 66.0 },
+  { country: "Lesotho", y1990: 59.3, y2020: 55.1 },
+  { country: "Nigeria", y1990: 45.7, y2020: 53.1 },
+];
+const ORDERS = [ // the switch's choices; each key is the field of a row to sort by
+  { key: "gain", name: "Years gained" },
+  { key: "y2020", name: "Life expectancy in 2020" },
+];
+
+const ROWS = COUNTRIES.map((c) => ({ ...c, gain: Math.round((c.y2020 - c.y1990) * 10) / 10 }));
+const all = ROWS.flatMap((c) => [c.y1990, c.y2020]);
+const range = nice(Math.min(...all), Math.max(...all)); // 40 to 90, ticks every 10
+const years = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const change = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: "exceptZero" });
+
+// Slat type: a country; a ring at 1990, a dot at 2020 and a bar between them, teal when it rose and red when it fell
+const Country = slat({
+  thickness: 44,
+  room: "auto",
+  css: `
+    .name { font-size: 15px; font-weight: 700; --rhp-label-gap: 14px; }
+    .span { --rhp-radius: 99px; background: linear-gradient(var(--rhp-toward-end), #c9c7c0, var(--move)); }
+    .then { background: var(--rhp-surface); box-shadow: inset 0 0 0 2.5px #18181b; }
+    .now { background: var(--move); box-shadow: 0 0 0 2px var(--rhp-surface); }
+    .value { min-width: calc(4.4em + 12px); font-size: 15px; font-weight: 800; font-variant-numeric: normal; --rhp-label-gap: 12px; } /* fits either order's text */
+    .value small { font-size: 12px; font-weight: 600; color: var(--rhp-muted); }
+    .country { --move: #00836c; }
+    .country.fell { --move: #c8402c; }
+    @container (max-width: 480px) { .name { font-size: 13px; } .value { min-width: calc(3em + 10px); font-size: 13px; --rhp-label-gap: 10px; } .value small { display: none; } }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class=${() => (d.gain < 0 ? "country fell" : "country")}>
+    <${Label} edge="start" class="name">${() => d.country}<//>
+    <${Bar} from=${() => d.y1990} to=${() => d.y2020} thick="4px" class="span" />
+    <${Dot} at=${() => d.y1990} size="13px" class="then" />
+    <${Dot} at=${() => d.y2020} size="13px" class="now" />
+    <${Label} edge="end" class="value">${() => (d.by === "gain" ? change.format(d.gain) : years.format(d.y2020))}<small> yrs</small><//>
+    <span class="say">${() => `: ${years.format(d.y1990)} years in 1990, ${years.format(d.y2020)} in 2020`}</span>
+  </div>`);
+
+// Chart component: the switch sorts the countries by years gained or by life expectancy in 2020; each slat slides to its place
+function LifeExpectancy() {
+  const [by, setBy] = createSignal("gain");
+  return html`
+    <${Poster}
+      kicker="Life expectancy at birth, 1990 and 2020"
+      title="Ethiopia gained 21 years of life; the US gained under 2"
+      dek=${html`<span>The years a newborn could expect to live, <i class="then"></i>in 1990 and <i class="now"></i>in 2020. Nine of these ten countries gained, Ethiopia most of all; Lesotho lost four years.</span>`}
+      note="Source: UN World Population Prospects 2024, via Our World in Data. 2020 includes the first year of COVID-19.">
+      <div class="pulse" aria-hidden="true">
+        <svg viewBox="0 0 120 28"><path d="M0 14H38L44 14L49 5L55 25L60 1L64 17L68 14H120" fill="none" stroke="#00836c" stroke-width="2" stroke-linejoin="round" /></svg>
+      </div>
+      <div class="order" role="group" aria-label="Order the countries by">
+        <span>Order by</span>
+        ${ORDERS.map((o) => html`
+          <button type="button" aria-pressed=${() => String(by() === o.key)} onClick=${() => setBy(o.key)}>${o.name}</button>`)}
+      </div>
+      <${Chart} scale=${[range.min, range.max]} ticks=${range.ticks} label="Life expectancy at birth in 1990 and 2020, ten countries"
+        theme=${{ font: '"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif', ink: "#18181b", muted: "#6b6b72", grid: "#e2e0da", surface: "#f7f6f2" }}>
+        <${Plot} rows=${ROWS} key="country" by=${by} order=${sortBy((d) => d[by()], "desc")}>${Country}<//>
+      <//>
+      <p class="axis-name">Life expectancy at birth, in years</p>
+    <//>`;
+}
+
+render(() => html`<${LifeExpectancy} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>
