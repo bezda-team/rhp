@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The World's Ten Tallest Buildings</title>
+<meta name="description" content="An editorial poster ranking the world's ten tallest buildings by height, from the Burj Khalifa at 828 metres to CITIC Tower at 527.7. Data: CTBUH.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#EEE7D7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314161B'/%3E%3Crect x='6' y='4' width='6' height='24' fill='%23E8461E'/%3E%3Crect x='14' y='10' width='5' height='18' fill='%23ECE5D4'/%3E%3Crect x='21' y='14' width='5' height='14' fill='%23ECE5D4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500..900&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap">
+<noscript><style>.chart{display:none}.chart-fail{display:block!important}</style></noscript>
+<style>
+:root{
+  --paper:#EEE7D7;
+  --paper-hi:#F7F2E6;
+  --ink:#14161B;
+  --ink-soft:#3A3D45;
+  --mute:#625E54;
+  --rule:rgba(20,22,27,.22);
+  --night:#101318;
+  --cream:#ECE5D4;
+  --cream-dim:#A8A393;
+  --cream-rule:rgba(236,229,212,.2);
+  --accent:#E8461E;
+  --accent-ink:#B8310F;
+  --f-display:"Big Shoulders Display","Bahnschrift Condensed","Avenir Next Condensed","Arial Narrow","Roboto Condensed",sans-serif-condensed,Impact,sans-serif;
+  --f-serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gutter:clamp(18px,4.2vw,60px);
+  --maxw:1280px;
+}
+*{box-sizing:border-box}
+h1,h2{text-wrap:balance}
+html{color-scheme:light;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-serif);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+.eyebrow{font:500 12px/1.3 var(--f-mono);letter-spacing:.14em;text-transform:uppercase}
+
+/* ---------- masthead ---------- */
+.masthead{padding-top:clamp(14px,2vw,22px)}
+.kicker{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:6px solid var(--ink);padding-top:12px}
+.kicker .l{display:flex;align-items:center;gap:14px}
+.glyph{display:block;width:78px;height:24px;flex:none}
+.head{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:end;padding:clamp(22px,3.6vw,48px) 0 clamp(30px,4.4vw,60px)}
+.title{container-type:inline-size;min-width:0;overflow-x:clip}
+h1{margin:0;font-family:var(--f-display);font-weight:900;text-transform:uppercase;line-height:.8;letter-spacing:0}
+h1 .l1{display:block;font:italic 400 26px/1 var(--f-serif);font:italic 400 clamp(20px,5cqw,34px)/1 var(--f-serif);text-transform:none;margin:0 0 .5em .04em;letter-spacing:0}
+h1 .l2,h1 .l3{display:block;width:max-content;white-space:nowrap}
+h1 .l2{font-size:13vw;font-size:calc(100cqw / 4.56)}
+h1 .l3{font-size:15vw;font-size:calc(100cqw / 3.85);margin-top:.06em}
+.deck .lede{font:400 clamp(26px,2.9vw,38px)/1.12 var(--f-serif);margin:0 0 .7em;letter-spacing:-.01em}
+.deck .lede em{font-style:italic;color:var(--accent-ink)}
+.deck .body{font-size:clamp(16px,1.35vw,18px);line-height:1.55;color:var(--ink-soft);margin:0;max-width:34em}
+.deck .body strong{font-weight:600;color:var(--ink)}
+
+/* ---------- Fig. 1: the skyline (night band) ---------- */
+.sky{background:var(--night);color:var(--cream)}
+.sky .wrap{padding-top:clamp(30px,4.4vw,58px);padding-bottom:clamp(30px,4.4vw,58px)}
+.sky-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 40px;margin-bottom:clamp(14px,2vw,26px)}
+.sky-head .eyebrow{color:var(--cream-dim);margin:0 0 6px}
+.sky-head h2{margin:0;font:800 clamp(34px,4.6vw,60px)/.92 var(--f-display);text-transform:uppercase}
+.sky-head .cap{margin:0;max-width:30em;font-size:15px;line-height:1.45;color:var(--cream-dim)}
+.sky-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:clamp(24px,4vw,64px);align-items:start}
+.stats{display:grid;gap:0}
+.stat{border-top:1px solid var(--cream-rule);padding:16px 0 22px}
+.stat .n{display:block;font:900 clamp(54px,6.2vw,88px)/.86 var(--f-display);letter-spacing:.005em}
+.stat .n i{font-style:normal;font-size:.42em;letter-spacing:.04em;margin-left:.12em}
+.stat.hot .n{color:var(--accent)}
+.stat p{margin:.55em 0 0;font-size:15px;line-height:1.45;color:var(--cream-dim)}
+.stat p b{font-weight:600;color:var(--cream)}
+
+/* ---------- Fig. 2 and 3 ---------- */
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(36px,6vw,88px);padding-top:clamp(40px,6vw,84px);padding-bottom:clamp(40px,6vw,84px)}
+.panel .eyebrow{color:var(--mute);margin:0 0 8px}
+.panel h2{margin:0 0 .3em;font:800 clamp(36px,4.4vw,58px)/.92 var(--f-display);text-transform:uppercase}
+.panel .cap{margin:0 0 18px;font-size:16px;line-height:1.5;color:var(--ink-soft);max-width:36em}
+.panel .rule{border-top:2px solid var(--ink);margin-bottom:14px}
+
+/* ---------- ledger ---------- */
+.ledger{padding-bottom:clamp(44px,6vw,84px)}
+.ledger-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 32px;border-top:6px solid var(--ink);padding-top:14px;margin-bottom:6px}
+.ledger-head h2{margin:0;font:800 clamp(34px,4.4vw,56px)/.92 var(--f-display);text-transform:uppercase}
+.ledger-head p{margin:0;font-size:15px;color:var(--mute);max-width:32em}
+table{width:100%;border-collapse:collapse}
+thead th{font:500 11px/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;text-align:left;color:var(--mute);padding:14px 10px 10px 0;border-bottom:2px solid var(--ink)}
+tbody tr{border-bottom:1px solid var(--rule)}
+tbody tr:last-child{border-bottom:2px solid var(--ink)}
+@media (hover:hover){tbody tr:hover{background:rgba(20,22,27,.045)}}
+td,tbody th{padding:12px 10px 12px 0;vertical-align:baseline;text-align:left}
+.c-rank{width:58px}
+tbody td.c-rank{font:800 30px/1 var(--f-display)}
+.nm{font:700 clamp(23px,2.5vw,32px)/1 var(--f-display);text-transform:uppercase;letter-spacing:.01em}
+.meta{display:none;font:400 12px/1.4 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+.c-city,.c-year{font:400 14px/1.2 var(--f-mono);letter-spacing:.04em;text-transform:uppercase}
+.c-year{width:100px}
+.c-h{width:30%;text-align:right}
+thead th.c-h{text-align:right}
+.c-h .num{font:800 clamp(28px,3.2vw,40px)/1 var(--f-display)}
+.c-h .u{font:500 13px var(--f-mono);color:var(--mute);margin-left:.25em}
+.c-h .bar{display:block;height:6px;margin:9px 0 0;background:var(--ink);width:var(--w)}
+tbody tr:first-child td.c-rank,tbody tr:first-child .num{color:var(--accent-ink)}
+tbody tr:first-child .bar{background:var(--accent)}
+.tie{margin:12px 0 0;font:400 12px/1.5 var(--f-mono);letter-spacing:.04em;color:var(--mute)}
+
+/* ---------- footer ---------- */
+.foot-wrap{padding-bottom:clamp(30px,4vw,48px)}
+.foot{border-top:6px solid var(--ink);padding-top:16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 40px;font:400 12px/1.6 var(--f-mono);letter-spacing:.03em;color:var(--mute)}
+.foot b{font-weight:600;color:var(--ink);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:2px}
+.foot p{margin:0}
+
+/* ---------- chart shells ---------- */
+.chart{min-height:440px;position:relative}
+.chart--hero{min-height:640px}
+.chart-fail{display:none;font:400 13px/1.5 var(--f-mono);padding:18px 0;color:var(--cream-dim)}
+.panel .chart-fail{color:var(--mute)}
+.nochart .only-chart{display:none}
+.chart.failed{display:none}
+.chart.failed + .chart-fail{display:block}
+#fig1.static{min-height:0;display:flex;align-items:flex-end;gap:clamp(3px,.8vw,10px);border-bottom:2px solid var(--cream);padding-top:8px}
+.fb{flex:1;min-width:0;text-align:center}
+.fb b{display:block;font:800 clamp(12px,1.9vw,20px)/1.3 var(--f-display);color:var(--cream)}
+.fb i{display:block;position:relative;height:calc(var(--p)*4.2px);background:var(--cream)}
+.fb:first-child i{background:var(--accent)}
+.fb:first-child b{color:var(--accent)}
+.fb i span{position:absolute;left:50%;bottom:8px;margin-left:-.65em;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;font:700 clamp(11px,1.4vw,16px)/1.3 var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--night)}
+.fb u{display:block;text-decoration:none;font:700 clamp(13px,1.8vw,20px)/1.8 var(--f-display);color:var(--cream)}
+
+/* ApexCharts tooltip, restyled to match */
+.apexcharts-canvas .apexcharts-tooltip{background:var(--paper-hi)!important;color:var(--ink)!important;border:1.5px solid var(--ink)!important;border-radius:0!important;box-shadow:5px 5px 0 rgba(20,22,27,.9)!important;overflow:visible!important}
+.tip{padding:10px 14px 11px;min-width:150px;font-family:var(--f-mono)}
+.tip .r{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.tip .t{font:800 22px/1.05 var(--f-display);text-transform:uppercase;margin:3px 0 4px;letter-spacing:.01em}
+.tip .m{font-size:12px;color:var(--ink-soft)}
+.tip .v{font:800 28px/1 var(--f-display);margin-top:6px;color:var(--accent-ink)}
+.tip .v small{font:500 12px var(--f-mono);color:var(--mute)}
+.sky .apexcharts-canvas{--apexcharts-focus-color:var(--cream)}
+.panel .apexcharts-canvas{--apexcharts-focus-color:var(--ink)}
+.chart--hero .apexcharts-datalabel{letter-spacing:.07em}
+.chart--blocks.is-wide .apexcharts-datalabel tspan:first-child{font-size:26px;font-weight:800}
+.chart--blocks.is-wide .apexcharts-datalabel tspan[data-newline]{font-size:11px;font-weight:600;letter-spacing:.08em}
+.chart--hero.is-wide .apexcharts-xaxis-label tspan:first-child{font-size:22px;font-weight:800}
+.chart--hero.is-wide .apexcharts-xaxis-label tspan[data-newline]{font-size:12px;font-weight:600;letter-spacing:.08em;fill:var(--cream-dim)}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .sky-grid{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 24px}
+}
+@media (max-width:900px){
+  .head{grid-template-columns:minmax(0,1fr);align-items:start}
+  .pair{grid-template-columns:minmax(0,1fr)}
+  .foot{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .c-city,.c-year,thead .c-city,thead .c-year{display:none}
+  .meta{display:block}
+  .c-rank{width:38px}
+  tbody td.c-rank{font-size:26px}
+  .c-h{width:44%}
+  .c-h .num{font-size:30px}
+  .nm{font-size:22px}
+}
+@media (max-width:640px){
+  body{font-size:17px}
+  .c-h{width:auto}
+  .kicker{flex-wrap:wrap}
+  .kicker .r{display:none}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .chart{min-height:380px}
+  .chart--hero{min-height:520px}
+  .fb i{height:calc(var(--p)*3.4px)}
+}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sky,.panel,tr,.foot{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead wrap">
+  <div class="kicker eyebrow">
+    <div class="l">
+      <svg class="glyph" viewBox="0 0 78 24" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" y="0" width="6" height="24"/><rect x="8" y="4.3" width="6" height="19.7"/><rect x="16" y="5.7" width="6" height="18.3"/><rect x="24" y="6.6" width="6" height="17.4"/><rect x="32" y="6.6" width="6" height="17.4"/><rect x="40" y="7.9" width="6" height="16.1"/><rect x="48" y="8.3" width="6" height="15.7"/><rect x="56" y="8.6" width="6" height="15.4"/><rect x="64" y="8.6" width="6" height="15.4"/><rect x="72" y="8.7" width="6" height="15.3"/></g></svg>
+      <span>Ranked by height</span>
+    </div>
+    <div class="r">Data: CTBUH</div>
+  </div>
+  <div class="head">
+    <div class="title">
+      <h1><span class="l1">The world&rsquo;s</span><span class="l2">Ten tallest</span><span class="l3">Buildings</span></h1>
+    </div>
+    <div class="deck">
+      <p class="lede">Every one clears 500 metres. <em>Only one clears 800.</em></p>
+      <p class="body"><strong>Burj Khalifa</strong> (Dubai, 2010) leads runner-up Merdeka 118 (Kuala Lumpur, 2023) by 149.1 metres. Five of the ten stand in China; the rest are in the UAE, Malaysia, Saudi Arabia, South Korea and the United States.</p>
+    </div>
+  </div>
+</header>
+<script>
+/* Fit the two big title lines to their column by measurement, so the headline fills the width
+   with Big Shoulders Display and still fits if a fallback font has to stand in. */
+(function () {
+  var box = document.querySelector('.title'), lines = box.querySelectorAll('.l2,.l3');
+  function fit() {
+    var W = box.clientWidth;
+    if (!W) { return; }
+    for (var i = 0; i < lines.length; i++) {
+      lines[i].style.fontSize = '100px';
+      var w = lines[i].getBoundingClientRect().width;
+      if (w) { lines[i].style.fontSize = (100 * W / w * 0.995).toFixed(2) + 'px'; }
+    }
+  }
+  fit();
+  window.addEventListener('resize', fit);
+  if (document.fonts) {
+    if (document.fonts.ready) { document.fonts.ready.then(fit); }
+    if (document.fonts.addEventListener) { document.fonts.addEventListener('loadingdone', fit); }
+  }
+})();
+</script>
+
+<main>
+<section class="sky" aria-labelledby="fig1-h">
+  <div class="wrap">
+    <div class="sky-head">
+      <div>
+        <p class="eyebrow">Fig. 1 &middot; The skyline</p>
+        <h2 id="fig1-h">Tallest to tenth</h2>
+      </div>
+      <p class="cap">Height in metres. The numeral under each tower is its rank.<span class="only-chart"> The dashed line marks 500&nbsp;m; the tinted band is the Burj Khalifa&rsquo;s lead over No.&nbsp;2.</span></p>
+    </div>
+    <div class="sky-grid">
+      <div>
+        <div id="fig1" class="chart chart--hero"></div>
+        <p class="chart-fail">The chart could not be loaded. The full ranking is in the ledger below.</p>
+      </div>
+      <div class="stats">
+        <div class="stat hot"><span class="n">828<i>m</i></span><p><b>Burj Khalifa, Dubai.</b> Completed in 2010 and still the tallest building on the list.</p></div>
+        <div class="stat"><span class="n">+149.1<i>m</i></span><p>Its lead over <b>Merdeka 118</b>, the runner-up at 678.9&nbsp;m (Kuala Lumpur, 2023).</p></div>
+        <div class="stat"><span class="n">6,022.5<i>m</i></span><p>The ten stacked end to end: <b>more than six kilometres</b> of building.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pair wrap">
+  <article class="panel" aria-labelledby="fig2-h">
+    <p class="eyebrow">Fig. 2 &middot; When</p>
+    <h2 id="fig2-h">Nine of ten rose in the 2010s</h2>
+    <p class="cap">Year completed against height; numerals are ranks. The oldest, Burj Khalifa (2010), is still unbeaten. The newest, Merdeka 118 (2023), ranks second.</p>
+    <div class="rule"></div>
+    <div id="fig2" class="chart"></div>
+    <p class="chart-fail">The chart could not be loaded. The full ranking is in the ledger below.</p>
+  </article>
+  <article class="panel" aria-labelledby="fig3-h">
+    <p class="eyebrow">Fig. 3 &middot; Where</p>
+    <h2 id="fig3-h">Five stand in China</h2>
+    <p class="cap">Towers by country, one block per building, numbered by rank. The five Chinese towers are in five different cities: Shanghai, Shenzhen, Guangzhou, Tianjin and Beijing.</p>
+    <div class="rule"></div>
+    <div id="fig3" class="chart chart--blocks"></div>
+    <p class="chart-fail">The chart could not be loaded. The full ranking is in the ledger below.</p>
+  </article>
+</section>
+
+<section class="ledger wrap" aria-labelledby="ledger-h">
+  <div class="ledger-head">
+    <h2 id="ledger-h">The full ranking</h2>
+    <p>Heights in metres, as supplied by CTBUH. Bars are scaled to the Burj Khalifa.</p>
+  </div>
+  <table id="ledger">
+    <caption class="sr">The ten tallest buildings, ranked by height, with city, year completed and height in metres.</caption>
+    <thead><tr><th scope="col" class="c-rank">No.</th><th scope="col" class="c-name">Building</th><th scope="col" class="c-city">City</th><th scope="col" class="c-year">Completed</th><th scope="col" class="c-h">Height</th></tr></thead>
+    <tbody>
+      <tr data-country="United Arab Emirates" data-year="2010" data-h="828"><td class="c-rank">1</td><th scope="row" class="c-name"><span class="nm">Burj Khalifa</span><span class="meta">Dubai &middot; 2010</span></th><td class="c-city">Dubai</td><td class="c-year">2010</td><td class="c-h"><span class="num">828</span><span class="u">m</span><span class="bar" style="--w:100%"></span></td></tr>
+      <tr data-country="Malaysia" data-year="2023" data-h="678.9"><td class="c-rank">2</td><th scope="row" class="c-name"><span class="nm">Merdeka 118</span><span class="meta">Kuala Lumpur &middot; 2023</span></th><td class="c-city">Kuala Lumpur</td><td class="c-year">2023</td><td class="c-h"><span class="num">678.9</span><span class="u">m</span><span class="bar" style="--w:82%"></span></td></tr>
+      <tr data-country="China" data-year="2015" data-h="632"><td class="c-rank">3</td><th scope="row" class="c-name"><span class="nm">Shanghai Tower</span><span class="meta">Shanghai &middot; 2015</span></th><td class="c-city">Shanghai</td><td class="c-year">2015</td><td class="c-h"><span class="num">632</span><span class="u">m</span><span class="bar" style="--w:76.3%"></span></td></tr>
+      <tr data-country="Saudi Arabia" data-year="2012" data-h="601"><td class="c-rank">4</td><th scope="row" class="c-name"><span class="nm">Makkah Royal Clock Tower</span><span class="meta">Mecca &middot; 2012</span></th><td class="c-city">Mecca</td><td class="c-year">2012</td><td class="c-h"><span class="num">601</span><span class="u">m</span><span class="bar" style="--w:72.6%"></span></td></tr>
+      <tr data-country="China" data-year="2017" data-h="599.1"><td class="c-rank">5</td><th scope="row" class="c-name"><span class="nm">Ping An Finance Center</span><span class="meta">Shenzhen &middot; 2017</span></th><td class="c-city">Shenzhen</td><td class="c-year">2017</td><td class="c-h"><span class="num">599.1</span><span class="u">m</span><span class="bar" style="--w:72.4%"></span></td></tr>
+      <tr data-country="South Korea" data-year="2017" data-h="554.5"><td class="c-rank">6</td><th scope="row" class="c-name"><span class="nm">Lotte World Tower</span><span class="meta">Seoul &middot; 2017</span></th><td class="c-city">Seoul</td><td class="c-year">2017</td><td class="c-h"><span class="num">554.5</span><span class="u">m</span><span class="bar" style="--w:67%"></span></td></tr>
+      <tr data-country="United States" data-year="2014" data-h="541.3"><td class="c-rank">7</td><th scope="row" class="c-name"><span class="nm">One World Trade Center</span><span class="meta">New York City &middot; 2014</span></th><td class="c-city">New York City</td><td class="c-year">2014</td><td class="c-h"><span class="num">541.3</span><span class="u">m</span><span class="bar" style="--w:65.4%"></span></td></tr>
+      <tr data-country="China" data-year="2016" data-h="530"><td class="c-rank">8</td><th scope="row" class="c-name"><span class="nm">Guangzhou CTF Finance Centre</span><span class="meta">Guangzhou &middot; 2016</span></th><td class="c-city">Guangzhou</td><td class="c-year">2016</td><td class="c-h"><span class="num">530</span><span class="u">m</span><span class="bar" style="--w:64%"></span></td></tr>
+      <tr data-country="China" data-year="2019" data-h="530"><td class="c-rank">9</td><th scope="row" class="c-name"><span class="nm">Tianjin CTF Finance Centre</span><span class="meta">Tianjin &middot; 2019</span></th><td class="c-city">Tianjin</td><td class="c-year">2019</td><td class="c-h"><span class="num">530</span><span class="u">m</span><span class="bar" style="--w:64%"></span></td></tr>
+      <tr data-country="China" data-year="2018" data-h="527.7"><td class="c-rank">10</td><th scope="row" class="c-name"><span class="nm">CITIC Tower</span><span class="meta">Beijing &middot; 2018</span></th><td class="c-city">Beijing</td><td class="c-year">2018</td><td class="c-h"><span class="num">527.7</span><span class="u">m</span><span class="bar" style="--w:63.7%"></span></td></tr>
+    </tbody>
+  </table>
+  <p class="tie">Guangzhou CTF Finance Centre and Tianjin CTF Finance Centre are tied at 530&nbsp;m; CITIC Tower is 2.3&nbsp;m shorter.</p>
+</section>
+</main>
+
+<footer class="wrap foot-wrap"><div class="foot">
+  <p><b>Source</b>CTBUH, the Council on Tall Buildings and Urban Habitat. Heights in metres; years are year of completion.</p>
+  <p><b>Notes</b>Ranks follow the order supplied. Countries are those of the cities listed.</p>
+  <p><b>Made with</b>ApexCharts. Type set in Big Shoulders Display, Newsreader and IBM Plex Mono.</p>
+</div></footer>
+
+<!-- ApexCharts, pinned to an exact version so the poster renders the same everywhere -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@7.8.0/dist/apexcharts.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* the ledger table is the single source of truth for the data */
+  var B = Array.prototype.map.call(document.querySelectorAll('#ledger tbody tr'), function (tr, i) {
+    return {
+      rank: i + 1,
+      name: tr.querySelector('.nm').textContent.trim(),
+      city: tr.querySelector('.c-city').textContent.trim(),
+      country: tr.getAttribute('data-country'),
+      year: +tr.getAttribute('data-year'),
+      h: +tr.getAttribute('data-h')
+    };
+  });
+  var fmt = function (h) { return Number.isInteger(h) ? String(h) : h.toFixed(1); };
+
+  /* if the chart library cannot be reached (or a chart fails), keep the poster readable:
+     a plain HTML skyline in place of Fig. 1, a short note in place of the others, and the ledger below */
+  function staticSky() {
+    var el = document.getElementById('fig1');
+    root.className += ' nochart';
+    el.className = 'chart chart--hero static';
+    el.innerHTML = B.map(function (b) {
+      return '<div class="fb"><b>' + fmt(b.h) + '</b><i style="--p:' + (b.h / B[0].h * 100).toFixed(1) + '"><span>' + b.name + '</span></i><u>' + b.rank + '</u></div>';
+    }).join('');
+  }
+  function giveUp(id) {
+    if (id === 'fig1') { staticSky(); } else { document.getElementById(id).className += ' failed'; }
+  }
+  if (typeof window.ApexCharts === 'undefined') {
+    staticSky();
+    giveUp('fig2');
+    giveUp('fig3');
+    return;
+  }
+
+  /* design tokens come from the stylesheet so CSS and charts never drift apart */
+  var cs = getComputedStyle(root);
+  var tok = function (n) { return cs.getPropertyValue(n).trim(); };
+  var C = { paper: tok('--paper'), ink: tok('--ink'), mute: tok('--mute'), rule: tok('--rule'), night: tok('--night'),
+            cream: tok('--cream'), creamDim: tok('--cream-dim'), accent: tok('--accent') };
+  var F = { display: tok('--f-display'), mono: tok('--f-mono') };
+  var tip = function (b) {
+    return '<div class="tip"><div class="r">No. ' + b.rank + '</div><div class="t">' + b.name + '</div>' +
+           '<div class="m">' + b.city + ' &middot; ' + b.year + '</div>' +
+           '<div class="v">' + fmt(b.h) + ' <small>m</small></div></div>';
+  };
+  /* text measurement in whatever font is actually rendering, so labels adapt if the web fonts are missing */
+  var g2d = document.createElement('canvas').getContext('2d');
+  function textPx(txt, weight, px, spacingEm) {
+    g2d.font = weight + ' ' + px + 'px ' + F.display;
+    return g2d.measureText(txt).width + txt.length * px * (spacingEm || 0);
+  }
+  /* do the city labels under the towers (Fig. 1) or inside the blocks (Fig. 3) fit without touching? */
+  function heroCityFits(cw) {
+    var slot = (cw - 40) / 10, w = B.map(function (b) { return textPx(b.city.toUpperCase(), 600, 12, 0.08); });
+    return w.every(function (x, i) { return i === w.length - 1 || (x + w[i + 1]) / 2 + 6 <= slot; });
+  }
+  function blocksCityFit(cw) {
+    var blockW = (cw - 20) / 6 * 0.92 - 3;
+    return B.every(function (b) { return textPx(b.city.toUpperCase(), 600, 11, 0.08) + 8 <= blockW; });
+  }
+  var anim = function (stagger) {
+    return { enabled: !reduceMotion, speed: 700, animateGradually: { enabled: !!stagger, delay: 60 }, dynamicAnimation: { enabled: false } };
+  };
+
+  /* ---------- Fig. 1 ---------- */
+  function hero(narrow, cw) {
+    var withCity = !narrow && heroCityFits(cw);
+    var names = B.map(function (b) { return b.name.toUpperCase(); });
+    var slot = (cw - 40) / 10;
+    var lbl = narrow ? (slot >= 30 ? 13 : 12) : 17, tick = narrow ? 13 : 17;
+    var val = Math.max(9, Math.min(22, Math.floor((slot - 3) / (textPx('599.1', 800, 100) / 100))));
+    /* the longest tower name must fit inside the shortest tower */
+    var longest = names.reduce(function (a, n) { return n.length > a.length ? n : a; }, '');
+    var room = ((narrow ? 520 : 640) - (withCity ? 78 : 46)) * B[9].h / 900 - 16;
+    var need = textPx(longest, 700, lbl, 0.07);
+    if (need > room) { lbl = Math.max(9, Math.floor(lbl * room / need)); }
+    var cat = function (b) { return withCity ? [String(b.rank), b.city.toUpperCase(), String(b.year)] : String(b.rank); };
+    var key = function (b) { return withCity ? cat(b).join(' ') : String(b.rank); };
+    return {
+      chart: { type: 'bar', height: narrow ? 520 : 640, width: '100%', fontFamily: F.display, foreColor: C.creamDim,
+               background: 'transparent', toolbar: { show: false }, zoom: { enabled: false }, parentHeightOffset: 0, animations: anim(true),
+               accessibility: { enabled: true, description: 'Column chart of the ten tallest buildings by height in metres: ' + B.map(function (b) { return b.name + ' ' + fmt(b.h); }).join(', ') + '.' } },
+      series: [{ name: 'Height (m)', data: B.map(function (b) { return b.h; }) }],
+      colors: B.map(function (b, i) { return i === 0 ? C.accent : C.cream; }),
+      plotOptions: { bar: { distributed: true, columnWidth: narrow ? '84%' : '68%', borderRadius: 0,
+                            dataLabels: { orientation: 'vertical', position: 'bottom', hideOverflowingLabels: false } } },
+      dataLabels: { enabled: true, textAnchor: 'end',
+                    formatter: function (v, o) { return names[o.dataPointIndex]; },
+                    style: { fontFamily: F.display, fontWeight: 700, fontSize: lbl + 'px', colors: B.map(function () { return C.night; }) } },
+      legend: { show: false },
+      fill: { opacity: 1 },
+      stroke: { show: false },
+      xaxis: { categories: B.map(cat),
+               labels: { style: { colors: B.map(function () { return C.cream; }), fontFamily: F.display, fontWeight: 700, fontSize: (narrow ? tick : (withCity ? 15 : 17)) + 'px' }, rotate: 0, rotateAlways: false, hideOverlappingLabels: false, trim: false },
+               axisBorder: { show: true, color: C.cream, height: 2 }, axisTicks: { show: false }, tooltip: { enabled: false }, crosshairs: { show: false } },
+      yaxis: { min: 0, max: 900, tickAmount: 9,
+               labels: { formatter: function (v) { return v > 0 && v % 200 === 0 ? String(v) : ''; }, offsetX: -3,
+                         style: { colors: [C.creamDim], fontFamily: F.mono, fontSize: (narrow ? 10 : 11) + 'px' } } },
+      grid: { borderColor: 'rgba(236,229,212,.14)', xaxis: { lines: { show: false } }, yaxis: { lines: { show: true } },
+              padding: { left: 0, right: 0, top: 0, bottom: 0 } },
+      annotations: {
+        yaxis: [
+          { y: B[1].h, y2: B[0].h, fillColor: C.accent, opacity: 0.16, borderColor: 'transparent',
+            label: { text: '+' + fmt(B[0].h - B[1].h) + ' m ahead of No. 2', position: 'right', textAnchor: 'end', borderWidth: 0, offsetX: -10, offsetY: narrow ? 22 : 30,
+                     style: { background: 'transparent', color: C.accent, fontFamily: F.display, fontWeight: 800, fontSize: (narrow ? 14 : 20) + 'px' } } },
+          { y: 500, borderColor: C.cream, strokeDashArray: 5, opacity: 0.9,
+            label: { text: '500', position: 'left', textAnchor: 'end', borderWidth: 0, offsetX: -6, offsetY: 6,
+                     style: { background: 'transparent', color: C.cream, fontFamily: F.display, fontWeight: 800, fontSize: (narrow ? 13 : 16) + 'px' } } }
+        ],
+        points: B.map(function (b) {
+          return { x: key(b), y: b.h, marker: { size: 0, strokeWidth: 0 },
+                   label: { text: fmt(b.h), borderWidth: 0, offsetY: -5, textAnchor: 'middle',
+                            style: { background: 'transparent', color: b.rank === 1 ? C.accent : C.cream, fontFamily: F.display, fontWeight: 800, fontSize: val + 'px',
+                                     padding: { left: 0, right: 0, top: 0, bottom: 0 } } } };
+        })
+      },
+      tooltip: { custom: function (o) { return tip(B[o.dataPointIndex]); } },
+      states: { hover: { filter: { type: 'darken', value: 0.12 } }, active: { filter: { type: 'none' } } }
+    };
+  }
+
+  /* ---------- Fig. 2 ---------- */
+  function when(narrow) {
+    var rest = B.slice(1).map(function (b) { return { x: b.year, y: b.h, rank: b.rank }; });
+    var top = [{ x: B[0].year, y: B[0].h, rank: 1 }];
+    var tickPx = (narrow ? 10 : 11) + 'px';
+    return {
+      chart: { type: 'scatter', height: narrow ? 380 : 440, width: '100%', fontFamily: F.display, foreColor: C.mute, background: 'transparent',
+               toolbar: { show: false }, zoom: { enabled: false }, parentHeightOffset: 0, animations: anim(false),
+               accessibility: { enabled: true, description: 'Scatter chart of year completed against height. Nine of the ten buildings were completed in the 2010s. Burj Khalifa (2010, 828 metres) is the oldest and still the tallest; Merdeka 118 (2023, 678.9 metres) is the newest and ranks second.' } },
+      series: [{ name: 'Other towers', data: rest }, { name: 'Burj Khalifa', data: top }],
+      colors: [C.ink, C.accent],
+      markers: { size: narrow ? 9 : 15, strokeWidth: 0, fillOpacity: 1, hover: { sizeOffset: 2 } },
+      dataLabels: { enabled: true, offsetY: narrow ? 1 : 2, textAnchor: 'middle',
+                    background: { enabled: false }, dropShadow: { enabled: false },
+                    formatter: function (v, o) { return o.w.config.series[o.seriesIndex].data[o.dataPointIndex].rank; },
+                    style: { fontFamily: F.display, fontWeight: 800, fontSize: (narrow ? 11 : 16) + 'px', colors: [C.paper, C.ink] } },
+      legend: { show: false },
+      xaxis: { type: 'numeric', min: 2009, max: 2024, tickAmount: 15,
+               labels: { formatter: function (v) { var y = Math.round(v); return (narrow ? y % 5 === 0 : y % 2 === 0) ? String(y) : ''; },
+                         style: { colors: [C.mute], fontFamily: F.mono, fontSize: tickPx } },
+               axisBorder: { show: true, color: C.ink }, axisTicks: { show: false }, tooltip: { enabled: false },
+               crosshairs: { show: true, stroke: { color: C.ink, width: 1, dashArray: 3 } } },
+      yaxis: { min: 400, max: 900, tickAmount: 5,
+               labels: { formatter: function (v) { return v >= 900 ? v + ' m' : String(v); }, style: { colors: [C.mute], fontFamily: F.mono, fontSize: tickPx } } },
+      grid: { borderColor: C.rule, strokeDashArray: 3, xaxis: { lines: { show: false } }, yaxis: { lines: { show: true } }, padding: { right: 14 } },
+      annotations: {
+        xaxis: [{ x: 2009.5, x2: 2019.5, fillColor: C.ink, opacity: 0.06, borderColor: 'transparent',
+                  label: { text: 'THE 2010s: NINE TOWERS', position: 'bottom', orientation: 'horizontal', textAnchor: 'start', borderWidth: 0, offsetX: 8, offsetY: -8,
+                           style: { background: 'transparent', color: C.ink, fontFamily: F.display, fontWeight: 800, fontSize: (narrow ? 12 : 14) + 'px' } } }],
+        yaxis: [{ y: 828, borderColor: C.accent, strokeDashArray: 4,
+                  label: { text: '828 m, unbeaten since 2010', position: 'right', textAnchor: 'end', borderWidth: 0, offsetY: -6,
+                           style: { background: 'transparent', color: tok('--accent-ink'), fontFamily: F.display, fontWeight: 800, fontSize: (narrow ? 12 : 15) + 'px' } } }]
+      },
+      tooltip: { custom: function (o) { return tip(B[o.w.config.series[o.seriesIndex].data[o.dataPointIndex].rank - 1]); } }
+    };
+  }
+
+  /* ---------- Fig. 3 ---------- */
+  function where(narrow, cw) {
+    var withCity = !narrow && blocksCityFit(cw);
+    var groups = {}, order = [];
+    B.forEach(function (b) { if (!groups[b.country]) { groups[b.country] = []; order.push(b.country); } groups[b.country].push(b); });
+    order.sort(function (a, b) { return groups[b].length - groups[a].length || groups[a][0].rank - groups[b][0].rank; });
+    var short = { 'United Arab Emirates': 'UAE', 'United States': 'USA', 'Saudi Arabia': ['SAUDI', 'ARABIA'], 'South Korea': ['SOUTH', 'KOREA'], 'Malaysia': 'MALAYSIA', 'China': 'CHINA' };
+    var depth = groups[order[0]].length;
+    var series = [];
+    for (var k = 0; k < depth; k++) {
+      series.push({ name: 'Tower ' + (k + 1), data: order.map(function (c) { var b = groups[c][k]; return b ? { x: c, y: 1, rank: b.rank } : { x: c, y: 0, rank: 0 }; }) });
+    }
+    var cats = order.map(function (c) { return short[c] || c.toUpperCase(); });
+    return {
+      chart: { type: 'bar', stacked: true, height: narrow ? 380 : 440, width: '100%', fontFamily: F.display, foreColor: C.ink, background: 'transparent',
+               toolbar: { show: false }, zoom: { enabled: false }, parentHeightOffset: 0, animations: anim(false),
+               accessibility: { enabled: true, description: 'Stacked blocks, one per building, grouped by country: ' + order.map(function (c) { return c + ' ' + groups[c].length + ' (rank' + (groups[c].length > 1 ? 's ' : ' ') + groups[c].map(function (b) { return b.rank; }).join(', ') + ')'; }).join('; ') + '.' } },
+      series: series,
+      colors: series.map(function () { return function (o) { return (o.seriesIndex === 0 && o.dataPointIndex === order.indexOf('United Arab Emirates')) ? C.accent : C.ink; }; }),
+      plotOptions: { bar: { columnWidth: narrow ? '84%' : '92%', borderRadius: 0 } },
+      fill: { opacity: 1 },
+      stroke: { show: true, width: 3, colors: [C.paper] },
+      dataLabels: { enabled: true,
+                    formatter: function (v, o) { var d = o.w.config.series[o.seriesIndex].data[o.dataPointIndex]; if (!d.rank) { return ''; } return withCity ? [String(d.rank), B[d.rank - 1].city.toUpperCase()] : String(d.rank); },
+                    style: { fontFamily: F.display, fontWeight: 800, fontSize: (narrow ? 18 : (withCity ? 12 : 26)) + 'px', colors: [function (o) { return (o.seriesIndex === 0 && o.dataPointIndex === order.indexOf('United Arab Emirates')) ? C.ink : C.paper; }] } },
+      legend: { show: false },
+      xaxis: { categories: cats, labels: { style: { colors: [C.ink], fontFamily: F.display, fontWeight: 700, fontSize: (narrow ? 12 : 15) + 'px' } },
+               axisBorder: { show: true, color: C.ink, height: 2 }, axisTicks: { show: false }, tooltip: { enabled: false }, crosshairs: { show: false } },
+      yaxis: { min: 0, max: depth, tickAmount: depth, show: false },
+      grid: { show: false, padding: { left: 0, right: 0, top: 0, bottom: 0 } },
+      tooltip: { custom: function (o) { var d = o.w.config.series[o.seriesIndex].data[o.dataPointIndex]; return d.rank ? tip(B[d.rank - 1]) : ''; } }
+    };
+  }
+
+  /* ---------- mount ---------- */
+  var charts = [];
+  var current = '';
+  var mq = window.matchMedia('(max-width: 640px)');
+  function variant() {
+    var n = mq.matches;
+    return (n ? 'n' : 'w') + (!n && heroCityFits(document.getElementById('fig1').clientWidth) ? 'c' : '') + (!n && blocksCityFit(document.getElementById('fig3').clientWidth) ? 'b' : '');
+  }
+  function mount() {
+    charts.forEach(function (c) { try { c.destroy(); } catch (e) {} });
+    charts = [];
+    var narrow = mq.matches;
+    document.getElementById('fig1').className = 'chart chart--hero' + (narrow ? '' : ' is-wide');
+    document.getElementById('fig3').className = 'chart chart--blocks' + (narrow ? '' : ' is-wide');
+    [['fig1', hero], ['fig2', when], ['fig3', where]].forEach(function (p) {
+      var el = document.getElementById(p[0]);
+      el.innerHTML = '';
+      try {
+        var c = new ApexCharts(el, p[1](narrow, el.clientWidth));
+        charts.push(c);
+        var r = c.render();
+        if (r && typeof r.catch === 'function') { r.catch(function () { giveUp(p[0]); }); }
+      } catch (e) { giveUp(p[0]); }
+    });
+    current = variant();
+    root.setAttribute('data-ready', '1');
+  }
+  var fonts = ['900 40px "Big Shoulders Display"', '700 16px "Big Shoulders Display"', '800 16px "Big Shoulders Display"', '400 12px "IBM Plex Mono"'];
+  var ready = (document.fonts && document.fonts.load)
+    ? Promise.race([Promise.all(fonts.map(function (f) { return document.fonts.load(f, '0123456789ABC'); })), new Promise(function (r) { setTimeout(r, 2500); })])
+    : Promise.resolve();
+  var drawnWithFonts = false;
+  function fontsHere() {
+    var ok = false;
+    try { document.fonts.forEach(function (f) { if (f.family.indexOf('Big Shoulders') > -1 && f.status === 'loaded') { ok = true; } }); } catch (e) {}
+    return ok;
+  }
+  ready.then(function () { drawnWithFonts = fontsHere(); mount(); }, mount);
+  if (document.fonts && document.fonts.addEventListener) {
+    document.fonts.addEventListener('loadingdone', function () { if (!drawnWithFonts && charts.length && fontsHere()) { drawnWithFonts = true; mount(); } });
+  }
+  var rt;
+  window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (variant() !== current) mount(); }, 160); });
+})();
+</script>
+</body>
+</html>

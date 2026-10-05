@@ -1,0 +1,67 @@
+{
+ "rhp": {
+  "skill_md_kb": 31.4,
+  "skill_md_tokens": 13115,
+  "all_md_kb": 337,
+  "all_md_tokens": 140697,
+  "md_files": 7,
+  "recipes_kb": 329,
+  "recipes_tokens": 153180,
+  "recipes": 30,
+  "mcp_tools": 4,
+  "mcp_defs_chars": 4682,
+  "mcp_defs_tokens": 1672
+ },
+ "apexcharts": {
+  "skill_md_kb": 47.0,
+  "skill_md_tokens": 19636,
+  "all_md_kb": 215,
+  "all_md_tokens": 89722,
+  "md_files": 15,
+  "recipes_kb": 0,
+  "recipes_tokens": 0,
+  "recipes": 0,
+  "mcp_tools": 23,
+  "mcp_defs_chars": 23553,
+  "mcp_defs_tokens": 8412
+ },
+ "flint": {
+  "skill_md_kb": 33.2,
+  "skill_md_tokens": 13891,
+  "all_md_kb": 33,
+  "all_md_tokens": 13891,
+  "md_files": 1,
+  "recipes_kb": 0,
+  "recipes_tokens": 0,
+  "recipes": 0,
+  "mcp_tools": 6,
+  "mcp_defs_chars": 18702,
+  "mcp_defs_tokens": 6679
+ },
+ "amcharts5": {
+  "skill_md_kb": 66.6,
+  "skill_md_tokens": 27842,
+  "all_md_kb": 320,
+  "all_md_tokens": 133751,
+  "md_files": 13,
+  "recipes_kb": 0,
+  "recipes_tokens": 0,
+  "recipes": 0,
+  "mcp_tools": 11,
+  "mcp_defs_chars": 7334,
+  "mcp_defs_tokens": 2619
+ },
+ "semiotic": {
+  "skill_md_kb": 8.1,
+  "skill_md_tokens": 3381,
+  "all_md_kb": 8,
+  "all_md_tokens": 3381,
+  "md_files": 1,
+  "recipes_kb": 0,
+  "recipes_tokens": 0,
+  "recipes": 0,
+  "mcp_tools": 24,
+  "mcp_defs_chars": 74270,
+  "mcp_defs_tokens": 26525
+ }
+}

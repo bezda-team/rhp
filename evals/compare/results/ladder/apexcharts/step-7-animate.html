@@ -1,0 +1,62 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Walk, cycle or transit share</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter&display=swap" rel="stylesheet">
+<style>
+  body { background: #f6f3ee; color: #1f1a14; font: 16px Inter, sans-serif }
+  main { max-width: 720px; margin: 0 auto }
+  h1 { font: 600 32px Fraunces, serif }
+  button { font: inherit; color: inherit }
+</style>
+<main>
+  <h1>Lisbon gained the most ground</h1>
+  <p>Share of commuters who walk, cycle or take transit (%): Lisbon rose 9 points between 2024 and 2025, more than any other city.</p>
+  <p id="years"><button>2024</button> <button>2025</button></p>
+  <p id="readout"></p>
+  <div id="chart"></div>
+  <p>Source: illustrative data</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@7"></script>
+<script>
+const cities = ['Vienna', 'Oslo', 'Lisbon', 'Prague', 'Dublin']
+const data = { 2024: [72, 61, 48, 55, 39], 2025: [70, 64, 57, 52, 45] }
+let year = '2025'
+
+const readout = document.querySelector('#readout')
+const show = (i = 2) => {
+  const change = data[year][i] - data[2024][i]
+  readout.textContent = `${cities[i]}: ${data[year][i]}% in ${year}, ${change > 0 ? '+' : ''}${change} points since 2024`
+}
+
+const chart = new ApexCharts(document.querySelector('#chart'), {
+  chart: {
+    type: 'bar', height: 300, fontFamily: 'Inter, sans-serif', foreColor: '#1f1a14',
+    events: { dataPointMouseEnter: (e, ctx, { dataPointIndex }) => show(dataPointIndex), dataPointMouseLeave: () => show() }
+  },
+  plotOptions: { bar: { horizontal: true, dataLabels: { position: 'top' } } },
+  series: [{ name: year, data: data[year] }],
+  xaxis: { categories: cities },
+  yaxis: { min: 0, max: 100 },
+  colors: [({ dataPointIndex }) => dataPointIndex === 2 ? '#c2410c' : '#b8b2a7'],
+  fill: { opacity: 1 },
+  dataLabels: { textAnchor: 'start', offsetX: 6, style: { colors: ['#1f1a14'] } },
+  grid: { show: false },
+  annotations: { xaxis: [{ x: 60, borderColor: '#1f1a14', label: { text: 'EU target: 60%', orientation: 'horizontal' } }] },
+  responsive: [{
+    breakpoint: 481,
+    options: {
+      plotOptions: { bar: { barHeight: '40%' } },
+      yaxis: { floating: true, labels: { align: 'left', offsetY: -14 } }
+    }
+  }]
+})
+chart.render()
+show()
+
+document.querySelectorAll('#years button').forEach(button => button.onclick = () => {
+  year = button.textContent
+  chart.updateSeries([{ name: year, data: data[year] }])
+  show()
+})
+</script>

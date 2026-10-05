@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ten Towers, One Giant</title>
+<meta name="description" content="An editorial poster on the world's ten tallest buildings, ranked by height in metres, from the Burj Khalifa (828 m) to CITIC Tower (527.7 m). Data: CTBUH.">
+<meta property="og:title" content="Ten Towers, One Giant: the world's ten tallest buildings">
+<meta property="og:description" content="The Burj Khalifa stands 149.1 m above the runner-up. Everything from No. 2 down to No. 10 fits inside 151.2 m. Data: CTBUH.">
+<meta property="og:type" content="article">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f2ede2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230e1a2b'/%3E%3Cpath d='M16 3l2.2 6V29h-4.4V9z' fill='%23e4472a'/%3E%3Crect x='7' y='16' width='5' height='13' fill='%23f2ede2'/%3E%3Crect x='20' y='12' width='5' height='17' fill='%23f2ede2'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Big+Shoulders+Text:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
+<script defer src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+
+<style>
+  :root {
+    --paper: #f2ede2;
+    --ink: #0e1a2b;
+    --ink-2: #364255;
+    --muted: #6a655b;
+    --rule: #cbc2ae;
+    --tall: #d4381d;      /* the tallest: vermilion */
+    --tall-text: #b02c16; /* deeper vermilion for small text */
+    --china: #10243b;     /* towers in China: deep navy */
+    --other: #766853;     /* everywhere else: stone */
+
+    --display: "Big Shoulders Display", "Oswald", "Arial Narrow", Haettenschweiler, Impact, sans-serif;
+    --label: "Big Shoulders Text", "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --pad: clamp(16px, 4.2vw, 56px);
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .sheet { max-width: 1280px; margin: 0 auto; padding: 0 var(--pad) 28px; }
+
+  /* ---------- masthead ---------- */
+  .mast {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 14px 0 13px;
+    border-top: 10px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    font: 500 11px/1.2 var(--mono);
+    letter-spacing: .16em; text-transform: uppercase;
+  }
+  .mast b { font-weight: 600; display: inline-flex; align-items: center; gap: 9px; }
+  .mast svg { width: 14px; height: 18px; display: block; }
+  .mast .mid { color: var(--muted); }
+  @media (max-width: 640px) { .mast .mid { display: none; } }
+
+  /* ---------- headline ---------- */
+  .head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; padding: clamp(24px, 4.4vw, 56px) 0 clamp(22px, 3.4vw, 40px); }
+  .head > * { min-width: 0; }
+  .kicker {
+    margin: 0 0 clamp(12px, 2vw, 22px);
+    font: 500 12px/1.4 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--display); font-weight: 900; text-transform: uppercase;
+    font-size: clamp(84px, 15vw, 150px);
+    line-height: .86; letter-spacing: -.004em;
+  }
+  h1 .ln { display: block; }
+  h1 .accent { color: var(--tall); }
+  @media (max-width: 560px) {            /* phones: four words stacked, filling the width */
+    h1 { font-size: min(27vw, 150px); }
+    h1 .w { display: block; }
+  }
+  .dek { margin: 0; font-size: clamp(20px, 2.3vw, 26px); line-height: 1.38; max-width: 27em; text-wrap: pretty; }
+  .dek .n { font-family: var(--display); font-weight: 800; font-size: 1.3em; line-height: 1; letter-spacing: .01em; }
+  .dek .n.red { color: var(--tall); }
+  @media (min-width: 1000px) {
+    .head { grid-template-columns: minmax(0, max-content) minmax(320px, 1fr); align-items: end; column-gap: clamp(32px, 5vw, 80px); }
+    h1 { font-size: clamp(104px, 10.6vw, 152px); }
+  }
+
+  /* ---------- figure ---------- */
+  .fig { margin: 0; padding: 14px 0 0; border-top: 1px solid var(--ink); }
+  .fig-top {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 28px;
+    padding-bottom: 6px;
+    font: 500 11px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0; padding: 0; list-style: none; }
+  .legend li { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); }
+  .legend li::before { content: ""; width: 11px; height: 11px; background: var(--c); }
+  /* reserved height = the chart's height per tier (see SIZE in the script), so nothing jumps when it mounts */
+  #chart { min-height: 560px; position: relative; }
+  @media (min-width: 681px) { #chart { min-height: 620px; } }
+  @media (min-width: 1024px) { #chart { min-height: 700px; } }
+  .chart-note {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font: 500 12px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+  .fig figcaption {
+    margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--rule);
+    font: 400 12px/1.5 var(--mono); letter-spacing: .04em; color: var(--muted);
+  }
+
+  /* ---------- ApexCharts internals, restyled ---------- */
+  #chart .apexcharts-canvas { margin: 0 auto; }
+  #chart .apexcharts-datalabel,
+  #chart .apexcharts-data-labels text { letter-spacing: .07em; }
+  #chart .apexcharts-point-annotation-marker { display: none; }
+  #chart .anno-note { letter-spacing: .1em; }
+  #chart .apexcharts-xaxis-label,
+  #chart .apexcharts-yaxis-label { letter-spacing: .03em; }
+  #chart .apexcharts-tooltip.apexcharts-theme-light {
+    background: var(--ink); color: var(--paper); border: 0; border-radius: 0;
+    box-shadow: 6px 6px 0 rgba(14, 26, 43, .18);
+  }
+  .tip { width: 240px; padding: 12px 14px 13px; white-space: normal; font-family: var(--serif); }
+  .tip-top { display: flex; justify-content: space-between; gap: 18px; font: 500 10.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #aab4c3; }
+  .tip-name { margin: 7px 0 1px; font: 600 19px/1.15 var(--serif); }
+  .tip-city { font: 400 14px/1.3 var(--serif); color: #cfd6e0; }
+  .tip-h { margin-top: 8px; font: 900 40px/.9 var(--display); letter-spacing: .005em; }
+  .tip-h small { font: 700 18px/1 var(--display); margin-left: 4px; color: #aab4c3; }
+  .tip-gap { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.18); font: 400 11px/1.5 var(--mono); color: #cfd6e0; }
+  .tip-gap span { display: block; }
+
+  /* ---------- fallback skyline (only if ApexCharts cannot load) ---------- */
+  #chart.is-fallback { min-height: 0; }
+  .chart-nojs { margin: 18px 0; font: 500 12px/1.5 var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+  .fb { position: relative; display: flex; align-items: flex-end; gap: clamp(4px, 1vw, 12px); height: 560px; padding-top: 34px; border-bottom: 3px solid var(--ink); }
+  @media (min-width: 681px) { .fb { height: 620px; } }
+  @media (min-width: 1024px) { .fb { height: 700px; } }
+  .fb-col { position: relative; flex: 1; height: calc(var(--p) * 1%); background: var(--c); }
+  .fb-col b { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 3px; font: 800 clamp(13px, 1.9vw, 22px)/1 var(--display); white-space: nowrap; color: var(--ink); }
+  .fb-col span { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%) rotate(180deg); writing-mode: vertical-rl; font: 600 clamp(10px, 1.1vw, 14px)/1 var(--label); letter-spacing: .07em; text-transform: uppercase; color: #fff; white-space: nowrap; }
+
+  /* ---------- key numbers ---------- */
+  .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: clamp(22px, 3vw, 36px); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .stat { padding: 18px 14px 20px 0; border-bottom: 1px solid var(--rule); }
+  .stat:nth-child(odd) { padding-right: 14px; border-right: 1px solid var(--rule); }
+  .stat:nth-child(even) { padding-left: 16px; }
+  .stat:nth-last-child(-n+2) { border-bottom: 0; }
+  .stat .k { display: block; font: 500 11px/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .stat .v { display: block; margin: 8px 0 8px; font: 900 clamp(46px, 11vw, 76px)/.86 var(--display); letter-spacing: -.002em; white-space: nowrap; }
+  .stat .v small { font-size: .42em; font-weight: 800; letter-spacing: .02em; margin-left: .12em; }
+  .stat .v .red { color: var(--tall); }
+  .stat p { margin: 0; font-size: 16px; line-height: 1.4; color: var(--ink-2); max-width: 22em; }
+  @media (min-width: 900px) {
+    .stat .v { font-size: clamp(46px, 5.3vw, 76px); }
+    .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .stat, .stat:nth-child(odd), .stat:nth-child(even) { padding: 22px 22px 24px; border-right: 1px solid var(--rule); border-bottom: 0; }
+    .stat:first-child { padding-left: 0; }
+    .stat:last-child { border-right: 0; padding-right: 0; }
+  }
+
+  /* ---------- notes + list ---------- */
+  .lower { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5vw, 48px); padding-top: clamp(26px, 4vw, 48px); }
+  @media (min-width: 960px) { .lower { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(36px, 6vw, 96px); } }
+  .sec-label { display: flex; align-items: center; gap: 12px; margin: 0 0 6px; font: 500 11px/1.3 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+  .sec-label::after { content: ""; flex: 1; height: 1px; background: var(--ink); }
+  .note { padding: 16px 0 18px; border-bottom: 1px solid var(--rule); }
+  .note:last-child { border-bottom: 0; }
+  .note h3 { margin: 0 0 6px; font: 800 30px/1 var(--display); letter-spacing: .01em; text-transform: uppercase; }
+  .note h3 i { font-style: normal; color: var(--tall); margin-right: 10px; }
+  .note p { margin: 0; font-size: 18px; line-height: 1.5; }
+
+  .pull { margin: 18px 0 0; padding: 18px 0 0; border-top: 6px solid var(--ink); }
+  .pull p { margin: 0; font: 900 clamp(38px, 4.4vw, 62px)/.94 var(--display); letter-spacing: .003em; text-transform: uppercase; text-wrap: balance; }
+  .pull em { font-style: normal; color: var(--tall); white-space: nowrap; }
+
+  table.list { width: 100%; border-collapse: collapse; }
+  .list th, .list td { text-align: left; vertical-align: top; padding: 0; font-weight: 400; }
+  .list thead th { padding: 8px 0 8px; border-bottom: 2px solid var(--ink); font: 500 10.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .list tbody tr { border-bottom: 1px solid var(--rule); }
+  .list tbody td, .list tbody th { padding: 13px 0 12px; }
+  .list tbody th { padding-right: 14px; }
+  .list .rk { width: 44px; font: 800 26px/1 var(--display); color: var(--muted); }
+  .list .nm { display: block; font: 600 19px/1.2 var(--serif); }
+  .list .ct { display: block; margin-top: 3px; font: 500 11px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .list .meter { display: block; width: calc(var(--p) * 1%); height: 4px; margin-top: 9px; background: var(--c); }
+  .list .yr { width: 72px; font: 500 14px/1.7 var(--mono); color: var(--ink-2); }
+  .list .ht { width: 118px; text-align: right !important; font: 900 30px/1 var(--display); letter-spacing: .005em; white-space: nowrap; }
+  .list .ht small { margin-left: 3px; font: 700 15px/1 var(--display); color: var(--muted); }
+  .list thead .num { text-align: right; }
+  .tie { display: block; width: max-content; margin: 5px 0 0 auto; padding: 2px 5px 1px; border: 1px solid var(--muted); font: 500 9.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---------- footer ---------- */
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 32px; margin-top: clamp(30px, 5vw, 56px); padding-top: 14px; border-top: 1px solid var(--ink); font: 400 12px/1.6 var(--mono); letter-spacing: .03em; color: var(--muted); }
+  .foot p { margin: 0; max-width: 62ch; }
+  .foot strong { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 480px) { .stat .v { font-size: clamp(30px, 9.4vw, 46px); } }
+
+  @media (max-width: 640px) {
+    body { font-size: 17px; }
+    .note h3 { font-size: 27px; }
+    .list .nm { font-size: 17px; }
+    .list .ct { font-size: 10.5px; letter-spacing: .06em; }
+    .list .rk { font-size: 22px; width: 30px; }
+    .list .ht { font-size: 26px; width: 96px; }
+    .list .yr { width: 50px; font-size: 12.5px; }
+    .list tbody td, .list tbody th { padding-top: 11px; padding-bottom: 10px; }
+    .list tbody th { padding-right: 10px; }
+  }
+  @media print {
+    @page { margin: 12mm; }
+    .apexcharts-tooltip { display: none !important; }
+    .stat, .note, .list tr, .pull, .fig { break-inside: avoid; }
+  }
+</style>
+<noscript><style>#chart { min-height: 0; } .chart-note, .fig figcaption { display: none; }</style></noscript>
+</head>
+
+<body>
+<div class="sheet">
+
+  <header class="mast">
+    <b>
+      <svg viewBox="0 0 14 18" aria-hidden="true"><path d="M7 0l1.1 3.4V18H5.9V3.4z" fill="#d4381d"/><path d="M0 9h4v9H0zM10 6h4v12h-4z" fill="#0e1a2b"/></svg>
+      The Height Index
+    </b>
+    <span class="mid">Height in metres &middot; Completed 2010&ndash;2023</span>
+    <span>Data &middot; CTBUH</span>
+  </header>
+
+  <main>
+  <section class="head" aria-labelledby="title">
+    <div>
+      <p class="kicker">The world&rsquo;s ten tallest buildings, ranked by height</p>
+      <h1 id="title" data-fit><span class="ln"><span class="w">Ten</span> <span class="w">towers.</span></span> <span class="ln accent"><span class="w">One</span> <span class="w">giant.</span></span></h1>
+    </div>
+    <p class="dek">The Burj Khalifa stands <span class="n red">149.1&nbsp;m</span> above the runner-up. Everything from No.&nbsp;2 down to No.&nbsp;10 fits inside <span class="n">151.2&nbsp;m</span>.</p>
+  </section>
+
+  <figure class="fig" aria-labelledby="fig-title">
+    <div class="fig-top">
+      <span id="fig-title">Fig. 1 &mdash; Height of each tower, in metres</span>
+      <ul class="legend" aria-label="Colour key">
+        <li style="--c:var(--tall)">Tallest</li>
+        <li style="--c:var(--china)">In China</li>
+        <li style="--c:var(--other)">Elsewhere</li>
+      </ul>
+    </div>
+    <div id="chart"><div class="chart-note" id="chart-note">Loading chart&hellip;</div></div>
+    <noscript><p class="chart-nojs">This chart needs JavaScript. All ten figures are listed in the table below.</p></noscript>
+    <figcaption>Ranked left to right. Hover or tap a tower for city, year and how far it falls short of the Burj Khalifa.</figcaption>
+  </figure>
+
+  <section class="stats" aria-label="Key numbers">
+    <div class="stat">
+      <span class="k">The tallest</span>
+      <span class="v" data-fit><span class="red">828</span><small>m</small></span>
+      <p>Burj Khalifa, Dubai, completed in 2010.</p>
+    </div>
+    <div class="stat">
+      <span class="k">Its lead</span>
+      <span class="v" data-fit>149.1<small>m</small></span>
+      <p>Over No.&nbsp;2, Merdeka&nbsp;118 in Kuala Lumpur, at 678.9&nbsp;m.</p>
+    </div>
+    <div class="stat">
+      <span class="k">Built in China</span>
+      <span class="v" data-fit>5<small>of 10</small></span>
+      <p>Shanghai, Shenzhen, Guangzhou, Tianjin and Beijing.</p>
+    </div>
+    <div class="stat">
+      <span class="k">Completed</span>
+      <span class="v" data-fit>2010&ndash;23</span>
+      <p>Every tower is from this span; eight are from 2014 or later.</p>
+    </div>
+  </section>
+
+  <div class="lower">
+    <section aria-labelledby="notes-h">
+      <h2 class="sec-label" id="notes-h">Reading the skyline</h2>
+      <article class="note">
+        <h3><i>01</i>The giant</h3>
+        <p>At 828&nbsp;m the Burj Khalifa stands 149.1&nbsp;m above Merdeka&nbsp;118, and is 57% taller than the tenth-placed CITIC Tower, which reaches 527.7&nbsp;m.</p>
+      </article>
+      <article class="note">
+        <h3><i>02</i>The crowd</h3>
+        <p>Below the leader, nine towers are packed into a 151.2&nbsp;m band, from 678.9&nbsp;m down to 527.7&nbsp;m. Ranks 4 and 5 are 1.9&nbsp;m apart; ranks 8 and 9 tie at exactly 530&nbsp;m.</p>
+      </article>
+      <article class="note">
+        <h3><i>03</i>The China run</h3>
+        <p>Five of the ten stand in China. They were completed one a year, from Shanghai Tower in 2015 to Tianjin CTF Finance Centre in 2019.</p>
+      </article>
+      <blockquote class="pull"><p>Nine towers have opened since the Burj Khalifa. None has come within <em>149&nbsp;m</em>.</p></blockquote>
+    </section>
+
+    <section aria-labelledby="list-h">
+      <h2 class="sec-label" id="list-h">The ten, in order</h2>
+      <table class="list">
+        <caption class="sr-only">The ten tallest buildings in the world, ranked by height in metres, with city, country and year of completion</caption>
+        <thead><tr><th scope="col">No.</th><th scope="col">Building</th><th scope="col">Year</th><th scope="col" class="num">Height</th></tr></thead>
+        <tbody>
+          <tr style="--p:100;--c:var(--tall)"><td class="rk">1</td><th scope="row"><span class="nm">Burj Khalifa</span><span class="ct">Dubai &middot; UAE</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2010</td><td class="ht">828<small>m</small></td></tr>
+          <tr style="--p:82;--c:var(--other)"><td class="rk">2</td><th scope="row"><span class="nm">Merdeka 118</span><span class="ct">Kuala Lumpur &middot; Malaysia</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2023</td><td class="ht">678.9<small>m</small></td></tr>
+          <tr style="--p:76.3;--c:var(--china)"><td class="rk">3</td><th scope="row"><span class="nm">Shanghai Tower</span><span class="ct">Shanghai &middot; China</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2015</td><td class="ht">632<small>m</small></td></tr>
+          <tr style="--p:72.6;--c:var(--other)"><td class="rk">4</td><th scope="row"><span class="nm">Makkah Royal Clock Tower</span><span class="ct">Mecca &middot; Saudi Arabia</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2012</td><td class="ht">601<small>m</small></td></tr>
+          <tr style="--p:72.4;--c:var(--china)"><td class="rk">5</td><th scope="row"><span class="nm">Ping An Finance Center</span><span class="ct">Shenzhen &middot; China</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2017</td><td class="ht">599.1<small>m</small></td></tr>
+          <tr style="--p:67;--c:var(--other)"><td class="rk">6</td><th scope="row"><span class="nm">Lotte World Tower</span><span class="ct">Seoul &middot; South Korea</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2017</td><td class="ht">554.5<small>m</small></td></tr>
+          <tr style="--p:65.4;--c:var(--other)"><td class="rk">7</td><th scope="row"><span class="nm">One World Trade Center</span><span class="ct">New York City &middot; USA</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2014</td><td class="ht">541.3<small>m</small></td></tr>
+          <tr style="--p:64;--c:var(--china)"><td class="rk">8</td><th scope="row"><span class="nm">Guangzhou CTF Finance Centre</span><span class="ct">Guangzhou &middot; China</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2016</td><td class="ht">530<small>m</small><span class="tie">tie</span></td></tr>
+          <tr style="--p:64;--c:var(--china)"><td class="rk">9</td><th scope="row"><span class="nm">Tianjin CTF Finance Centre</span><span class="ct">Tianjin &middot; China</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2019</td><td class="ht">530<small>m</small><span class="tie">tie</span></td></tr>
+          <tr style="--p:63.7;--c:var(--china)"><td class="rk">10</td><th scope="row"><span class="nm">CITIC Tower</span><span class="ct">Beijing &middot; China</span><i class="meter" aria-hidden="true"></i></th><td class="yr">2018</td><td class="ht">527.7<small>m</small></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  </main>
+
+  <footer class="foot">
+    <p><strong>Source:</strong> CTBUH, the Council on Tall Buildings and Urban Habitat. Heights in metres; year is year of completion. Countries are added for context. Bars in the table are proportional to height, as in the chart.</p>
+    <p>Chart: ApexCharts.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------------------------------------------------------- data */
+  // CTBUH figures as supplied: height in metres, year of completion.
+  var DATA = [
+    { name: 'Burj Khalifa',                 city: 'Dubai',         country: 'United Arab Emirates', year: 2010, h: 828   },
+    { name: 'Merdeka 118',                  city: 'Kuala Lumpur',  country: 'Malaysia',             year: 2023, h: 678.9, lines: ['KUALA', 'LUMPUR'] },
+    { name: 'Shanghai Tower',               city: 'Shanghai',      country: 'China',                year: 2015, h: 632   },
+    { name: 'Makkah Royal Clock Tower',     city: 'Mecca',         country: 'Saudi Arabia',         year: 2012, h: 601   },
+    { name: 'Ping An Finance Center',       city: 'Shenzhen',      country: 'China',                year: 2017, h: 599.1 },
+    { name: 'Lotte World Tower',            city: 'Seoul',         country: 'South Korea',          year: 2017, h: 554.5 },
+    { name: 'One World Trade Center',       city: 'New York City', country: 'United States',        year: 2014, h: 541.3, lines: ['NEW YORK', 'CITY'] },
+    { name: 'Guangzhou CTF Finance Centre', city: 'Guangzhou',     country: 'China',                year: 2016, h: 530   },
+    { name: 'Tianjin CTF Finance Centre',   city: 'Tianjin',       country: 'China',                year: 2019, h: 530   },
+    { name: 'CITIC Tower',                  city: 'Beijing',       country: 'China',                year: 2018, h: 527.7 }
+  ];
+
+  var TOP = DATA[0].h, SECOND = DATA[1].h, LAST = DATA[DATA.length - 1].h;
+  var C = { ink: '#0e1a2b', ink2: '#364255', muted: '#6a655b', grid: 'rgba(14,26,43,.14)', tall: '#d4381d', tallText: '#b02c16', china: '#10243b', other: '#766853' };
+  var F_UI = '"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+  var F_DISPLAY = '"Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif';
+  var F_LABEL = '"Big Shoulders Text", "Big Shoulders Display", "Arial Narrow", sans-serif';
+
+  function fmt(n) { return String(Number(n.toFixed(1))); }
+
+  /* ------------------------------------------- resilience when web fonts fail */
+  // Web fonts can fail to load (offline, blocked, a flaky network). The system fallback is much
+  // wider than Big Shoulders, so shrink the headline and big numerals just enough to stay in their box.
+  function fitText(el) {
+    el.style.fontSize = '';
+    var ws = el.style.whiteSpace;
+    el.style.whiteSpace = 'nowrap';
+    var avail = el.clientWidth, need = el.scrollWidth;
+    el.style.whiteSpace = ws;
+    if (avail > 0 && need > avail + 1) {
+      var size = parseFloat(getComputedStyle(el).fontSize);
+      el.style.fontSize = (Math.floor(size * (avail / need) * 98) / 100) + 'px';
+    }
+  }
+  function fitAll() { Array.prototype.forEach.call(document.querySelectorAll('[data-fit]'), fitText); }
+  var fitQueued = false;
+  function queueFit() {
+    if (fitQueued) return;
+    fitQueued = true;
+    requestAnimationFrame(function () { fitQueued = false; fitAll(); fitAll(); });
+  }
+  window.addEventListener('resize', queueFit);
+  if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', queueFit);
+
+  // True when the named font really is installed or loaded (its text measures differently from monospace).
+  function hasFont(family, weight) {
+    try {
+      var ctx = document.createElement('canvas').getContext('2d');
+      var sample = 'Hamburgefonstiv 0123456789';
+      ctx.font = (weight || 400) + ' 40px monospace';
+      var base = ctx.measureText(sample).width;
+      ctx.font = (weight || 400) + ' 40px "' + family + '", monospace';
+      return ctx.measureText(sample).width !== base;
+    } catch (e) { return true; }
+  }
+  // Lines under each tower: city and year, or the year alone on phones.
+  function baseLabel(d, tier) {
+    if (tier === 'narrow') return String(d.year);
+    return (d.lines || [d.city.toUpperCase()]).concat(String(d.year));
+  }
+  function colorOf(d, i) { return i === 0 ? C.tall : (d.country === 'China' ? C.china : C.other); }
+
+  /* ------------------------------------------------------------- tooltip */
+  function tooltipHTML(i) {
+    var d = DATA[i];
+    var rank = 'No.&nbsp;' + (i + 1);
+    var gap = i === 0
+      ? '<span>The tallest building in the world</span>'
+      : '<span>' + fmt(TOP - d.h) + ' m below the Burj Khalifa</span><span>' + Math.round(d.h / TOP * 100) + '% of its height</span>';
+    return '<div class="tip">' +
+      '<div class="tip-top"><span>' + rank + '</span><span>' + d.year + '</span></div>' +
+      '<div class="tip-name">' + d.name + '</div>' +
+      '<div class="tip-city">' + d.city + ', ' + d.country + '</div>' +
+      '<div class="tip-h">' + fmt(d.h) + '<small>m</small></div>' +
+      '<div class="tip-gap">' + gap + '</div></div>';
+  }
+
+  /* ------------------------------------------------------- chart options */
+  // Sizes per tier: 'wide' (desktop), 'mid' (tablet), 'narrow' (phone).
+  // padR is negative on purpose: with trim off, ApexCharts reserves half the widest x label at the
+  // plot's right edge (about 33 / 28 / 13 px at these sizes); the negative padding gives it back.
+  var SIZE = {
+    wide:   { height: 700, col: '70%', name: 16, nameDy: -14, val: 24, tick: 11,  big: 44, note: 11.5, padL: 6, padR: -30 },
+    mid:    { height: 620, col: '74%', name: 13, nameDy: -12, val: 19, tick: 10,  big: 34, note: 10.5, padL: 4, padR: -26 },
+    narrow: { height: 560, col: '80%', name: 11, nameDy: -8,  val: 13, tick: 9.5, big: 24, note: 9.5,  padL: 2, padR: -11 }
+  };
+  var ZERO_PAD = { left: 0, right: 0, top: 0, bottom: 0 };
+
+  function bandLabel(text, o) {
+    return {
+      text: text, borderWidth: 0, position: 'right', textAnchor: 'end', offsetX: -8, offsetY: o.offsetY,
+      style: { background: 'transparent', color: o.color, fontFamily: o.family, fontWeight: o.weight, fontSize: o.size + 'px', cssClass: o.css || '', padding: ZERO_PAD }
+    };
+  }
+
+  function buildOptions(tier) {
+    var z = SIZE[tier];
+    var kd = hasFont('Big Shoulders Display', 800) ? 1 : 0.74;   // fallback fonts are far wider
+    function px(n) { return Math.round(n * kd * 10) / 10; }
+    var names = DATA.map(function (d) { return d.name; });
+    var lead = TOP - SECOND, spread = SECOND - LAST;
+    var noteA = 'LEAD OVER NO. 2';
+    var noteB = tier === 'wide' ? 'SPREAD, NO. 2 TO NO. 10' : 'NO. 2 TO NO. 10';
+    var noteDy = Math.round(z.big * 0.92 + z.note + 9);
+
+    return {
+      chart: {
+        type: 'bar',
+        id: 'height-index',
+        height: z.height,
+        fontFamily: F_UI,
+        foreColor: C.ink2,
+        background: 'transparent',
+        parentHeightOffset: 0,
+        toolbar: { show: false },
+        zoom: { enabled: false },
+        animations: { enabled: false },   // a poster is always the finished picture: nothing to catch half-drawn
+        accessibility: {
+          enabled: true,
+          description: 'Column chart of the ten tallest buildings in the world, in metres: ' +
+            DATA.map(function (d) { return d.name + ', ' + d.city + ', ' + fmt(d.h); }).join('; ') + '.'
+        },
+        events: { mounted: layerBands, updated: layerBands }
+      },
+      series: [{ name: 'Height (m)', data: DATA.map(function (d) { return d.h; }) }],
+      colors: DATA.map(colorOf),
+      plotOptions: {
+        bar: {
+          distributed: true,
+          columnWidth: z.col,
+          borderRadius: 0,
+          dataLabels: { position: 'bottom', orientation: 'vertical', hideOverflowingLabels: false }
+        }
+      },
+      // The building's name, standing inside its own tower and reading upward.
+      dataLabels: {
+        enabled: true,
+        offsetY: z.nameDy,
+        formatter: function (val, opts) { return DATA[opts.dataPointIndex].name.toUpperCase(); },
+        style: { fontSize: px(z.name) + 'px', fontFamily: F_LABEL, fontWeight: 600, colors: ['#ffffff'] },
+        dropShadow: { enabled: false }
+      },
+      stroke: { show: false },
+      fill: { type: 'solid', opacity: 1 },
+      states: { hover: { filter: { type: 'none' } }, active: { filter: { type: 'none' } } },
+      grid: {
+        borderColor: C.grid, strokeDashArray: 2,
+        xaxis: { lines: { show: false } }, yaxis: { lines: { show: true } },
+        padding: { top: 0, right: z.padR, bottom: 0, left: z.padL }
+      },
+      xaxis: {
+        categories: names,
+        axisBorder: { show: true, color: C.ink, height: 3 },
+        axisTicks: { show: false },
+        crosshairs: { show: true, width: 'tickWidth', position: 'back', opacity: 1, stroke: { width: 0 }, fill: { type: 'solid', color: 'rgba(14, 26, 43, .05)' } },
+        tooltip: { enabled: false },
+        labels: {
+          rotate: 0, trim: false, hideOverlappingLabels: false,
+          style: { colors: C.ink2, fontSize: z.tick + 'px', fontFamily: F_UI, fontWeight: 500 },
+          formatter: function (v) {
+            var d = DATA[names.indexOf(v)];
+            return d ? baseLabel(d, tier) : v;
+          }
+        }
+      },
+      yaxis: {
+        min: 0, max: 900, tickAmount: 9,
+        labels: {
+          style: { colors: C.muted, fontSize: z.tick + 'px', fontFamily: F_UI },
+          formatter: function (v) { return v > 0 && v % 200 === 0 ? String(v) : ''; }
+        }
+      },
+      legend: { show: false },
+      tooltip: { arrow: false, custom: function (o) { return tooltipHTML(o.dataPointIndex); } },
+      annotations: {
+        // Two bands of almost equal height: the lead, and everything else.
+        // Each band is one annotation for its tint and big number, one for its caption.
+        yaxis: [
+          { y: SECOND, y2: TOP, fillColor: C.tall, opacity: 0.1, borderColor: C.tall,
+            label: bandLabel(fmt(lead) + ' m', { offsetY: Math.round(z.big * 0.92), color: C.tall, family: F_DISPLAY, weight: 900, size: px(z.big) }) },
+          { y: SECOND, y2: TOP, fillColor: C.tall, opacity: 0, borderColor: 'transparent',
+            label: bandLabel(noteA, { offsetY: noteDy, color: C.tallText, family: F_UI, weight: 500, size: z.note, css: 'anno-note' }) },
+          { y: LAST, y2: SECOND, fillColor: C.ink, opacity: 0.05, borderColor: C.ink,
+            label: bandLabel(fmt(spread) + ' m', { offsetY: Math.round(z.big * 0.92), color: C.ink, family: F_DISPLAY, weight: 900, size: px(z.big) }) },
+          { y: LAST, y2: SECOND, fillColor: C.ink, opacity: 0, borderColor: 'transparent',
+            label: bandLabel(noteB, { offsetY: noteDy, color: C.ink2, family: F_UI, weight: 500, size: z.note, css: 'anno-note' }) }
+        ],
+        // The height, set above each tower.
+        points: DATA.map(function (d, i) {
+          return {
+            x: d.name, y: d.h, marker: { size: 0 },
+            label: {
+              text: fmt(d.h), borderWidth: 0, textAnchor: 'middle', offsetY: -2,
+              style: { background: 'transparent', color: i === 0 ? C.tall : C.ink, fontFamily: F_DISPLAY, fontWeight: 800, fontSize: px(z.val) + 'px', padding: ZERO_PAD }
+            }
+          };
+        })
+      }
+    };
+  }
+
+  // ApexCharts draws annotation bands over the bars, which would tint them.
+  // Move the band layer behind the bars (inside the plot, just after the grid).
+  function layerBands() {
+    var inner = document.querySelector('#chart .apexcharts-inner');
+    if (!inner) return;
+    var bands = inner.querySelector(':scope > .apexcharts-yaxis-annotations');
+    var bars = inner.querySelector(':scope > .apexcharts-bar-series');
+    if (bands && bars) inner.insertBefore(bands, bars);
+  }
+
+  /* ------------------------------------------------------------ fallback */
+  function renderFallback(host) {
+    var note = document.getElementById('chart-note');
+    if (note) note.remove();
+    var cols = DATA.map(function (d, i) {
+      return '<div class="fb-col" style="--p:' + (d.h / 900 * 100).toFixed(2) + ';--c:' + colorOf(d, i) + '"><b>' + fmt(d.h) + '</b><span>' + d.name + '</span></div>';
+    }).join('');
+    host.classList.add('is-fallback');
+    host.insertAdjacentHTML('beforeend', '<div class="fb" role="img" aria-label="Column chart of the ten tallest buildings; the same figures are listed in the table below.">' + cols + '</div>');
+    var cap = document.querySelector('.fig figcaption');
+    if (cap) cap.textContent = 'Ranked left to right. The interactive chart could not be loaded, so this is a static version; every figure is also in the table below.';
+  }
+
+  /* --------------------------------------------------------------- mount */
+  var host = document.getElementById('chart');
+  var chart = null;
+  var builtOnFallback = false;
+  var mqNarrow = window.matchMedia('(max-width: 680px)');
+  var mqWide = window.matchMedia('(min-width: 1024px)');
+  function tier() { return mqNarrow.matches ? 'narrow' : (mqWide.matches ? 'wide' : 'mid'); }
+
+  function mount() {
+    if (chart) { chart.destroy(); chart = null; }          // always destroy before re-creating
+    var note = document.getElementById('chart-note');
+    if (note) note.remove();
+    builtOnFallback = !hasFont('Big Shoulders Display', 800);
+    chart = new window.ApexCharts(host, buildOptions(tier()));
+    chart.render().then(layerBands);                         // the constructor alone draws nothing
+  }
+
+  function fontsReady() {
+    if (!document.fonts || !document.fonts.load) return Promise.resolve();
+    var loads = ['900 40px "Big Shoulders Display"', '600 14px "Big Shoulders Text"', '500 11px "IBM Plex Mono"']
+      .map(function (f) { return document.fonts.load(f); });
+    var timeout = new Promise(function (r) { setTimeout(r, 2000); });
+    return Promise.race([Promise.all(loads), timeout]);
+  }
+
+  function start() {
+    var ready = fontsReady();
+    queueFit();
+    ready.then(queueFit);
+    if (!window.ApexCharts) { renderFallback(host); return; }   // CDN blocked or offline
+    ready.then(function () {
+      mount();
+      var onChange = function () { mount(); };
+      [mqNarrow, mqWide].forEach(function (mq) {
+        if (mq.addEventListener) mq.addEventListener('change', onChange); else if (mq.addListener) mq.addListener(onChange);
+      });
+      // Fonts that arrive late: redraw once so the labels are sized for the real typeface.
+      if (document.fonts && document.fonts.addEventListener) {
+        document.fonts.addEventListener('loadingdone', function () {
+          if (builtOnFallback && hasFont('Big Shoulders Display', 800)) mount();
+        });
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+</body>
+</html>

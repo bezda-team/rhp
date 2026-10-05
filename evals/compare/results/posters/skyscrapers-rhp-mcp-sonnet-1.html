@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The ten tallest buildings</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="An editorial poster of the world's ten tallest buildings, drawn as a skyline: height in metres, city and year completed, from the CTBUH.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600..900&family=Work+Sans:wght@400..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --page: #c9cdd0; --paper: #f4f2ed; --ink: #11151a; --soft: #555e68; --rule: #d6d3ca;
+    --accent: #c22b12; --tower: #39424d;
+    --display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --text: "Work Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+  body { margin: 0; padding: 48px 16px; background: var(--page); }
+  /* The poster: a museum height chart on cool, matte paper with a fine grain, ink type and one aviation-red accent */
+  .poster {
+    max-width: 1000px; margin: 0 auto; padding: 46px 52px 28px; border-radius: 2px; color: var(--ink); font: 16px/1.5 var(--text);
+    background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    box-shadow: 0 1px 2px rgb(17 21 26 / .18), 0 28px 50px -28px rgb(17 21 26 / .5);
+  }
+  .poster figcaption { display: grid; gap: 14px; margin-bottom: 26px; }
+  /* The ornament: an aircraft warning light, the red lamp every very tall building carries, blinking by the kicker */
+  .poster .kicker { display: flex; align-items: center; gap: 10px; font: 700 12px/1.3 var(--text); letter-spacing: .18em; text-transform: uppercase; color: var(--ink); }
+  .poster .kicker::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgb(194 43 18 / .2); animation: beacon 2.6s ease-in-out infinite; }
+  @keyframes beacon { 0%, 55%, 100% { opacity: 1; } 70%, 85% { opacity: .22; } }
+  @media (prefers-reduced-motion: reduce) { .poster .kicker::before { animation: none; } }
+  .poster .headline { max-width: 15em; font: 800 clamp(40px, 7.4vw, 76px)/.95 var(--display); letter-spacing: -.005em; text-wrap: balance; }
+  .poster .headline em { font-style: normal; color: var(--accent); }
+  .poster .dek { max-width: 58ch; font-size: 17px; line-height: 1.5; color: var(--soft); }
+  .poster .note { display: block; margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 12px; line-height: 1.55; color: var(--soft); }
+  /* The readout: a fixed-height block over the skyline, so nothing under it moves when the reader picks a tower */
+  .poster .readout { display: grid; align-content: start; gap: 2px; min-height: 66px; margin: 0 0 8px; padding-top: 12px; border-top: 2px solid var(--ink); font-size: 14px; line-height: 1.4; color: var(--soft); }
+  .poster .readout b { font: 700 26px/1.05 var(--display); letter-spacing: .01em; color: var(--ink); }
+  .poster .readout b.rest { color: var(--soft); }
+  .poster .readout span { font-variant-numeric: tabular-nums; }
+  @media (max-width: 999px) {
+    body { padding: 28px 16px 40px; }
+    .poster { padding: 38px 36px 24px; }
+  }
+  @media (max-width: 640px) {
+    body { padding: 10px 10px 28px; }
+    .poster { padding: 28px 22px 18px; }
+    .poster .dek { font-size: 16px; }
+    .poster .readout { min-height: 86px; } /* the longest reading wraps to two lines here */
+  }
+  @media (max-width: 520px) {
+    .poster { padding: 26px 14px 16px; }
+    .poster figcaption { gap: 12px; margin-bottom: 18px; }
+    .poster .headline { font-size: 42px; }
+    .poster .dek { font-size: 15px; }
+    .poster .readout { min-height: 80px; font-size: 13px; }
+    .poster .readout b { font-size: 22px; }
+  }
+  @media (max-width: 360px) {
+    body { padding: 8px 6px 24px; }
+    .poster { padding-left: 10px; padding-right: 10px; }
+    .poster .headline { font-size: 38px; }
+  }
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<script type="module">
+import { Chart, Plot, Scale, Bar, Tick, Label, Poster, slat, shape, html, render, createSignal, onCleanup, Show } from "@bezda/rhp/standalone";
+
+// Data: the ten tallest buildings, height in metres, city, year completed (CTBUH)
+const BUILDINGS = [
+  { name: "Burj Khalifa", city: "Dubai", height: 828, year: 2010 },
+  { name: "Merdeka 118", city: "Kuala Lumpur", height: 678.9, year: 2023 },
+  { name: "Shanghai Tower", city: "Shanghai", height: 632, year: 2015 },
+  { name: "Makkah Royal Clock Tower", city: "Mecca", height: 601, year: 2012 },
+  { name: "Ping An Finance Center", city: "Shenzhen", height: 599.1, year: 2017 },
+  { name: "Lotte World Tower", city: "Seoul", height: 554.5, year: 2017 },
+  { name: "One World Trade Center", city: "New York City", height: 541.3, year: 2014 },
+  { name: "Guangzhou CTF Finance Centre", city: "Guangzhou", height: 530, year: 2016 },
+  { name: "Tianjin CTF Finance Centre", city: "Tianjin", height: 530, year: 2019 },
+  { name: "CITIC Tower", city: "Beijing", height: 527.7, year: 2018 },
+];
+
+// What depends on the data: a sorted copy (never the input order), the ranks (a tie shares one), the gap, the scale
+const TOWERS = [...BUILDINGS].sort((a, b) => b.height - a.height).map((b, _, all) => ({
+  ...b,
+  rank: 1 + all.filter((o) => o.height > b.height).length,
+  tied: all.filter((o) => o.height === b.height).length > 1,
+}));
+const LEAD = 0; // the tallest, which the headline names: lit until the reader picks another
+const TOP = TOWERS[LEAD].height;
+const RUNNER = TOWERS[1];
+const GAP = TOP - RUNNER.height; // 149.1 m
+const SINCE = Math.min(...TOWERS.map((t) => t.year)); // 2010: the Burj Khalifa's year, and the oldest of the ten
+
+const metres = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+const rankText = (t) => (t.tied ? "=" : "") + t.rank; // "=8" for the two towers that tie for eighth
+const place = (t) => (t.tied ? "tied for No. " : "No. ") + t.rank;
+const say = (t) => `${place(t)}, ${t.name}, ${t.city}, completed ${t.year}: ${metres.format(t.height)} metres`;
+
+// Silhouettes: each building as a rough profile, [share of its height, half its width] from the ground up,
+// written once for both orientations as rhp's shape(): along the value axis first, then across the band
+const outline = (profile) => {
+  const left = profile.map(([h, w]) => [h, 0.5 - w]);
+  const right = profile.map(([h, w]) => [h, 0.5 + w]).reverse();
+  const pts = [...left, ...right];
+  return shape(["M", ...pts[0]], ...pts.slice(1).map((p) => ["L", ...p]), ["Z"]);
+};
+const SHAPES = {
+  // stepped setbacks, then the spire
+  "Burj Khalifa": outline([[0, .46], [.12, .46], [.12, .41], [.22, .41], [.22, .36], [.31, .36], [.31, .31], [.4, .31], [.4, .27], [.49, .27], [.49, .23], [.57, .23], [.57, .19], [.64, .19], [.64, .15], [.705, .15], [.705, .06], [.82, .04], [1, .01]]),
+  // a faceted crown and a long mast
+  "Merdeka 118": outline([[0, .44], [.2, .41], [.4, .35], [.55, .3], [.65, .27], [.72, .23], [.763, .17], [.763, .05], [.88, .035], [1, .01]]),
+  // a smooth taper to a rounded top
+  "Shanghai Tower": outline([[0, .4], [.1, .43], [.25, .42], [.4, .38], [.55, .33], [.7, .27], [.82, .21], [.92, .14], [.97, .09], [1, .05]]),
+  // a wide base, the shaft, the clock's housing and a spire
+  "Makkah Royal Clock Tower": outline([[0, .5], [.08, .5], [.08, .36], [.22, .34], [.62, .28], [.64, .28], [.64, .4], [.76, .4], [.76, .22], [.8, .2], [.8, .12], [.88, .05], [.88, .02], [1, .01]]),
+  // straight sides and a flat crown with a short mast
+  "Ping An Finance Center": outline([[0, .38], [.12, .4], [.6, .34], [.9, .28], [.935, .24], [.935, .03], [1, .012]]),
+  // a long concave taper to a point
+  "Lotte World Tower": outline([[0, .42], [.12, .42], [.5, .32], [.8, .22], [.9, .17], [.96, .1], [1, .02]]),
+  // a square tower, then its mast
+  "One World Trade Center": outline([[0, .4], [.73, .35], [.77, .32], [.77, .04], [1, .012]]),
+  // a gentle taper and a sculpted flat top
+  "Guangzhou CTF Finance Centre": outline([[0, .4], [.1, .43], [.55, .36], [.88, .29], [.94, .24], [1, .17]]),
+  // a steeper taper to a pointed crown
+  "Tianjin CTF Finance Centre": outline([[0, .41], [.1, .43], [.5, .36], [.8, .28], [.92, .22], [.97, .12], [1, .06]]),
+  // a vessel: wide at the foot, narrow at the waist, flaring at the top
+  "CITIC Tower": outline([[0, .42], [.08, .4], [.25, .28], [.4, .21], [.5, .2], [.62, .24], [.78, .31], [.92, .36], [.97, .37], [1, .3]]),
+};
+
+// Slat types: one tower, with its number at the foot, its height above it, and its name, city and year under the ground
+// line. A wide page sets them across the column; a narrower one hangs them down it like the spines of books.
+const DISPLAY = '"Big Shoulders Display", "Arial Narrow", "Helvetica Neue", Arial, sans-serif';
+const TOWER_CSS = `
+  .tower { outline: none; }
+  .tower:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: -2px; border-radius: 3px; }
+  .ground { --rhp-tick-width: 3px; }
+  .rank { --rhp-label-gap: 6px; font: 700 18px/1 ${DISPLAY}; letter-spacing: .02em; color: var(--rhp-surface); pointer-events: none; }
+  .value { --rhp-label-gap: 6px; font: 700 24px/1 ${DISPLAY}; letter-spacing: .01em; font-variant-numeric: tabular-nums; color: var(--rhp-ink); }
+  .value small { margin-left: .15em; font-size: .62em; font-weight: 600; letter-spacing: .04em; }
+  .on .value, .on .plate b { color: var(--rhp-series-1); }
+  .plate { white-space: normal; text-align: center; padding: 10px 0 0; font: 400 12px/1.25 var(--rhp-font); color: var(--rhp-muted); }
+  .plate b { display: block; margin-bottom: 3px; font-size: 12.5px; font-weight: 600; line-height: 1.2; letter-spacing: -.005em; color: var(--rhp-ink); text-wrap: balance; }
+  .city { display: block; letter-spacing: -.01em; }
+  .year { display: block; margin-top: 3px; font: 700 17px/1 ${DISPLAY}; letter-spacing: .02em; font-variant-numeric: tabular-nums; color: var(--rhp-ink); }
+`;
+// Hanging names: two lines running down under the column, the name and then the city and the year. The sizes are
+// variables, so a wider page only has to change them.
+const HANG_CSS = `
+  .tower { --rank: 13px; --value: 13.5px; --name: 11.5px; --where: 11px; --plate: 190px; --unit: none; }
+  .rank { font-size: var(--rank); --rhp-label-gap: 4px; }
+  .value { font-size: var(--value); --rhp-label-gap: 4px; }
+  .value small { display: var(--unit); font-size: 11px; }
+  .first .value small { display: inline; font-size: 10.5px; }
+  .plate { writing-mode: vertical-rl; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+    height: var(--plate); padding: 8px 0 0; text-align: start; white-space: nowrap; font-size: var(--where); line-height: 1.15; }
+  .plate b { margin: 0; font-size: var(--name); line-height: 1.15; text-wrap: nowrap; }
+  .city, .year { display: inline; letter-spacing: 0; font: inherit; color: inherit; margin: 0; }
+  .year::before { content: " · "; }
+  @container (max-width: 300px) { .tower { --rank: 12px; --value: 11.5px; --name: 10.5px; --where: 10px; } }
+`;
+const MID_CSS = `
+  .tower { --rank: 14px; --value: 16px; --name: 12.5px; --where: 12px; --plate: 214px; }
+  @container (min-width: 700px) { .tower { --rank: 16px; --value: 19px; --name: 13.5px; --where: 13px; --plate: 224px; --unit: inline; } }
+`;
+// How each size of page draws the skyline: the plot's height, the room under it for the names, the room over it for the numbers
+const LAYOUT = {
+  wide: { height: 470, room: { start: 110, end: 40 }, css: TOWER_CSS },
+  mid: { height: 400, room: { start: 228, end: 34 }, css: TOWER_CSS + HANG_CSS + MID_CSS },
+  phone: { height: 330, room: { start: 196, end: 30 }, css: TOWER_CSS + HANG_CSS },
+};
+const tower = (size) => slat({
+  inset: 0.05,
+  room: { ...LAYOUT[size].room, before: 0, after: 0 },
+  css: LAYOUT[size].css,
+}, (d) => html`
+  <div class=${() => (d.on ? "tower on" : "tower") + (d.rank === 1 ? " first" : "")} data-row=${() => d.index} aria-label=${() => say(d)}>
+    <${Bar} to=${() => d.height} shape=${() => SHAPES[d.name]} color=${() => (d.on ? "series-1" : "series-2")} />
+    <${Tick} at=${0} thick=${1} class="ground" />
+    <${Label} at=${0} class="rank">${() => rankText(d)}<//>
+    <${Label} at=${() => d.height} class="value">${() => metres.format(d.height)}<small>m</small><//>
+    <${Label} edge="start" class="plate"><b>${() => d.name}</b><span class="where"><span class="city">${() => d.city}</span><span class="year">${() => d.year}</span></span><//>
+  </div>`);
+const TYPES = { wide: tower("wide"), mid: tower("mid"), phone: tower("phone") };
+
+// Without an axis (the towers carry their heights) hairlines every 200 m stand in for the grid
+const Hairline = slat({ room: {}, css: `.hair { --rhp-tick-width: 1px; background: var(--rhp-grid); }` }, (t) => html`
+  <div><${Tick} at=${() => t.at} thick=${1} class="hair" /></div>`);
+
+// The headline's finding, drawn on the skyline: a dimension line from the runner-up's height up to the tallest tower's,
+// with a dashed leader from the runner-up's mast. It sits right of the first column (the tallest), in shares of the plot.
+const BELOW = (RUNNER.height / TOP) * 100; // the runner-up's top, as a share of the plot's height
+const LeadGap = slat({
+  room: {},
+  css: `
+    .cap, .dim, .ref { position: absolute; display: block; }
+    .cap { top: 0; left: calc(5% + 1px); width: 11px; border-top: 1.5px solid var(--rhp-series-1); }
+    .dim { top: 0; bottom: ${BELOW}%; left: calc(5% + 12px); border-left: 1.5px solid var(--rhp-series-1); }
+    .ref { bottom: ${BELOW}%; left: calc(5% + 12px); width: calc(10% - 12px); border-top: 1.5px dashed var(--rhp-series-1); }
+    .tag { position: absolute; top: -3px; left: calc(5% + 20px); display: grid; gap: 1px; white-space: nowrap; color: var(--rhp-series-1); }
+    .tag b { font: 700 22px/1 ${DISPLAY}; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
+    .tag span { font: 500 11.5px/1.2 var(--rhp-font); color: var(--rhp-muted); }
+    @container (max-width: 560px) { .tag b { font-size: 14px; } .tag span { display: none; } }
+  `,
+}, () => html`
+  <div>
+    <i class="cap"></i><i class="dim"></i><i class="ref"></i>
+    <div class="tag"><b>${metres.format(GAP)} m</b><span>ahead of No. 2</span></div>
+  </div>`);
+
+// Chart component: the tower the reader points at, taps or reaches with the keyboard lights up and is read out
+function Skyline() {
+  // Which size of page: wide (names under their columns), middle or phone (names hanging down them). The chart is drawn
+  // again only when the width has settled on another size: a window dragged across a breakpoint, a screenshot that lays
+  // the page out at another size for a moment, or a rotating phone must not tear the chart down and build it again.
+  const queries = [matchMedia("(min-width: 1000px)"), matchMedia("(min-width: 521px)")];
+  const sizeNow = () => (queries[0].matches ? "wide" : queries[1].matches ? "mid" : "phone");
+  const [size, setSize] = createSignal(sizeNow());
+  let settling;
+  const resize = () => {
+    clearTimeout(settling);
+    settling = setTimeout(() => setSize(sizeNow()), 300);
+  };
+  queries.forEach((q) => q.addEventListener("change", resize));
+  onCleanup(() => {
+    clearTimeout(settling);
+    queries.forEach((q) => q.removeEventListener("change", resize));
+  });
+
+  const [picked, setPicked] = createSignal(null);
+  const lit = () => picked() ?? LEAD;
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no tower the pick stays
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the tower that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const readout = () => {
+    const t = TOWERS[lit()];
+    const diff = Math.round((TOP - t.height) * 10) / 10;
+    const vs = diff === 0
+      ? `${metres.format(GAP)} m taller than ${RUNNER.name}, the runner-up`
+      : `${metres.format(diff)} m shorter than the ${TOWERS[LEAD].name}`;
+    return html`<b>${t.name}</b><span>${t.city}, ${t.year}. ${metres.format(t.height)} m, ${place(t)}: ${vs}.</span>`;
+  };
+  const chart = (s) => html`
+    <${Chart} orientation="vertical" height=${LAYOUT[s].height} scale=${[0, TOP]}
+      ticks=${s === "wide" ? [200, 400, 600, 800] : undefined} format=${(v) => (v === 800 ? "800 m" : v)}
+      label="The ten tallest buildings, height in metres"
+      theme=${{ font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--tower)"] }}>
+      <${Show} when=${s !== "wide"}><${Scale} ticks=${[200, 400, 600, 800]}>${Hairline}<//><//>
+      <${Plot} keyboard=${true} rows=${TOWERS} on=${(d) => d.index === lit()}>${TYPES[s]}<//>
+      <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${LeadGap}<//>
+    <//>`;
+  return html`
+    <${Poster}
+      kicker="The ten tallest buildings"
+      title=${html`<span>Since ${SINCE}, no building has come within ${Math.floor(GAP) + "\u00a0metres"} of the <em>Burj Khalifa</em></span>`}
+      dek=${`Height in metres. All ten were completed in ${SINCE} or later, and even ${RUNNER.name}, finished in ${RUNNER.year}, falls ${metres.format(GAP)} m short of the ${TOWERS[LEAD].name}.`}
+      note="Source: Council on Tall Buildings and Urban Habitat (CTBUH): height in metres and year of completion. Guangzhou CTF and Tianjin CTF tie at 530 m, so both are ranked 8th (=8) and the next is 10th."
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <p class="readout" aria-hidden="true">
+        ${() => (picked() == null ? html`<b class="rest">Tap or point at a tower</b><span>to compare it with the ${TOWERS[LEAD].name}.</span>` : readout())}
+      </p>
+      ${() => chart(size())}
+    <//>`;
+}
+
+render(() => html`<${Skyline} />`, document.getElementById("chart"));
+
+// The Poster draws its headline as a span: tell assistive technology it is the page's heading
+const headline = document.querySelector("#chart .headline");
+headline?.setAttribute("role", "heading");
+headline?.setAttribute("aria-level", "1");
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lisbon gained the most ground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 40px 16px; background: #f6f3ee; color: #1f1a14; font-family: Inter, sans-serif; }
+  .poster { max-width: 720px; margin: 0 auto; }
+  .poster figcaption { display: grid; gap: 8px; margin-bottom: 20px; }
+  .poster .kicker { display: none; }
+  .poster .headline { font: 700 34px Fraunces, serif; }
+  .poster .note { display: block; margin-top: 16px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Tick, Label, Poster, slat, sortBy, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data
+const city = ["Oslo", "Lisbon", "Vienna", "Dublin", "Prague"];
+const share = { 2024: [61, 48, 72, 39, 55], 2025: [64, 57, 70, 45, 52] };
+
+// Phone
+const phone = matchMedia("(max-width: 480px)");
+const [narrow, setNarrow] = createSignal(phone.matches);
+phone.addEventListener("change", (e) => setNarrow(e.matches));
+
+// Slat types
+const cityWith = (layout, name) => slat(layout, (d) => html`
+  <div>
+    ${name(d)}
+    <${Bar} to=${() => d.share} color=${() => (d.city === "Lisbon" ? "#c2410c" : "#b8b2a7")} />
+    <${Label} at=${() => d.share}>${() => d.share}<//>
+  </div>`);
+const Beside = cityWith({}, (d) => html`<${Label} edge="start">${() => d.city}<//>`);
+const Above = cityWith({
+  thickness: 56,
+  inset: 0.3,
+  room: {},
+  css: `.name { top: 0; translate: none; --rhp-label-gap: 0px; }`,
+}, (d) => html`<${Label} at=${0} class="name">${() => d.city}<//>`);
+const Target = slat({
+  room: { before: 24 },
+  css: `.tag { top: 0; translate: -50% -100%; padding-bottom: 5px; }`,
+}, () => html`
+  <div>
+    <${Tick} at=${60} thick=${1} style="--rhp-tick-width: 1px" />
+    <${Label} at=${60} class="tag">EU target: 60%<//>
+  </div>`);
+
+// Chart component
+const Commuters = () => html`
+  <${Poster} title="Lisbon gained the most ground"
+    dek="Lisbon's share of commuters who walk, cycle or take transit rose from 48% to 57% between 2024 and 2025, the biggest jump of the five cities."
+    note="Source: illustrative data">
+    <${Chart} scale=${[0, 100]} ticks=${false} label="Share of commuters who walk, cycle or take transit, %, 2025"
+      theme=${{ font: "Inter, sans-serif", ink: "#1f1a14" }}>
+      ${() => html`<${Plot} city=${city} share=${share[2025]} order=${sortBy("share", "desc")}>${narrow() ? Above : Beside}<//>`}
+      <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${Target}<//>
+    <//>
+  <//>`;
+
+render(Commuters, document.getElementById("chart"));
+</script>
+</body>
+</html>

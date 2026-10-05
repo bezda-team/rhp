@@ -1,0 +1,1119 @@
+{
+ "rows": [
+  {
+   "run": "skyscrapers-apex-none-sonnet-1",
+   "poster": "skyscrapers",
+   "lib": "apex",
+   "tooling": "none",
+   "condition": "apex-none",
+   "rep": 1,
+   "model": "sonnet",
+   "hasPoster": true,
+   "renders": true,
+   "requests": 134,
+   "contextMax": 487780,
+   "cacheRead": 41721684,
+   "cacheWrite": 463499,
+   "uncached": 268,
+   "output": 286870,
+   "cost": 12.3723,
+   "minutes": 41.6,
+   "toolCalls": 161,
+   "imagesRead": 67,
+   "bash": {
+    "other": 78,
+    "npm install": 2,
+    "own browser render": 8
+   },
+   "sources": {
+    "agent output (code, text, thinking)": 286870,
+    "screenshots": 87821,
+    "shell output": 36293,
+    "other file reads": 27945,
+    "harness reminders": 7137,
+    "task (TASK.md, incl. tool listing)": 793,
+    "edit confirmations": 431,
+    "task prompt": 182,
+    "other tools": 30
+   },
+   "checks": [],
+   "violations": [],
+   "scan": {
+    "renders": true,
+    "charts": 3,
+    "errors": 0,
+    "sideways": [],
+    "overlaps": 0,
+    "cut": 2,
+    "tiny": 0,
+    "lowContrast": 1,
+    "canvas": 0,
+    "phoneHeight": 4351
+   },
+   "posterBytes": 38076,
+   "judgePasses": 0,
+   "fidelity": null,
+   "data": null,
+   "design": null,
+   "legibility": null,
+   "overall": null,
+   "rankScore": null,
+   "issues": []
+  },
+  {
+   "run": "skyscrapers-apex-skill-mcp-sonnet-1",
+   "poster": "skyscrapers",
+   "lib": "apex",
+   "tooling": "skill-mcp",
+   "condition": "apex-skill-mcp",
+   "rep": 1,
+   "model": "sonnet",
+   "hasPoster": true,
+   "renders": true,
+   "requests": 132,
+   "contextMax": 519276,
+   "cacheRead": 44776302,
+   "cacheWrite": 548308,
+   "uncached": 264,
+   "output": 303596,
+   "cost": 13.3625,
+   "minutes": 52.3,
+   "toolCalls": 134,
+   "imagesRead": 31,
+   "bash": {
+    "other": 89,
+    "own browser render": 18,
+    "mcp apexcharts_list_products": 1,
+    "npm install": 3,
+    "mcp apexcharts_get_reference": 1,
+    "mcp apexcharts_generate_config": 1,
+    "mcp apexcharts_validate_config": 3
+   },
+   "sources": {
+    "agent output (code, text, thinking)": 303596,
+    "screenshots": 63097,
+    "skill docs": 36813,
+    "shell output": 29564,
+    "other file reads": 16301,
+    "task (TASK.md, incl. tool listing)": 13515,
+    "harness reminders": 7790,
+    "MCP docs/tools": 2323,
+    "MCP check": 911,
+    "task prompt": 412,
+    "edit confirmations": 170,
+    "other tools": 30
+   },
+   "checks": [],
+   "violations": [],
+   "scan": {
+    "renders": true,
+    "charts": 1,
+    "errors": 0,
+    "sideways": [],
+    "overlaps": 0,
+    "cut": 0,
+    "tiny": 0,
+    "lowContrast": 1,
+    "canvas": 0,
+    "phoneHeight": 3499
+   },
+   "posterBytes": 36122,
+   "judgePasses": 0,
+   "fidelity": null,
+   "data": null,
+   "design": null,
+   "legibility": null,
+   "overall": null,
+   "rankScore": null,
+   "issues": []
+  },
+  {
+   "run": "skyscrapers-apex-skill-sonnet-1",
+   "poster": "skyscrapers",
+   "lib": "apex",
+   "tooling": "skill",
+   "condition": "apex-skill",
+   "rep": 1,
+   "model": "sonnet",
+   "hasPoster": true,
+   "renders": true,
+   "requests": 122,
+   "contextMax": 503855,
+   "cacheRead": 39538775,
+   "cacheWrite": 521072,
+   "uncached": 244,
+   "output": 296938,
+   "cost": 12.1803,
+   "minutes": 41.5,
+   "toolCalls": 154,
+   "imagesRead": 58,
+   "bash": {
+    "own browser render": 3,
+    "other": 75,
+    "npm install": 1
+   },
+   "sources": {
+    "agent output (code, text, thinking)": 296938,
+    "screenshots": 85885,
+    "skill docs": 35546,
+    "shell output": 26467,
+    "other file reads": 13428,
+    "harness reminders": 6695,
+    "other tools": 2330,
+    "task (TASK.md, incl. tool listing)": 1303,
+    "edit confirmations": 987,
+    "task prompt": 229
+   },
+   "checks": [],
+   "violations": [],
+   "scan": {
+    "renders": true,
+    "charts": 2,
+    "errors": 0,
+    "sideways": [],
+    "overlaps": 0,
+    "cut": 5,
+    "tiny": 0,
+    "lowContrast": 0,
+    "canvas": 0,
+    "phoneHeight": 3404
+   },
+   "posterBytes": 35204,
+   "judgePasses": 0,
+   "fidelity": null,
+   "data": null,
+   "design": null,
+   "legibility": null,
+   "overall": null,
+   "rankScore": null,
+   "issues": []
+  },
+  {
+   "run": "skyscrapers-rhp-mcp-sonnet-1",
+   "poster": "skyscrapers",
+   "lib": "rhp",
+   "tooling": "mcp",
+   "condition": "rhp-mcp",
+   "rep": 1,
+   "model": "sonnet",
+   "hasPoster": true,
+   "renders": true,
+   "requests": 99,
+   "contextMax": 528615,
+   "cacheRead": 32568036,
+   "cacheWrite": 643577,
+   "uncached": 198,
+   "output": 278581,
+   "cost": 10.9088,
+   "minutes": 41.9,
+   "toolCalls": 132,
+   "imagesRead": 26,
+   "bash": {
+    "mcp rhp_guide": 2,
+    "mcp rhp_reference": 5,
+    "mcp rhp_recipe": 3,
+    "mcp rhp_check": 10,
+    "npm install": 2,
+    "own browser render": 1,
+    "other": 1,
+    "rhp check (CLI)": 1
+   },
+   "sources": {
+    "agent output (code, text, thinking)": 278581,
+    "other file reads": 118559,
+    "screenshots": 47907,
+    "checker (CLI)": 15199,
+    "shell output": 11787,
+    "MCP check": 10905,
+    "MCP docs/tools": 6300,
+    "harness reminders": 5688,
+    "task (TASK.md, incl. tool listing)": 3285,
+    "edit confirmations": 257,
+    "task prompt": 183,
+    "other tools": 30
+   },
+   "checks": [
+    {
+     "request": 26,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 17,
+     "codes": [
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off"
+     ]
+    },
+    {
+     "request": 36,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 2,
+     "warnings": 0,
+     "codes": [
+      "runtime-error",
+      "no-chart"
+     ]
+    },
+    {
+     "request": 37,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 3,
+     "warnings": 4,
+     "codes": [
+      "low-contrast",
+      "low-contrast",
+      "tiny-text",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast"
+     ]
+    },
+    {
+     "request": 49,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 53,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 4,
+     "warnings": 5,
+     "codes": [
+      "low-contrast",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast",
+      "low-contrast"
+     ]
+    },
+    {
+     "request": 67,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 75,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 10,
+     "codes": [
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off"
+     ]
+    },
+    {
+     "request": 75,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": [
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off",
+      "text-cut-off"
+     ]
+    },
+    {
+     "request": 80,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 93,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 93,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 93,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    }
+   ],
+   "violations": [],
+   "scan": {
+    "renders": true,
+    "charts": 1,
+    "errors": 0,
+    "sideways": [],
+    "overlaps": 0,
+    "cut": 10,
+    "tiny": 0,
+    "lowContrast": 0,
+    "canvas": 0,
+    "phoneHeight": 1116
+   },
+   "posterBytes": 19335,
+   "judgePasses": 0,
+   "fidelity": null,
+   "data": null,
+   "design": null,
+   "legibility": null,
+   "overall": null,
+   "rankScore": null,
+   "issues": []
+  },
+  {
+   "run": "skyscrapers-rhp-skill-mcp-sonnet-1",
+   "poster": "skyscrapers",
+   "lib": "rhp",
+   "tooling": "skill-mcp",
+   "condition": "rhp-skill-mcp",
+   "rep": 1,
+   "model": "sonnet",
+   "hasPoster": true,
+   "renders": true,
+   "requests": 99,
+   "contextMax": 602940,
+   "cacheRead": 40220610,
+   "cacheWrite": 747660,
+   "uncached": 198,
+   "output": 319189,
+   "cost": 13.1056,
+   "minutes": 59.0,
+   "toolCalls": 117,
+   "imagesRead": 30,
+   "bash": {
+    "other": 56,
+    "mcp rhp_guide": 1,
+    "mcp rhp_check": 9,
+    "own browser render": 2
+   },
+   "sources": {
+    "agent output (code, text, thinking)": 319189,
+    "skill docs": 126014,
+    "screenshots": 44786,
+    "shell output": 26389,
+    "MCP docs/tools": 13263,
+    "other file reads": 11261,
+    "MCP check": 7219,
+    "harness reminders": 5860,
+    "task (TASK.md, incl. tool listing)": 3211,
+    "edit confirmations": 241,
+    "task prompt": 136,
+    "other tools": 30
+   },
+   "checks": [
+    {
+     "request": 18,
+     "tool": "rhp_check",
+     "file": "column.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 30,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 5,
+     "warnings": 3,
+     "codes": [
+      "sticks-out",
+      "sticks-out",
+      "text-overlap",
+      "text-overlap",
+      "text-overlap",
+      "low-contrast",
+      "layout-jump",
+      "low-contrast"
+     ]
+    },
+    {
+     "request": 41,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 1,
+     "warnings": 0,
+     "codes": [
+      "sticks-out"
+     ]
+    },
+    {
+     "request": 69,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 75,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 82,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 88,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 94,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 97,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    }
+   ],
+   "violations": [],
+   "scan": {
+    "renders": true,
+    "charts": 1,
+    "errors": 0,
+    "sideways": [],
+    "overlaps": 0,
+    "cut": 0,
+    "tiny": 0,
+    "lowContrast": 0,
+    "canvas": 0,
+    "phoneHeight": 1112
+   },
+   "posterBytes": 22574,
+   "judgePasses": 0,
+   "fidelity": null,
+   "data": null,
+   "design": null,
+   "legibility": null,
+   "overall": null,
+   "rankScore": null,
+   "issues": []
+  },
+  {
+   "run": "skyscrapers-rhp-skill-sonnet-1",
+   "poster": "skyscrapers",
+   "lib": "rhp",
+   "tooling": "skill",
+   "condition": "rhp-skill",
+   "rep": 1,
+   "model": "sonnet",
+   "hasPoster": true,
+   "renders": true,
+   "requests": 125,
+   "contextMax": 611249,
+   "cacheRead": 52206974,
+   "cacheWrite": 769536,
+   "uncached": 250,
+   "output": 313973,
+   "cost": 15.5055,
+   "minutes": 45.8,
+   "toolCalls": 139,
+   "imagesRead": 37,
+   "bash": {
+    "other": 60,
+    "rhp check (CLI)": 13,
+    "own browser render": 5,
+    "npm install": 2
+   },
+   "sources": {
+    "agent output (code, text, thinking)": 313973,
+    "skill docs": 137900,
+    "screenshots": 57135,
+    "shell output": 25633,
+    "checker (CLI)": 18743,
+    "other file reads": 10572,
+    "harness reminders": 6634,
+    "other tools": 2407,
+    "task (TASK.md, incl. tool listing)": 1267,
+    "task prompt": 410,
+    "edit confirmations": 84
+   },
+   "checks": [
+    {
+     "request": 11,
+     "tool": "rhp_check",
+     "file": "column-test.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 35,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 3,
+     "warnings": 0,
+     "codes": [
+      "text-overlap",
+      "text-overlap",
+      "low-contrast"
+     ]
+    },
+    {
+     "request": 52,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 1,
+     "warnings": 1,
+     "codes": [
+      "low-contrast",
+      "layout-jump"
+     ]
+    },
+    {
+     "request": 74,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 97,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 107,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 112,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 1,
+     "warnings": 0,
+     "codes": [
+      "text-overlap"
+     ]
+    },
+    {
+     "request": 114,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 116,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 121,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    },
+    {
+     "request": 121,
+     "tool": "rhp_check",
+     "file": "poster.html",
+     "errors": 0,
+     "warnings": 0,
+     "codes": []
+    }
+   ],
+   "violations": [],
+   "scan": {
+    "renders": true,
+    "charts": 1,
+    "errors": 0,
+    "sideways": [],
+    "overlaps": 0,
+    "cut": 0,
+    "tiny": 0,
+    "lowContrast": 0,
+    "canvas": 0,
+    "phoneHeight": 1082
+   },
+   "posterBytes": 23161,
+   "judgePasses": 0,
+   "fidelity": null,
+   "data": null,
+   "design": null,
+   "legibility": null,
+   "overall": null,
+   "rankScore": null,
+   "issues": []
+  }
+ ],
+ "byCondition": {
+  "apex-none": {
+   "n": 1,
+   "requests": {
+    "mean": 134,
+    "median": 134,
+    "min": 134,
+    "max": 134
+   },
+   "contextMax": {
+    "mean": 487780,
+    "median": 487780,
+    "min": 487780,
+    "max": 487780
+   },
+   "cacheRead": {
+    "mean": 41721684,
+    "median": 41721684,
+    "min": 41721684,
+    "max": 41721684
+   },
+   "cacheWrite": {
+    "mean": 463499,
+    "median": 463499,
+    "min": 463499,
+    "max": 463499
+   },
+   "output": {
+    "mean": 286870,
+    "median": 286870,
+    "min": 286870,
+    "max": 286870
+   },
+   "cost": {
+    "mean": 12.372,
+    "median": 12.372,
+    "min": 12.3723,
+    "max": 12.3723
+   },
+   "minutes": {
+    "mean": 41.6,
+    "median": 41.6,
+    "min": 41.6,
+    "max": 41.6
+   },
+   "toolCalls": {
+    "mean": 161,
+    "median": 161,
+    "min": 161,
+    "max": 161
+   },
+   "imagesRead": {
+    "mean": 67,
+    "median": 67,
+    "min": 67,
+    "max": 67
+   },
+   "renders": 1.0,
+   "defects": {
+    "overlaps": 0,
+    "cut": 2,
+    "tiny": 0,
+    "lowContrast": 1,
+    "sideways": 0
+   }
+  },
+  "apex-skill": {
+   "n": 1,
+   "requests": {
+    "mean": 122,
+    "median": 122,
+    "min": 122,
+    "max": 122
+   },
+   "contextMax": {
+    "mean": 503855,
+    "median": 503855,
+    "min": 503855,
+    "max": 503855
+   },
+   "cacheRead": {
+    "mean": 39538775,
+    "median": 39538775,
+    "min": 39538775,
+    "max": 39538775
+   },
+   "cacheWrite": {
+    "mean": 521072,
+    "median": 521072,
+    "min": 521072,
+    "max": 521072
+   },
+   "output": {
+    "mean": 296938,
+    "median": 296938,
+    "min": 296938,
+    "max": 296938
+   },
+   "cost": {
+    "mean": 12.18,
+    "median": 12.18,
+    "min": 12.1803,
+    "max": 12.1803
+   },
+   "minutes": {
+    "mean": 41.5,
+    "median": 41.5,
+    "min": 41.5,
+    "max": 41.5
+   },
+   "toolCalls": {
+    "mean": 154,
+    "median": 154,
+    "min": 154,
+    "max": 154
+   },
+   "imagesRead": {
+    "mean": 58,
+    "median": 58,
+    "min": 58,
+    "max": 58
+   },
+   "renders": 1.0,
+   "defects": {
+    "overlaps": 0,
+    "cut": 5,
+    "tiny": 0,
+    "lowContrast": 0,
+    "sideways": 0
+   }
+  },
+  "apex-skill-mcp": {
+   "n": 1,
+   "requests": {
+    "mean": 132,
+    "median": 132,
+    "min": 132,
+    "max": 132
+   },
+   "contextMax": {
+    "mean": 519276,
+    "median": 519276,
+    "min": 519276,
+    "max": 519276
+   },
+   "cacheRead": {
+    "mean": 44776302,
+    "median": 44776302,
+    "min": 44776302,
+    "max": 44776302
+   },
+   "cacheWrite": {
+    "mean": 548308,
+    "median": 548308,
+    "min": 548308,
+    "max": 548308
+   },
+   "output": {
+    "mean": 303596,
+    "median": 303596,
+    "min": 303596,
+    "max": 303596
+   },
+   "cost": {
+    "mean": 13.363,
+    "median": 13.363,
+    "min": 13.3625,
+    "max": 13.3625
+   },
+   "minutes": {
+    "mean": 52.3,
+    "median": 52.3,
+    "min": 52.3,
+    "max": 52.3
+   },
+   "toolCalls": {
+    "mean": 134,
+    "median": 134,
+    "min": 134,
+    "max": 134
+   },
+   "imagesRead": {
+    "mean": 31,
+    "median": 31,
+    "min": 31,
+    "max": 31
+   },
+   "renders": 1.0,
+   "defects": {
+    "overlaps": 0,
+    "cut": 0,
+    "tiny": 0,
+    "lowContrast": 1,
+    "sideways": 0
+   }
+  },
+  "rhp-mcp": {
+   "n": 1,
+   "requests": {
+    "mean": 99,
+    "median": 99,
+    "min": 99,
+    "max": 99
+   },
+   "contextMax": {
+    "mean": 528615,
+    "median": 528615,
+    "min": 528615,
+    "max": 528615
+   },
+   "cacheRead": {
+    "mean": 32568036,
+    "median": 32568036,
+    "min": 32568036,
+    "max": 32568036
+   },
+   "cacheWrite": {
+    "mean": 643577,
+    "median": 643577,
+    "min": 643577,
+    "max": 643577
+   },
+   "output": {
+    "mean": 278581,
+    "median": 278581,
+    "min": 278581,
+    "max": 278581
+   },
+   "cost": {
+    "mean": 10.909,
+    "median": 10.909,
+    "min": 10.9088,
+    "max": 10.9088
+   },
+   "minutes": {
+    "mean": 41.9,
+    "median": 41.9,
+    "min": 41.9,
+    "max": 41.9
+   },
+   "toolCalls": {
+    "mean": 132,
+    "median": 132,
+    "min": 132,
+    "max": 132
+   },
+   "imagesRead": {
+    "mean": 26,
+    "median": 26,
+    "min": 26,
+    "max": 26
+   },
+   "renders": 1.0,
+   "defects": {
+    "overlaps": 0,
+    "cut": 10,
+    "tiny": 0,
+    "lowContrast": 0,
+    "sideways": 0
+   }
+  },
+  "rhp-skill": {
+   "n": 1,
+   "requests": {
+    "mean": 125,
+    "median": 125,
+    "min": 125,
+    "max": 125
+   },
+   "contextMax": {
+    "mean": 611249,
+    "median": 611249,
+    "min": 611249,
+    "max": 611249
+   },
+   "cacheRead": {
+    "mean": 52206974,
+    "median": 52206974,
+    "min": 52206974,
+    "max": 52206974
+   },
+   "cacheWrite": {
+    "mean": 769536,
+    "median": 769536,
+    "min": 769536,
+    "max": 769536
+   },
+   "output": {
+    "mean": 313973,
+    "median": 313973,
+    "min": 313973,
+    "max": 313973
+   },
+   "cost": {
+    "mean": 15.505,
+    "median": 15.505,
+    "min": 15.5055,
+    "max": 15.5055
+   },
+   "minutes": {
+    "mean": 45.8,
+    "median": 45.8,
+    "min": 45.8,
+    "max": 45.8
+   },
+   "toolCalls": {
+    "mean": 139,
+    "median": 139,
+    "min": 139,
+    "max": 139
+   },
+   "imagesRead": {
+    "mean": 37,
+    "median": 37,
+    "min": 37,
+    "max": 37
+   },
+   "renders": 1.0,
+   "defects": {
+    "overlaps": 0,
+    "cut": 0,
+    "tiny": 0,
+    "lowContrast": 0,
+    "sideways": 0
+   }
+  },
+  "rhp-skill-mcp": {
+   "n": 1,
+   "requests": {
+    "mean": 99,
+    "median": 99,
+    "min": 99,
+    "max": 99
+   },
+   "contextMax": {
+    "mean": 602940,
+    "median": 602940,
+    "min": 602940,
+    "max": 602940
+   },
+   "cacheRead": {
+    "mean": 40220610,
+    "median": 40220610,
+    "min": 40220610,
+    "max": 40220610
+   },
+   "cacheWrite": {
+    "mean": 747660,
+    "median": 747660,
+    "min": 747660,
+    "max": 747660
+   },
+   "output": {
+    "mean": 319189,
+    "median": 319189,
+    "min": 319189,
+    "max": 319189
+   },
+   "cost": {
+    "mean": 13.106,
+    "median": 13.106,
+    "min": 13.1056,
+    "max": 13.1056
+   },
+   "minutes": {
+    "mean": 59.0,
+    "median": 59.0,
+    "min": 59.0,
+    "max": 59.0
+   },
+   "toolCalls": {
+    "mean": 117,
+    "median": 117,
+    "min": 117,
+    "max": 117
+   },
+   "imagesRead": {
+    "mean": 30,
+    "median": 30,
+    "min": 30,
+    "max": 30
+   },
+   "renders": 1.0,
+   "defects": {
+    "overlaps": 0,
+    "cut": 0,
+    "tiny": 0,
+    "lowContrast": 0,
+    "sideways": 0
+   }
+  }
+ }
+}

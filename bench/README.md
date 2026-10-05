@@ -18,6 +18,9 @@ Each one is written the way its own docs suggest, with its default settings, inc
 | Recharts (React) | SVG | 400 ms |
 | Nivo (React) | SVG | spring |
 | Victory (React) | SVG | none |
+| Highcharts | SVG | its default |
+| AntV G2 | canvas (AntV G) | its default |
+| Vega-Lite (vega-embed) | canvas, compiled and drawn asynchronously | none |
 
 The adapters are in `libs/`, one file each.
 The React libraries render with `flushSync`, so an update is drawn in the frame it is made, like the others.
@@ -41,6 +44,19 @@ node run.mjs chrome rhp-css,d3   # only some libraries
 npm run report             # RESULTS.md from results/ and out/sizes.json
 ```
 
-`chrome` runs the installed Chrome, headed, through Playwright; `firefox` and `webkit` run Playwright's builds.
+`chrome` runs the installed Chrome, headed, through Playwright; `chromium` runs Playwright's Chromium headless (with `BENCH_BROWSER=<path>` for a build already on the machine), for a machine without Chrome such as a Linux container; `firefox` and `webkit` run Playwright's builds.
+`BENCH_RESULTS=<folder>` writes the results to another folder, and `BENCH_RESULTS=<folder> BENCH_OUT=<file> BENCH_MACHINE=<text> npm run report` writes a separate results page from them.
 `safari` runs the real Safari through `safaridriver` (enable it once with `safaridriver --enable`, and allow remote automation in Safari's Develop menu).
 Close other apps while it runs: timings are only as steady as the machine.
+
+## Scale: scatter plots and lines with many points
+
+`scale.mjs` draws one chart of many points in each library of `scale/`: a scatter plot of 1,000 and 10,000 dots, and a line of 1,000 and 100,000 points, with each library's defaults (rhp's charts are `static`, as its docs say for data that never changes).
+It reports the frame the chart is made in, all main-thread time in the 2 seconds after, and the DOM elements it adds, the median of 5 fresh pages.
+
+```sh
+node scale.mjs build                       # out-scale/: one page per library
+node scale.mjs run                         # Chromium; BENCH_BROWSER and BENCH_RESULTS as above; writes <results>/scale.json
+```
+
+An rhp scatter plot is one slat per point, each an HTML element, so its cost grows with the points the way the DOM's does; a Line is one SVG path, whatever its length.

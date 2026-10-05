@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commuters who walk, cycle or take transit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Inter&display=swap">
+<style>
+  body { background: #f6f3ee; color: #1f1a14; font-family: Inter, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; }
+  h1 { font-family: Fraunces, serif; }
+  svg text { font: 12px Inter, sans-serif; fill: currentColor; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<main>
+  <h1>Lisbon gained the most ground</h1>
+  <p>Share of commuters who walk, cycle or take transit in 2025, with Lisbon up 9 points on 2024.</p>
+  <div id="chart"></div>
+  <p>Source: illustrative data</p>
+</main>
+<script>
+const data = [
+  {name: "Oslo", 2025: 64},
+  {name: "Lisbon", 2025: 57},
+  {name: "Vienna", 2025: 70},
+  {name: "Dublin", 2025: 45},
+  {name: "Prague", 2025: 52},
+];
+data.sort((a, b) => b[2025] - a[2025]);
+
+const width = 720, height = 300;
+const margin = {top: 24, right: 30, bottom: 30, left: 60};
+
+const x = d3.scaleLinear([0, 100], [margin.left, width - margin.right]);
+const y = d3.scaleBand(data.map(d => d.name), [margin.top, height - margin.bottom]).padding(0.2);
+
+const svg = d3.select("#chart").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto;");
+
+svg.append("g").selectAll().data(data).join("rect")
+    .attr("x", x(0))
+    .attr("y", d => y(d.name))
+    .attr("width", d => x(d[2025]) - x(0))
+    .attr("height", y.bandwidth())
+    .attr("fill", d => d.name === "Lisbon" ? "#c2410c" : "#b8b2a7");
+
+const target = svg.append("g").attr("transform", `translate(${x(60)},0)`);
+
+target.append("line")
+    .attr("y1", margin.top)
+    .attr("y2", height - margin.bottom)
+    .attr("stroke", "currentColor");
+
+target.append("text")
+    .attr("y", margin.top - 6)
+    .attr("text-anchor", "middle")
+    .text("EU target: 60%");
+
+svg.append("g").selectAll().data(data).join("text")
+    .attr("x", d => x(d[2025]) + 4)
+    .attr("y", d => y(d.name) + y.bandwidth() / 2)
+    .attr("dy", "0.35em")
+    .text(d => d[2025]);
+
+svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x));
+
+svg.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y));
+</script>

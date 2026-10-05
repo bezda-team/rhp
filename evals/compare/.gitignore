@@ -1,0 +1,8 @@
+node_modules/
+cdn-cache/
+skills/
+runs/
+judging/
+harness/tools/
+harness/calls.log
+harness/*.out

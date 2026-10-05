@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commuters who walk, cycle or take transit</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+</head>
+<body>
+<div><canvas id="chart"></canvas></div>
+<script>
+Chart.register(ChartDataLabels);
+
+new Chart(document.getElementById('chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Vienna', 'Oslo', 'Lisbon', 'Prague', 'Dublin'],
+    datasets: [{
+      label: '2025',
+      data: [70, 64, 57, 52, 45],
+      backgroundColor: ['#b8b2a7', '#b8b2a7', '#c2410c', '#b8b2a7', '#b8b2a7']
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    scales: {
+      x: { min: 0, max: 100, grid: { display: false } },
+      y: { grid: { display: false } }
+    },
+    plugins: {
+      legend: { display: false },
+      datalabels: { anchor: 'end', align: 'end' }
+    }
+  }
+});
+</script>
+</body>
+</html>

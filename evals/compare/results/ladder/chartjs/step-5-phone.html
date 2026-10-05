@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lisbon gained the most ground</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  body { background: #f6f3ee; color: #1f1a14; font-family: Inter, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; }
+  h1 { font-family: Fraunces, serif; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+</head>
+<body>
+<main>
+  <h1>Lisbon gained the most ground</h1>
+  <p>Share of commuters who walk, cycle or take transit (%), 2025: Lisbon is up 9 points on 2024, more than any other city.</p>
+  <div style="height: 360px"><canvas id="chart"></canvas></div>
+  <p><small>Source: illustrative data</small></p>
+</main>
+<script type="module">
+Chart.defaults.font.family = 'Inter, sans-serif';
+Chart.defaults.color = '#1f1a14';
+Chart.register(ChartDataLabels);
+
+const phone = () => matchMedia('(max-width: 480px)').matches;
+
+await document.fonts.ready;
+new Chart(document.getElementById('chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Vienna', 'Oslo', 'Lisbon', 'Prague', 'Dublin'],
+    datasets: [{
+      label: '2025',
+      data: [70, 64, 57, 52, 45],
+      backgroundColor: ['#b8b2a7', '#b8b2a7', '#c2410c', '#b8b2a7', '#b8b2a7'],
+      barPercentage: () => phone() ? 0.5 : 0.9
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    maintainAspectRatio: false,
+    layout: { padding: { top: 30 } },
+    scales: {
+      x: { min: 0, max: 100, grid: { display: false } },
+      y: {
+        grid: { display: false },
+        ticks: { mirror: phone, labelOffset: () => phone() ? -21 : 0 }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      datalabels: { anchor: 'end', align: 'end', backgroundColor: '#f6f3ee' },
+      annotation: {
+        clip: false,
+        annotations: {
+          target: {
+            type: 'line',
+            scaleID: 'x',
+            value: 60,
+            label: { display: true, content: 'EU target: 60%', position: 'start', yAdjust: -30 }
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

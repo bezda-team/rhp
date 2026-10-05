@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lisbon gained the most ground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 40px 16px; background: #f6f3ee; color: #1f1a14; font-family: Inter, sans-serif; }
+  .poster { max-width: 720px; margin: 0 auto; }
+  .poster figcaption { display: grid; gap: 8px; margin-bottom: 20px; }
+  .poster .kicker { display: none; }
+  .poster .headline { font: 700 34px Fraunces, serif; }
+  .poster .note { display: block; margin-top: 16px; font-size: 12px; }
+  .years { display: flex; gap: 6px; margin: 0 0 12px; }
+  .years button { padding: 6px 12px; border: 1px solid; background: none; color: inherit; font: inherit; cursor: pointer; }
+  .years button[aria-pressed="true"] { background: #1f1a14; color: #f6f3ee; }
+  .readout { margin: 0 0 12px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Dot, Tick, Label, Poster, slat, shape, sortBy, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data
+const city = ["Oslo", "Lisbon", "Vienna", "Dublin", "Prague"];
+const share = { 2024: [61, 48, 72, 39, 55], 2025: [64, 57, 70, 45, 52] };
+const signed = new Intl.NumberFormat("en-US", { signDisplay: "exceptZero" });
+const say = (i, year) => `${city[i]}: ${share[year][i]}% in ${year}, ${signed.format(share[year][i] - share[2024][i])} points since 2024`;
+
+// Phone
+const phone = matchMedia("(max-width: 480px)");
+const [narrow, setNarrow] = createSignal(phone.matches);
+phone.addEventListener("change", (e) => setNarrow(e.matches));
+
+// Slat types
+const PERSON = shape(
+  ["M", 0, 1], ["C", 0, 0.72, 0.12, 0.6, 0.32, 0.55], ["C", 0.38, 0.53, 0.4, 0.5, 0.4, 0.46],
+  ["C", 0.3, 0.42, 0.26, 0.34, 0.26, 0.26], ["C", 0.26, 0.13, 0.36, 0.04, 0.5, 0.04],
+  ["C", 0.64, 0.04, 0.74, 0.13, 0.74, 0.26], ["C", 0.74, 0.34, 0.7, 0.42, 0.6, 0.46],
+  ["C", 0.6, 0.5, 0.62, 0.53, 0.68, 0.55], ["C", 0.88, 0.6, 1, 0.72, 1, 1], ["Z"]);
+const Person = slat({
+  css: `.icon { border-radius: 0; background: linear-gradient(90deg, var(--rhp-color) calc(var(--fill) * 100%), #d9d3c7 0); }`,
+}, (p) => html`
+  <${Dot} at=${() => 10 * p.index + 5} size="8cqw" shape=${PERSON} class="icon" color=${() => p.color}
+    style=${() => ({ "--fill": Math.min(1, (p.share - 10 * p.index) / 10) })} />`);
+const cityWith = (layout, name) => slat(layout, (d) => html`
+  <div data-row=${() => d.index}>
+    ${name(d)}
+    <${Plot} overlap=${true} slats=${() => Math.ceil(d.share / 10)} share=${() => d.share} color=${() => (d.city === "Lisbon" ? "#c2410c" : "#b8b2a7")}>${Person}<//>
+    <${Label} at=${() => 10 * Math.ceil(d.share / 10)}>${() => d.share}<//>
+  </div>`);
+const Beside = cityWith({ thickness: 52 }, (d) => html`<${Label} edge="start">${() => d.city}<//>`);
+const Above = cityWith({
+  thickness: 68,
+  room: {},
+  css: `.name { top: 0; translate: none; --rhp-label-gap: 0px; }`,
+}, (d) => html`<${Label} at=${0} class="name">${() => d.city}<//>`);
+const Target = slat({
+  room: { before: 24 },
+  css: `.tag { top: 0; translate: -50% -100%; padding-bottom: 5px; }`,
+}, () => html`
+  <div>
+    <${Tick} at=${60} thick=${1} style="--rhp-tick-width: 1px" />
+    <${Label} at=${60} class="tag">EU target: 60%<//>
+  </div>`);
+
+// Chart component
+const Commuters = () => {
+  const [on, setOn] = createSignal(null);
+  const [year, setYear] = createSignal(2025);
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setOn(row);
+  };
+  const leave = (e) => {
+    if (e.pointerType === "touch") return;
+    setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  return html`
+    <${Poster} title="Lisbon gained the most ground"
+      dek="Lisbon's share of commuters who walk, cycle or take transit rose from 48% to 57% between 2024 and 2025, the biggest jump of the five cities."
+      note="Source: illustrative data"
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <div class="years" role="group" aria-label="Year">
+        ${[2024, 2025].map((y) => html`<button type="button" aria-pressed=${() => year() === y} onClick=${() => setYear(y)}>${y}</button>`)}
+      </div>
+      <p class="readout" aria-live="polite">${() => say(on() ?? city.indexOf("Lisbon"), year())}</p>
+      <${Chart} scale=${[0, 100]} ticks=${false} label=${() => `Share of commuters who walk, cycle or take transit, %, ${year()}`}
+        style=${{ "--rhp-length-time": ".5s" }} theme=${{ font: "Inter, sans-serif", ink: "#1f1a14" }}>
+        ${() => html`<${Plot} keyboard=${true} city=${city} share=${() => share[year()]} order=${sortBy((d) => share[2025][d.index], "desc")}>${narrow() ? Above : Beside}<//>`}
+        <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${Target}<//>
+      <//>
+    <//>`;
+};
+
+render(Commuters, document.getElementById("chart"));
+</script>
+</body>
+</html>

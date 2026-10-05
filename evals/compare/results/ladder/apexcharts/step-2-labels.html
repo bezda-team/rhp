@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Walk, cycle or transit share</title>
+<div id="chart"></div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@7"></script>
+<script>
+new ApexCharts(document.querySelector('#chart'), {
+  chart: { type: 'bar', height: 300 },
+  plotOptions: { bar: { horizontal: true, dataLabels: { position: 'top' } } },
+  series: [{ name: '2025', data: [70, 64, 57, 52, 45] }],
+  xaxis: { categories: ['Vienna', 'Oslo', 'Lisbon', 'Prague', 'Dublin'] },
+  yaxis: { min: 0, max: 100 },
+  colors: [({ dataPointIndex }) => dataPointIndex === 2 ? '#c2410c' : '#b8b2a7'],
+  fill: { opacity: 1 },
+  dataLabels: { textAnchor: 'start', offsetX: 6, style: { colors: ['#1f1a14'] } },
+  grid: { show: false }
+}).render()
+</script>

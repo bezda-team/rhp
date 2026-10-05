@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commuters on foot, bike or transit</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, sortBy, html, render } from "@bezda/rhp/standalone";
+
+// Data
+const city = ["Oslo", "Lisbon", "Vienna", "Dublin", "Prague"];
+const share = { 2024: [61, 48, 72, 39, 55], 2025: [64, 57, 70, 45, 52] };
+
+// Slat type
+const City = (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.city}<//>
+    <${Bar} to=${() => d.share} color=${() => (d.city === "Lisbon" ? "#c2410c" : "#b8b2a7")} />
+    <${Label} at=${() => d.share}>${() => d.share}<//>
+  </div>`;
+
+// Chart component
+const Commuters = () => html`
+  <${Chart} scale=${[0, 100]} ticks=${false} label="Share of commuters who walk, cycle or take transit, %, 2025">
+    <${Plot} city=${city} share=${share[2025]} order=${sortBy("share", "desc")}>${City}<//>
+  <//>`;
+
+render(Commuters, document.getElementById("chart"));
+</script>
+</body>
+</html>

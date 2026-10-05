@@ -1,6 +1,8 @@
 // Runs every library through every scenario in one browser and writes results/<browser>.json.
-//   node run.mjs chrome | firefox | webkit | safari      (safari is the real Safari, see safari.mjs)
-// Chrome also reports main-thread time and runs the drag again on a CPU slowed 4x, like a mid-range phone.
+//   node run.mjs chrome | chromium | firefox | webkit | safari      (safari is the real Safari, see safari.mjs)
+// chrome is the installed Chrome, headed; chromium is Playwright's own Chromium, headless (for machines without Chrome,
+// such as a Linux container). Both also report main-thread time and run the drag again on a CPU slowed 4x, like a
+// mid-range phone. BENCH_RESULTS names the folder the results go to (results/ by default).
 import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
@@ -11,6 +13,7 @@ const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join
 const engine = process.argv[2] ?? "chrome", only = process.argv[3]?.split(",");
 const LIBS = fs.readdirSync(at("out")).filter((f) => f.endsWith(".html")).map((f) => f.slice(0, -5)).filter((l) => !only || only.includes(l));
 const REPS = { mount: 10, large: 5, dashboard: 5 };
+const CDP = engine === "chrome" || engine === "chromium";
 
 // The pages are served over http since Safari can't open files
 const server = http.createServer((q, r) => {
@@ -39,14 +42,15 @@ async function session() {
       end: async () => { finish(); await run; },
     };
   }
-  const type = { chrome: chromium, firefox, webkit }[engine];
-  const browser = await type.launch(engine === "chrome" ? { channel: "chrome", headless: false } : {});
+  const type = { chrome: chromium, chromium, firefox, webkit }[engine];
+  // BENCH_BROWSER runs another build of the engine, such as an older Playwright Chromium already on the machine
+  const browser = await type.launch(engine === "chrome" ? { channel: "chrome", headless: false } : { executablePath: process.env.BENCH_BROWSER });
   return {
     open: async (u) => {
       const page = await browser.newPage({ viewport: { width: 1000, height: 900 } });
       page.on("pageerror", (e) => console.log("  page error:", e.message));
       await page.goto(u);
-      const cdp = engine === "chrome" ? await page.context().newCDPSession(page) : null;
+      const cdp = CDP ? await page.context().newCDPSession(page) : null;
       if (cdp) await cdp.send("Performance.enable");
       return {
         call: (fn, arg) => page.evaluate(([fn, arg]) => window.bench[fn](arg), [fn, arg]),
@@ -95,7 +99,7 @@ for (const lib of LIBS) {
     r.update = { latency: +median(lat).toFixed(1), perChange: per(spent(m0, m1), 20) };
     await p.close();
   }
-  for (const rate of engine === "chrome" ? [1, 4] : [1]) { // a drag: one value changes every frame for 240 frames
+  for (const rate of CDP ? [1, 4] : [1]) { // a drag: one value changes every frame for 240 frames
     const p = await S.open(url(lib));
     await p.call("prepare", { n: 20 });
     if (rate > 1) await p.throttle(rate);
@@ -103,7 +107,7 @@ for (const lib of LIBS) {
     r[rate > 1 ? "drag4x" : "drag"] = { ...frames(gaps), perFrame: per(spent(m0, m1), 240) };
     await p.close();
   }
-  if (engine === "chrome") { // memory and DOM size with the 50-chart dashboard
+  if (CDP) { // memory and DOM size with the 50-chart dashboard
     const p = await S.open(url(lib));
     const h0 = await p.heap(), n0 = await p.nodes();
     await p.call("dashboard", { k: 50, n: 7 });
@@ -115,5 +119,6 @@ for (const lib of LIBS) {
 }
 await S.end();
 server.close();
-fs.mkdirSync(at("results"), { recursive: true });
-fs.writeFileSync(at(`results/${engine}.json`), JSON.stringify(results, null, 2));
+const dir = process.env.BENCH_RESULTS ?? "results";
+fs.mkdirSync(at(dir), { recursive: true });
+fs.writeFileSync(at(`${dir}/${engine}.json`), JSON.stringify(results, null, 2));

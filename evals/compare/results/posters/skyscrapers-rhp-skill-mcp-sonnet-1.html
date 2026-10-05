@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ten tallest buildings</title>
+<meta name="description" content="An editorial poster of the world's ten tallest buildings, drawn to scale: the Burj Khalifa's 149 m lead is nearly as big as the whole field behind it. Heights from CTBUH.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23b93c0b' d='M16 .5 16.8 9H19v5h2v5h2v5h2v7H7v-7h2v-5h2v-5h2V9h2.2z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  /* Elevation sheet: drafting-paper white, graphite ink, slate towers and one aviation orange for the story */
+  :root {
+    color-scheme: light;
+    --page: #cdd0d3; --paper: #f5f3ee; --ink: #14171a; --soft: #565c63; --rule: #d9d6cd;
+    --accent: #b93c0b; --quiet: #5f6974;
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --text: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: var(--page); }
+  .poster { position: relative; max-width: 1040px; margin: 0 auto; padding: 60px 64px 34px; background: var(--paper); color: var(--ink); font: 16px/1.5 var(--text);
+    box-shadow: 0 1px 2px rgb(20 23 26 / .18), 0 28px 50px -28px rgb(20 23 26 / .5); -webkit-tap-highlight-color: transparent; }
+  /* The ornament: the ruled frame of a drawing sheet */
+  .poster::before { content: ""; position: absolute; inset: 14px; border: 1px solid var(--ink); pointer-events: none; }
+  .poster figcaption { display: grid; gap: 14px; }
+  .poster .kicker { font: 600 12px/1.3 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+  .poster .headline { max-width: 17em; font: 800 clamp(32px, 5.6vw, 60px)/.96 var(--display); letter-spacing: .005em; text-wrap: balance; }
+  .poster .headline em { font-style: normal; color: var(--accent); }
+  .poster .dek { max-width: 64ch; font-size: 17px; line-height: 1.5; color: var(--soft); text-wrap: pretty; }
+  .poster .rhp-chart { margin: 0 -2px; }
+  .loading { max-width: 560px; margin: 96px auto; padding: 0 16px; font: 16px/1.5 var(--text); color: var(--soft); text-align: center; }
+  .poster .note { display: block; margin-top: 26px; padding-top: 12px; border-top: 2px solid var(--ink); font-size: 12px; line-height: 1.5; color: var(--soft); }
+
+  /* The readout: the tower in focus, a ruled strip like a sheet's title block. Every tower's version sits in the same cell,
+     so the strip is as tall as the tallest and never changes size; the one in focus is shown. */
+  .focus { display: grid; margin: 26px 0 30px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+  .focus .state { grid-area: 1 / 1; display: grid; grid-template-columns: 136px 200px 280px minmax(0, 1fr); align-items: center; visibility: hidden; }
+  .focus .state.on { visibility: visible; }
+  .focus .state > * { min-width: 0; padding: 12px 0 12px 18px; border-left: 1px solid var(--rule); }
+  .focus .state > :first-child { padding-left: 0; border-left: 0; }
+  .focus .tag { display: grid; gap: 4px; }
+  .focus .tag b { font: 600 11px/1 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+  .focus .tag span { font-size: 12.5px; line-height: 1.3; color: var(--soft); text-wrap: balance; }
+  .focus .num { font: 800 58px/1 var(--display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .focus .num small { margin-left: 3px; font-size: 24px; font-weight: 700; }
+  .focus .who { display: grid; gap: 2px; line-height: 1.25; }
+  .focus .who b { font-size: 16px; font-weight: 600; }
+  .focus .who span { font-size: 13.5px; color: var(--soft); }
+  .focus .vs { display: grid; gap: 2px; font-size: 14px; line-height: 1.4; }
+
+  /* Narrower sheets: the readout's cells go in two rows */
+  @media (max-width: 980px) {
+    .poster { padding: 52px 40px 30px; }
+    .focus .state { grid-template-columns: auto minmax(0, .8fr) minmax(0, 1.2fr); grid-template-areas: "num who vs" "tag tag tag"; }
+    .focus .num { grid-area: num; padding-left: 0; border-left: 0; }
+    .focus .who { grid-area: who; }
+    .focus .vs { grid-area: vs; }
+    .focus .tag { grid-area: tag; display: block; padding: 6px 0 8px; border-left: 0; border-top: 1px solid var(--rule); }
+    .focus .tag b { display: none; }
+  }
+  @media (max-width: 760px) {
+    body { padding: 10px 12px 28px; }
+    .poster { padding: 32px 18px 22px; }
+    .poster::before { inset: 7px; }
+    .poster figcaption { gap: 10px; }
+    .poster .kicker { font-size: 11px; }
+    .poster .dek { font-size: 15px; }
+    .poster .dek .more { display: none; }
+    .focus { margin: 14px 0 12px; }
+    .focus.picked { position: sticky; top: 0; z-index: 3; background: var(--paper); }
+    .focus .state { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "num who" "vs vs" "tag tag"; }
+    .focus .state > * { padding: 0; border-left: 0; }
+    .focus .num { padding: 10px 14px 4px 0; font-size: 44px; }
+    .focus .num small { font-size: 19px; }
+    .focus .who { padding-top: 10px; }
+    .focus .who b { font-size: 15px; }
+    .focus .vs { padding-bottom: 6px; font-size: 13.5px; }
+    .focus .tag { padding: 6px 0 8px; }
+    .focus .tag span { font-size: 12px; }
+    .poster .note { margin-top: 20px; }
+  }
+  @media print {
+    :root { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { padding: 0; background: none; }
+    .poster { max-width: none; box-shadow: none; }
+    .focus.picked { position: static; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"><p class="loading">Drawing the poster. It needs JavaScript and a connection to cdn.jsdelivr.net, where rhp is loaded from.</p></div>
+<script type="module">
+import { Chart, Plot, Bar, Tick, Label, Place, Poster, slat, shape, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: the world's ten tallest buildings (CTBUH): height in metres, city, year completed. The poster's numbers (the lead,
+// the field, the readout) are worked out from this list. The headline's claim, that the leader's lead is nearly as big as
+// the whole field behind it, is true for these numbers only: reword it if you change them.
+const TOWERS = [
+  { name: "Burj Khalifa", city: "Dubai", height: 828, year: 2010 },
+  { name: "Merdeka 118", city: "Kuala Lumpur", height: 678.9, year: 2023 },
+  { name: "Shanghai Tower", city: "Shanghai", height: 632, year: 2015 },
+  { name: "Makkah Royal Clock Tower", city: "Mecca", height: 601, year: 2012 },
+  { name: "Ping An Finance Center", city: "Shenzhen", height: 599.1, year: 2017 },
+  { name: "Lotte World Tower", city: "Seoul", height: 554.5, year: 2017 },
+  { name: "One World Trade Center", city: "New York City", height: 541.3, year: 2014 },
+  { name: "Guangzhou CTF Finance Centre", city: "Guangzhou", height: 530, year: 2016 },
+  { name: "Tianjin CTF Finance Centre", city: "Tianjin", height: 530, year: 2019 },
+  { name: "CITIC Tower", city: "Beijing", height: 527.7, year: 2018 },
+];
+const NOTE = "Source: CTBUH. Heights are to scale; the tower outlines are simplified drawings.";
+
+// Outlines, by building name (a building with none is drawn as a plain bar). Each silhouette is drawn in its own box:
+// a point is [height, half-width], height from the foot (0) to the tip (1) and half-width from the middle of the box
+// outwards (0.5 is the whole width). The left side mirrors the right.
+const through = (p) => p.slice(1).map((b, i) => { // a smooth curve through the points (a Catmull-Rom spline as cubics)
+  const a = p[i], before = p[i - 1] ?? a, after = p[i + 2] ?? b;
+  return ["C", a[0] + (b[0] - before[0]) / 6, a[1] + (b[1] - before[1]) / 6, b[0] - (after[0] - a[0]) / 6, b[1] - (after[1] - a[1]) / 6, b[0], b[1]];
+});
+const outline = (right, { left = right, smooth = false } = {}) => {
+  const L = left.map(([u, w]) => [u, 0.5 - w]);
+  const R = right.map(([u, w]) => [u, 0.5 + w]).reverse();
+  const side = (pts) => (smooth ? through(pts) : pts.slice(1).map((pt) => ["L", ...pt]));
+  return shape(["M", ...L[0]], ...side(L), ["L", ...R[0]], ...side(R), ["Z"]);
+};
+const OUTLINES = {
+  // Stepped setbacks climbing to a needle
+  "Burj Khalifa": outline([[0, .5], [.07, .5], [.07, .45], [.15, .45], [.15, .4], [.23, .4], [.23, .35], [.31, .35], [.31, .3], [.39, .3], [.39, .25],
+    [.47, .25], [.47, .2], [.55, .2], [.55, .15], [.62, .15], [.62, .1], [.69, .1], [.69, .05], [.78, .04], [.9, .02], [1, .006]]),
+  // A faceted taper, a crystal crown and a long spire
+  "Merdeka 118": outline([[0, .5], [.3, .465], [.58, .415], [.7, .375], [.745, .35], [.76, .27], [.8, .2], [.835, .125], [.86, .07], [.88, .035], [1, .008]]),
+  // A smooth taper with a slanted crown
+  "Shanghai Tower": outline([[0, .47], [.15, .445], [.4, .375], [.65, .29], [.85, .21], [.935, .165], [.955, .15]],
+    { left: [[0, .47], [.15, .445], [.4, .375], [.65, .29], [.85, .215], [.96, .15], [1, .09]], smooth: true }),
+  // A square shaft, the wide clock block, a crown and a finial
+  "Makkah Royal Clock Tower": outline([[0, .46], [.6, .4], [.62, .4], [.625, .5], [.8, .5], [.805, .24], [.84, .22], [.87, .15], [.9, .1], [.915, .045],
+    [.93, .03], [.94, .07], [.955, .07], [.965, .03], [1, .012]]),
+  // A tapering shaft with a flat top and a short mast
+  "Ping An Finance Center": outline([[0, .5], [.12, .485], [.45, .445], [.8, .395], [.965, .36], [.975, .3], [.985, .05], [1, .015]]),
+  // A long concave taper to a fine tip
+  "Lotte World Tower": outline([[0, .48], [.12, .455], [.32, .395], [.55, .315], [.75, .225], [.88, .15], [.95, .085], [1, .012]], { smooth: true }),
+  // A square shaft to the roof, then the spire
+  "One World Trade Center": outline([[0, .45], [.77, .45], [.795, .39], [.8, .065], [.88, .04], [1, .008]]),
+  // A taper with a chamfered flat top
+  "Guangzhou CTF Finance Centre": outline([[0, .46], [.12, .445], [.5, .395], [.85, .345], [.975, .325], [1, .28]]),
+  // A taper with shoulders and a blunt crown
+  "Tianjin CTF Finance Centre": outline([[0, .47], [.18, .45], [.55, .385], [.88, .325], [.925, .31], [.94, .23], [.975, .2], [1, .03]]),
+  // The ritual vessel: wide foot, narrow waist, flared top
+  "CITIC Tower": outline([[0, .4], [.06, .37], [.2, .3], [.38, .255], [.55, .285], [.74, .4], [.88, .49], [.96, .5], [1, .45]], { smooth: true }),
+};
+
+// What depends on the data: the ranking, the leader, the lead and the field behind it, all from a sorted copy
+const RANKED = [...TOWERS].sort((a, b) => b.height - a.height).map((t) => ({ ...t, outline: OUTLINES[t.name] }));
+const leader = RANKED[0];
+const second = RANKED[1];
+const last = RANKED[RANKED.length - 1];
+const LEAD = leader.height - second.height; // the Burj Khalifa over number two
+const FIELD = second.height - last.height; // number two over number ten: the whole field behind the leader
+const LEVELS = [leader.height, second.height, last.height]; // the three level lines
+const scale = nice(0, leader.height, 9); // 0 to 900 m
+
+const metres = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const m = (v) => metres.format(v) + "\u00a0m"; // a length, its unit held to its number
+const say = (t) => `${t.name}, ${t.city}, completed ${t.year}: ${metres.format(t.height)} metres`;
+const level = (t) => RANKED.filter((o) => o !== t && o.height === t.height).map((o) => o.name);
+// The readout's comparison with the leader
+const versus = (t) => {
+  if (t === leader) return [`The tallest of the ten, ${m(LEAD)} above ${second.name}.`];
+  const tie = level(t);
+  return [`${m(leader.height - t.height)} below the ${leader.name}, ${percent.format(t.height / leader.height)} of its height.`].concat(tie.length ? [`Level with ${tie.join(" and ")}.`] : []);
+};
+
+// Slat types
+// A tower: its silhouette, its name along it, its height at its tip, its city and year at its foot.
+// Standing (wide screens) the names run up the towers; lying down (phones) a line of text sits over each tower.
+const Tower = slat({
+  thickness: { horizontal: 52 },
+  inset: { vertical: 0.1 },
+  room: { vertical: { start: 54, end: 14 }, horizontal: { start: 0, end: 52 } },
+  css: `
+    .tower { cursor: default; }
+    .tower.lit:vertical { background: color-mix(in srgb, var(--rhp-series-1) 6%, transparent); }
+    .tower:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: -2px; }
+    .body { --rhp-radius: 0px; }
+    .body:horizontal { top: 19px; height: 26px; translate: none; }
+    .line { display: contents; }
+    .name { position: absolute; font: 600 13.5px/1 "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif; white-space: nowrap; pointer-events: none; }
+    .meta { position: absolute; font: 500 12.5px/1.2 "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif; color: var(--rhp-muted); pointer-events: none; }
+    .meta b { font-weight: 600; color: var(--rhp-ink); }
+    .meta i { font-style: normal; font-variant-numeric: tabular-nums; }
+    .value { font: 800 17px/1 "Big Shoulders Display", "Arial Narrow", Impact, sans-serif; letter-spacing: .01em; color: var(--rhp-ink); }
+    .lit .value { color: var(--rhp-series-1); }
+
+    .tower:vertical .name { left: 50%; bottom: 12px; translate: -50% 0; writing-mode: vertical-rl; rotate: 180deg; color: var(--rhp-surface); }
+    .tower:vertical .meta { top: calc(100% + 11px); left: 0; right: 0; text-align: center; }
+    .tower:vertical .meta b, .tower:vertical .meta i { display: block; }
+    .tower.lit:vertical .meta b { color: var(--rhp-series-1); }
+
+    .tower:horizontal .line { display: block; position: absolute; left: 0; top: 0; max-width: calc(100cqw + 52px); padding: 0 4px 0 5px; overflow: hidden; text-overflow: ellipsis; background: var(--rhp-surface); font-size: 12px; line-height: 16px; white-space: nowrap; }
+    .tower:horizontal .name { position: static; font-size: 13px; color: var(--rhp-ink); }
+    .tower.lit:horizontal .name { color: var(--rhp-series-1); }
+    .tower:horizontal .meta { position: static; font-size: 12px; line-height: 16px; }
+    .tower:horizontal .meta::before, .tower:horizontal .meta i::before { content: "\\00b7"; margin: 0 .4em; }
+    .tower:horizontal .meta b { font-weight: 500; color: var(--rhp-muted); }
+    .value:horizontal { top: 32px; font-size: 16px; background: var(--rhp-surface); padding-right: 3px; }
+    @container (max-width: 268px) { .tower:horizontal .name { font-size: 12px; } .tower:horizontal .meta { font-size: 11px; } }
+    @container (max-width: 226px) { .tower:horizontal .meta b, .tower:horizontal .meta::before { display: none; } }
+    @container (min-width: 460px) { .tower:horizontal .name { font-size: 14.5px; } .tower:horizontal .meta { font-size: 13px; } .tower:horizontal .line { line-height: 18px; } .value:horizontal { font-size: 18px; } }
+    .tower:vertical .meta { overflow-wrap: anywhere; }
+    @container (max-width: 640px) { .tower:vertical .meta { font-size: 11.5px; } }
+    @container (max-width: 560px) { .tower:vertical .meta { font-size: 11px; } .tower:vertical .name { font-size: 12.5px; } }
+  `,
+}, (d) => html`
+  <div class=${() => (d.lit ? "tower lit" : "tower")} data-row=${() => d.index} aria-label=${() => say(d)}>
+    <${Bar} to=${() => d.height} shape=${() => d.outline} class="body" color=${() => (d.lit ? "series-1" : "series-2")} />
+    <span class="line" aria-hidden="true">
+      <span class="name">${() => d.name}</span>
+      <span class="meta"><b>${() => d.city}</b><i>${() => d.year}</i></span>
+    </span>
+    <${Label} at=${() => d.height} class="value">${() => metres.format(d.height) + (d.lit ? "\u00a0m" : "")}<//>
+  </div>`);
+
+// A label on the dimension chain: a number and what it measures
+const gap = (at, kind, number, words) => html`
+  <${Place} at=${at} across=${1} class=${kind}>
+    <span class="gap"><b>${number}</b><small>${words}</small></span>
+  <//>`;
+
+// The guides, one slat across the whole plot, under the towers: the ground, a level line at the height of first, second
+// and tenth place, and, outside the plot, a dimension chain that measures the lead and the field against each other.
+// Standing, each number sits beside its part of the chain; lying down, the two sit under it, either side of the shared tick.
+const Guides = slat({
+  room: { vertical: { after: 112 }, horizontal: { after: 62 } },
+  css: `
+    .ground { --rhp-tick-width: 2px; background: var(--rhp-ink); }
+    .level:vertical { left: 0; translate: 0 50%; --rhp-tick-width: 1px; background: repeating-linear-gradient(90deg, var(--rhp-muted) 0 5px, transparent 5px 9px); }
+    .level:horizontal { top: 0; translate: -50% 0; --rhp-tick-width: 1px; background: repeating-linear-gradient(0deg, var(--rhp-muted) 0 5px, transparent 5px 9px); }
+    .dim:vertical, .cap:vertical { left: calc(100% + 18px); }
+    .dim:horizontal, .cap:horizontal { top: calc(100% + 18px); }
+    .gap { position: absolute; display: grid; white-space: nowrap; line-height: 1.1; }
+    .gap b { font: 800 22px/1 "Big Shoulders Display", "Arial Narrow", Impact, sans-serif; letter-spacing: .01em; }
+    .gap small { font: 500 12px/1.2 "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif; color: var(--rhp-muted); }
+    .lead b { color: var(--rhp-series-1); }
+    .wide:horizontal, .narrow:vertical { display: none; }
+    .wide:vertical .gap { left: 34px; top: 0; translate: 0 -50%; }
+    .narrow:horizontal .gap { top: 26px; }
+    .narrow:horizontal .gap b { font-size: 18px; }
+    .narrow.lead:horizontal .gap { left: 6px; }
+    .narrow.field:horizontal .gap { right: 6px; justify-items: end; }
+  `,
+}, () => html`
+  <div aria-hidden="true">
+    <${Tick} at=${0} thick=${1} class="ground" />
+    ${LEVELS.map((v) => html`<${Tick} at=${v} thick="calc(100% + 18px)" class="level" />`)}
+    <${Bar} from=${second.height} to=${leader.height} thick="2px" color="series-1" class="dim" />
+    <${Bar} from=${last.height} to=${second.height} thick="2px" color="ink" class="dim" />
+    ${LEVELS.map((v) => html`<${Tick} at=${v} thick="14px" color=${v === last.height ? "ink" : "series-1"} class="cap" />`)}
+    ${gap((leader.height + second.height) / 2, "wide lead", m(LEAD), "the lead")}
+    ${gap((second.height + last.height) / 2, "wide field", m(FIELD), html`<span>the field,<br>2nd to 10th</span>`)}
+    ${gap(second.height, "narrow lead", m(LEAD), "the lead")}
+    ${gap(second.height, "narrow field", m(FIELD), "the field")}
+  </div>`);
+
+// Chart component: the tower the reader points at, taps or reaches with the keyboard is lit and read out
+function Skyline() {
+  const [on, setOn] = createSignal(null);
+  const wide = matchMedia("(min-width: 761px)"); // wide: the towers stand; narrow: they lie down in rows
+  const [standing, setStanding] = createSignal(wide.matches);
+  wide.addEventListener("change", (e) => setStanding(e.matches));
+  const lit = () => on() ?? 0;
+  // The row of the slat an element is in, or null (between slats, on the guides or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setOn(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  return html`
+    <${Poster}
+      kicker="The ten tallest buildings, to scale"
+      title=${html`<span>The <em>${leader.name}\u2019s</em>${" "}${m(Math.round(LEAD))} lead is nearly as big as the whole field behind it</span>`}
+      dek=${html`<span>Heights in metres, to scale. The ${WORDS[RANKED.length - 1]} behind the ${leader.name} differ by only ${m(FIELD)}, from ${second.name} down to ${last.name}<span class="more">; the ${leader.name} itself stands ${m(LEAD)} above ${second.name}</span>.</span>`}
+      note=${NOTE}
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <div class=${() => (on() == null ? "focus" : "focus picked")} aria-hidden="true">
+        ${RANKED.map((tower, i) => html`
+          <div class=${() => (lit() === i ? "state on" : "state")}>
+            <span class="tag"><b>In focus</b><span>Point at a tower, or tap it.</span></span>
+            <b class="num">${metres.format(tower.height)}<small>m</small></b>
+            <span class="who"><b>${tower.name}</b><span>${tower.city + ", completed " + tower.year}</span></span>
+            <span class="vs">${versus(tower).map((line) => html`<span>${line}</span>`)}</span>
+          </div>`)}
+      </div>
+      <${Chart} orientation=${() => (standing() ? "vertical" : "horizontal")} height=${470} scale=${[scale.min, scale.max]} ticks=${false}
+        label="The ten tallest buildings, height in metres"
+        theme=${{ font: '"IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif', ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--quiet)"] }}>
+        <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${Guides}<//>
+        <${Plot} rows=${RANKED} keyboard=${true} lit=${(d) => lit() === d.index}>${Tower}<//>
+      <//>
+    <//>`;
+}
+
+const root = document.getElementById("chart");
+root.textContent = ""; // the loading message stays only if this script never ran
+render(() => html`<${Skyline} />`, root);
+root.querySelector(".headline")?.setAttribute("role", "heading"); // the Poster draws its headline as a span
+root.querySelector(".headline")?.setAttribute("aria-level", "1");
+</script>
+</body>
+</html>

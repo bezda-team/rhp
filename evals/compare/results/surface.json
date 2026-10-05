@@ -1,0 +1,111 @@
+{
+ "rhp": {
+  "exportedValues": 36,
+  "exportedTypes": 32,
+  "roots": [
+   "ChartProps",
+   "PlotSettings",
+   "ScaleProps",
+   "BarProps",
+   "DotProps",
+   "TickProps",
+   "PlaceProps",
+   "CellProps",
+   "LabelProps",
+   "LineProps",
+   "AreaProps",
+   "PosterProps",
+   "SlatLayout",
+   "ThemeValues"
+  ],
+  "optionPaths": 198,
+  "distinctOptionNames": 76,
+  "dtsKB": 18,
+  "dtsLines": 396
+ },
+ "apexcharts": {
+  "exportedValues": 32,
+  "exportedTypes": 46,
+  "roots": [
+   "ApexOptions"
+  ],
+  "optionPaths": 2650,
+  "distinctOptionNames": 605,
+  "dtsKB": 175,
+  "dtsLines": 5104
+ },
+ "highcharts": {
+  "exportedValues": 109,
+  "exportedTypes": 5259,
+  "roots": [
+   "Options"
+  ],
+  "optionPaths": 6259194,
+  "distinctOptionNames": 1525,
+  "dtsKB": 11241,
+  "dtsLines": 280288
+ },
+ "echarts": {
+  "exportedValues": 58,
+  "exportedTypes": 113,
+  "roots": [
+   "EChartsOption"
+  ],
+  "optionPaths": 2270565,
+  "distinctOptionNames": 1213,
+  "dtsKB": 461,
+  "dtsLines": 12596
+ },
+ "chartjs": {
+  "exportedValues": 41,
+  "exportedTypes": 199,
+  "roots": [
+   "ChartConfiguration"
+  ],
+  "optionPaths": 66,
+  "distinctOptionNames": 64,
+  "dtsKB": 231,
+  "dtsLines": 7451
+ },
+ "plot": {
+  "error": "Maximum call stack size exceeded"
+ },
+ "flint": {
+  "exportedValues": 156,
+  "exportedTypes": 90,
+  "roots": [
+   "ChartAssemblyInput"
+  ],
+  "optionPaths": 635,
+  "distinctOptionNames": 234,
+  "dtsKB": 231,
+  "dtsLines": 5117
+ },
+ "semiotic": {
+  "exportedValues": 176,
+  "exportedTypes": 314,
+  "roots": [
+   "BarChartProps",
+   "LineChartProps",
+   "ScatterplotProps",
+   "HeatmapProps",
+   "DonutChartProps",
+   "StackedBarChartProps"
+  ],
+  "optionPaths": 3332,
+  "distinctOptionNames": 430,
+  "dtsKB": 1160,
+  "dtsLines": 26807
+ },
+ "g2": {
+  "exportedValues": 80,
+  "exportedTypes": 282,
+  "roots": [
+   "G2Spec"
+  ],
+  "optionPaths": 235571957,
+  "distinctOptionNames": 774,
+  "dtsKB": 287,
+  "dtsLines": 6737
+ }
+}
