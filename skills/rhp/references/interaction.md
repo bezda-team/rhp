@@ -166,20 +166,24 @@ render(() => html`<${RainChart} />`, document.getElementById("chart"));
 - **Clearing.** `pointerleave` hands the pick back to the slat that has focus (the keyboard's pick, or a click's, since a click focuses the slat), or clears it when no slat in the poster has focus.
   It ignores a finger, whose `pointerleave` comes as it lifts after a tap.
   `focusout` clears when focus leaves the poster: a tap anywhere else takes focus from the slat.
-- **At rest**, the city the headline names is lit (`on() ?? LEAD`), and the readout gives the hint, in words that fit every device.
+  A control that is not a slat (a slider, or a date that is a `role="slider"`) keeps the pointer's pick on leave only while it has keyboard focus, `slider.matches(":focus-visible")`: a mouse click focuses it too, and with `document.activeElement` alone the pointer's last pick would stay after the pointer left.
+- **At rest**, the city the headline names is lit (`on() ?? LEAD`), and the readout gives the hint, in words that fit every device, or a fact the headline does not state; never the headline again, which spends the line next to the data on words the reader has just read.
+- **The hint names a way in that the reader cannot see.** A control only the keyboard finds, such as a date that is a `role="slider"` with no handle, is named in it: "Point at a year, or Tab to the date and use the arrow keys."
 - **Lit and dimmed.** The Plot turns the signal into two per-row groups, `on` and `dim`; the slat turns them into classes, and its css does the rest.
   rhp fades the Bar's `color` itself; the opacity changes at once, because a `transition` on a block would replace rhp's own (rule 7 in section 11).
 - **The readout** is one line of fixed height, so the chart under it never moves; keep its text short enough for 390px.
   It is `aria-hidden` because each slat's `aria-label` says the same to a screen reader.
 - **Next to the slat.** The readout can sit in the slat itself: `<${Show} when=${() => d.on}><${Label} at=…>…<//><//>` draws it in that one slat only (the pyramid and histogram recipes).
-  Do that when the chart is taller than about half a phone's screen, or pin the readout to the screen while the chart is in view: `position: sticky; bottom: 0` on a readout after the chart (or `top: 0` on one above it), with `z-index: 2` and the paper as its background.
+  Do that when the chart is taller than about half a phone's screen, or pin the readout to the screen while the chart is in view: `position: sticky; bottom: 0` on a readout after the chart, with `z-index: 2`, the paper as its background and a hairline on its top edge (`box-shadow: 0 -1px 0 #d9d4ca`), so it reads as a strip laid over the chart.
+  A readout above the chart pins (`top: 0`, and the hairline on its bottom edge) only while a pick exists, with a class such as `.readout.picked`: pinned at rest, it covers the plot's top as soon as the reader scrolls to the chart.
   A readout above a tall chart is out of sight when the reader taps a low slat, and without `z-index: 2` the slats cover a pinned one (rhp's plot is at `z-index: 1`).
 
 Checked: the checker reported a change for each slat it pointed at (City A, City C, City F) and tapped (City A, City F); its Tab reached City A and ArrowDown moved focus to City B.
 Playwright with a mouse: at rest City A was lit and the readout gave the hint; on City C's bar the readout named City C, City C was lit, and the five others were at opacity .3 with rhp's transition still on their bars; from City F down onto the axis the readout stayed on City F; leaving the poster cleared it all.
 With focus on City A, the mouse over City D took the readout, and leaving the poster gave it back to City A.
 At 390px with touch: a tap on City B kept the readout after the finger lifted, a scroll that started on City E moved the page and left the readout on City B, a tap on City E's number picked City E, and a tap on the headline or below the poster cleared it.
-With slats 110px thick (a chart taller than a 390 × 664 screen), a readout pinned with `position: sticky` and `z-index: 2`, after the chart or above it, showed City B on screen, and City E after a scroll; without `z-index: 2` the slats covered it.
+With slats 110px thick (a chart taller than a 390 × 664 screen), a readout pinned with `position: sticky` and `z-index: 2`, after the chart or above it, showed City B on screen, and City E after a scroll, with its hairline edge; without `z-index: 2` the slats covered it.
+Scrolled to the chart before any pick, the readout above it that pins only while a pick exists was out of the way, and one pinned at rest covered the plot's top.
 The chart's top stayed at the same y in every state.
 
 ## 3. Sort toggle
@@ -453,6 +457,7 @@ const interest = (rate, years) => {
   return r === 0 ? 0 : ((AMOUNT * r) / (1 - (1 + r) ** -n)) * n - AMOUNT;
 };
 const top = nice(0, interest(MAX_RATE, 30)); // the most the slider can reach, so the axis never moves
+const ticks = top.ticks.filter((v, k) => k % 2 === 0); // every other one: "$100K" is 35px wide, and the plot 120px at 320px
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact" });
 
 // Slat type
@@ -474,7 +479,7 @@ function Loan() {
         <input type="range" min="0" max=${MAX_RATE} step="0.25" value="5" aria-valuetext=${() => rate().toFixed(2) + "%"} onInput=${(e) => setRate(+e.currentTarget.value)}>
         <b aria-hidden="true">${() => rate().toFixed(2)}%</b>
       </label>
-      <${Chart} scale=${[top.min, top.max]} ticks=${top.ticks} format=${(v) => money.format(v)} label="Interest paid on a $300,000 loan, by term">
+      <${Chart} scale=${[top.min, top.max]} ticks=${ticks} format=${(v) => money.format(v)} label="Interest paid on a $300,000 loan, by term">
         <${Plot} years=${YEARS} interest=${paid} animate=${["interest"]}>${Term}<//>
       <//>
     <//>`;
@@ -769,14 +774,17 @@ With the option's lines in place of `seek`, Pause still stopped between rounds, 
 2. **One handler for the chart.** Put `data-row` on each slat's root (or `data-city`, a key, when rows come and go), find it with `e.target.closest("[data-row]")`, and listen on the Poster or a wrapper `div`: a Chart drops handlers.
 3. **A mouse or a pen picks on `pointermove`; a tap or a click on `click`; the keyboard on `focusin`.**
    Never pick on `pointerdown`, and on a finger's `pointermove` only when it moves sideways along a scrubber (section 6): a scroll on a phone starts with both.
-   An event on no slat keeps the pick, and `pointerleave` (never a finger's) hands it back to the focused slat or clears it.
+   An event on no slat keeps the pick, and `pointerleave` (never a finger's) hands it back to the focused slat or clears it; a control that is not a slat (a slider) keeps it only while it matches `:focus-visible`, since a mouse click focuses it too.
 4. **Never hover only.** What a hover shows, a tap and the keyboard show too, and the slat's text or `aria-label` says it to a screen reader.
+   The hint names a control only the keyboard finds ("or Tab to the date and use the arrow keys").
 5. **Keyboard wherever slats are interactive:** `keyboard=${true}` on the Plot, or real buttons and inputs; focus styles in the slat's css; never a clickable `div` as the only way in.
+   Never `outline: none` on a focusable slat unless the slat's css draws another mark of focus that is as easy to see (a ring around the mark, an ink stroke on it).
 6. **Overlay Plots** (a crosshair, a hairline, a today line, markers) get `style=${{ "pointer-events": "none" }}`, or they take the pointer from the Plot under them.
 7. **Effects are classes.** Never put a `transition` on a block (`.bar`, `.dot`, a Label) or on the slat's root: rhp moves them with its own, and yours would replace it or be ignored.
    Fade or grow an element inside a block (a `span` in a Label, a Bar's `::after`), or let the change happen at once.
-8. **Readouts are one line of fixed height**, short enough for 390px, with tabular figures, so nothing jumps.
-   On a phone, a chart taller than about half the screen shows the reading next to the picked slat (section 2).
+8. **Readouts are one line of fixed height**, short enough for 320px, with tabular figures, so nothing jumps; a readout of several lines keeps a `min-height` for its longest text at 320px.
+   At rest it gives the hint or a fact the headline does not state, never the headline again.
+   On a phone, a chart taller than about half the screen shows the reading next to the picked slat, or pins the readout (section 2).
 9. **Toggles and choices are `<button type="button">`s with `aria-pressed`,** in a `role="group"` with an `aria-label`; a button whose text changes (Play, Pause) has no `aria-pressed`.
 10. **Motion:** do not start playback by itself (a race may, once, when half of it is in view; never under reduced motion or after the reader used a control); stop timers and frame loops in `onCleanup`; rhp's own motion stops under reduced motion, and yours must check `matchMedia("(prefers-reduced-motion: reduce)")` or `@media (prefers-reduced-motion: reduce)`.
 11. **html template traps:** a handler on a component (`<${Poster}>`, a block) takes its event, `(e) => …`, or it runs once while drawing; booleans are written `keyboard=${true}`; compare in a per-row function (`on=${(d) => on() === d.index}`), which works with every rhp 2 (`createSelector` is there from 2.0.2); a value that changes is a function.

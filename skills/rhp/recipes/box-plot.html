@@ -130,8 +130,8 @@ function CommuteTimes() {
     <${Poster}
       kicker="Commute times, door to door"
       title="Bikes beat cars, and keep to time"
-      dek=${`One-way commutes timed over a month, ${MODES.reduce((n, m) => n + m.trips, 0)} trips in all. A cyclist's trips stay within a few minutes of each other; a driver's can take twice as long on a bad day.`}
-      note="Illustrative data. Point at a mode or tap it for its numbers, or Tab into the chart and use the arrow keys."
+      dek=${`One-way commutes timed over a month, ${MODES.reduce((n, m) => n + m.trips, 0)} trips in all. A cyclist's trips stay within a few minutes of each other; a driver's can take twice as long on a bad day. Tap or point at a mode for its numbers.`}
+      note="Illustrative data."
       onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <ul class="key">

@@ -62,16 +62,19 @@ const theme = { font: '"JetBrains Mono", ui-monospace, Menlo, monospace', ink: "
 const Curve = slat({ css: `.curve { stroke-width: 2.5px; }` }, (d) => html`
   <div><${Line} points=${() => d.points} class="curve" /></div>`);
 
-// The scale under the plot: a short mark and the year at each decade (every other decade on a phone)
+// The scale under the plot: a short mark and the year at each decade (every other decade on a phone), the first and
+// the last kept inside the plot
 const Decade = slat({
   room: { after: 28 },
   css: `
     .mark { top: 100%; height: 6px; translate: -50% 0; --rhp-tick-width: 1px; background: rgb(255 255 255 / .35); }
     .year { top: calc(100% + 10px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+    .first .year { translate: 0 0; }
+    .last .year { translate: -100% 0; }
     @container (max-width: 480px) { .odd { display: none; } }
   `,
 }, (t) => html`
-  <div>
+  <div class=${() => (t.first ? "first" : t.last ? "last" : "")}>
     <${Tick} at=${() => t.at} class="mark" />
     <${Label} at=${() => t.at} class=${() => ((t.at / 10) % 2 ? "year odd" : "year")}>${() => t.at}<//>
   </div>`);
@@ -138,8 +141,8 @@ function CarbonChart() {
     <${Poster}
       kicker="Mauna Loa Observatory, Hawaii"
       title="The air holds a third more carbon dioxide than in 1960"
-      dek=${html`<span>Yearly average CO₂ at 3,397 metres on Mauna Loa, in parts per million (ppm). It rose every single year, and <b>the yearly rise nearly tripled</b>, from 0.9 ppm in the 1960s to 2.4 in the 2010s.</span>`}
-      note="Source: NOAA Global Monitoring Laboratory, Mauna Loa annual means (Scripps Institution of Oceanography before 1974), retrieved 2026. Point at a year, tap it, or Tab into the chart and use the arrow keys.">
+      dek=${html`<span>Yearly average CO₂ at 3,397 metres on Mauna Loa, in parts per million (ppm). It rose every single year, and <b>the yearly rise nearly tripled</b>, from 0.9 ppm in the 1960s to 2.4 in the 2010s. Tap or point at a year, or drag along the line.</span>`}
+      note="Source: NOAA Global Monitoring Laboratory, Mauna Loa annual means (Scripps Institution of Oceanography before 1974), retrieved 2026.">
       <div class="plot" onPointerDown=${(e) => (start = [e.clientX, e.clientY])}
         onPointerMove=${(e) => (e.pointerType !== "touch" || sideways(e)) && pick(e)} onClick=${pick} onFocusIn=${pick}
         onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>

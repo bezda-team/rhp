@@ -233,7 +233,8 @@ A complete chart in the plain HTML format (the format of every recipe), with a p
   .poster .headline { font: 700 clamp(27px, 4.7vw, 34px)/1.05 Fraunces, Georgia, serif; text-wrap: balance; }
   .poster .dek { font-size: 15px; line-height: 1.45; color: #4d453b; max-width: 52ch; }
   .poster .note { display: block; margin-top: 14px; font-size: 11.5px; color: #6f665a; }
-  @media (max-width: 480px) { .poster { padding: 20px 16px 14px; } }
+  /* The dek is the readout: on a phone it keeps two lines, its longest text at 320px, so a pick never moves the chart */
+  @media (max-width: 480px) { .poster { padding: 20px 16px 14px; } .poster .dek { min-height: 2lh; } }
 </style>
 </head>
 <body>

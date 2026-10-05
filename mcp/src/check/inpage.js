@@ -89,6 +89,10 @@ export function install() {
     return { left, top, right, bottom, byX, byY, empty: right - left < 0.5 || bottom - top < 0.5 };
   }
 
+  // Whether what clipping leaves of a text's box shows it (2px or more both ways): screen-reader text, cut to 1px or to
+  // nothing by its own box, does not
+  const shows = (v) => !v.empty && v.right - v.left >= 2 && v.bottom - v.top >= 2;
+
   const describe = (el) => {
     if (!el || el.nodeType !== 1) return "";
     const cls = [...el.classList].filter((c) => !/^rhp-s/.test(c)).slice(0, 3).map((c) => "." + c).join("");
@@ -139,12 +143,17 @@ export function install() {
   // Every declaration in them is !important, so no page rule beats them.
   const ownRules = () => styleRules(document.adoptedStyleSheets ?? []).filter((r) => /^rhp(\.|$)/.test(r.layer));
 
-  // An element's text with a space between its parts ("English" and "Anglais" in two spans read "English Anglais")
-  const textOf = (el) => {
+  // The text of an element that a reader sees, with a space between its parts ("English" and "Anglais" in two spans
+  // read "English Anglais"): not what is hidden (display: none, a phone's short name beside the long one) nor
+  // screen-reader text (cut to 1px by its own box)
+  const seenText = (el) => {
     const parts = [];
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const range = document.createRange();
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      if (node.data.trim()) parts.push(node.data.trim());
+      if (!node.data.trim() || !visible(node.parentElement)) continue;
+      range.selectNodeContents(node);
+      if ([...range.getClientRects()].some((r) => shows(clipped(r, node.parentElement, null)))) parts.push(node.data.trim());
     }
     return parts.join(" ");
   };
@@ -319,7 +328,7 @@ export function install() {
       }
 
       if (!fragments.length) continue;
-      const shown = fragments.filter((f) => !f.visible.empty && f.visible.right - f.visible.left >= 2 && f.visible.bottom - f.visible.top >= 2);
+      const shown = fragments.filter((f) => shows(f.visible));
       out.push({ node, el, text: snippet(text), size, effective: size * Math.min(...fragments.map((f) => f.scale)), fragments, shown, style, turned: turn.turned });
     }
 
@@ -574,6 +583,47 @@ export function install() {
       }
     }
 
+    // Names in an overlap Plot on a cross axis (a scatter, a bubble chart) that a reader may take for another slat's: a
+    // Label's text drawn over another slat's Dot by more than 1px, or another slat's Dot nearer the middle line of the
+    // text than the Label's own Dot is to the text (a Dot beside the text on its line is read as what it names; one
+    // past a corner of the text is a neighbor)
+    const gap = (g, d) => Math.hypot(Math.max(g.left, Math.min(d.x, g.right)) - d.x, Math.max(g.top, Math.min(d.y, g.bottom)) - d.y) - d.r;
+    const fromLine = (g, d) => Math.hypot(Math.max(g.left, Math.min(d.x, g.right)) - d.x, (g.top + g.bottom) / 2 - d.y) - d.r;
+    for (const c of charts) {
+      if (collapsed.has(c) || !(parseFloat(c.style.getPropertyValue("--rhp-cross-min")) < parseFloat(c.style.getPropertyValue("--rhp-cross-max")))) continue;
+      let worst = null;
+      let count = 0;
+      for (const p of c.querySelectorAll(":scope > .rhp-body > .rhp-plot[data-rhp-overlap]:not(.rhp-scale)")) {
+        const slats = [...p.children].filter((s) => !s.hidden);
+        const dots = slats.flatMap((s) => [...s.querySelectorAll(".rhp-dot")].filter(visible).map((el) => {
+          const r = el.getBoundingClientRect();
+          return { s, x: (r.left + r.right) / 2, y: (r.top + r.bottom) / 2, r: Math.min(r.width, r.height) / 2 };
+        })).filter((d) => d.r > 0);
+        for (const s of slats) {
+          const own = dots.filter((d) => d.s === s);
+          if (!own.length) continue;
+          for (const label of s.querySelectorAll(".rhp-label")) {
+            const glyphs = boxes.filter((x) => label.contains(x.t.el)).map((x) => x.g);
+            if (!glyphs.length) continue;
+            const mine = Math.min(...glyphs.flatMap((g) => own.map((d) => gap(g, d))));
+            let found = null;
+            for (const d of dots) {
+              if (d.s === s) continue;
+              const over = -Math.min(...glyphs.map((g) => gap(g, d)));
+              const near = Math.min(...glyphs.map((g) => fromLine(g, d)));
+              // drawn over it first, the deepest; then the nearest past its own
+              const score = over > 1 ? 1000 + over : near < mine ? mine - near : -1;
+              if (score > (found?.score ?? 0)) found = { score, over: over > 1, d, near };
+            }
+            if (!found) continue;
+            count++;
+            if (!worst || found.score > worst.score) worst = { ...found, text: snippet(seenText(label)), other: snippet(seenText([...found.d.s.querySelectorAll(".rhp-label")].find((l) => seenText(l)) ?? found.d.s)), mine };
+          }
+        }
+      }
+      if (worst) add({ code: "ambiguous-label", text: worst.text, other: worst.other, over: worst.over, near: Math.max(0, Math.round(worst.near)), own: Math.round(worst.mine), count });
+    }
+
     // A vertical chart left at the default height (240px) whose slats' labels crowd each other
     for (const c of charts) {
       if (collapsed.has(c) || c.dataset.rhpO !== "v" || c.hasAttribute("data-rhp-aspect") || c.style.getPropertyValue("--rhp-height").trim() !== "240px") continue;
@@ -800,10 +850,11 @@ export function install() {
       const pr = plot?.getBoundingClientRect();
       const vertical = el.dataset.rhpO === "v";
       const track = block === "Bar" && pr && (vertical ? r.height >= pr.height * 0.99 : r.width >= pr.width * 0.99);
-      // the labels that name what a mark shows: words (not numbers) in the slat it is drawn in
+      // the labels that name what a mark shows: words (not numbers) in the slat it is drawn in, as the reader sees them
+      // (screen-reader text names nothing on screen)
       const slat = el.parentElement?.closest(".rhp-plot > *");
       const names = slat && slat !== el
-        ? [...slat.querySelectorAll(".rhp-label")].filter((l) => !l.contains(el) && visible(l)).map((l) => l.textContent.trim()).filter((x) => x && !/^[\s\d.,%+\-\u2212\u2013$\u20ac\u00a3\u00a5:/()kKMmBb]*$/.test(x))
+        ? [...slat.querySelectorAll(".rhp-label")].filter((l) => !l.contains(el) && visible(l)).map(seenText).filter((x) => x && !/^[\s\d.,%+\-\u2212\u2013$\u20ac\u00a3\u00a5:/()kKMmBb]*$/.test(x))
         : [];
       if (slat && !slats.has(slat)) slats.set(slat, slats.size);
       items.push({
@@ -907,14 +958,14 @@ export function install() {
     return { left: left + scrollX, top: top + scrollY, right: right + scrollX, bottom: bottom + scrollY };
   }
 
-  // What the interaction pass works on: slats to point at (the first, the middle and the last of the largest chart),
-  // buttons and toggles, ranges, selects, a slider for the arrow keys, Plots with keyboard. Controls go by their
-  // accessible name.
+  // What the interaction pass works on: slats to point at (the first, the middle and the last of the largest chart, and
+  // the one whose edge Label is widest: lit, a name that gets bolder can make room: "auto" measure again), buttons and
+  // toggles, ranges, selects, a slider for the arrow keys, Plots with keyboard. Controls go by their accessible name.
   function targets() {
 
     const list = (window.__rhpTargets = []);
     const keep = (el) => list.push(el) - 1;
-    const out = { slats: [], buttons: [], ranges: [], selects: [], slider: null, keyboard: null };
+    const out = { slats: [], widest: null, buttons: [], ranges: [], selects: [], slider: null, keyboard: null };
     const label = (el) => (nameOf(el) ? `"${snippet(nameOf(el))}"` : describe(el));
 
     // the largest chart (a size key drawn as a chart of its own comes before the chart it explains)
@@ -927,11 +978,17 @@ export function install() {
       const vertical = plot.dataset.rhpO === "v";
       const slats = [...plot.children].filter((s) => !s.hidden && visible(s));
       slats.sort((a, b) => (vertical ? a.getBoundingClientRect().left - b.getBoundingClientRect().left : a.getBoundingClientRect().top - b.getBoundingClientRect().top));
+      const range = document.createRange();
+      const nameWidth = (s) => Math.max(0, ...[...s.querySelectorAll(".rhp-label[data-rhp-edge]")].map((l) => {
+        range.selectNodeContents(l);
+        return range.getBoundingClientRect().width;
+      }));
+      const slatOf = (i) => ({ index: i + 1, of: slats.length, name: snippet([...slats[i].querySelectorAll(".rhp-label")].map(seenText).find((x) => x) ?? ""), target: keep(slats[i]) });
       const picks = [...new Set([0, Math.floor((slats.length - 1) / 2), slats.length - 1])].filter((i) => slats[i]);
-      for (const i of picks) {
-        const name = [...slats[i].querySelectorAll(".rhp-label")].map(textOf).find((x) => x) ?? "";
-        out.slats.push({ index: i + 1, of: slats.length, name: snippet(name), target: keep(slats[i]) });
-      }
+      out.slats = picks.map(slatOf);
+      const widths = slats.map(nameWidth);
+      const widest = widths.indexOf(Math.max(...widths));
+      if (widths[widest] > Math.max(...picks.map((i) => widths[i])) + 0.5) out.widest = slatOf(widest);
     }
 
     const usable = (el) => visible(el) && !el.disabled && el.getAttribute("aria-disabled") !== "true";
@@ -963,11 +1020,14 @@ export function install() {
   }
 
   // A point in the window on a mark of a slat (a target), where a reader would point or tap. The slat is scrolled into
-  // view, and the point is the first of a few on its marks that reaches the slat (a donut's wedge or a bubble sits away
-  // from the slat's center), else the first on its first mark (its slats may take no pointer), else the slat's center.
-  // The marks with a pointer cursor come first, in the page's order (the one shown at rest is often drawn larger), then
-  // the largest. The first point on a mark is across it (a share of its width: the middle, or one side so that two taps
-  // in a row land on different values), and on a Line it is on the line itself (a sloped line crosses its box).
+  // view, and the point is the first of a few that reaches the slat: on its marks (a bubble sits away from the slat's
+  // center), inside an SVG shape in it (a donut's wedge fills a small part of its box), then a Label's center. The
+  // marks with a pointer cursor come first, in the page's order (the one shown at rest is often drawn larger), then the
+  // largest. The first point on a mark is across it (a share of its width: the middle, or one side so that two taps in
+  // a row land on different values), and on a Line it is on the line itself (a sloped line crosses its box). When no
+  // point reaches it and something in the slat takes the pointer, something covers it: { covered } says what (another
+  // slat of its Plot, or an element). When nothing in it takes the pointer (the page reads the pointer around the
+  // chart), the first point on its first mark, or its center.
   function pointAt(n, across = 0.5) {
 
     const slat = window.__rhpTargets[n];
@@ -976,7 +1036,8 @@ export function install() {
       .map((m) => ({ m, r: m.getBoundingClientRect(), pointer: getComputedStyle(m).cursor === "pointer" }))
       .filter(({ r }) => r.width * r.height > 0);
     marks.sort((a, b) => b.pointer - a.pointer || (a.pointer ? 0 : b.r.width * b.r.height - a.r.width * a.r.height));
-    const grid = [0.1, 0.3, 0.5, 0.7, 0.9].flatMap((x) => [0.1, 0.3, 0.5, 0.7, 0.9].map((y) => [x, y]));
+    const steps = [0.1, 0.3, 0.5, 0.7, 0.9];
+    const grid = steps.flatMap((x) => steps.map((y) => [x, y]));
     const pointsOn = ({ m, r }) => {
       const line = m.matches(".rhp-line") && m.querySelector(".rhp-stroke");
       if (line) {
@@ -985,23 +1046,64 @@ export function install() {
       }
       return [[across, 0.5], ...grid].map(([fx, fy]) => ({ x: r.left + r.width * fx, y: r.top + r.height * fy }));
     };
+    // the points of a finer grid on an SVG shape's box that are inside its fill or on its stroke
+    const inShape = (g) => {
+      const r = g.getBoundingClientRect();
+      const toShape = g.getScreenCTM()?.inverse();
+      if (!toShape || r.width * r.height === 0) return [];
+      const fine = [across, 0.5, 0.2, 0.8, 0.05, 0.35, 0.65, 0.95];
+      return fine.flatMap((fx) => fine.map((fy) => ({ x: r.left + r.width * fx, y: r.top + r.height * fy }))).filter(({ x, y }) => {
+        const p = new DOMPoint(x, y).matrixTransform(toShape);
+        return g.isPointInFill(p) || g.isPointInStroke(p);
+      });
+    };
+    const shapes = [...slat.querySelectorAll("path, circle, ellipse, rect, polygon, polyline, line")].filter((g) => g instanceof SVGGeometryElement && visible(g));
+    const labels = [...slat.querySelectorAll(".rhp-label")].map((l) => l.getBoundingClientRect()).filter((r) => r.width * r.height > 0);
+    const reaches = ({ x, y }) => x >= 0 && y >= 0 && x < innerWidth && y < innerHeight && slat.contains(document.elementFromPoint(x, y));
 
     for (const mark of marks.slice(0, 3)) {
-      for (const { x, y } of pointsOn(mark)) {
-        if (x >= 0 && y >= 0 && x < innerWidth && y < innerHeight && slat.contains(document.elementFromPoint(x, y))) return { x, y };
-      }
+      const hit = pointsOn(mark).find(reaches);
+      if (hit) return hit;
     }
+    for (const g of shapes.slice(0, 3)) {
+      const hit = inShape(g).find(reaches);
+      if (hit) return hit;
+    }
+    const hit = labels.map((r) => ({ x: (r.left + r.right) / 2, y: (r.top + r.bottom) / 2 })).find(reaches);
+    if (hit) return hit;
 
     const r = slat.getBoundingClientRect();
     const { x, y } = marks.length ? pointsOn(marks[0])[0] : { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    const takes = (e) => getComputedStyle(e).pointerEvents !== "none" && e.checkVisibility({ visibilityProperty: true }) && e.getBoundingClientRect().width * e.getBoundingClientRect().height > 0;
+    if ([slat, ...slat.querySelectorAll("*")].some(takes)) {
+      const on = document.elementFromPoint(x, y);
+      return { covered: on && slat.parentElement.contains(on) && !slat.contains(on) ? "slat" : on ? describe(on) : "nothing in the window" };
+    }
 
     return { x, y };
   }
 
-  // Where the controls and the charts are on the page (in page px), before an interaction. moved(n) then says which
-  // of them the interaction moved by more than 2px: a control other than the one it used (a target), or a chart's top.
-  // What is fixed or sticky moves with scrolling, so it is left out.
+  // Where the controls and the charts are on the page (in page px), before an interaction. moved(n, lit) then says
+  // which of them the interaction moved by more than 2px: a control other than the one it used (a target), or a
+  // chart's top; and when it lit a slat (lit: pointing, a tap, the keyboard, which change no data), the plot inside a
+  // chart whose room "auto" for names changed (a lit name that gets bolder is measured again). A control in a slat
+  // moves with it (rows sorted or removed), so only what it moves apart from its slat counts. What is fixed or sticky
+  // moves with scrolling, so it is left out.
   let placed = [];
+  const at = (el) => {
+    const r = el.getBoundingClientRect();
+    return { el, x: r.left + scrollX, y: r.top + scrollY };
+  };
+  // The room "auto" gives names, in px: the chart body's first and last grid tracks (columns, or rows when vertical)
+  const gutters = (chart) => {
+    const o = chart.dataset.rhpGutters;
+    const body = chart.querySelector(":scope > .rhp-body");
+    if (!o || !body) return null;
+    const s = getComputedStyle(body);
+    const tracks = (o === "h" ? s.gridTemplateColumns : s.gridTemplateRows).split(/\s+/).map(parseFloat).filter(Number.isFinite);
+    if (tracks.length < 3) return null;
+    return o === "h" ? { o, start: tracks[0], end: tracks.at(-1) } : { o, start: tracks.at(-1), end: tracks[0] };
+  };
   function place() {
 
     const pinned = (el) => {
@@ -1012,50 +1114,67 @@ export function install() {
     };
     const charts = all().filter((c) => !c.parentElement?.closest(".rhp-chart"));
     placed = [...document.querySelectorAll(CONTROLS), ...charts].filter((el) => visible(el) && !pinned(el)).map((el) => {
-      const r = el.getBoundingClientRect();
-      return { el, chart: charts.includes(el), x: r.left + scrollX, y: r.top + scrollY };
+      const chart = charts.includes(el);
+      const slat = chart ? null : el.closest(".rhp-plot > *");
+      return { ...at(el), chart, slat: slat && at(slat), gutters: chart ? gutters(el) : null };
     });
   }
 
-  function moved(n) {
+  function moved(n, lit = false) {
 
     const used = window.__rhpTargets[n];
     const out = [];
+    const shift = (p) => {
+      const now = at(p.el);
+      return { dx: now.x - p.x, dy: now.y - p.y };
+    };
+    const far = (v) => Math.abs(v) > 2;
 
     for (const p of placed) {
       if (p.el === used || !p.el.isConnected || !visible(p.el)) continue;
-      const r = p.el.getBoundingClientRect();
-      const dx = p.chart ? 0 : Math.round(r.left + scrollX - p.x);
-      const dy = Math.round(r.top + scrollY - p.y);
-      if (Math.abs(dx) <= 2 && Math.abs(dy) <= 2) continue;
-      const name = p.chart ? "" : snippet(nameOf(p.el));
-      out.push({ what: p.chart ? "the chart" : name ? `"${name}"` : describe(p.el), dx, dy });
+      const d = shift(p);
+      const by = p.slat?.el.isConnected ? shift(p.slat) : { dx: 0, dy: 0 };
+      const dx = p.chart ? 0 : Math.round(d.dx - by.dx);
+      const dy = Math.round(d.dy - by.dy);
+      if (far(dx) || far(dy)) {
+        const name = p.chart ? "" : snippet(nameOf(p.el));
+        out.push({ what: p.chart ? "the chart" : name ? `"${name}"` : describe(p.el), dx, dy });
+      }
+      // the plot's edge at a side whose room for names grew or shrank
+      const now = lit && p.gutters ? gutters(p.el) : null;
+      if (!now || now.o !== p.gutters.o) continue;
+      const start = Math.round(now.start - p.gutters.start);
+      const end = Math.round(now.end - p.gutters.end);
+      if (now.o === "h" && far(start)) out.push({ what: "the plot's left edge", dx: start, dy: 0, plot: true });
+      if (now.o === "h" && far(end)) out.push({ what: "the plot's right edge", dx: -end, dy: 0, plot: true });
+      if (now.o === "v" && far(start)) out.push({ what: "the plot's bottom edge", dx: 0, dy: -start, plot: true });
+      if (now.o === "v" && far(end)) out.push({ what: "the plot's top edge", dx: 0, dy: end, plot: true });
     }
 
     return out;
   }
 
-  // A change recorder for one interaction: what changed in the DOM (text, attributes, inline styles, elements), and the
-  // elements it changed (kept until the next interaction, for unseen())
+  // A change recorder for one interaction: what changed in the DOM (text, attributes, inline styles, elements), and,
+  // when it is a tap (texts), the texts it wrote and the texts shown before it (kept until the next interaction, for
+  // unseen())
   let recorder = null;
-  let changed = new Set();
-  function record() {
+  let wrote = new Set();
+  let before = null;
+  function record(keepTexts = false) {
 
     const seen = { text: 0, attributes: 0, styles: 0, elements: 0 };
-    changed = new Set();
+    wrote = new Set();
+    before = keepTexts ? new Set(texts().filter((t) => t.shown.length).map((t) => t.node)) : null;
     const count = (m) => {
       if (m.type === "characterData") {
         seen.text++;
+        wrote.add(m.target);
       } else if (m.type === "childList") {
         seen.elements += m.addedNodes.length + m.removedNodes.length;
       } else if (m.attributeName === "style") {
         seen.styles++;
       } else {
         seen.attributes++;
-      }
-      changed.add(m.type === "characterData" ? m.target.parentElement : m.target);
-      for (const node of m.addedNodes) {
-        if (node.nodeType === 1) changed.add(node);
       }
     };
     recorder = new MutationObserver((list) => list.forEach(count));
@@ -1076,28 +1195,40 @@ export function install() {
     return seen;
   }
 
-  // After a tap on a slat (a target) that is in the window: when every element the tap changed that the reader could
-  // see lies outside the window, the nearest of them and how far it is; else null
+  // After a tap on a slat (a target) that is in the window: when the tap changed text the reader can see (wrote it, or
+  // showed it), but all of that text lies outside the window, the nearest of it and how far it is; else null. A style
+  // the tap changed in view (the tapped bar lit) does not say what a readout out of view says.
   function unseen(n) {
 
     const slat = window.__rhpTargets[n];
     const inView = (r) => r.right > 0 && r.bottom > 0 && r.left < innerWidth && r.top < innerHeight;
-    if (!slat?.isConnected || !inView(slat.getBoundingClientRect())) return null;
+    if (!before || !slat?.isConnected || !inView(slat.getBoundingClientRect())) return null;
 
     let nearest = null;
 
-    for (const el of changed) {
-      if (!el?.isConnected || !visible(el)) continue;
-      const r = el.getBoundingClientRect();
-      if (r.width < 1 || r.height < 1) continue;
-      if (inView(r)) return null;
-      const away = [[-r.bottom, "above"], [r.top - innerHeight, "below"], [-r.right, "left of"], [r.left - innerWidth, "right of"]].find(([by]) => by >= 0);
-      const text = textOf(el);
-      if (!nearest || away[0] < nearest.by) nearest = { what: text ? `"${snippet(text)}"` : describe(el), by: Math.round(away[0]), side: away[1] };
+    for (const t of texts()) {
+      if (before.has(t.node) && !wrote.has(t.node)) continue;
+      for (const { visible: r } of t.shown) {
+        if (inView(r)) return null;
+        const away = [[-r.bottom, "above"], [r.top - innerHeight, "below"], [-r.right, "left of"], [r.left - innerWidth, "right of"]].find(([by]) => by >= 0);
+        if (away && (!nearest || away[0] < nearest.by)) nearest = { what: `"${t.text}"`, by: Math.round(away[0]), side: away[1] };
+      }
     }
 
     return nearest;
   }
+
+  // The name of a focused element: a slat's (its Label's text) or a control's
+  const focusName = (el) => {
+    const plot = el.parentElement?.classList.contains("rhp-plot") ? el.parentElement : null;
+    if (plot) {
+      const name = [...el.querySelectorAll(".rhp-label")].map(seenText).find((x) => x);
+      return `slat ${[...plot.children].indexOf(el) + 1}${name ? ` (${snippet(name)})` : ""}`;
+    }
+    const role = el.getAttribute("role") ?? (el.localName === "a" ? "link" : el.localName === "input" ? el.type : el.localName);
+    const name = nameOf(el) || (el.localName === "a" ? seenText(el) : "");
+    return name ? `${role} "${snippet(name)}"` : describe(el);
+  };
 
   // Where the focus is: which slat of which Plot, if it is on one
   function focused() {
@@ -1107,8 +1238,31 @@ export function install() {
     const plot = el.parentElement?.classList.contains("rhp-plot") ? el.parentElement : null;
     if (!plot) return { slat: false };
 
-    return { slat: true, index: [...plot.children].indexOf(el) + 1, name: snippet([...el.querySelectorAll(".rhp-label")].map(textOf).find((x) => x) ?? "") };
+    return { slat: true, index: [...plot.children].indexOf(el) + 1, name: snippet([...el.querySelectorAll(".rhp-label")].map(seenText).find((x) => x) ?? "") };
   }
 
-  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, pointAt, place, moved, record, stop, unseen, focused };
+  // A stop of Tab through the page, for the focus check: the focused element's name, and its box in the window with
+  // room around it for an outline (none when it has no box in the window); again when Tab came back to an element it
+  // reached before; null when nothing has focus. focusStop(true) starts a new walk.
+  let stops = new Set();
+  function focusStop(fresh = false) {
+
+    if (fresh) stops = new Set();
+    const el = document.activeElement;
+    if (!el || el === document.body || el === document.documentElement) return null;
+    if (stops.has(el)) return { again: true };
+    stops.add(el);
+
+    const room = 12;
+    const r = el.getBoundingClientRect();
+    const left = Math.max(0, Math.floor(r.left - room));
+    const top = Math.max(0, Math.floor(r.top - room));
+    const right = Math.min(innerWidth, Math.ceil(r.right + room));
+    const bottom = Math.min(innerHeight, Math.ceil(r.bottom + room));
+    const box = r.width * r.height > 0 && right - left >= 1 && bottom - top >= 1 ? { x: left, y: top, width: right - left, height: bottom - top } : null;
+
+    return { what: focusName(el), clip: box };
+  }
+
+  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, pointAt, place, moved, record, stop, unseen, focused, focusStop };
 }

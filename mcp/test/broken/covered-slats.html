@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- A chart with a readout on hover, under a texture laid over it (z-index 2, over the plot's 1) that takes the pointer: no point of a slat can be reached, and the report says what covers them instead of pointing at them. expect: none; says: - hover slat 1 of 3 (Apples): could not reach slat 1: <div> (.grain) covers its marks -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>none</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  .frame { position: relative; }
+  .grain { position: absolute; inset: 0; z-index: 2; background: repeating-linear-gradient(45deg, rgb(0 0 0 / .03) 0 2px, transparent 2px 6px); }
+  .readout { height: 24px; margin: 0 0 12px; font-size: 16px; line-height: 24px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const sold = [12, 18, 7];
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
+  <div data-row=${() => d.index}>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const [on, setOn] = createSignal(null);
+const pick = (e) => {
+  const el = e.target.closest("[data-row]");
+  if (el) setOn(+el.dataset.row);
+};
+
+render(() => html`
+  <p class="readout">${() => (on() == null ? "Point at a fruit." : `${fruit[on()]}: ${sold[on()]} sold`)}</p>
+  <div class="frame" onPointerMove=${pick}>
+    <${Chart} scale=${[0, 20]} label="Fruit sold today">
+      <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+    <//>
+    <div class="grain"></div>
+  </div>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

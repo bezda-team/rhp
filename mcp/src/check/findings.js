@@ -137,6 +137,18 @@ export function fromProbe(f, context) {
     }
     case "text-overlap":
       return { level: "error", code: f.code, message: `${q(f.a)} overlaps ${q(f.b)} (${f.x} by ${f.y}px).`, fix: "Give each text its own space: more room or thickness, a smaller font, shorter text, or show one of them only where it fits." };
+    case "ambiguous-label": {
+      const mark = f.other ? `the mark of ${q(f.other)}` : "another slat's mark (one with no name)";
+      const more = f.count > 1 ? ` (${f.count} names are placed like it)` : "";
+      return {
+        level: "warning",
+        code: f.code,
+        message: f.over
+          ? `${q(f.text)} is drawn over ${mark}${more}, so a reader may take it for that mark's name.`
+          : `${q(f.text)} is ${f.near}px from ${mark}, in line with its text, and ${f.own}px from its own mark${more}, so a reader may take it for that mark's name.`,
+        fix: "Put each name beside its own mark, on the side away from its neighbors (a side or an offset per row, and another on narrow screens), or leave a crowded name to the readout.",
+      };
+    }
     case "page-scrolls-sideways":
       return {
         level: "error",
@@ -162,19 +174,29 @@ export function fromProbe(f, context) {
       };
     case "layout-jump": {
       const list = f.moved.slice(0, 3).map((m) => `${m.what} moves ${shift(m)}`).join(", ");
+      const plot = f.moved.some((m) => m.plot);
       return {
         level: "warning",
         code: f.code,
         message: `The layout jumps when ${DOING[f.kind] ?? f.kind} ${f.target}: ${list}${f.moved.length > 3 ? ` and ${f.moved.length - 3} more` : ""}${f.more ? ` (${f.more} more interaction${f.more > 1 ? "s do" : " does"} the same)` : ""}, so what the reader goes to next is no longer where it was.`,
-        fix: "Keep what the interaction changes in a box that keeps its size: a readout or a headline on one line (white-space: nowrap; overflow: hidden; text-overflow: ellipsis) or with a min-height for its longest text, and buttons that keep their width when their label or weight changes.",
+        fix: plot
+          ? "Keep the plot still while a slat is lit: a lit name that gets wider (bolder, larger) makes room: \"auto\" measure the names again, so keep the names' weight and size and change only their color, or give the room in px (room: { start: 140 })."
+          : "Keep what the interaction changes in a box that keeps its size: a readout or a headline on one line (white-space: nowrap; overflow: hidden; text-overflow: ellipsis) or with a min-height for its longest text, and buttons that keep their width when their label or weight changes.",
       };
     }
     case "out-of-view":
       return {
         level: "warning",
         code: f.code,
-        message: `Tapping ${f.target} changes only what lies outside the screen (${f.what}, ${f.by}px ${f.side} it)${f.more ? `, and so does tapping ${f.more} more slat${f.more > 1 ? "s" : ""}` : ""}: the reader cannot see what the tap changed.`,
-        fix: "Put the readout next to the slat (in the slat, or in a Label of it), or keep it in view on a phone (position: sticky; top: 0).",
+        message: `Tapping ${f.target} changes text only outside the screen (${f.what}, ${f.by}px ${f.side} it)${f.more ? `, and so does tapping ${f.more} more slat${f.more > 1 ? "s" : ""}` : ""}: on a phone the reader cannot see what the tap says.`,
+        fix: "Put the readout next to the slat (in the slat, or in a Label of it), or keep it in view on a phone (position: sticky; top: 0; z-index: 2, above the chart's plot).",
+      };
+    case "focus-invisible":
+      return {
+        level: "warning",
+        code: f.code,
+        message: `Tab reaches ${f.what}${f.more ? ` and ${f.more} more` : ""}, but nothing on screen shows the focus there: a keyboard reader cannot see where it is.`,
+        fix: "Show focus: take off outline: none, or put a :focus-visible style that shows in its place (outline: 2px solid in the ink color, outline-offset: 2px; on a slat, in the slat type's css).",
       };
     default:
       return { level: "error", code: f.code, message: JSON.stringify(f), fix: "" };

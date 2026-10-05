@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Who ships the world's phones</title>
-<meta name="description" content="Donut chart: a few parts of one whole, the total in the middle, and the slice the reader points at, taps or reaches with the keyboard read out in its place. Use it for two to six parts of a total, one or two of them the story.">
+<meta name="description" content="Donut chart: a few parts of one whole, each labeled inside its slice (or in a key under the donut when its label does not fit), the total in the middle, and the slice the reader points at, taps or reaches with the keyboard read out in its place. Use it for two to six parts of a total, one or two of them the story.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@500&display=swap">
@@ -28,6 +28,11 @@
   .poster .dek { max-width: 40ch; font-size: 17px; line-height: 1.5; color: #4a4f57; }
   .poster .note { display: block; margin-top: 22px; font-size: 12px; line-height: 1.5; color: #5d636c; }
   .chart { width: 100%; max-width: 560px; justify-self: center; }
+  /* The key: the slices whose labels do not fit inside them at this size, in the ring's order */
+  .key { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 13px; color: #4a4f57; }
+  .key li { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .key i { width: 11px; height: 11px; border-radius: 3px; }
+  .key b { color: #16181b; }
   /* The middle of the ring: the total, or the company being read */
   .hub { position: relative; z-index: 2; display: grid; place-content: center; text-align: center; pointer-events: none; }
   .hub small { font-size: clamp(11px, 2.6cqw, 14px); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #5d636c; }
@@ -37,6 +42,7 @@
     .poster { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); grid-template-rows: auto 1fr; column-gap: 48px; }
     .poster figcaption { grid-column: 1; grid-row: 1; }
     .poster .chart { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+    .poster .key { grid-column: 2; grid-row: 3; }
     .poster .note { grid-column: 1; grid-row: 2; align-self: end; }
   }
   @media (max-width: 520px) {
@@ -52,11 +58,12 @@
 <body>
 <div id="chart"></div>
 <script type="module">
-import { Chart, Plot, Bar, Label, Poster, slat, shares, stackUp, html, render, createSignal } from "@bezda/rhp/standalone";
+import { Chart, Plot, Bar, Label, Poster, slat, shares, stackUp, html, render, createSignal, onMount, onCleanup } from "@bezda/rhp/standalone";
 
 // Data: smartphones shipped worldwide in 2024, in millions, by company (the parent of each company's brands), from
 // IDC's preliminary results of January 2025. Replace with your own.
 // A company with a `color` is part of the story; the others are drawn gray, and their names carry them.
+// A company with no phones has no slice, so it is left out (the keyboard would stop on a slice that isn't drawn).
 const COMPANIES = [
   { company: "Apple", units: 232.1, color: "#cf3b20" },
   { company: "Samsung", units: 223.4, color: "#2954c8" },
@@ -64,7 +71,7 @@ const COMPANIES = [
   { company: "Transsion", units: 106.9 },
   { company: "OPPO", units: 104.8 },
   { company: "Others", units: 402.9, color: "#b9bdc3" },
-];
+].filter((c) => c.units > 0);
 const GRAY = "#7d848e";
 const TOTAL = COMPANIES.reduce((sum, c) => sum + c.units, 0);
 const { from, to } = stackUp(shares(COMPANIES.map((c) => c.units))); // each slice's start and end, 0 to 100
@@ -82,8 +89,8 @@ const textOn = (hex) => {
 // to slide out), angles in turns from twelve o'clock. Each edge is pushed aside along its length, so the gap is as
 // wide at the hole as at the rim, and a stroke in the fill's color rounds the corners.
 const TAU = Math.PI * 2;
-const ROUND = 1.6, GAP = 1.6;
-const OUTER = 47.5 - ROUND, INNER = 29.5 + ROUND, PUSH = GAP / 2 + ROUND;
+const ROUND = 1.6, GAP = 1.6, RIM = 47.5, HOLE = 29.5;
+const OUTER = RIM - ROUND, INNER = HOLE + ROUND, PUSH = GAP / 2 + ROUND;
 const xy = (t, r) => `${r * Math.sin(t * TAU)},${-r * Math.cos(t * TAU)}`;
 const aside = (r) => Math.asin(Math.min(1, PUSH / r)) / TAU;
 const big = (turns) => (turns > 0.5 ? 1 : 0);
@@ -98,6 +105,8 @@ const ring = (start, end) => {
 
 // Slat type: one company. The Bar keeps rhp's numbers and gives up its box to the SVG slice; --rhp-lo and --rhp-hi
 // (the Bar's ends, 0 to 1) give the angle a slice slides out along, and --rhp-p (the Label's value) its label's angle.
+// Keyboard focus draws a ring around the slice: an ink line outside a line of the paper, so it shows on any fill.
+// A label that does not fit inside its slice (cramped) is hidden, and the key under the donut names the slice.
 const Company = slat({
   room: { start: 0, end: 0 },
   css: `
@@ -106,29 +115,69 @@ const Company = slat({
     .wedge { inset: 0; width: 100%; height: 100%; translate: none; background: none; --mid: calc((var(--rhp-lo) + var(--rhp-hi)) / 2); }
     .wedge svg { display: block; width: 100%; height: 100%; overflow: visible; }
     .wedge path { fill: var(--rhp-color); stroke: var(--rhp-color); stroke-width: 3.2; stroke-linejoin: round; pointer-events: auto; cursor: pointer; transition: translate .2s ease-out, filter .2s; }
+    .wedge .ring { display: none; }
+    .slice:focus-visible .ring { display: inline; fill: none; stroke: var(--rhp-ink); stroke-width: 6.4; pointer-events: none; }
+    .slice:focus-visible .ring + .ring { stroke: var(--rhp-surface); stroke-width: 4.8; }
     .tag { left: 50%; top: 50%; translate: -50% -50%; padding: 0; text-align: center; color: var(--text); pointer-events: none;
       transform: rotate(calc(var(--rhp-p) * 1turn)) translateY(-38.5cqmin) rotate(calc(var(--rhp-p) * -1turn)); }
     .tag > span { display: block; transition: translate .2s ease-out; }
     .tag i { display: block; font-size: 12px; font-style: normal; font-weight: 600; }
     .tag b { display: block; font-size: 16px; font-weight: 750; letter-spacing: -.02em; }
+    .cramped .tag { visibility: hidden; }
     /* Lengths on an SVG path are the viewBox's units: 2.4 is 2.4% of the donut */
     .on .wedge path { translate: calc(sin(var(--mid) * 1turn) * 2.4px) calc(cos(var(--mid) * 1turn) * -2.4px); filter: drop-shadow(0 1.2px 1.6px rgb(22 24 27 / .3)); }
     .on .tag > span { translate: calc(sin(var(--rhp-p) * 1turn) * 2.4cqmin) calc(cos(var(--rhp-p) * 1turn) * -2.4cqmin); }
     @container (max-width: 400px) { .tag i { font-size: 11px; } .tag b { font-size: 14px; } }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   `,
 }, (d) => html`
-  <div class=${() => (d.on ? "slice on" : "slice")} data-row=${() => d.index}>
+  <div class=${() => ["slice", d.on && "on", d.cramped && "cramped"].filter(Boolean).join(" ")} data-row=${() => d.index}>
     <${Bar} from=${() => d.from} to=${() => d.to} color=${() => d.fill} class="wedge">
-      <svg viewBox="-50 -50 100 100" aria-hidden="true"><path d=${() => ring(d.from, d.to)} /></svg>
+      <svg viewBox="-50 -50 100 100" aria-hidden="true">
+        <path class="ring" d=${() => ring(d.from, d.to)} /><path class="ring" d=${() => ring(d.from, d.to)} /><path d=${() => ring(d.from, d.to)} />
+      </svg>
     <//>
-    <${Label} at=${() => (d.from + d.to) / 2} class="tag" style=${() => ({ "--text": textOn(d.fill) })}>
+    <${Label} at=${() => (d.from + d.to) / 2} class="tag" style=${() => ({ "--text": textOn(d.fill) })} aria-hidden="true">
       <span><i>${() => d.company}</i><b>${() => percent.format(d.units / TOTAL)}</b></span>
     <//>
+    <span class="say">${() => `${d.company}: ${number.format(d.units)} million phones, ${percent.format(d.units / TOTAL)} of all`}</span>
   </div>`);
 
 // Chart component: the slice the reader points at, taps or reaches with the keyboard slides out, and the middle reads it
 function PhoneMakers() {
   const [on, setOn] = createSignal(null);
+  // Which slices' labels are cramped at this size: a label fits when each of its lines of text (as wide as its words,
+  // as tall as the line) lies inside the ring and between its slice's edges. Measured again when the donut's size
+  // changes and once the fonts have loaded.
+  const [cramped, setCramped] = createSignal([]);
+  let plot;
+  const fit = () => {
+    const box = plot.getBoundingClientRect();
+    const unit = box.width / 100; // the slices' units, in px
+    const words = document.createRange();
+    setCramped(COMPANIES.map((_, i) => {
+      const tag = plot.querySelector(`[data-row="${i}"] .tag`);
+      const slid = tag.firstElementChild.getBoundingClientRect(), at = tag.getBoundingClientRect(); // a picked slice's label slides out
+      return [...tag.querySelectorAll("i, b")].some((line) => {
+        words.selectNodeContents(line);
+        const { left, right } = words.getBoundingClientRect(), { top, bottom } = line.getBoundingClientRect();
+        return [[left, top], [right, top], [left, bottom], [right, bottom]].some(([x, y]) => {
+          x -= slid.left - at.left + box.left + box.width / 2;
+          y -= slid.top - at.top + box.top + box.height / 2;
+          const far = Math.hypot(x, y) / unit;
+          const turn = (Math.atan2(x, -y) / TAU + 1) % 1;
+          const edge = Math.asin(GAP / 2 / far) / TAU; // the gap beside a slice, as a turn at this distance
+          return far < HOLE || far > RIM || turn < from[i] / 100 + edge || turn > to[i] / 100 - edge;
+        });
+      });
+    }));
+  };
+  onMount(() => {
+    const watch = new ResizeObserver(fit);
+    watch.observe(plot);
+    document.fonts.ready.then(fit);
+    onCleanup(() => watch.disconnect());
+  });
   // The row of the slat an element is in, or null (between slats, on the axis or the text)
   const rowOf = (el) => {
     const root = el.closest("[data-row]");
@@ -149,8 +198,8 @@ function PhoneMakers() {
     <${Poster}
       kicker="Smartphones · shipments in 2024"
       title=${html`<em>Apple</em> and <em>Samsung</em> ship more than a third of all smartphones`}
-      dek="Of 1.24 billion smartphones shipped in 2024, the two biggest companies shipped 455.5 million. The next three together shipped 380.2 million."
-      note="Source: IDC Worldwide Quarterly Mobile Phone Tracker, preliminary results for 2024 (January 2025), in millions of phones. Point at a slice, tap it, or Tab into the chart and use the arrow keys."
+      dek="Of 1.24 billion smartphones shipped in 2024, the two biggest companies shipped 455.5 million. The next three together shipped 380.2 million. Tap or point at a slice."
+      note="Source: IDC Worldwide Quarterly Mobile Phone Tracker, preliminary results for 2024 (January 2025), in millions of phones."
       onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <${Chart} class="chart" aspect=${1} ticks=${false} label="Smartphones shipped in 2024 by company, as shares of the total"
@@ -160,8 +209,13 @@ function PhoneMakers() {
           <b>${() => number.format(company() ? company().units : TOTAL / 1000)}</b>
           <span>${() => (company() ? "million phones" : "billion phones")}</span>
         </div>
-        <${Plot} overlap=${true} keyboard=${true} rows=${COMPANIES} from=${from} to=${to} fill=${fill} on=${(d) => on() === d.index}>${Company}<//>
+        <${Plot} overlap=${true} keyboard=${true} rows=${COMPANIES} from=${from} to=${to} fill=${fill} on=${(d) => on() === d.index}
+          cramped=${(d) => !!cramped()[d.index]} ref=${(el) => (plot = el)}>${Company}<//>
       <//>
+      ${() => cramped().some(Boolean) && html`
+        <ul class="key" aria-hidden="true">
+          ${COMPANIES.map((c, i) => cramped()[i] && html`<li data-row=${i}><i style=${{ background: fill[i] }}></i>${c.company} <b>${percent.format(c.units / TOTAL)}</b></li>`)}
+        </ul>`}
     <//>`;
 }
 

@@ -24,13 +24,13 @@
   .poster .headline { max-width: 14em; font: 700 50px/1.02 "Bodoni Moda", Didot, Georgia, serif; letter-spacing: -.01em; text-wrap: balance; }
   .poster .dek { max-width: 58ch; font-size: 16px; line-height: 1.5; color: #4a4d52; }
   .poster .note { display: block; margin-top: 16px; font-size: 12px; line-height: 1.5; color: #686b70; }
-  /* The readout: the country picked, on one line so the chart never moves */
+  /* The readout: the country picked, on one line (two on a phone) whatever the country, so the chart never moves */
   .readout { margin: 0 0 10px; padding: 9px 0; border-block: 1px solid #dcd8cc; font-size: 14px; color: #4a4d52; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .readout b { color: #191c1f; }
-  .axis { margin: 0; font-size: 12px; color: #686b70; }
-  .axis.x { text-align: right; }
+  .axis { margin: 0 0 8px; font-size: 12px; color: #686b70; }
+  .axis.x { margin: 8px 0 0; text-align: right; }
   .plot { border-radius: 4px; }
-  .plot:has(:focus-visible) { outline: 2px solid #191c1f; outline-offset: 8px; }
+  .plot:has(:focus-visible) { outline: 2px solid #191c1f; outline-offset: 4px; } /* 6px out: clear of the axis names, 8px away */
   @media (max-width: 600px) {
     body { padding: 16px 16px 32px; }
     .poster { padding: 26px 18px 18px; }
@@ -39,7 +39,7 @@
       repeating-conic-gradient(from 0deg at 100% 0%, rgb(25 28 31 / .1) 0 .8deg, transparent .8deg 3deg), #f2f0e9; }
     .poster .headline { font-size: 34px; }
     .poster .dek { font-size: 15px; }
-    .readout { font-size: 13px; }
+    .readout { box-sizing: content-box; min-height: 2.8em; font-size: 13px; line-height: 1.4; white-space: normal; }
   }
 </style>
 </head>
@@ -169,8 +169,8 @@ function WealthChart() {
     <${Poster}
       kicker="Wealth and health of nations"
       title="Life expectancy climbs fast with income, then levels off"
-      dek="Twenty countries in 2023. Above about $25,000 a person, higher income goes with little extra life: the United States, richer than all but Norway here, has a lower life expectancy than Costa Rica, with about a third of its income."
-      note="Sources: World Bank (GDP per person, 2021 international dollars) and UN World Population Prospects 2024 (life expectancy), via Our World in Data. Point at a dot, tap it, or Tab into the chart and use the arrow keys.">
+      dek="Twenty countries in 2023. Above about $25,000 a person, higher income goes with little extra life: the United States, richer than all but Norway here, has a lower life expectancy than Costa Rica, with about a third of its income. Tap or point at a dot."
+      note="Sources: World Bank (GDP per person, 2021 international dollars) and UN World Population Prospects 2024 (life expectancy), via Our World in Data.">
       <p class="readout"><b>${() => shown().name}</b><span>${() => `: ${dollars.format(shown().gdp)} a person, ${years.format(shown().life)} years`}</span></p>
       <p class="axis">Life expectancy at birth, years</p>
       <div class="plot"

@@ -12,6 +12,7 @@ const PASSES = [
   [["sticks-out", "text-outside-poster"], "nothing sticks out"],
   [["cramped"], "slats have room"],
   [["text-overlap"], "no overlapping text"],
+  [["ambiguous-label"], "names by their own marks"],
   [["text-cut-off"], "no text cut off"],
   [["page-scrolls-sideways"], "no sideways scroll"],
   [["tiny-text"], "text 9px or larger"],
@@ -66,15 +67,16 @@ export function report(r) {
   }
 
   // a chart with no controls whose slats change nothing when pointed at or tapped has no interaction: one line, since
-  // that is right for a chart asked to have none
-  const none = r.interactions?.length && r.interactions.every((x) => (x.kind === "hover" || x.kind === "tap") && !x.changed && !x.error);
+  // that is right for a chart asked to have none (and then slats that others cover don't matter, as long as one slat
+  // was reached)
+  const none = r.interactions?.length && r.interactions.every((x) => (x.kind === "hover" || x.kind === "tap") && !x.changed && !x.error) && r.interactions.some((x) => !x.missed);
 
   if (none) {
     lines.push("", "Interactions: no interaction found (fine when none was asked for).");
   } else if (r.interactions?.length) {
     // pointing at slats (and tapping them) that changes nothing is no failure when buttons or a slider carry the
     // interaction: one line
-    const still = (kind) => r.interactions.filter((x) => x.kind === kind).every((x) => !x.changed && !x.error);
+    const still = (kind) => r.interactions.filter((x) => x.kind === kind).every((x) => !x.changed && !x.error) && r.interactions.some((x) => x.kind === kind && !x.missed);
     const hovers = r.interactions.filter((x) => x.kind === "hover").length;
     const taps = r.interactions.filter((x) => x.kind === "tap").length;
     const controls = r.interactions.some((x) => x.changed && (/^(click|input|select)$/.test(x.kind) || / on slider /.test(x.target)));

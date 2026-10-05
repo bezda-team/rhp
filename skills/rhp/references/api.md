@@ -229,7 +229,7 @@ Its settings:
 |---|---|---|---|
 | `rows` | array of objects | none | each object is a row; its fields read as `d.field`. A data group with the same name wins. |
 | `key` | group name, or `(d) => id` | none | names each row, so a slat follows its row when rows are added or removed |
-| `order` | `(number or null)[]`, or `(rows, current) => positions` | data order | each row's place on screen. `null` hides a row; ties and fractions are allowed. `sortBy()` makes the function. |
+| `order` | `(number or null)[]`, or `(rows, current) => positions` | data order | each row's place on screen. `null` hides a row at once; ties and fractions are allowed. `sortBy()` makes the function. A function of your own gets the rows and their places on screen now (`null` for a hidden row), and runs again whenever what it reads changes (section 12 has one). |
 | `reorder` | `"slide"`, `"move"`, `"refill"` | `"slide"` | slide: slats keep their place in the page and slide on screen (`aria-owns` gives the reading order). move: slats move in the page. refill: the elements stay in place and show other rows. |
 | `overlap` | boolean | `false` | every slat shares one band: stacked segments, layers, strips of dots, scatter plots |
 | `orientation` | `"horizontal"`, `"vertical"`, `"across"` | the Chart's or the Plot's around it | `"across"`: the other way from the Plot around it (heatmap cells) |
@@ -1107,6 +1107,9 @@ For anything else (dashes, bands, pills, numbers on top), draw a `Scale` (sectio
 Put transitions (hover fades, growth) on elements inside blocks, or change properties without one.
 With reduced motion rhp turns its own off; turn yours off too (`@media (prefers-reduced-motion: reduce)` in the slat's CSS).
 
+**Animations.** A CSS animation works on a slat's root and on anything inside (a row that fades in, section 12).
+A slat's CSS is made `!important`, and an `!important` declaration beats an animation, so an animation holds its own end state: `.out { animation: fade .3s forwards; }` with `@keyframes fade { to { opacity: 0; } }`; with `opacity: 0` declared beside it, the row is hidden at once and the fade never shows.
+
 ```js
 import { Chart, Plot, Bar, Label, slat, html, render } from "@bezda/rhp/standalone";
 
@@ -1114,7 +1117,7 @@ import { Chart, Plot, Bar, Label, slat, html, render } from "@bezda/rhp/standalo
 const planet = ["Jupiter", "Saturn", "Uranus", "Neptune"];
 const moons = [95, 146, 28, 16];
 
-// Slat types: corners, a gradient along the bar, a value that appears on hover with a fade inside the Label
+// Slat types: corners, a gradient along the bar, a value that darkens on hover with a fade inside the Label
 const Planet = slat({
   thickness: 42,
   room: { start: 72, end: 44 },
@@ -1127,7 +1130,7 @@ const Planet = slat({
     }
     .name { font-weight: 600; }
     .value { --rhp-label-gap: 8px; --rhp-label-size: 14px; font-weight: 800; }
-    .value span { opacity: .35; transition: opacity .15s; }
+    .value span { opacity: .7; transition: opacity .15s; }
     .slat:hover .value span { opacity: 1; }
     @media (prefers-reduced-motion: reduce) { .value span { transition: none; } }
   `,
@@ -1180,7 +1183,8 @@ Measured in Chromium, for the JS version under steady change:
 - For moves driven by a slider or a drag, keep the default 150 ms: with 300 ms the JS version trailed a drag as much as the CSS version (10.4 against 10.1 points of 100); with 150 ms it trailed 6.2.
 - When the scale follows the data, `animate` goes on the Chart: on the Plot alone the scale jumps every step and the bars with it.
 - For a history that scrolls (a live sparkline), animate one time value (`now`) and cut the window from it (`x = t - now`, kept inside the scale); animating the point arrays makes each vertex take its neighbor's value, so the line morphs in place instead of scrolling.
-- A race that shows the top N of more rows hides the others with its order: `order=${(rows, now) => sortBy("gdp", "desc")(rows, now).map((p) => (p < N ? p : null))}`.
+- A race that shows the top N of more rows hides the others with its order: `order=${(rows, now) => sortBy("gdp", "desc")(rows, now).map((p) => (p < N ? p : null))}`. A row hidden this way vanishes at once; the second example below lets rows leave and come in.
+- In the JS version an order function reads each value half a slide ahead of what the marks show (measured: 75 of 100 read 253 ms into a linear 1 s move), so two rows pass each other where their values cross.
 The `race` and `live` recipes put all of this together.
 rhp writes style changes in the next animation frame; `drawing(fn)` writes those made inside your own `requestAnimationFrame` at once.
 
@@ -1236,6 +1240,101 @@ const VoteChart = () => {
 
 render(VoteChart, document.getElementById("chart"));
 ```
+
+**A top-N race whose rows leave and come in.**
+A row that leaves the top N slides to place N, just below the last place, fades there, and is hidden at the next step; a row that comes in fades in at its place.
+Rows a source leaves out (a table of the top four each year) are `null` in the data.
+Three parts do it:
+
+- The order function: the rows in the race of the step nearest to `t`, by their value at `t`; a row that dropped out at that step takes place N until `t` reaches the step; every other row is `null`.
+- A hidden Plot of N + 1 empty slats, as thick as the data's slats, under the data's Plot. While a row sits below the last place the data's Plot has N + 1 places, and the hidden Plot keeps the chart at that height all the time; without it the chart grows by one slat at every exit.
+- Animations on the slat's root fade a row out at place N and in where it comes in (rhp keeps the root's transition for its slide). A slat's CSS is made `!important`, which beats an animation, so each animation holds its own end state (`forwards`) instead of a declaration beside it.
+
+```js
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
+
+// Data: market shares in %, from a source that lists only the four largest makers each year: null where a maker is
+// not among that year's four (illustrative; the makers are invented)
+const N = 4;
+const MAKER = ["Aster", "Birch", "Cedar", "Dune", "Ember", "Fjord"];
+const SHARE = [
+  [22, 18, 14, 11, null, null], // 2021
+  [21, 19, 12, null, 13, null], // 2022: Dune drops out, Ember comes in
+  [19, 21, null, null, 15, 12], // 2023: Cedar drops out, Fjord comes in
+  [17, 22, null, null, 18, 13], // 2024
+];
+const LAST = SHARE.length - 1;
+const YEAR_MS = 1500;
+// The makers in each year's race: its N largest known shares
+const RACE = SHARE.map((year) => new Set(MAKER.map((_, i) => i).filter((i) => year[i] != null).sort((a, b) => year[b] - year[a]).slice(0, N)));
+// The shares at t, a year with a fraction: on the straight line between the years around t, or the known one when the
+// other year has none (a maker that drops out keeps its last share while it slides out)
+const sharesAt = (t) => {
+  const k = Math.min(Math.floor(t), LAST - 1);
+  const f = t - k;
+  return SHARE[k].map((a, i) => {
+    const b = SHARE[k + 1][i];
+    return a == null ? b ?? 0 : b == null ? a : a * (1 - f) + b * f;
+  });
+};
+
+// Slat types: a maker fades out at place N and fades in where it comes in; the animations keep their end state
+const Maker = slat({
+  thickness: 40,
+  room: { start: 64, end: 52 },
+  css: `
+    .maker { animation: maker-in .3s; }
+    .maker.out { animation: maker-out .3s forwards; }
+    @keyframes maker-in { from { opacity: 0; } }
+    @keyframes maker-out { to { opacity: 0; visibility: hidden; } }
+    @media (prefers-reduced-motion: reduce) { .maker, .maker.out { animation: none; } .maker.out { visibility: hidden; } }
+  `,
+}, (d) => html`
+  <div class=${() => (d.position === N ? "maker out" : "maker")}>
+    <${Label} edge="start">${() => d.maker}<//>
+    <${Bar} to=${() => d.share} />
+    <${Label} at=${() => d.share}>${() => d.share.toFixed(1)}%<//>
+  </div>`);
+// N + 1 empty slats, drawn hidden under the data, keep the chart as tall as N + 1 places
+const Band = slat({ thickness: 40, room: {} }, () => html`<div></div>`);
+
+// Chart component: the playhead t moves on every frame while it plays, as in the example above
+const ShareRace = () => {
+  const [t, setT] = createSignal(0);
+  // The makers in the race of the year nearest to t, by their share at t; a maker that has just dropped out takes
+  // place N, below the last place, until t reaches its first year out; the others are hidden
+  const places = (rows) => {
+    const race = RACE[Math.round(t())];
+    const ranked = [...race].sort((a, b) => rows[b].share - rows[a].share);
+    return rows.map((_, i) => (race.has(i) ? ranked.indexOf(i) : RACE[Math.floor(t())].has(i) ? N : null));
+  };
+  let frame;
+  const play = () => {
+    cancelAnimationFrame(frame);
+    setT(0);
+    let last = null;
+    const move = (now) => {
+      setT(Math.min(LAST, t() + Math.min(now - (last ?? now), 250) / YEAR_MS));
+      last = now;
+      if (t() < LAST) frame = requestAnimationFrame(move);
+    };
+    frame = requestAnimationFrame(move);
+  };
+  onCleanup(() => cancelAnimationFrame(frame));
+  return html`
+    <div>
+      <p><button onClick=${play}>Play</button>${" "}<b>${() => 2021 + Math.round(t())}</b></p>
+      <${Chart} scale=${[0, 25]} ticks=${[0, 5, 10, 15, 20, 25]} animate=${{ slide: 300 }} label="Market shares of the four largest makers">
+        <${Plot} slats=${N + 1} style=${{ visibility: "hidden" }}>${Band}<//>
+        <${Plot} maker=${MAKER} share=${() => sharesAt(t())} order=${places}>${Maker}<//>
+      <//>
+    </div>`;
+};
+
+render(ShareRace, document.getElementById("chart"));
+```
+
+Measured in Chromium while it played, at 1280px and 390px: the chart kept its height in every frame (without the hidden Plot it changed between 186px and 226px), Dune was drawn at 15 heights between its place and place 4 while it faded and was then hidden, Ember faded in, and 2024 ended with its exact shares in order; under reduced motion the rows moved and appeared at once.
 
 ## 13. Accessibility and interaction
 

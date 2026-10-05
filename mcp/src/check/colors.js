@@ -146,23 +146,28 @@ export function faintMarks(items, shown, hidden, k) {
 // Series colors that look alike: 2 to 8 distinct mark colors in a chart, and two of them, with no labels in their slats
 // that tell them apart, either touching somewhere (stacked segments, mixed dots) and under a CIEDE2000 difference of 10,
 // or anywhere and under 5 (the same color, to that reader), for normal vision or simulated protanopia, deuteranopia or
-// tritanopia. Colors that never touch are told apart by their place too (the first and last segments of a stack).
-export function colorBlind(items) {
+// tritanopia. Colors that never touch are told apart by their place too (the first and last segments of a stack). A
+// see-through color (rgba, color-mix with transparent, a mark's opacity) is the color it makes over what is behind
+// the mark, read from the screenshot with the marks hidden.
+export function colorBlind(items, hidden, k) {
 
   const out = [];
   const charts = new Map();
 
   for (const m of items) {
-    if (m.kind !== "mark" || m.track || m.color[3] < 0.2) continue;
+    const alpha = m.color[3] * m.opacity;
+    if (m.kind !== "mark" || m.track || alpha < 0.2) continue;
+    const behind = alpha < 1 && hidden ? pixelsIn(hidden, scaled(m.boxes[0], k)) : [];
+    const rgb = behind.length ? over(m.color, alpha, median(behind).color) : m.color.slice(0, 3);
     if (!charts.has(m.chart)) charts.set(m.chart, []);
-    charts.get(m.chart).push(m);
+    charts.get(m.chart).push({ ...m, rgb });
   }
 
   for (const marks of charts.values()) {
     // one entry per color, colors that look the same merged
     const colors = [];
     for (const m of marks) {
-      const rgb = m.color.slice(0, 3);
+      const rgb = m.rgb;
       let c = colors.find((x) => difference(x.rgb, rgb) < 2);
       if (!c) colors.push((c = { rgb, names: new Set(), marks: [] }));
       c.marks.push(m);

@@ -43,29 +43,30 @@
 <body>
 <div id="chart"></div>
 <script type="module">
-import { Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, nice, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
 
 // Data: life expectancy at birth in years, 1960 to 2020, UN World Population Prospects 2024. Replace with your own
-// series (one value per year each). The colors passed the color-blind checks in this order.
+// series (one value per year each). The colors passed the color-blind checks in this order. `code` is the short name a
+// phone shows at the line's end.
 const FIRST = 1960;
 const COUNTRIES = [
-  { name: "Japan", color: "#2a78d6", values: [
+  { name: "Japan", code: "JPN", color: "#2a78d6", values: [
     67.7, 68.4, 68.7, 69.7, 70.2, 70.3, 71.1, 71.4, 71.7, 71.9, 72, 72.8, 73.3, 73.4, 73.8, 74.4, 74.8, 75.3, 75.7, 76.2, 76.1, 76.6, 77.1, 77.1, 77.5, 77.8, 78.2, 78.6, 78.5, 79, 79,
     79.3, 79.3, 79.4, 79.8, 79.7, 80.4, 80.6, 80.6, 80.6, 81.2, 81.5, 81.8, 81.9, 82.1, 82, 82.4, 82.5, 82.6, 83, 82.9, 82.7, 83.2, 83.4, 83.6, 83.9, 84.1, 84.2, 84.3, 84.4, 84.7,
   ] },
-  { name: "South Korea", color: "#e0522b", values: [
+  { name: "South Korea", code: "KOR", color: "#e0522b", values: [
     53.8, 54.4, 55, 55, 55.3, 55.8, 55.4, 60.9, 60.9, 61.4, 62.2, 62.7, 63.2, 63.8, 64.2, 64.7, 65, 64.6, 65, 66.1, 64.8, 67.1, 67.1, 66.7, 68.1, 68.4, 69, 69.3, 70.2, 70.7, 71,
     71.4, 72.2, 72.7, 72.9, 73.4, 74, 74.5, 75, 75.6, 76.2, 76.9, 77.2, 77.5, 78, 78.4, 79, 79.4, 80, 80.6, 80.7, 81.2, 81.3, 81.8, 82.4, 82.5, 82.9, 83.3, 83.3, 83.7, 83.7,
   ] },
-  { name: "United States", color: "#169e6e", values: [
+  { name: "United States", code: "USA", color: "#169e6e", values: [
     69.8, 70.3, 70.1, 69.9, 70.2, 70.2, 70.2, 70.5, 70.2, 70.5, 70.7, 71.1, 71.2, 71.4, 72, 72.5, 72.8, 73.2, 73.4, 73.8, 73.7, 74.1, 74.5, 74.6, 74.7, 74.7, 74.7, 74.9, 74.8, 75.1, 75.4,
     75.5, 75.8, 75.6, 75.7, 75.9, 76.2, 76.5, 76.7, 76.7, 76.8, 76.9, 77, 77.1, 77.5, 77.5, 77.8, 78, 78.1, 78.5, 78.7, 78.7, 78.8, 78.8, 78.9, 78.7, 78.7, 78.6, 78.8, 78.9, 77,
   ] },
-  { name: "Brazil", color: "#8a5cd0", values: [
+  { name: "Brazil", code: "BRA", color: "#8a5cd0", values: [
     53.2, 53.6, 54, 54.5, 54.8, 55.2, 55.6, 56, 56.5, 56.9, 57.3, 57.8, 58.3, 58.7, 59.1, 59.6, 60, 60.5, 60.9, 61.4, 61.8, 62.3, 62.7, 63.1, 63.6, 64, 64.4, 64.8, 65.2, 65.5, 65.9,
     66.2, 66.5, 66.9, 67.3, 67.7, 68.1, 68.5, 68.8, 69.2, 69.6, 70, 70.4, 70.9, 71.4, 71.8, 72.3, 72.7, 73.1, 73.5, 73.8, 74, 74.3, 74.6, 74.8, 75.1, 75.1, 75.4, 75.6, 75.8, 74.5,
   ] },
-  { name: "Nigeria", color: "#b98400", values: [
+  { name: "Nigeria", code: "NGA", color: "#b98400", values: [
     37.2, 37.4, 37.6, 37.8, 38, 38.2, 38.4, 37.5, 38.6, 38.9, 40, 40.6, 41.3, 41.8, 42.5, 43.1, 44.2, 44.8, 45.3, 45.7, 46, 46.3, 46.4, 46.4, 46.3, 46.2, 46, 45.9, 45.8, 45.8, 45.7,
     45.5, 45.6, 45.8, 45.7, 45.9, 45.8, 46, 46.1, 46.6, 47.1, 47.5, 48, 48.6, 49.1, 49.5, 49.9, 50.4, 50.7, 51.1, 51.3, 51.5, 51.7, 51.8, 51.9, 51.9, 52.2, 52.4, 52.7, 53, 53.1,
   ] },
@@ -101,35 +102,44 @@ function dodge(values, gap) {
 const labelAt = dodge(COUNTRIES.map((c) => c.values.at(-1)), (17 / HEIGHT) * (y.max - y.min));
 
 // Slat types
-// The scale under the plot: a short mark and the year at each decade (every other decade on a phone)
+// The scale under the plot: a short mark and the year at each decade (every other decade on a phone), the first and
+// the last kept inside the plot
 const Decade = slat({
   room: { after: 28 },
   css: `
     .mark { top: 100%; height: 6px; translate: -50% 0; --rhp-tick-width: 1px; background: #b9b3a6; }
     .year { top: calc(100% + 10px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+    .first .year { translate: 0 0; }
+    .last .year { translate: -100% 0; }
     @container (max-width: 480px) { .odd { display: none; } }
   `,
 }, (t) => html`
-  <div>
+  <div class=${() => (t.first ? "first" : t.last ? "last" : "")}>
     <${Tick} at=${() => t.at} class="mark" />
     <${Label} at=${() => t.at} class=${() => ((t.at / 10) % 2 ? "year odd" : "year")}>${() => t.at}<//>
   </div>`);
 
-// A country: its line, and its name at the line's end (a short stroke of its color leads to the name)
-const Country = slat({
-  room: { end: 112 },
+// A country's line
+const Country = slat({ css: `.line { stroke-width: 2px; } .story .line { stroke-width: 3.5px; }` }, (d) => html`
+  <div class=${() => (d.name === STORY ? "story" : "")}>
+    <${Line} points=${() => d.values.map((v, i) => [FIRST + i, v])} color=${() => d.color} class="line" />
+  </div>`);
+
+// A country's name at its line's end (a short stroke of its color leads to it), in a room as wide as the longest. A
+// phone shows the codes, in a room that fits them, so the lines keep most of a narrow chart.
+const ending = (room, text) => slat({
+  room: { end: room },
   css: `
-    .line { stroke-width: 2px; }
-    .story .line { stroke-width: 3.5px; }
     .name { --rhp-label-gap: 4px; font-size: 13px; font-weight: 600; }
     .name i { display: inline-block; width: 10px; height: 2px; margin-right: 5px; vertical-align: 4px; border-radius: 1px; }
     .story .name { font-weight: 800; }
   `,
 }, (d) => html`
   <div class=${() => (d.name === STORY ? "story" : "")}>
-    <${Line} points=${() => d.values.map((v, i) => [FIRST + i, v])} color=${() => d.color} class="line" />
-    <${Label} at=${LAST} cross=${() => d.labelAt} class="name"><i style=${() => ({ background: d.color })}></i>${() => d.name}<//>
+    <${Label} at=${LAST} cross=${() => d.labelAt} class="name"><i style=${() => ({ background: d.color })}></i>${() => text(d)}<//>
   </div>`);
+const Name = ending(112, (d) => d.name);
+const Code = ending(52, (d) => d.code);
 
 // The year picked: a hairline across the plot, then a dot on each line
 const Crosshair = slat({ css: `.hair { --rhp-tick-width: 1px; background: #1b1d22; opacity: .45; }` }, (d) => html`
@@ -156,6 +166,12 @@ const Year = slat({
 
 // Chart component: the readout and the crosshair show the year under the pointer, a tap or the arrow keys, and the latest otherwise
 function LifeChart() {
+  const roomy = matchMedia("(min-width: 480px)");
+  const [wide, setWide] = createSignal(roomy.matches);
+  const turn = (e) => setWide(e.matches);
+  roomy.addEventListener("change", turn);
+  onCleanup(() => roomy.removeEventListener("change", turn));
+
   const [picked, setPicked] = createSignal(null);
   const i = () => picked() ?? YEARS.length - 1;
   // The row of the slat an element is in, or null (between slats, on the axis or the text)
@@ -181,8 +197,8 @@ function LifeChart() {
     <${Poster}
       kicker=${html`<span><svg viewBox="0 0 11 16" aria-hidden="true"><path d="M1 1h9M1 15h9M2 1c0 5 3.5 5 3.5 7S2 10 2 15M9 1c0 5-3.5 5-3.5 7S9 10 9 15" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Life expectancy at birth</span>`}
       title="South Koreans can expect to live 30 years longer than in 1960"
-      dek="South Korea started level with Brazil and 16 years behind the United States. It caught the US in 2001 and has stayed ahead. Japan has topped all five since 1965; Nigeria gained 16 years and still trails it by three decades."
-      note="Source: UN World Population Prospects 2024, via Our World in Data. Point at a year, tap it, or Tab into the chart and use the arrow keys.">
+      dek="South Korea started level with Brazil and 16 years behind the United States. It caught the US in 2001 and has stayed ahead. Japan has topped all five since 1965; Nigeria gained 16 years and still trails it by three decades. Tap or point at a year, or drag along the lines."
+      note="Source: UN World Population Prospects 2024, via Our World in Data.">
       <p class="readout">
         <b class="year">${() => YEARS[i()]}</b>
         ${COUNTRIES.map((c) => html`<span><i style=${{ background: c.color }}></i>${c.name + " "}<strong>${() => years.format(c.values[i()])}</strong></span>`)}
@@ -195,7 +211,8 @@ function LifeChart() {
           label=${`Life expectancy at birth in ${COUNTRIES.map((c) => c.name).join(", ")}, ${FIRST} to ${LAST}`}
           theme=${{ font: '"Public Sans", "Helvetica Neue", Arial, sans-serif', ink: "#1b1d22", muted: "#686b72", grid: "#e1dccf" }}>
           <${Scale} ticks=${YEARS.filter((year) => year % 10 === 0)}>${Decade}<//>
-          <${Plot} overlap=${true} rows=${COUNTRIES} labelAt=${labelAt}>${Country}<//>
+          <${Plot} overlap=${true} rows=${COUNTRIES}>${Country}<//>
+          ${() => html`<${Plot} overlap=${true} rows=${COUNTRIES} labelAt=${labelAt}>${wide() ? Name : Code}<//>`}
           <${Plot} overlap=${true} slats=${1} year=${() => YEARS[i()]} style=${{ "pointer-events": "none" }}>${Crosshair}<//>
           <${Plot} overlap=${true} rows=${COUNTRIES} year=${() => YEARS[i()]} i=${i} style=${{ "pointer-events": "none" }}>${Mark}<//>
           <${Plot} orientation="vertical" keyboard=${true} year=${YEARS}>${Year}<//>

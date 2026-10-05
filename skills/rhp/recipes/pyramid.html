@@ -32,7 +32,9 @@
   .readout span + span { color: #5f5c55; font-size: 13px; }
   .key { display: flex; gap: 14px; margin-bottom: 8px; font-size: 13px; color: #4d4a44; }
   .key i { display: inline-block; width: 12px; height: 12px; margin-right: 6px; border-radius: 2px; vertical-align: -1px; }
-  .chart { width: 100%; max-width: 560px; justify-self: center; }
+  /* Widen the plot by 5%, keeping the two 40px label rooms the same size. */
+  .chart { width: calc(105% - 4px); max-width: 584px; justify-self: center; align-self: center; }
+  .poster .chart { margin-bottom: 35px; }
   @media (min-width: 860px) {
     .poster { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); grid-template-rows: auto auto auto 1fr; column-gap: 40px; }
     .poster figcaption { grid-column: 1; grid-row: 1; }
@@ -82,7 +84,7 @@ const pale = (c) => `color-mix(in oklab, ${c} 28%, #f3f0e8)`;
 
 // Slat type: an age band. The bands at or above the picked age are in full color; the picked one shows its numbers.
 const Band = slat({
-  thickness: 21,
+  thickness: 23.1,
   inset: "1.5px",
   room: { start: 40, end: 40 },
   css: `

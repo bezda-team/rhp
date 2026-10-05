@@ -27,10 +27,10 @@
   .readout { box-sizing: content-box; min-height: 1.4em; margin: 0 0 8px; padding: 9px 0; border-block: 1px solid rgb(255 255 255 / .12);
     font: 13px/1.4 "DM Mono", ui-monospace, monospace; color: #b9bcc1; }
   .readout b { font-family: Sora, sans-serif; font-weight: 600; color: #ece8df; }
-  .axis { margin: 0; font-size: 11px; color: #9aa1aa; }
-  .axis.x { text-align: right; }
+  .axis { margin: 0 0 8px; font-size: 11px; color: #9aa1aa; }
+  .axis.x { margin: 8px 0 0; text-align: right; }
   .plot { border-radius: 4px; }
-  .plot:has(:focus-visible) { outline: 2px solid #ece8df; outline-offset: 8px; }
+  .plot:has(:focus-visible) { outline: 2px solid #ece8df; outline-offset: 4px; } /* 6px out: clear of the axis names, 8px away */
   @media (max-width: 600px) {
     body { padding: 16px 16px 32px; }
     .poster { padding: 26px 18px 18px; }
@@ -45,20 +45,21 @@
 import { Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, html, render, createSignal, Show } from "@bezda/rhp/standalone";
 
 // Data: built-up urban areas from Demographia World Urban Areas, 20th edition (2025): people, land in km², people per
-// km². Replace with your own rows, largest first, so the small bubbles are drawn on top. `side` labels a bubble.
+// km². Replace with your own rows, largest first, so the small bubbles are drawn on top. `side` labels a bubble, and
+// `code` is the short label it shows where the chart is too narrow for its name (never hide a label instead).
 const CITIES = [
-  { name: "Tokyo", people: 37325000, km2: 8775, density: 4254, side: "after" },
+  { name: "Tokyo", code: "TYO", people: 37325000, km2: 8775, density: 4254, side: "after" },
   { name: "Jakarta", people: 36877000, km2: 3546, density: 10400 },
   { name: "Delhi", people: 33224000, km2: 2344, density: 14174 },
   { name: "Mumbai", people: 26237000, km2: 1067, density: 24588, side: "after" },
   { name: "Cairo", people: 22684000, km2: 2696, density: 8413 },
   { name: "São Paulo", people: 21747000, km2: 3649, density: 5959 },
-  { name: "New York", people: 20892000, km2: 11344, density: 1842, side: "before" },
+  { name: "New York", code: "NYC", people: 20892000, km2: 11344, density: 1842, side: "before" },
   { name: "Kinshasa", people: 13060000, km2: 518, density: 25212 },
   { name: "London", people: 11360000, km2: 1738, density: 6537 },
   { name: "Paris", people: 11282000, km2: 2854, density: 3953 },
   { name: "Hong Kong", people: 7117000, km2: 290, density: 24535 },
-  { name: "Atlanta", people: 5495000, km2: 7151, density: 768, side: "after" },
+  { name: "Atlanta", code: "ATL", people: 5495000, km2: 7151, density: 768, side: "after" },
 ];
 const STORY = CITIES.findIndex((c) => c.name === "Mumbai"); // read out when nothing is picked
 
@@ -108,7 +109,7 @@ const Guide = slat({
     <//>
   </div>`);
 
-// A city: its bubble, its name when the data labels it, and a sentence for screen readers. Only the bubble takes the
+// A city: its bubble, its name when the data labels it (its code on a narrow chart), and a sentence for screen readers. Only the bubble takes the
 // pointer, since the slat itself covers the whole plot.
 const City = slat({
   css: `
@@ -118,6 +119,8 @@ const City = slat({
     .labeled .bubble { background: rgb(245 165 36 / .55); }
     .on .bubble { z-index: 2; background: rgb(245 165 36 / .7); box-shadow: inset 0 0 0 1.5px #f5a524, 0 0 0 2px #0e1116, 0 0 0 4px #ece8df; }
     .name { font-size: 13px; font-weight: 600; }
+    .code { display: none; }
+    @container (max-width: 260px) { .full { display: none; } .code { display: inline; } } /* where the names stop fitting */
     .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   `,
 }, (d) => html`
@@ -125,7 +128,9 @@ const City = slat({
     <${Dot} at=${() => Math.log10(d.km2)} cross=${() => Math.log10(d.density)} size=${() => `${diameter(d.people)}cqw`} class="bubble" />
     <${Show} when=${() => d.side}>
       <${Label} at=${() => Math.log10(d.km2)} cross=${() => Math.log10(d.density)} side=${() => d.side}
-        style=${() => ({ "--rhp-label-gap": `calc(${diameter(d.people) / 2}cqw + 6px)` })} class="name">${() => d.name}<//>
+        style=${() => ({ "--rhp-label-gap": `calc(${diameter(d.people) / 2}cqw + 6px)` })} class="name">
+        <span class="full">${() => d.name}</span><span class="code">${() => d.code ?? d.name}</span>
+      <//>
     <//>
     <span class="say">${() => `${d.name}: ${millions.format(d.people / 1e6)} million people on ${count.format(d.km2)} square kilometres, ${count.format(d.density)} per square kilometre`}</span>
   </div>`);
@@ -153,8 +158,8 @@ function CitiesChart() {
     <${Poster}
       kicker=${html`<span>Megacities from above <span class="scalebar" aria-hidden="true"><span>0</span><span>10 km</span></span></span>`}
       title="Mumbai fits more people than New York on a tenth of the land"
-      dek="Twelve of the world's largest built-up areas by land and by crowding. Bubble area shows population; along each diagonal, cities hold the same number of people."
-      note="Source: Demographia World Urban Areas, 20th edition (2025), built-up urban areas. Point at a city, tap it, or Tab into the chart and use the arrow keys.">
+      dek="Twelve of the world's largest built-up areas by land and by crowding. Bubble area shows population; along each diagonal, cities hold the same number of people. Tap or point at a city."
+      note="Source: Demographia World Urban Areas, 20th edition (2025), built-up urban areas.">
       <p class="readout"><b>${() => shown().name}</b><span>${() => `: ${millions.format(shown().people / 1e6)} million people on ${count.format(shown().km2)} km², ${count.format(shown().density)} per km²`}</span></p>
       <p class="axis">People per km², log scale</p>
       <div class="plot" onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}

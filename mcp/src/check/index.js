@@ -10,7 +10,7 @@
 //   code      the chart's code instead of a file (written to a temp file; imports resolve from the checker)
 //   format    "html", "solid", "react" or "module" (found from the file, its imports and its project when left out)
 //   widths    page widths in px, [1280, 390] by default; the interaction pass runs at the first, and slats are tapped
-//             at the widths of a phone (600px or less, which are drawn as a touch screen)
+//             at the widths of a phone (600px or less, which are drawn as a touch screen), in a window 664px tall
 //   dark      emulate prefers-color-scheme: dark
 //   interact  run the interaction pass and the taps (true by default)
 //   outDir    where the screenshots go (a folder in the OS temp dir by default)
@@ -49,6 +49,8 @@ const CDN = /^https?:\/\/(?:cdn\.jsdelivr\.net\/npm|unpkg\.com|esm\.sh)\/@bezda\
 const EXT = { html: ".html", solid: ".jsx", react: ".jsx", module: ".js" };
 const LEVELS = { error: 0, warning: 1, info: 2 };
 const PHONE = 600;
+// The height of what a phone shows of a page (Safari on a 390 by 844 iPhone, its bars shown): where the taps are tried
+const PHONE_WINDOW = 664;
 
 const shortHash = (text) => crypto.createHash("sha1").update(text).digest("hex").slice(0, 8);
 
@@ -187,9 +189,11 @@ export async function check(options = {}) {
   const screenshots = [];
   const isLocal = (u) => u.startsWith("file:") || u.startsWith(ORIGIN);
 
-  // A page with the chart, the probe installed and at rest; what the page throws or prints goes to events
-  const open = async (context, events, reducedMotion) => {
+  // A page with the chart, the probe installed and at rest (in a window of another size when asked); what the page
+  // throws or prints goes to events
+  const open = async (context, events, reducedMotion, viewport = null) => {
     const page = await context.newPage();
+    if (viewport) await page.setViewportSize(viewport);
     page.on("pageerror", (e) => events.push({ kind: "pageerror", text: `${e.name && !String(e.message).startsWith(e.name) ? e.name + ": " : ""}${e.message}`, stack: e.stack }));
     page.on("console", (m) => {
       const text = m.text();
@@ -270,7 +274,7 @@ export async function check(options = {}) {
         noMarks = keep(await shot(), "no-marks");
       }
       await page.evaluate(() => window.__rhpProbe.show());
-      const colorFindings = [...textContrast(items, noText, 1), ...(noMarks ? faintMarks(items, drawn, noMarks, 1) : []), ...colorBlind(items)];
+      const colorFindings = [...textContrast(items, noText, 1), ...(noMarks ? faintMarks(items, drawn, noMarks, 1) : []), ...colorBlind(items, noMarks, 1)];
 
       // with reduced motion rhp turns every block's transition off, so a slat's own is read with motion on
       await page.emulateMedia({ reducedMotion: "no-preference" });
@@ -279,20 +283,26 @@ export async function check(options = {}) {
       await page.close();
 
       // The interactions are tried on a fresh page with motion on, as a reader gets it: the pass at the first width,
-      // and taps at a phone's (not when the page never finished loading)
+      // and taps at a phone's, in the window a phone shows (not when the page never finished loading)
       const interactions = [];
+      const unfocused = [];
       const loaded = !events.some((e) => e.kind === "pageerror" && /^The page did not finish loading/.test(e.text));
       if (wantInteract && loaded && (i === 0 || phone)) {
-        const fresh = await open(context, events, "no-preference");
+        const fresh = await open(context, events, "no-preference", phone ? { width, height: PHONE_WINDOW } : null);
         const pass = { events, capture: (opts) => capture(fresh, opts), shoot: (suffix) => save(fresh, width, suffix) };
-        if (i === 0) interactions.push(...(await interactionPass(fresh, pass)));
-        if (phone) interactions.push(...(await interactionPass(fresh, { ...pass, taps: true })));
+        const passes = [];
+        if (i === 0) passes.push(await interactionPass(fresh, pass));
+        if (phone) passes.push(await interactionPass(fresh, { ...pass, taps: true }));
+        for (const done of passes) {
+          interactions.push(...done.interactions);
+          unfocused.push(...done.unfocused);
+        }
         // what the slats read once, read again (the pass does it after each step too)
         await fresh.evaluate(() => globalThis.__rhpCheck?.recheck?.()).catch(() => {});
         guarded.push(...(await fresh.evaluate(() => globalThis.__rhpCheck?.findings ?? []).catch(() => [])));
       }
 
-      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), ms: Math.round(performance.now() - w0) });
+      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, ms: Math.round(performance.now() - w0) });
       await context.close();
     }));
   } finally {
@@ -358,9 +368,12 @@ export async function check(options = {}) {
       findings.push({ ...fromProbe(j, {}), width: r.width });
     }
 
-    // taps whose every change lies outside the window: one finding, on the last of them (the furthest slat)
+    // taps whose every change of text lies outside the window: one finding, on the last of them (the furthest slat)
     const unseen = r.interactions.filter((x) => x.unseen);
     if (unseen.length) findings.push({ ...fromProbe({ code: "out-of-view", target: unseen.at(-1).target, ...unseen.at(-1).unseen, more: unseen.length - 1 }, {}), width: r.width });
+
+    // focus that shows nothing: one finding for the page
+    if (r.unfocused.length) findings.push({ ...fromProbe({ code: "focus-invisible", what: r.unfocused[0], more: r.unfocused.length - 1 }, {}), width: r.width });
   }
 
   const charts = results.flatMap((r) => r.seen.charts.map((c) => ({ width: r.width, ...c })));

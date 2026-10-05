@@ -84,6 +84,7 @@ const Language = slat({
     .lit .name, .lit .value { color: #b8321a; }
     .language:focus-visible { outline: 2px solid #161412; outline-offset: -2px; border-radius: 4px; }
     @container (max-width: 420px) { .name { font-size: 13px; } .name small { font-size: 11px; } .value { font-size: 12px; } }
+    @container (max-width: 300px) { .name { max-width: 6.5em; white-space: normal; } } /* long names wrap, so the bars keep their room */
   `,
 }, (d) => html`
   <div class=${() => (d.lit ? "language lit" : "language")} data-row=${() => d.index} aria-label=${() => `${d.name}: ${count.format(d.millions)} million speakers`}>
@@ -115,8 +116,8 @@ function SpokenLanguages() {
     <${Poster}
       kicker="The world's languages"
       title=${html`<em>English</em> is the world's most spoken language`}
-      dek="Total speakers in millions, counting everyone who speaks it as a first or a second language. Mandarin has more native speakers; English has more learners."
-      note="Source: Ethnologue, 2023 (speakers); United Nations, 2023 (world population, 8.05 billion). Point at a language, tap it, or Tab into the chart and use the arrow keys."
+      dek="Total speakers in millions, counting everyone who speaks it as a first or a second language. Mandarin has more native speakers; English has more learners. Tap or point at a language."
+      note="Source: Ethnologue, 2023 (speakers); United Nations, 2023 (world population, 8.05 billion)."
       onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout" aria-live="polite">

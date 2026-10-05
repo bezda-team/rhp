@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- Names in room "auto" that turn bold when their slat is lit: lighting the widest name (not the first, middle or last slat) makes the room wider, and every bar slides right. expect: layout-jump -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>layout-jump-name</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const country = ["Peru", "Chile", "Brazil", "United States", "Cuba", "Mexico"];
+const medals = [4, 7, 21, 113, 9, 5];
+
+const Country = slat({ thickness: 32, room: { start: "auto", end: 40 }, css: ".on .name { font-weight: 800; }" }, (d) => html`
+  <div class=${() => (d.lit ? "on" : "")} data-row=${() => d.index}>
+    <${Label} edge="start" class="name">${() => d.country}<//>
+    <${Bar} to=${() => d.medals} />
+    <${Label} at=${() => d.medals}>${() => d.medals}<//>
+  </div>`);
+
+const [lit, setLit] = createSignal(null);
+const point = (e) => {
+  const el = e.target.closest("[data-row]");
+  if (el) setLit(+el.dataset.row);
+};
+
+render(() => html`
+  <div onPointerMove=${point} onPointerLeave=${() => setLit(null)}>
+    <${Chart} scale=${[0, 120]} label="Medals at the 2024 Olympics">
+      <${Plot} country=${country} medals=${medals} lit=${(d) => lit() === d.index}>${Country}<//>
+    <//>
+  </div>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

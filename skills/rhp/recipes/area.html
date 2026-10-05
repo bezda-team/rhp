@@ -92,31 +92,29 @@ const Outline = slat({
     <${Label} at=${() => d.mw.length - 0.5} cross=${() => d.mw.at(-1)} class="name">${() => d.name}<//>
   </div>`);
 
-// The day shown: its filled area, then its peak and its low, each a dot with a line down to a tag at the foot of
-// the plot, where no line passes (the peak's tag sits higher so the two never meet; --rhp-p keeps them inside)
+// The day shown: its filled area, with the peak's tag just above its dot and the low's just below.
+// Center each tag on its point, clamping it to the plot's edges on a phone.
 const Demand = slat({
   css: `
     .area { --rhp-length-time: .6s; --rhp-length-ease: cubic-bezier(.3, .7, .2, 1); stroke-width: 2.5px; }
-    .point, .drop, .pin { --rhp-length-time: .6s; --rhp-length-ease: cubic-bezier(.3, .7, .2, 1); }
+    .point, .pin { --rhp-length-time: .6s; --rhp-length-ease: cubic-bezier(.3, .7, .2, 1); }
     .point { box-shadow: 0 0 0 2px #f3f2ee; }
-    .drop { top: auto; bottom: 0; translate: -50% 0; --rhp-tick-width: 1px; background: rgb(28 29 31 / .4); }
-    .tag { position: absolute; left: 0; translate: calc(var(--rhp-p) * -100%) 0; padding: 3px 7px; border-radius: 4px; white-space: nowrap;
+    .tag { position: absolute; left: 0; translate: clamp(calc(var(--rhp-p) * -100cqw), -50%, calc((1 - var(--rhp-p)) * 100cqw - 100%)) 0;
+      padding: 3px 7px; border-radius: 4px; white-space: nowrap;
       font-size: 12px; background: #fff; box-shadow: 0 0 0 1px rgb(28 29 31 / .14); }
     .tag b { font-weight: 700; }
-    .peak { bottom: 38px; }
-    .low { bottom: 8px; }
+    .peak { bottom: 10px; }
+    .low { top: 10px; }
   `,
 }, (d) => html`
   <div>
     <${Line} points=${() => points(d.mw)} fill=${true} color=${() => d.color} class="area" />
-    <${Tick} at=${() => d.peak + 0.5} thick=${() => d.mw[d.peak] / TOP} class="drop" />
-    <${Tick} at=${() => d.low + 0.5} thick=${() => d.mw[d.low] / TOP} class="drop" />
     <${Dot} at=${() => d.peak + 0.5} cross=${() => d.mw[d.peak]} color=${() => d.color} size="9px" class="point" />
     <${Dot} at=${() => d.low + 0.5} cross=${() => d.mw[d.low]} color=${() => d.color} size="9px" class="point" />
-    <${Place} at=${() => d.peak + 0.5} across=${1} class="pin">
+    <${Place} at=${() => d.peak + 0.5} cross=${() => d.mw[d.peak]} class="pin">
       <span class="tag peak"><b>Peak ${() => mw.format(d.mw[d.peak])} MW</b>, ${() => clock(d.peak)}</span>
     <//>
-    <${Place} at=${() => d.low + 0.5} across=${1} class="pin">
+    <${Place} at=${() => d.low + 0.5} cross=${() => d.mw[d.low]} class="pin">
       <span class="tag low"><b>Low ${() => mw.format(d.mw[d.low])} MW</b>, ${() => clock(d.low)}</span>
     <//>
   </div>`);
@@ -129,8 +127,8 @@ function PowerChart() {
     <${Poster}
       kicker="New York City power demand"
       title="A July day used 40% more power than a January one"
-      dek="Demand on the city's grid, hour by hour, on Tuesday 16 July and Wednesday 17 January 2024. Both days peaked at 5 pm, and in July the 4 am low (7,268 megawatts) was higher than January's peak (7,196)."
-      note="Source: NYISO real-time actual load, zone N.Y.C., 2024, hourly means of five-minute readings. Pick a day with the buttons; the other day stays as a gray line.">
+      dek="Demand on the city's grid, hour by hour, on Tuesday 16 July and Wednesday 17 January 2024. Both days peaked at 5 pm, and in July the 4 am low (7,268 megawatts) was higher than January's peak (7,196). Pick a day with the buttons; the other day stays as a gray line."
+      note="Source: NYISO real-time actual load, zone N.Y.C., 2024, hourly means of five-minute readings.">
       <div class="days" role="group" aria-label="Day shown">
         ${DAYS.map((d, k) => html`
           <button type="button" aria-pressed=${() => shown() === k} onClick=${() => setShown(k)} style=${{ "--c": d.color }}><i></i>${d.label}</button>`)}
