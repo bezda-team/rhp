@@ -1,5 +1,4 @@
-https://github.com/user-attachments/assets/c1f33391-21ea-4f0b-a0d6-47c8899f9b75
-
+https://github.com/user-attachments/assets/39c1584b-7124-4cfa-a08a-56b11f2b9414
 
 # rhp: reactive html plots
 
