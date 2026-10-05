@@ -113,6 +113,7 @@
     container-type: inline-size;
     visibility: inherit;
     pointer-events: inherit;
+    -webkit-tap-highlight-color: inherit;
     font: 400 12px/1.15 var(--rhp-font);
     color: var(--rhp-ink);
     print-color-adjust: exact;

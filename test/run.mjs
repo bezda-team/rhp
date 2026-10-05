@@ -371,6 +371,20 @@ const open = async (url, opts = {}) => {
     getComputedStyle(document.querySelector(".looked .rhp-label[data-rhp-edge=start]")).color,
     getComputedStyle(document.querySelector(".looked .rhp-bar")).backgroundColor,
     getComputedStyle(document.querySelector(".looked .rhp-label[data-rhp-at]")).color]), ["rgb(1, 1, 1)", "rgb(4, 5, 6)", "rgb(7, 8, 9)"]);
+  if (await p.evaluate(() => CSS.supports("-webkit-tap-highlight-color", "transparent"))) {
+    check("a chart keeps its ancestor's tap highlight through the body and bars, including transparent", await p.evaluate(() => {
+      const host = document.querySelector(".one-around"), original = host.style.cssText;
+      const elements = [...document.querySelectorAll(".one .rhp-body, .one .rhp-bar")];
+      try {
+        return ["rgb(1, 2, 3)", "transparent"].map((color) => {
+          host.style.setProperty("-webkit-tap-highlight-color", color);
+          return elements.map((e) => getComputedStyle(e).webkitTapHighlightColor);
+        });
+      } finally {
+        host.style.cssText = original;
+      }
+    }), [Array(4).fill("rgb(1, 2, 3)"), Array(4).fill("rgba(0, 0, 0, 0)")]);
+  }
   check("no page errors", p.errors, []);
   await p.close();
 }
