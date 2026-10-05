@@ -21,7 +21,7 @@ const LIMIT = 50;
 const MAX_WIDTH = 1280;
 const MAX_HEIGHT = 2000;
 
-const INSTRUCTIONS = `rhp 2 (@bezda/rhp) makes charts out of HTML elements and CSS with SolidJS. It came out in September 2026, after your training data, so what you remember about rhp is wrong or belongs to the unrelated rhp 1. Before you write or change any rhp code, call rhp_guide and follow its workflow. Start each chart from the closest recipe (rhp_recipe), and look up every prop you are unsure of with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`;
+const INSTRUCTIONS = `rhp 2 (@bezda/rhp) makes charts out of HTML elements and CSS with SolidJS. It came out in September 2026, after your training data, so what you remember about rhp is wrong or belongs to the unrelated rhp 1. Before you write or change any rhp code, call rhp_guide and follow its workflow. Take each chart's technique from the closest recipe (rhp_recipe) and design the chart for its own subject, and look up every prop you are unsure of with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`;
 
 const text = (body) => ({ content: [{ type: "text", text: body }] });
 const failure = (body) => ({ content: [{ type: "text", text: body }], isError: true });
@@ -200,7 +200,7 @@ server.registerTool("rhp_reference", {
 
 server.registerTool("rhp_recipe", {
   title: "rhp recipe",
-  description: 'Lists rhp\'s recipes (call it with no type), or returns one recipe\'s complete HTML file (type, for example "bar"). A recipe is a tested, designed chart page, a worked example of one way to build a chart: start every chart from the closest recipe, keep its structure and techniques, and replace its data, text and look.',
+  description: 'Lists rhp\'s recipes (call it with no type), or returns one recipe\'s complete HTML file (type, for example "bar"). A recipe is a tested chart page that shows the technique for one kind of chart: take its technique (how its Plots, slats and blocks are composed, its interaction, its phone rules) and leave its design, which was made for its own subject.',
   inputSchema: {
     type: z.string().optional().describe('The recipe, for example "bar", "line" or "donut"; leave it out for the list'),
   },
@@ -239,7 +239,7 @@ server.registerPrompt("chart", {
     role: "user",
     content: {
       type: "text",
-      text: `Make this chart with rhp (@bezda/rhp): ${request}\n\nFirst call rhp_guide and follow its workflow: write the brief, start from the closest recipe (rhp_recipe), and look up props with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`,
+      text: `Make this chart with rhp (@bezda/rhp): ${request}\n\nFirst call rhp_guide and follow its workflow: write the brief, take the technique from the closest recipe (rhp_recipe), design the chart for its own subject, and look up props with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`,
     },
   }],
 }));
