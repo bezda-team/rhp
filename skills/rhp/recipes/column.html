@@ -93,7 +93,7 @@ function MonsoonYear() {
     const row = rowOf(e.target);
     if (row != null) setAt(row);
   };
-  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  // Leaving the plot or poster: back to the slat that has focus (a keyboard's or a click's pick), or none
   const leave = (e) => {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setAt(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
@@ -113,7 +113,8 @@ function MonsoonYear() {
       <${Chart} orientation="vertical" height=${300} scale=${[scale.min, scale.max]} ticks=${scale.ticks} format=${(v) => mm.format(v)}
         label="Rainfall by month, in millimetres"
         theme=${{ font: 'Archivo, "Helvetica Neue", Arial, sans-serif', ink: "#eef2f5", muted: "#8d969e", grid: "#2c3135" }}>
-        <${Plot} month=${MONTHS} mm=${RAIN} step=${(d) => (d.index > end() ? "later" : d.index === at() ? "now" : "")} keyboard=${true}>${Month}<//>
+        <${Plot} month=${MONTHS} mm=${RAIN} step=${(d) => (d.index > end() ? "later" : d.index === at() ? "now" : "")} keyboard=${true}
+          ref=${(el) => el.addEventListener("pointerleave", leave)}>${Month}<//>
       <//>
     <//>`;
 }

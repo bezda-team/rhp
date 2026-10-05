@@ -116,8 +116,8 @@ function Commutes() {
   const [pinned, setPinned] = createSignal(null);
   const lit = () => hovered() ?? pinned();
   const modeOf = (el) => el?.closest("[data-mode]")?.dataset.mode ?? null;
-  // A mouse or a pen lights the mode it moves over; between the bars the mode stays lit
-  const hover = (e) => e.pointerType !== "touch" && modeOf(e.target) && setHovered(modeOf(e.target));
+  // A mouse or a pen previews a mode; away from the line and bars, the keyboard's or kept mode shows
+  const hover = (e) => e.pointerType !== "touch" && setHovered(modeOf(e.target) ?? modeOf(e.currentTarget.querySelector(":focus-visible")));
   // The keyboard lights the mode it reaches. A click or a tap focuses its button too, so only a focus ring counts.
   const focus = (e) => e.target.matches(":focus-visible") && setHovered(modeOf(e.target));
   // Leaving the poster: back to the mode the keyboard is on, or none, so the kept mode shows
