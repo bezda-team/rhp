@@ -418,7 +418,8 @@ The full list, with the mistake and the fix for each, is [pitfalls.md](reference
 Read the ones the chart needs; each is self-contained.
 
 - [forms.md](references/forms.md): the subject's own form, which chart for which data and story, and which recipe has the technique.
-- [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, worked looks, color, type, layout, annotation, charts inside an app, a style the user asks for.
+- [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, color, type, layout, annotation, charts inside an app, a style the user asks for.
+- [looks.md](references/looks.md): eight looks written out in full (tokens, fonts, texture, type), as examples of how a look is written, not a menu.
 - [interaction.md](references/interaction.md): which interaction for which story, with complete code for each.
 - [environments.md](references/environments.md): plain HTML, Solid, Astro, React, Next.js, Vue, Svelte and Angular, each verified, and the html template to JSX rules.
 - [api.md](references/api.md): every component, prop, helper and CSS variable, exactly.

@@ -185,9 +185,9 @@ server.registerTool("rhp_guide", {
 
 server.registerTool("rhp_reference", {
   title: "rhp reference",
-  description: "Returns one of rhp's references by name: api (every component, prop, helper and CSS variable, exactly), design (the editorial poster, looks, color, type, layout), interaction (which interaction for which story, with code), environments (plain HTML, Solid, React, Next.js, Vue, Svelte, Angular, Astro), forms (which chart for which data and story), pitfalls (mistakes and their fixes). Look props up here instead of guessing. A long reference comes back as its list of sections: call again with section to get the one you need.",
+  description: "Returns one of rhp's references by name: api (every component, prop, helper and CSS variable, exactly), design (art direction from the subject, the editorial poster, color, type, layout), looks (eight looks written out in full, as examples), interaction (which interaction for which story, with code), environments (plain HTML, Solid, React, Next.js, Vue, Svelte, Angular, Astro), forms (the subject's own form, which chart for which data and story), pitfalls (mistakes and their fixes). Look props up here instead of guessing. A long reference comes back as its list of sections: call again with section to get the one you need.",
   inputSchema: {
-    name: z.string().describe("The reference: api, design, environments, forms, interaction or pitfalls"),
+    name: z.string().describe("The reference: api, design, environments, forms, interaction, looks or pitfalls"),
     section: z.string().optional().describe('One "##" section of the reference, by its number or title, for example "4" or "Plot"'),
   },
   annotations: { readOnlyHint: true, openWorldHint: false },

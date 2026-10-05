@@ -147,7 +147,7 @@ Without `--scope user` it goes to the project's `.gemini/settings.json`.
 | Tool | What it returns |
 |---|---|
 | `rhp_guide` | The workflow from a request to a checked chart, the rules that prevent most bugs, and the names of the references and recipes. The agent calls it first. |
-| `rhp_reference` | One reference by `name`: `api`, `design`, `environments`, `forms`, `interaction` or `pitfalls`. A long one comes back as its list of sections, and `section` (a number or a title) returns one of them. |
+| `rhp_reference` | One reference by `name`: `api`, `design`, `environments`, `forms`, `interaction`, `looks` or `pitfalls`. A long one comes back as its list of sections, and `section` (a number or a title) returns one of them. |
 | `rhp_recipe` | With no `type`, the list of recipes with what each is for; with a `type` such as `bar`, that recipe's whole HTML file, a tested chart page to start from. |
 | `rhp_check` | Renders the chart at `file` (an absolute path) or the `code` given, and returns the report (errors and warnings, each with a fix, and the interactions it tried) and the screenshots as images. Options: `format`, `widths` (`[1280, 390]` by default), `dark`, `interact`. |
 
