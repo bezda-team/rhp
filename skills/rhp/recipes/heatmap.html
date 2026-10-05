@@ -29,7 +29,8 @@
   .readout { display: flex; align-items: center; gap: 8px 18px; flex-wrap: wrap; margin-bottom: 12px; font: 500 14px/1.4 "JetBrains Mono", ui-monospace, Menlo, monospace; }
   .readout b { font-weight: 700; }
   .readout output { flex: 1 1 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .readout .key { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #5f5e69; }
+  /* Keep the key's height while centering its numbers on a whole-pixel line box. */
+  .readout .key { display: inline-flex; align-items: center; gap: 6px; height: 1.4em; font-size: 12px; line-height: 1; color: #5f5e69; }
   .readout .key i { width: 88px; height: 10px; border-radius: 3px; background: linear-gradient(90deg in oklab, #f7f6f3, #3730a3); box-shadow: inset 0 0 0 1px rgb(28 27 34 / .14); }
   /* The keyboard's case around the keys */
   .chart { border-radius: 14px; background: #d9d8d3; box-shadow: inset 0 1px 3px rgb(30 29 26 / .25), 0 1px 0 #fff; } /* its padding is the chart's room, set by the slat types */
