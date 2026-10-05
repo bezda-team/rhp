@@ -173,6 +173,8 @@ render(() => html`<${RainChart} />`, document.getElementById("chart"));
   rhp fades the Bar's `color` itself; the opacity changes at once, because a `transition` on a block would replace rhp's own (rule 7 in section 11).
 - **The readout** is one line of fixed height, so the chart under it never moves; keep its text short enough for 390px.
   It is `aria-hidden` because each slat's `aria-label` says the same to a screen reader.
+- **Where it sits is part of the design.** A band above the chart is this example's choice, not a rule.
+  The readout can be the big number of the composition, a line in the poster's rail or title block, or a note in the slat itself, as long as it keeps its size when its text changes (design.md, sections 2 and 6).
 - **Next to the slat.** The readout can sit in the slat itself: `<${Show} when=${() => d.on}><${Label} at=…>…<//><//>` draws it in that one slat only (the pyramid and histogram recipes).
   Do that when the chart is taller than about half a phone's screen, or pin the readout to the screen while the chart is in view: `position: sticky; bottom: 0` on a readout after the chart, with `z-index: 2`, the paper as its background and a hairline on its top edge (`box-shadow: 0 -1px 0 #d9d4ca`), so it reads as a strip laid over the chart.
   A readout above the chart pins (`top: 0`, and the hairline on its bottom edge) only while a pick exists, with a class such as `.readout.picked`: pinned at rest, it covers the plot's top as soon as the reader scrolls to the chart.

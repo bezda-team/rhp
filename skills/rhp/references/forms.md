@@ -1,17 +1,41 @@
 # Choosing the form: data, story, slat and recipe
 
 Use this file in step 3 of the workflow, after the brief.
-It goes from what the reader should see, to the form, to the slat that draws it, to the recipe to start from.
+It goes from the subject and what the reader should see, to the form, to the slat that draws it, to the recipe that has the technique.
 When the user named a form ("a donut", "a gantt"), use it, and start at the recipe catalog below.
 
 ## Contents
 
+- Start from the subject's own form
 - Start from the reader's question
 - The compositions rhp charts are made of
 - The recipe catalog
 - Orientation, size and phones
 - Combining recipes
 - What rhp does not draw, and the closest answer
+
+## Start from the subject's own form
+
+Before the data's shape, look at the subject's.
+A reader already knows what it looks like, and a chart that takes that form is recognized before a word is read.
+rhp draws all of these; the recipe named has the technique, not the design.
+
+| The subject has | The form that carries it | Technique |
+|---|---|---|
+| a cycle that turns (hours of a day, days of a week, months, seasons, a rotation) | a ring or a dial with the cycle around it, or a calendar grid | `donut` (wedges from shares), `radial-bars` (arcs), `heatmap` (a grid of Cells) |
+| things known by their outline (buildings, mountains, animals, ships, bottles) | each one drawn in its own outline, to scale, on one ground line | a `shape()` per row on a Bar (api.md section 6), in a vertical chart |
+| units a reader can count (people, seats, days, coins, floors) | one small mark per unit, or a bar cut into units | `waffle` (Cells, a picture in each), a Bar cut by a mask (design.md section 2) |
+| something that fills (rain, fuel, a battery, a budget, a quota) | a vessel up to the top of the scale, with its content inside | `column` (a tube and its water), `bullet` (bands and a target) |
+| a level things rise above or sink below (sea level, ground, zero, par, a freezing point) | bars or lines hanging from, or standing on, that one line | `diverging-bars`; in a vertical chart, values below the level are negative and hang from it |
+| a route or a sequence in space (stops, stages, a course, a river) | one line with its stations in order | `stacked-100` (its key is a metro line), `gantt`, `slope` |
+| a document the reader knows (a receipt, a ledger, a timetable, a scoreboard, a league table, a menu) | the chart laid out as that document, its lines the slats | `lollipop`, `waterfall`, `sparklines`, `live` |
+| a place (states, districts, seats in a hall, a pitch, a shelf) | a grid of tiles that echoes the place | `heatmap`'s composition (a Plot of rows, each a Plot of Cells) |
+| an instrument that measures it (a thermometer, a gauge, a ruler, a clock, a scale) | the instrument's own scale and pointer | a `Scale` drawn your own way, a Tick as the pointer, `radial-bars` |
+
+- The native form is the hero, and the numbers still have to be read: print each value on or beside its mark, since a ring, an outline or a tile is read less exactly than a bar on a shared baseline.
+- When an exact comparison is the whole point, keep bars from one baseline and let the subject show in how the marks are drawn (design.md section 2).
+- When the subject has no form of its own (abstract values, quarters of a year, A against B), the form comes from the reader's question below, and the idea from what the numbers do: the gap, the turn, the outlier.
+- Never bend the data to fit the form: a ring is for parts of a cycle or of a whole, an outline is scaled in one direction only, and units are all one size.
 
 ## Start from the reader's question
 
@@ -88,6 +112,7 @@ Inside any slat, add ordinary elements where the story needs them: an icon or a 
 ## The recipe catalog
 
 Each recipe is a complete page in `recipes/<name>.html` with a designed poster, fixed data and one interaction.
+The comment at the top of each says what to take (its technique) and what to leave (its design, made for its own subject).
 The interaction listed is the recipe's; interaction.md has the others.
 
 | Recipe | Shows | Composition | Interaction |

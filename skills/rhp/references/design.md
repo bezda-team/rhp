@@ -1,23 +1,25 @@
 # Design: posters, looks, color, type and layout
 
 How an rhp chart looks: an original editorial poster when the user asks for no style, exactly the style they ask for when they do, and the app's own look inside an app.
+In all three the chart is designed for its subject: section 2 is the procedure, and it comes before any look.
 Each kit was tested on two recipes, and every other code block on a page of its own, with the checker at 1280px and 390px; the sketches in section 2 are excerpts of tested recipes.
 
 1. [The editorial poster](#1-the-editorial-poster): its five parts, the base CSS and the theme every look shares
-2. [Art direction from the subject](#2-art-direction-from-the-subject): five decisions, four worked examples
-3. [Look kits](#3-look-kits): eight tested looks to start from
+2. [Art direction from the subject](#2-art-direction-from-the-subject): five decisions (idea, marks, composition, palette, type), two tests, worked examples
+3. [Look kits](#3-look-kits): eight worked looks, examples and not a menu
 4. [Color](#4-color): accent and context, palettes, ramps, dark mode
-5. [Typography](#5-typography): pairings, sizes, numbers
-6. [Layout](#6-layout): widths, phones, long labels, orientation
+5. [Typography](#5-typography): voices, sizes, numbers
+6. [Layout](#6-layout): placing the poster's parts, widths, phones, long labels, orientation
 7. [Annotation](#7-annotation): call out the key value, label directly, reference lines, units
-8. [Inside an existing app](#8-inside-an-existing-app): take the app's fonts, colors and spacing
-9. [A style the user asks for](#9-a-style-the-user-asks-for): follow it exactly
+8. [Inside an existing app](#8-inside-an-existing-app): the app's fonts and colors, and a chart still designed for its subject
+9. [A style the user asks for](#9-a-style-the-user-asks-for): follow it exactly, and design what they left open
 10. [Anti-patterns](#10-anti-patterns): what makes a chart look generic or wrong
 
 ## 1. The editorial poster
 
 With no style given and no app around it, a chart is an editorial poster: a page from a magazine, an advertisement or a feature article, designed for its subject.
-It has five parts, top to bottom.
+It has five parts.
+They are content, not a layout: the table gives their usual order, and where each one sits is a decision you make for the subject (sections 2 and 6).
 
 | Part | What it says | Good | Bad |
 |---|---|---|---|
@@ -51,7 +53,8 @@ html`<${Poster} kicker="Screen time, by age" title="Weekends add the most screen
 <//>`
 ```
 
-**Base CSS.** Every poster page starts with this block, then adds one kit (section 3) or a look of its own that sets the same tokens.
+**Base CSS.** A starting block for the page and the poster's parts: it makes them legible and safe on a phone, and it decides nothing.
+The look and the composition you design for the subject (section 2) go on top of it and may change any line of it, the poster's width, padding and part order included.
 
 ```css
 /* Base: the page and the poster's parts. A kit (section 3) sets the tokens and the look. */
@@ -84,7 +87,7 @@ body { margin: 0; padding: 48px 16px; background: var(--page); }
 | Token | Use | Rule |
 |---|---|---|
 | `--page` | the page around the poster | darker or lighter than the paper, near neutral |
-| `--paper` | the poster's background (a kit adds texture as `background-image`) | achromatic or near neutral: never the chart's hues |
+| `--paper` | the poster's background (a look adds texture as `background-image`) | near neutral, or the material's own color (kraft, blueprint blue, slate): never a hue the marks use |
 | `--ink` | headline, labels, the strongest marks | 7:1 or more on the paper |
 | `--soft` | dek, note, axis numbers, small secondary text in the chart | 4.5:1 on flat paper, 5:1 on textured paper |
 | `--rule` | hairlines, grid lines | about 1.35:1, quiet |
@@ -113,25 +116,89 @@ const QUIET = "series-4"; // every other mark
 
 ## 2. Art direction from the subject
 
-Make five decisions, in this order, and write them under **Chosen** in the brief ("Look: a till receipt; thermal white, black and the register's red; Space Mono; dotted stems; torn edges").
+A chart is original when a reader could not trace it back to a recipe, and when it still says what it is about with its words covered.
+New colors and a new font on the same page do not get there.
+It comes from the subject, in five decisions.
+Make them in this order and write them in the brief's Design lines; each comes from this subject, and each differs from the recipe you start from.
 
-1. **Material or setting.** Ask where a reader meets this data in the world, and name one real object or place: a till receipt for prices, a transit map for commutes, a share certificate for a stock, a race bib for a marathon, a naturalist's plate for birds.
-   Borrow its paper, ink, type and marks; never put a picture of it behind the chart.
-2. **Palette.** The material's paper, kept near neutral; ink near black (near white on a dark ground); one accent the subject owns (the register's red, a team's color, the fruit's color) for the story; up to two more hues only when several series are the story.
-   Check every color against the token rules (section 1).
-3. **Type pairing.** A display face with the subject's voice for the headline and the big numbers, and a plain text face for the rest (section 5).
-4. **Mark treatment.** One treatment for every mark, taken from the material: square ends for print, round caps for a transit line, dotted stems for a receipt, hollow bodies for the days a stock rose, a slanted end for speed.
-   Marks stay flat: no gradient, texture or shadow on data.
-   When the items are things a reader knows by their outline (buildings, animals, ships), each may wear its own simple silhouette: a `shape()` per row, drawn roughly to proportion, passed as data and read with `shape=${() => d.outline}`.
+1. **Idea.** One sentence a reader would use to tell a friend about the chart: "every lighthouse drawn at its real height along one coast", "a year of rain poured into twelve gauges", "the budget as the ledger page it is kept in".
+   Find it by asking three questions about the subject:
+   - *What shape does it have?* A cycle turns (a week, a season, an orbit), a depth hangs below a surface, a route runs from a start to an end, a crowd is a count of people.
+   - *What objects does a reader know it by?* A ticket, a scoreboard, a gauge, a seed packet, a boarding pass, a pay slip.
+   - *How do the people who work with it already draw this data?* A tide table, a tasting sheet, a growth chart, a ship's log, a league table.
+
+   Pass over the answer that every chart on the topic gets: a newspaper page for anything in the news, a dark screen for anything technical, a notebook for anything personal.
+   It names the topic's category, not this data; keep asking until the answer belongs to this subject only.
+   The idea must help the reading: the marks are easier to recognize, the comparison easier to see, or the finding easier to remember.
+   It shows in the form or the marks, where the reader looks, not only in the frame around them.
+   forms.md lists the shapes rhp draws and the recipe that has the technique for each.
+
+2. **Marks.** Draw the marks so that they carry the idea: this is where a reader meets it first.
+   - **Its own outline.** When the items are things a reader knows by their shape (buildings, animals, ships, bottles), each wears its own simple silhouette, drawn roughly to proportion: a `shape()` per row, passed as data and read with `shape=${() => d.outline}`.
+     One shared outline for every item is a bar with a hat.
+   - **Counted units.** A bar cut into the subject's units (hours, coins, floors, seats) by a mask, so the reader can count them.
+     Cut each bar into its rounded count of equal parts (the code below): the bar keeps its exact length, and no sliver is left after the last whole unit.
+   - **A container and its content.** A Bar to the top of the scale as the vessel and a Bar to the value inside it (a gauge, a tank, a battery, a glass), as `column` does.
+   - **One small picture per unit.** An inline SVG in each Cell, as `waffle` does with its drops.
+   - **The stroke of the subject's instrument.** Dotted leaders for a receipt, round caps for a transit line, hollow bodies for the days a stock rose, a slanted end for speed.
+
+   ```js
+   // Slat CSS: the bar in --n equal parts, 2px apart, with no gap after the last one
+   //   .bar:horizontal { mask: linear-gradient(to right, #000 calc(100% - 2px), #0000 0) 0 0 / calc((100% + 2px) / var(--n)) 100%; }
+   //   .bar:vertical { mask: linear-gradient(to top, #000 calc(100% - 2px), #0000 0) 0 100% / 100% calc((100% + 2px) / var(--n)); }
+   html`<${Bar} to=${() => d.hours} class="bar" style=${() => `--n: ${Math.max(1, Math.round(d.hours))}`} />`
+   ```
+
+   One treatment for all the marks of a chart.
+   Marks stay flat and honest: the value is read from a length, a position or a count, with no gradient, texture or shadow on data, and a picture is repeated or cropped, never stretched with the value.
    Textures stay out of the plot area, where lines read as grid lines and specks as data: on paper with rules, a grid or specks, give the chart the paper's flat color (`.poster .rhp-chart { background-color: var(--paper); }`), as the Swiss grid and zine kits do; a fine grain or a soft glow may stay under it.
-5. **One ornament.** One detail at the poster's edge, away from the data: a masthead rule, a torn edge, a double frame, a staple, corner brackets.
 
-Then check: with the text blurred, the poster should still say its subject; if it could hold any chart, the material is too weak, and if the ornament draws the eye before the data, it is too strong.
+3. **Composition.** Where the parts sit comes from the idea, not from the recipe.
+   A recipe's order (kicker, headline, dek, a band, the chart, a note, in a card on a gray page) is one answer among many, and keeping it is what makes a chart read as that recipe.
+   Take the composition from the idea's object: a ticket has a stub, a drawing sheet has a title block at its foot, a scoreboard is rows of big numerals, a label is a narrow strip, a field guide sets its plate beside the text.
+   Decide what the reader sees first (the form itself, one big number, or the headline) and give it the most room.
+   Section 6 shows how to place the parts freely.
+   At most one ornament, at the edge and away from the data (a torn edge, a staple, corner brackets): it finishes the object, and it is never the idea.
+   Then decide the phone: the idea is still there at 390px (the silhouettes carried into the turned bars, the ring kept and its labels moved below it), never a fallback to plain bars.
 
-Four worked examples; each is a recipe, so open it for the whole page.
+4. **Palette.** The subject's paper and ink: thermal white, blueprint blue, a chalkboard's slate, kraft, pink newsprint, a jersey's color.
+   A paper with a color of its own is fine when no mark shares its hue and every floor of section 4 holds.
+   One accent the subject owns (the register's red, a team's color, the fruit's color) for the story; up to two more hues only when several series are the story.
+   Context marks are quiet, and need not be gray: a tint of the accent, an outline in ink or the material's second ink keeps them back without turning the chart into a wall of gray slabs.
+   Check every color against the token rules (section 1).
+
+5. **Type.** A display face with the subject's voice for the headline and the big numbers, and a plain text face for the rest (section 5).
+   Not the faces of the recipe you start from.
+
+Then put the result to the two tests of SKILL.md step 7, on the screenshots.
+The recipe test: beside the starting recipe's screenshot, a reader could not tell that yours started from it.
+The subject test: with the words covered, at 1280px and at 390px, the page still says its subject; if it could hold any chart, the idea is too weak, and if the ornament draws the eye before the data, it is too strong.
+
+**The reasoning, once in full.** The request: a chart of the world's deepest lakes.
+
+- The answer every nature topic gets is a field guide page with blue bars; it would fit rivers, birds or rainfall as well, so pass over it.
+- Shape: a depth hangs down from a surface that all lakes share.
+  Object: the sounding line, a weighted rope let down to the bottom.
+  Convention: a nautical chart prints depths as small numbers on pale water.
+- Idea: every lake sounded from one waterline, the lines hanging down to their depths.
+  It helps the reading: deeper is lower, as in the world, and the surface is the shared baseline.
+- Marks: a thin line per lake from the surface down, a lead weight (a Dot) at its depth, the depth printed under the weight.
+  The depths are negative values under a 0 line at the top of a vertical chart, printed without their sign.
+- Composition: the names sit on the waterline, and the headline goes in the lower left, in the empty water under the shallow lakes.
+  On a phone the lines still hang: they carry numbers, and the names are a numbered list under the chart.
+- Palette: the chart paper's pale blue-green for the water, navy ink, the red of a chart's danger marks for the deepest lake.
+- Type: an engraver's serif for the headline, a small sans for the depths, as on a chart.
+
+Nothing here is the `column` recipe's rain gauges, though the technique (vertical Bars, a readout) comes from it.
+
+Four more, each a recipe, so open it for the whole page.
 
 **Big Mac prices in twelve countries** (`lollipop`, The Economist's Big Mac index of July 2026).
-Material: a till receipt; palette: thermal white, black, the register's red for the countries cheaper than the US; type: Space Mono throughout, bold capitals for the headline; marks: lollipops whose stems are the receipt's dotted leaders; ornament: torn top and bottom edges.
+Idea: the prices printed as the till receipt a burger comes with, one country per line.
+Marks: lollipops whose stems are the receipt's dotted leaders, from the name to the price.
+Composition: a narrow strip with everything centered like a receipt's header, torn at the top and the bottom, a barcode at the foot.
+Palette: thermal white, black, the register's red for the countries cheaper than the US.
+Type: Space Mono throughout, bold capitals for the headline.
 
 ```css
 .poster { background: #fbfaf7; font-family: "Space Mono", ui-monospace, Menlo, monospace;
@@ -143,7 +210,11 @@ Material: a till receipt; palette: thermal white, black, the register's red for 
 ```
 
 **How six invented cities get to work** (`stacked-100`, illustrative data).
-Material: a transit map; palette: white enamel with faint 45 degree hatching, one line color per mode; type: Jost, a geometric sans like a metro's signs; marks: the modes end to end in one band, each share written inside it when it fits; ornament: the key drawn as a metro line whose stations are the buttons.
+Idea: the ways to commute drawn as the lines of a metro map.
+Marks: the modes end to end in one band, each in its line's color, its share written inside when it fits.
+Composition: the key is a metro line between the dek and the bars, and its stations are the buttons.
+Palette: white enamel with faint 45 degree hatching, one line color per mode.
+Type: Jost, a geometric sans like a metro's signs.
 
 ```css
 .poster { background: repeating-linear-gradient(45deg, rgb(29 27 23 / .028) 0 1px, transparent 1px 11px), #fbfbf9; }
@@ -152,7 +223,11 @@ Material: a transit map; palette: white enamel with faint 45 degree hatching, on
 ```
 
 **A stock's month** (`candlestick`).
-Material: an engraved share certificate; palette: ivory paper, a sepia frame, green for the days that rose and red for the days that fell, also told apart by fill (hollow and solid), so color is never the only difference; type: Cormorant Garamond for the headline, IBM Plex Mono for the prices; marks: candles with hairline wicks; ornament: a double rule inside the edge.
+Idea: the month printed on the engraved share certificate that the stock is.
+Marks: candles with hairline wicks, hollow on the days that rose and solid on the days that fell, so color is never the only difference.
+Composition: the headline centered inside a double rule, as on a certificate, the day's prices on one ticker line.
+Palette: ivory paper, a sepia frame, green for the days that rose and red for the days that fell.
+Type: Cormorant Garamond for the headline, IBM Plex Mono for the prices.
 
 ```css
 .poster { background: repeating-linear-gradient(45deg, rgb(80 64 32 / .028) 0 1px, transparent 1px 5px), #f5efe0;
@@ -162,7 +237,11 @@ Material: an engraved share certificate; palette: ivory paper, a sepia frame, gr
 ```
 
 **A monsoon year** (`column`).
-Material: rain gauges at night; palette: near-black paper with fine slanting rain, white type, the water in blue; type: Archivo, wide for the headline; marks: each month a glass tube up to the top of the scale, with its rain inside; ornament: a bracket under the monsoon months.
+Idea: twelve rain gauges standing in the night rain, one per month.
+Marks: each month a glass tube up to the top of the scale, with its rain inside.
+Composition: the running total as the big number above the gauges, a bracket under the monsoon months.
+Palette: near-black paper with fine slanting rain, white type, the water in blue.
+Type: Archivo, wide for the headline.
 
 ```css
 .poster { background: repeating-linear-gradient(104deg, transparent 0 26px, rgb(255 255 255 / .035) 26px 27px), #141618; color: #eef2f5; }
@@ -172,30 +251,34 @@ Material: rain gauges at night; palette: near-black paper with fine slanting rai
 
 ## 3. Look kits
 
-A kit is a starting point for a poster: tokens, fonts, paper texture, type and one ornament.
-To put one on a recipe (how each kit here was tested):
+A kit is a look written out in full: tokens, fonts, paper texture, type and one ornament, tested with the checker.
+The eight here are worked examples, not a menu.
+A kit picked because it matches the topic (newsprint for anything in the news, a dark screen for anything technical) gives the chart the look every chart on that topic gets, and a reader sees the template.
+A kit is also only decisions 4 and 5 of section 2: the idea, the marks and the composition are not in it.
+So write the look for your subject, and take from the kits what is hard to get right: paper and ink values that pass the contrast floors, a texture, the CSS of a key or a button group.
 
-1. Replace the recipe's font link with the kit's, after the two preconnect links below, and its `<style>` with the base CSS (section 1), the kit, and the recipe's own parts (readout, key, buttons) rewritten with the tokens.
+How a look written as tokens goes onto a page (how each kit here was tested on a recipe):
+
+1. The look's font link goes after the two preconnect links below, and the page's `<style>` holds the base CSS (section 1), the look, and the page's own parts (readout, key, buttons) written with the tokens.
 2. Declare `THEME`, `ACCENT` and `QUIET` before the slat types, and give every Chart `theme=${THEME}`.
-3. Replace hex colors in slat CSS and data with theme keys (`series-1`, `var(--rhp-series-4)`, `var(--rhp-surface)`), and outside the chart with the tokens (`var(--accent)`); a legend becomes `.keys`, a button group `.choice`.
-4. Change the kit for the subject (section 2): a kit used as it is, chart after chart, becomes a template look.
-   Keep the token rules when you change a color (section 4), and run the checker.
+3. Use theme keys in slat CSS and data (`series-1`, `var(--rhp-series-4)`, `var(--rhp-surface)`), and the tokens outside the chart (`var(--accent)`); a legend is `.keys`, a button group `.choice`.
+4. Keep the token rules when you choose a color (section 4), and run the checker.
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 ```
 
-| Kit | Suits | Tested on |
+| Kit | The object it is taken from | Tested on |
 |---|---|---|
-| Broadsheet | politics, economy, society, history, anything "news" | bar, diverging-bars |
-| Swiss grid | design, architecture, transport, cities, technology | stacked-100 (light and dark), stacked-bars |
-| Field guide | nature, animals, plants, weather, farming, geography | column, waffle |
-| Luxury magazine | fashion, luxury goods, wine, perfume, art market, travel | donut, waterfall |
-| Sports page | sports, races, games, competitions, records | race, grouped-bars |
-| Scientific figure | research results, medicine, health, experiments | pyramid, sparklines |
-| Night instrument | technology, energy, space, aviation, systems, markets | heatmap, area |
-| Photocopied zine | music, pop culture, the internet, youth, activism | lollipop, radial-bars |
+| Broadsheet | a newspaper's front page | bar, diverging-bars |
+| Swiss grid | a 1960s typographic poster | stacked-100 (light and dark), stacked-bars |
+| Field guide | a naturalist's plate | column, waffle |
+| Luxury magazine | a fashion monthly's feature page | donut, waterfall |
+| Sports page | a matchday programme | race, grouped-bars |
+| Scientific figure | a journal's figure | pyramid, sparklines |
+| Night instrument | a cockpit display after dark | heatmap, area |
+| Photocopied zine | a stapled fanzine | lollipop, radial-bars |
 
 ### Broadsheet
 
@@ -446,11 +529,12 @@ Marks: black for most marks, pink for the one value that matters, dotted stems l
 ## 4. Color
 
 - One accent for the story: the value the headline names, the series it is about.
-  Everything else is the quiet color or ink.
+  Everything else is quiet: the quiet color, ink, a tint of the accent, or an outline.
+  A chart of one lit bar among rows of heavy mid-gray slabs is quiet in the wrong place: lighten the context marks to a tint (3:1 on the paper) or draw them as outlines, so the story is not outweighed.
 - Color several series only when comparing them is the story, six at most; with more, label the marks directly and group the small ones as "Other" in the quiet color.
 - Give meaning a second channel where it matters: filled against hollow, solid against dashed, a label.
 - Never red against green as the only difference; use blue against orange for good and bad, up and down.
-- The paper and the page stay neutral: color belongs to the data and the accent.
+- The paper and the page stay quiet: near neutral, or the material's own color when it has one (section 2), and never a hue the marks use.
 
 What the checker measures, and the floor for each:
 
@@ -466,7 +550,10 @@ What the checker measures, and the floor for each:
 Text in a series color must pass 4.5:1 too, so only the accent (and ink) may color text; the other series and the quiet color are for marks.
 Text on a mark is `var(--rhp-surface)` (the paper) or `var(--rhp-ink)` rather than `#fff`, so it flips with dark mode.
 
-**Categorical palettes**, measured with the checker's own color math; use them in this order, from the first color:
+**Categorical palettes.**
+Series that have colors of their own in the world (coal is dark and hydro blue, a party, a team or a metro line has its color) take those, checked like any other.
+When the headline is about one series, that series takes the accent and the others take tints of one quiet hue, not a hue each.
+When the series have no colors of their own and comparing them all is the story, these two palettes are measured with the checker's own color math; use them in this order, from the first color:
 
 | Paper | Colors | Contrast | Closest pair, worst vision |
 |---|---|---|---|
@@ -506,7 +593,7 @@ Set them as the theme's `positive` and `negative` (`color="positive"` on a block
 Inside the chart use the theme keys; outside it (a key's swatch, a button) use the tokens (`style="background: var(--s2)"`), because `--rhp-*` variables exist only inside the chart.
 
 **Dark mode.**
-A poster page is light unless the user asks for dark, the look is dark by nature (Night instrument), or it goes into an app that has a dark mode, where both are required.
+A poster page is light unless the user asks for dark, the subject is dark by nature (a night sky, a chalkboard, a control room), or it goes into an app that has a dark mode, where both are required.
 Write the same tokens again under `prefers-color-scheme: dark` (or under the app's own `.dark` class): THEME reads the tokens, so the chart follows with no script.
 Use a near-black neutral paper (not `#000`), an off-white ink, lighter accents (a dark accent sinks), a darker quiet color, and no shadows.
 Check that the story still stands out: in the dark the accent must be brighter than the quiet color.
@@ -523,21 +610,37 @@ Check both: the checker without and with `--dark`.
 
 ## 5. Typography
 
-Pairings, all on Google Fonts; the kits use the first eight, the recipes named use the rest.
+The type takes its voice from the subject's own lettering: how the object of the idea (section 2) is printed, painted, stamped or displayed.
+Choose the display face for that voice from all of Google Fonts, and a plain text face beside it.
+The pairings the kits and the recipes use are below as examples of a voice; they are the ones a reader has already seen, so prefer a face of your own.
 
-| Voice | Display (headline, big numbers) | Text (dek, labels, values) | Suits |
+| Voice | Display (headline, big numbers) | Text (dek, labels, values) | Used by |
 |---|---|---|---|
-| news | Noto Serif Display, condensed | Libre Franklin | politics, economy |
-| neutral, modern | Host Grotesk 800 | Host Grotesk 400 | design, cities, transport |
-| bookish | Alegreya 800 | Alegreya Sans | nature, history |
-| luxury | Playfair (high contrast at large sizes) | Urbanist | fashion, travel, wine |
-| fast | Sofia Sans Extra Condensed, italic | Sofia Sans | sports, games |
-| precise | IBM Plex Sans 700 | IBM Plex Sans, STIX Two Text for captions | science, medicine |
-| technical | B612 | B612, with B612 Mono for short labels | technology, energy |
-| raw | Anton | Courier Prime | music, culture |
-| warm editorial | Instrument Serif | Instrument Sans | people, languages (`bar`) |
-| report | Newsreader | Public Sans | health, demography (`multi-line`) |
-| poster | Big Shoulders Display | Work Sans | cities, infrastructure (`area`) |
+| news | Noto Serif Display, condensed | Libre Franklin | Broadsheet |
+| neutral, modern | Host Grotesk 800 | Host Grotesk 400 | Swiss grid |
+| bookish | Alegreya 800 | Alegreya Sans | Field guide |
+| luxury | Playfair (high contrast at large sizes) | Urbanist | Luxury magazine |
+| fast | Sofia Sans Extra Condensed, italic | Sofia Sans | Sports page |
+| precise | IBM Plex Sans 700 | IBM Plex Sans, STIX Two Text for captions | Scientific figure |
+| technical | B612 | B612, with B612 Mono for short labels | Night instrument |
+| raw | Anton | Courier Prime | Photocopied zine |
+| warm editorial | Instrument Serif | Instrument Sans | `bar` |
+| report | Newsreader | Public Sans | `multi-line` |
+| poster | Big Shoulders Display | Work Sans | `area` |
+
+More lettering to start from, by where it comes from (each a Google Font; check that it loaded, the checker says so):
+
+| The subject's lettering | Display faces |
+|---|---|
+| engraved (certificates, maps, banknotes) | Cormorant Garamond, Old Standard TT, IM Fell English, Cinzel |
+| wood type and slabs (posters, labels, railways) | Alfa Slab One, Zilla Slab, Rokkitt, Bitter |
+| signs and boards (roads, stations, shops) | Oswald, Barlow Condensed, Bebas Neue, Bungee |
+| stencil and stamps (crates, freight, military) | Saira Stencil One, Stardos Stencil, Black Ops One |
+| typewriter and forms (files, cards, tickets) | Special Elite, Cutive Mono, Courier Prime |
+| screens (terminals, dot matrix, arcades) | VT323, Share Tech Mono, DotGothic16, Press Start 2P |
+| fashion and deco (mastheads, cinemas, perfume) | Bodoni Moda, Abril Fatface, Limelight, Poiret One |
+| hand lettering (chalk, markers, notes), short labels only | Permanent Marker, Caveat, Rock Salt, Patrick Hand |
+| friendly and round (toys, food, apps) | Fredoka, Baloo 2, Bricolage Grotesque |
 
 - Two families at most; a mono for numbers may be a third.
 - Every stack ends in system fonts of the same kind: `"Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif`.
@@ -579,6 +682,56 @@ const minus = (text) => text.replace("-", "\u2212"); // -$61M becomes −$61M, w
 Axis numbers have fixed room (42px left of a vertical chart, 24px under a horizontal one): keep them to about five characters with `compact`, and expect a wide font (B612, any mono) to need it sooner.
 
 ## 6. Layout
+
+**Placing the parts.** `Poster` renders the kicker, the headline and the dek inside a `<figcaption>`, then its children, then the note.
+With `display: contents` on the figcaption and a grid on the poster, every part is a grid item, and you place each one where the composition (section 2) wants it.
+Wrap the Chart, with its key and its readout, in one element of your own (`<div class="stage">`), so that the chart is one grid item.
+
+```css
+/* Free the parts: the caption's three spans become grid items of the poster, beside the chart and the note */
+.poster { display: grid; grid-template-columns: minmax(0, 1fr); }
+.poster figcaption { display: contents; }
+.poster .kicker { grid-area: kicker; }
+.poster .headline { grid-area: headline; }
+.poster .dek { grid-area: dek; }
+.poster .stage { grid-area: chart; min-width: 0; }
+.poster .note { grid-area: note; }
+```
+
+Then one map of the areas says where they sit. Three to start from, each over the block above:
+
+```css
+/* The chart first: the form is what the reader sees, and the words caption it */
+.poster { row-gap: 12px; grid-template-areas: "kicker" "chart" "headline" "dek" "note"; }
+.poster .stage { margin-bottom: 12px; }
+```
+
+```css
+/* A rail: the words in a column beside the chart from 860px, stacked under 860px */
+.poster { row-gap: 12px; grid-template-areas: "kicker" "headline" "dek" "chart" "note"; }
+@media (min-width: 860px) {
+  .poster { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); grid-template-rows: auto auto 1fr auto; column-gap: 48px;
+    grid-template-areas: "kicker chart" "headline chart" "dek chart" "note chart"; }
+  .poster .note { margin-top: 0; }
+}
+```
+
+```css
+/* A title block at the foot, as on a drawing sheet or a label: the chart above, the words ruled off below it */
+.poster { row-gap: 10px; grid-template-areas: "chart" "kicker" "headline" "dek" "note"; }
+.poster .kicker { margin-top: 18px; padding-top: 16px; border-top: 2px solid var(--ink); }
+.poster .note { margin-top: 0; border-top: 0; padding-top: 0; }
+@media (min-width: 860px) {
+  .poster { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); column-gap: 40px;
+    grid-template-areas: "chart chart" "kicker kicker" "headline dek" "headline note"; }
+  .poster .note { align-self: end; }
+}
+```
+
+- A fourth: one number as the hero. Add an element of your own to the Poster's children (`<b class="figure">62%</b>`), give it a grid area and the largest type on the page, and let the headline caption it.
+- These are starting points, not a second menu: take the composition from the idea's object, and change the poster's `max-width`, padding and proportions with it (a narrow strip for a receipt or a label, a wide sheet for a timeline).
+- The chart never gets smaller when the window gets wider: beside a rail the chart keeps two thirds of the width or more, and the rail starts only where the chart stays at least as wide as it was just under the breakpoint.
+- On a phone the parts stack in one column, with the chart in the first screen.
 
 | Form | Poster `max-width` |
 |---|---|
@@ -669,9 +822,16 @@ const appTheme = () => ({
    - shadcn/ui on Tailwind 3 stores bare numbers (`--foreground: 222 47% 11%`): wrap them, `"hsl(var(--foreground))"`.
    - With fixed colors only (a `tailwind.config` palette, a design token file), copy the hex values into the theme.
    - Check the app's colors like any other: shadcn/ui's default `--chart-4` and `--chart-5` are yellow and amber at 1.7:1 and 2.1:1 on white, so `appTheme` takes the first three and the muted foreground for the rest; run the checker in both of the app's themes.
-3. **Keep the editorial habits that help any chart**: a title that states the finding, in the app's card-title style; a one-line description with the unit; direct labels; the source in small muted text at the foot; the app's primary color (or `--chart-1`) for the story and its muted color for the rest.
-4. **Leave out the poster**: no kicker, no paper, no texture, no ornament, no display font, no page background.
+3. **Keep the editorial habits that help any chart**: a title that states the finding, in the app's card-title style; a one-line description with the unit; direct labels; the source in small muted text at the foot; the app's primary color (or `--chart-1`) for the story.
+4. **Leave out the poster's dress**: no kicker, no paper, no texture, no ornament, no display font, no page background.
    The app's card holds the chart, with the app's padding and radius, and the chart fills the card's width.
+5. **Still design it for its subject.** The app fixes the palette and the type (decisions 4 and 5 of section 2).
+   The idea, the marks and the composition inside the card are yours, and they are what keeps the chart from being a stock widget in the app's colors:
+   - **The idea**, from the subject's own shape or object: storage as vessels filling toward their quotas, a release plan as the weeks it covers, depths hanging below a surface.
+   - **The marks**, in the app's colors: each item's own outline, counted units, a container and its content.
+     The story takes the app's primary color, and the context marks a tint of it (`color-mix(in oklab, var(--primary) 40%, var(--card))`, at 3:1 on the card or with an outline), not rows of mid-gray slabs.
+   - **The composition**, with the app's own type scale: one key number in the app's heading font at its largest size; the fact the data is remembered for written on the mark it belongs to (a short note in the slat), not left in a footnote; a readout that says at rest something the title does not.
+   - The reader sees the app's own component, and still could not take the chart for a library's default.
 
 ```js
 // Inside the app's card component, or plain markup with the app's classes
@@ -683,20 +843,41 @@ html`<section class="card">
 </section>`
 ```
 
+**Worked example.** Storage per team, in an admin dashboard built with shadcn/ui.
+Fixed: the app's font, `--primary`, `--muted-foreground`, `--border`, its Card.
+Idea: every team's storage is a vessel that fills toward its quota.
+Marks: a Bar to the quota, outlined in `--border`, and a Bar to the usage inside it in a tint of `--primary`; the team over its quota in `--destructive`, with "12 GB over" written on its bar.
+Composition: the card's title states the finding ("Design is over its quota"), the total in use is the big number in the card's header, and the vessels sort fullest first.
+Nothing in it is a poster, and nothing is a default bar chart.
+
 ## 9. A style the user asks for
 
 The user's words beat every default in this file: do exactly what they asked, and keep only what they did not mention.
-Colors or fonts fix the palette and the type, not the design: the layout, the frame, the marks and one idea from the subject are still yours (section 2).
+Colors or fonts fix the palette and the type (decisions 4 and 5 of section 2), and only those: the idea, the marks and the composition still come from the subject.
+The user's four colors on a rounded dark card with pill buttons follow the palette and design nothing.
+
+- Give their colors a plan: which one is the story and which are context.
+  Build the page's own neutrals (paper, rules, soft text) as tints and shades of their colors instead of stock grays, so the whole page belongs to the palette.
+- Give their font a range: one family still has a voice through weight, width, size and case (a headline at weight 800 and 72px, labels at weight 500 in letterspaced capitals).
+- Keep their words exactly (a title they gave is the headline; a legend "at the top" is at the top), and build the idea around them.
 
 | They say | Do |
 |---|---|
 | brand colors ("our blue is #0047ab") | put them in the tokens as the accent and the series; a color under 3:1 stays a fill with an outline that stands out from the paper (darker on light paper, lighter on dark) or a direct label, a text color under 4.5:1 becomes ink beside it, and the handoff says so; the series the headline names still leads at rest |
 | a font ("use Futura") | load it from Google Fonts when it is there; otherwise name it first with close fallbacks (`"Futura", "Jost", "Century Gothic", sans-serif`) and say it shows only where it is installed |
 | "minimal", "clean" | no kicker, texture or ornament; white or the page's own color; one accent; drawn as the plain chart below; keep the headline that states the finding and the source line |
-| "dark" | dark tokens (section 4) or the Night instrument kit, dark only unless they want both |
+| "dark" | dark tokens (section 4) for a ground the subject has (a night sky, a chalkboard, a control room, a stage), dark only unless they want both; "dark" fixes the ground, not the design |
 | "plain", "no poster", "just the chart" | the Chart alone, with its `label`, drawn as the plain chart below; a title above it only if they did not also say "no title" |
 | "like The Economist", "like the FT" | take the publication's traits in your own words and colors (a red rule and tag at the top left, a sans headline, blue bars, horizontal grid lines, the source at the bottom left; or salmon paper, a serif headline, teal and claret); never their name, logo or fonts as branding |
 | a screenshot or a site to match | its palette, type, spacing and corner radius, measured from the reference, then checked like any other |
+
+**Worked example.** "Cups sold per hour at our cafe, in our green #0f766e, font Poppins."
+Fixed: the green and Poppins.
+Idea: each hour is a stack of cups.
+Marks: columns cut into units of ten cups by a mask; the busiest hour in their green, the others in a lighter tint of it that still reaches 3:1 on the paper.
+Composition: the hours run along the foot as on the opening-hours sign of the shop's door, and the busiest hour's count is the big number beside the headline.
+Palette: the paper is a pale tint of their green and the ink a deep shade of it, both checked.
+Type: Poppins 800 for the number and the headline, Poppins 400 for the rest.
 
 Whatever they did not mention keeps the defaults: text at 4.5:1 and marks at 3:1, labels of 11px or more, no sideways scroll at 390px, direct labels, the source line (none when the user gave the data and no source), and a clean check.
 
@@ -749,8 +930,13 @@ render(() => html`<${Bars} />`, document.getElementById("chart"));
 | Inter, or one system sans, for everything | no voice; every chart looks the same | a display face with the subject's voice and a plain text face (section 5) |
 | emoji as bullets, icons or decoration | noisy, drawn differently on every system | words, or a small inline SVG drawn for the subject |
 | rounded cards with drop shadows around every part; the same card layout for every chart; a dark rounded card with pill buttons | dashboard sameness; boxes compete with the data | one poster, parts separated by space and hairlines |
-| a recipe's headline formula, kicker wording or readout band, as they are | the page reads as the kit's template with a new subject | words and parts written for this subject |
-| one look for every chart | a template, not a design | a new material, accent and type per subject |
+| a recipe's page in a new skin: its parts in their places, its band above the chart, its marks, in new colors and fonts | the reader sees the recipe with new data | a composition and marks from this subject's idea (section 2) |
+| a recipe's headline formula, kicker wording or readout band, as they are | the page reads as the skill's template with a new subject | words and parts written for this subject |
+| an idea that shows only in the frame (a clipped corner, a barcode, a border, a mono face) | with the words covered, the page could hold any chart | carry the idea into the form or the marks |
+| a look picked by topic (newsprint for the news, a dark screen for anything technical) | every chart on the topic gets it | the shape or object that only this subject has |
+| one outline shared by every item (bars with hats) | no item is recognizable | each item's own silhouette, or honest plain bars |
+| one lit bar among rows of heavy mid-gray slabs, as the whole design | the gray mass outweighs the story | context marks as tints or outlines (section 4) |
+| one look for every chart | a template, not a design | a new idea, composition, accent and type per subject |
 | a rainbow, or a color per bar of one series | color with no meaning | one accent for the story, the quiet color for the rest |
 | gradients, textures or shadows on data marks; 3D | they distort the values and the comparison | flat marks; texture belongs to the paper |
 | heavy or colored shadows | a shadow takes the color of the surface it falls on: a colored one reads as neon | a soft shadow in a darker shade of the page, or none |
