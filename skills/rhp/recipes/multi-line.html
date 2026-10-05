@@ -119,27 +119,24 @@ const Decade = slat({
     <${Label} at=${() => t.at} class=${() => ((t.at / 10) % 2 ? "year odd" : "year")}>${() => t.at}<//>
   </div>`);
 
-// A country's line
-const Country = slat({ css: `.line { stroke-width: 2px; } .story .line { stroke-width: 3.5px; }` }, (d) => html`
-  <div class=${() => (d.name === STORY ? "story" : "")}>
-    <${Line} points=${() => d.values.map((v, i) => [FIRST + i, v])} color=${() => d.color} class="line" />
-  </div>`);
-
-// A country's name at its line's end (a short stroke of its color leads to it), in a room as wide as the longest. A
-// phone shows the codes, in a room that fits them, so the lines keep most of a narrow chart.
-const ending = (room, text) => slat({
+// A country's line and its name at the end (a short stroke of its color leads to it), in the same slat so the name
+// stays with its series. A phone shows the codes, in a room that fits them, so the lines keep most of a narrow chart.
+const country = (room, text) => slat({
   room: { end: room },
   css: `
+    .line { stroke-width: 2px; }
+    .story .line { stroke-width: 3.5px; }
     .name { --rhp-label-gap: 4px; font-size: 13px; font-weight: 600; }
     .name i { display: inline-block; width: 10px; height: 2px; margin-right: 5px; vertical-align: 4px; border-radius: 1px; }
     .story .name { font-weight: 800; }
   `,
 }, (d) => html`
   <div class=${() => (d.name === STORY ? "story" : "")}>
+    <${Line} points=${() => d.values.map((v, i) => [FIRST + i, v])} color=${() => d.color} class="line" />
     <${Label} at=${LAST} cross=${() => d.labelAt} class="name"><i style=${() => ({ background: d.color })}></i>${() => text(d)}<//>
   </div>`);
-const Name = ending(112, (d) => d.name);
-const Code = ending(52, (d) => d.code);
+const Country = country(112, (d) => d.name);
+const CountryCode = country(52, (d) => d.code);
 
 // The year picked: a hairline across the plot, then a dot on each line
 const Crosshair = slat({ css: `.hair { --rhp-tick-width: 1px; background: #1b1d22; opacity: .45; }` }, (d) => html`
@@ -211,8 +208,7 @@ function LifeChart() {
           label=${`Life expectancy at birth in ${COUNTRIES.map((c) => c.name).join(", ")}, ${FIRST} to ${LAST}`}
           theme=${{ font: '"Public Sans", "Helvetica Neue", Arial, sans-serif', ink: "#1b1d22", muted: "#686b72", grid: "#e1dccf" }}>
           <${Scale} ticks=${YEARS.filter((year) => year % 10 === 0)}>${Decade}<//>
-          <${Plot} overlap=${true} rows=${COUNTRIES}>${Country}<//>
-          ${() => html`<${Plot} overlap=${true} rows=${COUNTRIES} labelAt=${labelAt}>${wide() ? Name : Code}<//>`}
+          ${() => html`<${Plot} overlap=${true} rows=${COUNTRIES} labelAt=${labelAt}>${wide() ? Country : CountryCode}<//>`}
           <${Plot} overlap=${true} slats=${1} year=${() => YEARS[i()]} style=${{ "pointer-events": "none" }}>${Crosshair}<//>
           <${Plot} overlap=${true} rows=${COUNTRIES} year=${() => YEARS[i()]} i=${i} style=${{ "pointer-events": "none" }}>${Mark}<//>
           <${Plot} orientation="vertical" keyboard=${true} year=${YEARS}>${Year}<//>
