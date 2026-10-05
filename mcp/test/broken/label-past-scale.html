@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- Bars drawn in shares (0 to 1) and their Labels placed at the percent (12, 18, 7): rhp keeps each Label at the end of the scale, away from its bar. expect: value-past-scale -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>label-past-scale</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const share = [0.12, 0.18, 0.07];
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 48 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.share} />
+    <${Label} at=${() => d.share * 100}>${() => Math.round(d.share * 100) + "%"}<//>
+  </div>`);
+
+render(() => html`
+  <${Chart} scale=${[0, 0.2]} label="Share of fruit sold">
+    <${Plot} fruit=${fruit} share=${share}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

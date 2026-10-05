@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- A headline set tight (line-height .86, as design.md's kits do) with an em and a no-break span on neighboring lines: lines of one heading, not overlapping texts. expect: none -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>none</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  main { max-width: 640px; margin: 0 auto; }
+  h1 { margin: 0 0 32px; font-size: 56px; line-height: .86; }
+  h1 em { font-style: normal; color: #b3261e; }
+  h1 .nowrap { white-space: nowrap; }
+  @media (max-width: 600px) { body { padding: 24px 16px; } h1 { font-size: 40px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1><em>Grapes sold out,</em><br><span class="nowrap">kiwis held on</span></h1>
+  <div id="chart"></div>
+</main>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render } from "@bezda/rhp/standalone";
+
+const fruit = ["Kiwis", "Apples", "Figs"];
+const sold = [18, 12, 7];
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+render(() => html`
+  <${Chart} scale=${[0, 20]} label="Fruit sold today">
+    <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # npm test on every push to master and every pull request, in Chromium, WebKit and Firefox at once (three jobs side by
 # side, each about 5 minutes). macOS, so WebKit is Safari's engine and the fonts are the ones the checks were measured
-# with. A newer push cancels the run of an older one.
+# with. A newer push cancels the run of an older one. The chart checker in mcp/ is tested in a job of its own.
 name: test
 
 on:
@@ -32,3 +32,27 @@ jobs:
       - run: npm test
         env:
           BROWSER: ${{ matrix.browser }}
+
+  # The checker's and the MCP server's tests (npm test in mcp/) on rhp built from this commit: the broken charts, the
+  # skill's recipes, the guard, the skill's example and the server's tools. The site's gallery needs the documentation
+  # checkout, so that part is skipped here.
+  checker:
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            mcp/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm ci
+        working-directory: mcp
+      - run: node bin/rhp-mcp.js install-browser
+        working-directory: mcp
+      - run: npm test
+        working-directory: mcp

@@ -416,6 +416,10 @@ const open = async (url, opts = {}) => {
   await p.evaluate(() => window.setValues([12, 18, 25])); await p.waitForTimeout(100);
   check("no build step: a signal passed as a data group updates the chart", await rows(), "Apple12@2 Kiwi18@1 Lemon25@0");
   check("no build step: slat CSS applies", await p.evaluate(() => getComputedStyle(document.querySelector(".bar")).borderTopRightRadius), "6px");
+  check("no build step: the module also exports createSelector, createComputed, on, mergeProps, splitProps, Switch and Match", await p.evaluate(async () => {
+    const m = await import("./standalone.js");
+    return ["createSelector", "createComputed", "on", "mergeProps", "splitProps", "Switch", "Match"].filter((n) => typeof m[n] !== "function");
+  }), []);
   check("no page errors", p.errors, []);
   await p.close();
 }

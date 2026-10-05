@@ -1,0 +1,67 @@
+<!doctype html>
+<!-- A donut whose last slice is thin (7%, just before twelve o'clock): no point of a grid on its box falls on the slice, so the pointer goes inside the slice's SVG shape, and the middle reads it. expect: none; says: - hover slat 5 of 5: changed 1 text, 1 attribute -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>none</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 360px; margin: 0 auto; }
+  .hub { position: relative; z-index: 2; display: grid; place-content: center; font-size: 16px; text-align: center; pointer-events: none; }
+  @media (max-width: 600px) { body { padding: 24px 16px; } }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, slat, shares, stackUp, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Visits by source, the last one small
+const source = ["Organic", "Direct", "Social", "Referral", "Email"];
+const visits = [38912, 20644, 11307, 9486, 5871];
+const { from, to } = stackUp(shares(visits));
+
+// A slice is an SVG path in a 100 x 100 box around the middle: a ring from radius 30 to 48
+const TAU = Math.PI * 2;
+const xy = (t, r) => `${r * Math.sin(t * TAU)},${-r * Math.cos(t * TAU)}`;
+const ring = (start, end) => {
+  const a = start / 100;
+  const b = end / 100 - 0.004;
+  const big = b - a > 0.5 ? 1 : 0;
+  return `M${xy(a, 48)}A48,48 0 ${big} 1 ${xy(b, 48)}L${xy(b, 30)}A30,30 0 ${big} 0 ${xy(a, 30)}Z`;
+};
+
+const Source = slat({
+  room: { start: 0, end: 0 },
+  css: `
+    .slice { pointer-events: none; }
+    .wedge { inset: 0; width: 100%; height: 100%; translate: none; background: none; }
+    .wedge svg { display: block; width: 100%; height: 100%; }
+    .wedge path { fill: var(--rhp-color); pointer-events: auto; }
+    .on .wedge path { fill: #1d1d1f; }
+  `,
+}, (d) => html`
+  <div class=${() => (d.on ? "slice on" : "slice")} data-row=${() => d.index}>
+    <${Bar} from=${() => d.from} to=${() => d.to} color="#8a94a3" class="wedge">
+      <svg viewBox="-50 -50 100 100" aria-hidden="true"><path d=${() => ring(d.from, d.to)} /></svg>
+    <//>
+  </div>`);
+
+const [on, setOn] = createSignal(null);
+const pick = (e) => {
+  const el = e.target.closest("[data-row]");
+  if (el) setOn(+el.dataset.row);
+};
+
+render(() => html`
+  <div onPointerMove=${pick} onClick=${pick} onPointerLeave=${() => setOn(null)}>
+    <${Chart} aspect=${1} ticks=${false} label="Visits by source">
+      <div class="hub">${() => (on() == null ? "All sources" : source[on()])}</div>
+      <${Plot} overlap=${true} source=${source} from=${from} to=${to} on=${(d) => on() === d.index}>${Source}<//>
+    <//>
+  </div>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

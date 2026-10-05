@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Japan's population by age</title>
+<meta name="description" content="Population pyramid: two sides of one population (men and women) by age band, oldest on top, with an age picked by pointer, tap or keyboard that lights everyone that age or older and reads out their share. Use it for any two groups compared across ordered bands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d9d6ce; font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Helvetica Neue", Arial, sans-serif; }
+  /* The poster: washi paper with a fine grain, sumi ink, the two sides in hanada blue and vermilion, and a line of
+     type set vertically down the right edge */
+  .poster { position: relative; display: grid; max-width: 940px; margin: 0 auto; padding: 50px 64px 30px 52px; color: #1e1d1b;
+    background: #f3f0e8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .9' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .36 0 0 0 .38 -.17'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    box-shadow: 0 1px 2px rgb(40 36 30 / .18), 0 26px 46px -28px rgb(40 36 30 / .55); }
+  .poster > * { min-width: 0; }
+  .poster::after { content: "Five-year age bands · millions of people"; position: absolute; top: 50px; right: 22px; writing-mode: vertical-rl;
+    font-size: 11px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #6d6a63; }
+  .poster figcaption { display: grid; gap: 12px; margin-bottom: 20px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #9c3422; }
+  .poster .headline { font: 900 46px/1.08 "Zen Old Mincho", "Hiragino Mincho ProN", Georgia, serif; letter-spacing: -.01em; text-wrap: balance; }
+  .poster .dek { max-width: 54ch; font-size: 16px; line-height: 1.6; color: #4d4a44; }
+  .poster .note { display: block; margin-top: 18px; font-size: 12px; line-height: 1.55; color: #5f5c55; }
+  /* The readout: the share of people at the picked age or older, and how many */
+  .readout { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 14px; margin: 4px 0 14px; padding: 12px 0; border-block: 1px solid #d8d3c8; }
+  .readout b { grid-row: span 2; font: 900 58px/1 "Zen Old Mincho", Georgia, serif; letter-spacing: -.02em; }
+  .readout span { font-size: 15px; line-height: 1.35; }
+  .readout span + span { color: #5f5c55; font-size: 13px; }
+  .key { display: flex; gap: 14px; margin-bottom: 8px; font-size: 13px; color: #4d4a44; }
+  .key i { display: inline-block; width: 12px; height: 12px; margin-right: 6px; border-radius: 2px; vertical-align: -1px; }
+  /* Widen the plot by 5%, keeping the two 40px label rooms the same size. */
+  .chart { width: calc(105% - 4px); max-width: 584px; justify-self: center; align-self: center; }
+  .poster .chart { margin-bottom: 35px; }
+  @media (min-width: 860px) {
+    .poster { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); grid-template-rows: auto auto auto 1fr; column-gap: 40px; }
+    .poster figcaption { grid-column: 1; grid-row: 1; }
+    .readout { grid-column: 1; grid-row: 2; }
+    .key { grid-column: 1; grid-row: 3; }
+    .poster .chart { grid-column: 2; grid-row: 1 / span 4; align-self: center; }
+    .poster .note { grid-column: 1; grid-row: 4; align-self: end; }
+  }
+  /* On a phone the chart is taller than half the screen: the readout stays at the top of the screen while the chart
+     scrolls under it (the poster is a flex column there: a sticky grid item can't leave its own row) */
+  @media (max-width: 560px) {
+    body { padding: 24px 16px 32px; }
+    .poster { display: flex; flex-direction: column; padding: 34px 34px 20px 16px; }
+    .poster::after { top: 34px; right: 10px; font-size: 10px; }
+    .poster .headline { font-size: 31px; }
+    .poster .dek { font-size: 15px; }
+    .readout { position: sticky; top: 0; z-index: 2; background: inherit; }
+    .readout b { font-size: 46px; }
+    .readout span { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, html, render, createSignal, Show } from "@bezda/rhp/standalone";
+
+// Data: people in each age band on October 1, 2023, in millions rounded to two decimals, youngest first, from the
+// Statistics Bureau of Japan's population estimates (total population). Replace with your own.
+const AGES = ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64",
+  "65-69", "70-74", "75-79", "80-84", "85-89", "90+"];
+const MEN = [2.09, 2.48, 2.69, 2.82, 3.21, 3.33, 3.27, 3.59, 3.94, 4.62, 4.87, 4.14, 3.72, 3.57, 4.16, 3.37, 2.46, 1.45, 0.71];
+const WOMEN = [2.00, 2.36, 2.56, 2.68, 3.02, 3.15, 3.11, 3.45, 3.83, 4.50, 4.78, 4.14, 3.79, 3.76, 4.66, 4.11, 3.44, 2.53, 2.02];
+const FROM = 13; // the age band picked at rest: 65 and older
+const COLORS = { men: "#00749a", women: "#c8442f" };
+
+// Both sides start SPINE away from 0, which leaves a strip down the middle for the ages. The axis ticks are moved
+// out by the same amount, so they still read in millions.
+const SPINE = 0.9;
+const WIDEST = Math.ceil(Math.max(...MEN, ...WOMEN));
+const STEPS = Array.from({ length: WIDEST + 1 }, (_, k) => k);
+const TICKS = [...STEPS.map((k) => -(SPINE + k)).reverse(), ...STEPS.map((k) => SPINE + k)];
+const TOTAL = [...MEN, ...WOMEN].reduce((sum, v) => sum + v, 0);
+const millions = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+const pale = (c) => `color-mix(in oklab, ${c} 28%, #f3f0e8)`;
+
+// Slat type: an age band. The bands at or above the picked age are in full color; the picked one shows its numbers.
+const Band = slat({
+  thickness: 23.1,
+  inset: "1.5px",
+  room: { start: 40, end: 40 },
+  css: `
+    .side { --rhp-start-radius: 0px; --rhp-end-radius: 3px; }
+    .age { padding: 0; translate: -50% -50%; font-size: 11px; font-weight: 500; color: #6d6a63; font-variant-numeric: tabular-nums; }
+    .old .age { color: #1e1d1b; font-weight: 700; }
+    .on .age { color: #1e1d1b; }
+    .val { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .band:focus-visible { outline: 2px solid #1e1d1b; outline-offset: -1px; border-radius: 3px; }
+  `,
+}, (d) => html`
+  <div class=${() => ["band", d.old && "old", d.on && "on"].filter(Boolean).join(" ")} data-row=${() => d.index}>
+    <${Bar} from=${-SPINE} to=${() => -(SPINE + d.men)} color=${() => (d.old ? COLORS.men : pale(COLORS.men))} class="side" />
+    <${Bar} from=${SPINE} to=${() => SPINE + d.women} color=${() => (d.old ? COLORS.women : pale(COLORS.women))} class="side" />
+    <${Label} at=${0} class="age">${() => d.age}<//>
+    <${Show} when=${() => d.on}>
+      <${Label} at=${() => -(SPINE + d.men)} side="before" class="val">${() => millions.format(d.men)}<//>
+      <${Label} at=${() => SPINE + d.women} class="val">${() => millions.format(d.women)}<//>
+    <//>
+  </div>`);
+
+// Chart component: the band the reader points at, taps or reaches with the keyboard sets the age, and the readout
+// counts everyone that age or older
+function AgeingJapan() {
+  const [picked, setPicked] = createSignal(null);
+  const from = () => picked() ?? FROM;
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const older = () => MEN.slice(from()).concat(WOMEN.slice(from())).reduce((sum, v) => sum + v, 0);
+  return html`
+    <${Poster}
+      kicker="Japan · population by age and sex"
+      title="Nearly three in ten people in Japan are 65 or older"
+      dek="Men to the left, women to the right, in millions, the oldest at the top. Two bulges show the baby booms of the late 1940s and early 1970s; the base keeps shrinking."
+      note="Source: Statistics Bureau of Japan, population estimates for October 1, 2023 (124.35 million people), rounded to the nearest 10,000. Point at an age band, tap it, or Tab into the chart and use the arrow keys."
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <p class="readout" aria-live="polite">
+        <b>${() => percent.format(older() / TOTAL)}</b>
+        <span>${() => (from() ? `are ${parseInt(AGES[from()])} or older` : "of all ages")}</span>
+        <span>${() => `${millions.format(older())} million people`}</span>
+      </p>
+      <p class="key"><span><i style=${{ background: COLORS.men }}></i>Men</span><span><i style=${{ background: COLORS.women }}></i>Women</span></p>
+      <${Chart} class="chart" scale=${[-(SPINE + WIDEST), SPINE + WIDEST]} ticks=${TICKS} format=${(v) => (Math.abs(v) - SPINE ? Math.round(Math.abs(v) - SPINE) + "M" : "0")}
+        label="Japan's population by age band in 2023, men and women, in millions"
+        theme=${{ font: "'Zen Kaku Gothic New', 'Helvetica Neue', Arial, sans-serif", ink: "#1e1d1b", muted: "#6d6a63", grid: "#dfdad0" }}>
+        <${Plot} keyboard=${true} age=${AGES} men=${MEN} women=${WOMEN} order=${AGES.map((_, i) => AGES.length - 1 - i)}
+          old=${(d) => d.index >= from()} on=${(d) => d.index === from()}>${Band}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${AgeingJapan} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

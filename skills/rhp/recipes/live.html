@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northgate carries a third</title>
+<meta name="description" content="Live board: requests per second for six regions, each slat a line of the last minute that scrolls as readings arrive, the current value beside it, with pause and resume and a readout on hover, focus and tap. The lines move by rhp's JS version (animate) because the feed changes the data without pause. Use it for live or streaming data: metrics, sensors, prices, counts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@900&family=Martian+Mono:wght@400;600&family=Oxanium:wght@400..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #b3b7b8; font-family: Oxanium, "Eurostile", "Bahnschrift", "DIN Alternate", sans-serif; }
+  /* The poster: a dot-matrix display in a control room. Graphite glass with a grid of unlit dots, amber for the story */
+  .poster { max-width: 980px; margin: 0 auto; padding: 46px 52px 30px; color: #e9ece9; border-radius: 18px;
+    background: radial-gradient(circle, rgb(255 255 255 / .05) 1px, transparent 1.3px) 0 0 / 6px 6px, #0f1112;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / .07), 0 0 0 8px #232628, 0 0 0 9px #3a3e41, 0 34px 60px -28px rgb(16 18 19 / .7); }
+  .poster figcaption { display: grid; gap: 14px; margin-bottom: 30px; }
+  .poster .kicker { display: flex; align-items: center; gap: 10px; font: 600 12px/1.3 "Martian Mono", ui-monospace, Menlo, monospace; letter-spacing: .14em; text-transform: uppercase; color: #a5adaf; }
+  .led { width: 9px; height: 9px; border-radius: 50%; background: #ffb22e; animation: blink 1.2s steps(2, jump-none) infinite; }
+  .paused .led { background: transparent; box-shadow: inset 0 0 0 1.5px #8f9799; animation: none; }
+  @keyframes blink { 50% { opacity: .25; } }
+  .poster .headline { max-width: 14em; font-size: 54px; font-weight: 700; line-height: 1; letter-spacing: -.01em; text-wrap: balance; }
+  .poster .headline em { font-style: normal; color: #ffb22e; }
+  .poster .dek { max-width: 58ch; font-size: 17px; line-height: 1.5; color: #b8bfc0; }
+  /* Above the board: one line that reads out the region in focus (fixed height), and the pause button */
+  .status { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+  .readout { min-width: 0; height: 24px; margin: 0; font-size: 16px; line-height: 24px; white-space: nowrap; color: #b8bfc0; }
+  .readout b { font-weight: 600; color: #e9ece9; }
+  .readout em { font: normal 900 19px/24px Doto, "Martian Mono", ui-monospace, monospace; color: #e9ece9; }
+  .pause { flex: none; display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border: 1px solid rgb(255 255 255 / .28); border-radius: 17px;
+    font: 600 12px/1 "Martian Mono", ui-monospace, Menlo, monospace; letter-spacing: .1em; text-transform: uppercase; color: #e9ece9; background: transparent; cursor: pointer; }
+  .pause i { width: 10px; height: 10px; border-inline: 3px solid currentColor; }
+  .pause[aria-pressed="true"] { border-color: #ffb22e; color: #0f1112; background: #ffb22e; }
+  .pause:focus-visible { outline: 2px solid #ffb22e; outline-offset: 3px; }
+  .board { padding: 4px 0 2px; border-top: 1px solid rgb(255 255 255 / .12); }
+  .poster .note { display: block; margin-top: 20px; padding-top: 12px; border-top: 1px solid rgb(255 255 255 / .12); font-size: 12.5px; line-height: 1.5; color: #8f9799; }
+  @media (prefers-reduced-motion: reduce) { .led { animation: none; } }
+  @media (max-width: 640px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 28px 18px 18px; border-radius: 12px; }
+    .poster .headline { font-size: 34px; }
+    .poster .dek { font-size: 15px; }
+    .poster figcaption { margin-bottom: 22px; }
+    .readout { font-size: 14px; }
+    .readout em { font-size: 16px; }
+    .pause { width: 34px; padding: 0; justify-content: center; }
+    .pause span { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Line, Dot, Label, Poster, slat, html, render, createSignal, createMemo, onCleanup } from "@bezda/rhp/standalone";
+
+// Data: requests per second answered by each region of an API (invented names), one reading every 0.4 s, from a
+// simulated feed. Replace connect() below with your own feed; the board shows the last WINDOW seconds.
+const REGIONS = [
+  { name: "Northgate", base: 4200, story: true },
+  { name: "Eastport", base: 3100 },
+  { name: "Bayside", base: 1900 },
+  { name: "Highmoor", base: 1500 },
+  { name: "Westmere", base: 1300 },
+  { name: "Southby", base: 800 },
+];
+const TICK = 400; // ms between readings
+const WINDOW = 60; // seconds of history on the board
+const PEAK = 6000; // the rate that fills a slat's height: your capacity, or a round number above the data
+const INSET = 0.14; // the empty share of a slat's band, half above the line and half below
+const AMBER = "#ffb22e";
+const GRAY = "#7e898d";
+
+// A seeded generator (mulberry32), so the simulated feed is the same on every load; never Math.random
+function mulberry32(seed) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const random = mulberry32(2026);
+let sent = 0;
+const drift = REGIONS.map(() => 0);
+const surge = REGIONS.map(() => 0);
+
+// One simulated reading: each region's rate sways slowly, wanders, and now and then surges and fades
+function simulate() {
+  const t = (sent++ * TICK) / 1000;
+  const rps = {};
+  REGIONS.forEach((r, i) => {
+    drift[i] = 0.85 * drift[i] + 0.04 * (random() * 2 - 1);
+    if (random() < 0.006) surge[i] = 0.2;
+    surge[i] *= 0.93;
+    const sway = 0.05 * Math.sin((2 * Math.PI * t) / 37 + i);
+    rps[r.name] = Math.round(r.base * (1 + sway + drift[i] + surge[i]));
+  });
+  return { t, rps };
+}
+
+// THE FEED: calls onReading({ t, rps }) for every reading, in time order (t in seconds, rps by region name), and
+// returns a function that stops it (Pause calls it; Resume connects again). This one is simulated: it sends the last
+// minute at once, then one reading every TICK ms.
+// A real feed plugs in the same way, for example:
+//   const socket = new WebSocket("wss://example.com/traffic");            // WebSocket
+//   socket.onmessage = (e) => onReading(JSON.parse(e.data));
+//   return () => socket.close();
+//   const source = new EventSource("/traffic/stream");                    // server-sent events
+//   source.onmessage = (e) => onReading(JSON.parse(e.data));
+//   return () => source.close();
+//   const poll = setInterval(async () => onReading(await (await fetch("/traffic/now")).json()), TICK); // polling
+//   return () => clearInterval(poll);
+// With a real feed, t is the server's time in seconds (Date.now() / 1000), and the history starts empty or from a fetch.
+function connect(onReading) {
+  while (sent * TICK <= WINDOW * 1000) onReading(simulate());
+  const timer = setInterval(() => onReading(simulate()), TICK);
+  return () => clearInterval(timer);
+}
+
+// The line of the last WINDOW seconds up to `now`, as [seconds before now, rate] points (cut where the window
+// starts and where now falls between two readings), and the rate at now
+const lerp = (a, b, t) => a[1] + ((b[1] - a[1]) * (t - a[0])) / (b[0] - a[0]);
+function lastMinute(trace, now) {
+  const from = now - WINDOW;
+  const points = [];
+  for (let i = 0; i < trace.length; i++) {
+    const [t, v] = trace[i];
+    const before = trace[i - 1];
+    if (before && before[0] < from && t > from) points.push([-WINDOW, lerp(before, trace[i], from)]);
+    if (t > now) {
+      const at = before ? lerp(before, trace[i], now) : v;
+      points.push([0, at]);
+      return { points, at };
+    }
+    if (t >= from) points.push([Math.max(-WINDOW, t - now), v]);
+  }
+  return { points, at: trace.at(-1)?.[1] ?? 0 };
+}
+const across = (v) => INSET / 2 + (1 - INSET) * (1 - Math.min(1, v / PEAK)); // a rate's place across the band, as the Line draws it
+const rate = new Intl.NumberFormat("en-US");
+
+// Slat type: the region, its last minute as a line that ends in a dot at now, and its latest reading in LED digits.
+// The digits are monospaced and the reading keeps a width of five of them, so the room "auto" measures never changes
+// and nothing moves sideways while the numbers change.
+const Region = slat({
+  thickness: { horizontal: 62 },
+  inset: INSET,
+  room: "auto",
+  css: `
+    .region { outline: none; border-bottom: 1px solid rgb(255 255 255 / .07); }
+    .wash { position: absolute; inset: 0 -8px; border-radius: 6px; background: rgb(255 255 255 / .06); opacity: 0; transition: opacity .2s; }
+    .on .wash, .region:focus-visible .wash { opacity: 1; }
+    .region:focus-visible .wash { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .4); }
+    .name { font: 600 16px Oxanium, "Eurostile", "Bahnschrift", sans-serif; color: #e9ece9; }
+    .trace { stroke-width: 1.75px; }
+    .pen { box-shadow: 0 0 0 3px #0f1112; }
+    .rate { --rhp-label-gap: 14px; min-width: 5ch; text-align: right; font: 900 25px/1 Doto, "Martian Mono", ui-monospace, monospace; color: #e9ece9; }
+    .story .name, .story .rate { color: #ffb22e; }
+    @container (max-width: 480px) { .name { font-size: 14px; } .rate { font-size: 20px; --rhp-label-gap: 8px; } }
+    @media (prefers-reduced-motion: reduce) { .wash { transition: none; } }
+  `,
+}, (d) => {
+  const minute = createMemo(() => lastMinute(d.trace, d.now)); // once a frame, shared by the line and the dot
+  const color = () => (d.story ? AMBER : GRAY);
+  return html`
+    <div class=${() => `region${d.story ? " story" : ""}${d.on ? " on" : ""}`} data-row=${() => d.index} aria-label=${() => d.say}>
+      <span class="wash"></span>
+      <${Label} edge="start" class="name">${() => d.name}<//>
+      <${Line} points=${() => minute().points} peak=${PEAK} fill=${true} color=${color} class="trace" />
+      <${Dot} at=${0} across=${() => across(minute().at)} size="8px" color=${color} class="pen" />
+      <${Label} edge="end" class="rate">${() => rate.format(d.rps)}<//>
+    </div>`;
+});
+
+// Chart component: the readings are the app's state; the feed adds to them until it is paused
+function TrafficBoard() {
+  const [readings, setReadings] = createSignal([]);
+  const keep = (r) => setReadings((list) => [...list.filter((x) => x.t >= r.t - WINDOW - 2), r]);
+  let stop = connect(keep); // before the board is drawn, so the first minute is there from the start
+  const [live, setLive] = createSignal(true);
+  const toggle = () => {
+    if (live()) stop();
+    else stop = connect(keep);
+    setLive(!live());
+  };
+  onCleanup(() => stop());
+
+  const latest = () => readings().at(-1);
+  const traces = createMemo(() => REGIONS.map((r) => readings().map((x) => [x.t, x.rps[r.name]])));
+  const rps = createMemo(() => REGIONS.map((r) => latest()?.rps[r.name] ?? 0));
+  const total = () => rps().reduce((sum, v) => sum + v, 0);
+  const say = () => REGIONS.map((r, i) => `${r.name}: ${rate.format(rps()[i])} requests a second`);
+
+  const [picked, setPicked] = createSignal(null);
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the board: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const readout = () => {
+    const i = picked();
+    if (i == null) return html`<b>All regions</b>: <em>${rate.format(total())}</em> requests a second`;
+    return html`<b>${REGIONS[i].name}</b>: <em>${rate.format(rps()[i])}</em> a second, ${Math.round((rps()[i] / (total() || 1)) * 100)}% of all`;
+  };
+
+  // JS version: the feed changes the data every TICK ms without pause, so the time `now` moves on rhp's clock, at an
+  // even speed: every line slides left without stopping, carried from one reading into the next. A move lasts one and a
+  // half intervals, so a reading that comes up to half an interval late (a real network) slows the lines instead of
+  // stopping them. The scale stays still (always the last minute), so animate goes on the Plot, naming the group.
+  return html`
+    <${Poster}
+      class=${() => (live() ? "" : "paused")}
+      kicker=${html`<i class="led"></i><span>API traffic, ${() => (live() ? "live" : "paused")}</span>`}
+      title=${html`<em>Northgate</em> carries a third of the traffic`}
+      dek="Requests per second answered by each region of the API over the last minute. A reading arrives every 0.4 seconds and the lines move left; the dot at the end of each line is now."
+      note="Illustrative data: invented regions and a simulated feed, the same on every load. Point at a region, tap it, or Tab into the board and use the arrow keys.">
+      <div class="status">
+        <p class="readout">${readout}</p>
+        <button type="button" class="pause" aria-label="Pause" aria-pressed=${() => String(!live())} onClick=${toggle}><i></i><span>Pause</span></button>
+      </div>
+      <div class="board"
+        onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+        onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <${Chart} scale=${[-WINDOW, 0]} ticks=${[1, 0.75, 0.5, 0.25, 0].map((k) => -k * WINDOW)} format=${(v) => (v === 0 ? "now" : `${-v}s`)}
+          label="Requests per second by region over the last minute"
+          theme=${{ font: '"Martian Mono", ui-monospace, Menlo, monospace', ink: "#e9ece9", muted: "#8f9799", grid: "rgb(255 255 255 / .08)" }}>
+          <${Plot} keyboard=${true} rows=${REGIONS} trace=${traces} now=${() => latest()?.t} rps=${rps} say=${say}
+            on=${(d) => d.index === picked()} animate=${{ groups: ["now"], duration: TICK * 1.5, ease: "linear" }}>${Region}<//>
+        <//>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${TrafficBoard} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

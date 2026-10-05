@@ -1,0 +1,14 @@
+{
+  "name": "rhp",
+  "owner": {
+    "name": "Bezda"
+  },
+  "description": "rhp (reactive html plots) for AI agents: the rhp skill and the rhp MCP server",
+  "plugins": [
+    {
+      "name": "rhp",
+      "source": "./skills",
+      "description": "Makes charts with rhp (@bezda/rhp): the rhp skill teaches the agent rhp 2 and how to go from a request to a designed, interactive chart, and the rhp MCP server renders each chart in a browser and reports what is wrong, with screenshots."
+    }
+  ]
+}

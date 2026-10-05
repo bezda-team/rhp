@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- A button and slats that take focus, each with outline: none and nothing in its place: Tab reaches them and nothing shows where the focus is. expect: focus-invisible; says: 1. [focus-invisible] Tab reaches button "Sort" and 1 more, but nothing on screen shows the focus there: a keyboard reader cannot see where it is. (1280px) -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>focus-invisible</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  .sort { margin: 0 0 12px; padding: 6px 12px; border: 1px solid #555; border-radius: 4px; background: #fff; color: #222; font: inherit; }
+  .sort:focus { outline: none; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, sortBy, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const sold = [12, 18, 7];
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 }, css: ".fruit:focus-visible { outline: none; }" }, (d) => html`
+  <div class="fruit">
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const [dir, setDir] = createSignal("desc");
+
+render(() => html`
+  <button class="sort" onClick=${() => setDir(dir() === "desc" ? "asc" : "desc")}>Sort</button>
+  <${Chart} scale=${[0, 20]} label="Fruit sold today">
+    <${Plot} keyboard=${true} fruit=${fruit} sold=${sold} order=${() => sortBy("sold", dir())}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

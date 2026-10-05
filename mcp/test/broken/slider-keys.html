@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- A slider of the page's own (role=slider), moved only by its arrow keys, whose key handler throws. expect: interaction-error -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>slider-keys</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  .day { display: inline-block; margin-bottom: 16px; padding: 6px 12px; border: 1px solid #555; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const days = [[12, 18, 7], [9, 14, 11], [15, 10, 6]];
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const [day, setDay] = createSignal(0);
+const step = (e) => {
+  if (e.key === "ArrowRight" || e.key === "ArrowUp") setDay(nextDay(day()));
+  if (e.key === "ArrowLeft" || e.key === "ArrowDown") setDay(Math.max(0, day() - 1));
+};
+
+render(() => html`
+  <div class="day" role="slider" tabindex="0" aria-label="Day" aria-valuemin="0" aria-valuemax="2" aria-valuenow=${day} onKeyDown=${step}>Day ${() => day() + 1}</div>
+  <${Chart} scale=${[0, 20]} label="Fruit sold">
+    <${Plot} fruit=${fruit} sold=${() => days[day()]}>${Fruit}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

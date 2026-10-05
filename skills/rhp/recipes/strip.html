@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Burger places are hit or miss</title>
+<meta name="description" content="Strip plot of restaurant ratings by cuisine: one dot per restaurant in its cuisine's band (an overlap Plot inside each slat), a median tick, and a readout of the restaurant the reader points at, taps or reaches with the arrow keys. Use it to show every value of a few groups.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@700&family=Karla:wght@400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root { color-scheme: light; } /* the page around the chalkboard is light */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #d8d6d1; font-family: Karla, "Helvetica Neue", Arial, sans-serif; color: #f2f1ec; }
+  /* The poster: a chalkboard menu in a wooden frame, its slate smudged where it was wiped */
+  .poster { max-width: 940px; margin: 0 auto; padding: 34px 40px 24px; line-height: 1.45; border: 12px solid #6b4a2f; border-radius: 4px;
+    background:
+      radial-gradient(60% 40% at 22% 18%, rgb(255 255 255 / .05), transparent 70%),
+      radial-gradient(50% 35% at 78% 72%, rgb(255 255 255 / .04), transparent 70%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .09 0 0 0 -.035'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+      #2b2e2d;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / .5), inset 0 0 40px rgb(0 0 0 / .45), 0 0 0 1px #4e341f, 0 22px 44px -18px rgb(0 0 0 / .6); }
+  .poster figcaption { display: grid; gap: 8px; margin-bottom: 20px; }
+  .poster .kicker { font-size: 13px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #f3d36b; }
+  .poster .headline { font: 700 58px/1.02 "Cabin Sketch", "Comic Sans MS", cursive; letter-spacing: .005em; text-wrap: balance; }
+  .poster .dek { max-width: 60ch; font-size: 16px; color: #cfcdc6; }
+  .poster .note { display: block; margin-top: 16px; font-size: 12px; color: #a9a7a0; }
+  /* The readout: the restaurant under the pointer, two lines tall so the chart below never moves */
+  .readout { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; min-height: 58px; margin: 0 0 14px; padding: 10px 0;
+    border-block: 1px dashed rgb(242 241 236 / .35); }
+  .readout .stars { font: 700 34px/1 "Cabin Sketch", "Comic Sans MS", cursive; color: #f3d36b; font-variant-numeric: tabular-nums; }
+  .readout b { display: block; font-size: 17px; font-weight: 800; }
+  .readout span { font-size: 14px; color: #cfcdc6; }
+  @media (max-width: 600px) {
+    body { padding: 16px 12px; }
+    .poster { padding: 24px 16px 18px; border-width: 9px; }
+    .poster .kicker { font-size: 11px; letter-spacing: .16em; }
+    .poster .headline { font-size: 38px; }
+    .poster .dek { font-size: 14.5px; }
+    .readout { min-height: 64px; }
+    .readout .stars { font-size: 28px; }
+    .readout b { font-size: 15.5px; }
+    .readout span { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Dot, Tick, Label, Poster, slat, summary, sortBy, every, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: invented restaurants in one city, their cuisine, average rating out of 5 and number of reviews. Illustrative.
+// Replace with your own.
+const PLACES = [
+  { name: "Blue Nile Kitchen", cuisine: "Ethiopian", rating: 4.7, reviews: 412 },
+  { name: "Lalibela Table", cuisine: "Ethiopian", rating: 4.6, reviews: 288 },
+  { name: "Addis Café", cuisine: "Ethiopian", rating: 4.4, reviews: 156 },
+  { name: "Injera House", cuisine: "Ethiopian", rating: 4.8, reviews: 521 },
+  { name: "Habesha Corner", cuisine: "Ethiopian", rating: 4.5, reviews: 203 },
+  { name: "Teff & Tea", cuisine: "Ethiopian", rating: 4.3, reviews: 97 },
+  { name: "Kumo Ramen", cuisine: "Japanese", rating: 4.8, reviews: 1240 },
+  { name: "Tanuki Sushi Bar", cuisine: "Japanese", rating: 4.6, reviews: 880 },
+  { name: "Yuzu Izakaya", cuisine: "Japanese", rating: 4.4, reviews: 610 },
+  { name: "Hinode Bento", cuisine: "Japanese", rating: 4.1, reviews: 325 },
+  { name: "Sakura Garden", cuisine: "Japanese", rating: 3.9, reviews: 402 },
+  { name: "Mochi Mochi", cuisine: "Japanese", rating: 4.5, reviews: 290 },
+  { name: "Shiro Udon", cuisine: "Japanese", rating: 4.3, reviews: 515 },
+  { name: "Oni Grill", cuisine: "Japanese", rating: 4.0, reviews: 188 },
+  { name: "Kaiseki Mori", cuisine: "Japanese", rating: 4.7, reviews: 264 },
+  { name: "Tokyo Express", cuisine: "Japanese", rating: 3.6, reviews: 733 },
+  { name: "Saffron Lane", cuisine: "Indian", rating: 4.6, reviews: 970 },
+  { name: "Masala Theory", cuisine: "Indian", rating: 4.4, reviews: 540 },
+  { name: "Chai Wallah", cuisine: "Indian", rating: 4.2, reviews: 311 },
+  { name: "Tandoor Nights", cuisine: "Indian", rating: 4.0, reviews: 466 },
+  { name: "Bombay Tiffin", cuisine: "Indian", rating: 4.5, reviews: 288 },
+  { name: "Curry Leaf", cuisine: "Indian", rating: 4.3, reviews: 602 },
+  { name: "Delhi Darbar", cuisine: "Indian", rating: 3.7, reviews: 380 },
+  { name: "Goa Shack", cuisine: "Indian", rating: 4.1, reviews: 215 },
+  { name: "Spice Route", cuisine: "Indian", rating: 3.5, reviews: 450 },
+  { name: "La Paloma", cuisine: "Mexican", rating: 4.5, reviews: 810 },
+  { name: "Taquería El Sol", cuisine: "Mexican", rating: 4.7, reviews: 1055 },
+  { name: "Casa Verde", cuisine: "Mexican", rating: 4.2, reviews: 390 },
+  { name: "Mole Mole", cuisine: "Mexican", rating: 4.0, reviews: 245 },
+  { name: "Burrito Barn", cuisine: "Mexican", rating: 3.4, reviews: 930 },
+  { name: "Agave Azul", cuisine: "Mexican", rating: 4.3, reviews: 520 },
+  { name: "El Comal", cuisine: "Mexican", rating: 4.6, reviews: 342 },
+  { name: "Tortilla Flats", cuisine: "Mexican", rating: 3.8, reviews: 611 },
+  { name: "Salsa Brava", cuisine: "Mexican", rating: 3.9, reviews: 288 },
+  { name: "Cantina 52", cuisine: "Mexican", rating: 3.2, reviews: 474 },
+  { name: "Trattoria Nonna", cuisine: "Italian", rating: 4.6, reviews: 1320 },
+  { name: "Pizzeria Bella", cuisine: "Italian", rating: 4.3, reviews: 2010 },
+  { name: "Osteria Verde", cuisine: "Italian", rating: 4.4, reviews: 540 },
+  { name: "Pasta Fresca", cuisine: "Italian", rating: 4.1, reviews: 690 },
+  { name: "Il Forno", cuisine: "Italian", rating: 3.9, reviews: 820 },
+  { name: "Gelato & Co", cuisine: "Italian", rating: 4.7, reviews: 310 },
+  { name: "Luigi's Slice", cuisine: "Italian", rating: 3.5, reviews: 1150 },
+  { name: "Bistro Roma", cuisine: "Italian", rating: 3.7, reviews: 402 },
+  { name: "Vino e Cucina", cuisine: "Italian", rating: 4.2, reviews: 288 },
+  { name: "Mamma Mia Express", cuisine: "Italian", rating: 3.1, reviews: 960 },
+  { name: "Patty Shack", cuisine: "Burgers", rating: 4.8, reviews: 1420 },
+  { name: "Smash Bros Burgers", cuisine: "Burgers", rating: 4.4, reviews: 980 },
+  { name: "Grill Republic", cuisine: "Burgers", rating: 3.9, reviews: 640 },
+  { name: "Bun Run", cuisine: "Burgers", rating: 3.3, reviews: 720 },
+  { name: "The Beef Joint", cuisine: "Burgers", rating: 2.9, reviews: 530 },
+  { name: "Double Deck", cuisine: "Burgers", rating: 3.6, reviews: 810 },
+  { name: "Burger Barn", cuisine: "Burgers", rating: 2.6, reviews: 1090 },
+  { name: "Stack & Sauce", cuisine: "Burgers", rating: 4.1, reviews: 450 },
+  { name: "Drive Thru Deluxe", cuisine: "Burgers", rating: 3.0, reviews: 2300 },
+];
+const FOCUS = "Patty Shack"; // the restaurant the readout opens on
+
+// Each dot takes the first of a few lanes across its band that has no dot with a close rating, so ties never hide each other
+const LANES = [0.5, 0.24, 0.76, 0.08, 0.92];
+const lanes = (ratings) => {
+  const taken = LANES.map(() => []);
+  return ratings.map((r) => {
+    const k = Math.max(0, LANES.findIndex((_, i) => taken[i].every((q) => Math.abs(q - r) >= 0.15)));
+    taken[k].push(r);
+    return LANES[k];
+  });
+};
+// One row per cuisine: its restaurants from the lowest rating up (each with its index in PLACES and its lane), and their median
+const CUISINES = [...new Set(PLACES.map((p) => p.cuisine))].map((cuisine) => {
+  const places = PLACES.filter((p) => p.cuisine === cuisine).sort((a, b) => a.rating - b.rating);
+  const across = lanes(places.map((p) => p.rating));
+  return {
+    cuisine,
+    places: places.map((p, i) => ({ ...p, id: PLACES.indexOf(p), across: across[i] })),
+    median: summary(places.map((p) => p.rating)).median,
+  };
+});
+const opening = Math.max(0, PLACES.findIndex((p) => p.name === FOCUS));
+const lowest = Math.floor(Math.min(...PLACES.map((p) => p.rating)) * 2) / 2; // the scale starts on the half star below the lowest rating
+const one = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const count = new Intl.NumberFormat("en-US");
+
+// Slat types: a restaurant is a chalk dot at its rating; a cuisine is a band of dots with a line at its median
+const Place = slat({
+  css: `
+    .place { width: 13px; height: 13px; background: #f2f1ec; box-shadow: 0 0 0 2px var(--rhp-surface); cursor: pointer; }
+    .place::before { content: ""; position: absolute; inset: -6px; border-radius: 50%; } /* a bigger target for a finger */
+    .place.on { z-index: 1; width: 19px; height: 19px; background: #f3d36b; box-shadow: 0 0 0 2px var(--rhp-surface), 0 0 0 4px #f3d36b; }
+    .place:focus-visible { outline: 2px solid #f3d36b; outline-offset: 4px; }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (p) => html`
+  <${Dot} at=${() => p.rating} across=${() => p.across} class=${() => (p.picked === p.id ? "place on" : "place")} data-place=${() => p.id}>
+    <span class="say">${() => `${p.name}, ${one.format(p.rating)} stars from ${count.format(p.reviews)} reviews`}</span>
+  <//>`);
+
+const Cuisine = slat({
+  thickness: 62,
+  room: { start: "auto", end: 16 },
+  css: `
+    .name { font-size: 16px; font-weight: 800; line-height: 1.2; --rhp-label-gap: 16px; }
+    .name small { display: block; font-size: 12.5px; font-weight: 600; color: var(--rhp-muted); }
+    .median { --rhp-tick-width: 3px; border-radius: 2px; background: rgb(242 241 236 / .55); }
+    .cuisine { border-top: 1px dashed rgb(242 241 236 / .16); }
+    @container (max-width: 480px) { .name { font-size: 14px; --rhp-label-gap: 12px; } .name small { font-size: 11.5px; } }
+  `,
+}, (d) => html`
+  <div class="cuisine">
+    <${Label} edge="start" class="name">${() => d.cuisine}<small>${() => `median ${one.format(d.median)}`}</small><//>
+    <${Tick} at=${() => d.median} thick=${0.92} class="median" />
+    <${Plot} overlap=${true} rows=${() => d.places} picked=${() => d.picked} keyboard=${true}>${Place}<//>
+  </div>`);
+
+// Chart component: the restaurant the reader points at, taps or reaches with the arrow keys is lit and read out
+function RestaurantRatings() {
+  const [picked, setPicked] = createSignal(null);
+  const shown = () => picked() ?? opening;
+  const place = () => PLACES[shown()];
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-place]");
+    return root ? +root.dataset.place : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // Leaving the poster: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  return html`
+    <${Poster}
+      kicker="City food guide · ratings out of 5"
+      title="Burger places are hit or miss"
+      dek="Every dot is a restaurant, placed by its average rating. Ethiopian kitchens all score between 4.3 and 4.8; burgers run from under 3 to almost 5."
+      note="Illustrative data for invented restaurants. Point at a dot or tap it for the restaurant, or Tab into a cuisine and use the arrow keys."
+      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="readout">
+        <span class="stars">${() => one.format(place().rating)} ★</span>
+        <div>
+          <b>${() => place().name}</b>
+          <span>${() => `${place().cuisine} · ${count.format(place().reviews)} reviews`}</span>
+        </div>
+      </div>
+      <${Chart} scale=${[lowest, 5]} ticks=${every(0.5)} format=${(v) => `${one.format(v)} ★`}
+        label="Strip plot of restaurant ratings out of 5, one dot per restaurant, by cuisine"
+        theme=${{ font: 'Karla, "Helvetica Neue", Arial, sans-serif', ink: "#f2f1ec", muted: "#b3b1aa", grid: "rgb(242 241 236 / .16)", surface: "#2b2e2d" }}>
+        <${Plot} rows=${CUISINES} order=${sortBy("median", "desc")} picked=${shown}>${Cuisine}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${RestaurantRatings} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

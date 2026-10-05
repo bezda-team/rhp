@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- Two continents' dots in see-through colors (color-mix with transparent) on a cream paper: mixed with the paper, the touching pink and green look alike to readers with deuteranopia, and the names are only screen-reader text, so nothing on screen tells the dots apart. expect: colorblind -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>colorblind-mixed</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #f6f2e8; color: #1c1915; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  @media (max-width: 600px) { body { padding: 24px 16px; } }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Dot, Label, slat, html, render } from "@bezda/rhp/standalone";
+
+// GDP per person (thousands of dollars) and life expectancy
+const country = ["Brazil", "Mexico", "Chile", "Canada"];
+const continent = ["South America", "North America", "South America", "North America"];
+const gdp = [20, 22.5, 30, 55];
+const life = [76, 75.3, 80, 82];
+const COLOR = { "South America": "#b6487f", "North America": "#0d765a" };
+
+const Country = slat({
+  css: `
+    .country { pointer-events: none; }
+    .bubble { background: color-mix(in srgb, var(--rhp-color) 55%, transparent); }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => html`
+  <div class="country">
+    <${Dot} at=${() => d.gdp} cross=${() => d.life} size="28px" color=${() => COLOR[d.continent]} class="bubble" />
+    <${Label} at=${() => d.gdp} cross=${() => d.life}><span class="say">${() => d.country}</span><//>
+  </div>`);
+
+render(() => html`
+  <${Chart} scale=${[0, 60]} cross=${[70, 85]} height=${260} theme=${{ surface: "#f6f2e8", ink: "#1c1915", muted: "#5a544b" }} label="Life expectancy against GDP per person">
+    <${Plot} overlap=${true} country=${country} continent=${continent} gdp=${gdp} life=${life}>${Country}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

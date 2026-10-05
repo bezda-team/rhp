@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teenagers sleep longer at weekends</title>
+<meta name="description" content="Violin plot of hours of sleep by age group made with density(): a mirrored Area per group with its median, over a band of the recommended range, and a switch between weeknights and weekends that morphs the shapes. Use it to compare the full distribution of several groups.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400..600&family=Albert+Sans:wght@400..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #050506; font-family: "Albert Sans", "Helvetica Neue", Arial, sans-serif; color: #f1eee6; }
+  /* The poster: a night sky with a scatter of faint stars and a crescent moon */
+  .poster { position: relative; max-width: 900px; margin: 0 auto; padding: 40px 48px 28px; border-radius: 20px; line-height: 1.45;
+    background:
+      radial-gradient(1px 1px at 23px 41px, rgb(255 255 255 / .55), transparent),
+      radial-gradient(1px 1px at 131px 97px, rgb(255 255 255 / .4), transparent),
+      radial-gradient(1.5px 1.5px at 202px 19px, rgb(255 255 255 / .5), transparent),
+      radial-gradient(1px 1px at 77px 173px, rgb(255 255 255 / .35), transparent),
+      radial-gradient(1px 1px at 251px 151px, rgb(255 255 255 / .45), transparent),
+      #101115;
+    background-size: 270px 210px, 270px 210px, 270px 210px, 270px 210px, 270px 210px, auto;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / .06); }
+  .poster::before { content: ""; position: absolute; top: 34px; right: 44px; width: 58px; height: 58px; border-radius: 50%; box-shadow: 15px -9px 0 0 #efe4c4; }
+  .poster figcaption { display: grid; gap: 10px; margin-bottom: 22px; padding-right: 90px; }
+  .poster .kicker { font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #a8a7ad; }
+  .poster .headline { font: italic 500 62px/1 Newsreader, Georgia, serif; letter-spacing: -.015em; text-wrap: balance; }
+  .poster .dek { max-width: 58ch; font-size: 16px; color: #c6c4cb; }
+  .poster .note { display: block; margin-top: 18px; font-size: 12px; color: #9a99a0; }
+  /* The switch between the two kinds of night, with the band's key beside it */
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin: 0 0 18px; }
+  .switch { display: inline-flex; padding: 3px; border-radius: 99px; background: #1d1e24; box-shadow: inset 0 0 0 1px #2e2f37; }
+  .switch button { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border: 0; border-radius: 99px; background: none; color: #b4b3ba;
+    font: 700 14px/1 "Albert Sans", "Helvetica Neue", Arial, sans-serif; cursor: pointer; }
+  .switch button i { width: 10px; height: 10px; border-radius: 50%; }
+  .switch button[aria-pressed="true"] { background: #f1eee6; color: #101115; }
+  .switch button:focus-visible { outline: 2px solid #f1eee6; outline-offset: 2px; }
+  .keys { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: #a8a7ad; }
+  .keys span { display: inline-flex; align-items: center; gap: 8px; }
+  .keys .band { width: 22px; height: 12px; border-radius: 2px; background: rgb(255 255 255 / .05); box-shadow: inset 0 1px 0 rgb(255 255 255 / .38), inset 0 -1px 0 rgb(255 255 255 / .38); }
+  .keys .median { position: relative; width: 22px; height: 12px; border-radius: 6px; background: #5b5c66; }
+  .keys .median::after { content: ""; position: absolute; left: 5px; right: 5px; top: 5px; height: 2px; background: #101115; }
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    .poster { padding: 28px 18px 20px; border-radius: 16px; }
+    .poster::before { top: 22px; right: 22px; width: 38px; height: 38px; box-shadow: 10px -6px 0 0 #efe4c4; }
+    .poster figcaption { padding-right: 52px; margin-bottom: 18px; }
+    .poster .kicker { font-size: 11px; letter-spacing: .14em; }
+    .poster .headline { font-size: 40px; }
+    .poster .dek { font-size: 14.5px; }
+    .switch button { padding: 7px 13px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Tick, Label, Area, Poster, slat, density, summary, extent, html, render, createSignal, createMemo } from "@bezda/rhp/standalone";
+
+// Data: hours slept per night from a week of sleep diaries, one number per person, by age group. Illustrative. Replace with your own.
+const SLEEP = {
+  weeknights: {
+    "14-17": [7.75, 6.5, 7.25, 6, 7, 7.75, 6.5, 7.25, 5.75, 8, 6.75, 7.5, 6.25, 7, 4.75, 7.75, 6.5, 7.25, 6, 8.5, 6.75, 7.5, 6.25, 7, 5.5, 7.75, 6.5, 7.25, 6, 6.75, 7.5, 6.25, 7, 5.75, 8, 6.75, 7.5, 6.25, 7, 5],
+    "18-25": [8, 6.75, 7.5, 6, 7, 8, 6.5, 7.5, 5.75, 8.5, 7, 7.75, 6.5, 7.25, 4.75, 8.25, 6.75, 7.5, 6, 9, 7, 7.75, 6.5, 7.25, 5.5, 8.25, 6.75, 7.5, 6, 7, 7.75, 6.5, 7.25, 5.75, 8.5, 6.75, 7.75, 6.25, 7.25, 5.25],
+    "26-44": [7.75, 6.5, 7.25, 6, 7, 7.5, 6.5, 7.25, 5.75, 8, 6.75, 7.5, 6.25, 7, 4.75, 7.75, 6.75, 7.25, 6, 8.25, 6.75, 7.5, 6.25, 7, 5.5, 7.75, 6.5, 7.25, 6, 6.75, 7.5, 6.5, 7, 5.75, 8, 6.75, 7.25, 6.25, 7, 5.25],
+    "45-64": [7.75, 6.5, 7.25, 6, 6.75, 7.5, 6.25, 7, 5.5, 8, 6.75, 7.5, 6.25, 7, 4.5, 7.75, 6.5, 7.25, 5.75, 8.25, 6.75, 7.5, 6.25, 7, 5.25, 7.75, 6.5, 7.25, 6, 6.75, 7.5, 6.25, 7, 5.5, 8, 6.5, 7.25, 6, 7, 5],
+    "65+": [8.25, 7, 7.75, 6.25, 7.25, 8, 6.5, 7.5, 5.75, 8.5, 7, 7.75, 6.25, 7.25, 4.5, 8, 6.75, 7.5, 6, 9, 7, 7.75, 6.5, 7.25, 5.5, 8.25, 6.75, 7.75, 6.25, 7.25, 8, 6.75, 7.5, 6, 8.75, 7, 8, 6.5, 7.5, 5.25],
+  },
+  weekends: {
+    "14-17": [8.75, 9.5, 8.25, 9, 10, 8.5, 9.25, 8, 11, 8.75, 9.75, 8.5, 9.25, 7.75, 10.25, 8.75, 9.5, 8.25, 9, 10, 8.5, 9.25, 7.75, 10.5, 8.75, 9.5, 8.25, 9, 7.25, 10, 8.5, 9.5, 8, 11.5, 9, 10, 8.5, 9.25, 7.75, 10.5],
+    "18-25": [8.25, 9, 7.5, 8.5, 9.5, 8, 8.75, 7.25, 10.5, 8.25, 9.25, 7.75, 8.75, 7, 10, 8.25, 9, 7.5, 8.5, 9.5, 8, 8.75, 7.25, 10.25, 8.25, 9, 7.5, 8.5, 6.5, 9.75, 8, 9, 7.5, 11.25, 8.5, 9.5, 8, 8.75, 7, 10],
+    "26-44": [7.5, 8.25, 7, 7.75, 8.75, 7.25, 8, 6.75, 9.5, 7.75, 8.5, 7.25, 8, 6.5, 9, 7.5, 8.25, 7, 7.75, 8.75, 7.25, 8, 6.75, 9.25, 7.5, 8.25, 7, 7.75, 6, 8.75, 7.5, 8.25, 7, 10.25, 7.75, 8.75, 7.25, 8, 6.75, 9.25],
+    "45-64": [7, 7.75, 6.5, 7.25, 8, 6.75, 7.5, 6.25, 9, 7.25, 8, 6.75, 7.5, 6, 8.5, 7, 7.75, 6.5, 7.25, 8, 6.75, 7.5, 6.25, 8.75, 7, 7.75, 6.5, 7.25, 5.75, 8.25, 7, 7.75, 6.5, 9.75, 7.25, 8.25, 7, 7.5, 6.25, 8.75],
+    "65+": [7, 7.75, 6.5, 7.25, 8.5, 7, 7.75, 6.25, 9.5, 7.25, 8.25, 6.75, 7.5, 5.75, 8.75, 7, 7.75, 6.25, 7.25, 8.25, 6.75, 7.5, 6, 9, 7.25, 8, 6.75, 7.5, 5.5, 8.5, 7, 7.75, 6.25, 10, 7.25, 8.25, 6.75, 7.5, 5.75, 8.75],
+  },
+};
+// The sleep the National Sleep Foundation recommends for each age, in hours (2015)
+const RECOMMENDED = { "14-17": [8, 10], "18-25": [7, 9], "26-44": [7, 9], "45-64": [7, 9], "65+": [7, 8] };
+const NIGHTS = [
+  { key: "weeknights", name: "Weeknights", color: "#7489ee" },
+  { key: "weekends", name: "Weekends", color: "#c98224" },
+];
+
+const AGES = Object.keys(RECOMMENDED);
+const SCALE = [4, 12]; // hours shown
+// A group's outline: density() a little past its shortest and longest night so the tips taper, kept inside the scale
+const outline = (hours) => {
+  const [lo, hi] = extent(hours);
+  return density(hours, { points: 48, domain: [Math.max(SCALE[0], lo - 1), Math.min(SCALE[1], hi + 1)] });
+};
+// One peak for every shape, both kinds of night, so widths compare across groups and the switch never rescales them
+const PEAK = Math.max(...NIGHTS.flatMap((n) => AGES.flatMap((a) => outline(SLEEP[n.key][a]).map((p) => p[1]))));
+const share = new Intl.NumberFormat("en-US", { style: "percent" });
+const teensShort = SLEEP.weeknights["14-17"].filter((h) => h < RECOMMENDED["14-17"][0]).length / SLEEP.weeknights["14-17"].length;
+const clock = (hours) => {
+  const minutes = Math.round(hours * 60);
+  return `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, "0")}`;
+};
+
+// Slat type: an age group; the recommended band, the shape of its nights (density, mirrored) and a line at the median
+const AgeGroup = slat({
+  inset: 0.06,
+  room: { start: 48, end: 8 },
+  css: `
+    .age { --rhp-length-time: .6s; --rhp-length-ease: cubic-bezier(.3, .7, .2, 1); }
+    .band { --rhp-radius: 2px; background: rgb(255 255 255 / .04); box-shadow: inset 0 1px 0 rgb(255 255 255 / .34), inset 0 -1px 0 rgb(255 255 255 / .34); }
+    .shape { fill: var(--rhp-color); stroke: none; }
+    @media (prefers-reduced-motion: no-preference) { .shape path { transition-property: d, fill; } } /* the color fades as the outline moves */
+    .median { --rhp-tick-width: 2px; background: #101115; }
+    .name { font-size: 15px; font-weight: 800; color: var(--rhp-ink); --rhp-label-gap: 10px; }
+    .name small { display: block; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--rhp-muted); font-variant-numeric: tabular-nums; }
+    @container (max-width: 420px) { .name { font-size: 13px; } .name small { font-size: 11px; } }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  `,
+}, (d) => {
+  const shape = createMemo(() => outline(d.hours));
+  const median = createMemo(() => summary(d.hours).median);
+  return html`
+    <div class="age">
+      <${Bar} from=${() => d.low} to=${() => d.high} thick=${0.92} class="band" />
+      <${Area} points=${shape} mirror=${true} smooth=${true} peak=${() => d.peak} color=${() => d.color} class="shape" />
+      <${Tick} at=${median} thick=${0.36} class="median" />
+      <${Label} edge="start" class="name">${() => d.age}<small>${() => clock(median())}</small><//>
+      <span class="say">${() => `: median night ${clock(median())}, ${d.low} to ${d.high} hours recommended`}</span>
+    </div>`;
+});
+
+// Chart component: the switch picks which nights the shapes show; they morph from one to the other
+function SleepByAge() {
+  const [when, setWhen] = createSignal("weeknights");
+  const night = () => NIGHTS.find((n) => n.key === when());
+  return html`
+    <${Poster}
+      kicker="Sleep diaries · hours per night"
+      title="Teenagers sleep two hours longer at weekends"
+      dek=${`Each shape is wide where many people in an age group slept that long. The band is the sleep recommended for the age: on weeknights, ${share.format(teensShort)} of teenagers got less than 8 hours.`}
+      note="Sleep diaries: illustrative data, 40 people per age group. Recommended hours: National Sleep Foundation, 2015. Use the switch to compare weeknights with weekends.">
+      <div class="controls">
+        <div class="switch" role="group" aria-label="Nights shown">
+          ${NIGHTS.map((n) => html`
+            <button type="button" aria-pressed=${() => String(when() === n.key)} onClick=${() => setWhen(n.key)}><i style=${{ background: n.color }}></i>${n.name}</button>`)}
+        </div>
+        <div class="keys">
+          <span><i class="band"></i>Recommended for the age</span>
+          <span><i class="median"></i>Median night</span>
+        </div>
+      </div>
+      <${Chart} orientation="vertical" height=${340} scale=${SCALE} ticks=${[4, 6, 8, 10, 12]} format=${(v) => `${v} h`}
+        label=${() => `Violin plot of hours of sleep on ${night().name.toLowerCase()} by age group`}
+        theme=${{ font: '"Albert Sans", "Helvetica Neue", Arial, sans-serif', ink: "#f1eee6", muted: "#9a99a0", grid: "#24252b", surface: "#101115" }}>
+        <${Plot} age=${AGES} hours=${() => AGES.map((a) => SLEEP[when()][a])} low=${AGES.map((a) => RECOMMENDED[a][0])} high=${AGES.map((a) => RECOMMENDED[a][1])}
+          color=${() => night().color} peak=${PEAK}>${AgeGroup}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${SleepByAge} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

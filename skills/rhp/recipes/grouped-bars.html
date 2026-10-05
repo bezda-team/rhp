@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekend screen time</title>
+<meta name="description" content="Grouped bar chart, two bars per category with the gap between them in the end gutter, and a switch that sorts the groups. Use it to compare two to four values side by side for each category.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Unbounded:wght@600..800&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: #e2e0db; font-family: Manrope, "Segoe UI", system-ui, sans-serif; }
+  /* The poster: pale paper with a pixel grid, cobalt for weekdays, orange for weekends, a sticker for the headline number */
+  .poster { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 32px; max-width: 960px; margin: 0 auto; padding: 46px 52px 30px; color: #17161c; border-radius: 22px;
+    background: radial-gradient(circle, rgb(23 22 28 / .08) 1px, transparent 1.5px) 0 0 / 14px 14px, #f7f6f2;
+    box-shadow: 0 26px 50px -30px rgb(70 66 58 / .6); }
+  .poster > * { grid-column: 1 / -1; min-width: 0; }
+  .poster figcaption { grid-column: 1; display: grid; gap: 14px; margin-bottom: 26px; }
+  .poster .kicker { font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #2d43c4; }
+  .poster .headline { max-width: 15em; font: 700 44px/1.06 Unbounded, "Arial Black", system-ui, sans-serif; letter-spacing: -.02em; text-wrap: balance; }
+  .poster .dek { max-width: 54ch; font-size: 16px; line-height: 1.55; color: #47454f; }
+  .poster .note { display: block; margin-top: 22px; font-size: 12px; line-height: 1.5; color: #6c6975; }
+  /* The sticker: the largest weekend gain on a starburst, the burst turned, the words level */
+  .sticker { position: relative; isolation: isolate; grid-column: 2; grid-row: 1; align-self: start; display: grid; place-content: center; gap: 6px; width: 172px; height: 172px; margin: 0; color: #f7f6f2; text-align: center; font-size: 12px; line-height: 1.3; }
+  .sticker::before { content: ""; position: absolute; inset: 0; z-index: -1; background: #17161c; rotate: -9deg;
+    clip-path: polygon(50% 0, 59.6% 13.9%, 75% 6.7%, 76.3% 23.7%, 93.3% 25%, 86.1% 40.4%, 100% 50%, 86.1% 59.6%, 93.3% 75%, 76.3% 76.3%, 75% 93.3%, 59.6% 86.1%, 50% 100%, 40.4% 86.1%, 25% 93.3%, 23.7% 76.3%, 6.7% 75%, 13.9% 59.6%, 0 50%, 13.9% 40.4%, 6.7% 25%, 23.7% 23.7%, 25% 6.7%, 40.4% 13.9%); }
+  .sticker b { font: 700 20px/1.2 Unbounded, "Arial Black", system-ui, sans-serif; color: #ff8a4c; }
+  /* The key and the sort switch */
+  .tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; margin-bottom: 14px; }
+  .key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; font-size: 14px; font-weight: 700; }
+  .key i { display: inline-block; width: 22px; height: 10px; margin-right: 7px; border-radius: 5px; }
+  .sort { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 999px; background: #e9e7e1; font-size: 13px; font-weight: 700; color: #5f5c68; }
+  .sort span { padding: 0 8px 0 10px; }
+  .sort button { padding: 7px 13px; border: 0; white-space: nowrap; border-radius: 999px; background: none; color: #47454f; font: 700 13px/1 Manrope, system-ui, sans-serif; cursor: pointer; }
+  .sort button[aria-pressed="true"] { background: #17161c; color: #f7f6f2; }
+  .sort button:focus-visible { outline: 2px solid #2d43c4; outline-offset: 2px; }
+  @media (max-width: 640px) {
+    body { padding: 16px 16px 32px; }
+    .poster { column-gap: 10px; padding: 26px 16px 18px; border-radius: 16px; }
+    .poster figcaption { grid-column: 1 / -1; margin-bottom: 18px; }
+    .poster .headline { font-size: 27px; }
+    .poster .dek { font-size: 15px; }
+    .sticker { grid-row: 2; width: 132px; height: 132px; gap: 3px; font-size: 11px; line-height: 1.2; }
+    .sticker b { font-size: 15px; }
+    .tools { grid-column: 1; grid-row: 2; flex-direction: column; align-items: flex-start; align-self: center; }
+    .sort span { display: none; }
+    .sort button { padding: 7px 11px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, sortBy, every, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: average minutes a day on screens outside work and school, by age group. Illustrative data; replace with your own.
+const GROUPS = [
+  { age: "13-17", weekday: 345, weekend: 455 },
+  { age: "18-24", weekday: 340, weekend: 410 },
+  { age: "25-34", weekday: 230, weekend: 365 },
+  { age: "35-44", weekday: 195, weekend: 320 },
+  { age: "45-54", weekday: 200, weekend: 290 },
+  { age: "55-64", weekday: 225, weekend: 275 },
+  { age: "65+", weekday: 270, weekend: 280 },
+];
+const DAYS = [ // the bars of each group, in order
+  { key: "weekday", name: "Weekday", color: "#2d43c4" },
+  { key: "weekend", name: "Weekend", color: "#e8600f" },
+];
+
+const time = (m) => (m < 60 ? `${m}m` : `${Math.floor(m / 60)}h ${m % 60}m`.replace(" 0m", ""));
+const gain = (d) => d.weekend - d.weekday;
+const most = GROUPS.reduce((a, d) => (gain(d) > gain(a) ? d : a));
+// The scale: whole 2-hour steps, with 45 minutes past the longest bar for its time, so it stays clear of the gains
+const max = Math.ceil((Math.max(...GROUPS.flatMap((d) => DAYS.map((x) => d[x.key]))) + 45) / 120) * 120;
+
+// Slat types: a day's bar with its time, and an age group holding its days' bars (a Plot inside the slat) and its gain
+const Day = slat({
+  inset: "5px",
+  css: `
+    .bar { --rhp-radius: 99px; }
+    .time { font-size: 12px; font-weight: 600; color: #6c6975; font-variant-numeric: tabular-nums; }
+  `,
+}, (b) => html`
+  <div>
+    <${Bar} to=${() => b.minutes} color=${() => b.color} class="bar" />
+    <${Label} at=${() => b.minutes} class="time">${() => time(b.minutes)}<//>
+  </div>`);
+
+const Group = slat({
+  thickness: 64,
+  room: "auto",
+  css: `
+    .age { font: 700 15px/1 Unbounded, "Arial Black", system-ui, sans-serif; --rhp-label-gap: 14px; }
+    .gain { font-size: 13px; font-weight: 800; color: #17161c; font-variant-numeric: tabular-nums; --rhp-label-gap: 12px; }
+    @container (max-width: 420px) { .age { font-size: 13px; --rhp-label-gap: 10px; } .gain { font-size: 12px; --rhp-label-gap: 8px; } }
+  `,
+}, (d) => html`
+  <div aria-label=${() => d.age + ": " + DAYS.map((x) => `${x.name.toLowerCase()} ${time(d[x.key])}`).join(", ")}>
+    <${Label} edge="start" class="age">${() => d.age}<//>
+    <${Plot} color=${DAYS.map((x) => x.color)} minutes=${() => DAYS.map((x) => d[x.key])}>${Day}<//>
+    <${Label} edge="end" class="gain">${() => "+" + time(gain(d))}<//>
+  </div>`);
+
+// Chart component: the switch sorts the age groups by their weekend gain, and they slide to their new places
+function WeekendScreens() {
+  const [byGain, setByGain] = createSignal(false);
+  return html`
+    <${Poster}
+      kicker="Screen time, by age"
+      title="Weekends add the most screen time for 25 to 44 year olds"
+      dek="Average time a day on screens outside work and school, on a weekday and on a weekend day. Teenagers spend the most; adults with a working week gain the most when it ends."
+      note="Illustrative data. The number after each group is how much longer its weekend days are. Sort the groups with the switch.">
+      <p class="sticker"><b>${"+" + time(gain(most))}</b><span>a weekend day,<br>ages ${most.age}</span></p>
+      <div class="tools">
+        <p class="key">${DAYS.map((x) => html`<span><i style=${"background: " + x.color}></i>${x.name}</span>`)}</p>
+        <div class="sort" role="group" aria-label="Sort the age groups">
+          <span aria-hidden="true">Sort</span>
+          <button type="button" aria-pressed=${() => !byGain()} onClick=${() => setByGain(false)}>Age</button>
+          <button type="button" aria-pressed=${() => byGain()} onClick=${() => setByGain(true)}>Weekend gain</button>
+        </div>
+      </div>
+      <${Chart} scale=${[0, max]} ticks=${every(120)} format=${(v) => v / 60 + "h"}
+        label="Screen time a day by age group, weekdays and weekends"
+        theme=${{ font: 'Manrope, "Segoe UI", system-ui, sans-serif', ink: "#17161c", muted: "#6c6975", grid: "#dedbd3" }}>
+        <${Plot} rows=${GROUPS} key="age" order=${() => (byGain() ? sortBy(gain, "desc") : null)}>${Group}<//>
+      <//>
+    <//>`;
+}
+
+render(() => html`<${WeekendScreens} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

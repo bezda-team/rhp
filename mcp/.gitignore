@@ -1,0 +1,3 @@
+# copies that npm run build (prepack) makes for the package: the skill from ../skills/rhp, and rhp's LICENSE
+/skill/
+/LICENSE

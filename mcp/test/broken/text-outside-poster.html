@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- A headline that doesn't wrap runs out of its poster. expect: text-outside-poster; widths: 1280 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>text-outside-poster</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  .poster { max-width: 420px; margin: 0 auto; padding: 16px; border: 1px solid #ddd; }
+  .poster .headline { display: block; font-size: 28px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, Poster } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const sold = [12, 18, 7];
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+render(() => html`
+  <${Poster} title="Bananas outsell every other fruit at the market">
+    <${Chart} scale=${[0, 20]} label="Fruit sold today">
+      <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+    <//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

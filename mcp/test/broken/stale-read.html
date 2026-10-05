@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- A value label read once (${d.sold}): after the button changes the data it still shows the old number. expect: stale-read -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stale-read</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries"];
+const [sold, setSold] = createSignal([12, 18, 7]);
+
+const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} />
+    <${Label} at=${() => d.sold}>${d.sold}<//>
+  </div>`);
+
+render(() => html`
+  <div>
+    <button onClick=${() => setSold([6, 9, 15])}>Next week</button>
+    <${Chart} scale=${[0, 20]} label="Fruit sold today">
+      <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+    <//>
+  </div>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

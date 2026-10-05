@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- Pale layers inside a cup Bar whose shadow outlines them are not faint. expect: none -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>none</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  body { background: #f3ebe0; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render } from "@bezda/rhp/standalone";
+
+const drink = ["Latte", "Flat white", "Cortado"];
+const milk = [[60, 150], [60, 100], [30, 30]];
+
+const Layer = (l) => html`<${Bar} from=${() => l.from} to=${() => l.to} color=${() => l.color} />`;
+
+const Drink = slat({ thickness: 48, room: { start: 90, end: 20 }, css: ".cup { background: none; box-shadow: 0 10px 18px -12px rgb(43 27 18 / .55); }" }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.drink}<//>
+    <${Bar} class="cup" to=${() => d.milk[0] + d.milk[1]} />
+    <${Plot} overlap=${true} from=${() => [0, d.milk[0]]} to=${() => [d.milk[0], d.milk[0] + d.milk[1]]} color=${["#3f2415", "#ede0cc"]}>${Layer}<//>
+  </div>`);
+
+render(() => html`
+  <${Chart} scale=${[0, 250]} label="Espresso and milk in ml" theme=${{ ink: "#2b1b12", muted: "#5e4a3a", surface: "#f3ebe0" }}>
+    <${Plot} drink=${drink} milk=${milk}>${Drink}<//>
+  <//>`, document.getElementById("chart"));
+</script>
+</body>
+</html>
