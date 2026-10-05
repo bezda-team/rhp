@@ -1,3 +1,6 @@
+https://github.com/user-attachments/assets/c1f33391-21ea-4f0b-a0d6-47c8899f9b75
+
+
 # rhp: reactive html plots
 
 rhp builds charts out of HTML elements placed by CSS, with [SolidJS](https://www.solidjs.com), instead of drawing them into an SVG or a canvas.
