@@ -72,14 +72,16 @@
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: subgrid;
-    grid-template-rows: 100%; /* one track as tall as the plot, so a row's top is a share of the plot */
+    grid-template-rows: 100%;
+    /* one track as tall as the plot, so a row's top is a share of the plot */
   }
 
   [data-rhp-gutters="v"]>.rhp-body>.rhp-plot {
     grid-row: 1 / -1;
     display: grid;
     grid-template-rows: subgrid;
-    grid-template-columns: 100%; /* and as wide, so a column's left is too */
+    grid-template-columns: 100%;
+    /* and as wide, so a column's left is too */
   }
 
   [data-rhp-gutters]>.rhp-body>.rhp-plot> :not(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
