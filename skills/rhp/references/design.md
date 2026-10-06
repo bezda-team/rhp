@@ -284,6 +284,7 @@ How a look goes onto a page:
 
 **Colored papers that pass.** Fourteen grounds with an ink, a secondary text color, a rule, an accent and a quiet mark that meet the token rules of section 1 (ink 7:1 or more, soft 5:1, rule about 1.4:1, accent 4.5:1, quiet 3.3:1), each checked on a poster page.
 Take one as it is, or shift its hue toward the subject's and check again.
+Keep a colored paper pale or deep: a paper of middle lightness (a saturated tan, yellow or red) gets neither a dark nor a light ink far enough from it, and its text looks muddy even where the numbers pass.
 
 | Paper | `--paper` | `--page` | `--ink` | `--soft` | `--rule` | `--accent` | `--quiet` |
 |---|---|---|---|---|---|---|---|
@@ -296,11 +297,11 @@ Take one as it is, or shift its hue toward the subject's and check again.
 | oxblood | `#6b1d22` | `#4a1316` | `#fbeeea` | `#e8c4bd` | `#843a3e` | `#ffd1a1` | `#c98b84` |
 | brick | `#8a2d1c` | `#6b2114` | `#fff3ea` | `#f0c9bc` | `#a2463a` | `#ffd166` | `#d99a8a` |
 | salmon | `#f8dcc8` | `#e9c3aa` | `#2a1c15` | `#6b5248` | `#e2bba3` | `#0f5f63` | `#96705f` |
-| mustard | `#e9bc3f` | `#c99e2e` | `#231a05` | `#4a3a0e` | `#cfa533` | `#1d3b8f` | `#6b5617` |
+| mustard | `#edc965` | `#d1ad44` | `#231a05` | `#4a3a0e` | `#d4b33c` | `#163077` | `#6b5617` |
 | powder blue | `#d7e6f4` | `#b9cfe4` | `#0f2540` | `#44607f` | `#b7cde2` | `#c8102e` | `#5b789c` |
 | mint | `#dfeee0` | `#c6dfc8` | `#14301c` | `#4a6650` | `#bcd6bf` | `#b8233a` | `#568466` |
 | lavender | `#e6e0f3` | `#d2c9ea` | `#221a3a` | `#5a5273` | `#c9bfe0` | `#9c3a1a` | `#76699e` |
-| kraft | `#cfa76b` | `#b58f55` | `#2a1a0a` | `#3b2a10` | `#b89054` | `#7a160f` | `#634a1e` |
+| kraft | `#e2caa6` | `#cdb08a` | `#2a1a0a` | `#4a3618` | `#cbb08a` | `#7a160f` | `#6a5020` |
 
 The eight deep papers set `color-scheme: dark` on `:root`; on them the accent is a light warm hue and the quiet marks a tint of the paper.
 On the six pale papers the accent is a deep hue and the quiet marks a shade of the paper.
