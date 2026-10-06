@@ -50,9 +50,12 @@ Start from a recipe, never from what another library does.
 5. **NaN, undefined or null** draw at the scale's start and print "NaN" [16]: clean or filter the data first.
 6. **Every slat got one item of a list meant for all of them**: an array given to a Plot is a column, item i for row i. To give every slat the same list (the series still shown, a set of picked names), pass a function of the row: `shown=${(d) => shown()}`.
 7. **Lists of different lengths** wrap around without an error [8]: the third slat of a 3-item list shown beside a 5-item list repeats the first values. Give every data group the same length.
-8. **A Dot is an oval**: its `size` was a number [17]. Give a length, `size="12px"`.
+8. **A Dot is an oval**: its `size` was a number [17].
+   Give a length, `size="12px"`.
+   `ManyDots` has a different size contract: its numbers mean pixels, so `size=${12}` is a 12px point.
 9. **A vertical Plot over a horizontal chart draws 0px-tall columns**: in rhp 2.0.1, a second top-level Plot with `orientation="vertical"` in a horizontal Chart whose slat type has `room: "auto"` gets columns as wide as the chart and no height. Give the slats room in px, or put the Plot in a chart with `cross` (as the line recipe does).
-10. **A scatter or line chart puts everything on one line**: the Chart needs `cross=${[min, max]}`, the Plot needs `overlap=${true}`, and each Dot needs `cross=${() => d.y}`.
+10. **A scatter or line chart puts everything on one line**: with Dot slats, the Chart needs `cross=${[min, max]}`, the Plot needs `overlap=${true}`, and each Dot needs `cross=${() => d.y}`.
+    The experimental [ManyDots collection](api.md#manydots-experimental-point-collection) goes directly inside a Chart with `cross` and takes its own `rows`, `at`, and `cross` accessors.
 
 ## Text sticks out, is cut off or overlaps
 

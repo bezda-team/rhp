@@ -1531,7 +1531,9 @@ document.head.insertAdjacentHTML("beforeend", `
    Give the poster's root its own font, color, `letter-spacing` and `text-align`, and your own elements inside it their own sizes and margins.
 2. Scoped component styles never reach the chart (Vue `scoped`, Svelte, Astro, Angular's emulated encapsulation): rhp makes the chart's elements, not the component's template.
    Use a plain CSS file, imported where section 2's table says.
-3. Inside the chart, style with the slat type's `css` and the Chart's `theme` only: page CSS cannot change rhp's blocks (api.md, section 11).
+3. Style regular slat blocks with the slat type's `css` and the Chart's `theme`: page CSS cannot change their protected appearance (api.md, section 11).
+   The experimental [ManyDots collection](api.md#manydots-experimental-point-collection) instead accepts application classes and `pointStyle` for point appearance while retaining its geometry guard.
+   In frameworks with scoped component CSS, put those application classes in the plain CSS file too.
 4. Only Solid draws the chart on the server (SolidStart, Astro islands).
    Everywhere else the server sends an empty box and the browser draws the chart, so the content below moves down once; give the box a `min-height` if that matters.
 5. macOS and Windows ignore case in file names: `towers.ts` beside `Towers.tsx` made `./Towers` load the data file (checked in Next.js).

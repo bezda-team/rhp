@@ -4,7 +4,7 @@ rhp 2 (`@bezda/rhp@2`, built on SolidJS 1.9).
 Every statement here was checked against rhp's source and by running it in a browser, and every code block is a complete example that runs.
 The `js` examples are the module script of [the page skeleton](#a-page-with-a-chart): they draw into `<div id="chart">`.
 
-Contents: [1 The model](#1-the-model) · [2 Imports and the html template](#2-imports-and-the-html-template) · [3 Chart](#3-chart) · [4 Plot](#4-plot) · [5 slat()](#5-slat) · [6 Blocks](#6-blocks) · [7 Scales and axes](#7-scales-and-axes) · [8 Theme](#8-theme) · [9 Helpers](#9-helpers) · [10 Poster](#10-poster) · [11 CSS](#11-css) · [12 Motion](#12-motion) · [13 Accessibility and interaction](#13-accessibility-and-interaction) · [14 Limits](#14-limits) · [15 Gotchas](#15-gotchas)
+Contents: [1 The model](#1-the-model) · [2 Imports and the html template](#2-imports-and-the-html-template) · [3 Chart](#3-chart) · [4 Plot](#4-plot) · [5 slat()](#5-slat) · [6 Blocks](#6-blocks) · [ManyDots](#manydots-experimental-point-collection) · [7 Scales and axes](#7-scales-and-axes) · [8 Theme](#8-theme) · [9 Helpers](#9-helpers) · [10 Poster](#10-poster) · [11 CSS](#11-css) · [12 Motion](#12-motion) · [13 Accessibility and interaction](#13-accessibility-and-interaction) · [14 Limits](#14-limits) · [15 Gotchas](#15-gotchas)
 
 ## 1. The model
 
@@ -16,6 +16,8 @@ Contents: [1 The model](#1-the-model) · [2 Imports and the html template](#2-im
   It reads the row as `d.fruit` and `d.sold`, plus `d.index` (the row's number) and `d.position` (its place on screen).
   rhp places that element in its band and moves it when the order changes.
 - **Blocks** inside the slat (Bar, Dot, Tick, Label, Cell, Place, Area, Line) sit at their numbers on the Chart's scale.
+- **ManyDots** is an experimental bulk point collection, placed directly inside a Chart with `cross`.
+  It draws one plain HTML element per valid row without a Plot, slat, or Solid computation per point.
 - **Orientation** is the direction bars run.
   `"horizontal"` (the default): bars run left to right and slats stack top to bottom.
   `"vertical"`: bars run bottom to top and slats stand side by side.
@@ -40,6 +42,7 @@ Both `@bezda/rhp` and `@bezda/rhp/standalone` export rhp's whole API:
 
 - components: `Chart`, `Plot`, `Scale`, `Axis`, `Theme`, `Poster`
 - blocks: `Bar`, `Dot`, `Tick`, `Label`, `Cell`, `Place`, `Area`, `Line`
+- experimental point collection: [`ManyDots`](#manydots-experimental-point-collection), in builds of this repository that export it
 - functions: `slat`, `restyle`, `linkedCss`, `shape`, `at`, `useOrientation`, `series`, `cycle`, `sortBy`, `extent`, `every`, `nice`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`, `animated`, `curve`, `drawing`
 - the object `THEME` (the default theme)
 
@@ -176,7 +179,7 @@ export default function FruitChart() {
 A Chart passes nothing else to its element: `data-*`, `title`, `tabindex` and event handlers are dropped.
 Put them on an element around the chart, or on the [Poster](#10-poster).
 
-Children: one or more Plots (later ones drawn on top), a `Scale`, and Solid control flow (`Show`) around them.
+Children: one or more Plots (later ones drawn on top), a `Scale`, a `ManyDots` collection with a cross scale, and Solid control flow (`Show`) around them.
 A Plot outside a Chart draws nothing usable: no CSS, no scale, no message.
 
 **Size and room.** The chart's element (`.rhp-chart`) is a block as wide as its container.
@@ -653,6 +656,109 @@ const ChangeChart = () => html`
 render(ChangeChart, document.getElementById("chart"));
 ```
 
+### ManyDots (experimental point collection)
+
+`ManyDots` draws a bulk collection of points directly inside a `Chart` with `scale` and `cross`.
+It is part of the upcoming npm 2.0.3 release.
+It is a collection rather than a block in a slat, so do not wrap it in a `Plot` or supply a slat function.
+Use a repository build that exports `ManyDots`; the version-2 CDN URL in the page skeleton does not guarantee this experimental API is available.
+Both package entry points export it in that build, and Solid users can import `ManyDotsProps<T>` and `ManyDotsValue<T, V>` for its types.
+
+Choose it explicitly for bulk HTML points, or keep `Dot` for individual blocks, rich point content, and Plot behavior at any point count.
+Neither component switches into the other automatically, including at 500 points.
+
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| `rows` | readonly array of rows | required | one point per row with finite coordinates |
+| `at`, `cross` | number or `(row, index) => number` | required | coordinates on the Chart's value and cross scales |
+| `key` | `(row, index) => identity` | source row index | stable identity for keyed updates; rendered keys must be unique |
+| `size` | number, CSS length, or accessor | `"4px"` | diameter; a number means pixels, unlike Dot's band fraction |
+| `color` | CSS color, theme key, or accessor | `"series-1"` | shared or individual point colors |
+| `shape` | `shape()` outline or accessor | circular points | shared or individual point outlines |
+| `pointClass` | string or accessor | none | space-separated application classes on each point |
+| `pointStyle` | CSS properties object or accessor | none | individual appearance overrides |
+| `class`, `classList`, `style`, `ref`, HTML attributes and events | normal div props | none | apply to the collection host; `style` accepts an object or string |
+
+The appearance accessors above receive `(row, index)`.
+Both domains must have finite, distinct endpoints, and nonfinite point coordinates are skipped.
+Finite coordinates outside a domain keep their outside positions, so choose scales that cover the data.
+Every rendered point retains its original row index in `data-rhp-index`, even when preceding rows are skipped.
+
+**Appearance and DOM.**
+The light-DOM host is `.rhp-manydots`, its point container is `.rhp-manydots-points`, and each point is a `.rhp-manydot` div.
+There is no shadow root, so document queries, Testing Library queries, native events, and page-level event delegation see the points.
+Use `pointClass` with ordinary application CSS for background color, radius, opacity, outlines, filters, transforms, and hover styles.
+Shared defaults use one scoped stylesheet per collection, with a fallback for browsers without `@scope` support.
+Per-point color and shape accessors write inline styles, which take precedence over ordinary class rules.
+Size, color, and shape accessors also override the same properties supplied through `pointStyle`.
+The collection owns coordinates and centering and guards position, dimensions, margins, padding, borders, and min/max dimensions.
+Explicit width and height in `pointStyle` can override a shared size; appearance remains customizable without the slat's general text and font reset.
+
+**Interaction and accessibility.**
+CSS hover and native click, touch, and pointer events work on the plain HTML points.
+Attach handlers to the host and recover the row with `data-rhp-index`; there is no per-point handler prop or built-in drag behavior.
+Implement dragging with pointer events and pointer capture when needed, and use `getBoundingClientRect()` for overlays against the visible point box.
+`ManyDots` does not implement Plot's automatic keyboard navigation, selection, or readout behavior and accepts no point children, `innerHTML`, or `textContent`.
+Provide a Chart `label` and a textual summary, data table, or keyboard-accessible controls when readers need individual values.
+The following complete module example includes a table whose buttons offer the same selection as clicking a point.
+Validate the experimental collection's point count, geometry, appearance, native interactions, and accessible controls in the browser rather than treating a standard-chart checker report as complete bulk-point coverage.
+
+```js
+import { Chart, ManyDots, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const samples = [
+  { id: "a", name: "Sample A", x: 20, y: 35, diameter: 8, color: "#a73157" },
+  { id: "b", name: "Sample B", x: 60, y: 80, diameter: 10, color: "#18749a" },
+  { id: "c", name: "Sample C", x: 85, y: 50, diameter: 6, color: "#6b4da1" },
+];
+
+function Measurements() {
+  const [selected, setSelected] = createSignal(null);
+  const chosen = () => samples.find(row => row.id === selected());
+  const pick = event => {
+    const point = event.target.closest?.(".rhp-manydot");
+    if (point && event.currentTarget.contains(point)) {
+      setSelected(samples[Number(point.dataset.rhpIndex)].id);
+    }
+  };
+  return html`
+    <section>
+      <style>
+        .measurement-point { cursor: pointer; }
+        .measurement-point:hover { outline: 2px solid currentColor; outline-offset: 2px; }
+      </style>
+      <p>Click or tap a point, or choose a sample in the table.</p>
+      <${Chart} scale=${[0, 100]} cross=${[0, 100]} height=${280} label="Illustrative sample measurements">
+        <${ManyDots} rows=${samples} at=${row => row.x} cross=${row => row.y} key=${row => row.id}
+          size=${row => row.diameter} color=${row => row.color} pointClass="measurement-point"
+          pointStyle=${row => ({ opacity: selected() == null || selected() === row.id ? 1 : 0.35 })}
+          onClick=${pick} />
+      <//>
+      <p aria-live="polite">${() => chosen() ? `${chosen().name}: x ${chosen().x}, y ${chosen().y}` : "No sample selected"}</p>
+      <table>
+        <caption>Illustrative sample values</caption>
+        <thead><tr><th scope="col">Sample</th><th scope="col">X</th><th scope="col">Y</th></tr></thead>
+        <tbody>${samples.map(row => html`
+          <tr><th scope="row"><button type="button" onClick=${event => setSelected(row.id)}>${row.name}</button></th>
+            <td>${row.x}</td><td>${row.y}</td></tr>`)}
+        </tbody>
+      </table>
+    </section>`;
+}
+
+render(Measurements, document.getElementById("chart"));
+```
+
+**Updates and server rendering.**
+Stable keys preserve leaf elements through replacement arrays, reordering, and removals.
+One collection computation visits every row when a dependency changes, while unchanged points receive no managed style writes.
+Dragging one point through reactive data therefore still requires a bulk row pass; update and drag performance have not been measured.
+Data updates move points immediately, and JavaScript-driven Chart scale animation updates their resolved coordinates.
+Server rendering emits the complete HTML collection, and hydration reuses its host, container, and points.
+Initial leaves are adopted by row order because server keys are not serialized; keep server and client row order aligned when point DOM identity matters.
+Managed classes, coordinates, and appearance declarations can be rewritten by the collection, while native listeners and metadata outside its managed fields survive ordinary updates.
+See the [prototype guide](../../../examples/manydots/README.md) for centering and custom-size animation details and the [capabilities explanation](../../../examples/manydots/TRADEOFFS.md) for the measured initial-render tradeoffs.
+
 ## 7. Scales and axes
 
 **The axis.** The Chart draws grid lines and numbers from `ticks` and `format`:
@@ -1046,7 +1152,8 @@ Where each kind of style goes:
 
 | What | Where |
 |---|---|
-| anything inside the chart: bars, labels, slats, hover, fonts per label | the slat type's `css` |
+| slat blocks: bars, labels, hover, fonts per label | the slat type's `css` |
+| ManyDots point appearance | `pointClass` with ordinary application CSS, or `pointStyle`, `color`, `size`, and `shape` |
 | colors and the font of the whole chart | the Chart's `theme` (or `Theme`) |
 | the chart's box: width, margin, background, border, radius | page CSS on the chart's element, or the Chart's `class` and `style` |
 | the poster around it, and elements of your own outside the chart | page CSS |
@@ -1059,11 +1166,11 @@ A selector may start with `.rhp-chart` to depend on the chart (`.rhp-chart[data-
 `@keyframes` names are made private to the type: use them in the same CSS.
 `::before` and `::after` work on the slat's root and on any element.
 
-**Layers.** rhp makes every declaration (its own and a slat's) `!important`, inside cascade layers declared first: `rhp.place`, then `rhp.slat`, then `rhp.core`.
+**Layers for slat blocks.** rhp makes its regular block and slat declarations `!important`, inside cascade layers declared first: `rhp.place`, then `rhp.slat`, then `rhp.core`.
 For `!important` the first layer wins, and any layered `!important` beats every page rule (`!important` or not).
 So a slat's CSS beats rhp's core (colors, corners, fonts, even a block's position), placement beats a slat's CSS (a slat's root, its motion), and the page reaches none of them.
 
-**What page CSS can and cannot change** (measured):
+**What page CSS can and cannot change on regular slat blocks** (measured):
 
 | Page CSS on rhp's elements | Result |
 |---|---|
@@ -1084,6 +1191,7 @@ Even where page CSS reaches rhp's custom properties, set them in the slat's `css
 | `.rhp-body` | the grid inside it |
 | `.rhp-axis`, `.rhp-gridline`, `.rhp-gridline > span` | the axis, a grid line, its number (`.rhp-axis[data-rhp-cross]`: the second axis) |
 | `.rhp-plot` | a Plot; `data-rhp-overlap`, `data-rhp-reorder`; `.rhp-plot.rhp-scale` is a Scale |
+| `.rhp-manydots`, `.rhp-manydots-points`, `.rhp-manydot[data-rhp-index]` | ManyDots host, point container, and point with its original row index |
 | `[data-rhp-slat]` | a slat's root (the value is the type's scope) |
 | `.rhp-bar` (`[data-rhp-back]` when it runs backward), `.rhp-dot`, `.rhp-tick`, `.rhp-cell`, `.rhp-place` | blocks |
 | `.rhp-label[data-rhp-at]`, `.rhp-label[data-rhp-edge="start"]`, `.rhp-label[data-rhp-edge="end"]`, `[data-rhp-side="before"]` | Labels at a value, in the start room, in the end room |

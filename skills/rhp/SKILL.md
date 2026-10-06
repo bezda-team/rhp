@@ -12,6 +12,8 @@ metadata:
 
 rhp draws charts out of HTML elements placed by CSS.
 You describe one **slat** (the element drawn for one row of data) from a few **blocks** (Bar, Dot, Tick, Label, Cell, Place, Area, Line), and rhp draws a slat for every row of the data and keeps each one in its place.
+For bulk scatter points, the experimental [`ManyDots` collection](references/api.md#manydots-experimental-point-collection) can draw plain HTML points directly inside a Chart with `cross`, without a Plot or a slat per point.
+Use a repository build that exports it; a version-2 package or CDN URL alone does not establish prototype availability.
 
 **You do not know rhp yet.**
 rhp 2 was written in September 2026, after your training data.
@@ -81,6 +83,14 @@ Then open the closest recipe in `recipes/` and read it whole.
 Every recipe is a complete, tested, designed chart page, a worked example of one composition: start from it, keep its structure and its techniques, and replace its data, text, look and details.
 When the story needs a slat no recipe has (a name, a bar, a sparkline and a target in one slat), combine the techniques of several recipes.
 
+For a bulk scatter collection, consider `ManyDots` instead of creating one slat per point.
+Keep `Dot` when you need rich point content or Plot's automatic keyboard navigation, selection, or readout behavior.
+Both remain explicit choices at any count, with no automatic switch at 500 points.
+Read the [ManyDots API and accessible example](references/api.md#manydots-experimental-point-collection) before using it.
+It preserves per-point color, size, shape, classes, and appearance styles and supports native hover, click, touch, and pointer events through its host.
+Point metadata uses the original `data-rhp-index`; drag behavior and keyboard-accessible controls are supplied by the application.
+Its numeric sizes mean pixels, updates are immediate and scan the rows, and initial SSR hydration requires aligned row order when DOM identity matters.
+
 | Recipe | Use it for |
 |---|---|
 | `bar` | ranked categories, long names (horizontal bars) |
@@ -148,6 +158,7 @@ A chart with fixed data and no interaction gets `static=${true}` on its Chart: r
 ### 6. Build it from the recipe
 
 - Keep the recipe's code format and section order: data, then slat types, then the chart component, then mounting.
+  With `ManyDots`, omit slat types and put the collection directly inside the Chart.
 - Use the user's data exactly, every value, in their units.
   With no data given: when the subject is factual, use real figures and name the source and year in the note; with network access, take them from the primary source (the agency or publisher that makes them) rather than from memory, and from memory use only figures you know well.
   Otherwise use plausible figures and the note says "Illustrative data".
@@ -169,6 +180,8 @@ Run the checker on the file after the first full draft and again after every fix
 - otherwise run `npx -y @bezda/rhp-mcp check <file>` (add `--dark` when the page has a dark mode).
 
 A chart component that takes its data from the app cannot be drawn on its own: check a small entry file that draws it with fixed data, as environments.md section 13 shows.
+For the experimental `ManyDots` collection, use a build that exports it and also check its rendered point count, coordinates, per-point appearance, native interactions, and keyboard-accessible alternative directly in the browser.
+A clean standard-chart checker report alone does not establish coverage of its bulk points.
 
 It builds the chart, renders it in a browser at 1280px and 390px, tries its interaction, and reports runtime errors, props rhp does not have, data the slat reads but the Plot lacks, values past the scale, overlapping or cut-off text, marks sticking out, sideways scrolling, low contrast and tiny text, with a fix for each.
 Its screenshots show the page with reduced motion asked for, so a chart that animates on load is pictured at rest; its interactions run with motion on.
@@ -342,7 +355,11 @@ Structure and layout:
 
 Style and color:
 
-17. **Style the inside of a chart with the slat's `css` and the Chart's `theme` only.** rhp's CSS is `!important` inside cascade layers, so page CSS cannot change a block's color, background, font, border, radius, shadow, padding or transition. Page CSS styles the poster around the chart and the chart's box. Focus styles for slats (`.slat:focus-visible`) go in the slat's `css` too: a page `:focus-visible` rule never reaches a slat.
+17. **Style regular slat blocks with the slat's `css` and the Chart's `theme`.**
+    rhp's block CSS is `!important` inside cascade layers, so page CSS cannot change a block's color, background, font, border, radius, shadow, padding or transition.
+    Page CSS styles the poster around the chart and the chart's box.
+    Focus styles for slats (`.slat:focus-visible`) go in the slat's `css` too: a page `:focus-visible` rule never reaches a slat.
+    `ManyDots` instead uses `pointClass` and ordinary application CSS or `pointStyle` for appearance, while the collection guards point geometry.
 18. **Color with theme keys or CSS colors**: `color="series-2"`, `"positive"`, `"negative"`, `"muted"` or `"#c2410c"`. Set the palette in the Chart's `theme` (`series`, `ink`, `muted`, `grid`, `surface`, `positive`, `negative`, `low`, `high`, `font`). Theme values may read the page's own variables (`ink: "var(--ink)"`), so the poster and the chart share one set of tokens and dark mode is a few lines of CSS (design.md); a block's `color` may not (rhp warns), and page CSS never sets rhp's own `--rhp-*` variables. `series()` counts six colors: with a shorter `series` list, call `series(n)`. A Label does not take its Bar's color: color the slat root (`--rhp-color` in its style) or the Label's own text.
 19. **A Dot's `size` is a length** (`size="12px"`); a bare number stretches it into an oval.
 20. **Overlay Plots** (a crosshair, a marker over other Plots) need `style=${{ "pointer-events": "none" }}` so the pointer reaches the Plot under them.
