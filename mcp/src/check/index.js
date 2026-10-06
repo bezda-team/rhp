@@ -16,6 +16,7 @@
 //   outDir    where the screenshots go (a folder in the OS temp dir by default)
 //   guard     check how rhp is used, in the page (true by default; false is for proving the guard draws nothing)
 //   freeze    take the screenshots with CSS animations stopped (an endless one at its start), for comparing them
+//   settleTimeout  readiness budget per settling wait in ms (10000 by default); an unsettled page fails explicitly
 //   offline   fetch nothing from the web (fonts fall back): for tests that must not depend on the network
 //   browser   a Playwright Browser to use instead of launching one (it is left open)
 //   debug     also save the screenshots the color probes read (as drawn, with the text hidden, with the marks hidden)
@@ -89,6 +90,10 @@ export async function check(options = {}) {
   const dark = !!options.dark;
   const guard = options.guard !== false;
   const wantInteract = options.interact !== false;
+  const settleTimeout = options.settleTimeout ?? 10000;
+  const requireRest = (result) => {
+    if (!result.rest) throw Object.assign(new Error(`The page did not settle within ${settleTimeout}ms; layout and color measurements would be unreliable.`), { code: "page-unsettled" });
+  };
 
   const src = source(options);
   if (src.error) return finish({ file: options.file ?? null, format: options.format ?? null, findings: [{ level: "error", code: "no-file", message: src.error, fix: "Pass the path of the chart's file (an .html page, a .jsx component or a .js module)." }], timings, started });
@@ -212,7 +217,7 @@ export async function check(options = {}) {
     await page.route("**/*", route);
     await page.goto(format === "html" ? pathToFileURL(file).href : ORIGIN + "/", { waitUntil: "load", timeout: 20000 }).catch((e) => events.push({ kind: "pageerror", text: "The page did not finish loading: " + String(e.message).split("\n")[0] }));
     await page.evaluate(install);
-    await page.evaluate(() => window.__rhpProbe.settle(2000));
+    requireRest(await page.evaluate((max) => window.__rhpProbe.settle(max), settleTimeout));
     return page;
   };
 
@@ -221,7 +226,7 @@ export async function check(options = {}) {
   const capture = async (page, opts) => {
     const since = await page.evaluate(() => window.__rhpProbe.resized());
     const png = await page.screenshot(opts);
-    await page.evaluate((n) => window.__rhpProbe.calm(n), since).catch(() => {});
+    requireRest(await page.evaluate(([n, max]) => window.__rhpProbe.calm(n, max), [since, settleTimeout]));
     return png;
   };
 
@@ -249,12 +254,11 @@ export async function check(options = {}) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: phone ? 2 : 1, hasTouch: phone, colorScheme: dark ? "dark" : "light" });
       const events = [];
       const w0 = performance.now();
+      try {
 
       // The page is measured and pictured with reduced motion asked for: rhp's moves end at once, and a page that moves
       // on its own (an autoplay, a live feed) waits or changes in steps, so the screenshots show what was measured
       const page = await open(context, events, "reduce");
-      const seen = await page.evaluate(() => window.__rhpProbe.measure());
-      const items = await page.evaluate(() => window.__rhpProbe.colorItems());
 
       // first, before any probe hides or restyles anything
       await save(page, width, "");
@@ -266,6 +270,10 @@ export async function check(options = {}) {
         return decode(png);
       };
       const drawn = keep(await shot(), "drawn");
+      // Full-page captures can trigger responsive layout handlers. Read geometry
+      // and text colors only after those handlers have come to rest again.
+      const seen = await page.evaluate(() => window.__rhpProbe.measure());
+      const items = await page.evaluate(() => window.__rhpProbe.colorItems());
       await page.evaluate(() => window.__rhpProbe.hide("text"));
       const noText = keep(await shot(), "no-text");
       let noMarks = null;
@@ -303,7 +311,12 @@ export async function check(options = {}) {
       }
 
       results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, ms: Math.round(performance.now() - w0) });
-      await context.close();
+      } catch (error) {
+        if (error.code !== "page-unsettled") throw error;
+        findings.push({ level: "error", code: error.code, message: error.message, fix: "Let finite entry animations finish, honor prefers-reduced-motion for live updates, or increase the check's settleTimeout for a slow machine.", width });
+      } finally {
+        await context.close();
+      }
     }));
   } finally {
     if (!options.browser) await browser.close();

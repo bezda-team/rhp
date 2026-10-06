@@ -25,7 +25,7 @@ export const SETTING_VALUE = {
   children: (v) => typeof v === "function",
 };
 
-export const CHART_PROPS = ["scale", "orientation", "height", "aspect", "ticks", "format", "animate", "theme", "static", "cross", "crossTicks", "crossFormat", "label", "id", "class", "role", "style", "ref", "children"];
+export const CHART_PROPS = ["scale", "orientation", "height", "aspect", "ticks", "grid", "format", "animate", "theme", "static", "cross", "crossTicks", "crossGrid", "crossFormat", "label", "id", "class", "role", "style", "ref", "children"];
 
 export const THEME_KEYS = ["series", "positive", "negative", "ink", "muted", "grid", "surface", "low", "high", "font"];
 

@@ -22,12 +22,13 @@ export function install() {
   // Waits for fonts, two frames, the animations that end (CSS transitions, a slat's own animations) and a DOM that
   // stays still for two frames (the JS version moves numbers on its own clock), up to max ms. Says whether the page
   // came to rest.
-  async function settle(max = 2000) {
+  async function settle(max = 10000) {
 
     const start = performance.now();
     const left = () => max - (performance.now() - start);
 
-    await Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, Math.max(0, left())))]);
+    let timer;
+    await Promise.race([document.fonts?.ready, new Promise((r) => { timer = setTimeout(r, Math.max(0, left())); })]).finally(() => clearTimeout(timer));
     await frame();
     await frame();
 
@@ -39,7 +40,7 @@ export function install() {
       still = !moving && mutations === before ? still + 1 : 0;
     }
 
-    return { ms: Math.round(performance.now() - start), rest: still >= 2 };
+    return { ms: Math.round(performance.now() - start), rest: still >= 2 && document.fonts?.status !== "loading" };
   }
 
   // A full-page screenshot lays the page out at another size for a moment (Chromium does, to draw what is past the
@@ -48,11 +49,12 @@ export function install() {
   // since.
   let resizes = 0;
   addEventListener("resize", () => resizes++);
-  async function calm([r, m]) {
+  async function calm([r, m], max = 10000) {
 
     await frame();
     const moving = document.getAnimations().some((a) => a.playState === "running" && Number.isFinite(a.effect?.getComputedTiming?.().endTime ?? Infinity));
-    if (resizes !== r && (mutations !== m || moving)) await settle(500);
+    if (resizes !== r || mutations !== m || moving || document.fonts?.status === "loading") return settle(max);
+    return { rest: true };
   }
 
   const visible = (el) => !!el && el.checkVisibility?.({ opacityProperty: true, visibilityProperty: true }) !== false;

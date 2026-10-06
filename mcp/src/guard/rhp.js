@@ -168,6 +168,10 @@ function inspectChart(props) {
   }
 
   checkTheme("Chart's theme", read(props, "theme"));
+  for (const prop of ["grid", "crossGrid"]) {
+    const value = read(props, prop);
+    if (value != null && typeof value !== "boolean") note("error", "bad-prop", `Chart's ${prop} is ${show(value)}.`, "Use false to hide grid lines while retaining axis numbers, or true to show them.");
+  }
 }
 
 // The keys of the objects in rows, over all of them (a row may leave one out)

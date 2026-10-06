@@ -296,6 +296,8 @@ async function serverPart(pkg) {
     ok(!broken.isError && /\[unknown-prop\]/.test(textOf(broken)) && /Fix: /.test(textOf(broken)) && imagesOf(broken).length > 0, "a broken chart's file: the finding, its fix and the screenshots");
     const inline = await call("rhp_check", { code: fs.readFileSync(path.join(BROKEN, "missing-group.html"), "utf8"), interact: false });
     ok(!inline.isError && /\[missing-group\]/.test(textOf(inline)) && imagesOf(inline).length > 0, "a broken chart's code: the same");
+    const unsettled = await call("rhp_check", { file: path.join(BROKEN, "page-unsettled.html"), widths: [900], interact: false, settleTimeout: 150 });
+    ok(!unsettled.isError && /\[page-unsettled\]/.test(textOf(unsettled)) && !/Passed:/.test(textOf(unsettled)), "a custom readiness budget returns an explicit unsettled finding without passed claims");
 
     // What the agent gets wrong
     const relative = await call("rhp_check", { file: "skills/rhp/recipes/bar.html" });
@@ -303,7 +305,8 @@ async function serverPart(pkg) {
     const both = await call("rhp_check", { file: BAR, code: "<p>chart</p>" });
     const neither = await call("rhp_check", {});
     const badWidth = await call("rhp_check", { file: BAR, widths: [10] });
-    ok(both.isError && neither.isError && badWidth.isError, "file and code together, neither, or a width of 10px: errors");
+    const badBudget = await call("rhp_check", { file: BAR, settleTimeout: -1 });
+    ok(both.isError && neither.isError && badWidth.isError && badBudget.isError, "file and code together, neither, a width of 10px, or an invalid readiness budget: errors");
     const missing = await call("rhp_check", { file: path.join(WORK, "no-such-chart.html") });
     ok(!missing.isError && /\[no-file\]/.test(textOf(missing)), "a file that doesn't exist: the report says so");
   } finally {

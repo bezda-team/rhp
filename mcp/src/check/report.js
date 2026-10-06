@@ -52,7 +52,7 @@ export function report(r) {
   section("info", "Notes");
 
   const codes = new Set(r.findings.map((f) => f.code));
-  if (r.charts?.length || r.screenshots?.length) {
+  if (!codes.has("page-unsettled") && (r.charts?.length || r.screenshots?.length)) {
     const passed = [];
     for (const [fail, text] of PASSES) {
       if (fail.some((c) => codes.has(c))) continue;
