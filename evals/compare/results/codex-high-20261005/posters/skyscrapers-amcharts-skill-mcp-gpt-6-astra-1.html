@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ec">
+  <meta name="description" content="An illustrated, to-scale comparison of the world's ten tallest buildings, using CTBUH architectural heights.">
+  <title>A Higher Ambition | The World's Ten Tallest Buildings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --paper:#f5f3ec; --ink:#252824; --muted:#656a63; --rule:#cdcec5; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#e6e5df; color:var(--ink); font-family:'DM Sans',sans-serif; }
+    .poster { max-width:1440px; margin:28px auto; padding:30px 54px 26px; background:var(--paper); box-shadow:0 8px 35px #2528240a; }
+    .mono { font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:400; letter-spacing:.08em; text-transform:uppercase; }
+    .masthead { display:flex; justify-content:space-between; gap:20px; padding-bottom:15px; border-bottom:2px solid var(--ink); }
+    .brand { font-weight:500; }
+    .brand::before { content:'+'; display:inline-block; margin-right:13px; font-size:18px; line-height:10px; }
+    .hero { display:grid; grid-template-columns:1fr 290px; gap:48px; align-items:end; padding:32px 0 33px; }
+    .eyebrow { margin:0 0 17px; }
+    h1 { font-family:'Barlow Condensed','Arial Narrow',Impact,sans-serif; font-size:clamp(96px,11.6vw,166px); line-height:.82; letter-spacing:-.025em; font-weight:700; margin:0 0 1px -5px; }
+    h1 span { display:block; }
+    .intro { margin:0 0 23px; font-size:16px; line-height:1.6; max-width:290px; }
+    .stat { border-top:1px solid var(--ink); padding-top:13px; }
+    .stat-value { font-family:'Barlow Condensed',sans-serif; font-size:65px; font-weight:600; line-height:1; letter-spacing:-.02em; }
+    .stat-value small { font-family:'IBM Plex Mono',monospace; font-size:20px; padding-left:7px; font-weight:400; }
+    .stat p { font-size:12px; line-height:1.5; margin:7px 0 0; color:var(--muted); }
+    .skyline { margin:0; border-top:1px solid var(--ink); }
+    .chart-scroll { overflow-x:auto; overscroll-behavior-x:contain; scrollbar-color:#a0aaa9 var(--paper); scrollbar-width:thin; }
+    #chart { min-width:960px; width:100%; height:560px; }
+    .chart-status { padding:20px; color:var(--muted); }
+    .chart-status[hidden] { display:none; }
+    .caption { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:12px 0 18px; border-bottom:1px solid var(--ink); color:var(--muted); font-size:11px; line-height:1.5; }
+    .swipe { display:none; }
+    .directory-heading { display:flex; align-items:baseline; justify-content:space-between; gap:20px; padding:21px 0 19px; }
+    h2 { font-size:11px; margin:0; font-weight:500; }
+    .directory-heading span { color:var(--muted); font-size:10px; }
+    .buildings { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); column-gap:25px; row-gap:22px; padding:0; margin:0; list-style:none; }
+    .building { border-top:1px solid var(--rule); padding:13px 0 0; }
+    .building-top { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:11px; }
+    .number { display:inline-grid; place-items:center; width:25px; height:25px; border:1px solid #7c8178; border-radius:50%; font-family:'IBM Plex Mono',monospace; font-size:10px; }
+    .height { font-family:'Barlow Condensed',sans-serif; font-size:29px; line-height:1; font-weight:600; }
+    .height small { font-family:'IBM Plex Mono',monospace; font-size:10px; margin-left:4px; font-weight:400; }
+    h3 { font-size:14px; line-height:1.3; min-height:37px; margin:0 0 7px; font-weight:700; }
+    .location { font-size:12px; color:var(--muted); margin:0 0 5px; }
+    .year { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); }
+    .closing { display:grid; grid-template-columns:1fr 1fr 1.25fr; margin-top:31px; padding:22px 0; border-top:2px solid var(--ink); border-bottom:1px solid var(--rule); gap:35px; }
+    .fact { display:flex; align-items:center; gap:15px; }
+    .fact strong { font-family:'Barlow Condensed',sans-serif; font-size:51px; line-height:1; font-weight:600; }
+    .fact p { margin:0; font-size:12px; line-height:1.55; color:var(--muted); }
+    .method { font-size:11px; line-height:1.65; color:var(--muted); margin:0; }
+    .method b { color:var(--ink); font-weight:500; }
+    footer { display:flex; justify-content:space-between; gap:20px; padding-top:17px; color:var(--muted); font-size:10px; line-height:1.5; }
+    footer a { color:inherit; text-underline-offset:3px; }
+    a:focus-visible, .chart-scroll:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
+    @media (max-width:1050px) {
+      .poster { margin:0; padding:25px 32px; }
+      .hero { grid-template-columns:1fr 240px; gap:25px; }
+      h1 { font-size:120px; }
+      .buildings { column-gap:18px; }
+      .swipe { display:inline; }
+    }
+    @media (max-width:700px) {
+      .poster { padding:20px; }
+      .masthead { font-size:9px; gap:10px; }
+      .masthead .edition { max-width:110px; text-align:right; }
+      .hero { display:block; padding:29px 0 25px; }
+      .eyebrow { font-size:10px; margin-bottom:17px; }
+      h1 { font-size:clamp(84px,19.5vw,135px); margin-left:-2px; }
+      .hero-aside { display:grid; grid-template-columns:1.15fr 1fr; gap:20px; margin-top:25px; align-items:start; }
+      .intro { font-size:13px; line-height:1.6; margin:0; }
+      .stat { padding-top:8px; }
+      .stat-value { font-size:48px; }
+      .stat-value small { font-size:15px; padding-left:4px; }
+      .stat p { font-size:10px; }
+      #chart { height:490px; min-width:960px; }
+      .caption { align-items:start; font-size:10px; gap:18px; }
+      .caption > span:last-child { text-align:right; max-width:135px; }
+      .directory-heading { padding-top:20px; }
+      .directory-heading span { font-size:8px; text-align:right; }
+      .buildings { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 23px; }
+      h3 { font-size:14px; }
+      .closing { grid-template-columns:1fr 1fr; gap:20px; margin-top:25px; }
+      .fact { gap:12px; }
+      .fact strong { font-size:43px; }
+      .fact p { font-size:10px; }
+      .method { grid-column:1/-1; }
+      footer { font-size:9px; }
+      footer > span:last-child { text-align:right; }
+    }
+    @media print {
+      @page { size:A3 landscape; margin:10mm; }
+      body { background:var(--paper); print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      .poster { margin:0; box-shadow:none; padding:0; max-width:none; }
+      .chart-scroll { overflow:visible; }
+      #chart { min-width:0; height:470px; }
+      .swipe { display:none; }
+      .building, .closing { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="masthead mono">
+      <span class="brand">Fieldnotes / The built world</span>
+      <span class="edition">Architecture atlas &nbsp; / &nbsp; No. 001</span>
+    </header>
+    <section class="hero" aria-labelledby="poster-title">
+      <div>
+        <p class="eyebrow mono">The world's ten tallest buildings</p>
+        <h1 id="poster-title"><span>A HIGHER</span><span>AMBITION.</span></h1>
+      </div>
+      <div class="hero-aside">
+        <p class="intro">Ten extraordinary buildings.<br>Six countries. One shared ambition: to reach further into the sky.</p>
+        <div class="stat">
+          <div class="stat-value">149.1<small>m</small></div>
+          <p>Burj Khalifa's lead over its nearest rival, Merdeka 118.</p>
+        </div>
+      </div>
+    </section>
+    <figure class="skyline" aria-label="Buildings compared by architectural height in metres">
+      <div class="chart-scroll" tabindex="0" role="region" aria-label="Skyline height comparison. Scroll horizontally on small screens. Full building details follow below.">
+        <div id="chart"><p class="chart-status" id="chart-status" role="status">Drawing the skyline…</p></div>
+      </div>
+      <figcaption class="caption">
+        <span>Heights to scale. Silhouettes simplified; widths illustrative.<br><span class="swipe">Swipe the skyline to explore all ten →</span></span>
+        <span>Hover or tap a tower for details.<br>Numbered key below ↓</span>
+      </figcaption>
+    </figure>
+    <section aria-labelledby="directory-title">
+      <div class="directory-heading">
+        <h2 id="directory-title" class="mono">02 / The skyward ten</h2>
+        <span class="mono">Height / City / Completion</span>
+      </div>
+      <ol class="buildings">
+        <li class="building"><div class="building-top"><span class="number">01</span><span class="height">828<small>m</small></span></div><h3>Burj Khalifa</h3><p class="location">Dubai</p><span class="year">Completed 2010</span></li>
+        <li class="building"><div class="building-top"><span class="number">02</span><span class="height">678.9<small>m</small></span></div><h3>Merdeka 118</h3><p class="location">Kuala Lumpur</p><span class="year">Completed 2023</span></li>
+        <li class="building"><div class="building-top"><span class="number">03</span><span class="height">632<small>m</small></span></div><h3>Shanghai Tower</h3><p class="location">Shanghai</p><span class="year">Completed 2015</span></li>
+        <li class="building"><div class="building-top"><span class="number">04</span><span class="height">601<small>m</small></span></div><h3>Makkah Royal Clock Tower</h3><p class="location">Mecca</p><span class="year">Completed 2012</span></li>
+        <li class="building"><div class="building-top"><span class="number">05</span><span class="height">599.1<small>m</small></span></div><h3>Ping An Finance Center</h3><p class="location">Shenzhen</p><span class="year">Completed 2017</span></li>
+        <li class="building"><div class="building-top"><span class="number">06</span><span class="height">554.5<small>m</small></span></div><h3>Lotte World Tower</h3><p class="location">Seoul</p><span class="year">Completed 2017</span></li>
+        <li class="building"><div class="building-top"><span class="number">07</span><span class="height">541.3<small>m</small></span></div><h3>One World Trade Center</h3><p class="location">New York City</p><span class="year">Completed 2014</span></li>
+        <li class="building"><div class="building-top"><span class="number">08</span><span class="height">530<small>m</small></span></div><h3>Guangzhou CTF Finance Centre</h3><p class="location">Guangzhou</p><span class="year">Completed 2016</span></li>
+        <li class="building"><div class="building-top"><span class="number">09</span><span class="height">530<small>m</small></span></div><h3>Tianjin CTF Finance Centre</h3><p class="location">Tianjin</p><span class="year">Completed 2019</span></li>
+        <li class="building"><div class="building-top"><span class="number">10</span><span class="height">527.7<small>m</small></span></div><h3>CITIC Tower</h3><p class="location">Beijing</p><span class="year">Completed 2018</span></li>
+      </ol>
+    </section>
+    <aside class="closing" aria-label="Context and measurement notes">
+      <div class="fact"><strong>9/10</strong><p>of these buildings<br>are in Asia.</p></div>
+      <div class="fact"><strong>5/10</strong><p>are in China, across<br>five different cities.</p></div>
+      <p class="method"><b>Measured to the architectural top.</b> Heights include spires, but exclude antennas and other technical equipment. Guangzhou and Tianjin share a height of 530 m.</p>
+    </aside>
+    <footer>
+      <span>Source: <a href="https://www.skyscrapercenter.com/buildings" target="_blank" rel="noopener noreferrer">Council on Tall Buildings and Urban Habitat (CTBUH)</a><br>Based on the supplied ten-building dataset.</span>
+      <span class="mono">Human ambition, measured.<br>Fieldnotes / 001</span>
+    </footer>
+  </main>
+  <script type="module">
+    const status = document.getElementById('chart-status');
+    try {
+      const am5 = await import('https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/+esm');
+      await document.fonts.ready;
+      const buildings = Array.from(document.querySelectorAll('.building'), (card, i) => ({
+        name:card.querySelector('h3').textContent,
+        city:card.querySelector('.location').textContent,
+        year:Number(card.querySelector('.year').textContent.replace('Completed ','')),
+        height:parseFloat(card.querySelector('.height').textContent),
+        number:String(i + 1).padStart(2,'0'), x:i + 0.5
+      }));
+      // Normalized architectural profiles. The tallest vertex is exactly 1.
+      const profiles = [
+        [[-.32,0],[-.32,.12],[-.25,.12],[-.25,.31],[-.20,.31],[-.20,.48],[-.15,.48],[-.15,.63],[-.10,.63],[-.10,.75],[-.06,.75],[-.06,.85],[-.015,.85],[0,1],[.018,.87],[.05,.87],[.05,.79],[.09,.79],[.09,.67],[.14,.67],[.14,.51],[.20,.51],[.20,.34],[.26,.34],[.26,.16],[.33,.16],[.33,0]],
+        [[-.27,0],[-.27,.71],[-.19,.77],[.04,.86],[.15,1],[.17,.78],[.29,.71],[.29,.10],[.23,0]],
+        [[-.29,0],[-.30,.13],[-.26,.34],[-.22,.55],[-.20,.73],[-.16,.90],[-.09,.98],[.06,1],[.19,.96],[.24,.85],[.24,.68],[.22,.49],[.20,.27],[.28,0]],
+        [[-.38,0],[-.38,.14],[-.28,.14],[-.28,.58],[-.22,.58],[-.22,.76],[-.25,.76],[-.25,.83],[-.13,.83],[-.08,.9],[-.025,.93],[0,1],[.025,.93],[.08,.9],[.13,.83],[.25,.83],[.25,.76],[.22,.76],[.22,.58],[.28,.58],[.28,.14],[.38,.14],[.38,0]],
+        [[-.27,0],[-.27,.76],[-.19,.90],[0,1],[.19,.90],[.27,.76],[.27,0]],
+        [[-.30,0],[-.27,.26],[-.22,.51],[-.15,.76],[-.07,.96],[.015,1],[.07,.98],[.14,.81],[.23,.49],[.28,.22],[.30,0]],
+        [[-.28,0],[-.28,.12],[-.15,.77],[-.12,.79],[-.012,.79],[0,1],[.013,.79],[.12,.79],[.16,.77],[.28,.12],[.28,0]],
+        [[-.28,0],[-.28,.81],[-.23,.81],[-.23,.90],[-.18,.90],[-.18,1],[.20,1],[.20,.94],[.27,.94],[.27,0]],
+        [[-.31,0],[-.30,.22],[-.25,.50],[-.18,.78],[-.11,.93],[-.04,.99],[.04,1],[.12,.95],[.18,.78],[.25,.50],[.30,.22],[.31,0]],
+        [[-.30,0],[-.26,.18],[-.20,.40],[-.19,.56],[-.21,.74],[-.28,.94],[-.30,1],[.30,1],[.28,.94],[.21,.74],[.19,.56],[.20,.40],[.26,.18],[.30,0]]
+      ];
+      const root = am5.Root.new('chart',{fontFamily:'DM Sans, sans-serif',fontSize:12});
+      root.container.set('layout',root.verticalLayout);
+      const ink = am5.color(0x252824), muted = am5.color(0x656a63), paper = am5.color(0xf5f3ec);
+      const heading = root.container.children.push(am5.Container.new(root,{width:am5.p100,height:51}));
+      heading.children.push(am5.Label.new(root,{text:'01 / A SKYLINE IN SCALE',fontFamily:'IBM Plex Mono, monospace',fontSize:11,fill:ink,x:0,y:14,paddingLeft:0}));
+      heading.children.push(am5.Label.new(root,{text:'ARCHITECTURAL HEIGHT / METRES',fontFamily:'IBM Plex Mono, monospace',fontSize:10,fill:muted,x:am5.p100,centerX:am5.p100,y:14,paddingRight:0}));
+      // A custom amCharts chart keeps all geometry in one module and one metre scale.
+      const chart = root.container.children.push(am5.Container.new(root,{
+        width:am5.p100,height:am5.p100
+      }));
+      const blue = am5.ColorSet.new(root,{}).getIndex(0);
+      const grid = chart.children.push(am5.Graphics.new(root,{stroke:ink,strokeOpacity:.14,strokeDasharray:[2,4]}));
+      const ground = chart.children.push(am5.Graphics.new(root,{stroke:ink,strokeOpacity:.7}));
+      const tickLabels = [0,200,400,600,800].map(value => ({value,label:chart.children.push(am5.Label.new(root,{
+        text:String(value),fontFamily:'IBM Plex Mono, monospace',fontSize:10,fill:muted,centerY:am5.p50,paddingLeft:0
+      }))}));
+      const towers = buildings.map((building,i) => {
+        const detail = `${building.number}  ${building.name}\n${building.city} · ${building.year}\n[bold]${building.height} metres[/]`;
+        const shape = chart.children.push(am5.Graphics.new(root,{
+          fill:blue,fillOpacity:i === 0 ? 1 : .76,stroke:blue,strokeWidth:1,
+          interactive:true,tooltipText:detail,focusable:true,
+          ariaLabel:`${building.name}, ${building.city}, ${building.height} metres, completed ${building.year}`,role:'img'
+        }));
+        shape.states.create('hover',{fillOpacity:1});
+        shape.events.on('click',() => shape.showTooltip());
+        const facade = chart.children.push(am5.Graphics.new(root,{stroke:paper,strokeWidth:.8,strokeOpacity:.6}));
+        const heightLabel = chart.children.push(am5.Label.new(root,{
+          text:String(building.height),centerX:am5.p50,centerY:am5.p100,
+          fontFamily:'IBM Plex Mono, monospace',fontSize:13,fontWeight:'500',fill:ink,
+          paddingLeft:3,paddingRight:3,background:am5.Rectangle.new(root,{fill:paper,fillOpacity:.92})
+        }));
+        const numberLabel = chart.children.push(am5.Label.new(root,{
+          text:building.number,centerX:am5.p50,fontFamily:'IBM Plex Mono, monospace',fontSize:11,fill:ink
+        }));
+        return {shape,facade,heightLabel,numberLabel};
+      });
+      const annotation = chart.children.push(am5.Label.new(root,{
+        text:'TEN LANDMARKS.\nAN EXTRAORDINARY HORIZON.',
+        fontFamily:'Barlow Condensed, sans-serif',fontSize:26,fontWeight:'600',lineHeight:1.1,fill:muted,opacity:.75
+      }));
+      function drawSkyline() {
+        const width = chart.width(), height = chart.height();
+        if (width <= 0 || height <= 0) return;
+        const left = 39, right = width - 8, top = 25, bottom = height - 48;
+        const x = value => left + value / 10 * (right - left);
+        const y = metres => bottom - metres / 900 * (bottom - top);
+        const path = (points,close=false) => points.map(([px,py],i) => `${i ? 'L' : 'M'}${x(px).toFixed(2)},${y(py).toFixed(2)}`).join(' ') + (close ? ' Z' : '');
+        grid.set('svgPath',[200,400,600,800].map(value => path([[0,value],[10,value]])).join(' '));
+        ground.set('svgPath',path([[0,0],[10,0]]));
+        tickLabels.forEach(({value,label}) => label.setAll({x:0,y:y(value)}));
+        buildings.forEach((building,i) => {
+          const tower = towers[i];
+          tower.shape.set('svgPath',path(profiles[i].map(([px,py]) => [building.x+px,py*building.height]),true));
+          const lines = [-.105,0,.105].map((offset,j) => {
+            const top = i === 0 ? [.58,.84,.48][j] : i === 3 ? .57 : i === 6 ? .75 : .87;
+            return path([[building.x+offset,0],[building.x+offset*.65,building.height*top]]);
+          });
+          if (i === 1 || i === 6) lines.push(path([[building.x-.23,building.height*.08],[building.x+.12,building.height*.77],[building.x-.22,building.height*.60]]));
+          if (i === 3) {
+            const face = Array.from({length:25},(_,k) => [building.x+Math.cos(k/24*Math.PI*2)*.105,building.height*.725+Math.sin(k/24*Math.PI*2)*13]);
+            lines.push(path(face,true),path([[building.x,building.height*.725+9],[building.x,building.height*.725],[building.x+.065,building.height*.725]]));
+          }
+          tower.facade.set('svgPath',lines.join(' '));
+          tower.heightLabel.setAll({x:x(building.x),y:y(building.height)-11});
+          tower.numberLabel.setAll({x:x(building.x),y:bottom+12});
+        });
+        annotation.setAll({x:x(5.1),y:top+10});
+      }
+      chart.events.on('boundschanged',drawSkyline);
+      root.events.once('frameended',drawSkyline);
+      status.hidden = true;
+      document.documentElement.dataset.chartReady = 'true';
+      window.addEventListener('pagehide',event => { if (!event.persisted) root.dispose(); });
+    } catch (error) {
+      status.hidden = false;
+      status.textContent = 'The skyline could not load. Please check your connection and reload. All ten buildings are listed below.';
+      console.error(error);
+    }
+  </script>
+</body>
+</html>

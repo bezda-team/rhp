@@ -1,36 +1,16 @@
 {
- "_tmp": [
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null
- ],
- "_work": [
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null
- ],
  "apexcharts": [
   {
    "step": "basic",
    "lines": 15,
-   "chars": 571,
-   "tokens": 260
+   "chars": 575,
+   "tokens": 261
   },
   {
    "step": "labels",
    "lines": 19,
-   "chars": 818,
-   "tokens": 372,
+   "chars": 822,
+   "tokens": 374,
    "added": 8,
    "removed": 4,
    "changed": 12
@@ -38,8 +18,8 @@
   {
    "step": "editorial",
    "lines": 30,
-   "chars": 1395,
-   "tokens": 634,
+   "chars": 1399,
+   "tokens": 636,
    "added": 13,
    "removed": 2,
    "changed": 15
@@ -47,8 +27,8 @@
   {
    "step": "annotation",
    "lines": 31,
-   "chars": 1520,
-   "tokens": 691,
+   "chars": 1524,
+   "tokens": 693,
    "added": 2,
    "removed": 1,
    "changed": 3
@@ -56,8 +36,8 @@
   {
    "step": "phone",
    "lines": 38,
-   "chars": 1708,
-   "tokens": 776,
+   "chars": 1712,
+   "tokens": 778,
    "added": 8,
    "removed": 1,
    "changed": 9
@@ -65,8 +45,8 @@
   {
    "step": "readout",
    "lines": 50,
-   "chars": 2201,
-   "tokens": 1000,
+   "chars": 2205,
+   "tokens": 1002,
    "added": 15,
    "removed": 3,
    "changed": 18
@@ -74,26 +54,34 @@
   {
    "step": "animate",
    "lines": 59,
-   "chars": 2531,
-   "tokens": 1150,
+   "chars": 2535,
+   "tokens": 1152,
    "added": 14,
    "removed": 5,
    "changed": 19
   },
-  null
+  {
+   "step": "pictogram",
+   "lines": 76,
+   "chars": 3783,
+   "tokens": 1720,
+   "added": 20,
+   "removed": 3,
+   "changed": 23
+  }
  ],
  "chartjs": [
   {
    "step": "basic",
    "lines": 25,
-   "chars": 624,
-   "tokens": 284
+   "chars": 628,
+   "tokens": 285
   },
   {
    "step": "labels",
    "lines": 38,
-   "chars": 1016,
-   "tokens": 462,
+   "chars": 1024,
+   "tokens": 465,
    "added": 16,
    "removed": 3,
    "changed": 19
@@ -101,8 +89,8 @@
   {
    "step": "editorial",
    "lines": 52,
-   "chars": 1677,
-   "tokens": 762,
+   "chars": 1685,
+   "tokens": 766,
    "added": 17,
    "removed": 3,
    "changed": 20
@@ -110,8 +98,8 @@
   {
    "step": "annotation",
    "lines": 65,
-   "chars": 2111,
-   "tokens": 960,
+   "chars": 2123,
+   "tokens": 965,
    "added": 14,
    "removed": 1,
    "changed": 15
@@ -119,8 +107,8 @@
   {
    "step": "phone",
    "lines": 71,
-   "chars": 2362,
-   "tokens": 1074,
+   "chars": 2374,
+   "tokens": 1079,
    "added": 9,
    "removed": 3,
    "changed": 12
@@ -128,8 +116,8 @@
   {
    "step": "readout",
    "lines": 101,
-   "chars": 3448,
-   "tokens": 1567,
+   "chars": 3460,
+   "tokens": 1573,
    "added": 34,
    "removed": 4,
    "changed": 38
@@ -137,26 +125,34 @@
   {
    "step": "animate",
    "lines": 113,
-   "chars": 3826,
-   "tokens": 1739,
+   "chars": 3838,
+   "tokens": 1745,
    "added": 17,
    "removed": 5,
    "changed": 22
   },
-  null
+  {
+   "step": "pictogram",
+   "lines": 144,
+   "chars": 5086,
+   "tokens": 2312,
+   "added": 33,
+   "removed": 2,
+   "changed": 35
+  }
  ],
  "d3": [
   {
    "step": "basic",
    "lines": 37,
-   "chars": 1336,
-   "tokens": 607
+   "chars": 1340,
+   "tokens": 609
   },
   {
    "step": "labels",
    "lines": 43,
-   "chars": 1627,
-   "tokens": 740,
+   "chars": 1631,
+   "tokens": 741,
    "added": 8,
    "removed": 2,
    "changed": 10
@@ -164,8 +160,8 @@
   {
    "step": "editorial",
    "lines": 55,
-   "chars": 2161,
-   "tokens": 982,
+   "chars": 2165,
+   "tokens": 984,
    "added": 14,
    "removed": 2,
    "changed": 16
@@ -173,8 +169,8 @@
   {
    "step": "annotation",
    "lines": 64,
-   "chars": 2483,
-   "tokens": 1129,
+   "chars": 2487,
+   "tokens": 1130,
    "added": 10,
    "removed": 1,
    "changed": 11
@@ -182,8 +178,8 @@
   {
    "step": "phone",
    "lines": 73,
-   "chars": 2816,
-   "tokens": 1280,
+   "chars": 2820,
+   "tokens": 1282,
    "added": 17,
    "removed": 8,
    "changed": 25
@@ -191,8 +187,8 @@
   {
    "step": "readout",
    "lines": 87,
-   "chars": 3548,
-   "tokens": 1613,
+   "chars": 3552,
+   "tokens": 1615,
    "added": 21,
    "removed": 7,
    "changed": 28
@@ -200,26 +196,34 @@
   {
    "step": "animate",
    "lines": 100,
-   "chars": 4087,
-   "tokens": 1858,
+   "chars": 4091,
+   "tokens": 1860,
    "added": 19,
    "removed": 6,
    "changed": 25
   },
-  null
+  {
+   "step": "pictogram",
+   "lines": 111,
+   "chars": 4944,
+   "tokens": 2247,
+   "added": 22,
+   "removed": 11,
+   "changed": 33
+  }
  ],
  "rhp": [
   {
    "step": "basic",
    "lines": 30,
-   "chars": 1047,
-   "tokens": 476
+   "chars": 1051,
+   "tokens": 478
   },
   {
    "step": "labels",
    "lines": 31,
-   "chars": 1219,
-   "tokens": 554,
+   "chars": 1223,
+   "tokens": 556,
    "added": 5,
    "removed": 4,
    "changed": 9
@@ -227,8 +231,8 @@
   {
    "step": "editorial",
    "lines": 47,
-   "chars": 2213,
-   "tokens": 1006,
+   "chars": 2217,
+   "tokens": 1008,
    "added": 20,
    "removed": 4,
    "changed": 24
@@ -236,8 +240,8 @@
   {
    "step": "annotation",
    "lines": 56,
-   "chars": 2592,
-   "tokens": 1178,
+   "chars": 2596,
+   "tokens": 1180,
    "added": 11,
    "removed": 2,
    "changed": 13
@@ -245,8 +249,8 @@
   {
    "step": "phone",
    "lines": 67,
-   "chars": 3114,
-   "tokens": 1415,
+   "chars": 3118,
+   "tokens": 1417,
    "added": 16,
    "removed": 5,
    "changed": 21
@@ -254,8 +258,8 @@
   {
    "step": "readout",
    "lines": 88,
-   "chars": 4161,
-   "tokens": 1891,
+   "chars": 4165,
+   "tokens": 1893,
    "added": 32,
    "removed": 11,
    "changed": 43
@@ -263,8 +267,8 @@
   {
    "step": "animate",
    "lines": 95,
-   "chars": 4775,
-   "tokens": 2170,
+   "chars": 4779,
+   "tokens": 2172,
    "added": 12,
    "removed": 5,
    "changed": 17
@@ -272,8 +276,8 @@
   {
    "step": "pictogram",
    "lines": 104,
-   "chars": 5599,
-   "tokens": 2545,
+   "chars": 5603,
+   "tokens": 2547,
    "added": 15,
    "removed": 6,
    "changed": 21

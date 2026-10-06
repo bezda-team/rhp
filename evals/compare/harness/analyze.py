@@ -73,7 +73,8 @@ def image_tokens(w, h, long_edge=2576, max_tokens=4784):
 
 
 def load(path):
-    rows = [json.loads(l) for l in open(path) if l.strip()]
+    with open(path) as transcript:
+        rows = [json.loads(l) for l in transcript if l.strip()]
     reqs = []        # one per API request (assistant message id)
     cur = None
     first_user = None
@@ -215,7 +216,8 @@ def analyze(path):
             name = b["name"]
             tools[name] += 1
             inp = b.get("input") or {}
-            if name not in ("Bash", "Read", "Write", "Edit", "Glob", "Grep", "SubagentHandback", "MultiEdit", "NotebookEdit"):
+            native_headless_tool = result is not None and (name == "Skill" or name.startswith("mcp__"))
+            if not native_headless_tool and name not in ("Bash", "Read", "Write", "Edit", "Glob", "Grep", "SubagentHandback", "MultiEdit", "NotebookEdit"):
                 violations.append(name)
             blob = json.dumps(inp)
             for forbidden in filter(None, os.environ.get("FORBIDDEN_PATHS", "").split(",")):
@@ -317,7 +319,7 @@ def analyze(path):
                 except Exception:
                     pass
     ts = [q["ts"] for q in reqs if q["ts"]]
-    wall = (parse(ts[-1]) - parse(ts[0])).total_seconds() if len(ts) > 1 else 0
+    wall = result["duration_ms"] / 1000 if result and result.get("duration_ms") is not None else (parse(ts[-1]) - parse(ts[0])).total_seconds() if len(ts) > 1 else 0
     final_text = ""
     for q in reversed(reqs):
         for b in q["blocks"]:
@@ -329,7 +331,7 @@ def analyze(path):
             break
     learning = {"first_draft_request": first_draft, "read_before_draft": {k: round(v) for k, v in before_draft.most_common()},
                 "output_before_draft": round(sum(o["out"] for o in out[:first_draft])) if first_draft is not None else None,
-                "minutes_before_draft": round((parse(reqs[first_draft]["ts"]) - parse(reqs[0]["ts"])).total_seconds() / 60, 1) if first_draft is not None else None}
+                "minutes_before_draft": round((parse(reqs[first_draft]["ts"]) - parse(reqs[0]["ts"])).total_seconds() / 60, 1) if first_draft is not None and reqs[first_draft]["ts"] and reqs[0]["ts"] else None}
     return {"model": model, "totals": totals, "learning": learning, "context_sources": {k: round(v) for k, v in attribution.most_common()},
             "reread_by_source": {k: round(v) for k, v in reread.most_common()}, "tools": dict(tools), "bash": dict(bash), "reads": dict(reads), "writes": writes, "checks": checks,
             "violations": violations, "wall_seconds": round(wall), "final_text": final_text, "per_request": out}

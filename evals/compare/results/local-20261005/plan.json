@@ -1,0 +1,80 @@
+{
+  "created": "2026-10-05T19:07:45.596Z",
+  "status": "superseded-by-separate-cohort",
+  "continuation": "../codex-high-browser-20261005/plan.json",
+  "reason": "Claude Code preflight returned HTTP 429 with zero token usage; no new poster generation launched.",
+  "originalCohort": "Original six Sonnet max-effort runs remain separate.",
+  "plannedModel": "claude-sonnet-5-5",
+  "plannedEffort": "high",
+  "network": "jsDelivr reachable; SANDBOX_NOTE=0",
+  "conditions": [
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-skill-mcp"
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-skill-mcp"
+    },
+    {
+      "poster": "keeling",
+      "condition": "rhp-skill-mcp"
+    },
+    {
+      "poster": "keeling",
+      "condition": "apex-skill-mcp"
+    },
+    {
+      "poster": "day",
+      "condition": "rhp-skill-mcp"
+    },
+    {
+      "poster": "day",
+      "condition": "apex-skill-mcp"
+    },
+    {
+      "poster": "paygap",
+      "condition": "rhp-skill-mcp"
+    },
+    {
+      "poster": "paygap",
+      "condition": "apex-skill-mcp"
+    },
+    {
+      "poster": "cafe",
+      "condition": "rhp-skill-mcp"
+    },
+    {
+      "poster": "cafe",
+      "condition": "apex-skill-mcp"
+    },
+    {
+      "poster": "coffee",
+      "condition": "rhp-skill-mcp"
+    },
+    {
+      "poster": "coffee",
+      "condition": "apex-skill-mcp"
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "flint-skill-mcp"
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "semiotic-skill-mcp"
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "amcharts-skill-mcp"
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-none"
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-none"
+    }
+  ]
+}

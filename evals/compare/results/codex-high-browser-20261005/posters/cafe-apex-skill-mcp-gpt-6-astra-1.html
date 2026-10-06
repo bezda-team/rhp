@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f1e6">
+  <title>Find your coffee moment | The neighbourhood café</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f7f1e6; --ink:#432b28; --muted:#76645b; --line:#d7c9b7; --accent:#a44932; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:36px; background:#e8e1d5; color:var(--ink); font-family:'DM Sans',sans-serif; }
+    .poster { max-width:1180px; margin:auto; padding:36px 54px 28px; background:var(--paper); border:1px solid #d9cebc; box-shadow:0 10px 45px #432b280b; }
+    .masthead { display:flex; justify-content:space-between; align-items:center; gap:20px; padding-bottom:22px; border-bottom:1px solid var(--ink); }
+    .brand { font-size:12px; letter-spacing:2.4px; font-weight:700; display:flex; align-items:center; gap:12px; }
+    .brand-mark { width:24px; height:24px; }
+    .edition { font-size:10px; letter-spacing:1.8px; text-align:right; line-height:1.7; }
+    .hero { display:flex; align-items:center; justify-content:space-between; gap:25px; padding:36px 0 32px; }
+    .eyebrow { margin:0 0 14px; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); font-weight:700; }
+    h1 { font-family:'Playfair Display',Georgia,serif; font-size:clamp(48px,6.5vw,82px); font-weight:500; letter-spacing:-3.3px; line-height:1.05; margin:0; }
+    h1 em { font-weight:500; color:var(--accent); }
+    .intro { margin:22px 0 0; font-size:15px; line-height:1.6; color:var(--muted); }
+    .coffee { width:242px; flex:none; color:var(--accent); transform:rotate(-7deg); margin-right:14px; }
+    .coffee text { fill:currentColor; font-family:'DM Sans',sans-serif; letter-spacing:3px; font-size:10px; }
+    .chart-section { border-top:1px solid var(--line); padding-top:24px; }
+    .chart-heading { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; }
+    h2 { font-family:'Playfair Display',Georgia,serif; font-size:25px; font-weight:500; margin:0 0 6px; letter-spacing:-.4px; }
+    .chart-subtitle { font-size:12px; color:var(--muted); margin:0; }
+    .legend { display:flex; flex-wrap:wrap; gap:12px; font-size:11px; align-items:center; }
+    .legend-label { color:var(--muted); margin-right:2px; }
+    .key { display:flex; gap:5px; align-items:center; white-space:nowrap; }
+    .swatch { width:13px; height:13px; border-radius:3px; background:var(--swatch); border:1px solid #432b2812; }
+    .chart-scroll { overflow-x:auto; margin:14px -5px 0; scrollbar-color:#b79e89 var(--paper); scrollbar-width:thin; }
+    #heatmap { min-width:800px; height:354px; }
+    .chart-note { display:flex; justify-content:space-between; gap:18px; font-size:11px; line-height:1.6; color:var(--muted); margin:1px 0 0; }
+    .mobile-hint { display:none; font-size:11px; color:var(--accent); margin:14px 0 0; }
+    .insights { display:grid; grid-template-columns:repeat(3,1fr); margin:28px 0 26px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); padding:23px 0; }
+    .insight { padding:0 24px; border-left:1px solid var(--line); }
+    .insight:first-child { padding-left:0; border-left:0; }
+    .insight:last-child { padding-right:0; }
+    .insight .eyebrow { font-size:10px; letter-spacing:1.7px; margin-bottom:8px; }
+    .insight h3 { font-family:'Playfair Display',Georgia,serif; font-size:24px; font-weight:500; margin:0 0 7px; letter-spacing:-.5px; }
+    .insight p:last-child { margin:0; color:var(--muted); font-size:12px; line-height:1.6; }
+    footer { display:flex; align-items:center; justify-content:space-between; gap:18px; font-size:10px; color:var(--muted); line-height:1.6; }
+    .signoff { font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:17px; color:var(--ink); white-space:nowrap; }
+    .apexcharts-tooltip { border:1px solid var(--line)!important; box-shadow:0 4px 16px #432b2818!important; border-radius:6px!important; }
+    .cell-tooltip { background:var(--paper); padding:10px 13px; color:var(--ink); font-size:12px; line-height:1.7; }
+    .cell-tooltip strong { display:block; font-size:14px; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .chart-scroll:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+    .load-error { padding:24px; color:var(--accent); }
+    @media (max-width:1000px) {
+      body { padding:20px; } .poster { padding:30px; }
+      .coffee { width:190px; margin-right:0; }
+      .chart-heading { align-items:flex-start; flex-direction:column; gap:15px; }
+      .mobile-hint { display:block; }
+    }
+    @media (max-width:600px) {
+      body { padding:0; } .poster { padding:24px 20px; border:0; }
+      .masthead { padding-bottom:17px; gap:12px; }
+      .brand { font-size:9px; letter-spacing:1.4px; gap:7px; }
+      .brand-mark { width:19px; height:19px; flex:none; }
+      .edition { font-size:8px; letter-spacing:1px; }
+      .hero { padding:30px 0 26px; position:relative; }
+      h1 { font-size:51px; letter-spacing:-2px; line-height:1.09; }
+      .hero .eyebrow { font-size:9px; letter-spacing:1.5px; }
+      .intro { font-size:13px; margin-top:18px; max-width:285px; }
+      .coffee { display:none; }
+      h2 { font-size:24px; }
+      .legend { gap:10px; font-size:10px; }
+      .legend-label { width:100%; }
+      #heatmap { min-width:800px; height:354px; }
+      .chart-note { flex-direction:column; gap:5px; font-size:10px; }
+      .insights { grid-template-columns:1fr; margin-top:23px; padding:0; }
+      .insight, .insight:first-child, .insight:last-child { padding:18px 0; border-left:0; }
+      .insight + .insight { border-top:1px solid var(--line); }
+      .insight h3 { font-size:24px; margin-bottom:5px; }
+      footer { align-items:flex-start; flex-direction:column; gap:12px; }
+    }
+    @media print {
+      @page { size:A4 landscape; margin:8mm; }
+      body { background:var(--paper); padding:0; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      .poster { border:0; box-shadow:none; padding:12px 20px; max-width:none; }
+      .hero { padding:20px 0; } h1 { font-size:58px; } .coffee { width:170px; }
+      .chart-heading { flex-direction:row; } .chart-scroll { overflow:visible; }
+      #heatmap { min-width:0; } .mobile-hint { display:none; }
+      .insights { margin:16px 0; padding:14px 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="masthead">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 8h12v7a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M16 9h2a3 3 0 0 1 0 6h-2M2 22h18M7 2v3m5-3v3"/></svg>
+        THE NEIGHBOURHOOD CAFÉ
+      </div>
+      <div class="edition">A WEEK IN THE LIFE<br>No. 01 / THE COFFEE EDIT</div>
+    </header>
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <p class="eyebrow">Good coffee. Your kind of company.</p>
+        <h1 id="title">Find your<br><em>coffee moment.</em></h1>
+        <p class="intro">Come for the buzz, or settle into the quiet.<br>Here’s how a week at our café flows.</p>
+      </div>
+      <svg class="coffee" viewBox="0 0 250 250" fill="none" aria-hidden="true">
+        <circle cx="125" cy="125" r="115" stroke="currentColor" stroke-opacity=".35"/>
+        <circle cx="125" cy="125" r="108" stroke="currentColor" stroke-opacity=".2" stroke-dasharray="1 5"/>
+        <path d="M96 82c-12-15 11-18 0-35m28 35c-12-15 11-18 0-35m28 35c-12-15 11-18 0-35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="120" cy="104" rx="53" ry="13" stroke="currentColor" stroke-width="2"/>
+        <path d="M68 105l8 47c4 26 82 26 87 0l9-47m-3 8c41-13 43 38-3 36" stroke="currentColor" stroke-width="2"/>
+        <path d="M81 112c11 7 64 7 77 0" stroke="currentColor" stroke-opacity=".5"/>
+        <path d="M74 162c-39 11-19 30 47 30s85-19 48-30M87 179c17 7 49 7 65 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <text x="125" y="219" text-anchor="middle">TAKE YOUR TIME</text>
+      </svg>
+    </section>
+    <section class="chart-section" aria-labelledby="chart-title">
+      <div class="chart-heading">
+        <div><h2 id="chart-title">The rhythm of the week</h2><p class="chart-subtitle">Average customers per hour · Monday to Sunday</p></div>
+        <div class="legend" aria-label="Colour scale in customers per hour">
+          <span class="legend-label">Quiet to lively</span>
+          <span class="key"><i class="swatch" style="--swatch:#ece2cf"></i>0–9</span>
+          <span class="key"><i class="swatch" style="--swatch:#ddbb97"></i>10–19</span>
+          <span class="key"><i class="swatch" style="--swatch:#b76546"></i>20–29</span>
+          <span class="key"><i class="swatch" style="--swatch:#88402f"></i>30–39</span>
+          <span class="key"><i class="swatch" style="--swatch:#492927"></i>40+</span>
+        </div>
+      </div>
+      <p class="mobile-hint">Swipe across the chart to explore all hours →</p>
+      <div class="chart-scroll" tabindex="0" role="region" aria-label="Hourly café heatmap, scroll horizontally to see all hours" aria-describedby="chart-note">
+        <div id="heatmap"></div>
+      </div>
+      <div id="chart-note" class="chart-note"><span>Each column is the hour starting then: 07:00 to 20:00.</span><span id="cell-detail" role="status" aria-live="polite">Hover or tap a cell for details.</span></div>
+      <div id="accessible-data" class="sr-only"></div>
+      <noscript><p>Enable JavaScript to view the heatmap. The busiest hour is Saturday at 11:00, with 41 customers.</p></noscript>
+    </section>
+    <section class="insights" aria-label="Find your favourite time">
+      <article class="insight"><p class="eyebrow">The morning ritual</p><h3>Weekdays at 08:00</h3><p>The daily rush: about 34 customers<br>per hour, averaged across weekdays.</p></article>
+      <article class="insight"><p class="eyebrow">The weekend buzz</p><h3>Saturday at 11:00</h3><p>Our busiest hour of the week,<br>with 41 customers on average.</p></article>
+      <article class="insight"><p class="eyebrow">A slower sip</p><h3>19:00 &amp; 20:00</h3><p>Just 1 to 4 customers per hour.<br>A little more room to linger.</p></article>
+    </section>
+    <footer><span>Illustrative data, not measured footfall.<br>Numbers show average customers in each one-hour slot; 20:00 means 20:00–21:00.</span><span class="signoff">There’s a moment for everyone.</span></footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const hours = Array.from({ length: 14 }, (_, i) => `${String(i + 7).padStart(2, '0')}:00`);
+    const days = [
+      ['Monday', [12,32,27,7,8,20,22,10,10,15,10,6,2,4]],
+      ['Tuesday', [11,32,27,11,8,20,27,8,14,14,10,6,1,4]],
+      ['Wednesday', [12,34,27,8,8,19,22,9,13,15,11,8,2,1]],
+      ['Thursday', [15,35,25,9,7,23,26,9,14,13,12,9,1,2]],
+      ['Friday', [11,35,27,9,9,20,26,11,13,17,19,15,4,3]],
+      ['Saturday', [3,8,17,35,41,28,21,24,19,14,6,4,1,3]],
+      ['Sunday', [3,5,14,31,33,26,19,23,21,15,6,5,1,4]]
+    ];
+    document.querySelector('#accessible-data').innerHTML = `<table><caption>Average customers per hour, illustrative data. Columns are hour starting times.</caption><thead><tr><th scope="col">Day</th>${hours.map(hour => `<th scope="col">${hour}</th>`).join('')}</tr></thead><tbody>${days.map(([day, values]) => `<tr><th scope="row">${day}</th>${values.map(value => `<td>${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    // ApexCharts draws the first heatmap series at the bottom.
+    const series = days.map(([name, values]) => ({ name, data: values.map((y, i) => ({ x: hours[i], y })) })).reverse();
+    const options = {
+      chart: { type: 'heatmap', height:354,
+        events: { dataPointSelection: (event, chart, {seriesIndex, dataPointIndex, w}) => {
+          if (seriesIndex < 0 || dataPointIndex < 0) return;
+          const row = w.config.series[seriesIndex];
+          const point = row.data[dataPointIndex];
+          document.querySelector('#cell-detail').textContent = `${row.name}, ${point.x}: ${point.y} ${point.y === 1 ? 'customer' : 'customers'} per hour`;
+        } }, fontFamily: "'DM Sans', sans-serif", foreColor:'#76645b', background:'transparent', toolbar:{show:false}, animations:{enabled:false}, zoom:{enabled:false}, parentHeightOffset:0, print:{enabled:true,width:980} },
+      series,
+      plotOptions: { heatmap: { radius:5, enableShades:false, distributed:false, colorScale: { min:0, max:41, ranges:[
+        {from:0,to:9,color:'#ece2cf',foreColor:'#594538',name:'0–9'},
+        {from:10,to:19,color:'#ddbb97',foreColor:'#432b28',name:'10–19'},
+        {from:20,to:29,color:'#b76546',foreColor:'#ffffff',name:'20–29'},
+        {from:30,to:39,color:'#88402f',foreColor:'#ffffff',name:'30–39'},
+        {from:40,to:50,color:'#492927',foreColor:'#ffffff',name:'40+'}
+      ] } } },
+      dataLabels: { enabled:true, style:{fontSize:'12px',fontWeight:500}, formatter:value => value },
+      stroke: {width:5,colors:['#f7f1e6']},
+      legend: {show:false},
+      xaxis: {type:'category',position:'top',labels:{rotate:0,trim:false,hideOverlappingLabels:false,style:{fontSize:'10px'}},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
+      yaxis: {labels:{offsetX:-8,minWidth:86,maxWidth:98,style:{fontSize:'12px',fontWeight:500}}},
+      grid: {show:false,padding:{top:0,right:0,bottom:0,left:0}},
+      states: {hover:{filter:{type:'darken',value:.9}},active:{filter:{type:'none'}}},
+      tooltip: {shared:false,intersect:true,custom:({seriesIndex,dataPointIndex,w}) => {
+        const row = w.config.series[seriesIndex];
+        const point = row.data[dataPointIndex];
+        const end = `${String(dataPointIndex + 8).padStart(2,'0')}:00`;
+        return `<div class="cell-tooltip">${row.name} · ${point.x}–${end}<strong>${point.y} ${point.y === 1 ? 'customer' : 'customers'} per hour</strong>Illustrative average</div>`;
+      }}
+    };
+    async function renderChart() {
+      try {
+        if (!window.ApexCharts) throw new Error('Chart library unavailable');
+        await document.fonts.ready;
+        const chart = new ApexCharts(document.querySelector('#heatmap'), options);
+        await chart.render();
+      } catch (error) {
+        document.querySelector('#heatmap').innerHTML = '<p class="load-error">The chart could not load. Please check your internet connection and reload.</p>';
+        document.querySelector('#accessible-data').classList.remove('sr-only');
+        document.querySelector('#accessible-data').style.overflowX = 'auto';
+        console.error(error);
+      }
+    }
+    renderChart();
+  </script>
+</body>
+</html>

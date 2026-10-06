@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f0e7">
+  <meta name="description" content="An architectural portrait of the world's ten tallest buildings, with CTBUH heights, cities and completion years.">
+  <title>Above the rest | The world's ten tallest buildings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+  <style>
+    :root { --page:#d9d8d1; --paper:#f3f0e7; --ink:#252b28; --soft:#5d625b; --rule:#d0d0c5; --accent:#ab3525; --quiet:#73796f; --text:Inter,Arial,sans-serif; --mono:"IBM Plex Mono",monospace; --display:Antonio,"Arial Narrow",sans-serif; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:32px 20px; background:var(--page); color:var(--ink); font:15px/1.5 var(--text); }
+    .poster { max-width:1200px; margin:auto; padding:32px 48px 26px; background:var(--paper); border-top:5px solid var(--ink); }
+    .masthead { display:flex; justify-content:space-between; align-items:center; gap:16px; padding-bottom:15px; border-bottom:1px solid var(--ink); font:500 11px/1.4 var(--mono); letter-spacing:.1em; text-transform:uppercase; }
+    .masthead b { font-weight:500; color:var(--accent); }
+    .intro { display:grid; grid-template-columns:1fr 270px; gap:36px; align-items:end; padding:29px 0 30px; }
+    .kicker { margin:0 0 16px; font:500 11px/1.5 var(--mono); letter-spacing:.12em; text-transform:uppercase; }
+    h1 { font:600 clamp(52px,7.6vw,92px)/1.05 var(--display); letter-spacing:-.035em; margin:0; max-width:10em; }
+    h1 span { color:var(--accent); }
+    .dek { margin:19px 0 0; color:var(--soft); font-size:14px; max-width:49ch; }
+    .lead-stat { border-left:1px solid var(--rule); padding:0 0 3px 25px; }
+    .lead-stat .number { font:400 65px/1.15 var(--display); color:var(--accent); letter-spacing:-.03em; white-space:nowrap; }
+    .lead-stat .number small { font-size:28px; margin-left:6px; }
+    .lead-stat p { margin:10px 0 0; font-size:13px; color:var(--soft); max-width:25ch; }
+    .lead-stat strong { font-weight:600; color:var(--ink); }
+    .plot-heading { display:flex; justify-content:space-between; gap:20px; align-items:baseline; padding:13px 0 4px; border-top:1px solid var(--ink); }
+    .plot-heading h2 { margin:0; font:500 11px/1.6 var(--mono); letter-spacing:.06em; text-transform:uppercase; }
+    .plot-heading p { margin:0; font:11px/1.5 var(--mono); color:var(--soft); }
+    .skyline { padding:10px 0 0; }
+    .rhp-chart { background:var(--paper); }
+    .inspection { display:grid; grid-template-columns:45px minmax(0,1fr) auto; align-items:center; gap:18px; min-height:103px; margin-top:4px; padding:17px 0; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); }
+    .inspection .index { font:400 30px/1 var(--display); color:var(--accent); }
+    .inspection h3 { margin:0 0 5px; font-size:17px; font-weight:600; }
+    .inspection p { margin:0; font:12px/1.6 var(--mono); color:var(--soft); }
+    .inspection .comparison { width:244px; font:13px/1.6 var(--text); text-align:right; color:var(--soft); }
+    .inspection .comparison strong { color:var(--accent); font-weight:600; }
+    .directory-heading { display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin:25px 0 15px; }
+    .directory-heading h2 { margin:0; font:500 11px/1.5 var(--mono); letter-spacing:.1em; text-transform:uppercase; }
+    .directory-heading p { margin:0; font:11px/1.5 var(--mono); color:var(--soft); }
+    .directory { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:22px; }
+    .building { min-width:0; padding:10px 0 0; border:0; border-top:2px solid var(--rule); background:none; color:var(--ink); font:inherit; text-align:left; cursor:pointer; }
+    .building.selected { border-color:var(--accent); }
+    .building:focus-visible { outline:2px solid var(--accent); outline-offset:5px; }
+    .building .topline { display:flex; justify-content:space-between; align-items:baseline; gap:7px; margin-bottom:8px; }
+    .building .rank { color:var(--soft); font:11px/1.5 var(--mono); }
+    .building .height { font:500 14px/1.5 var(--mono); white-space:nowrap; }
+    .building.selected .height { color:var(--accent); }
+    .building .name { display:block; min-height:3.9em; font-size:13px; line-height:1.3; font-weight:600; }
+    .building .city, .building .year { display:block; font-size:11px; line-height:1.7; color:var(--soft); }
+    footer { display:flex; justify-content:space-between; gap:30px; margin-top:28px; padding-top:14px; border-top:1px solid var(--ink); color:var(--soft); font-size:10px; line-height:1.6; }
+    footer p { margin:0; max-width:75ch; }
+    .folio { font:500 12px/1.5 var(--mono); white-space:nowrap; color:var(--ink); }
+    #loading { padding:60px 20px; text-align:center; }
+    @media (max-width:1000px) {
+      .poster { padding:26px 30px; }
+      .intro { grid-template-columns:1fr 210px; gap:24px; }
+      .lead-stat .number { font-size:54px; }
+      .directory { gap:14px; }
+      .building .name { min-height:5.2em; }
+    }
+    @media (max-width:650px) {
+      body { padding:12px 10px; }
+      .poster { padding:18px 16px; border-top-width:4px; }
+      .masthead { font-size:9px; letter-spacing:.04em; gap:10px; }
+      .masthead .edition { max-width:100px; text-align:right; }
+      .intro { display:block; padding:22px 0; }
+      .kicker { margin-bottom:12px; font-size:10px; }
+      h1 { font-size:55px; line-height:1.07; }
+      .dek { font-size:13px; margin-top:16px; }
+      .lead-stat { border-left:0; padding:0; display:flex; align-items:center; gap:18px; margin-top:17px; }
+      .lead-stat .number { font-size:37px; }
+      .lead-stat .number small { font-size:20px; }
+      .lead-stat p { font-size:11px; margin:0; max-width:25ch; }
+      .plot-heading { display:block; padding-top:11px; }
+      .plot-heading h2 { font-size:10px; }
+      .plot-heading p { font-size:10px; margin-top:4px; }
+      .inspection { grid-template-columns:26px minmax(0,1fr); gap:10px; min-height:160px; padding:14px 0; }
+      .inspection .index { font-size:25px; align-self:start; padding-top:3px; }
+      .inspection h3 { font-size:15px; min-height:2.8em; line-height:1.4; margin:0; }
+      .inspection p { font-size:10px; }
+      .inspection .comparison { grid-column:2; width:auto; text-align:left; font-size:12px; min-height:2lh; }
+      .directory-heading { align-items:start; margin-top:23px; }
+      .directory-heading p { max-width:110px; text-align:right; font-size:10px; }
+      .directory { grid-template-columns:repeat(2,minmax(0,1fr)); gap:21px 18px; }
+      .building .name { min-height:3.9em; }
+      footer { gap:20px; font-size:10px; }
+    }
+    @media print { body { padding:0; background:var(--paper); } .poster { max-width:none; } .building { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <div id="app"><p id="loading">Loading the skyline…</p></div>
+  <noscript>This interactive poster needs JavaScript enabled.</noscript>
+  <script type="module">
+    import { Chart, Plot, Bar, Label, slat, shape, nice, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
+
+    // Data: CTBUH figures supplied for this poster, with simplified architectural outlines.
+    const BUILDINGS = [
+      { name:"Burj Khalifa", city:"Dubai", height:828, year:2010, points:[[.05,1],[.05,.84],[.16,.84],[.16,.66],[.26,.66],[.26,.46],[.35,.46],[.35,.28],[.44,.28],[.48,0],[.52,0],[.56,.2],[.64,.2],[.64,.4],[.74,.4],[.74,.62],[.85,.62],[.85,.82],[.95,.82],[.95,1]] },
+      { name:"Merdeka 118", city:"Kuala Lumpur", height:678.9, year:2023, points:[[.12,1],[.12,.38],[.3,.28],[.65,.2],[.68,0],[.72,0],[.74,.27],[.89,.39],[.89,1]] },
+      { name:"Shanghai Tower", city:"Shanghai", height:632, year:2015, points:[[.08,1],[.13,.8],[.18,.6],[.25,.35],[.32,.1],[.45,.015],[.65,0],[.78,.07],[.85,.24],[.82,.45],[.77,.7],[.84,1]] },
+      { name:"Makkah Royal Clock Tower", city:"Mecca", height:601, year:2012, points:[[0,1],[0,.77],[.13,.77],[.13,.4],[.24,.4],[.24,.28],[.36,.23],[.42,.17],[.47,.17],[.48,0],[.52,0],[.53,.17],[.58,.17],[.64,.23],[.76,.28],[.76,.4],[.87,.4],[.87,.77],[1,.77],[1,1]] },
+      { name:"Ping An Finance Center", city:"Shenzhen", height:599.1, year:2017, points:[[.07,1],[.13,.16],[.34,.05],[.47,0],[.53,0],[.66,.05],[.87,.16],[.93,1]] },
+      { name:"Lotte World Tower", city:"Seoul", height:554.5, year:2017, points:[[.05,1],[.13,.61],[.24,.25],[.35,.03],[.46,0],[.48,.09],[.52,.09],[.54,0],[.65,.03],[.76,.25],[.87,.61],[.95,1]] },
+      { name:"One World Trade Center", city:"New York City", height:541.3, year:2014, points:[[.04,1],[.2,.3],[.47,.3],[.48,0],[.52,0],[.53,.3],[.8,.3],[.96,1]] },
+      { name:"Guangzhou CTF Finance Centre", city:"Guangzhou", height:530, year:2016, points:[[.1,1],[.1,.08],[.23,.08],[.23,0],[.7,0],[.7,.08],[.82,.08],[.82,.2],[.9,.2],[.9,1]] },
+      { name:"Tianjin CTF Finance Centre", city:"Tianjin", height:530, year:2019, points:[[.06,1],[.13,.68],[.21,.47],[.25,.2],[.34,.04],[.46,0],[.58,.015],[.68,.08],[.75,.28],[.77,.48],[.89,.78],[.94,1]] },
+      { name:"CITIC Tower", city:"Beijing", height:527.7, year:2018, points:[[.06,1],[.16,.75],[.23,.5],[.19,.27],[.06,.025],[.17,0],[.83,0],[.94,.025],[.81,.27],[.77,.5],[.84,.75],[.94,1]] }
+    ];
+    const rows = [...BUILDINGS].sort((a,b) => b.height-a.height).map((b,i) => ({...b, number:String(i+1).padStart(2,"0"), outline:shape(...b.points.map(([x,y],j) => [j ? "L" : "M",1-y,x]),["Z"])}));
+    const fmt = new Intl.NumberFormat("en",{maximumFractionDigits:1});
+    const scale = nice(Math.min(0,...rows.map(b=>b.height)),Math.max(...rows.map(b=>b.height)),5);
+    const lead = rows[0];
+    const gap = lead.height-rows[1].height;
+
+    // Slat: architectural height sets each silhouette's exact vertical extent.
+    const Building = slat({
+      inset:.18,
+      room:{start:32,end:25,before:0,after:0},
+      css:`
+        .tower { cursor:pointer; }
+        .tower:focus-visible { outline:2px solid #ab3525; outline-offset:-2px; }
+        .bar { --rhp-radius:0px; }
+        .height { font:500 13px "IBM Plex Mono",monospace; color:#424b43; padding-bottom:7px; }
+        .number { font:500 11px "IBM Plex Mono",monospace; color:#5d625b; padding-top:9px; }
+        .leader .height, .leader .number { color:#ab3525; font-weight:600; }
+        .selected .number { text-decoration:underline; text-underline-offset:5px; }
+        .clock { position:absolute; width:44%; aspect-ratio:1; border:2px solid #f3f0e7; border-radius:50%; top:29%; left:28%; }
+        .clock:before { content:""; position:absolute; left:47%; top:15%; width:1px; height:40%; background:#f3f0e7; }
+        .clock:after { content:""; position:absolute; left:47%; top:50%; width:32%; height:1px; background:#f3f0e7; }
+        @container (max-width:600px) { .height { display:none; } .number { font-size:10px; } .clock { border-width:1px; } }
+      `
+    }, d => html`
+      <div class=${()=>`tower ${d.index===0?"leader":""} ${d.selected?"selected":""}`} data-row=${()=>d.index}
+        aria-label=${()=>`${d.number}. ${d.name}, ${fmt.format(d.height)} metres, ${d.city}, completed ${d.year}`}>
+        <${Bar} to=${()=>d.height} shape=${()=>d.outline} color=${()=>d.index===0?"#ab3525":d.selected?"#323e36":"#73796f"}>
+          ${()=>d.name==="Makkah Royal Clock Tower"?html`<span class="clock" aria-hidden="true"></span>`:null}
+        <//>
+        <${Label} at=${()=>d.height} class="height">${()=>fmt.format(d.height)}<//>
+        <${Label} edge="start" class="number">${()=>d.number}<//>
+      </div>`);
+
+    // Poster and comparison: pointer, touch and keyboard use the same selection.
+    function SkylinePoster() {
+      const [selected,setSelected] = createSignal(null);
+      const current = () => rows[selected()??0];
+      const media = matchMedia("(max-width:650px)");
+      const [phone,setPhone] = createSignal(media.matches);
+      const resize = e => setPhone(e.matches);
+      media.addEventListener("change",resize);
+      onCleanup(()=>media.removeEventListener("change",resize));
+      const rowOf = el => { const row=el?.closest?.("[data-row]"); return row?Number(row.dataset.row):null; };
+      const pick = e => { const row=rowOf(e.target); if(row!==null) setSelected(row); };
+      const leave = e => { if(e.pointerType!=="touch") setSelected(e.currentTarget.contains(document.activeElement)?rowOf(document.activeElement):null); };
+      return html`
+        <main class="poster" onPointerMove=${e=>e.pointerType!=="touch"&&pick(e)} onClick=${pick} onFocusIn=${pick}
+          onPointerLeave=${leave} onFocusOut=${e=>!e.currentTarget.contains(e.relatedTarget)&&setSelected(null)}>
+          <header class="masthead"><b>The vertical city</b><span class="edition">Architecture / Field notes 01</span></header>
+          <section class="intro" aria-labelledby="headline">
+            <div><p class="kicker">The world's ten tallest buildings</p>
+              <h1 id="headline">Burj Khalifa rises<br /><span>above the rest.</span></h1>
+              <p class="dek">Ten extraordinary buildings, one shared scale. Height to the architectural top, measured in metres.</p>
+            </div>
+            <aside class="lead-stat"><div class="number">${fmt.format(gap)}<small>m</small></div><p>The distance between <strong>${lead.name}</strong> and its nearest rival, ${rows[1].name}.</p></aside>
+          </section>
+          <section aria-labelledby="chart-title">
+            <div class="plot-heading"><h2 id="chart-title">01 / A skyline measured in metres</h2><p>Tap, point or use Tab + arrow keys to compare.</p></div>
+            <div class="skyline">
+              <${Chart} orientation="vertical" height=${()=>phone()?280:410} scale=${[scale.min,scale.max]} ticks=${scale.ticks}
+                label="The world's ten tallest buildings on a shared height scale, in metres"
+                theme=${{font:"Inter,Arial,sans-serif",ink:"#252b28",muted:"#5d625b",grid:"#d0d0c5",surface:"#f3f0e7"}}>
+                <${Plot} rows=${rows} selected=${d=>(selected()??0)===d.index} keyboard=${true}>${Building}<//>
+              <//>
+            </div>
+            <div class="inspection" aria-live="polite" aria-atomic="true">
+              <span class="index">${()=>current().number}</span>
+              <div><h3>${()=>current().name}</h3><p>${()=>`${current().city} / ${fmt.format(current().height)} m / Completed ${current().year}`}</p></div>
+              <p class="comparison">${()=>current()===lead?html`<strong>${fmt.format(gap)} m taller</strong>${" "}than ${rows[1].name}, the next building in the ranking.`:html`<strong>${fmt.format(lead.height-current().height)} m below</strong>${" "}${lead.name}; ${fmt.format(current().height/lead.height*100)}% of its height.`}</p>
+            </div>
+          </section>
+          <section aria-labelledby="directory-title">
+            <div class="directory-heading"><h2 id="directory-title">02 / The building directory</h2><p>Height / City / Completion</p></div>
+            <div class="directory">${rows.map((b,i)=>html`
+              <button type="button" class=${()=>`building ${(selected()??0)===i?"selected":""}`} data-row=${i} aria-pressed=${()=>(selected()??0)===i}>
+                <span class="topline"><span class="rank">${b.number}</span><span class="height">${fmt.format(b.height)} m</span></span>
+                <span class="name">${b.name}</span><span class="city">${b.city}</span><span class="year">Completed ${b.year}</span>
+              </button>`)}</div>
+          </section>
+          <footer><p>Source: Council on Tall Buildings and Urban Habitat (CTBUH), figures supplied for this poster.<br />Heights are to architectural tops. Silhouettes are schematic; heights share a scale, widths do not. Buildings 08 and 09 share the same height.</p><span class="folio">10 / 10</span></footer>
+        </main>`;
+    }
+
+    // Mount: all code and data live in this file; rhp is loaded from jsDelivr.
+    document.getElementById("loading").remove();
+    render(SkylinePoster,document.getElementById("app"));
+  </script>
+</body>
+</html>

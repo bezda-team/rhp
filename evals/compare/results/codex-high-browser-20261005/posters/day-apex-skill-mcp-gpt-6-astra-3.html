@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f3eb">
+  <meta name="description" content="How Americans spend an average 24-hour day, using approximate 2023 American Time Use Survey figures for people aged 15 and over.">
+  <title>Where the day goes | America in 24 hours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f6f3eb; --ink:#253a42; --muted:#64706e; --rule:#d7d8cc; --orange:#dc693d; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
+    main { max-width:1180px; padding:34px 48px 28px; margin:auto; }
+    .masthead { display:flex; justify-content:space-between; align-items:center; padding-bottom:17px; border-bottom:1px solid var(--ink); font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+    .brand { display:flex; gap:10px; align-items:center; }
+    .brand svg { width:20px; height:20px; }
+    .edition { color:var(--muted); letter-spacing:1.5px; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:30px; padding:32px 0 27px; }
+    .eyebrow { margin:0 0 9px; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--orange); }
+    h1 { font-family:'DM Serif Display',Georgia,serif; font-size:clamp(44px,6vw,76px); font-weight:400; line-height:1.06; letter-spacing:-2.5px; margin:0 0 16px; }
+    h1 em { font-weight:400; color:var(--orange); }
+    .intro { margin:0; max-width:630px; color:var(--muted); font-size:15px; line-height:1.7; }
+    .year { border:1px solid var(--rule); border-radius:50%; width:103px; height:103px; display:flex; flex:none; flex-direction:column; justify-content:center; align-items:center; transform:rotate(8deg); }
+    .year span { font-size:9px; text-transform:uppercase; letter-spacing:1.8px; }
+    .year strong { font-family:'DM Serif Display',Georgia,serif; font-size:30px; font-weight:400; line-height:1.4; }
+    .visual { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); display:grid; grid-template-columns:1.1fr 1fr; gap:48px; padding:25px 0 28px; }
+    .section-label { font-size:10px; text-transform:uppercase; letter-spacing:1.6px; font-weight:700; margin:0; }
+    .chart-column { display:flex; flex-direction:column; min-width:0; }
+    .chart-shell { width:100%; max-width:490px; aspect-ratio:1; margin:auto; position:relative; }
+    #day-chart { position:absolute; inset:0; }
+    .chart-center { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:48%; text-align:center; pointer-events:none; }
+    .center-kicker { display:block; font-size:10px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--muted); }
+    .center-value { display:block; font-family:'DM Serif Display',Georgia,serif; font-size:clamp(60px,8vw,96px); line-height:1.08; letter-spacing:-4px; }
+    .center-unit { font-size:13px; display:block; color:var(--muted); margin-top:6px; }
+    .center-rule { display:block; width:28px; height:1px; background:var(--orange); margin:16px auto 12px; }
+    #center-detail { font-size:12px; color:var(--muted); }
+    .chart-caption { text-align:center; color:var(--muted); font-size:11px; margin:0 0 9px; }
+    .chart-caption span { color:var(--orange); padding-right:4px; }
+    .breakdown { min-width:0; padding-top:1px; }
+    .table-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+    .unit-label { font-size:10px; text-transform:uppercase; letter-spacing:1.3px; color:var(--muted); }
+    .activity { appearance:none; width:100%; background:transparent; color:var(--ink); font:inherit; border:0; border-bottom:1px solid var(--rule); padding:10px 8px; display:grid; grid-template-columns:10px 1fr auto; gap:12px; align-items:center; text-align:left; cursor:pointer; border-radius:0; transition:background .15s; }
+    .activity:first-child { border-top:1px solid var(--rule); }
+    .activity:hover, .activity[aria-pressed="true"] { background:#eae8df; }
+    .activity:focus-visible, .reset:focus-visible { outline:2px solid var(--orange); outline-offset:2px; }
+    .swatch { width:9px; height:9px; border-radius:50%; background:var(--color); }
+    .activity-name { font-size:13px; font-weight:500; }
+    .activity small { display:block; font-size:10px; color:var(--muted); font-weight:400; margin-top:4px; }
+    .activity strong { font-size:19px; font-weight:500; font-variant-numeric:tabular-nums; line-height:1; }
+    .table-total { display:flex; justify-content:space-between; padding:15px 8px 0 30px; align-items:center; }
+    .reset { padding:0; background:none; border:0; font:inherit; font-size:11px; color:var(--muted); cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+    .table-total strong { font-size:20px; font-weight:700; }
+    .insights { display:grid; grid-template-columns:1fr 1.15fr 1fr; gap:28px; padding:27px 0; border-bottom:1px solid var(--ink); }
+    .insight + .insight { border-left:1px solid var(--rule); padding-left:28px; }
+    .insight .section-label { color:var(--muted); font-size:9px; letter-spacing:1.4px; }
+    .insight h2 { font-family:'DM Serif Display',Georgia,serif; font-weight:400; font-size:43px; letter-spacing:-1px; margin:8px 0 3px; line-height:1.1; }
+    .insight h2 small { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0; }
+    .insight p { font-size:12px; line-height:1.65; margin:7px 0 0; color:var(--muted); }
+    .insight p strong { font-weight:600; color:var(--ink); }
+    .tv h2 { color:var(--orange); }
+    .tv-bar { height:8px; background:#ecdcc4; margin-top:13px; display:flex; }
+    .tv-bar span { width:50.980392%; background:var(--orange); }
+    .tv-labels { display:flex; justify-content:space-between; gap:12px; margin-top:7px; font-size:9px; color:var(--muted); }
+    .insight h2.note-title { font-size:28px; line-height:1.13; margin-top:12px; letter-spacing:-.5px; }
+    footer { display:flex; gap:40px; justify-content:space-between; padding-top:17px; font-size:10px; line-height:1.7; color:var(--muted); }
+    footer p { margin:0; max-width:760px; }
+    footer a { color:inherit; text-underline-offset:2px; }
+    .footer-mark { white-space:nowrap; text-transform:uppercase; letter-spacing:1.5px; font-size:9px; padding-top:2px; }
+    .apexcharts-tooltip { font-family:'DM Sans',sans-serif !important; }
+    .chart-error { text-align:center; color:var(--muted); padding:30px; font-size:13px; }
+    @media(min-width:900px) { .chart-shell { margin-top:10px; margin-bottom:0; } }
+    @media(max-width:800px) {
+      main { padding:25px 28px; }
+      header { padding:27px 0; }
+      h1 { font-size:58px; }
+      .year { width:84px; height:84px; }
+      .visual { gap:22px; grid-template-columns:1fr 1fr; }
+      .center-value { font-size:70px; }
+      .center-rule { margin:10px auto; }
+      .chart-center { width:53%; }
+      .insights { gap:20px; }
+      .insight + .insight { padding-left:20px; }
+    }
+    @media(max-width:600px) {
+      main { padding:22px 22px 25px; }
+      .masthead { font-size:9px; letter-spacing:1.6px; }
+      .edition { font-size:9px; letter-spacing:1px; }
+      header { padding:30px 0 24px; }
+      .year { display:none; }
+      h1 { font-size:52px; letter-spacing:-1.9px; max-width:350px; }
+      .intro { font-size:13px; line-height:1.7; }
+      .desktop-break { display:none; }
+      .eyebrow { font-size:9px; }
+      .visual { display:block; padding-top:21px; padding-bottom:23px; }
+      .chart-shell { max-width:390px; margin:9px auto 0; }
+      .center-value { font-size:80px; }
+      .chart-caption { margin:0 0 28px; font-size:10px; }
+      .activity { padding:12px 8px; }
+      .activity-name { font-size:13px; }
+      .insights { display:block; padding:0; }
+      .insight { padding:24px 0; }
+      .insight + .insight { border-left:0; border-top:1px solid var(--rule); padding:24px 0; }
+      .insight p { font-size:13px; }
+      .insight h2 { font-size:48px; }
+      .insight h2.note-title { font-size:30px; }
+      footer { display:block; font-size:10px; }
+      .footer-mark { margin-top:13px; }
+    }
+    @media(prefers-reduced-motion:reduce) { * { transition:none !important; } }
+    @media print { main { max-width:100%; padding:15px; } .activity { break-inside:avoid; } .insights { break-inside:avoid; } body { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="masthead">
+      <span class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 5v7l4 2"/></svg> The everyday, in data</span>
+      <span class="edition">United States / 2023</span>
+    </div>
+    <header>
+      <div>
+        <p class="eyebrow">One country. Twenty-four hours.</p>
+        <h1>Where the <em>day goes.</em></h1>
+        <p class="intro">Sleep, work, a little downtime. Here’s how people in America<br class="desktop-break"> spend an average day, one hour at a time.</p>
+      </div>
+      <div class="year" aria-label="2023 time use survey"><span>Time use</span><strong>2023</strong><span>Survey</span></div>
+    </header>
+
+    <section class="visual" aria-label="The average American day">
+      <div class="chart-column">
+        <h2 class="section-label">01 / A day at a glance</h2>
+        <div class="chart-shell">
+          <div id="day-chart" aria-label="Donut chart showing the ten activities in the breakdown"></div>
+          <div class="chart-center" aria-live="polite" aria-atomic="true">
+            <span class="center-kicker" id="center-label">One full day</span>
+            <span class="center-value" id="center-value">24</span>
+            <span class="center-unit">hours per day</span>
+            <span class="center-rule"></span>
+            <span id="center-detail">All of us, on average.</span>
+          </div>
+        </div>
+        <p class="chart-caption"><span>↗</span> Select a slice or an activity to explore.</p>
+      </div>
+      <div class="breakdown">
+        <div class="table-head"><h2 class="section-label">02 / The daily breakdown</h2><span class="unit-label">Hours / day</span></div>
+        <div id="activities" role="group" aria-label="Activity hours, select for share of day"></div>
+        <div class="table-total"><button class="reset" id="reset" type="button">View the whole day</button><strong>24.0</strong></div>
+      </div>
+    </section>
+
+    <section class="insights" aria-label="What the numbers tell us">
+      <article class="insight">
+        <div class="section-label">The biggest piece</div>
+        <h2>3 in 8 <small>hours</small></h2>
+        <p>That’s how much of the day is spent <strong>sleeping</strong>. At 9 hours, it’s the single largest slice of American life.</p>
+      </article>
+      <article class="insight tv">
+        <div class="section-label">Inside leisure &amp; sports</div>
+        <h2>2.6 <small>hours of TV</small></h2>
+        <p>Watching TV takes up <strong>about half of leisure time</strong>, and almost 11% of the whole day.</p>
+        <div class="tv-bar" role="img" aria-label="Of 5.1 leisure hours, 2.6 are watching TV and 2.5 are other leisure"><span></span></div>
+        <div class="tv-labels"><span>TV · 2.6 h</span><span>Other leisure · 2.5 h</span></div>
+      </article>
+      <article class="insight">
+        <div class="section-label">A little perspective</div>
+        <h2 class="note-title">An average.<br>Not a schedule.</h2>
+        <p>These figures include <strong>everyone aged 15 and over</strong>, across weekdays and weekends. Work time is averaged over workers and nonworkers alike.</p>
+      </article>
+    </section>
+    <footer>
+      <p><strong>Source:</strong> U.S. Bureau of Labor Statistics, <a href="https://www.bls.gov/tus/" target="_blank" rel="noopener noreferrer">American Time Use Survey, 2023</a>.<br>Approximate hours per day, population aged 15 and over. TV is included in leisure and sports. Slices show amounts of time, not when activities occur.</p>
+      <p class="footer-mark">24 hours. A thousand ways to live.</p>
+    </footer>
+    <noscript><p>Enable JavaScript to view the chart. Hours per day: Sleeping 9.0; Leisure and sports 5.1 (including TV 2.6); Working 3.6; Household activities 2.0; Eating and drinking 1.1; Other personal care 0.8; Shopping 0.7; Caring for others 0.5; Education 0.4; Everything else 0.8.</p></noscript>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const activities = [
+      { name:'Sleeping', hours:9.0, color:'#293f4b' },
+      { name:'Leisure and sports', hours:5.1, color:'#dc693d', note:'Includes 2.6 hours of watching TV' },
+      { name:'Working', hours:3.6, color:'#d8ac58' },
+      { name:'Household activities', hours:2.0, color:'#698476' },
+      { name:'Eating and drinking', hours:1.1, color:'#a2b1a2' },
+      { name:'Other personal care', hours:0.8, color:'#9a7b86' },
+      { name:'Shopping', hours:0.7, color:'#ba9274' },
+      { name:'Caring for others', hours:0.5, color:'#719699' },
+      { name:'Education', hours:0.4, color:'#8d93a7' },
+      { name:'Everything else', hours:0.8, color:'#b9b8aa' }
+    ];
+    const list = document.querySelector('#activities');
+    let selected = -1;
+    let dayChart;
+    const buttons = activities.map((item, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'activity';
+      button.style.setProperty('--color', item.color);
+      button.setAttribute('aria-pressed', 'false');
+      button.setAttribute('aria-label', `${item.name}: ${item.hours.toFixed(1)} hours per day${item.note ? ', ' + item.note : ''}`);
+      button.innerHTML = `<span class="swatch" aria-hidden="true"></span><span class="activity-name">${item.name}${item.note ? `<small>${item.note}</small>` : ''}</span><strong>${item.hours.toFixed(1)}</strong>`;
+      button.addEventListener('click', () => selectActivity(selected === index ? -1 : index));
+      list.appendChild(button);
+      return button;
+    });
+    function selectActivity(index) {
+      selected = index;
+      const item = activities[index];
+      document.querySelector('#center-label').textContent = item ? item.name : 'One full day';
+      document.querySelector('#center-value').textContent = item ? item.hours.toFixed(1) : '24';
+      document.querySelector('#center-value').style.color = item ? item.color : 'var(--ink)';
+      document.querySelector('#center-detail').textContent = item ? `${(item.hours / 24 * 100).toFixed(1)}% of the day` : 'All of us, on average.';
+      buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+      document.querySelectorAll('#day-chart .apexcharts-pie-series').forEach((slice, i) => {
+        slice.style.opacity = index < 0 || i === index ? '1' : '0.35';
+      });
+    }
+    document.querySelector('#reset').addEventListener('click', () => selectActivity(-1));
+    async function renderChart() {
+      if (typeof ApexCharts === 'undefined') {
+        document.querySelector('#day-chart').innerHTML = '<p class="chart-error">The chart could not load. All figures are available in the breakdown.</p>';
+        return;
+      }
+      dayChart = new ApexCharts(document.querySelector('#day-chart'), {
+        chart: {
+          type:'donut', height:'100%', width:'100%', fontFamily:'DM Sans, sans-serif',
+          background:'transparent', parentHeightOffset:0, toolbar:{ show:false },
+          animations:{ enabled:false },
+          events:{
+            dataPointSelection:(_event, _chart, config) => selectActivity(selected === config.dataPointIndex ? -1 : config.dataPointIndex),
+            updated:() => selectActivity(selected)
+          }
+        },
+        series:activities.map(item => item.hours),
+        labels:activities.map(item => item.name),
+        colors:activities.map(item => item.color),
+        stroke:{ width:3, colors:['#f6f3eb'] },
+        legend:{ show:false },
+        dataLabels:{ enabled:false },
+        plotOptions:{ pie:{ customScale:0.94, expandOnClick:false, hoverOutline:{ show:false }, donut:{ size:'70%', labels:{ show:false } } } },
+        states:{ hover:{ filter:{ type:'none' } }, active:{ filter:{ type:'none' } } },
+        tooltip:{ enabled:true, shared:false, intersect:true, y:{ formatter:value => `${value.toFixed(1)} hours · ${(value / 24 * 100).toFixed(1)}%` } },
+        grid:{ padding:{ top:0, bottom:0, left:0, right:0 } }
+      });
+      try { await dayChart.render(); }
+      catch (error) {
+        document.querySelector('#day-chart').innerHTML = '<p class="chart-error">The chart could not load. All figures are available in the breakdown.</p>';
+        console.error(error);
+      }
+    }
+    renderChart();
+  </script>
+</body>
+</html>

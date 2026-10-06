@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An illustrative comparison of women's and men's median weekly earnings in eight occupations.">
+<title>The gender pay gap, occupation by occupation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+:root { color-scheme: light; --paper: #faf9f5; --ink: #242528; --red: #d71920; --muted: #616366; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 44px 24px; background: #e7e7e3; color: var(--ink); font-family: Inter, Arial, sans-serif; }
+.poster { max-width: 1040px; margin: auto; padding: 0 48px 28px; background: var(--paper); box-shadow: 0 12px 40px #0000000c; }
+.masthead { border-top: 2px solid var(--red); display: flex; justify-content: space-between; align-items: center; padding-top: 23px; position: relative; }
+.masthead::before { content: ''; position: absolute; top: -2px; left: 0; height: 8px; width: 64px; background: var(--red); }
+.kicker, .edition { font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.kicker { color: #bd151b; }
+.edition { color: var(--muted); }
+h1 { font-size: clamp(36px, 5.2vw, 61px); line-height: 1.04; letter-spacing: -.045em; font-weight: 700; margin: 29px 0 19px; max-width: 850px; }
+.dek { max-width: 700px; font-size: 16px; line-height: 1.55; margin: 0 0 26px; color: #505255; }
+.chart-title { border-top: 1px solid var(--ink); padding-top: 17px; margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+.chart-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 8px 0 22px; font-size: 13px; }
+.units { color: var(--muted); }
+.legend { display: flex; gap: 19px; flex-shrink: 0; }
+.legend span { display: flex; align-items: center; gap: 7px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--ink); }
+.legend .women { background: var(--red); }
+.columns { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid #c7c8c5; }
+.readout { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; min-height: 80px; margin-top: 18px; padding: 15px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid #c7c8c5; background: var(--paper); }
+.readout-name { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+.readout-detail { font-size: 13px; line-height: 1.5; color: #505255; }
+.readout-number { color: #bd151b; font-size: 29px; font-weight: 700; letter-spacing: -.04em; white-space: nowrap; text-align: right; }
+.readout-number small { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
+.hint { color: var(--muted); font-size: 11px; margin: 9px 0 22px; }
+.note { font-size: 11px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 82ch; }
+.footer { display: flex; justify-content: space-between; margin-top: 22px; padding-top: 10px; border-top: 1px solid #c7c8c5; color: var(--muted); font-size: 10px; letter-spacing: .09em; text-transform: uppercase; }
+@media (max-width: 650px) {
+ body { padding: 16px 10px; }
+ .poster { padding: 0 20px 22px; }
+ .masthead { padding-top: 20px; }
+ .edition { display: none; }
+ h1 { font-size: 37px; margin-top: 25px; }
+ .dek { font-size: 14px; margin-bottom: 22px; }
+ .chart-title { font-size: 16px; }
+ .chart-meta { display: block; margin-bottom: 18px; }
+ .legend { margin-top: 12px; }
+ .columns { font-size: 10px; }
+ .readout { min-height: 104px; margin-top: 14px; padding: 12px 0; }
+ .readout.picked { position: sticky; bottom: 0; z-index: 3; }
+ .readout-name { font-size: 13px; }
+ .readout-detail { font-size: 11px; }
+ .readout-number { font-size: 25px; }
+ .note { font-size: 11px; }
+}
+@media print {
+ body { padding: 0; background: white; }
+ .poster { box-shadow: none; max-width: none; padding: 0 20px 16px; }
+ .hint { display: none; }
+ .readout { position: static; }
+ * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<main id="poster"></main>
+<noscript>This chart needs JavaScript to display.</noscript>
+<script type="module">
+import { Chart, Plot, Bar, Dot, Label, slat, nice, html, render, createSignal, Show, onCleanup } from '@bezda/rhp/standalone';
+
+// Data: illustrative median weekly earnings in US dollars, provided for this poster.
+const DATA = [
+ { name: 'Software developers', women: 1850, men: 2100 },
+ { name: 'Lawyers', women: 1880, men: 2450 },
+ { name: 'Physicians', women: 1950, men: 2800 },
+ { name: 'Registered nurses', women: 1400, men: 1550 },
+ { name: 'Elementary school teachers', women: 1150, men: 1250 },
+ { name: 'Accountants', women: 1300, men: 1600 },
+ { name: 'Retail salespersons', women: 650, men: 820 },
+ { name: 'Chefs and head cooks', women: 700, men: 850 },
+];
+const ROWS = DATA.map(d => ({ ...d, gap: d.men - d.women, percent: (d.men - d.women) / d.men * 100 })).sort((a,b) => b.gap - a.gap);
+const leader = ROWS[0];
+const numbers = new Intl.NumberFormat('en-US');
+const usd = v => '$' + numbers.format(v);
+const all = ROWS.flatMap(d => [d.women, d.men]);
+const range = nice(Math.min(0, ...all), Math.max(0, ...all));
+const describe = d => `${d.name}: women ${usd(d.women)}, men ${usd(d.men)} per week. Gap ${usd(d.gap)}, or ${d.percent.toFixed(1)}% of men's earnings.`;
+
+// Slat types: two earnings dots joined by the dollar gap, with labels on either side.
+const rowCss = `
+ .occupation { border-bottom: 1px solid #dedfdb; cursor: pointer; }
+ .occupation.on { background: #f0efea; }
+ .occupation:focus-visible { outline: 2px solid #d71920; outline-offset: -2px; }
+ .name { position: absolute; left: -222px; width: 207px; top: 50%; transform: translateY(-50%); font-size: 14px; line-height: 1.3; font-weight: 500; }
+ .on .name { font-weight: 700; }
+ .on .gap { color: #bd151b; font-weight: 700; }
+ .gap { font-size: 14px; --rhp-label-gap: 40px; font-variant-numeric: tabular-nums; }
+ .earnings { font-size: 12px; font-weight: 500; --rhp-label-gap: 11px; font-variant-numeric: tabular-nums; }
+ .women-value { color: #bd151b; }
+ .link { --rhp-radius: 0px; }
+ @media (max-width: 650px) {
+  .name { left: 0; top: 6px; transform: none; width: calc(100% - 20px); font-size: 12px; line-height: 1.2; }
+  .gap { left: auto; right: -36px; top: 6px; width: 50px; max-width: none; padding: 0; --rhp-label-gap: 0px; text-align: right; transform: none; font-size: 12px; }
+  .earnings { font-size: 11px; --rhp-label-gap: 9px; }
+ }
+`;
+const drawRow = d => html`
+ <div class=${() => d.on ? 'occupation on' : 'occupation'} data-row=${() => d.index} aria-label=${() => describe(d)}>
+  <span class="name">${() => d.name}</span>
+  <${Bar} from=${() => d.women} to=${() => d.men} thick="3px" color="#969a9d" class="link" />
+  <${Dot} at=${() => d.women} size="11px" color="#d71920" />
+  <${Dot} at=${() => d.men} size="11px" color="#242528" />
+  <${Label} at=${() => d.women} side="before" class="earnings women-value">${() => numbers.format(d.women)}<//>
+  <${Label} at=${() => d.men} class="earnings">${() => numbers.format(d.men)}<//>
+  <${Label} edge="end" class="gap">${() => usd(d.gap)}<//>
+ </div>`;
+const DesktopRow = slat({ thickness: 59, room: { start: 222, end: 83 }, css: rowCss }, drawRow);
+const PhoneRow = slat({ thickness: 84, room: { start: 14, end: 50 }, css: rowCss }, drawRow);
+
+// Chart component: a selected occupation reveals the proportional gap as well as the dollar gap.
+function PayGap() {
+ const [selected, setSelected] = createSignal(null);
+ const media = matchMedia('(max-width: 650px)');
+ const [phone, setPhone] = createSignal(media.matches);
+ const resize = e => setPhone(e.matches);
+ media.addEventListener('change', resize);
+ onCleanup(() => media.removeEventListener('change', resize));
+ const current = () => ROWS[selected() ?? 0];
+ const rowOf = el => { const row = el?.closest?.('[data-row]'); return row ? Number(row.dataset.row) : null; };
+ const pick = e => { const row = rowOf(e.target); if (row !== null) setSelected(row); };
+ const leave = e => {
+  if (e.pointerType === 'touch') return;
+  setSelected(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+ };
+ const chart = Row => html`
+  <${Chart} scale=${[range.min, range.max]} ticks=${range.ticks} format=${v => numbers.format(v)}
+   label="Illustrative median weekly earnings in US dollars, women and men in eight occupations, ordered by dollar gap"
+   theme=${{ font: 'Inter, Arial, sans-serif', ink: '#242528', muted: '#616366', grid: '#dedfdb', surface: '#faf9f5' }}>
+   <${Plot} rows=${ROWS} key="name" keyboard=${true} on=${d => (selected() ?? 0) === d.index}>${Row}<//>
+  <//>`;
+ return html`
+ <article class="poster" onPointerMove=${e => e.pointerType !== 'touch' && pick(e)} onClick=${pick} onFocusIn=${pick}
+  onPointerLeave=${leave} onFocusOut=${e => !e.currentTarget.contains(e.relatedTarget) && setSelected(null)}>
+  <header>
+   <div class="masthead"><span class="kicker">Work & pay / Gender gap</span><span class="edition">Eight occupations</span></div>
+   <h1>${leader.name} have the<br />widest pay gap</h1>
+   <p class="dek">In these illustrative figures, women earn less in every occupation. The weekly difference is largest for ${leader.name.toLowerCase()}, at ${usd(leader.gap)}.</p>
+  </header>
+  <section aria-labelledby="chart-title">
+   <h2 class="chart-title" id="chart-title">The distance between their paychecks</h2>
+   <div class="chart-meta"><span class="units">Median weekly earnings, US dollars</span><div class="legend" aria-label="Red dots: women. Charcoal dots: men."><span><i class="women" aria-hidden="true"></i>Women</span><span><i aria-hidden="true"></i>Men</span></div></div>
+   <div class="columns"><span>Occupation · largest dollar gap first</span><span>Weekly gap</span></div>
+   <${Show} when=${phone} fallback=${() => chart(DesktopRow)}>${() => chart(PhoneRow)}<//>
+   <div class=${() => selected() === null ? 'readout' : 'readout picked'} aria-hidden="true">
+    <div><div class="readout-name">${() => current().name}</div><div class="readout-detail">${() => `Women ${usd(current().women)} · Men ${usd(current().men)}`}<br />${() => `Weekly difference: ${usd(current().gap)}`}</div></div>
+    <div class="readout-number">${() => current().percent.toFixed(1)}%<small>women earn less</small></div>
+   </div>
+   <p class="hint">Tap or point at a row to compare. Keyboard: Tab, then arrow keys.</p>
+  </section>
+  <p class="note"><strong>Note:</strong> Figures are illustrative, not official estimates. Dollar gaps are men's minus women's median weekly earnings. Percentage gaps use men's earnings as the denominator. Comparisons are not adjusted for hours, experience or other factors.</p>
+  <footer class="footer"><span>Pay, occupation by occupation</span><span>01</span></footer>
+ </article>`;
+}
+
+// Mount the self-contained poster.
+render(() => html`<${PayGap} />`, document.getElementById('poster'));
+</script>
+</body>
+</html>

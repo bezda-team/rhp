@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f1e8">
+<meta name="description" content="An architectural portrait of the world's ten tallest buildings, using supplied CTBUH heights, cities and completion years.">
+<title>Burj Khalifa stands apart | The vertical world</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+  :root { color-scheme: light; --paper: #f4f1e8; --ink: #252e30; --soft: #596062; --accent: #b73522; --rule: #d2d2c9; --text: "DM Sans", Arial, sans-serif; --display: "Big Shoulders Display", "Arial Narrow", sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 30px; background: #deddd5; color: var(--ink); font: 15px/1.5 var(--text); }
+  .poster { max-width: 1240px; margin: auto; padding: 34px 48px 24px; background: var(--paper); }
+  .masthead { display: flex; justify-content: space-between; gap: 16px; border-top: 5px solid var(--ink); padding-top: 12px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  .masthead span:first-child { color: var(--accent); }
+  .intro { display: grid; grid-template-columns: 1fr 250px; gap: 40px; align-items: end; margin: 32px 0 30px; }
+  h1 { font: 800 clamp(62px, 8.7vw, 108px)/.94 var(--display); letter-spacing: -.025em; margin: 0 0 20px; }
+  h1 span { display: block; }
+  .dek { max-width: 580px; margin: 0; font-size: 16px; line-height: 1.55; }
+  .hero-stat { border-left: 1px solid var(--rule); padding-left: 28px; padding-bottom: 3px; }
+  .hero-stat .eyebrow { color: var(--accent); }
+  .hero-number { display: block; font: 700 114px/.95 var(--display); color: var(--accent); letter-spacing: -.04em; margin: 12px 0; }
+  .hero-number small { font: 500 24px var(--text); letter-spacing: 0; margin-left: 6px; }
+  .hero-stat p { margin: 0; color: var(--soft); font-size: 13px; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .chart-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 13px; border-top: 1px solid var(--ink); }
+  .chart-heading h2 { font: 600 17px var(--text); margin: 0; }
+  .chart-heading span { color: var(--soft); font-size: 12px; }
+  .chart-wrap { margin-top: 20px; }
+  .chart-foot { display: flex; justify-content: space-between; gap: 20px; margin: 6px 0 20px; color: var(--soft); font-size: 12px; }
+  .readout { display: grid; grid-template-columns: 1fr 260px; align-items: center; gap: 24px; height: 100px; padding: 14px 20px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: #eae8de; }
+  .selected-name { display: block; font: 700 27px/1.1 var(--display); }
+  .selected-meta { color: var(--soft); font-size: 13px; }
+  .comparison { border-left: 1px solid #c2c5bd; padding-left: 24px; }
+  .comparison strong { font: 700 36px/1 var(--display); color: var(--accent); }
+  .comparison span { display: block; font-size: 12px; color: var(--soft); margin-top: 4px; }
+  .directory-heading { display: flex; justify-content: space-between; gap: 16px; margin: 28px 0 12px; }
+  .directory-heading h2 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .directory-heading span { font-size: 12px; color: var(--soft); }
+  .directory { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 24px; margin: 0; padding: 0; list-style: none; }
+  .directory li { min-width: 0; border-top: 1px solid var(--rule); }
+  .building { width: 100%; min-height: 151px; display: flex; flex-direction: column; align-items: flex-start; position: relative; padding: 13px 0 17px; border: 0; background: transparent; text-align: left; color: var(--ink); font: inherit; cursor: pointer; }
+  .building::before { content: ""; position: absolute; top: -1px; left: 0; width: 0; height: 3px; background: var(--accent); transition: width .16s; }
+  .building.active::before { width: 100%; }
+  .building .number { font-size: 11px; line-height: 1; color: var(--soft); margin-bottom: 9px; font-weight: 600; }
+  .building .name { font-size: 14px; font-weight: 700; line-height: 1.25; min-height: 2.5em; margin-bottom: 5px; }
+  .building .city { font-size: 12px; color: var(--soft); }
+  .building .facts { display: flex; width: 100%; align-items: baseline; gap: 8px; justify-content: space-between; margin-top: auto; padding-top: 7px; }
+  .building .height { font: 700 25px/1 var(--display); }
+  .building .height small { font: 400 12px var(--text); }
+  .building .year { font-size: 12px; color: var(--soft); }
+  .building.active .number, .building.active .height { color: var(--accent); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  footer { display: flex; gap: 26px; justify-content: space-between; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--ink); color: var(--soft); font-size: 11px; line-height: 1.6; }
+  footer p { margin: 0; max-width: 660px; }
+  .colophon { flex-shrink: 0; text-align: right; font-weight: 600; letter-spacing: .08em; }
+  .load-note { max-width: 800px; margin: auto; padding: 24px; }
+  @media (max-width: 1000px) {
+    body { padding: 20px; }
+    .poster { padding: 28px 30px 22px; }
+    .intro { grid-template-columns: 1fr 190px; gap: 24px; }
+    .hero-stat { padding-left: 20px; }
+    .hero-number { font-size: 90px; }
+    .directory { gap: 0 18px; }
+    .building { min-height: 164px; }
+    .building .name { font-size: 13px; min-height: 3.75em; }
+  }
+  @media (max-width: 760px) {
+    body { padding: 12px; }
+    .poster { padding: 20px; }
+    .intro { grid-template-columns: 1fr; margin: 26px 0 24px; }
+    h1 { font-size: clamp(57px, 11vw, 80px); }
+    .hero-stat { display: none; }
+    .directory { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; }
+    .building { min-height: 143px; }
+    .building .name { font-size: 14px; min-height: 2.5em; }
+    .readout { grid-template-columns: 1fr 160px; padding: 14px 12px; gap: 12px; }
+    .comparison { padding-left: 12px; }
+    .selected-name { font-size: 24px; }
+    footer { flex-direction: column; gap: 12px; }
+    .colophon { text-align: left; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 0; }
+    .poster { padding: 20px 18px; }
+    .masthead { font-size: 10px; letter-spacing: .09em; gap: 10px; }
+    h1 { font-size: 62px; margin-bottom: 15px; }
+    .intro { margin: 24px 0 22px; }
+    .dek { font-size: 14px; }
+    .chart-heading h2 { font-size: 15px; }
+    .chart-heading span { font-size: 11px; }
+    .chart-foot { display: block; font-size: 11px; margin-bottom: 16px; }
+    .chart-foot span { display: block; }
+    .readout { height: 118px; grid-template-columns: 1fr 117px; }
+    .selected-name { font-size: 23px; }
+    .selected-meta { display: block; margin-top: 5px; font-size: 11px; }
+    .comparison strong { font-size: 31px; }
+    .comparison span { font-size: 11px; line-height: 1.4; }
+    .directory-heading { margin-top: 24px; }
+    .directory-heading span { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .building::before { transition: none; } }
+  @media print { body { padding: 0; background: var(--paper); } .poster { max-width: none; padding: 20px; } .chart-foot .hint { display: none; } }
+</style>
+</head>
+<body>
+<div id="app"><p class="load-note">Loading the vertical world…</p></div>
+<noscript><p>This interactive poster needs JavaScript and an internet connection to load rhp.</p></noscript>
+<script type="module">
+import { Chart, Plot, Bar, Label, Tick, slat, shape, nice, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
+
+// Data: the supplied CTBUH records, with unrounded architectural heights in metres.
+const DATA = [
+  { name: "Burj Khalifa", city: "Dubai", height: 828, year: 2010 },
+  { name: "Merdeka 118", city: "Kuala Lumpur", height: 678.9, year: 2023 },
+  { name: "Shanghai Tower", city: "Shanghai", height: 632, year: 2015 },
+  { name: "Makkah Royal Clock Tower", city: "Mecca", height: 601, year: 2012 },
+  { name: "Ping An Finance Center", city: "Shenzhen", height: 599.1, year: 2017 },
+  { name: "Lotte World Tower", city: "Seoul", height: 554.5, year: 2017 },
+  { name: "One World Trade Center", city: "New York City", height: 541.3, year: 2014 },
+  { name: "Guangzhou CTF Finance Centre", city: "Guangzhou", height: 530, year: 2016 },
+  { name: "Tianjin CTF Finance Centre", city: "Tianjin", height: 530, year: 2019 },
+  { name: "CITIC Tower", city: "Beijing", height: 527.7, year: 2018 }
+];
+const rows = [...DATA].sort((a, b) => b.height - a.height);
+const metres = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+const lead = rows[0];
+const gap = lead.height - rows[1].height;
+const scale = nice(0, Math.max(...rows.map(d => d.height)), 8);
+const num = i => String(i + 1).padStart(2, "0");
+
+// Schematic elevations: points use x across the facade and y down from the tip.
+const outline = points => shape(...points.map(([x, y], i) => [i ? "L" : "M", 1 - y, x]), ["Z"]);
+const silhouettes = [
+  [[0,1],[0,.88],[.11,.88],[.11,.68],[.21,.68],[.21,.48],[.31,.48],[.31,.29],[.41,.29],[.41,.16],[.47,.16],[.5,0],[.53,.16],[.59,.16],[.59,.34],[.68,.34],[.68,.54],[.78,.54],[.78,.74],[.9,.74],[.9,.9],[1,.9],[1,1]],
+  [[.1,1],[.1,.36],[.28,.24],[.62,.17],[.67,0],[.71,.2],[.9,.3],[.9,1]],
+  [[.04,1],[.04,.8],[.1,.6],[.17,.4],[.22,.2],[.3,.05],[.53,0],[.73,.03],[.85,.13],[.91,.28],[.95,.48],[1,.7],[1,1]],
+  [[0,1],[0,.56],[.12,.56],[.12,.36],[.24,.36],[.24,.22],[.4,.16],[.46,.1],[.5,0],[.54,.1],[.6,.16],[.76,.22],[.76,.36],[.88,.36],[.88,.56],[1,.56],[1,1]],
+  [[.08,1],[.08,.18],[.23,.12],[.43,.01],[.5,0],[.57,.01],[.77,.12],[.92,.18],[.92,1]],
+  [[0,1],[.05,.8],[.13,.57],[.24,.29],[.36,.06],[.46,0],[.61,.015],[.7,.09],[.79,.31],[.88,.58],[.95,.8],[1,1]],
+  [[.07,1],[.16,.38],[.33,.26],[.47,.26],[.49,0],[.51,0],[.53,.26],[.67,.26],[.84,.38],[.93,1]],
+  [[0,1],[0,.21],[.13,.21],[.13,.08],[.3,.08],[.3,0],[.78,0],[.78,.04],[1,.04],[1,1]],
+  [[0,1],[.09,.83],[.1,.62],[.18,.43],[.28,.24],[.34,.08],[.45,0],[.64,0],[.75,.08],[.79,.24],[.87,.43],[.94,.62],[.94,.84],[1,1]],
+  [[0,1],[.06,.84],[.16,.65],[.21,.47],[.2,.32],[.13,.14],[.06,0],[.94,0],[.87,.14],[.8,.32],[.79,.47],[.84,.65],[.94,.84],[1,1]]
+].map(outline);
+
+// Slat types: a shaped Bar preserves the exact height from the shared zero baseline.
+const Tower = slat({
+  room: { start: 30, end: 24 }, inset: .2,
+  css: `
+    .tower { cursor: pointer; }
+    .tower:focus-visible { outline: 2px solid #b73522; outline-offset: -2px; }
+    .tower.on { background: rgb(37 46 48 / .035); }
+    .bar { --rhp-radius: 0px; }
+    .value { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .rank { font-size: 12px; font-weight: 600; color: #596062; }
+    .leader .value, .leader .rank { color: #b73522; font-weight: 700; }
+    @container (max-width: 600px) { .value { font-size: 11px; } }
+    @container (max-width: 440px) { .value { display: none; } .tower.on .value { display: block; } .rank { font-size: 11px; } }
+  `
+}, d => html`
+  <div class=${() => `tower ${d.index === 0 ? "leader" : ""} ${d.on ? "on" : ""}`} data-row=${() => d.index}
+    aria-label=${() => `${num(d.index)}. ${d.name}, ${metres.format(d.height)} metres. ${d.city}, completed ${d.year}. ${d.index === 0 ? "Tallest building." : metres.format(lead.height - d.height) + " metres below Burj Khalifa."}`}>
+    <${Bar} to=${() => d.height} shape=${() => d.outline} class="bar" color=${() => d.index === 0 ? "#b73522" : d.on ? "#252e30" : "#657477"} />
+    <${Label} at=${() => d.height} class="value">${() => metres.format(d.height)}<//>
+    <${Label} edge="start" class="rank">${() => num(d.index)}<//>
+  </div>`);
+const Ground = slat({ room: {} }, () => html`<div><${Tick} at=${0} thick=${1} color="#252e30" /></div>`);
+
+// Chart component: shared selection links the skyline, comparison and directory.
+function SkylinePoster() {
+  const [on, setOn] = createSignal(null);
+  const current = () => rows[on() ?? 0];
+  const smallScreen = matchMedia("(max-width: 600px)");
+  const [small, setSmall] = createSignal(smallScreen.matches);
+  const resize = e => setSmall(e.matches);
+  smallScreen.addEventListener("change", resize);
+  onCleanup(() => smallScreen.removeEventListener("change", resize));
+  const rowOf = el => { const row = el?.closest?.("[data-row]"); return row ? +row.dataset.row : null; };
+  const pick = e => { const row = rowOf(e.target); if (row !== null) setOn(row); };
+  const leave = e => { if (e.pointerType !== "touch") setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null); };
+
+  return html`<main class="poster" onPointerMove=${e => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+    onPointerLeave=${leave} onFocusOut=${e => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+    <header>
+      <div class="masthead"><span>The vertical world</span><span>Architecture / No. 01</span></div>
+      <div class="intro">
+        <div><h1>${lead.name}<span>stands apart.</span></h1>
+          <p class="dek">The world's ten tallest buildings, measured from the ground to their architectural tops. At ${metres.format(lead.height)} metres, Dubai's landmark rises <strong>${metres.format(gap)} metres</strong> above its nearest rival.</p>
+        </div>
+        <aside class="hero-stat" aria-label="Tallest building">
+          <span class="eyebrow">The height to beat</span>
+          <span class="hero-number">${metres.format(lead.height)}<small>m</small></span>
+          <p>${lead.city} · Completed ${lead.year}<br />The tallest of the ten.</p>
+        </aside>
+      </div>
+    </header>
+    <section aria-labelledby="skyline-title">
+      <div class="chart-heading"><h2 id="skyline-title">A skyline of superlatives</h2><span>Architectural height / m</span></div>
+      <div class="chart-wrap">
+        <${Chart} orientation="vertical" height=${() => small() ? 260 : 410} scale=${[scale.min, scale.max]} ticks=${scale.ticks}
+          format=${v => metres.format(v)} label="The world's ten tallest buildings. Height in metres, from a shared zero baseline. Numbers correspond to the directory below."
+          theme=${{ font: '"DM Sans", Arial, sans-serif', ink: "#252e30", muted: "#596062", grid: "#d2d2c9", surface: "#f4f1e8" }}>
+          <${Plot} rows=${rows} outline=${silhouettes} on=${d => (on() ?? 0) === d.index} keyboard=${true}>${Tower}<//>
+          <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${Ground}<//>
+        <//>
+      </div>
+      <div class="chart-foot"><span>Heights to scale. Silhouettes simplified; widths illustrative.</span><span class="hint">Point, tap or focus a tower to compare. Use arrow keys.</span></div>
+      <div class="readout" aria-live="polite" aria-atomic="true">
+        <div><span class="selected-name">${() => current().name}</span><span class="selected-meta">${() => `${current().city} · ${metres.format(current().height)} m · ${current().year}`}</span></div>
+        <div class="comparison"><strong>${() => metres.format((on() ?? 0) === 0 ? gap : lead.height - current().height)} m</strong><span>${() => (on() ?? 0) === 0 ? "above Merdeka 118" : "below Burj Khalifa"}</span></div>
+      </div>
+    </section>
+    <section aria-labelledby="directory-title">
+      <div class="directory-heading"><h2 id="directory-title">The ten, in detail</h2><span>Height / completion year</span></div>
+      <ol class="directory">${rows.map((d, i) => html`<li><button type="button" class=${() => `building ${(on() ?? 0) === i ? "active" : ""}`} data-row=${i} aria-pressed=${() => (on() ?? 0) === i}>
+        <span class="number">${num(i)}</span><span class="name">${d.name}</span><span class="city">${d.city}</span>
+        <span class="facts"><span class="height">${metres.format(d.height)}<small> m</small></span><span class="year">${d.year}</span></span>
+      </button></li>`)}</ol>
+    </section>
+    <footer><p>Source: Council on Tall Buildings and Urban Habitat (CTBUH), as supplied.<br />Architectural height includes spires. Years indicate completion. The two CTF centres share the same height of 530 m.</p><p class="colophon">TEN BUILDINGS<br />ONE VERTICAL WORLD</p></footer>
+  </main>`;
+}
+
+// Mount the standalone poster.
+document.getElementById("app").replaceChildren();
+render(SkylinePoster, document.getElementById("app"));
+</script>
+</body>
+</html>

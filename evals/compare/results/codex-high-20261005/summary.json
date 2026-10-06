@@ -1,0 +1,626 @@
+{
+  "updated": "2026-10-05T21:04:49.607Z",
+  "generationRuns": 7,
+  "reviewed": 5,
+  "judgingSessions": 0,
+  "method": "Each generated poster is one observation. Judge scores are averaged within that poster before condition means and sample standard deviations are calculated. Null means unavailable, not zero. Failures remain in denominators.",
+  "groups": [
+    {
+      "key": "day/apex-skill-mcp",
+      "attempts": 1,
+      "complete": 1,
+      "rendered": 0,
+      "tokens": {
+        "input_tokens": {
+          "n": 1,
+          "mean": 455181,
+          "median": 455181,
+          "min": 455181,
+          "max": 455181,
+          "sd": null
+        },
+        "cached_input_tokens": {
+          "n": 1,
+          "mean": 406400,
+          "median": 406400,
+          "min": 406400,
+          "max": 406400,
+          "sd": null
+        },
+        "output_tokens": {
+          "n": 1,
+          "mean": 8851,
+          "median": 8851,
+          "min": 8851,
+          "max": 8851,
+          "sd": null
+        },
+        "reasoning_output_tokens": {
+          "n": 1,
+          "mean": 741,
+          "median": 741,
+          "min": 741,
+          "max": 741,
+          "sd": null
+        }
+      },
+      "uncachedInput": {
+        "n": 1,
+        "mean": 48781,
+        "median": 48781,
+        "min": 48781,
+        "max": 48781,
+        "sd": null
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "key": "day/rhp-skill-mcp",
+      "attempts": 1,
+      "complete": 1,
+      "rendered": 1,
+      "tokens": {
+        "input_tokens": {
+          "n": 1,
+          "mean": 681235,
+          "median": 681235,
+          "min": 681235,
+          "max": 681235,
+          "sd": null
+        },
+        "cached_input_tokens": {
+          "n": 1,
+          "mean": 576384,
+          "median": 576384,
+          "min": 576384,
+          "max": 576384,
+          "sd": null
+        },
+        "output_tokens": {
+          "n": 1,
+          "mean": 7601,
+          "median": 7601,
+          "min": 7601,
+          "max": 7601,
+          "sd": null
+        },
+        "reasoning_output_tokens": {
+          "n": 1,
+          "mean": 732,
+          "median": 732,
+          "min": 732,
+          "max": 732,
+          "sd": null
+        }
+      },
+      "uncachedInput": {
+        "n": 1,
+        "mean": 104851,
+        "median": 104851,
+        "min": 104851,
+        "max": 104851,
+        "sd": null
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "key": "keeling/apex-skill-mcp",
+      "attempts": 1,
+      "complete": 1,
+      "rendered": 1,
+      "tokens": {
+        "input_tokens": {
+          "n": 1,
+          "mean": 529055,
+          "median": 529055,
+          "min": 529055,
+          "max": 529055,
+          "sd": null
+        },
+        "cached_input_tokens": {
+          "n": 1,
+          "mean": 463744,
+          "median": 463744,
+          "min": 463744,
+          "max": 463744,
+          "sd": null
+        },
+        "output_tokens": {
+          "n": 1,
+          "mean": 9268,
+          "median": 9268,
+          "min": 9268,
+          "max": 9268,
+          "sd": null
+        },
+        "reasoning_output_tokens": {
+          "n": 1,
+          "mean": 981,
+          "median": 981,
+          "min": 981,
+          "max": 981,
+          "sd": null
+        }
+      },
+      "uncachedInput": {
+        "n": 1,
+        "mean": 65311,
+        "median": 65311,
+        "min": 65311,
+        "max": 65311,
+        "sd": null
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "key": "keeling/rhp-skill-mcp",
+      "attempts": 1,
+      "complete": 1,
+      "rendered": 1,
+      "tokens": {
+        "input_tokens": {
+          "n": 1,
+          "mean": 826558,
+          "median": 826558,
+          "min": 826558,
+          "max": 826558,
+          "sd": null
+        },
+        "cached_input_tokens": {
+          "n": 1,
+          "mean": 711168,
+          "median": 711168,
+          "min": 711168,
+          "max": 711168,
+          "sd": null
+        },
+        "output_tokens": {
+          "n": 1,
+          "mean": 11948,
+          "median": 11948,
+          "min": 11948,
+          "max": 11948,
+          "sd": null
+        },
+        "reasoning_output_tokens": {
+          "n": 1,
+          "mean": 3029,
+          "median": 3029,
+          "min": 3029,
+          "max": 3029,
+          "sd": null
+        }
+      },
+      "uncachedInput": {
+        "n": 1,
+        "mean": 115390,
+        "median": 115390,
+        "min": 115390,
+        "max": 115390,
+        "sd": null
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "key": "paygap/rhp-skill-mcp",
+      "attempts": 1,
+      "complete": 1,
+      "rendered": 0,
+      "tokens": {
+        "input_tokens": {
+          "n": 1,
+          "mean": 425920,
+          "median": 425920,
+          "min": 425920,
+          "max": 425920,
+          "sd": null
+        },
+        "cached_input_tokens": {
+          "n": 1,
+          "mean": 347648,
+          "median": 347648,
+          "min": 347648,
+          "max": 347648,
+          "sd": null
+        },
+        "output_tokens": {
+          "n": 1,
+          "mean": 6204,
+          "median": 6204,
+          "min": 6204,
+          "max": 6204,
+          "sd": null
+        },
+        "reasoning_output_tokens": {
+          "n": 1,
+          "mean": 904,
+          "median": 904,
+          "min": 904,
+          "max": 904,
+          "sd": null
+        }
+      },
+      "uncachedInput": {
+        "n": 1,
+        "mean": 78272,
+        "median": 78272,
+        "min": 78272,
+        "max": 78272,
+        "sd": null
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "key": "skyscrapers/apex-skill-mcp",
+      "attempts": 1,
+      "complete": 1,
+      "rendered": 1,
+      "tokens": {
+        "input_tokens": {
+          "n": 1,
+          "mean": 457364,
+          "median": 457364,
+          "min": 457364,
+          "max": 457364,
+          "sd": null
+        },
+        "cached_input_tokens": {
+          "n": 1,
+          "mean": 407680,
+          "median": 407680,
+          "min": 407680,
+          "max": 407680,
+          "sd": null
+        },
+        "output_tokens": {
+          "n": 1,
+          "mean": 9561,
+          "median": 9561,
+          "min": 9561,
+          "max": 9561,
+          "sd": null
+        },
+        "reasoning_output_tokens": {
+          "n": 1,
+          "mean": 1123,
+          "median": 1123,
+          "min": 1123,
+          "max": 1123,
+          "sd": null
+        }
+      },
+      "uncachedInput": {
+        "n": 1,
+        "mean": 49684,
+        "median": 49684,
+        "min": 49684,
+        "max": 49684,
+        "sd": null
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "key": "skyscrapers/rhp-skill-mcp",
+      "attempts": 1,
+      "complete": 1,
+      "rendered": 1,
+      "tokens": {
+        "input_tokens": {
+          "n": 1,
+          "mean": 426089,
+          "median": 426089,
+          "min": 426089,
+          "max": 426089,
+          "sd": null
+        },
+        "cached_input_tokens": {
+          "n": 1,
+          "mean": 347520,
+          "median": 347520,
+          "min": 347520,
+          "max": 347520,
+          "sd": null
+        },
+        "output_tokens": {
+          "n": 1,
+          "mean": 7729,
+          "median": 7729,
+          "min": 7729,
+          "max": 7729,
+          "sd": null
+        },
+        "reasoning_output_tokens": {
+          "n": 1,
+          "mean": 655,
+          "median": 655,
+          "min": 655,
+          "max": 655,
+          "sd": null
+        }
+      },
+      "uncachedInput": {
+        "n": 1,
+        "mean": 78569,
+        "median": 78569,
+        "min": 78569,
+        "max": 78569,
+        "sd": null
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    }
+  ],
+  "entries": [
+    {
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-1",
+      "poster": "skyscrapers",
+      "condition": "rhp-skill-mcp",
+      "rep": 1,
+      "status": "complete",
+      "hasPoster": true,
+      "scan": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 3,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 1898
+      },
+      "usage": {
+        "input_tokens": 426089,
+        "cached_input_tokens": 347520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7729,
+        "reasoning_output_tokens": 655
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-1",
+      "poster": "skyscrapers",
+      "condition": "apex-skill-mcp",
+      "rep": 1,
+      "status": "complete",
+      "hasPoster": true,
+      "scan": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 27,
+        "lowContrast": 8,
+        "canvas": 0,
+        "phoneHeight": 2343
+      },
+      "usage": {
+        "input_tokens": 457364,
+        "cached_input_tokens": 407680,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9561,
+        "reasoning_output_tokens": 1123
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "runId": "keeling-apex-skill-mcp-gpt-6-astra-1",
+      "poster": "keeling",
+      "condition": "apex-skill-mcp",
+      "rep": 1,
+      "status": "complete",
+      "hasPoster": true,
+      "scan": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 1,
+        "cut": 0,
+        "tiny": 2,
+        "lowContrast": 8,
+        "canvas": 0,
+        "phoneHeight": 1542
+      },
+      "usage": {
+        "input_tokens": 529055,
+        "cached_input_tokens": 463744,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9268,
+        "reasoning_output_tokens": 981
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "runId": "keeling-rhp-skill-mcp-gpt-6-astra-1",
+      "poster": "keeling",
+      "condition": "rhp-skill-mcp",
+      "rep": 1,
+      "status": "complete",
+      "hasPoster": true,
+      "scan": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 1068
+      },
+      "usage": {
+        "input_tokens": 826558,
+        "cached_input_tokens": 711168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11948,
+        "reasoning_output_tokens": 3029
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "runId": "day-rhp-skill-mcp-gpt-6-astra-1",
+      "poster": "day",
+      "condition": "rhp-skill-mcp",
+      "rep": 1,
+      "status": "complete",
+      "hasPoster": true,
+      "scan": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 1,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 1395
+      },
+      "usage": {
+        "input_tokens": 681235,
+        "cached_input_tokens": 576384,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7601,
+        "reasoning_output_tokens": 732
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "runId": "day-apex-skill-mcp-gpt-6-astra-1",
+      "poster": "day",
+      "condition": "apex-skill-mcp",
+      "rep": 1,
+      "status": "complete",
+      "hasPoster": true,
+      "scan": null,
+      "usage": {
+        "input_tokens": 455181,
+        "cached_input_tokens": 406400,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8851,
+        "reasoning_output_tokens": 741
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    },
+    {
+      "runId": "paygap-rhp-skill-mcp-gpt-6-astra-1",
+      "poster": "paygap",
+      "condition": "rhp-skill-mcp",
+      "rep": 1,
+      "status": "complete",
+      "hasPoster": true,
+      "scan": null,
+      "usage": {
+        "input_tokens": 425920,
+        "cached_input_tokens": 347648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6204,
+        "reasoning_output_tokens": 904
+      },
+      "quality": {
+        "fidelity": null,
+        "data": null,
+        "design": null,
+        "legibility": null,
+        "overall": null,
+        "rankScore": null
+      }
+    }
+  ]
+}

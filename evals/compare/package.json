@@ -7,7 +7,10 @@
     "skills": "node harness/fetch-skills.mjs",
     "bridge": "node harness/mcpd.mjs 8790",
     "collect": "node harness/collect.mjs",
-    "surface": "node harness/surface.mjs > results/surface.json"
+    "surface": "node harness/surface.mjs > results/surface.json",
+    "test": "node --test harness/*.test.mjs && python3 -B -m unittest discover -s harness -p \"test_*.py\"",
+    "ladder:test": "node harness/ladder-test.mjs results/ladder",
+    "ladder:measure": "python3 harness/ladder.py results/ladder"
   },
   "dependencies": {
     "@amcharts/amcharts5-mcp": "1.6.0",
@@ -26,5 +29,8 @@
     "semiotic": "3.12.0",
     "semver": "^7.7.2",
     "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "pixelmatch": "^7.2.0"
   }
 }

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e7">
+  <title>A time for every cup | Our neighbourhood café</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f6f1e7; --ink:#352b26; --muted:#76665a; --red:#a63825; --line:#d7cbb9; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:32px; background:#e5ddcf; color:var(--ink); font-family:'DM Sans',sans-serif; }
+    .poster { max-width:1200px; margin:auto; padding:32px 52px 25px; background:var(--paper); border-top:8px solid var(--red); box-shadow:0 12px 50px #49342312; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; gap:20px; padding-bottom:22px; border-bottom:1px solid var(--ink); font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+    .brand { display:flex; align-items:center; gap:10px; }
+    .brand svg { width:24px; height:24px; }
+    .edition { color:var(--muted); font-size:10px; letter-spacing:1.6px; }
+    .hero { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:35px 0 34px; }
+    h1 { margin:0; color:var(--red); font-family:'DM Serif Display',Georgia,serif; font-size:clamp(54px,6.2vw,82px); font-weight:400; line-height:1.02; letter-spacing:-2.5px; }
+    h1 em { font-weight:400; }
+    .intro { max-width:545px; margin:20px 0 0; color:var(--muted); font-size:15px; line-height:1.65; }
+    .coffee-art { flex:0 0 235px; width:235px; height:235px; color:var(--red); transform:rotate(-8deg); }
+    .chart-section { border-top:1px solid var(--ink); padding-top:24px; }
+    .section-head { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; }
+    h2 { margin:0; font-family:'DM Serif Display',Georgia,serif; font-size:29px; font-weight:400; letter-spacing:-.5px; }
+    .unit { margin:7px 0 0; color:var(--muted); font-size:12px; }
+    .legend { display:flex; align-items:center; gap:10px; font-size:10px; color:var(--muted); }
+    .legend-scale { display:flex; gap:4px; }
+    .legend-item { text-align:center; min-width:39px; }
+    .swatch { display:block; height:9px; width:39px; margin-bottom:5px; border-radius:1px; }
+    .chart-scroll { margin:20px -9px 0; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-color:#bba48a var(--paper); }
+    .chart-inner { min-width:740px; }
+    #heatmap { min-height:367px; }
+    .chart-note { display:flex; justify-content:space-between; gap:14px; margin:2px 0 0; color:var(--muted); font-size:11px; line-height:1.5; }
+    .mobile-hint { display:none; }
+    .insights { display:grid; grid-template-columns:repeat(3,1fr); margin:31px 0 26px; padding:25px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .insight { padding:0 25px; border-left:1px solid var(--line); }
+    .insight:first-child { padding-left:0; border:0; }
+    .insight:last-child { padding-right:0; }
+    .eyebrow { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.6px; color:var(--red); }
+    .insight h3 { margin:9px 0 7px; font-family:'DM Serif Display',Georgia,serif; font-size:23px; font-weight:400; }
+    .insight p { margin:0; font-size:12px; line-height:1.7; color:var(--muted); }
+    .insight strong { color:var(--ink); font-weight:600; }
+    footer { display:flex; justify-content:space-between; gap:20px; font-size:10px; line-height:1.6; color:var(--muted); }
+    .signoff { color:var(--red); font-family:'DM Serif Display',Georgia,serif; font-size:18px; white-space:nowrap; font-style:italic; }
+    details { margin-top:15px; font-size:11px; color:var(--muted); }
+    summary { cursor:pointer; width:fit-content; text-decoration:underline; text-underline-offset:3px; }
+    summary:focus-visible, .chart-scroll:focus-visible { outline:2px solid var(--red); outline-offset:5px; }
+    .table-scroll { overflow:auto; margin-top:12px; }
+    table { width:100%; min-width:730px; border-collapse:collapse; text-align:center; font-variant-numeric:tabular-nums; }
+    caption { text-align:left; margin-bottom:10px; }
+    th,td { padding:8px; border-bottom:1px solid var(--line); }
+    th:first-child { text-align:left; }
+    .tooltip { padding:11px 14px; background:var(--paper); color:var(--ink); font-size:12px; }
+    .tooltip strong { display:block; margin-top:5px; font-size:16px; }
+    .apexcharts-tooltip { border:1px solid var(--line) !important; box-shadow:0 3px 14px #352b2620 !important; }
+    .apexcharts-heatmap-rect { cursor:crosshair; }
+    .error { padding:30px; color:var(--red); font-size:14px; }
+    @media (max-width:900px) {
+      body { padding:18px; }
+      .poster { padding:26px 30px; }
+      .coffee-art { flex-basis:180px; width:180px; height:180px; }
+      .section-head { align-items:flex-start; flex-direction:column; gap:18px; }
+      .chart-note { flex-wrap:wrap; }
+      .mobile-hint { display:inline; color:var(--red); }
+      .insight { padding:0 16px; }
+    }
+    @media (max-width:560px) {
+      body { padding:0; }
+      .poster { padding:22px 22px 24px; border-top-width:6px; box-shadow:none; }
+      .masthead { font-size:9px; letter-spacing:1.3px; gap:10px; padding-bottom:17px; }
+      .edition { max-width:75px; text-align:right; font-size:8px; line-height:1.6; letter-spacing:1px; }
+      .brand { gap:7px; }
+      .hero { position:relative; padding:30px 0 26px; }
+      h1 { font-size:55px; line-height:1.04; letter-spacing:-1.8px; }
+      .intro { margin-top:18px; max-width:290px; font-size:13px; }
+      .coffee-art { display:none; }
+      h2 { font-size:27px; }
+      .chart-section { padding-top:21px; }
+      .legend { gap:9px; }
+      .legend-item { min-width:35px; }
+      .swatch { width:35px; }
+      .chart-scroll { margin-top:14px; }
+      .chart-note { font-size:10px; gap:7px; }
+      .chart-note .desktop-hint { display:none; }
+      .insights { grid-template-columns:1fr; margin-top:23px; padding:0; }
+      .insight, .insight:first-child, .insight:last-child { padding:20px 0; border-left:0; }
+      .insight + .insight { border-top:1px solid var(--line); }
+      .insight h3 { font-size:24px; margin:6px 0; }
+      .insight p { font-size:13px; }
+      footer { flex-direction:column; gap:12px; }
+    }
+    @media print {
+      @page { size:A3 portrait; margin:9mm; }
+      body { padding:0; background:var(--paper); print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      .poster { padding:15px 28px; box-shadow:none; max-width:none; }
+      .hero { padding:18px 0; }
+      h1 { font-size:61px; }
+      .coffee-art { width:165px; height:165px; flex-basis:165px; }
+      .chart-scroll { overflow:visible; margin-top:6px; }
+      .chart-inner { min-width:0; }
+      .insights { margin:15px 0; padding:15px 0; }
+      details, .desktop-hint, .mobile-hint { display:none; }
+      .section-head { flex-direction:row; align-items:flex-end; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="masthead">
+      <div class="brand"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 9h14v9a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6V9Z"/><path d="M19 11h2a4 4 0 0 1 0 8h-2M3 26h20M9 2v4M14 1v5"/></svg> Our neighbourhood café</div>
+      <div class="edition">A week in coffee</div>
+    </header>
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <h1 id="title">There’s a time<br>for <em>every cup.</em></h1>
+        <p class="intro">Come for the buzz, or find a little breathing room.<br>Here’s how the rhythm of our café flows through the week.</p>
+      </div>
+      <svg class="coffee-art" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+        <circle cx="120" cy="120" r="110" stroke="currentColor" stroke-width="1" stroke-dasharray="2 5"/>
+        <path id="top-arc" d="M37 120a83 83 0 0 1 166 0"/>
+        <text fill="currentColor" font-family="DM Sans, sans-serif" font-size="11" font-weight="600" letter-spacing="3.5"><textPath href="#top-arc" startOffset="50%" text-anchor="middle">YOUR DAILY PAUSE</textPath></text>
+        <ellipse cx="112" cy="163" rx="67" ry="12" fill="#e6c6a7"/>
+        <path d="M66 102h93v34c0 21-16 35-39 35h-14c-24 0-40-14-40-35v-34Z" fill="#a63825"/>
+        <path d="M159 109h10c24 0 25 37 0 37h-12" stroke="currentColor" stroke-width="9"/>
+        <ellipse cx="112.5" cy="102" rx="46.5" ry="11" fill="#edd5b6" stroke="currentColor" stroke-width="2"/>
+        <ellipse cx="112" cy="104" rx="37" ry="6" fill="#633729"/>
+        <path d="M97 82c-11-12 14-14 4-28M121 80c-11-12 14-14 4-28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M78 122v11c0 13 8 23 19 26" stroke="#edc6a2" stroke-width="2" stroke-linecap="round"/>
+        <text x="120" y="202" text-anchor="middle" fill="currentColor" font-family="DM Serif Display, Georgia, serif" font-size="17" font-style="italic">Make yourself at home.</text>
+      </svg>
+    </section>
+    <section class="chart-section" aria-labelledby="chart-title">
+      <div class="section-head">
+        <div><h2 id="chart-title">The café, by the hour.</h2><p class="unit">Average customers per hour · Monday to Sunday</p></div>
+        <div class="legend" aria-label="Colour scale in customers per hour: 0 to 9, 10 to 19, 20 to 29, 30 to 39, 40 to 49">
+          <span>Quiet</span>
+          <div class="legend-scale">
+            <div class="legend-item"><span class="swatch" style="background:#eadfc9"></span>0 to 9</div>
+            <div class="legend-item"><span class="swatch" style="background:#dfb784"></span>10 to 19</div>
+            <div class="legend-item"><span class="swatch" style="background:#c87c4b"></span>20 to 29</div>
+            <div class="legend-item"><span class="swatch" style="background:#a7472c"></span>30 to 39</div>
+            <div class="legend-item"><span class="swatch" style="background:#692d28"></span>40 to 49</div>
+          </div>
+          <span>Busy</span>
+        </div>
+      </div>
+      <div class="chart-scroll" tabindex="0" role="region" aria-label="Hourly café heatmap. Scroll horizontally on smaller screens to see all hours.">
+        <div class="chart-inner"><div id="heatmap" aria-label="Heatmap of average customers by weekday and starting hour. Exact values are also available in the data table below."></div></div>
+      </div>
+      <p class="chart-note"><span>Each column is the hour starting then: 7:00 through 20:00.</span><span class="desktop-hint">Hover over a square for a closer look.</span><span class="mobile-hint">Swipe the chart to explore all hours →</span></p>
+    </section>
+    <section class="insights" aria-label="A few moments to know">
+      <article class="insight"><div class="eyebrow">Weekdays · 8:00</div><h3>The morning ritual.</h3><p>The before-work buzz: <strong>32 to 35 customers</strong> in the hour starting at 8:00.</p></article>
+      <article class="insight"><div class="eyebrow">Saturday · 11:00</div><h3>A slow start. A full house.</h3><p>Weekends find their rhythm later. Saturday at 11:00 is the week’s peak: <strong>41 customers.</strong></p></article>
+      <article class="insight"><div class="eyebrow">Every day · 19:00</div><h3>A little room to linger.</h3><p>Take the evening at your own pace, with just <strong>1 to 4 customers</strong> in the 19:00 hour.</p></article>
+    </section>
+    <footer><div>Illustrative data, supplied for this poster.<br>Values are hourly averages, not live customer counts.</div><div class="signoff">Good coffee. Your kind of company.</div></footer>
+    <details><summary>View the data table</summary><div class="table-scroll"><table id="data-table"><caption>Average customers per hour. Column labels indicate the starting hour.</caption><thead></thead><tbody></tbody></table></div></details>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const hours = Array.from({ length: 14 }, (_, index) => `${index + 7}:00`);
+    const rows = [
+      { name: 'Monday', values: [12,32,27,7,8,20,22,10,10,15,10,6,2,4] },
+      { name: 'Tuesday', values: [11,32,27,11,8,20,27,8,14,14,10,6,1,4] },
+      { name: 'Wednesday', values: [12,34,27,8,8,19,22,9,13,15,11,8,2,1] },
+      { name: 'Thursday', values: [15,35,25,9,7,23,26,9,14,13,12,9,1,2] },
+      { name: 'Friday', values: [11,35,27,9,9,20,26,11,13,17,19,15,4,3] },
+      { name: 'Saturday', values: [3,8,17,35,41,28,21,24,19,14,6,4,1,3] },
+      { name: 'Sunday', values: [3,5,14,31,33,26,19,23,21,15,6,5,1,4] }
+    ];
+    document.querySelector('#data-table thead').innerHTML = `<tr><th scope="col">Day</th>${hours.map(hour => `<th scope="col">${hour}</th>`).join('')}</tr>`;
+    document.querySelector('#data-table tbody').innerHTML = rows.map(row => `<tr><th scope="row">${row.name}</th>${row.values.map(value => `<td>${value}</td>`).join('')}</tr>`).join('');
+    // ApexCharts places the first heatmap series at the bottom.
+    const series = rows.slice().reverse().map(row => ({ name: row.name, data: row.values.map((value, index) => ({ x: hours[index], y: value })) }));
+    async function renderHeatmap() {
+      try {
+        await document.fonts.ready;
+        const chart = new ApexCharts(document.querySelector('#heatmap'), {
+          series,
+          chart: {
+            type: 'heatmap', height: 367, fontFamily: 'DM Sans, sans-serif', foreColor: '#76665a',
+            background: 'transparent', toolbar: { show: false }, animations: { enabled: false },
+            zoom: { enabled: false }, parentHeightOffset: 0
+          },
+          plotOptions: { heatmap: {
+            radius: 3, enableShades: false, distributed: false,
+            colorScale: { min: 0, max: 49, ranges: [
+              { from: 0, to: 9, color: '#eadfc9', foreColor: '#514236' },
+              { from: 10, to: 19, color: '#dfb784', foreColor: '#493324' },
+              { from: 20, to: 29, color: '#c87c4b', foreColor: '#321f17' },
+              { from: 30, to: 39, color: '#a7472c', foreColor: '#fff8ec' },
+              { from: 40, to: 49, color: '#692d28', foreColor: '#fff8ec' }
+            ] }
+          } },
+          stroke: { width: 5, colors: ['#f6f1e7'] },
+          dataLabels: { enabled: true, style: { fontSize: '12px', fontWeight: 600 }, background: { enabled: false } },
+          legend: { show: false },
+          grid: { show: false, padding: { top: 0, right: 0, bottom: 0, left: 2 } },
+          xaxis: {
+            type: 'category', position: 'top', axisBorder: { show: false }, axisTicks: { show: false },
+            labels: { rotate: 0, trim: false, hideOverlappingLabels: false, style: { fontSize: '10px', fontWeight: 500 } },
+            tooltip: { enabled: false }
+          },
+          yaxis: { labels: { offsetX: -5, minWidth: 43, maxWidth: 43, style: { fontSize: '11px', fontWeight: 600 }, formatter: value => String(value).slice(0, 3) } },
+          states: { hover: { filter: { type: 'darken', value: 0.9 } }, active: { filter: { type: 'none' } } },
+          tooltip: { shared: false, intersect: true, custom: ({ seriesIndex, dataPointIndex, w }) => {
+            const row = w.config.series[seriesIndex];
+            const cell = row.data[dataPointIndex];
+            return `<div class="tooltip">${row.name} · ${cell.x} to ${dataPointIndex + 8}:00<strong>${cell.y} ${cell.y === 1 ? 'customer' : 'customers'} on average</strong></div>`;
+          } }
+        });
+        await chart.render();
+        window.cafeChart = chart;
+      } catch (error) {
+        document.querySelector('#heatmap').innerHTML = '<p class="error">The chart could not load. You can find every hourly value in the data table below.</p>';
+        document.querySelector('details').open = true;
+        console.error(error);
+      }
+    }
+    renderHeatmap();
+  </script>
+</body>
+</html>

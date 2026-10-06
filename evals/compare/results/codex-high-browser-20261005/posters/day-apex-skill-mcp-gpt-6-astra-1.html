@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f3eb">
+<title>24 hours: A day in the life of America</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f6f3eb;--ink:#252c29;--muted:#686e65;--line:#d9d9cc;--sleep:#526fa0;--leisure:#d7774e;--work:#d5af4f;--home:#6e8b6c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}main{max-width:1160px;margin:0 auto;padding:35px 56px 28px}.masthead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ink);padding-bottom:17px;font-size:11px;letter-spacing:1.9px;font-weight:700;text-transform:uppercase}.brand{display:flex;gap:10px;align-items:center}.brand svg{width:21px;height:21px}.edition{color:var(--muted)}header{position:relative;padding:36px 0 28px;border-bottom:1px solid var(--line)}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin:0 0 13px;color:var(--muted)}h1{font-family:'Libre Caslon Display',Georgia,serif;font-size:clamp(54px,6.4vw,84px);line-height:.99;letter-spacing:-2.5px;font-weight:400;margin:0;max-width:780px}h1 em{font-style:normal;color:var(--sleep)}.intro{font-size:15px;line-height:1.6;color:var(--muted);max-width:620px;margin:22px 0 0}.year{position:absolute;right:0;bottom:34px;text-align:right}.year strong{display:block;font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:45px;line-height:1}.year span{font-size:10px;letter-spacing:1.7px;text-transform:uppercase}.breakdown{display:grid;grid-template-columns:1.13fr 1fr;gap:43px;align-items:center;padding:27px 0 31px}.visual{min-width:0;text-align:center}.section-label{display:flex;align-items:center;gap:10px;text-transform:uppercase;letter-spacing:1.6px;font-size:10px;font-weight:700;text-align:left}.section-label span{color:var(--muted)}.section-label:after{content:'';height:1px;background:var(--line);flex:1}.ring-wrap{position:relative;width:100%;aspect-ratio:1;max-width:490px;margin:13px auto 0}#day-chart{position:absolute;inset:0}.center{position:absolute;inset:25%;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;padding-bottom:5px}.center-top{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:1px}.center-number{font-family:'Libre Caslon Display',Georgia,serif;font-size:100px;line-height:1;letter-spacing:-4px}.center-label{font-size:12px;line-height:1.35;max-width:170px;margin-top:7px}.center-share{font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:.4px}.chart-note{font-size:11px;color:var(--muted);margin:0 0 3px}.chart-note:before{content:'↗';margin-right:5px}.list-heading{display:flex;justify-content:space-between;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--muted);padding-bottom:12px;border-bottom:1px solid var(--ink)}.activity-list{list-style:none;padding:0;margin:0}.activity-list li{border-bottom:1px solid var(--line)}.activity{width:100%;display:grid;grid-template-columns:11px 1fr auto;gap:12px;align-items:center;border:0;background:none;color:var(--ink);padding:11px 4px;text-align:left;font:inherit;cursor:pointer;border-radius:3px;transition:background .15s}.activity:hover,.activity.active,.activity:focus-visible{background:#e9e7df}.activity:focus-visible{outline:2px solid var(--sleep);outline-offset:2px}.swatch{width:9px;height:9px;border-radius:50%;background:var(--color)}.activity-name{font-size:13px}.activity-value{font-size:19px;line-height:1;letter-spacing:-.5px;font-variant-numeric:tabular-nums}.activity-value small{font-size:10px;color:var(--muted);letter-spacing:0;margin-left:4px}.subline{display:block;font-size:10px;color:var(--muted);margin-top:3px}.insights{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--ink);color:var(--paper);padding:27px 30px 30px}.insight{min-width:0}.insight:first-child{padding-right:30px;border-right:1px solid #51564c}.insight:last-child{padding-left:30px}.insight .eyebrow{color:#c2c5b5;font-size:10px;margin-bottom:14px;letter-spacing:1.7px}.insight-title{display:flex;gap:15px;align-items:center}.big-stat{font-family:'Libre Caslon Display',Georgia,serif;font-size:64px;line-height:.9;color:#e2e8a6;letter-spacing:-1.5px;white-space:nowrap}.big-stat small{font-size:29px;letter-spacing:0}.insight h2{font-size:16px;font-weight:500;line-height:1.4;margin:0}.insight p{font-size:12px;color:#c5c8ba;line-height:1.65;margin:15px 0 0}.tv-meter{display:flex;height:8px;gap:3px;margin:18px 0 7px}.tv-meter span:first-child{width:50.9804%;background:#dc8c64}.tv-meter span:last-child{flex:1;background:#666c60}.meter-labels{display:flex;justify-content:space-between;font-size:10px;color:#c5c8ba}.meter-labels strong{font-weight:500;color:#f0efdf}.footnote{display:grid;grid-template-columns:1fr 1fr;gap:35px;padding-top:24px;font-size:10px;line-height:1.7;color:var(--muted)}.footnote p{margin:0}.footnote strong{font-weight:600;color:var(--ink)}a{color:inherit;text-underline-offset:3px}footer{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:23px;padding-top:12px;font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted)}.center[hidden]{display:none}.error{font-size:13px;padding:25%;color:var(--muted)}
+@media(min-width:1300px){main{padding-top:44px}}
+@media(max-width:760px){main{padding:22px 24px}.masthead{font-size:9px;letter-spacing:1.2px}.edition{max-width:110px;text-align:right;line-height:1.5}header{padding:29px 0 24px}h1{font-size:64px;letter-spacing:-2px}.intro{font-size:13px;max-width:480px;padding-right:0;margin-top:17px}.year{position:static;display:flex;align-items:center;gap:9px;margin-top:17px;text-align:left}.year strong{font-size:26px}.year span{font-size:8px;letter-spacing:1px}.breakdown{grid-template-columns:1fr;gap:27px;padding:24px 0 29px}.ring-wrap{max-width:440px;margin-top:9px}.center-number{font-size:94px}.chart-note{font-size:10px}.activity{padding:12px 5px}.activity-name{font-size:14px}.activity-value{font-size:21px}.subline{font-size:11px}.insights{padding:24px;grid-template-columns:1fr;gap:23px}.insight:first-child{padding:0 0 23px;border-right:0;border-bottom:1px solid #51564c}.insight:last-child{padding:0}.insight-title{gap:20px}.insight p{font-size:12px}.footnote{grid-template-columns:1fr;gap:12px;padding-top:20px}footer{font-size:8px;letter-spacing:.8px}}
+@media(max-width:380px){main{padding:18px}h1{font-size:55px}.center-number{font-size:76px}.center-top{font-size:9px}.center-label{font-size:11px}.center-share{font-size:9px}.intro{padding-right:0}.insights{padding:21px}.big-stat{font-size:57px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{main{max-width:100%;padding:20px}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.insights,.breakdown{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<div class="masthead"><div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 5.5V12l4 2.5"/></svg> The everyday, in numbers</div><span class="edition">American Time Use Survey</span></div>
+<header>
+<p class="eyebrow">Life in the United States</p>
+<h1>A day in the life<br>of <em>America.</em></h1>
+<p class="intro">We all get 24 hours. Here’s how Americans aged 15 and over spend them, on an average day.</p>
+<div class="year"><strong>2023</strong><span>Survey year</span></div>
+</header>
+<section class="breakdown" aria-label="Average daily time by activity">
+<div class="visual">
+<div class="section-label">01 <span>The whole day</span></div>
+<div class="ring-wrap">
+<div id="day-chart" aria-label="Donut chart of daily activities. Exact values are listed alongside."></div>
+<div class="center" aria-hidden="true"><span class="center-top" id="center-top">One day</span><span class="center-number" id="center-number">24</span><span class="center-label" id="center-label">hours, shared by us all</span><span class="center-share" id="center-share">10 ways we spend them</span></div>
+</div>
+<p class="chart-note">Hover or tap a category to explore</p>
+</div>
+<div class="ledger"><div class="list-heading"><span>Activity</span><span>Hours / day</span></div>
+<ul class="activity-list" id="activity-list">
+<li><button class="activity" data-index="0" style="--color:#526fa0"><span class="swatch"></span><span class="activity-name">Sleeping</span><span class="activity-value">9.0<small>h</small></span></button></li>
+<li><button class="activity" data-index="1" style="--color:#d7774e"><span class="swatch"></span><span class="activity-name">Leisure and sports<span class="subline">Includes 2.6 hours watching TV</span></span><span class="activity-value">5.1<small>h</small></span></button></li>
+<li><button class="activity" data-index="2" style="--color:#d5af4f"><span class="swatch"></span><span class="activity-name">Working</span><span class="activity-value">3.6<small>h</small></span></button></li>
+<li><button class="activity" data-index="3" style="--color:#6e8b6c"><span class="swatch"></span><span class="activity-name">Household activities</span><span class="activity-value">2.0<small>h</small></span></button></li>
+<li><button class="activity" data-index="4" style="--color:#a57b91"><span class="swatch"></span><span class="activity-name">Eating and drinking</span><span class="activity-value">1.1<small>h</small></span></button></li>
+<li><button class="activity" data-index="5" style="--color:#79a8aa"><span class="swatch"></span><span class="activity-name">Other personal care</span><span class="activity-value">0.8<small>h</small></span></button></li>
+<li><button class="activity" data-index="6" style="--color:#b99d7a"><span class="swatch"></span><span class="activity-name">Shopping</span><span class="activity-value">0.7<small>h</small></span></button></li>
+<li><button class="activity" data-index="7" style="--color:#8d8fab"><span class="swatch"></span><span class="activity-name">Caring for others</span><span class="activity-value">0.5<small>h</small></span></button></li>
+<li><button class="activity" data-index="8" style="--color:#b3bf79"><span class="swatch"></span><span class="activity-name">Education</span><span class="activity-value">0.4<small>h</small></span></button></li>
+<li><button class="activity" data-index="9" style="--color:#999b91"><span class="swatch"></span><span class="activity-name">Everything else</span><span class="activity-value">0.8<small>h</small></span></button></li>
+</ul>
+</div>
+</section>
+<section class="insights" aria-label="Two things to take away">
+<article class="insight"><p class="eyebrow">02 / The big picture</p><div class="insight-title"><span class="big-stat">59<small>%</small></span><h2>Sleeping + leisure.<br>More than half the day.</h2></div><p>Together, they add up to 14.1 hours. Sleeping alone takes up 37.5% of the average day.</p></article>
+<article class="insight"><p class="eyebrow">03 / A closer look at leisure</p><div class="insight-title"><span class="big-stat">2.6<small> h</small></span><h2>Watching TV takes<br>about half of leisure time.</h2></div><div class="tv-meter" role="img" aria-label="Of 5.1 leisure hours, TV takes 2.6 hours, or 51%, and other leisure takes 2.5 hours."><span></span><span></span></div><div class="meter-labels"><span><strong>TV</strong> · 2.6 h</span><span><strong>Other leisure</strong> · 2.5 h</span></div></article>
+</section>
+<div class="footnote"><p><strong>An average, not an itinerary.</strong> These figures average across all people aged 15 and over and all days of the week, including people who did not do an activity. Working time is not the length of a typical workday.</p><p><strong>Source:</strong> U.S. Bureau of Labor Statistics, <a href="https://www.bls.gov/tus/" target="_blank" rel="noopener noreferrer">American Time Use Survey, 2023</a>.<br>Approximate hours supplied for this infographic total 24.0. TV is part of leisure and sports. Percentages are calculated from these rounded hours.</p></div>
+<footer><span>24 hours · One shared daily budget</span><span>United States / 2023</span></footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+<script>
+(() => {
+  const buttons = [...document.querySelectorAll('.activity')];
+  const activities = buttons.map(button => ({
+    name: button.querySelector('.activity-name').firstChild.textContent,
+    hours: parseFloat(button.querySelector('.activity-value').textContent),
+    color: button.style.getPropertyValue('--color')
+  }));
+  let selected = -1;
+  const center = {
+    top: document.getElementById('center-top'),
+    number: document.getElementById('center-number'),
+    label: document.getElementById('center-label'),
+    share: document.getElementById('center-share')
+  };
+  function display(index) {
+    const activity = activities[index];
+    center.top.textContent = activity ? 'Hours per day' : 'One day';
+    center.number.textContent = activity ? activity.hours.toFixed(1) : '24';
+    center.number.style.color = activity ? activity.color : '';
+    center.label.textContent = activity ? activity.name : 'hours, shared by us all';
+    center.share.textContent = activity ? (activity.hours / 24 * 100).toFixed(1) + '% of the day' : '10 ways we spend them';
+    buttons.forEach((button, i) => button.classList.toggle('active', i === index));
+  }
+  function select(index) {
+    selected = selected === index ? -1 : index;
+    buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === selected)));
+    display(selected);
+  }
+  buttons.forEach((button, index) => {
+    button.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-label', activities[index].name + ', ' + activities[index].hours.toFixed(1) + ' hours per day, ' + (activities[index].hours / 24 * 100).toFixed(1) + '% of the day');
+    button.addEventListener('mouseenter', () => display(index));
+    button.addEventListener('mouseleave', () => display(selected));
+    button.addEventListener('focus', () => display(index));
+    button.addEventListener('blur', () => display(selected));
+    button.addEventListener('click', () => select(index));
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { selected = -1; buttons.forEach(button => button.setAttribute('aria-pressed', 'false')); display(-1); }
+  });
+  async function render() {
+    const element = document.getElementById('day-chart');
+    try {
+      const chart = new ApexCharts(element, {
+        chart: {
+          type: 'donut', height: '100%', width: '100%', fontFamily: 'DM Sans, sans-serif',
+          background: 'transparent', parentHeightOffset: 0, toolbar: { show: false },
+          animations: { enabled: false },
+          events: {
+            dataPointMouseEnter: (event, context, config) => display(config.dataPointIndex),
+            dataPointMouseLeave: () => display(selected),
+            dataPointSelection: (event, context, config) => select(config.dataPointIndex)
+          }
+        },
+        series: activities.map(activity => activity.hours),
+        labels: activities.map(activity => activity.name),
+        colors: activities.map(activity => activity.color),
+        plotOptions: { pie: { expandOnClick: false, customScale: .98, donut: { size: '71%' } } },
+        stroke: { width: 3, colors: ['#f6f3eb'] },
+        dataLabels: { enabled: false }, legend: { show: false }, tooltip: { enabled: false },
+        states: { hover: { filter: { type: 'lighten', value: .07 } }, active: { filter: { type: 'none' } } },
+        grid: { padding: { top: 0, bottom: 0, left: 0, right: 0 } }
+      });
+      await chart.render();
+      window.addEventListener('pagehide', event => { if (!event.persisted) chart.destroy(); }, { once: true });
+    } catch (error) {
+      element.innerHTML = '<p class="error">Chart unavailable. All daily hours are listed below.</p>';
+      document.querySelector('.center').hidden = true;
+      console.error(error);
+    }
+  }
+  render();
+})();
+</script>
+</body>
+</html>

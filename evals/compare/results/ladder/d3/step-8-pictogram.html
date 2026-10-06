@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commuters who walk, cycle or take transit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Inter&display=swap">
+<style>
+  body { background: #f6f3ee; color: #1f1a14; font-family: Inter, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; }
+  h1 { font-family: Fraunces, serif; }
+  button { font: inherit; }
+  svg text { font: 12px Inter, sans-serif; fill: currentColor; stroke: #f6f3ee; stroke-width: 3px; paint-order: stroke; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<main>
+  <h1>Lisbon gained the most ground</h1>
+  <p>Share of commuters who walk, cycle or take transit in 2025, with Lisbon up 9 points on 2024.</p>
+  <div><button>2024</button> <button>2025</button></div>
+  <p id="readout"></p>
+  <div id="chart"></div>
+  <p>Source: illustrative data</p>
+</main>
+<script>
+const data = [
+  {name: "Oslo", 2024: 61, 2025: 64},
+  {name: "Lisbon", 2024: 48, 2025: 57},
+  {name: "Vienna", 2024: 72, 2025: 70},
+  {name: "Dublin", 2024: 39, 2025: 45},
+  {name: "Prague", 2024: 55, 2025: 52},
+];
+data.sort((a, b) => b[2025] - a[2025]);
+let year = 2025;
+
+const chart = d3.select("#chart");
+const narrow = innerWidth <= 480;
+const width = chart.node().clientWidth, height = 300;
+const margin = {top: 24, right: 30, bottom: 30, left: narrow ? 10 : 60};
+
+const x = d3.scaleLinear([0, 100], [margin.left, width - margin.right]);
+const y = d3.scaleBand(data.map(d => d.name), [margin.top, height - margin.bottom]).padding(narrow ? 0.5 : 0.2);
+
+const lisbon = data.find(d => d.name === "Lisbon");
+
+function show(d) {
+  const change = d[2025] - d[2024];
+  const since = year === 2025 ? `, ${change > 0 ? "+" : ""}${change} points since 2024` : "";
+  d3.select("#readout").text(`${d.name}: ${d[year]}% in ${year}${since}`);
+}
+
+show(lisbon);
+
+const svg = chart.append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto;");
+
+const bars = svg.append("g").selectAll().data(data).join("g")
+    .attr("fill", d => d.name === "Lisbon" ? "#c2410c" : "#b8b2a7")
+    .attr("tabindex", 0)
+    .on("mouseenter focus click", (event, d) => show(d))
+    .on("mouseleave blur", () => show(lisbon))
+    .on("keydown", event => {
+      if (event.key === "ArrowDown" || event.key === "ArrowRight") event.target.nextElementSibling?.focus();
+      if (event.key === "ArrowUp" || event.key === "ArrowLeft") event.target.previousElementSibling?.focus();
+    });
+
+const person = 'M0 1 C0 .72 .12 .6 .32 .55 C.38 .53 .4 .5 .4 .46 C.3 .42 .26 .34 .26 .26 C.26 .13 .36 .04 .5 .04 C.64 .04 .74 .13 .74 .26 C.74 .34 .7 .42 .6 .46 C.6 .5 .62 .53 .68 .55 C.88 .6 1 .72 1 1 Z';
+function drawPeople() {
+  bars.each(function(d) {
+    const row = d3.select(this), pitch = x(10) - x(0), size = Math.min(pitch * 0.8, y.bandwidth());
+    row.selectAll('*').remove();
+    row.append('rect').attr('x', x(0)).attr('y', y(d.name))
+        .attr('width', x(Math.ceil(d[year] / 10) * 10) - x(0)).attr('height', y.bandwidth()).attr('fill', 'transparent');
+    const icons = row.selectAll('svg').data(d3.range(Math.ceil(d[year] / 10))).join('svg')
+        .attr('x', j => x(j * 10 + 5) - size / 2).attr('y', y(d.name) + (y.bandwidth() - size) / 2)
+        .attr('width', size).attr('height', size).attr('viewBox', '0 0 1 1').attr('pointer-events', 'none');
+    icons.append('path').attr('d', person).attr('fill', '#d9d3c7');
+    icons.append('path').attr('d', person)
+        .style('clip-path', j => `inset(0 ${100 - Math.min(1, (d[year] - j * 10) / 10) * 100}% 0 0)`);
+  });
+}
+drawPeople();
+
+const target = svg.append("g").attr("transform", `translate(${x(60)},0)`).attr("pointer-events", "none");
+
+target.append("line")
+    .attr("y1", margin.top)
+    .attr("y2", height - margin.bottom)
+    .attr("stroke", "currentColor");
+
+target.append("text")
+    .attr("y", margin.top - 6)
+    .attr("text-anchor", "middle")
+    .text("EU target: 60%");
+
+const labels = svg.append("g").selectAll().data(data).join("text")
+    .attr("x", d => x(Math.ceil(d[year] / 10) * 10) + 4)
+    .attr("y", d => y(d.name) + y.bandwidth() / 2)
+    .attr("dy", "0.35em")
+    .text(d => d[year]);
+
+svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x));
+
+if (narrow) {
+  svg.append("g").selectAll().data(data).join("text")
+      .attr("x", x(0))
+      .attr("y", d => y(d.name) - 6)
+      .text(d => d.name);
+} else {
+  svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y));
+}
+
+d3.selectAll("button").on("click", event => {
+  year = +event.target.textContent;
+  drawPeople();
+  labels
+      .attr("x", d => x(Math.ceil(d[year] / 10) * 10) + 4)
+      .text(d => d[year]);
+  show(lisbon);
+});
+</script>

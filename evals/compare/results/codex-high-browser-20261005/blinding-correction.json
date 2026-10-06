@@ -1,0 +1,227 @@
+{
+  "date": "2026-10-05T22:27:54.649Z",
+  "reason": "Version 1 mistook the accessible label Vega visualization for a vector logo and hid Flint charts. Only the separate judging screenshots were affected. Original HTML, original renders, scans and generation usage are unchanged. The first three skyscraper judging passes are excluded and will be replaced by fresh sessions.",
+  "affected": [
+    {
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-1",
+      "before": {
+        "images": {
+          "desktop": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-1/render-blind/desktop.jpg",
+            "fullHeight": 1646,
+            "cropped": false,
+            "sha256": "aff366f0ceab9e88adcb8e6f0aca579a415ec9fb72105682ce4a9591f8bcd348"
+          },
+          "phone": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-1/render-blind/phone.jpg",
+            "fullHeight": 2269,
+            "cropped": true,
+            "sha256": "711370b50b18e3383a440d3c2b5763eb854fb507768c6023542a01e123399abb"
+          }
+        },
+        "redactions": {
+          "390": [
+            {
+              "kind": "logo",
+              "identity": "Vega visualization",
+              "x": 20,
+              "y": 504.890625,
+              "width": 350,
+              "height": 500
+            }
+          ],
+          "1280": [
+            {
+              "kind": "logo",
+              "identity": "Vega visualization",
+              "x": 64,
+              "y": 486.09375,
+              "width": 1152,
+              "height": 510
+            }
+          ]
+        }
+      },
+      "after": {
+        "images": {
+          "desktop": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-1/render-blind-v2/desktop.jpg",
+            "fullHeight": 1646,
+            "cropped": false
+          },
+          "phone": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-1/render-blind-v2/phone.jpg",
+            "fullHeight": 2269,
+            "cropped": true
+          }
+        },
+        "redactions": {
+          "390": [],
+          "1280": []
+        },
+        "version": 2
+      },
+      "unchangedFromOriginal": {
+        "390": {
+          "originalSha256": "95dc4043d00bb9e50f4d2e19ff3cfbe68f2e1a40c624c504befc25862b6d7c2c",
+          "correctedSha256": "95dc4043d00bb9e50f4d2e19ff3cfbe68f2e1a40c624c504befc25862b6d7c2c"
+        },
+        "1280": {
+          "originalSha256": "5b76a8e6fc85652d5ecf4e7428fb80e87f16788ebd23789518720ff5539f6d4a",
+          "correctedSha256": "5b76a8e6fc85652d5ecf4e7428fb80e87f16788ebd23789518720ff5539f6d4a"
+        }
+      }
+    },
+    {
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-2",
+      "before": {
+        "images": {
+          "desktop": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-2/render-blind/desktop.jpg",
+            "fullHeight": 1527,
+            "cropped": false,
+            "sha256": "90d4bd43324479553f3dcf4bba2259c8e6e3ba14724778cafd7e42bb9ad540b0"
+          },
+          "phone": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-2/render-blind/phone.jpg",
+            "fullHeight": 2048,
+            "cropped": true,
+            "sha256": "fa8e629f947c66491377b698241f82329119b59c6ed889d8259675be7e8651a4"
+          }
+        },
+        "redactions": {
+          "390": [
+            {
+              "kind": "logo",
+              "identity": "Vega visualization",
+              "x": 20,
+              "y": 525.640625,
+              "width": 350,
+              "height": 490
+            }
+          ],
+          "1280": [
+            {
+              "kind": "logo",
+              "identity": "Vega visualization",
+              "x": 56,
+              "y": 521.375,
+              "width": 1168,
+              "height": 461
+            }
+          ]
+        }
+      },
+      "after": {
+        "images": {
+          "desktop": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-2/render-blind-v2/desktop.jpg",
+            "fullHeight": 1527,
+            "cropped": false
+          },
+          "phone": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-2/render-blind-v2/phone.jpg",
+            "fullHeight": 2048,
+            "cropped": true
+          }
+        },
+        "redactions": {
+          "390": [],
+          "1280": []
+        },
+        "version": 2
+      },
+      "unchangedFromOriginal": {
+        "390": {
+          "originalSha256": "29f600259e02f7a71248dd0634002da9c837c802621cd879c4bc0af1403dc772",
+          "correctedSha256": "29f600259e02f7a71248dd0634002da9c837c802621cd879c4bc0af1403dc772"
+        },
+        "1280": {
+          "originalSha256": "4465edbc9811a17b4a4edd3045b633fe298b75cc1bebbdf8ef7d43fdc0903355",
+          "correctedSha256": "4465edbc9811a17b4a4edd3045b633fe298b75cc1bebbdf8ef7d43fdc0903355"
+        }
+      }
+    },
+    {
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-3",
+      "before": {
+        "images": {
+          "desktop": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-3/render-blind/desktop.jpg",
+            "fullHeight": 1579,
+            "cropped": false,
+            "sha256": "c07111045d82830e92d7de827f15f894125f240aa75d839101cffa7a49b1ccae"
+          },
+          "phone": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-3/render-blind/phone.jpg",
+            "fullHeight": 2424,
+            "cropped": true,
+            "sha256": "99593e3b33205d2fb5719289322a6c2976c04139d902f935528f57b769d27e7c"
+          }
+        },
+        "redactions": {
+          "390": [
+            {
+              "kind": "logo",
+              "identity": "Vega visualization",
+              "x": 20,
+              "y": 553.171875,
+              "width": 350,
+              "height": 540
+            }
+          ],
+          "1280": [
+            {
+              "kind": "logo",
+              "identity": "Vega visualization",
+              "x": 56,
+              "y": 469.75,
+              "width": 1168,
+              "height": 452
+            }
+          ]
+        }
+      },
+      "after": {
+        "images": {
+          "desktop": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-3/render-blind-v2/desktop.jpg",
+            "fullHeight": 1579,
+            "cropped": false
+          },
+          "phone": {
+            "file": "/tmp/rhp-codex-high-browser-20261005/skyscrapers-flint-skill-mcp-gpt-6-astra-3/render-blind-v2/phone.jpg",
+            "fullHeight": 2424,
+            "cropped": true
+          }
+        },
+        "redactions": {
+          "390": [],
+          "1280": []
+        },
+        "version": 2
+      },
+      "unchangedFromOriginal": {
+        "390": {
+          "originalSha256": "deb7e8d75c4f12c00fbdf48ba55db4f3cc9194fb06b2a9f69b3d8aa852bd8556",
+          "correctedSha256": "deb7e8d75c4f12c00fbdf48ba55db4f3cc9194fb06b2a9f69b3d8aa852bd8556"
+        },
+        "1280": {
+          "originalSha256": "ab7d6fbc3dfb5b818b40bef46ed7f1a64f3309185414b55cb79b1f7680494837",
+          "correctedSha256": "ab7d6fbc3dfb5b818b40bef46ed7f1a64f3309185414b55cb79b1f7680494837"
+        }
+      }
+    }
+  ],
+  "status": "corrected and independently rejudged",
+  "excludedJudging": "excluded-blinding/judging.json",
+  "finalJudging": "judging.json",
+  "finalAudit": {
+    "posters": 51,
+    "remainingRedactions": [
+      "amCharts 5 canvas logo",
+      "Drawn with rhp",
+      "Visualized with rhp"
+    ]
+  }
+}

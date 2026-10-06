@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f3efe5">
+<meta name="description" content="The height of ambition: an editorial comparison of the world's ten tallest buildings, with architectural heights, cities and completion years. Data: CTBUH.">
+<title>The height of ambition | Ten buildings above the world</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3efe5;--ink:#242a27;--red:#b9422c;--muted:#64665f;--rule:#c9c7bc;--semiotic-bg:#f3efe5;--semiotic-text:#242a27;--semiotic-text-secondary:#64665f;--semiotic-grid:#d9d5ca}
+*{box-sizing:border-box}html{background:#e5e0d4}body{margin:0;color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}.poster{max-width:1440px;margin:auto;background:var(--paper);padding:32px 60px 24px;min-height:100vh}.mono{font-family:'IBM Plex Mono',monospace}.masthead{display:flex;justify-content:space-between;align-items:center;border-top:4px solid var(--ink);border-bottom:1px solid var(--ink);padding:13px 0;font-size:11px;letter-spacing:1.6px;text-transform:uppercase}.brand{display:flex;align-items:center;gap:9px;font-weight:700}.brand-mark{display:inline-flex;gap:3px;align-items:flex-end;height:15px}.brand-mark i{width:4px;background:var(--red);height:9px}.brand-mark i:nth-child(2){height:15px}.brand-mark i:nth-child(3){height:12px}.issue{color:var(--muted)}.hero{display:grid;grid-template-columns:1fr 265px;gap:40px;align-items:end;padding:36px 0 31px}h1{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-size:clamp(85px,9.5vw,137px);line-height:.87;font-weight:600;letter-spacing:-1px;margin:0;text-transform:uppercase}h1 span{display:block;color:var(--red)}.intro{font-size:14px;line-height:1.6;margin:0 0 3px}.intro strong{display:block;font-size:19px;font-weight:500;line-height:1.35;margin-bottom:13px}.section-line{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--ink);padding-top:14px;gap:14px;font-size:11px;letter-spacing:1px;text-transform:uppercase}.section-line strong{font-weight:500}.chart-section{position:relative;margin-top:5px}.chart-shell{position:relative;width:100%;min-height:490px}.lead-note{position:absolute;right:7px;top:39px;width:265px;z-index:2;display:grid;grid-template-columns:auto 1fr;gap:15px;align-items:center;background:var(--paper);padding:10px 0 10px 15px;border-left:2px solid var(--red)}.lead-note b{display:block;font-family:'Barlow Condensed',sans-serif;color:var(--red);font-size:54px;line-height:1;font-weight:500;letter-spacing:-1px}.lead-note b small{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0;margin-left:3px}.lead-note p{font-size:11px;line-height:1.55;margin:0;color:var(--muted)}#chart{width:100%;position:relative}#chart svg text{font-family:'IBM Plex Mono',monospace!important}#chart svg{overflow:visible}#chart svg[role="img"]>g>text{text-anchor:middle}#chart canvas{pointer-events:none}.chart-note{font-size:11px;color:var(--muted);margin:6px 0 24px;text-align:right}.directory{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:24px;row-gap:22px;margin:0;padding:0;list-style:none}.building{border-top:1px solid var(--rule);padding-top:12px;min-width:0}.building-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}.rank{font-size:11px;color:var(--red)}.height{font-family:'Barlow Condensed',sans-serif;font-size:31px;font-weight:500;line-height:1}.height small{font-family:'IBM Plex Mono',monospace;font-size:10px;margin-left:3px;color:var(--muted)}.building h2{font-size:14px;line-height:1.4;font-weight:600;margin:0 0 6px;min-height:40px}.building p{font-size:11px;color:var(--muted);line-height:1.65;margin:0}.year{font-family:'IBM Plex Mono',monospace;font-size:10px}.afterword{display:grid;grid-template-columns:1fr 1fr;gap:35px;border-top:1px solid var(--ink);margin-top:28px;padding:19px 0 24px}.afterword p{font-size:12px;line-height:1.6;margin:0;max-width:500px}.afterword strong{font-weight:600}.footer{display:flex;justify-content:space-between;gap:30px;border-top:1px solid var(--rule);padding-top:14px;font-size:9px;line-height:1.7;color:var(--muted)}.footer a{color:inherit;text-underline-offset:3px}.footer .folio{white-space:nowrap;letter-spacing:1px;text-transform:uppercase}.mobile-labels{display:none}.loading{height:490px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}.failed{padding:30px 0;color:var(--red);font-size:13px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1441px){.poster{margin:24px auto}}
+@media(max-width:1000px) and (min-width:701px){.poster{padding:28px 32px 24px}.hero{grid-template-columns:1fr 210px;gap:24px}h1{font-size:90px}.intro{font-size:12px}.intro strong{font-size:17px}.directory{column-gap:18px}.building h2{font-size:12px;min-height:51px}.lead-note{width:240px}}
+@media(max-width:700px){.poster{padding:20px 22px 22px}.masthead{font-size:9px;letter-spacing:.7px;padding:11px 0}.masthead .issue{font-size:8px}.hero{display:block;padding:29px 0 24px}h1{font-size:clamp(58px,15.3vw,106px);letter-spacing:-.5px;line-height:.9}.intro{font-size:12px;line-height:1.6;max-width:430px;margin-top:24px}.intro strong{font-size:16px;margin-bottom:7px}.section-line{font-size:9px;letter-spacing:.6px;align-items:start}.section-line span{max-width:108px;text-align:right;line-height:1.6}.lead-note{position:static;width:100%;margin:18px 0 24px;padding:3px 0 3px 14px;display:flex;gap:16px}.lead-note b{font-size:43px}.lead-note p{font-size:11px;max-width:170px}.chart-shell{min-height:930px}.chart-note{text-align:left;font-size:10px;line-height:1.6;margin:16px 0 0}.directory{display:none}.mobile-labels{display:block;position:absolute;inset:0;pointer-events:none}.mobile-label{position:absolute;left:0;right:0}.mobile-label .name-line{display:flex;gap:9px;align-items:baseline}.mobile-label .rank{font-size:10px;flex-shrink:0}.mobile-label h2{font-size:13px;font-weight:600;margin:0;line-height:1.4}.mobile-label .meta-line{display:flex;justify-content:space-between;align-items:baseline;margin:5px 0 0 24px;font-size:10px;color:var(--muted)}.mobile-label .mobile-height{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--red);font-weight:500}.afterword{grid-template-columns:1fr;gap:12px;margin-top:24px;padding-bottom:22px}.afterword p{font-size:11px}.footer{font-size:9px;gap:20px}.footer .folio{font-size:8px}.loading{height:850px}}
+@media print{html,body{background:var(--paper)}.poster{margin:0;max-width:none;padding:24px}.hero{padding-top:24px}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.footer a{text-decoration:none}}
+</style>
+<script type="importmap">
+{"imports":{"https://cdn.jsdelivr.net/npm/react@%5E19.3.0/+esm":"https://cdn.jsdelivr.net/npm/react@19.3.0/+esm","react":"https://cdn.jsdelivr.net/npm/react@19.3.0/+esm","react-dom/client":"https://cdn.jsdelivr.net/npm/react-dom@19.3.0/client/+esm","semiotic/ordinal":"https://cdn.jsdelivr.net/npm/semiotic@3.12.0/ordinal/+esm"}}
+</script>
+</head>
+<body>
+<main class="poster">
+<header class="masthead mono"><span class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span> The built world</span><span class="issue">A study in scale / No. 01</span></header>
+<section class="hero" aria-labelledby="poster-title">
+<h1 id="poster-title">The height<span>of ambition</span></h1>
+<p class="intro"><strong>Ten buildings.<br>One extraordinary skyline.</strong>From Dubai to Beijing, the world’s tallest buildings turn engineering into a race for the sky. Here is how the giants measure up.</p>
+</section>
+<section aria-labelledby="chart-title">
+<div class="section-line mono"><strong id="chart-title">01 / The world’s ten tallest buildings</strong><span>Architectural height · metres</span></div>
+<div class="chart-section">
+<aside class="lead-note"><b>149.1<small>m</small></b><p>Burj Khalifa’s lead<br>over its nearest rival.</p></aside>
+<div class="chart-shell"><div id="chart"><p class="loading mono">Drawing the skyline…</p></div></div>
+<p class="chart-note">A shared zero baseline. Equal heights are shown equally. Numbers connect bars to the entries below.</p>
+</div>
+<ol class="directory" id="directory" aria-label="Building heights, cities and completion years"></ol>
+</section>
+<section class="afterword" aria-label="Reading the skyline">
+<p><strong>A class of its own.</strong> At 828 metres, Burj Khalifa stands 22% taller than Merdeka 118. The distance between them is greater than the entire spread from Shanghai Tower to CITIC Tower.</p>
+<p><strong>The narrow end of the race.</strong> Just 26.8 metres separate the final five buildings. Guangzhou and Tianjin share the same architectural height: 530 metres.</p>
+</section>
+<footer class="footer"><div>Source: <a href="https://www.ctbuh.org/">Council on Tall Buildings and Urban Habitat (CTBUH)</a>, supplied dataset.<br>Architectural height includes spires, excludes antennas. Years indicate completion. Ranking reflects the supplied list.</div><span class="folio mono">Architecture<br>In numbers / 01</span></footer>
+</main>
+<script id="chart-config" type="application/json">{
+  "component": "BarChart",
+  "props": {
+    "data": [
+      {
+        "name": "Burj Khalifa",
+        "city": "Dubai",
+        "height": 828,
+        "year": 2010,
+        "id": "01"
+      },
+      {
+        "name": "Merdeka 118",
+        "city": "Kuala Lumpur",
+        "height": 678.9,
+        "year": 2023,
+        "id": "02"
+      },
+      {
+        "name": "Shanghai Tower",
+        "city": "Shanghai",
+        "height": 632,
+        "year": 2015,
+        "id": "03"
+      },
+      {
+        "name": "Makkah Royal Clock Tower",
+        "city": "Mecca",
+        "height": 601,
+        "year": 2012,
+        "id": "04"
+      },
+      {
+        "name": "Ping An Finance Center",
+        "city": "Shenzhen",
+        "height": 599.1,
+        "year": 2017,
+        "id": "05"
+      },
+      {
+        "name": "Lotte World Tower",
+        "city": "Seoul",
+        "height": 554.5,
+        "year": 2017,
+        "id": "06"
+      },
+      {
+        "name": "One World Trade Center",
+        "city": "New York City",
+        "height": 541.3,
+        "year": 2014,
+        "id": "07"
+      },
+      {
+        "name": "Guangzhou CTF Finance Centre",
+        "city": "Guangzhou",
+        "height": 530,
+        "year": 2016,
+        "id": "08"
+      },
+      {
+        "name": "Tianjin CTF Finance Centre",
+        "city": "Tianjin",
+        "height": 530,
+        "year": 2019,
+        "id": "09"
+      },
+      {
+        "name": "CITIC Tower",
+        "city": "Beijing",
+        "height": 527.7,
+        "year": 2018,
+        "id": "10"
+      }
+    ],
+    "categoryAccessor": "id",
+    "valueAccessor": "height",
+    "orientation": "vertical",
+    "width": 1100,
+    "height": 480,
+    "margin": {
+      "left": 40,
+      "right": 0,
+      "top": 35,
+      "bottom": 30
+    },
+    "valueExtent": [
+      0,
+      900
+    ],
+    "sort": false,
+    "barPadding": 42,
+    "color": "#bc3e26",
+    "showGrid": true,
+    "showCategoryTicks": true,
+    "showLegend": false,
+    "enableHover": false,
+    "tooltip": false,
+    "animate": false,
+    "description": "The world's ten tallest buildings, compared by architectural height in metres.",
+    "summary": "Burj Khalifa is tallest at 828 metres, 149.1 metres higher than Merdeka 118. All ten buildings are listed below with cities, heights and completion years.",
+    "accessibleTable": false,
+    "annotations": [
+      {
+        "type": "text",
+        "id": "01",
+        "height": 828,
+        "label": "828",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "02",
+        "height": 678.9,
+        "label": "678.9",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "03",
+        "height": 632,
+        "label": "632",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "04",
+        "height": 601,
+        "label": "601",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "05",
+        "height": 599.1,
+        "label": "599.1",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "06",
+        "height": 554.5,
+        "label": "554.5",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "07",
+        "height": 541.3,
+        "label": "541.3",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "08",
+        "height": 530,
+        "label": "530",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "09",
+        "height": 530,
+        "label": "530",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      },
+      {
+        "type": "text",
+        "id": "10",
+        "height": 527.7,
+        "label": "527.7",
+        "dy": -13,
+        "fontSize": 15,
+        "fontWeight": 600,
+        "fill": "#a23421"
+      }
+    ],
+    "styleRules": [
+      {
+        "style": {
+          "fill": {
+            "type": "hatch",
+            "background": "#b9422c",
+            "stroke": "#edb59c",
+            "lineWidth": 0.65,
+            "spacing": 5,
+            "angle": 90
+          }
+        }
+      }
+    ]
+  }
+}
+</script>
+<script>
+const posterConfig = JSON.parse(document.getElementById('chart-config').textContent);
+const buildings = posterConfig.props.data;
+const directory = document.getElementById('directory');
+for (const d of buildings) {
+  const item = document.createElement('li');
+  item.className = 'building';
+  item.innerHTML = `<div class="building-head"><span class="rank mono">${d.id}</span><span class="height">${d.height}<small>m</small></span></div><h2>${d.name}</h2><p>${d.city}<br><span class="year">Completed ${d.year}</span></p>`;
+  directory.append(item);
+}
+</script>
+<script type="module">
+try {
+  const [{default:React}, {createRoot}, {BarChart}] = await Promise.all([import('react'), import('react-dom/client'), import('semiotic/ordinal')]);
+  const e = React.createElement;
+  const root = createRoot(document.getElementById('chart'));
+  function App() {
+    const [width, setWidth] = React.useState(document.getElementById('chart').clientWidth);
+    React.useEffect(() => {
+      const observer = new ResizeObserver(entries => setWidth(Math.round(entries[0].contentRect.width)));
+      observer.observe(document.getElementById('chart'));
+      return () => observer.disconnect();
+    }, []);
+    const mobile = window.matchMedia('(max-width:700px)').matches;
+    const props = {...posterConfig.props, width, height:490, barPadding:(width - 40) * .55};
+    if (mobile) Object.assign(props, {
+      height:930, orientation:'horizontal', margin:{top:0,bottom:30,left:0,right:0},
+      showCategoryTicks:false, showGrid:false, barPadding:720, annotations:[], styleRules:[],
+      frameProps:{rTickValues:[0,300,600,900],tickLabelEdgeAlign:true},
+      description:'The world’s ten tallest buildings. Horizontal bars share a zero baseline and a scale from 0 to 900 metres. Exact heights, cities and years are printed above each bar.',
+      summary:'Burj Khalifa leads at 828 metres. Each building’s city, completion year and exact height appear above its bar.'
+    });
+    window.posterChartConfig = {component:'BarChart', props};
+    document.querySelector('.chart-note').textContent = mobile
+      ? 'Architectural height in metres, measured from a shared zero baseline. Guangzhou and Tianjin are tied at 530 m.'
+      : 'A shared zero baseline. Equal heights are shown equally. Numbers connect bars to the entries below.';
+    return e(React.Fragment,null,
+      e(BarChart, props),
+      mobile && e('div',{className:'mobile-labels'},buildings.map((d,i)=>e('div',{className:'mobile-label',key:d.id,style:{top:(i*900/10.8+15)+'px'}},
+        e('div',{className:'name-line'},e('span',{className:'rank mono'},d.id),e('h2',null,d.name)),
+        e('div',{className:'meta-line'},e('span',null,`${d.city} · ${d.year}`),e('span',{className:'mobile-height'},`${d.height} m`))
+      )))
+    );
+  }
+  root.render(e(App));
+  document.documentElement.dataset.chartStatus = 'ready';
+} catch (error) {
+  document.getElementById('chart').innerHTML = '<p class="failed">The chart could not load. The complete building list is available below.</p>';
+  document.getElementById('directory').style.display = 'grid';
+  document.documentElement.dataset.chartStatus = 'error';
+  console.error(error);
+}
+</script>
+</body>
+</html>

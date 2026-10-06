@@ -1,0 +1,2688 @@
+{
+  "collected": "2026-10-05T22:39:00.914Z",
+  "method": "Independent ephemeral model sessions; anonymous shuffled entries; visible library credit text and identifiable logos hidden in separate screenshots. Visual style may reveal the library. Desktop and phone crops follow the fixed rubric.",
+  "scores": [
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E01",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Numbered skyline requires lookup in the building index",
+        "Most height labels disappear from the phone skyline"
+      ],
+      "strengths": [
+        "Specific headline communicates the main finding",
+        "Accurate skyline with a strong tallest-building highlight",
+        "Readable phone index includes every supplied value"
+      ],
+      "rank": 2,
+      "of": 21,
+      "rankScore": 0.95
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E02",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Phone skyline omits height labels and building names",
+        "Small city, year and source text"
+      ],
+      "strengths": [
+        "Confident typography and balanced desktop composition",
+        "Recognizable silhouettes on an accurate common scale",
+        "Clear 149.1 m comparison and complete data index"
+      ],
+      "rank": 4,
+      "of": 21,
+      "rankScore": 0.85
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E03",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 10,
+      "design": 8,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Phone city, year and value labels are very small",
+        "Phone summary columns make explanatory text cramped"
+      ],
+      "strengths": [
+        "Directly labeled bars integrate all requested data",
+        "Accurate zero baseline and explicit shared eighth place",
+        "Refined serif headline and useful geographic context"
+      ],
+      "rank": 6,
+      "of": 21,
+      "rankScore": 0.75
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E04",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop skyline names require reference to the index",
+        "Some chart notes and source text are small"
+      ],
+      "strengths": [
+        "Clear editorial claim supported by the height gap",
+        "Phone switches to readable bars with full names, cities and years",
+        "Accurate scales and restrained color hierarchy"
+      ],
+      "rank": 1,
+      "of": 21,
+      "rankScore": 1
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E05",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 7,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Numbered phone bars require a distant building index",
+        "Spacious repeated sections make the phone layout lengthy",
+        "Headline offers little specific insight"
+      ],
+      "strengths": [
+        "Exact values and zero-based bars on both screens",
+        "Clear tallest-building emphasis",
+        "Complete data and useful lead and geography annotations"
+      ],
+      "rank": 17,
+      "of": 21,
+      "rankScore": 0.19999999999999996
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E06",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 7,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Chart identifiers require lookup in a separate index",
+        "Small phone heights, cities and completion years",
+        "Conventional chart and generic headline"
+      ],
+      "strengths": [
+        "Compact phone chart preserves all ten comparisons",
+        "Accurate scales and complete data",
+        "Strong typographic hierarchy and clear lead annotation"
+      ],
+      "rank": 15,
+      "of": 21,
+      "rankScore": 0.30000000000000004
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E07",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline loses direct height labels",
+        "Small city and completion-year text",
+        "Numbered silhouettes require index lookup"
+      ],
+      "strengths": [
+        "Detailed silhouettes create a convincing architectural poster",
+        "Accurate common scale with purposeful tallest-building emphasis",
+        "Compact phone composition retains the full data index"
+      ],
+      "rank": 7,
+      "of": 21,
+      "rankScore": 0.7
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E08",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 7,
+      "overall": 7,
+      "issues": [
+        "Phone chart shows only three complete towers before horizontal clipping",
+        "Tianjin is numbered 09 in the chart but 08 in the index",
+        "Small secondary text and lengthy phone composition"
+      ],
+      "strengths": [
+        "Distinctive purple palette and refined headline typography",
+        "Desktop skyline has exact values and city labels",
+        "Complete data index and useful explanation of equal heights"
+      ],
+      "rank": 18,
+      "of": 21,
+      "rankScore": 0.15000000000000002
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E09",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone chart has no direct height labels and only sparse scale ticks",
+        "Building names require a separate index",
+        "Tiny chart notes and source text"
+      ],
+      "strengths": [
+        "Strong headline hierarchy and cohesive blue skyline",
+        "Large, readable heights in the phone index",
+        "Accurate data with useful first-to-tenth and geographic context"
+      ],
+      "rank": 12,
+      "of": 21,
+      "rankScore": 0.44999999999999996
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E10",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-3",
+      "fidelity": 7,
+      "data": 7,
+      "design": 3,
+      "legibility": 6,
+      "overall": 4,
+      "issues": [
+        "Central chart area is empty on both screens",
+        "Large empty region pushes phone data far down the page",
+        "Chart instructions refer to bars that are not visible"
+      ],
+      "strengths": [
+        "Desktop index preserves every supplied data value",
+        "Readable headline and coherent typography",
+        "Correct lead, tied-height and range annotations"
+      ],
+      "rank": 21,
+      "of": 21,
+      "rankScore": 0
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E11",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone chart uses small abbreviated building labels",
+        "Separate chart and index repeat information over a long page",
+        "Desktop chart requires numbered lookup"
+      ],
+      "strengths": [
+        "Accurate zero-based comparisons",
+        "Clear phone bar labels improve identification",
+        "Strong visual hierarchy and useful 600 m threshold annotation"
+      ],
+      "rank": 11,
+      "of": 21,
+      "rankScore": 0.5
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E12",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 10,
+      "design": 8,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Phone city and year text is very small",
+        "Three narrow phone summary columns constrain readability"
+      ],
+      "strengths": [
+        "Complete data integrated directly with accurately scaled bars",
+        "Equal-height buildings correctly share eighth place",
+        "Well-composed benchmark illustration and useful summary facts"
+      ],
+      "rank": 5,
+      "of": 21,
+      "rankScore": 0.8
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E13",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Yellow highlight has modest contrast against the pale chart background",
+        "Phone cities, years and bar-end values are very small",
+        "Large introductory section delays the comparison"
+      ],
+      "strengths": [
+        "Clear table-and-bar alignment with full building names",
+        "Accurate zero-based lengths and exact supplied values",
+        "Distinctive yellow benchmark panel and disciplined spacing"
+      ],
+      "rank": 9,
+      "of": 21,
+      "rankScore": 0.6
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E14",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 7,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone bars identify cities rather than buildings",
+        "Separate index makes the phone layout lengthy",
+        "Phone caption refers to chart numbers that are not shown"
+      ],
+      "strengths": [
+        "Accurate bars and complete data index",
+        "Readable phone city labels and height values",
+        "Prominent and correctly explained 149.1 m lead"
+      ],
+      "rank": 16,
+      "of": 21,
+      "rankScore": 0.25
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E15",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 10,
+      "design": 8,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop chart requires numbered lookup",
+        "Striped desktop bars add texture without aiding comparison",
+        "Generic headline understates the stronger findings below"
+      ],
+      "strengths": [
+        "Phone combines full names, cities, years and heights with each bar",
+        "Accurate zero-based comparisons on both screens",
+        "Useful 22 percent lead and 26.8 m lower-group spread annotations"
+      ],
+      "rank": 3,
+      "of": 21,
+      "rankScore": 0.9
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E16",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-1",
+      "fidelity": 7,
+      "data": 7,
+      "design": 3,
+      "legibility": 6,
+      "overall": 4,
+      "issues": [
+        "Central visualization is absent on both screens",
+        "Oversized empty region interrupts the reading order",
+        "Scale and index instructions describe a chart that is not visible"
+      ],
+      "strengths": [
+        "Complete and readable desktop data index",
+        "Strong headline typography and contrast",
+        "Correct 149.1 m comparison"
+      ],
+      "rank": 20,
+      "of": 21,
+      "rankScore": 0.050000000000000044
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E17",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Numbered phone chart requires lookup below the summary strip",
+        "Small phone metadata and explanatory text",
+        "Progressive bar colors add little to the height comparison"
+      ],
+      "strengths": [
+        "Accurate bars retain every exact height",
+        "Distinctive tallest-building highlight",
+        "Compact data index and useful lead, geography and tie annotations"
+      ],
+      "rank": 14,
+      "of": 21,
+      "rankScore": 0.35
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E18",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline is split across two panels, slowing comparisons",
+        "Numbered towers require a separate index",
+        "Small city and year labels"
+      ],
+      "strengths": [
+        "Phone panels preserve a consistent scale and visible height labels",
+        "Detailed silhouettes and strong color hierarchy",
+        "Explicit tied ranks and complete supplied data"
+      ],
+      "rank": 13,
+      "of": 21,
+      "rankScore": 0.4
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E19",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline omits exact height labels",
+        "Small phone axis labels and completion-year text",
+        "Pale blue architectural details have limited contrast"
+      ],
+      "strengths": [
+        "Large heights make the data index easy to scan",
+        "Accurate skyline with a well-placed lead annotation",
+        "Consistent composition and complete data on desktop"
+      ],
+      "rank": 10,
+      "of": 21,
+      "rankScore": 0.55
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E20",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 9,
+      "overall": 8,
+      "issues": [
+        "Phone skyline omits exact values and names",
+        "Repeated Burj Khalifa panel adds scrolling before the index",
+        "Single-column phone index separates later buildings from the chart"
+      ],
+      "strengths": [
+        "Specific headline communicates the main comparison",
+        "Readable full-width phone data rows",
+        "Accurate skyline, exact values and clear source note"
+      ],
+      "rank": 8,
+      "of": 21,
+      "rankScore": 0.65
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E21",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-2",
+      "fidelity": 7,
+      "data": 7,
+      "design": 3,
+      "legibility": 6,
+      "overall": 4,
+      "issues": [
+        "Skyline area is empty on both screens",
+        "Large blank chart region delays the phone data index",
+        "Baseline and index references have no visible chart"
+      ],
+      "strengths": [
+        "Desktop index includes all requested values",
+        "Clear headline and readable data typography",
+        "Correct lead and equal-height explanations"
+      ],
+      "rank": 19,
+      "of": 21,
+      "rankScore": 0.09999999999999998
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E01",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Small city, year and annotation text on phone"
+      ],
+      "strengths": [
+        "Refined serif headline and restrained color",
+        "Complete data directly beside proportional zero-based bars",
+        "Compact phone layout",
+        "Useful contextual statistics and explicit tied ranks"
+      ],
+      "rank": 3,
+      "of": 21,
+      "rankScore": 0.9
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E02",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Numbered bars require a separate building index on both screens",
+        "Small secondary text in phone statistics"
+      ],
+      "strengths": [
+        "Accurate zero-based comparison and complete data",
+        "Strong headline hierarchy",
+        "Clear leader highlight",
+        "Phone chart changes to horizontal bars"
+      ],
+      "rank": 13,
+      "of": 21,
+      "rankScore": 0.4
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E03",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Desktop bars require cross-referencing numbered cards",
+        "Small abbreviated building labels on phone",
+        "Dense desktop gridlines"
+      ],
+      "strengths": [
+        "Complete precise data",
+        "Phone bars carry recognizable building names",
+        "Strong typographic hierarchy",
+        "Useful lead and threshold statistics"
+      ],
+      "rank": 11,
+      "of": 21,
+      "rankScore": 0.5
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E04",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Chart identifies buildings only through a distant numbered index",
+        "Long phone layout separates comparison from building details"
+      ],
+      "strengths": [
+        "Accurate common zero baseline",
+        "Complete data and readable cards",
+        "Confident headline and consistent spacing",
+        "Clear explanatory statistics"
+      ],
+      "rank": 17,
+      "of": 21,
+      "rankScore": 0.19999999999999996
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E05",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Phone skyline omits exact height labels",
+        "Numbered silhouettes require cross-referencing the index",
+        "Fine silhouette details compress on phone"
+      ],
+      "strengths": [
+        "Distinctive architectural skyline drawn to a common height scale",
+        "Complete data with prominent height typography",
+        "Well-positioned lead annotation",
+        "Cohesive blue palette"
+      ],
+      "rank": 7,
+      "of": 21,
+      "rankScore": 0.7
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E06",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop silhouettes require a numbered building index",
+        "Some schematic building profiles are visually crude"
+      ],
+      "strengths": [
+        "Headline communicates the main finding",
+        "Accurate scaled desktop skyline",
+        "Excellent phone adaptation with names, bars, values, cities and years together",
+        "All ten buildings readable in a coherent phone layout"
+      ],
+      "rank": 1,
+      "of": 21,
+      "rankScore": 1
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E07",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Phone skyline extends beyond the viewport",
+        "Only the first few towers can be compared in the visible phone chart",
+        "Small secondary text in the building index"
+      ],
+      "strengths": [
+        "Expressive skyline silhouettes and purple palette",
+        "Accurate shared scale and complete data",
+        "City labels beneath desktop towers",
+        "Tied eighth place handled explicitly"
+      ],
+      "rank": 18,
+      "of": 21,
+      "rankScore": 0.15000000000000002
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E08",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop bars require cross-referencing a numbered index",
+        "Decorative bar stripes add visual noise"
+      ],
+      "strengths": [
+        "Excellent phone layout integrates all requested data with each bar",
+        "Accurate zero-based scales",
+        "Useful analysis of both the leader and the tightly grouped lower five",
+        "Strong hierarchy and readable typography"
+      ],
+      "rank": 2,
+      "of": 21,
+      "rankScore": 0.95
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E09",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-3",
+      "fidelity": 8,
+      "data": 6,
+      "design": 4,
+      "legibility": 6,
+      "overall": 5,
+      "issues": [
+        "Main chart is entirely blank on both screens",
+        "Large empty chart region pushes phone data far down",
+        "Chart exploration instructions refer to absent marks"
+      ],
+      "strengths": [
+        "Complete and accurate desktop data index",
+        "Clear headline typography",
+        "Correct numerical comparisons in supporting text"
+      ],
+      "rank": 21,
+      "of": 21,
+      "rankScore": 0
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E10",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Phone skyline labels only Burj Khalifa's exact height",
+        "Numbered silhouettes require the separate index",
+        "Repeated Burj Khalifa summary adds length"
+      ],
+      "strengths": [
+        "Specific headline states the central finding",
+        "Accurate common-scale skyline",
+        "Large readable heights and complete details in phone cards",
+        "Purposeful leader highlight and confident typography"
+      ],
+      "rank": 5,
+      "of": 21,
+      "rankScore": 0.8
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E11",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 8,
+      "design": 9,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline has no exact height labels",
+        "Small index values and years",
+        "Numbered silhouettes require cross-referencing"
+      ],
+      "strengths": [
+        "Carefully detailed architectural silhouettes",
+        "Accurate common scale and complete data",
+        "Balanced compact composition on both screens",
+        "Consistent restrained color and typography"
+      ],
+      "rank": 9,
+      "of": 21,
+      "rankScore": 0.6
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E12",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-1",
+      "fidelity": 8,
+      "data": 6,
+      "design": 4,
+      "legibility": 6,
+      "overall": 5,
+      "issues": [
+        "Main chart is missing on both screens",
+        "Lead annotation floats in an otherwise empty graphic region",
+        "Large blank phone region delays access to the data index"
+      ],
+      "strengths": [
+        "Complete accurate desktop index",
+        "Prominent readable height values",
+        "Strong headline contrast"
+      ],
+      "rank": 20,
+      "of": 21,
+      "rankScore": 0.050000000000000044
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E13",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-2",
+      "fidelity": 8,
+      "data": 6,
+      "design": 4,
+      "legibility": 6,
+      "overall": 5,
+      "issues": [
+        "Skyline chart is entirely absent on both screens",
+        "Large empty region dominates the composition",
+        "Scale and legend text accompany no visible data marks"
+      ],
+      "strengths": [
+        "All requested data remains in the desktop index",
+        "Readable phone index typography",
+        "Clear explanation of equal heights"
+      ],
+      "rank": 19,
+      "of": 21,
+      "rankScore": 0.09999999999999998
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E14",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 10,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Very small phone city, year and value text",
+        "Bright yellow bar has weaker contrast against the pale background"
+      ],
+      "strengths": [
+        "Complete data directly aligned with accurate bars",
+        "Strong Burj Khalifa feature panel",
+        "All ten buildings remain visible in the phone comparison",
+        "Useful lead, geography and equal-height annotations"
+      ],
+      "rank": 10,
+      "of": 21,
+      "rankScore": 0.55
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E15",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Exact height labels disappear from the phone skyline",
+        "Narrow phone silhouettes lose architectural detail",
+        "Numbered chart requires a separate index"
+      ],
+      "strengths": [
+        "Striking desktop skyline with prominent height labels",
+        "Accurate shared baseline and complete data",
+        "Strong color hierarchy",
+        "Compact phone cards with large height figures"
+      ],
+      "rank": 6,
+      "of": 21,
+      "rankScore": 0.75
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E16",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline omits exact height labels",
+        "Repeated selected-building panel lengthens the phone page",
+        "Some silhouettes are blocky and unevenly resolved"
+      ],
+      "strengths": [
+        "Finding-led headline",
+        "Accurate shared height scale",
+        "Complete data in clearly separated index rows",
+        "Readable phone building names"
+      ],
+      "rank": 16,
+      "of": 21,
+      "rankScore": 0.25
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E17",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline omits exact values and most scale ticks",
+        "Small pale skyline details on phone",
+        "Numbered chart requires cross-referencing the index"
+      ],
+      "strengths": [
+        "Complete data and prominent index heights",
+        "Recognizable architectural silhouettes",
+        "Clear overall hierarchy",
+        "Useful geographical and height-spread commentary"
+      ],
+      "rank": 15,
+      "of": 21,
+      "rankScore": 0.30000000000000004
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E18",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Small phone metadata and source text",
+        "Narrow phone annotation columns produce dense wrapping"
+      ],
+      "strengths": [
+        "Accurate bars directly paired with complete building details",
+        "Strong editorial typography and architectural illustration",
+        "Correct explicit tied ranking",
+        "Compact comparison preserved on phone"
+      ],
+      "rank": 4,
+      "of": 21,
+      "rankScore": 0.85
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E19",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Numbered bars require cross-referencing on both screens",
+        "Index emphasizes rank more than height",
+        "Small phone values and completion years"
+      ],
+      "strengths": [
+        "Accurate zero-based scales and complete data",
+        "Clear leader highlight",
+        "Strong headline and tidy grid",
+        "Horizontal phone chart avoids crowding"
+      ],
+      "rank": 14,
+      "of": 21,
+      "rankScore": 0.35
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E20",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone bars identify cities rather than building names",
+        "Desktop bars require a numbered index",
+        "Long phone comparison separates bars from full building details"
+      ],
+      "strengths": [
+        "Accurate zero-based bars and exact values",
+        "Complete readable building index",
+        "Clear lead annotation",
+        "Phone chart provides meaningful labels instead of numbers alone"
+      ],
+      "rank": 12,
+      "of": 21,
+      "rankScore": 0.44999999999999996
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E21",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Two phone chart panels make comparison across all ten less immediate",
+        "Numbered silhouettes require a separate index",
+        "Small city and completion-year text"
+      ],
+      "strengths": [
+        "Phone panels preserve readable silhouettes and every exact height label",
+        "Consistent zero-based scale across both panels",
+        "Explicit tied eighth place",
+        "Refined architectural textures and cohesive colors"
+      ],
+      "rank": 8,
+      "of": 21,
+      "rankScore": 0.65
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E01",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Phone skyline requires the separate index for names and exact heights",
+        "Small secondary text and chart identifiers"
+      ],
+      "strengths": [
+        "Distinctive architectural silhouettes on a shared zero baseline",
+        "Complete and accurate building data",
+        "Strong typography and restrained highlight color",
+        "Compact phone layout includes all ten entries"
+      ],
+      "rank": 5,
+      "of": 21,
+      "rankScore": 0.8
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E02",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Two phone chart panels separate the full skyline comparison",
+        "Building names are distant from the phone silhouettes",
+        "Small city and completion text"
+      ],
+      "strengths": [
+        "Accurate shared scales across both phone panels",
+        "Exact heights remain labeled on the phone charts",
+        "Equal heights explicitly receive equal ranks",
+        "Polished color and typographic hierarchy"
+      ],
+      "rank": 9,
+      "of": 21,
+      "rankScore": 0.6
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E03",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 7,
+      "overall": 7,
+      "issues": [
+        "Phone chart shows only part of the skyline at once",
+        "Fourth tower and its labels are clipped at the phone viewport edge",
+        "Horizontal exploration is needed for the main comparison"
+      ],
+      "strengths": [
+        "Complete readable building index",
+        "Accurate scaled silhouettes with direct height labels on desktop",
+        "Refined typography and cohesive violet palette",
+        "Useful geographic and height-gap commentary"
+      ],
+      "rank": 18,
+      "of": 21,
+      "rankScore": 0.15000000000000002
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E04",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Phone city, year, and value labels are very small",
+        "Yellow leading bar has relatively weak contrast against the paper background"
+      ],
+      "strengths": [
+        "Names and metadata align directly with accurate zero-based bars",
+        "Entire comparison fits the phone width",
+        "Strong headline and architectural inset",
+        "Useful gap, geography, and equal-height annotations"
+      ],
+      "rank": 6,
+      "of": 21,
+      "rankScore": 0.75
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E05",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop silhouettes require index lookup for most building names",
+        "Desktop selected-building strip repeats information already nearby"
+      ],
+      "strengths": [
+        "Clear editorial claim supported by the 149.1-metre gap",
+        "Architectural silhouettes provide a compelling desktop centerpiece",
+        "Phone chart integrates full names, cities, years, and exact heights",
+        "Honest zero-based scales and equal lengths for the tied towers",
+        "Readable phone layout with all ten buildings"
+      ],
+      "rank": 1,
+      "of": 21,
+      "rankScore": 1
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E06",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 7,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Number-only phone bars require scrolling to the building index",
+        "Progressively changing green shades add little information",
+        "Small secondary labels and notes"
+      ],
+      "strengths": [
+        "Accurate bars and exact values on both screens",
+        "Complete building metadata",
+        "Useful statistical callouts",
+        "Clear headline hierarchy and leading-building emphasis"
+      ],
+      "rank": 16,
+      "of": 21,
+      "rankScore": 0.25
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E07",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone silhouettes omit exact height labels",
+        "Single-column phone index spreads the building details over a long page",
+        "Selected-building panel repeats the leading tower's data"
+      ],
+      "strengths": [
+        "Specific and effective editorial headline",
+        "Accurate skyline with a clear common baseline",
+        "Highly readable phone building names and values",
+        "Complete dataset and clear explanation of the tied heights"
+      ],
+      "rank": 12,
+      "of": 21,
+      "rankScore": 0.44999999999999996
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E08",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Phone city and completion labels are tiny",
+        "Phone values and supporting annotations are small",
+        "Large introductory section delays the comparison"
+      ],
+      "strengths": [
+        "Accurate horizontal bars with adjacent names and metadata",
+        "Equal heights use equal ranks and lengths",
+        "Elegant architectural illustration and strong headline",
+        "Complete comparison remains visible within the phone width"
+      ],
+      "rank": 7,
+      "of": 21,
+      "rankScore": 0.7
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E09",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline has no direct height labels",
+        "Tiny phone chart numbers require lookup in the index",
+        "Pale blue architectural details have limited contrast"
+      ],
+      "strengths": [
+        "Accurate skyline proportions",
+        "Prominent readable heights in the building cards",
+        "Complete data with useful geographic context",
+        "Well-positioned lead-gap annotation"
+      ],
+      "rank": 11,
+      "of": 21,
+      "rankScore": 0.5
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E10",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-2",
+      "fidelity": 7,
+      "data": 6,
+      "design": 3,
+      "legibility": 6,
+      "overall": 4,
+      "issues": [
+        "Main skyline graphic is absent on both screens",
+        "Large empty chart region dominates the composition",
+        "Chart legend and baseline notes refer to invisible marks",
+        "Empty phone space pushes much of the data far down the page"
+      ],
+      "strengths": [
+        "All supplied values and metadata appear in the desktop index",
+        "Clear headline typography",
+        "Accurate lead-gap annotation",
+        "Readable surviving index text"
+      ],
+      "rank": 20,
+      "of": 21,
+      "rankScore": 0.050000000000000044
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E11",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-1",
+      "fidelity": 7,
+      "data": 6,
+      "design": 3,
+      "legibility": 6,
+      "overall": 4,
+      "issues": [
+        "Main comparison graphic is absent on both screens",
+        "Large blank region leaves the height-gap callout visually unsupported",
+        "Scale captions describe a chart that is not visible",
+        "Phone layout delays the building index by more than a screen"
+      ],
+      "strengths": [
+        "Complete accurate desktop data index",
+        "Bold readable heights in the surviving cards",
+        "Strong black and red typography",
+        "Correct explanation of the equal-height towers"
+      ],
+      "rank": 19,
+      "of": 21,
+      "rankScore": 0.09999999999999998
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E12",
+      "runId": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone skyline lacks direct values and has only sparse scale labels",
+        "Numbered silhouettes require a separate index lookup",
+        "Very small desktop source text"
+      ],
+      "strengths": [
+        "Complete clearly organized building cards",
+        "Recognizable architectural silhouettes",
+        "Accurate common height scale",
+        "Useful geographic context and first-to-tenth height difference"
+      ],
+      "rank": 10,
+      "of": 21,
+      "rankScore": 0.55
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E13",
+      "runId": "skyscrapers-apex-none-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Phone building names, values, and metadata are small",
+        "Phone chart devotes little width to the quantitative comparison",
+        "Benchmark building outline is extremely faint"
+      ],
+      "strengths": [
+        "Elegant serif headline and restrained palette",
+        "Directly associated names, metadata, and proportional bars",
+        "Complete accurate data and explicit tied ranks",
+        "Compact phone composition with useful summary statistics"
+      ],
+      "rank": 8,
+      "of": 21,
+      "rankScore": 0.65
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E14",
+      "runId": "skyscrapers-rhp-none-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Phone skyline relies on the index for exact heights and names",
+        "Phone chart identifiers and secondary metadata are small"
+      ],
+      "strengths": [
+        "Strong architectural centerpiece and purposeful leading-tower highlight",
+        "Accurate skyline scale",
+        "Large clear height typography in the index",
+        "Complete dataset in an efficient phone layout",
+        "Consistent spacing and visual hierarchy"
+      ],
+      "rank": 3,
+      "of": 21,
+      "rankScore": 0.9
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E15",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Several phone chart names are abbreviated",
+        "Phone chart labels are small",
+        "Separate chart and index repeat the data and lengthen the page",
+        "Desktop gridlines are more numerous than needed"
+      ],
+      "strengths": [
+        "Accurate zero-based bars with exact heights",
+        "Phone bars use recognizable building names",
+        "Complete data in the index",
+        "Useful 600-metre threshold and geographic annotations",
+        "Strong headline and consistent color hierarchy"
+      ],
+      "rank": 13,
+      "of": 21,
+      "rankScore": 0.4
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E16",
+      "runId": "skyscrapers-rhp-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Only the leading tower retains its height label in the phone skyline",
+        "Selected-building panel repeats nearby information",
+        "Most silhouettes require index lookup for their names"
+      ],
+      "strengths": [
+        "Headline communicates a specific finding",
+        "Readable phone cards with clear cities, heights, and years",
+        "Accurate shared skyline scale",
+        "Purposeful red emphasis and strong typography",
+        "All ten building cards visible in the supplied phone crop"
+      ],
+      "rank": 4,
+      "of": 21,
+      "rankScore": 0.85
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E17",
+      "runId": "skyscrapers-apex-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 7,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone bars use identifiers instead of building names",
+        "Index heights receive less emphasis than index numbers",
+        "Small metadata and chart values"
+      ],
+      "strengths": [
+        "Accurate bars and readable common scales",
+        "Complete building data",
+        "Clean responsive chart orientation",
+        "Consistent restrained palette and clear leading-building highlight"
+      ],
+      "rank": 15,
+      "of": 21,
+      "rankScore": 0.30000000000000004
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E18",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-1",
+      "fidelity": 10,
+      "data": 8,
+      "design": 7,
+      "legibility": 7,
+      "overall": 7,
+      "issues": [
+        "Phone bars use numbers with names located much farther down",
+        "Stacked callouts increase the distance between chart and index",
+        "Spacious phone cards make data lookup slow",
+        "Small chart identifiers and secondary text"
+      ],
+      "strengths": [
+        "Accurate zero-based bar lengths",
+        "Complete correct desktop index",
+        "Useful height-gap and geographic observations",
+        "Clear leading-building color emphasis"
+      ],
+      "rank": 17,
+      "of": 21,
+      "rankScore": 0.19999999999999996
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E19",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-2",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 8,
+      "overall": 8,
+      "issues": [
+        "Phone chart identifies cities rather than buildings",
+        "Phone caption still refers to index numbers although chart categories are cities",
+        "Chart and separate index produce a long phone layout"
+      ],
+      "strengths": [
+        "Accurate bars and clear exact-height labels",
+        "Readable city labels on the phone chart",
+        "Prominent informative height-gap annotation",
+        "Complete well-structured building cards"
+      ],
+      "rank": 14,
+      "of": 21,
+      "rankScore": 0.35
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E20",
+      "runId": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-3",
+      "fidelity": 10,
+      "data": 10,
+      "design": 8,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop bar texture adds visual noise without additional information",
+        "Uniform red bars provide little emphasis for the editorial focus",
+        "Desktop building names require index lookup"
+      ],
+      "strengths": [
+        "Excellent phone integration of names, cities, years, values, and bars",
+        "Accurate zero-based scales and equal-height treatment",
+        "Useful original comparisons including the 22 percent lead and 26.8-metre lower-group spread",
+        "Complete dataset with clear typography",
+        "Efficient phone layout avoids a duplicate index"
+      ],
+      "rank": 2,
+      "of": 21,
+      "rankScore": 0.95
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E21",
+      "runId": "skyscrapers-flint-skill-mcp-gpt-6-astra-3",
+      "fidelity": 7,
+      "data": 6,
+      "design": 3,
+      "legibility": 5,
+      "overall": 4,
+      "issues": [
+        "Main chart is absent on desktop and phone",
+        "Large empty region breaks the poster composition",
+        "Instructions invite exploration of invisible bars",
+        "Long phone layout exposes only part of the index within two screens"
+      ],
+      "strengths": [
+        "Complete correct desktop data index",
+        "Strong headline hierarchy",
+        "Accurate annotations about the tied towers and overall height spread",
+        "Readable surviving building cards"
+      ],
+      "rank": 21,
+      "of": 21,
+      "rankScore": 0
+    }
+  ],
+  "sessions": [
+    {
+      "packet": "skyscrapers-p1",
+      "key": {
+        "E01": "skyscrapers-rhp-skill-mcp-gpt-6-astra-3",
+        "E02": "skyscrapers-rhp-none-gpt-6-astra-3",
+        "E03": "skyscrapers-apex-none-gpt-6-astra-1",
+        "E04": "skyscrapers-rhp-skill-mcp-gpt-6-astra-2",
+        "E05": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-1",
+        "E06": "skyscrapers-apex-skill-mcp-gpt-6-astra-2",
+        "E07": "skyscrapers-rhp-none-gpt-6-astra-2",
+        "E08": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-3",
+        "E09": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-2",
+        "E10": "skyscrapers-flint-skill-mcp-gpt-6-astra-3",
+        "E11": "skyscrapers-apex-skill-mcp-gpt-6-astra-3",
+        "E12": "skyscrapers-apex-none-gpt-6-astra-2",
+        "E13": "skyscrapers-apex-none-gpt-6-astra-3",
+        "E14": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-2",
+        "E15": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-3",
+        "E16": "skyscrapers-flint-skill-mcp-gpt-6-astra-1",
+        "E17": "skyscrapers-apex-skill-mcp-gpt-6-astra-1",
+        "E18": "skyscrapers-rhp-none-gpt-6-astra-1",
+        "E19": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-1",
+        "E20": "skyscrapers-rhp-skill-mcp-gpt-6-astra-1",
+        "E21": "skyscrapers-flint-skill-mcp-gpt-6-astra-2"
+      },
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cli": "codex-cli 0.153.4",
+      "images": {
+        "E01-desktop.jpg": "3fa5f4a0080e7dd7da18a1e41975586dac08d84bbb9ec14190316695514310a3",
+        "E01-phone.jpg": "6ddd0276bcbecff1435edb42a911ce826c4b59b5ee50057d60678964ccefa88e",
+        "E02-desktop.jpg": "e6df1665ac1e1e65838e6ef4e2a8fdff3d39189ce5f666d9e1fb2627bc72cdde",
+        "E02-phone.jpg": "b0e5a12dc9ecce22022ed27d90895f3c7f7c23ed9ef4af34052648a608982d91",
+        "E03-desktop.jpg": "b2e5747768771cdb24445a0d590f942b086b407c001ca233681334f130997483",
+        "E03-phone.jpg": "410b9224a8f823f89048ded04bcdcbce2129994daad49dd71327c6ae524d47a8",
+        "E04-desktop.jpg": "c475a761796ea1aa886e8579cfd56824868a2df0da5ecc7bf604360ac08527d3",
+        "E04-phone.jpg": "bc2591488337a7400848622a2230786815aee5b584af48ea738f719e45135520",
+        "E05-desktop.jpg": "e8900bf52da4f85128c30b2942a5b01784d9bdecd209a70ac7e3da0ce95b324f",
+        "E05-phone.jpg": "b40e4abf813aa09134e61c380e56ed942244b5fa28822710f90dd2e95e8cddb6",
+        "E06-desktop.jpg": "00d28a9d7a16cad3a7d4a2c65df3ced665590965f5d5f9f1dcfbbf4ed953466c",
+        "E06-phone.jpg": "edbcaad3a79aff4b2c8344c9318106b7ff102d7f70d9c9c30b60a3fccef47a6b",
+        "E07-desktop.jpg": "79bd98cbbe7ebb133784f5d60de660d464ee4247257e99f0b391319fbe4c916b",
+        "E07-phone.jpg": "ba7ea710e77de4f589683951066224c425dd0cba3212706e287b3fb7549de27d",
+        "E08-desktop.jpg": "77803f3a2e3c9a1530c466cedddca14f1196c609b423be4f35ae8add29d30d74",
+        "E08-phone.jpg": "d4efc7e95042deeba6cd01026c269cfe0c332b7f05f0efd8fe0518b94fe19d83",
+        "E09-desktop.jpg": "2e26366bc410fc17798a8136598a44e2d3e4d1a92e6074a4db9bc5b67351a2b9",
+        "E09-phone.jpg": "c50960b99c714fe28128430985dfee1d7dd499e10cbc832abef1a3799400951c",
+        "E10-desktop.jpg": "c07111045d82830e92d7de827f15f894125f240aa75d839101cffa7a49b1ccae",
+        "E10-phone.jpg": "99593e3b33205d2fb5719289322a6c2976c04139d902f935528f57b769d27e7c",
+        "E11-desktop.jpg": "d11be87390eddd035c1957a789a9b0c4d2eb1547e24fa9f101ee956cd36fde11",
+        "E11-phone.jpg": "cfe15efa782598decca42ea11bed0fd6ae031b6989629db97d17e3507c5deb8b",
+        "E12-desktop.jpg": "d893be731c8bff46a1a3f99c864ea12be769f9c800c3a81f644ded698b81d525",
+        "E12-phone.jpg": "c872a4268dbd6c027582655763a87a94638d7ce845e64cf16c8fafefbfabcd39",
+        "E13-desktop.jpg": "953607410c3325826c203c16140e68b0c854b4f84d09f467cd7cbf5e861a046b",
+        "E13-phone.jpg": "024dd547e7a9f767a62345ea80fc3252333fa3b7c57935981f91c5dad9d69337",
+        "E14-desktop.jpg": "ff7818b236bbf4552f0545e580060260bf285f4976876d6ac92c7481041fc13e",
+        "E14-phone.jpg": "b1773536725e689084c2cb9e9118b0235b8aea0b54e5a8b1a25075c2bacf65aa",
+        "E15-desktop.jpg": "11a91b0fe6d21452ababa76040f8e28ecdd7572025e5e86887f3d0ec723d9fde",
+        "E15-phone.jpg": "94c427aaa403e2ae714e58da3cc5f3e0e0040c70472676ef65e41e86b13320fe",
+        "E16-desktop.jpg": "aff366f0ceab9e88adcb8e6f0aca579a415ec9fb72105682ce4a9591f8bcd348",
+        "E16-phone.jpg": "711370b50b18e3383a440d3c2b5763eb854fb507768c6023542a01e123399abb",
+        "E17-desktop.jpg": "ef28987dcbad852ac334dc52556e5b71646ea1a9c04016e1663f805a1a94f116",
+        "E17-phone.jpg": "41d1e16b53130b519dca6e3c40a7dd1ac0ecbd633cc4df73543d96845b9c5e9f",
+        "E18-desktop.jpg": "7d98bd372919c326a7ffece6a7bb283f84d5325c228a84a2b59c502933372f4f",
+        "E18-phone.jpg": "d231b826599f0c6246e8d9f400917ba932190582a47a1056aa0485c3464af9da",
+        "E19-desktop.jpg": "5ef9bc620d97c11c32beb0ce1925faaa0274d1c8955c63af778a387e98fb1ff0",
+        "E19-phone.jpg": "c0e0d880eebd9c4a648130723f1c16fe0aa90f0279131ee4d63ea8069049abcb",
+        "E20-desktop.jpg": "37b8f5a530254e6104207e05833558b4afb19e91017514f0ecf2e34ccb186f13",
+        "E20-phone.jpg": "59812793bee51c8f5da254e42e51b4e2e09f16d81ad2b606f4da7d8e96b352b1",
+        "E21-desktop.jpg": "90d4bd43324479553f3dcf4bba2259c8e6e3ba14724778cafd7e42bb9ad540b0",
+        "E21-phone.jpg": "fa8e629f947c66491377b698241f82329119b59c6ed889d8259675be7e8651a4"
+      },
+      "redactionEvidence": {
+        "E01": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E02": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Visualized with rhp",
+                "x": 20,
+                "y": 1622.296875,
+                "width": 100.265625,
+                "height": 10
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Visualized with rhp",
+                "x": 1105.578125,
+                "y": 1248.5625,
+                "width": 110.421875,
+                "height": 12
+              }
+            ]
+          }
+        },
+        "E03": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E04": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E05": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E06": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E07": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E08": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 436.84,
+                  "right": 60.84,
+                  "bottom": 460
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 511.84,
+                  "right": 60.84,
+                  "bottom": 535
+                }
+              }
+            ]
+          }
+        },
+        "E09": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 396.84,
+                  "right": 60.84,
+                  "bottom": 420
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 496.84,
+                  "right": 60.84,
+                  "bottom": 520
+                }
+              }
+            ]
+          }
+        },
+        "E10": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 553.171875,
+                "width": 350,
+                "height": 540
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 56,
+                "y": 469.75,
+                "width": 1168,
+                "height": 452
+              }
+            ]
+          }
+        },
+        "E11": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E12": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E13": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E14": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E15": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E16": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 504.890625,
+                "width": 350,
+                "height": 500
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 64,
+                "y": 486.09375,
+                "width": 1152,
+                "height": 510
+              }
+            ]
+          }
+        },
+        "E17": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E18": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Drawn with rhp",
+                "x": 300.796875,
+                "y": 1955.734375,
+                "width": 67.203125,
+                "height": 10
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Drawn with rhp",
+                "x": 1148.390625,
+                "y": 1245.4375,
+                "width": 75.609375,
+                "height": 11
+              }
+            ]
+          }
+        },
+        "E19": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 351.84,
+                  "right": 60.84,
+                  "bottom": 375
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 541.84,
+                  "right": 60.84,
+                  "bottom": 565
+                }
+              }
+            ]
+          }
+        },
+        "E20": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E21": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 525.640625,
+                "width": 350,
+                "height": 490
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 56,
+                "y": 521.375,
+                "width": 1168,
+                "height": 461
+              }
+            ]
+          }
+        }
+      },
+      "notes": "The best entries combine accurate height comparisons with a specific editorial takeaway and readable phone layouts. E04 stands out for replacing its desktop skyline with directly labeled phone bars, while E01 has a particularly strong headline and E15 integrates the phone data effectively. Separate numbered indexes, tiny supporting text and horizontal clipping weaken otherwise polished work. E10, E16 and E21 retain correct data indexes but have empty central chart areas on both screens; screenshot cutoffs and hidden credit spaces were not treated as defects.",
+      "result": {
+        "exitCode": 0,
+        "status": "complete",
+        "started": "2026-10-05T22:22:35.253Z",
+        "ended": "2026-10-05T22:25:07.748Z",
+        "wallSeconds": 152.495,
+        "resumed": false,
+        "usage": {
+          "input_tokens": 807447,
+          "cached_input_tokens": 721792,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 4858,
+          "reasoning_output_tokens": 1075
+        },
+        "costUSD": null,
+        "error": null,
+        "warnings": [],
+        "finalText": "done",
+        "transcript": "/Users/anasb/repositories/rhp/evals/compare/out/codex-judging/sessions/skyscrapers-p1/transcript.jsonl"
+      }
+    },
+    {
+      "packet": "skyscrapers-p2",
+      "key": {
+        "E01": "skyscrapers-apex-none-gpt-6-astra-1",
+        "E02": "skyscrapers-apex-skill-mcp-gpt-6-astra-1",
+        "E03": "skyscrapers-apex-skill-mcp-gpt-6-astra-3",
+        "E04": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-1",
+        "E05": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-1",
+        "E06": "skyscrapers-rhp-skill-mcp-gpt-6-astra-2",
+        "E07": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-3",
+        "E08": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-3",
+        "E09": "skyscrapers-flint-skill-mcp-gpt-6-astra-3",
+        "E10": "skyscrapers-rhp-skill-mcp-gpt-6-astra-3",
+        "E11": "skyscrapers-rhp-none-gpt-6-astra-2",
+        "E12": "skyscrapers-flint-skill-mcp-gpt-6-astra-1",
+        "E13": "skyscrapers-flint-skill-mcp-gpt-6-astra-2",
+        "E14": "skyscrapers-apex-none-gpt-6-astra-3",
+        "E15": "skyscrapers-rhp-none-gpt-6-astra-3",
+        "E16": "skyscrapers-rhp-skill-mcp-gpt-6-astra-1",
+        "E17": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-2",
+        "E18": "skyscrapers-apex-none-gpt-6-astra-2",
+        "E19": "skyscrapers-apex-skill-mcp-gpt-6-astra-2",
+        "E20": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-2",
+        "E21": "skyscrapers-rhp-none-gpt-6-astra-1"
+      },
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cli": "codex-cli 0.153.4",
+      "images": {
+        "E01-desktop.jpg": "b2e5747768771cdb24445a0d590f942b086b407c001ca233681334f130997483",
+        "E01-phone.jpg": "410b9224a8f823f89048ded04bcdcbce2129994daad49dd71327c6ae524d47a8",
+        "E02-desktop.jpg": "ef28987dcbad852ac334dc52556e5b71646ea1a9c04016e1663f805a1a94f116",
+        "E02-phone.jpg": "41d1e16b53130b519dca6e3c40a7dd1ac0ecbd633cc4df73543d96845b9c5e9f",
+        "E03-desktop.jpg": "d11be87390eddd035c1957a789a9b0c4d2eb1547e24fa9f101ee956cd36fde11",
+        "E03-phone.jpg": "cfe15efa782598decca42ea11bed0fd6ae031b6989629db97d17e3507c5deb8b",
+        "E04-desktop.jpg": "e8900bf52da4f85128c30b2942a5b01784d9bdecd209a70ac7e3da0ce95b324f",
+        "E04-phone.jpg": "b40e4abf813aa09134e61c380e56ed942244b5fa28822710f90dd2e95e8cddb6",
+        "E05-desktop.jpg": "5ef9bc620d97c11c32beb0ce1925faaa0274d1c8955c63af778a387e98fb1ff0",
+        "E05-phone.jpg": "c0e0d880eebd9c4a648130723f1c16fe0aa90f0279131ee4d63ea8069049abcb",
+        "E06-desktop.jpg": "c475a761796ea1aa886e8579cfd56824868a2df0da5ecc7bf604360ac08527d3",
+        "E06-phone.jpg": "bc2591488337a7400848622a2230786815aee5b584af48ea738f719e45135520",
+        "E07-desktop.jpg": "77803f3a2e3c9a1530c466cedddca14f1196c609b423be4f35ae8add29d30d74",
+        "E07-phone.jpg": "d4efc7e95042deeba6cd01026c269cfe0c332b7f05f0efd8fe0518b94fe19d83",
+        "E08-desktop.jpg": "11a91b0fe6d21452ababa76040f8e28ecdd7572025e5e86887f3d0ec723d9fde",
+        "E08-phone.jpg": "94c427aaa403e2ae714e58da3cc5f3e0e0040c70472676ef65e41e86b13320fe",
+        "E09-desktop.jpg": "c07111045d82830e92d7de827f15f894125f240aa75d839101cffa7a49b1ccae",
+        "E09-phone.jpg": "99593e3b33205d2fb5719289322a6c2976c04139d902f935528f57b769d27e7c",
+        "E10-desktop.jpg": "3fa5f4a0080e7dd7da18a1e41975586dac08d84bbb9ec14190316695514310a3",
+        "E10-phone.jpg": "6ddd0276bcbecff1435edb42a911ce826c4b59b5ee50057d60678964ccefa88e",
+        "E11-desktop.jpg": "79bd98cbbe7ebb133784f5d60de660d464ee4247257e99f0b391319fbe4c916b",
+        "E11-phone.jpg": "ba7ea710e77de4f589683951066224c425dd0cba3212706e287b3fb7549de27d",
+        "E12-desktop.jpg": "aff366f0ceab9e88adcb8e6f0aca579a415ec9fb72105682ce4a9591f8bcd348",
+        "E12-phone.jpg": "711370b50b18e3383a440d3c2b5763eb854fb507768c6023542a01e123399abb",
+        "E13-desktop.jpg": "90d4bd43324479553f3dcf4bba2259c8e6e3ba14724778cafd7e42bb9ad540b0",
+        "E13-phone.jpg": "fa8e629f947c66491377b698241f82329119b59c6ed889d8259675be7e8651a4",
+        "E14-desktop.jpg": "953607410c3325826c203c16140e68b0c854b4f84d09f467cd7cbf5e861a046b",
+        "E14-phone.jpg": "024dd547e7a9f767a62345ea80fc3252333fa3b7c57935981f91c5dad9d69337",
+        "E15-desktop.jpg": "e6df1665ac1e1e65838e6ef4e2a8fdff3d39189ce5f666d9e1fb2627bc72cdde",
+        "E15-phone.jpg": "b0e5a12dc9ecce22022ed27d90895f3c7f7c23ed9ef4af34052648a608982d91",
+        "E16-desktop.jpg": "37b8f5a530254e6104207e05833558b4afb19e91017514f0ecf2e34ccb186f13",
+        "E16-phone.jpg": "59812793bee51c8f5da254e42e51b4e2e09f16d81ad2b606f4da7d8e96b352b1",
+        "E17-desktop.jpg": "2e26366bc410fc17798a8136598a44e2d3e4d1a92e6074a4db9bc5b67351a2b9",
+        "E17-phone.jpg": "c50960b99c714fe28128430985dfee1d7dd499e10cbc832abef1a3799400951c",
+        "E18-desktop.jpg": "d893be731c8bff46a1a3f99c864ea12be769f9c800c3a81f644ded698b81d525",
+        "E18-phone.jpg": "c872a4268dbd6c027582655763a87a94638d7ce845e64cf16c8fafefbfabcd39",
+        "E19-desktop.jpg": "00d28a9d7a16cad3a7d4a2c65df3ced665590965f5d5f9f1dcfbbf4ed953466c",
+        "E19-phone.jpg": "edbcaad3a79aff4b2c8344c9318106b7ff102d7f70d9c9c30b60a3fccef47a6b",
+        "E20-desktop.jpg": "ff7818b236bbf4552f0545e580060260bf285f4976876d6ac92c7481041fc13e",
+        "E20-phone.jpg": "b1773536725e689084c2cb9e9118b0235b8aea0b54e5a8b1a25075c2bacf65aa",
+        "E21-desktop.jpg": "7d98bd372919c326a7ffece6a7bb283f84d5325c228a84a2b59c502933372f4f",
+        "E21-phone.jpg": "d231b826599f0c6246e8d9f400917ba932190582a47a1056aa0485c3464af9da"
+      },
+      "redactionEvidence": {
+        "E01": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E02": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E03": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E04": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E05": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 351.84,
+                  "right": 60.84,
+                  "bottom": 375
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 541.84,
+                  "right": 60.84,
+                  "bottom": 565
+                }
+              }
+            ]
+          }
+        },
+        "E06": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E07": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 436.84,
+                  "right": 60.84,
+                  "bottom": 460
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 511.84,
+                  "right": 60.84,
+                  "bottom": 535
+                }
+              }
+            ]
+          }
+        },
+        "E08": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E09": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 553.171875,
+                "width": 350,
+                "height": 540
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 56,
+                "y": 469.75,
+                "width": 1168,
+                "height": 452
+              }
+            ]
+          }
+        },
+        "E10": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E11": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E12": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 504.890625,
+                "width": 350,
+                "height": 500
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 64,
+                "y": 486.09375,
+                "width": 1152,
+                "height": 510
+              }
+            ]
+          }
+        },
+        "E13": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 525.640625,
+                "width": 350,
+                "height": 490
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 56,
+                "y": 521.375,
+                "width": 1168,
+                "height": 461
+              }
+            ]
+          }
+        },
+        "E14": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E15": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Visualized with rhp",
+                "x": 20,
+                "y": 1622.296875,
+                "width": 100.265625,
+                "height": 10
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Visualized with rhp",
+                "x": 1105.578125,
+                "y": 1248.5625,
+                "width": 110.421875,
+                "height": 12
+              }
+            ]
+          }
+        },
+        "E16": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E17": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 396.84,
+                  "right": 60.84,
+                  "bottom": 420
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 496.84,
+                  "right": 60.84,
+                  "bottom": 520
+                }
+              }
+            ]
+          }
+        },
+        "E18": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E19": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E20": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E21": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Drawn with rhp",
+                "x": 300.796875,
+                "y": 1955.734375,
+                "width": 67.203125,
+                "height": 10
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Drawn with rhp",
+                "x": 1148.390625,
+                "y": 1245.4375,
+                "width": 75.609375,
+                "height": 11
+              }
+            ]
+          }
+        }
+      },
+      "notes": "The best entries combine accurate common scales with a clear editorial point and phone layouts that keep building identities and exact values easy to read. Directly labeled comparisons reduce the effort of consulting separate numbered indexes, while well-scaled architectural silhouettes add useful visual character. Small secondary type, hidden phone chart labels and horizontal overflow distinguish the weaker functioning entries. The three entries with blank main graphics retain accurate data indexes but lose their central visual comparison and waste substantial screen space. Screenshot boundaries and anonymized credit spaces were not treated as defects.",
+      "result": {
+        "exitCode": 0,
+        "status": "complete",
+        "started": "2026-10-05T22:22:35.263Z",
+        "ended": "2026-10-05T22:24:59.246Z",
+        "wallSeconds": 143.983,
+        "resumed": false,
+        "usage": {
+          "input_tokens": 529268,
+          "cached_input_tokens": 452864,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 5089,
+          "reasoning_output_tokens": 817
+        },
+        "costUSD": null,
+        "error": null,
+        "warnings": [],
+        "finalText": "done",
+        "transcript": "/Users/anasb/repositories/rhp/evals/compare/out/codex-judging/sessions/skyscrapers-p2/transcript.jsonl"
+      }
+    },
+    {
+      "packet": "skyscrapers-p3",
+      "key": {
+        "E01": "skyscrapers-rhp-none-gpt-6-astra-2",
+        "E02": "skyscrapers-rhp-none-gpt-6-astra-1",
+        "E03": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-3",
+        "E04": "skyscrapers-apex-none-gpt-6-astra-3",
+        "E05": "skyscrapers-rhp-skill-mcp-gpt-6-astra-2",
+        "E06": "skyscrapers-apex-skill-mcp-gpt-6-astra-1",
+        "E07": "skyscrapers-rhp-skill-mcp-gpt-6-astra-1",
+        "E08": "skyscrapers-apex-none-gpt-6-astra-2",
+        "E09": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-1",
+        "E10": "skyscrapers-flint-skill-mcp-gpt-6-astra-2",
+        "E11": "skyscrapers-flint-skill-mcp-gpt-6-astra-1",
+        "E12": "skyscrapers-amcharts-skill-mcp-gpt-6-astra-2",
+        "E13": "skyscrapers-apex-none-gpt-6-astra-1",
+        "E14": "skyscrapers-rhp-none-gpt-6-astra-3",
+        "E15": "skyscrapers-apex-skill-mcp-gpt-6-astra-3",
+        "E16": "skyscrapers-rhp-skill-mcp-gpt-6-astra-3",
+        "E17": "skyscrapers-apex-skill-mcp-gpt-6-astra-2",
+        "E18": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-1",
+        "E19": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-2",
+        "E20": "skyscrapers-semiotic-skill-mcp-gpt-6-astra-3",
+        "E21": "skyscrapers-flint-skill-mcp-gpt-6-astra-3"
+      },
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cli": "codex-cli 0.153.4",
+      "images": {
+        "E01-desktop.jpg": "79bd98cbbe7ebb133784f5d60de660d464ee4247257e99f0b391319fbe4c916b",
+        "E01-phone.jpg": "ba7ea710e77de4f589683951066224c425dd0cba3212706e287b3fb7549de27d",
+        "E02-desktop.jpg": "7d98bd372919c326a7ffece6a7bb283f84d5325c228a84a2b59c502933372f4f",
+        "E02-phone.jpg": "d231b826599f0c6246e8d9f400917ba932190582a47a1056aa0485c3464af9da",
+        "E03-desktop.jpg": "77803f3a2e3c9a1530c466cedddca14f1196c609b423be4f35ae8add29d30d74",
+        "E03-phone.jpg": "d4efc7e95042deeba6cd01026c269cfe0c332b7f05f0efd8fe0518b94fe19d83",
+        "E04-desktop.jpg": "953607410c3325826c203c16140e68b0c854b4f84d09f467cd7cbf5e861a046b",
+        "E04-phone.jpg": "024dd547e7a9f767a62345ea80fc3252333fa3b7c57935981f91c5dad9d69337",
+        "E05-desktop.jpg": "c475a761796ea1aa886e8579cfd56824868a2df0da5ecc7bf604360ac08527d3",
+        "E05-phone.jpg": "bc2591488337a7400848622a2230786815aee5b584af48ea738f719e45135520",
+        "E06-desktop.jpg": "ef28987dcbad852ac334dc52556e5b71646ea1a9c04016e1663f805a1a94f116",
+        "E06-phone.jpg": "41d1e16b53130b519dca6e3c40a7dd1ac0ecbd633cc4df73543d96845b9c5e9f",
+        "E07-desktop.jpg": "37b8f5a530254e6104207e05833558b4afb19e91017514f0ecf2e34ccb186f13",
+        "E07-phone.jpg": "59812793bee51c8f5da254e42e51b4e2e09f16d81ad2b606f4da7d8e96b352b1",
+        "E08-desktop.jpg": "d893be731c8bff46a1a3f99c864ea12be769f9c800c3a81f644ded698b81d525",
+        "E08-phone.jpg": "c872a4268dbd6c027582655763a87a94638d7ce845e64cf16c8fafefbfabcd39",
+        "E09-desktop.jpg": "5ef9bc620d97c11c32beb0ce1925faaa0274d1c8955c63af778a387e98fb1ff0",
+        "E09-phone.jpg": "c0e0d880eebd9c4a648130723f1c16fe0aa90f0279131ee4d63ea8069049abcb",
+        "E10-desktop.jpg": "90d4bd43324479553f3dcf4bba2259c8e6e3ba14724778cafd7e42bb9ad540b0",
+        "E10-phone.jpg": "fa8e629f947c66491377b698241f82329119b59c6ed889d8259675be7e8651a4",
+        "E11-desktop.jpg": "aff366f0ceab9e88adcb8e6f0aca579a415ec9fb72105682ce4a9591f8bcd348",
+        "E11-phone.jpg": "711370b50b18e3383a440d3c2b5763eb854fb507768c6023542a01e123399abb",
+        "E12-desktop.jpg": "2e26366bc410fc17798a8136598a44e2d3e4d1a92e6074a4db9bc5b67351a2b9",
+        "E12-phone.jpg": "c50960b99c714fe28128430985dfee1d7dd499e10cbc832abef1a3799400951c",
+        "E13-desktop.jpg": "b2e5747768771cdb24445a0d590f942b086b407c001ca233681334f130997483",
+        "E13-phone.jpg": "410b9224a8f823f89048ded04bcdcbce2129994daad49dd71327c6ae524d47a8",
+        "E14-desktop.jpg": "e6df1665ac1e1e65838e6ef4e2a8fdff3d39189ce5f666d9e1fb2627bc72cdde",
+        "E14-phone.jpg": "b0e5a12dc9ecce22022ed27d90895f3c7f7c23ed9ef4af34052648a608982d91",
+        "E15-desktop.jpg": "d11be87390eddd035c1957a789a9b0c4d2eb1547e24fa9f101ee956cd36fde11",
+        "E15-phone.jpg": "cfe15efa782598decca42ea11bed0fd6ae031b6989629db97d17e3507c5deb8b",
+        "E16-desktop.jpg": "3fa5f4a0080e7dd7da18a1e41975586dac08d84bbb9ec14190316695514310a3",
+        "E16-phone.jpg": "6ddd0276bcbecff1435edb42a911ce826c4b59b5ee50057d60678964ccefa88e",
+        "E17-desktop.jpg": "00d28a9d7a16cad3a7d4a2c65df3ced665590965f5d5f9f1dcfbbf4ed953466c",
+        "E17-phone.jpg": "edbcaad3a79aff4b2c8344c9318106b7ff102d7f70d9c9c30b60a3fccef47a6b",
+        "E18-desktop.jpg": "e8900bf52da4f85128c30b2942a5b01784d9bdecd209a70ac7e3da0ce95b324f",
+        "E18-phone.jpg": "b40e4abf813aa09134e61c380e56ed942244b5fa28822710f90dd2e95e8cddb6",
+        "E19-desktop.jpg": "ff7818b236bbf4552f0545e580060260bf285f4976876d6ac92c7481041fc13e",
+        "E19-phone.jpg": "b1773536725e689084c2cb9e9118b0235b8aea0b54e5a8b1a25075c2bacf65aa",
+        "E20-desktop.jpg": "11a91b0fe6d21452ababa76040f8e28ecdd7572025e5e86887f3d0ec723d9fde",
+        "E20-phone.jpg": "94c427aaa403e2ae714e58da3cc5f3e0e0040c70472676ef65e41e86b13320fe",
+        "E21-desktop.jpg": "c07111045d82830e92d7de827f15f894125f240aa75d839101cffa7a49b1ccae",
+        "E21-phone.jpg": "99593e3b33205d2fb5719289322a6c2976c04139d902f935528f57b769d27e7c"
+      },
+      "redactionEvidence": {
+        "E01": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E02": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Drawn with rhp",
+                "x": 300.796875,
+                "y": 1955.734375,
+                "width": 67.203125,
+                "height": 10
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Drawn with rhp",
+                "x": 1148.390625,
+                "y": 1245.4375,
+                "width": 75.609375,
+                "height": 11
+              }
+            ]
+          }
+        },
+        "E03": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 436.84,
+                  "right": 60.84,
+                  "bottom": 460
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 511.84,
+                  "right": 60.84,
+                  "bottom": 535
+                }
+              }
+            ]
+          }
+        },
+        "E04": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E05": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E06": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E07": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E08": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E09": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 351.84,
+                  "right": 60.84,
+                  "bottom": 375
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 541.84,
+                  "right": 60.84,
+                  "bottom": 565
+                }
+              }
+            ]
+          }
+        },
+        "E10": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 525.640625,
+                "width": 350,
+                "height": 490
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 56,
+                "y": 521.375,
+                "width": 1168,
+                "height": 461
+              }
+            ]
+          }
+        },
+        "E11": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 504.890625,
+                "width": 350,
+                "height": 500
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 64,
+                "y": 486.09375,
+                "width": 1152,
+                "height": 510
+              }
+            ]
+          }
+        },
+        "E12": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 396.84,
+                  "right": 60.84,
+                  "bottom": 420
+                }
+              }
+            ],
+            "1280": [
+              {
+                "kind": "canvas-logo",
+                "identity": "amCharts 5",
+                "bounds": {
+                  "left": 0,
+                  "top": 496.84,
+                  "right": 60.84,
+                  "bottom": 520
+                }
+              }
+            ]
+          }
+        },
+        "E13": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E14": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Visualized with rhp",
+                "x": 20,
+                "y": 1622.296875,
+                "width": 100.265625,
+                "height": 10
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Visualized with rhp",
+                "x": 1105.578125,
+                "y": 1248.5625,
+                "width": 110.421875,
+                "height": 12
+              }
+            ]
+          }
+        },
+        "E15": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E16": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E17": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E18": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E19": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E20": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E21": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 20,
+                "y": 553.171875,
+                "width": 350,
+                "height": 540
+              }
+            ],
+            "1280": [
+              {
+                "kind": "logo",
+                "identity": "Vega visualization",
+                "x": 56,
+                "y": 469.75,
+                "width": 1168,
+                "height": 452
+              }
+            ]
+          }
+        }
+      },
+      "notes": "The best posters combine accurate zero-based comparisons, a specific editorial takeaway, and phone layouts that keep names and metadata close to the values. E05 offers the strongest combination of architectural character and an integrated mobile chart, while E20 adds particularly useful quantitative commentary. Separate numbered indexes, tiny secondary text, and horizontal clipping weaken otherwise polished entries. E10, E11, and E21 retain accurate data indexes but have visibly empty main chart regions on both screens; ordinary screenshot cutoffs and hidden credit areas were not treated as defects. HTML packaging and interactive behavior cannot be verified from these images.",
+      "result": {
+        "exitCode": 0,
+        "status": "complete",
+        "started": "2026-10-05T22:22:35.281Z",
+        "ended": "2026-10-05T22:25:00.293Z",
+        "wallSeconds": 145.012,
+        "resumed": false,
+        "usage": {
+          "input_tokens": 725497,
+          "cached_input_tokens": 647680,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 5424,
+          "reasoning_output_tokens": 650
+        },
+        "costUSD": null,
+        "error": null,
+        "warnings": [],
+        "finalText": "done",
+        "transcript": "/Users/anasb/repositories/rhp/evals/compare/out/codex-judging/sessions/skyscrapers-p3/transcript.jsonl"
+      }
+    }
+  ],
+  "excluded": true,
+  "exclusionReason": "Blinding version 1 hid the complete Flint/Vega charts by misclassifying their accessible labels as logos. These 63 scores and all three rankings are invalid and are excluded from every final quality aggregate."
+}

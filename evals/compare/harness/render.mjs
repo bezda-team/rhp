@@ -1,17 +1,19 @@
 // Renders a poster page the way a reader's browser would, and measures what any reader would hit, whatever library drew it.
 //   node render.mjs <poster.html> <outDir> [--widths 1280,390]
-// CDN requests (jsDelivr, unpkg, cdnjs, Highcharts' CDN) are answered from the npm registry's copy of the same package,
-// since this sandbox blocks the CDNs; Google Fonts and every other host go through the sandbox's proxy as usual.
+// Exact CDN responses are cached by URL and content hash. The optional "mirror" mode rebuilds assets from npm
+// for legacy environments that block CDNs; rebuilt ESM is an approximation, especially for CommonJS exports and peers.
 // Writes <outDir>/shot-<width>.png (full page) and <outDir>/scan.json.
 import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
+import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 import { PNG } from "pngjs";
 import semver from "semver";
 import { build as esbuild } from "esbuild";
+import { blindCredits, BLINDING_VERSION } from "./blind-inpage.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const CACHE = path.join(here, "..", "cdn-cache");
@@ -35,6 +37,13 @@ function packageDir(name, version) {
     fs.mkdirSync(dir, { recursive: true });
     const tgz = execFileSync("npm", ["pack", `${name}@${version}`, "--silent"], { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim().split("\n").pop();
     execFileSync("tar", ["xzf", tgz], { cwd: dir });
+    // Some npm archives mark directories 0644. npm install repairs those modes;
+    // our archive mirror must also make extracted directories traversable.
+    const readable = folder => {
+      fs.chmodSync(folder, fs.statSync(folder).mode | 0o700);
+      for (const entry of fs.readdirSync(folder, { withFileTypes: true })) if (entry.isDirectory()) readable(path.join(folder, entry.name));
+    };
+    readable(path.join(dir, "package"));
     fs.rmSync(path.join(dir, tgz));
   }
   return path.join(dir, "package");
@@ -322,7 +331,8 @@ function pixelContrast(png, box) {
 }
 
 // ---------- main ----------
-export async function render(file, outDir, { widths = [1280, 390], browser: given } = {}) {
+export async function render(file, outDir, { widths = [1280, 390], browser: given, redactCredits = false, cdnMode = "direct" } = {}) {
+  if (!["direct", "mirror"].includes(cdnMode)) throw new Error("cdnMode must be direct or mirror");
   fs.mkdirSync(outDir, { recursive: true });
   const root = path.dirname(path.resolve(file));
   const server = http.createServer((q, r) => {
@@ -333,7 +343,7 @@ export async function render(file, outDir, { widths = [1280, 390], browser: give
   await new Promise((r) => server.on("listening", r));
   const url = `http://127.0.0.1:${server.address().port}/${encodeURIComponent(path.basename(file))}`;
   const browser = given ?? await chromium.launch({ executablePath: process.env.RENDER_BROWSER });
-  const result = { file, widths: {}, cdn: [], errors: [], failed: [] };
+  const result = { file, widths: {}, cdnMode, cdn: [], errors: [], failed: [], ...(redactCredits ? { redactionVersion: BLINDING_VERSION } : {}) };
   try {
     for (const width of widths) {
       const context = await browser.newContext({ viewport: { width, height: width <= 600 ? 844 : 900 }, deviceScaleFactor: 1, reducedMotion: "reduce", isMobile: width <= 600, hasTouch: width <= 600 });
@@ -346,6 +356,24 @@ export async function render(file, outDir, { widths = [1280, 390], browser: give
         const u = route.request().url();
         if (u.startsWith("http://127.0.0.1")) return route.continue();
         try {
+          if (cdnMode === "direct" && parseCdn(u)) {
+            const key = crypto.createHash("sha256").update(u).digest("hex");
+            const folder = path.join(CACHE, "http", key);
+            const metadata = path.join(folder, "response.json");
+            let got;
+            if (fs.existsSync(metadata)) got = JSON.parse(fs.readFileSync(metadata, "utf8"));
+            else {
+              const response = await route.fetch({ timeout: 30000, maxRedirects: 5 });
+              const body = await response.body();
+              got = { url: u, status: response.status(), type: response.headers()["content-type"] ?? "text/javascript", sha256: crypto.createHash("sha256").update(body).digest("hex") };
+              if (got.status !== 200) throw new Error(`CDN returned ${got.status} for ${u}`);
+              fs.mkdirSync(folder, { recursive: true });
+              fs.writeFileSync(path.join(folder, "body"), body);
+              fs.writeFileSync(metadata, JSON.stringify(got, null, 2));
+            }
+            if (width === widths[0]) result.cdn.push(got);
+            return route.fulfill({ status: got.status, contentType: got.type, body: fs.readFileSync(path.join(folder, "body")), headers: { "access-control-allow-origin": "*" } });
+          }
           const got = await serveCdn(u);
           if (got) {
             if (width === widths[0]) result.cdn.push({ url: u, served: got.source ?? got.body.toString().slice(0, 100), status: got.status });
@@ -369,7 +397,9 @@ export async function render(file, outDir, { widths = [1280, 390], browser: give
       await page.evaluate(() => document.fonts?.ready).catch(() => {});
       await page.waitForTimeout(2500); // entry animations, even with reduced motion asked for
       const loadMs = Date.now() - t0;
+      const redactions = redactCredits ? await page.evaluate(blindCredits) : undefined;
       const scan = await page.evaluate(inPage);
+      if (redactCredits) scan.creditRedactions = redactions;
       const shot = path.join(outDir, `shot-${width}.png`);
       await page.screenshot({ path: shot, fullPage: true });
       const png = PNG.sync.read(fs.readFileSync(shot));
@@ -418,6 +448,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const [file, outDir] = process.argv.slice(2);
   const at = process.argv.indexOf("--widths");
   const widths = at > 0 ? process.argv[at + 1].split(",").map(Number) : undefined;
-  const r = await render(file, outDir, { widths });
+  const cdnAt = process.argv.indexOf("--cdn");
+  const cdnMode = cdnAt > 0 ? process.argv[cdnAt + 1] : undefined;
+  const r = await render(file, outDir, { widths, cdnMode });
   console.log(JSON.stringify({ summary: summarize(r), cdn: r.cdn }, null, 1));
 }

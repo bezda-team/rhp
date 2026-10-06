@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An illustrative comparison of women's and men's median weekly earnings in eight occupations.">
+<title>The gender pay gap | Eight occupations</title>
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+  :root { color-scheme: light; --paper: #fffef9; --ink: #202326; --soft: #565b60; --accent: #c92027; --rule: #d9d9d3; --text: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 44px 24px; background: #e9e9e4; color: var(--ink); font-family: var(--text); }
+  .poster { position: relative; max-width: 1000px; margin: auto; padding: 37px 48px 27px; background: var(--paper); border-top: 1px solid var(--accent); box-shadow: 0 10px 36px #2023260d; }
+  .poster::before { content: ""; position: absolute; top: -1px; left: 48px; width: 76px; height: 9px; background: var(--accent); }
+  .poster figcaption { display: grid; gap: 13px; margin-bottom: 27px; }
+  .kicker { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .headline { max-width: 760px; font-size: clamp(34px, 4.7vw, 54px); font-weight: 700; line-height: 1.04; letter-spacing: -.035em; text-wrap: balance; }
+  .dek { max-width: 660px; color: var(--soft); font-size: 17px; line-height: 1.5; }
+  .chart-heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; border-top: 1px solid var(--ink); padding-top: 15px; margin-bottom: 8px; }
+  .measure { margin: 0; font-size: 15px; font-weight: 700; }
+  .keys { display: flex; gap: 22px; font-size: 14px; }
+  .keys span { display: inline-flex; align-items: center; gap: 7px; }
+  .keys i { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); }
+  .keys .men { background: var(--ink); }
+  .hint { margin: 0 0 14px; color: var(--soft); font-size: 12px; line-height: 1.5; }
+  .axis-unit { margin: 8px 0 19px; text-align: right; font-size: 12px; color: var(--soft); }
+  .readout { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 20px; min-height: 82px; padding: 15px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); background: var(--paper); }
+  .readout-name { font-size: 17px; font-weight: 700; }
+  .readout-context { display: block; margin-top: 5px; font-size: 12px; color: var(--soft); }
+  .readout-value { text-align: right; white-space: nowrap; font-size: 27px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .readout-value small { display: block; margin-top: 3px; font-size: 12px; font-weight: 400; color: var(--soft); }
+  .note { display: block; margin-top: 17px; color: var(--soft); font-size: 12px; line-height: 1.6; }
+  noscript { display: block; padding: 24px; }
+  @media (max-width: 640px) {
+    body { padding: 16px 10px; }
+    .poster { padding: 28px 18px 20px; }
+    .poster::before { left: 18px; width: 58px; height: 7px; }
+    .poster figcaption { gap: 12px; margin-bottom: 22px; }
+    .headline { font-size: 36px; }
+    .dek { font-size: 15px; line-height: 1.45; }
+    .chart-heading { gap: 13px; }
+    .measure { flex-basis: 100%; font-size: 14px; }
+    .keys { font-size: 13px; }
+    .hint { margin-top: 9px; margin-bottom: 9px; }
+    .readout { min-height: 108px; gap: 12px; }
+    .readout-name { display: block; max-width: 180px; font-size: 15px; line-height: 1.25; }
+    .readout-context { font-size: 11px; line-height: 1.4; }
+    .readout-value { font-size: 25px; }
+    .readout-value small { font-size: 11px; }
+  }
+  @media print {
+    body { padding: 0; background: white; }
+    .poster { box-shadow: none; max-width: none; }
+    .readout { position: static; }
+    .hint { display: none; }
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<noscript>This chart needs JavaScript enabled to display the illustrative earnings figures.</noscript>
+<script type="module">
+import { Chart, Plot, Bar, Dot, Label, Poster, Show, slat, nice, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
+
+// Data: illustrative median weekly earnings, in US dollars, supplied by the user.
+const DATA = [
+  { name: "Software developers", women: 1850, men: 2100 },
+  { name: "Lawyers", women: 1880, men: 2450 },
+  { name: "Physicians", women: 1950, men: 2800 },
+  { name: "Registered nurses", women: 1400, men: 1550 },
+  { name: "Elementary school teachers", women: 1150, men: 1250 },
+  { name: "Accountants", women: 1300, men: 1600 },
+  { name: "Retail salespersons", women: 650, men: 820 },
+  { name: "Chefs and head cooks", women: 700, men: 850 },
+];
+const ROWS = DATA.map(d => ({ ...d, gap: d.men - d.women, percent: (d.men - d.women) / d.men * 100 }));
+const leader = [...ROWS].sort((a, b) => b.gap - a.gap)[0];
+const values = ROWS.flatMap(d => [d.women, d.men]);
+const range = nice(Math.min(0, ...values), Math.max(0, ...values));
+const number = new Intl.NumberFormat("en-US");
+const percent = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+const dollars = value => "$" + number.format(value);
+const describe = d => `${d.name}: women ${dollars(d.women)}, men ${dollars(d.men)} per week. Women earn ${dollars(d.gap)}, or ${percent.format(d.percent)}%, less than men.`;
+const THEME = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--ink)"] };
+
+// Slat types: the same two endpoints and connector, with names above the marks on phones.
+const occupation = mobile => slat({
+  thickness: mobile ? 82 : 59,
+  room: { start: mobile ? 14 : 205, end: 46, before: 3, after: 4 },
+  css: `
+    .occupation { border-bottom: 1px solid #2023260c; cursor: default; }
+    .occupation.on { background: #c9202707; }
+    .occupation:focus-visible { outline: 2px solid #c92027; outline-offset: -2px; }
+    .name { max-width: 188px; white-space: normal; text-align: left; font-size: 15px; line-height: 1.25; --rhp-label-gap: 17px; }
+    .on .name, .on .mobile-name { font-weight: 700; }
+    .mobile-name { position: absolute; top: 7px; left: 0; font-size: 13px; line-height: 1.3; }
+    .value { font-size: ${mobile ? 12 : 14}px; font-variant-numeric: tabular-nums; --rhp-label-gap: 10px; background: var(--rhp-surface); padding: 2px 1px; }
+    .women-value { color: #b31c23; transform: translateX(-7px); }
+    .men-value { color: #202326; transform: translateX(7px); }
+    .mobile-gap { position: absolute; bottom: 5px; right: 0; font-size: 11px; line-height: 1.4; color: #b31c23; visibility: hidden; }
+    .on .mobile-gap { visibility: visible; }
+    .connector { --rhp-radius: 0px; }
+    .on .connector { background: #c92027; }
+  `,
+}, d => html`
+  <div class=${() => d.on ? "occupation on" : "occupation"} data-row=${() => d.index} aria-label=${() => describe(d)}>
+    ${mobile ? html`<span class="mobile-name">${() => d.name}</span>` : html`<${Label} edge="start" class="name">${() => d.name}<//>`}
+    ${mobile ? html`<span class="mobile-gap" aria-hidden="true">${() => `${dollars(d.gap)} gap · ${percent.format(d.percent)}%`}</span>` : null}
+    <${Bar} from=${() => d.women} to=${() => d.men} thick="2px" color="#85898b" class="connector" />
+    <${Dot} at=${() => d.women} size=${mobile ? "8px" : "11px"} color="series-1" />
+    <${Dot} at=${() => d.men} size=${mobile ? "8px" : "11px"} color="series-2" />
+    <${Label} at=${() => d.women} side="before" class="value women-value">${() => number.format(d.women)}<//>
+    <${Label} at=${() => d.men} class="value men-value">${() => number.format(d.men)}<//>
+  </div>`);
+const DesktopOccupation = occupation(false);
+const MobileOccupation = occupation(true);
+
+// Chart component: selection adds the dollar and percentage gaps without shifting the layout.
+function PayGap() {
+  const [on, setOn] = createSignal(null);
+  const media = matchMedia("(max-width: 640px)");
+  const [mobile, setMobile] = createSignal(media.matches);
+  const resize = event => setMobile(event.matches);
+  media.addEventListener("change", resize);
+  onCleanup(() => media.removeEventListener("change", resize));
+  const selected = () => on() == null ? leader : ROWS[on()];
+  const rowOf = element => {
+    const row = element?.closest("[data-row]");
+    return row ? Number(row.dataset.row) : null;
+  };
+  const pick = event => {
+    const row = rowOf(event.target);
+    if (row != null) setOn(row);
+  };
+  const leave = event => {
+    if (event.pointerType !== "touch") setOn(event.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const chart = type => html`
+    <${Chart} scale=${[range.min, range.max]} ticks=${range.ticks} format=${value => number.format(value)}
+      label="Illustrative median weekly earnings in US dollars, women versus men in eight occupations" theme=${THEME}>
+      <${Plot} rows=${ROWS} key="name" keyboard=${true} on=${d => selected().name === d.name}>${type}<//>
+    <//>`;
+  return html`
+    <${Poster}
+      kicker="Work & earnings"
+      title="Women earn less in all eight occupations"
+      dek="The gender pay gap across eight occupations, in an illustrative comparison. Each line joins women's and men's earnings."
+      note="Note: These are illustrative figures, not observed statistics. Gaps compare the supplied medians and do not adjust for hours, experience or other factors. Percentage gaps use men's earnings as the denominator."
+      onPointerMove=${event => event.pointerType !== "touch" && pick(event)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${event => !event.currentTarget.contains(event.relatedTarget) && setOn(null)}>
+      <div class="chart-heading">
+        <p class="measure">Median weekly earnings, US dollars</p>
+        <div class="keys" aria-label="Red dots: women. Dark dots: men.">
+          <span><i aria-hidden="true"></i>Women</span><span><i class="men" aria-hidden="true"></i>Men</span>
+        </div>
+      </div>
+      <p class="hint">Point, tap or use Tab and arrow keys to compare gaps.</p>
+      <${Show} when=${mobile} fallback=${() => chart(DesktopOccupation)}>${() => chart(MobileOccupation)}<//>
+      <p class="axis-unit">US$ per week</p>
+      <div class="readout" aria-hidden="true">
+        <div>
+          <span class="readout-name">${() => selected().name}</span>
+          <span class="readout-context">${() => on() == null ? "Largest weekly gap in this comparison" : "Difference in median weekly earnings"}</span>
+        </div>
+        <div class="readout-value">${() => dollars(selected().gap)}<small>${() => `${percent.format(selected().percent)}% less for women`}</small></div>
+      </div>
+    <//>`;
+}
+
+// Mount the complete poster; no build step or local assets are needed.
+render(() => html`<${PayGap} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2efe6">
+  <title>Reaching for the sky | The world's ten tallest buildings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f2efe6; --ink:#222b28; --muted:#646a60; --line:#c9cbbf; --orange:#c84a23; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:#e1dfd5; font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
+    .poster { max-width:1440px; margin:0 auto; padding:30px 64px 25px; background:var(--paper); }
+    .mono { font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+    .masthead { display:flex; justify-content:space-between; gap:16px; padding-bottom:16px; border-bottom:2px solid var(--ink); }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:700; }
+    .brand-mark { display:flex; align-items:flex-end; gap:3px; height:16px; }
+    .brand-mark i { width:4px; height:9px; background:var(--orange); }
+    .brand-mark i:nth-child(2) { height:16px; }
+    .brand-mark i:nth-child(3) { height:12px; }
+    .hero { display:grid; grid-template-columns:1fr 280px; gap:48px; align-items:end; padding:36px 0 34px; }
+    .eyebrow { margin:0 0 15px; color:var(--orange); }
+    h1 { font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(85px,10.8vw,155px); font-weight:700; line-height:.86; letter-spacing:-.025em; margin:0; }
+    h1 span { display:block; }
+    h1 .accent { color:var(--orange); }
+    .intro { padding-bottom:3px; }
+    .intro h2 { font-size:21px; font-weight:500; line-height:1.3; margin:0 0 12px; letter-spacing:-.03em; }
+    .intro p { color:var(--muted); font-size:13px; line-height:1.6; margin:0; }
+    .gap-stat { border-top:1px solid var(--line); margin-top:24px; padding-top:15px; }
+    .gap-stat strong { font-family:'Barlow Condensed',sans-serif; font-size:57px; line-height:1; font-weight:600; color:var(--orange); }
+    .gap-stat strong small { font-size:29px; }
+    .gap-stat p { font-size:11px; margin-top:6px; max-width:225px; }
+    .chart-section { border-top:2px solid var(--ink); }
+    .section-heading { display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:17px 0 0; }
+    .section-heading h2 { margin:0; font-size:12px; letter-spacing:.07em; font-weight:600; text-transform:uppercase; }
+    .section-heading h2 span { color:var(--orange); margin-right:15px; font-family:'IBM Plex Mono',monospace; }
+    .section-heading p { color:var(--muted); margin:0; white-space:nowrap; font-size:10px; }
+    figure { margin:0; }
+    #height-chart { width:100%; min-height:410px; margin-top:12px; }
+    .chart-note { display:flex; justify-content:space-between; gap:16px; font-size:10px; color:var(--muted); margin:0 0 22px; }
+    .chart-note .key { display:inline-flex; align-items:center; gap:6px; }
+    .key i { width:8px; height:8px; display:inline-block; background:var(--orange); }
+    .directory { border-top:1px solid var(--ink); }
+    .directory-head { display:flex; justify-content:space-between; padding:15px 0 19px; color:var(--muted); }
+    .directory-head span { font-size:10px; }
+    .buildings { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); column-gap:24px; }
+    .building { padding:0 0 20px; margin-bottom:19px; border-bottom:1px solid var(--line); }
+    .building-top { display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:10px; }
+    .building-number { font-family:'Barlow Condensed',sans-serif; font-size:26px; color:var(--muted); font-weight:600; line-height:1; }
+    .building-height { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); }
+    .building h3 { font-size:15px; line-height:1.3; font-weight:600; min-height:39px; margin:0 0 12px; letter-spacing:-.02em; }
+    .building p { margin:0; font-size:11px; line-height:1.5; color:var(--muted); }
+    .building:first-child h3, .building:first-child .building-number, .building:first-child .building-height { color:var(--orange); }
+    .city-year { display:flex; justify-content:space-between; gap:8px; }
+    .city-year time { font-family:'IBM Plex Mono',monospace; font-size:10px; }
+    .footer { display:grid; grid-template-columns:1fr auto; gap:30px; padding-top:2px; align-items:end; }
+    .footer p { margin:0; color:var(--muted); font-size:10px; line-height:1.6; max-width:760px; }
+    .footer p + p { margin-top:3px; }
+    .footer a { color:inherit; text-underline-offset:3px; }
+    .folio { font-family:'Barlow Condensed',sans-serif; font-size:28px; white-space:nowrap; }
+    .folio span { color:var(--orange); }
+    .chart-tooltip { padding:12px 15px; background:var(--ink); color:var(--paper); font-family:'DM Sans',sans-serif; }
+    .chart-tooltip strong { display:block; font-size:13px; margin-bottom:5px; }
+    .chart-tooltip span { font-size:11px; opacity:.85; }
+    .apexcharts-tooltip { border:0!important; border-radius:0!important; box-shadow:0 3px 12px #222b2820!important; }
+    .chart-error { padding:30px 0; color:var(--muted); }
+    @media (min-width:1500px) { .poster { margin:30px auto; box-shadow:0 4px 30px #222b2810; } }
+    @media (max-width:1000px) {
+      .poster { padding:26px 35px; }
+      .hero { grid-template-columns:1fr 220px; gap:25px; }
+      h1 { font-size:clamp(80px,11vw,120px); }
+      .intro h2 { font-size:18px; }
+      .intro p { font-size:12px; }
+      .buildings { column-gap:18px; }
+      .building h3 { font-size:13px; min-height:51px; }
+      .city-year { flex-direction:column; gap:3px; }
+    }
+    @media (max-width:600px) {
+      .poster { padding:21px 22px 24px; }
+      .masthead { padding-bottom:13px; }
+      .masthead .mono { font-size:9px; letter-spacing:.03em; }
+      .masthead .edition { max-width:95px; text-align:right; line-height:1.5; }
+      .hero { grid-template-columns:1fr; gap:25px; padding:29px 0 25px; }
+      .eyebrow { font-size:10px; margin-bottom:16px; }
+      h1 { font-size:clamp(65px,17vw,102px); line-height:.91; }
+      .intro { display:grid; grid-template-columns:1.2fr 1fr; gap:19px; }
+      .intro h2 { font-size:16px; margin-bottom:8px; }
+      .intro p { font-size:11px; line-height:1.5; }
+      .gap-stat { margin:0; border-top:0; border-left:1px solid var(--line); padding:1px 0 0 18px; }
+      .gap-stat strong { font-size:43px; }
+      .gap-stat strong small { font-size:22px; }
+      .gap-stat p { font-size:10px; }
+      .section-heading { align-items:flex-start; }
+      .section-heading h2 { font-size:10px; line-height:1.5; }
+      .section-heading h2 span { margin-right:8px; }
+      .section-heading p { font-size:9px; line-height:1.6; }
+      #height-chart { min-height:480px; margin-top:5px; }
+      .chart-note { font-size:9px; margin-bottom:20px; }
+      .buildings { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:23px; }
+      .building { margin-bottom:17px; padding-bottom:17px; }
+      .building h3 { font-size:14px; min-height:37px; margin-bottom:10px; }
+      .city-year { flex-direction:row; gap:5px; }
+      .city-year p { font-size:10px; }
+      .directory-head span { font-size:9px; }
+      .footer { gap:18px; align-items:start; }
+      .footer p { font-size:9px; }
+      .folio { font-size:23px; }
+    }
+    @media print { body { background:var(--paper); } .poster { max-width:none; margin:0; padding:20px; } a { text-decoration:none; } .building { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="masthead">
+      <div class="brand mono"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span> The built world</div>
+      <div class="edition mono">Architecture / A study in scale</div>
+    </header>
+    <section class="hero" aria-labelledby="poster-title">
+      <div>
+        <p class="eyebrow mono">Ten buildings. One extraordinary skyline.</p>
+        <h1 id="poster-title"><span>REACHING</span><span class="accent">FOR THE SKY.</span></h1>
+      </div>
+      <div class="intro">
+        <div><h2>The world's ten<br>tallest buildings.</h2><p>From Dubai to Beijing, a portrait of the structures that take the city to new heights.</p></div>
+        <div class="gap-stat"><strong>149.1<small> m</small></strong><p>Burj Khalifa's lead over its closest rival, Merdeka 118.</p></div>
+      </div>
+    </section>
+    <section class="chart-section" aria-labelledby="chart-title">
+      <div class="section-heading"><h2 id="chart-title"><span>01 /</span> The height of ambition</h2><p class="mono">Architectural height · metres</p></div>
+      <figure aria-describedby="chart-caption">
+        <div id="height-chart" aria-label="Height comparison of ten buildings. Full figures are listed in the building index below."></div>
+        <figcaption id="chart-caption" class="chart-note"><span class="key"><i></i> World's tallest: Burj Khalifa</span><span>Hover or tap a bar to explore</span></figcaption>
+      </figure>
+    </section>
+    <section class="directory" aria-labelledby="index-title">
+      <div class="directory-head mono"><span id="index-title">The building index</span><span>City / Year completed</span></div>
+      <ol class="buildings" id="building-index"></ol>
+      <noscript><p>JavaScript is needed to display the chart and building index.</p></noscript>
+    </section>
+    <footer class="footer">
+      <div><p>Source: <a href="https://www.ctbuh.org/" target="_blank" rel="noopener noreferrer">Council on Tall Buildings and Urban Habitat (CTBUH)</a>.</p><p>Architectural height includes spires, but excludes antennas. Buildings of equal height are shown consecutively. All heights in metres.</p></div>
+      <div class="folio" aria-label="Plate 01">PLATE <span>01</span></div>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const buildings = [
+      { name:'Burj Khalifa', city:'Dubai', height:828, year:2010 },
+      { name:'Merdeka 118', city:'Kuala Lumpur', height:678.9, year:2023 },
+      { name:'Shanghai Tower', city:'Shanghai', height:632, year:2015 },
+      { name:'Makkah Royal Clock Tower', city:'Mecca', height:601, year:2012 },
+      { name:'Ping An Finance Center', city:'Shenzhen', height:599.1, year:2017 },
+      { name:'Lotte World Tower', city:'Seoul', height:554.5, year:2017 },
+      { name:'One World Trade Center', city:'New York City', height:541.3, year:2014 },
+      { name:'Guangzhou CTF Finance Centre', city:'Guangzhou', height:530, year:2016 },
+      { name:'Tianjin CTF Finance Centre', city:'Tianjin', height:530, year:2019 },
+      { name:'CITIC Tower', city:'Beijing', height:527.7, year:2018 }
+    ];
+    const number = index => String(index + 1).padStart(2, '0');
+    document.getElementById('building-index').innerHTML = buildings.map((b, i) => `
+      <li class="building"><div class="building-top"><span class="building-number" aria-hidden="true">${number(i)}</span><span class="building-height">${b.height} m</span></div>
+      <h3>${b.name}</h3><div class="city-year"><p>${b.city}</p><p><time datetime="${b.year}">${b.year}</time></p></div></li>`).join('');
+    const phone = window.matchMedia('(max-width: 600px)');
+    let chart;
+    function options(mobile) {
+      return {
+        chart: { type:'bar', height:mobile ? 480 : 410, fontFamily:'IBM Plex Mono, monospace', foreColor:'#646a60', background:'transparent', toolbar:{show:false}, zoom:{enabled:false}, animations:{enabled:false}, parentHeightOffset:0 },
+        series: [{ name:'Architectural height', data:buildings.map((b, i) => ({x:number(i), y:b.height})) }],
+        colors:buildings.map((b, i) => i === 0 ? '#c84a23' : '#313e36'),
+        plotOptions: { bar:{ horizontal:mobile, distributed:true, columnWidth:'47%', barHeight:'48%', borderRadius:0, dataLabels:{position:'top'} } },
+        dataLabels: { enabled:true, formatter:value => String(value), offsetY:mobile ? 0 : -21, offsetX:mobile ? 8 : 0, textAnchor:mobile ? 'start' : 'middle', style:{fontSize:mobile ? '10px' : '12px', fontWeight:500, colors:['#222b28']}, background:{enabled:false} },
+        stroke:{show:false}, fill:{opacity:1}, legend:{show:false},
+        grid:{borderColor:'#d4d5ca', strokeDashArray:3, padding:{top:10,right:mobile ? 28 : 4,bottom:0,left:5}, xaxis:{lines:{show:mobile}}, yaxis:{lines:{show:!mobile}}},
+        xaxis: { type:'category', ...(mobile ? {min:0,max:900,tickAmount:3} : {}), axisBorder:{show:!mobile,color:'#8a9083'}, axisTicks:{show:false}, labels:{style:{fontSize:'11px'}, formatter:value => String(value)}, tooltip:{enabled:false}, crosshairs:{show:false} },
+        yaxis: { min:0,max:900,tickAmount:3, labels:{style:{fontSize:'11px'}, formatter:value => mobile ? String(value) : String(Math.round(value))} },
+        tooltip:{enabled:true, shared:false, intersect:true, custom:({dataPointIndex}) => { const b = buildings[dataPointIndex]; return b ? `<div class="chart-tooltip"><strong>${number(dataPointIndex)} / ${b.name}</strong><span>${b.height} m · ${b.city} · Completed ${b.year}</span></div>` : ''; }},
+        states:{hover:{filter:{type:'lighten',value:.08}},active:{filter:{type:'none'}}},
+        noData:{text:'Height data unavailable'}
+      };
+    }
+    async function renderChart() {
+      if (chart) chart.destroy();
+      const container = document.getElementById('height-chart');
+      if (!window.ApexCharts) { container.innerHTML = '<p class="chart-error">The chart could not load. All heights appear in the building index below.</p>'; return; }
+      chart = new ApexCharts(container, options(phone.matches));
+      try { await chart.render(); } catch (error) { container.innerHTML = '<p class="chart-error">The chart could not load. All heights appear in the building index below.</p>'; console.error(error); }
+    }
+    document.fonts.ready.then(renderChart);
+    phone.addEventListener('change', renderChart);
+  </script>
+</body>
+</html>

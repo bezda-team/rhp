@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1e8">
+  <meta name="description" content="Atmospheric carbon dioxide at Mauna Loa rose from 316.9 ppm in 1960 to 424.6 ppm in 2024. A visual record of NOAA annual means.">
+  <title>The air has changed | Mauna Loa CO₂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --paper: #f4f1e8; --ink: #222b28; --muted: #626b63; --orange: #bc461d; --rule: #cfcfc1; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e5e6dc; color: var(--ink); font-family: 'DM Sans', sans-serif; }
+    .poster { max-width: 1280px; margin: 32px auto; padding: 36px 58px 26px; background: var(--paper); border-top: 7px solid var(--ink); }
+    .masthead { display: flex; justify-content: space-between; gap: 20px; align-items: center; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-symbol { display: inline-block; width: 17px; height: 17px; border: 1px solid var(--ink); border-radius: 50%; background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); }
+    .location { color: var(--muted); }
+    header { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: end; padding: 44px 0 32px; }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(58px, 7.4vw, 96px); font-weight: 500; line-height: .98; letter-spacing: -.075em; margin: 0 0 23px; }
+    .intro { margin: 0; max-width: 440px; font-size: 16px; line-height: 1.55; color: var(--muted); }
+    .current { padding: 0 0 4px 35px; border-left: 1px solid var(--rule); }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .current-value { font-family: 'Space Grotesk', sans-serif; font-size: clamp(66px, 7.3vw, 94px); letter-spacing: -.065em; color: var(--orange); line-height: 1.1; margin: 12px 0 6px; }
+    .current-value span { font-family: 'DM Sans', sans-serif; font-size: 20px; letter-spacing: -.02em; margin-left: 7px; }
+    .current p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+    .current strong { color: var(--ink); font-weight: 600; }
+    figure { margin: 0; border-top: 1px solid var(--ink); padding-top: 21px; }
+    .figure-heading { display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    h2 { margin: 0; font-size: 13px; font-weight: 600; }
+    .legend { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+    .legend i { width: 23px; height: 3px; background: var(--orange); display: inline-block; position: relative; }
+    .legend i::after { content: ''; position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); top: -2px; left: 9px; }
+    #chart { width: 100%; height: 430px; margin-top: 9px; }
+    figcaption { display: flex; justify-content: space-between; gap: 20px; font-size: 11px; color: var(--muted); margin: 0 0 24px; line-height: 1.5; }
+    .insights { border-top: 1px solid var(--ink); display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 25px 0 28px; }
+    .insight { padding: 0 28px; border-left: 1px solid var(--rule); }
+    .insight:first-child { padding-left: 0; border-left: 0; }
+    .insight:last-child { padding-right: 0; }
+    .insight .eyebrow { color: var(--muted); font-size: 10px; }
+    .insight h3 { font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 500; letter-spacing: -.045em; margin: 8px 0; }
+    .insight h3 span { font-family: 'DM Sans', sans-serif; font-size: 15px; letter-spacing: 0; }
+    .insight p { font-size: 13px; line-height: 1.6; margin: 0; max-width: 300px; color: var(--muted); }
+    .insight.milestone h3 { color: var(--orange); }
+    footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--rule); padding-top: 17px; font-size: 10px; line-height: 1.6; color: var(--muted); }
+    footer p { margin: 0; max-width: 760px; }
+    a { color: inherit; text-underline-offset: 3px; }
+    .edition { flex-shrink: 0; letter-spacing: .09em; text-transform: uppercase; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .chart-error { padding: 50px 20px; line-height: 1.6; }
+    .apexcharts-tooltip { border: 1px solid var(--rule) !important; box-shadow: 0 3px 14px #222b2814 !important; }
+    @media (max-width: 700px) {
+      body { background: var(--paper); }
+      .poster { margin: 0; padding: 24px 22px; border-top-width: 5px; }
+      .masthead { font-size: 9px; letter-spacing: .09em; align-items: flex-start; }
+      .location { text-align: right; max-width: 105px; line-height: 1.6; }
+      header { grid-template-columns: 1fr; padding: 34px 0 25px; gap: 26px; }
+      h1 { font-size: clamp(55px, 13.5vw, 80px); margin-bottom: 19px; }
+      .intro { font-size: 14px; max-width: 350px; }
+      .current { padding: 0 0 0 18px; }
+      .current-value { font-size: 67px; margin: 5px 0 2px; }
+      .current-value span { font-size: 18px; }
+      .current p { font-size: 12px; }
+      .figure-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+      h2 { font-size: 12px; }
+      #chart { height: 385px; margin-top: 12px; }
+      figcaption { font-size: 10px; margin-bottom: 20px; }
+      .hint { display: none; }
+      .insights { grid-template-columns: 1fr; padding: 0; }
+      .insight, .insight:first-child, .insight:last-child { padding: 21px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+      .insight h3 { font-size: 32px; margin: 5px 0; }
+      .insight p { max-width: none; }
+      footer { flex-direction: column; border-top: 0; gap: 12px; }
+    }
+    @media print {
+      body { background: var(--paper); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .poster { margin: 0; padding: 20px; max-width: none; }
+      h1 { font-size: 65px; }
+      .current-value { font-size: 65px; }
+      .hint { display: none; }
+      footer a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <div class="masthead">
+      <div class="brand"><span class="brand-symbol" aria-hidden="true"></span> Atmospheric record / 01</div>
+      <div class="location">Mauna Loa, Hawaiʻi · 1960–2024</div>
+    </div>
+    <header>
+      <div>
+        <h1>The air<br>has changed.</h1>
+        <p class="intro">Six decades of rising atmospheric carbon dioxide, measured at Mauna Loa.</p>
+      </div>
+      <div class="current">
+        <div class="eyebrow">2024 annual mean</div>
+        <div class="current-value">424.6<span>ppm</span></div>
+        <p><strong>34% higher than in 1960.</strong><br>A growing concentration in the air we share.</p>
+      </div>
+    </header>
+    <figure aria-labelledby="chart-title" aria-describedby="chart-description">
+      <div class="figure-heading">
+        <h2 id="chart-title">Atmospheric CO₂ · parts per million (ppm)</h2>
+        <div class="legend"><i aria-hidden="true"></i> Annual mean, selected years</div>
+      </div>
+      <div id="chart"></div>
+      <p class="sr-only" id="chart-description">Atmospheric carbon dioxide rises from 316.9 ppm in 1960 to 424.6 ppm in 2024. In 2015, the annual mean first exceeded 400 ppm, reaching 400.8 ppm. A horizontal reference shows the approximate pre-industrial level of 280 ppm. The plotted values are available in the following table.</p>
+      <div class="sr-only"><table>
+        <caption>NOAA annual mean CO₂ at Mauna Loa, selected years</caption>
+        <thead><tr><th scope="col">Year</th><th scope="col">CO₂ (ppm)</th></tr></thead>
+        <tbody id="data-table"></tbody>
+      </table></div>
+      <figcaption><span>Each dot is an annual mean. Lines connect the supplied years.</span><span class="hint">Hover over a point to explore</span></figcaption>
+    </figure>
+    <section class="insights" aria-label="Three points of perspective">
+      <div class="insight">
+        <div class="eyebrow">The rise since 1960</div>
+        <h3>+107.7 <span>ppm</span></h3>
+        <p>From 316.9 to 424.6 ppm in 64 years, an increase of approximately 34%.</p>
+      </div>
+      <div class="insight milestone">
+        <div class="eyebrow">A threshold crossed</div>
+        <h3>2015 <span>/ 400.8 ppm</span></h3>
+        <p>The first year Mauna Loa’s annual mean passed 400 parts per million.</p>
+      </div>
+      <div class="insight">
+        <div class="eyebrow">Before industrialization</div>
+        <h3>≈280 <span>ppm</span></h3>
+        <p>The pre-industrial reference level. By 2024, the concentration was about 52% higher.</p>
+      </div>
+    </section>
+    <footer>
+      <p><strong>Source:</strong> <a href="https://gml.noaa.gov/ccgg/trends/data.html">NOAA Global Monitoring Laboratory</a>, Mauna Loa annual mean CO₂, selected years supplied.<br>ppm = parts per million: the number of CO₂ molecules per million molecules of dry air. Pre-industrial reference is approximate.</p>
+      <span class="edition">An atmosphere in numbers</span>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const measurements = [[1960,316.9],[1965,320.0],[1970,325.7],[1975,331.1],[1980,338.8],[1985,346.1],[1990,354.5],[1995,360.8],[2000,369.7],[2005,379.8],[2010,389.9],[2015,400.8],[2020,414.2],[2024,424.6]];
+    document.querySelector('#data-table').innerHTML = measurements.map(([year, ppm]) => `<tr><th scope="row">${year}</th><td>${ppm.toFixed(1)}</td></tr>`).join('');
+    const ink = '#222b28', orange = '#bc461d', paper = '#f4f1e8';
+    const labelStyle = { background: paper, color: ink, fontSize: '12px', fontWeight: 600, padding: { left: 7, right: 7, top: 5, bottom: 5 } };
+    const options = {
+      chart: { type: 'line', height: 430, fontFamily: 'DM Sans, sans-serif', foreColor: '#626b63', background: 'transparent', toolbar: { show: false }, zoom: { enabled: false }, animations: { enabled: false }, parentHeightOffset: 0 },
+      series: [{ name: 'Annual mean CO₂', data: measurements.map(([x,y]) => ({x,y})) }],
+      colors: [orange],
+      stroke: { curve: 'straight', width: 3.5, lineCap: 'round' },
+      fill: { opacity: 1 },
+      markers: { size: 3.5, strokeWidth: 1.5, strokeColors: paper, hover: { sizeOffset: 3 } },
+      dataLabels: { enabled: false },
+      legend: { show: false },
+      grid: { borderColor: '#deded2', strokeDashArray: 2, padding: { top: 16, right: 18, bottom: 0, left: 3 }, xaxis: { lines: { show: false } } },
+      xaxis: { type: 'numeric', min: 1960, max: 2025, tickAmount: 13, axisBorder: { show: false }, axisTicks: { show: false }, labels: { rotate: 0, hideOverlappingLabels: false, style: { fontSize: '11px' }, formatter: value => Number(value) % 10 === 0 ? String(Math.round(value)) : '' }, tooltip: { enabled: false }, crosshairs: { stroke: { color: '#9b9f91', dashArray: 3 } } },
+      yaxis: { min: 260, max: 440, tickAmount: 9, forceNiceScale: false, labels: { minWidth: 29, style: { fontSize: '11px' }, formatter: value => value.toFixed(0) } },
+      tooltip: { shared: false, intersect: false, theme: 'light', x: { formatter: value => String(Math.round(value)) }, y: { formatter: value => value.toFixed(1) + ' ppm' }, marker: { show: true } },
+      annotations: {
+        yaxis: [
+          { y: 280, borderColor: '#73816d', strokeDashArray: 6, label: { text: '≈280 ppm · pre-industrial', position: 'left', textAnchor: 'start', offsetX: 9, offsetY: -7, borderColor: 'transparent', style: { ...labelStyle, color: '#5b6955', fontWeight: 500 } } },
+          { y: 400, borderColor: '#c6b5a0', strokeDashArray: 5 }
+        ],
+        xaxis: [{ x: 2015, borderColor: '#bbaa95', strokeDashArray: 4 }],
+        points: [
+          { x: 1960, y: 316.9, marker: { size: 5, fillColor: orange, strokeColor: paper, strokeWidth: 2 }, label: { text: '1960 · 316.9', borderColor: 'transparent', offsetX: 48, offsetY: -16, style: labelStyle } },
+          { x: 2024, y: 424.6, marker: { size: 6, fillColor: orange, strokeColor: paper, strokeWidth: 2 }, label: { text: '2024 · 424.6', borderColor: 'transparent', offsetX: -47, offsetY: -14, style: { ...labelStyle, color: orange } } },
+          { x: 2015, y: 400.8, marker: { size: 7, fillColor: paper, strokeColor: orange, strokeWidth: 3 }, label: { text: '2015 · first annual mean >400 ppm', borderColor: 'transparent', offsetX: -133, offsetY: 80, style: { ...labelStyle, color: orange } } }
+        ]
+      },
+      responsive: [{ breakpoint: 700, options: {
+        chart: { height: 385 },
+        grid: { padding: { right: 8, left: 0 } },
+        xaxis: { labels: { formatter: value => Number(value) % 20 === 0 ? String(Math.round(value)) : '' } },
+        annotations: { points: [
+          { x: 1960, y: 316.9, marker: { size: 4, fillColor: orange, strokeColor: paper, strokeWidth: 2 }, label: { text: '1960 · 316.9', borderColor: 'transparent', offsetX: 45, offsetY: -16, style: { ...labelStyle, fontSize: '11px' } } },
+          { x: 2024, y: 424.6, marker: { size: 5, fillColor: orange, strokeColor: paper, strokeWidth: 2 }, label: { text: '2024 · 424.6', borderColor: 'transparent', offsetX: -43, offsetY: -14, style: { ...labelStyle, color: orange, fontSize: '11px' } } },
+          { x: 2015, y: 400.8, marker: { size: 6, fillColor: paper, strokeColor: orange, strokeWidth: 3 }, label: { text: '2015 · above 400 ppm', borderColor: 'transparent', offsetX: -68, offsetY: 120, style: { ...labelStyle, color: orange, fontSize: '11px' } } }
+        ] }
+      } }]
+    };
+    async function renderChart() {
+      try {
+        if (!window.ApexCharts) throw new Error('ApexCharts could not load.');
+        await document.fonts.ready;
+        const chart = new ApexCharts(document.querySelector('#chart'), options);
+        await chart.render();
+      } catch (error) {
+        document.querySelector('#chart').innerHTML = '<p class="chart-error">The chart could not load. Please check your internet connection and reload this page. CO₂ rose from 316.9 ppm in 1960 to 424.6 ppm in 2024.</p>';
+        console.error(error);
+      }
+    }
+    renderChart();
+  </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Coffee by numbers: five leading coffee producers, annual coffee consumption per person, and about 2.25 billion cups drunk worldwide every day. Approximate figures for illustration.">
+<meta name="theme-color" content="#f6f0e5">
+<title>Coffee by numbers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+  :root { --page: #ded6c9; --paper: #f6f0e5; --ink: #30261f; --soft: #6d5e50; --rule: #d9cdbb; --accent: #a23f22; --quiet: #8b7560; --text: "DM Sans", Arial, sans-serif; --display: "Libre Caslon Display", Georgia, serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 24px; background: var(--page); color: var(--ink); font: 15px/1.5 var(--text); }
+  .poster { max-width: 1120px; margin: 0 auto; padding: 36px 48px 24px; background: var(--paper); box-shadow: 0 12px 50px #30261f12; }
+  .masthead { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-top: 3px solid var(--ink); padding-top: 12px; }
+  .eyebrow { margin: 0; color: var(--accent); font-size: 11px; line-height: 1.4; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  .edition { color: var(--soft); font-size: 11px; letter-spacing: .08em; }
+  .intro { position: relative; padding: 22px 0 27px; border-bottom: 1px solid var(--ink); }
+  h1 { margin: 0; font: 400 clamp(56px, 7.7vw, 94px)/1.02 var(--display); letter-spacing: -.045em; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .dek { margin: 15px 0 0; color: var(--soft); font-size: 16px; }
+  .rankings { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin: 28px 0 26px; }
+  .ranking { min-width: 0; }
+  .ranking:first-child { padding-right: 32px; border-right: 1px solid var(--rule); }
+  .ranking:last-child { padding-left: 32px; }
+  .section-tag { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+  .section-number { font: 400 23px/1 var(--display); color: var(--accent); }
+  h2 { margin: 0; font: 400 clamp(27px, 2.8vw, 35px)/1.15 var(--display); letter-spacing: -.015em; }
+  .units { margin: 9px 0 3px; color: var(--soft); font-size: 13px; }
+  .hint { margin: 0 0 12px; font-size: 11px; color: var(--soft); }
+  .plot-frame { min-height: 312px; }
+  .readout { display: flex; align-items: center; min-height: 55px; margin: 12px 0 0; padding: 9px 0 0; border-top: 1px solid var(--rule); color: var(--accent); font-size: 13px; line-height: 1.5; font-weight: 500; }
+  .daily { position: relative; display: grid; grid-template-columns: 1fr 160px; align-items: center; gap: 18px; padding: 24px 32px 27px; background: var(--ink); color: var(--paper); }
+  .daily .eyebrow { color: #e6b192; }
+  .daily .section-number { color: #e6b192; }
+  .daily-content { display: flex; align-items: center; gap: 24px; }
+  .big-number { margin: 0; font: 400 clamp(100px, 10.7vw, 136px)/.95 var(--display); letter-spacing: -.06em; }
+  .big-number small { display: block; margin: 6px 0 5px 5px; font: 500 11px/1.5 var(--text); letter-spacing: .14em; text-transform: uppercase; color: #e6b192; }
+  .daily-copy { margin: 20px 0 0; max-width: 250px; font-size: 15px; line-height: 1.6; color: #e0d4c4; }
+  .daily-copy strong { display: block; font: 400 37px/1.1 var(--display); color: var(--paper); margin-bottom: 5px; }
+  .cup-art { width: 150px; height: 155px; color: #bda286; }
+  footer { display: flex; justify-content: space-between; gap: 24px; margin-top: 19px; color: var(--soft); font-size: 11px; }
+  footer p { margin: 0; }
+  .footer-mark { white-space: nowrap; letter-spacing: .1em; font-weight: 600; }
+  noscript { display: block; padding: 24px; }
+  @media (max-width: 900px) {
+    .poster { padding: 28px 28px 22px; }
+    .ranking:first-child { padding-right: 22px; }
+    .ranking:last-child { padding-left: 22px; }
+    .daily { grid-template-columns: 1fr 125px; padding-inline: 25px; }
+    .cup-art { width: 120px; }
+    .daily-content { gap: 20px; }
+  }
+  @media (max-width: 700px) {
+    body { padding: 12px; }
+    .poster { padding: 23px 21px 20px; }
+    .edition { font-size: 10px; }
+    .intro { padding: 24px 0; }
+    h1 { font-size: clamp(54px, 12vw, 78px); max-width: 450px; }
+    .dek { font-size: 14px; max-width: 32ch; margin-top: 12px; }
+    .rankings { grid-template-columns: minmax(0, 1fr); gap: 26px; margin-top: 24px; }
+    .ranking:first-child { padding: 0 0 24px; border-right: 0; border-bottom: 1px solid var(--ink); }
+    .ranking:last-child { padding: 0; }
+    h2 { font-size: 32px; }
+    .plot-frame { min-height: 0; }
+    .readout { min-height: 54px; margin-top: 10px; }
+    .daily { grid-template-columns: minmax(0, 1fr); padding: 23px; gap: 0; }
+    .daily-content { display: block; }
+    .big-number { font-size: 119px; margin-top: 14px; }
+    .daily-copy { margin-top: 14px; max-width: 24ch; font-size: 14px; }
+    .daily-copy strong { font-size: 34px; }
+    .cup-art { position: absolute; top: 56px; right: 18px; width: 78px; height: 120px; }
+    footer { display: block; font-size: 11px; }
+    .footer-mark { margin-top: 12px; }
+  }
+  @media (max-width: 359px) {
+    .poster { padding-inline: 15px; }
+    .cup-art { width: 54px; right: 12px; }
+    .big-number { font-size: 104px; }
+    .edition { display: none; }
+  }
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .poster { box-shadow: none; max-width: none; }
+    .daily { print-color-adjust: exact; }
+    .hint { visibility: hidden; }
+  }
+</style>
+</head>
+<body>
+<main class="poster">
+  <header>
+    <div class="masthead"><p class="eyebrow">A world of coffee</p><span class="edition">FROM BEAN TO CUP</span></div>
+    <div class="intro"><h1>Coffee <em>by numbers</em></h1><p class="dek">A global ritual, measured in harvests, habits and everyday cups.</p></div>
+  </header>
+  <div id="rankings" class="rankings"></div>
+  <section class="daily" aria-labelledby="daily-title">
+    <div>
+      <div class="section-tag"><span class="section-number">03</span><h2 id="daily-title" class="eyebrow">The daily ritual</h2></div>
+      <div class="daily-content"><p class="big-number"><small>About</small>2.25</p><p class="daily-copy"><strong>billion cups</strong>of coffee are drunk every day<br>around the world.</p></div>
+    </div>
+    <svg class="cup-art" viewBox="0 0 160 170" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M51 48c-16-16 16-21 0-38M77 48c-16-16 16-21 0-38M103 48c-16-16 16-21 0-38" stroke-linecap="round"/>
+      <path d="M27 68h94v39c0 24-20 39-47 39s-47-15-47-39V68Z"/>
+      <path d="M122 76h10c28 0 27 39 0 39h-12M15 153h124M25 159h104" stroke-linecap="round"/>
+      <path d="M35 76h78" stroke-width="1"/>
+    </svg>
+  </section>
+  <footer><p>All figures are approximate and for illustration only.<br>Annual production and consumption figures do not refer to a specified year.</p><p class="footer-mark">COFFEE BY NUMBERS</p></footer>
+  <noscript>Please enable JavaScript to view the two coffee rankings.</noscript>
+</main>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: approximate figures supplied for illustration.
+const PRODUCERS = [
+  { name: "Brazil", value: 66.3 }, { name: "Vietnam", value: 27.5 },
+  { name: "Colombia", value: 12.6 }, { name: "Indonesia", value: 11.9 },
+  { name: "Ethiopia", value: 8.4 },
+];
+const DRINKERS = [
+  { name: "Finland", value: 12.0 }, { name: "Norway", value: 9.9 },
+  { name: "Iceland", value: 9.0 }, { name: "Denmark", value: 8.7 },
+  { name: "Netherlands", value: 8.4 }, { name: "Sweden", value: 8.2 },
+];
+const decimal = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+const THEME = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--quiet)"] };
+
+// Slat: each country has its name, a flat bar and an exact value.
+const Country = slat({
+  thickness: 46,
+  inset: "12px",
+  room: { start: "auto", end: 40 },
+  css: `
+    .country { cursor: pointer; }
+    .name { font-size: 13px; font-weight: 500; }
+    .bar { --rhp-radius: 1px; }
+    .value { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; --rhp-label-gap: 7px; }
+    .on .name, .on .value { color: var(--rhp-series-1); }
+    .country:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: -2px; }
+    @container (max-width: 340px) { .name, .value { font-size: 12px; } }
+  `,
+}, (d) => html`
+  <div class=${() => d.on ? "country on" : "country"} data-row=${() => d.index}
+    aria-label=${() => `${d.name}: ${decimal.format(d.value)} ${d.unit}`}>
+    <${Label} edge="start" class="name">${() => d.name}<//>
+    <${Bar} to=${() => d.value} color=${() => d.on ? "series-1" : "series-2"} />
+    <${Label} at=${() => d.value} class="value">${() => decimal.format(d.value)}<//>
+  </div>`);
+
+// Chart: pointer, tap and keyboard selections compare each country with the leader.
+function Ranking(props) {
+  const rows = [...props.rows].sort((a, b) => b.value - a.value);
+  const values = rows.map(d => d.value);
+  const scale = nice(Math.min(0, ...values), Math.max(0, ...values), 4);
+  const [picked, setPicked] = createSignal(null);
+  const rowOf = el => {
+    const row = el?.closest?.("[data-row]");
+    return row ? Number(row.dataset.row) : null;
+  };
+  const pick = e => { const row = rowOf(e.target); if (row !== null) setPicked(row); };
+  const leave = e => {
+    if (e.pointerType === "touch") return;
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const comparison = () => {
+    const index = picked() ?? 0;
+    if (index === 0) return `${rows[0].name}: ${decimal.format(rows[0].value / rows[1].value)}× ${rows[1].name}’s ${props.measure}.`;
+    return `${rows[index].name}: ${percent.format(rows[index].value / rows[0].value)} of ${rows[0].name}’s ${props.measure}.`;
+  };
+  return html`
+    <section class="ranking" aria-labelledby=${props.id}
+      onPointerMove=${e => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${e => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="section-tag"><span class="section-number">${props.number}</span><p class="eyebrow">${props.kicker}</p></div>
+      <h2 id=${props.id}>${props.title}</h2>
+      <p class="units">${props.units}</p>
+      <p class="hint">Point, tap or use Tab + arrow keys to compare.</p>
+      <div class="plot-frame">
+        <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} theme=${THEME} label=${props.label}>
+          <${Plot} rows=${rows} unit=${props.unit} on=${d => d.index === (picked() ?? 0)} keyboard=${true}>${Country}<//>
+        <//>
+      </div>
+      <p class="readout" aria-live="polite">${comparison}</p>
+    </section>`;
+}
+
+// Mount both independent rankings.
+render(() => html`
+  <${Ranking} rows=${PRODUCERS} id="producers-title" number="01" kicker="The growers"
+    title="Brazil leads the harvest" units="Top five producers · million 60-kg bags / year"
+    unit="million 60-kg bags per year" measure="annual output"
+    label="Top five coffee producers, million 60-kg bags per year" />
+  <${Ranking} rows=${DRINKERS} id="drinkers-title" number="02" kicker="The drinkers"
+    title="Finland fills the cup" units="Coffee drunk · kg per person / year"
+    unit="kg per person per year" measure="consumption per person"
+    label="Annual coffee consumption, kg per person, in six countries" />
+`, document.getElementById("rankings"));
+</script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+{
+  "created": "2026-10-05T21:22:39.549Z",
+  "model": "gpt-6-astra",
+  "effort": "high",
+  "repetitions": 3,
+  "jobs": [
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "keeling",
+      "condition": "rhp-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "keeling",
+      "condition": "apex-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "day",
+      "condition": "rhp-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "day",
+      "condition": "apex-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "paygap",
+      "condition": "rhp-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "paygap",
+      "condition": "apex-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "cafe",
+      "condition": "rhp-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "cafe",
+      "condition": "apex-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "coffee",
+      "condition": "rhp-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "coffee",
+      "condition": "apex-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "flint-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "semiotic-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "amcharts-skill-mcp",
+      "rep": 1
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-none",
+      "rep": 1
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-none",
+      "rep": 1
+    },
+    {
+      "poster": "paygap",
+      "condition": "rhp-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "paygap",
+      "condition": "apex-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "cafe",
+      "condition": "rhp-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "cafe",
+      "condition": "apex-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "coffee",
+      "condition": "rhp-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "coffee",
+      "condition": "apex-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "flint-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "semiotic-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "amcharts-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-none",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-none",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "keeling",
+      "condition": "rhp-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "keeling",
+      "condition": "apex-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "day",
+      "condition": "rhp-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "day",
+      "condition": "apex-skill-mcp",
+      "rep": 2
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "flint-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "semiotic-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "amcharts-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-none",
+      "rep": 3
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-none",
+      "rep": 3
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "rhp-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "skyscrapers",
+      "condition": "apex-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "keeling",
+      "condition": "rhp-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "keeling",
+      "condition": "apex-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "day",
+      "condition": "rhp-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "day",
+      "condition": "apex-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "paygap",
+      "condition": "rhp-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "paygap",
+      "condition": "apex-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "cafe",
+      "condition": "rhp-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "cafe",
+      "condition": "apex-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "coffee",
+      "condition": "rhp-skill-mcp",
+      "rep": 3
+    },
+    {
+      "poster": "coffee",
+      "condition": "apex-skill-mcp",
+      "rep": 3
+    }
+  ],
+  "status": "complete",
+  "runs": "/tmp/rhp-codex-high-browser-20261005",
+  "concurrency": 3,
+  "libraryScope": "Published packages and frozen matching skills; local source fixes are tested and benchmarked separately.",
+  "originalCohort": "Original six Sonnet max-effort runs are excluded from this cohort.",
+  "isolation": "Fresh ephemeral CLI session per run, user config/plugins/apps/global skills disabled, only condition MCP servers enabled.",
+  "browser": "Every condition has an identical dedicated Chromium server and project-local Playwright client. The sandboxed agent connects over localhost; browser startup happens in the evaluation harness. The earlier sandbox-limited pilot is excluded.",
+  "cost": "Exact CLI token usage; dollar cost unavailable for subscription-backed runs.",
+  "completed": "2026-10-05T22:31:18.596Z",
+  "judging": {
+    "status": "complete",
+    "sessions": 18,
+    "scores": 153,
+    "passesPerGeneration": 3,
+    "excludedSessions": 3
+  }
+}

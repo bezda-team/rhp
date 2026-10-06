@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Atmospheric carbon dioxide at Mauna Loa, 1960 to 2024. NOAA annual means, with the 2015 milestone and a pre-industrial reference.">
+<title>The air keeps more carbon | Mauna Loa, 1960 to 2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+:root { --page:#deded4; --paper:#f6f3e9; --ink:#263b35; --soft:#5c645a; --accent:#aa422c; --rule:#d8d9cc; --text:'DM Sans',sans-serif; --mono:'DM Mono',monospace; }
+* { box-sizing:border-box; }
+body { margin:0; padding:32px 24px; background:var(--page); color:var(--ink); font:16px/1.5 var(--text); }
+.poster { max-width:1120px; margin:auto; padding:32px 54px 26px; background:var(--paper); box-shadow:0 10px 45px #263b3510; }
+.masthead { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--ink); gap:18px; font:11px/1.5 var(--mono); letter-spacing:.09em; text-transform:uppercase; }
+.station { display:flex; align-items:center; gap:12px; }
+.station svg { width:52px; height:26px; flex:none; }
+.edition { text-align:right; }
+.hero { display:grid; grid-template-columns:1.35fr 1fr; gap:35px; align-items:end; padding:30px 0 28px; }
+.kicker { font:500 11px/1.5 var(--mono); color:var(--accent); letter-spacing:.12em; text-transform:uppercase; margin:0 0 12px; }
+h1 { font:400 clamp(48px,6.3vw,78px)/.97 'Libre Caslon Display',Georgia,serif; letter-spacing:-.035em; margin:0; }
+h1 span { display:block; }
+.dek { margin:20px 0 0; max-width:440px; color:var(--soft); font-size:15px; line-height:1.55; }
+.stat { padding-bottom:3px; }
+.stat-number { font:400 clamp(70px,9vw,112px)/1 'Libre Caslon Display',Georgia,serif; letter-spacing:-.045em; color:var(--accent); }
+.stat-number small { font:400 19px var(--mono); letter-spacing:-.05em; margin-left:7px; }
+.stat-label { font:12px/1.6 var(--mono); margin:8px 0 0; }
+.stat-change { margin:14px 0 0; padding-top:12px; border-top:1px solid var(--rule); color:var(--soft); font-size:14px; }
+.chart-heading { border-top:1px solid var(--ink); padding:14px 0 8px; display:flex; justify-content:space-between; gap:20px; font:11px/1.4 var(--mono); color:var(--soft); }
+.chart-heading strong { color:var(--ink); font-weight:500; }
+.chart-shell { cursor:crosshair; touch-action:pan-y; }
+.explorer { display:grid; grid-template-columns:1fr auto; align-items:center; gap:20px; border-top:1px solid var(--rule); padding:17px 0; margin-top:12px; }
+.explore-label { font:11px/1.4 var(--mono); text-transform:uppercase; letter-spacing:.07em; }
+.explore-hint { display:block; color:var(--soft); font-size:12px; margin-top:4px; }
+.explore-controls { display:flex; align-items:center; gap:18px; }
+select { color:var(--ink); background:var(--paper); border:1px solid #8b9586; border-radius:0; font:14px var(--mono); min-height:44px; padding:8px 30px 8px 12px; cursor:pointer; }
+select:focus-visible,a:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.readout { min-width:225px; font:13px/1.7 var(--mono); }
+.readout strong { font-weight:500; color:var(--accent); }
+.readout small { display:block; font:12px/1.6 var(--text); color:var(--soft); }
+.footer { display:grid; grid-template-columns:1.5fr 1fr; gap:36px; border-top:1px solid var(--ink); padding-top:16px; color:var(--soft); font-size:11px; line-height:1.65; }
+.footer p { margin:0; }
+a { color:inherit; text-underline-offset:3px; }
+.footer strong { font-weight:600; color:var(--ink); }
+@media (max-width:760px) {
+ body { padding:16px; } .poster { padding:24px 28px; } .hero { gap:25px; } h1 { font-size:58px; } .stat-number { font-size:76px; } .stat-number small { font-size:14px; } .explorer { gap:12px; } .readout { min-width:170px; } .explore-controls { gap:12px; }
+}
+@media (max-width:540px) {
+ body { padding:0; } .poster { padding:21px 20px; } .masthead { font-size:9px; letter-spacing:.04em; padding-bottom:12px; gap:8px; } .station { gap:7px; } .station svg { width:34px; } .edition { max-width:90px; }
+ .hero { display:block; padding:22px 0 20px; } .kicker { font-size:10px; margin-bottom:10px; } h1 { font-size:53px; } h1 span { display:inline; } .dek { font-size:13px; margin-top:13px; max-width:35ch; }
+ .stat { display:grid; grid-template-columns:auto 1fr; gap:0 17px; align-items:center; margin-top:18px; } .stat-number { font-size:59px; } .stat-number small { font-size:12px; margin-left:4px; } .stat-label { font-size:10px; margin:0; } .stat-change { grid-column:1 / -1; border:0; margin:7px 0 0; padding:0; font-size:12px; }
+ .chart-heading { font-size:10px; gap:10px; padding-top:12px; } .chart-heading span { max-width:93px; text-align:right; }
+ .explorer { grid-template-columns:1fr; gap:10px; margin-top:8px; padding:14px 0; } .explore-hint { display:inline; margin-left:7px; font-size:11px; } .explore-controls { justify-content:space-between; gap:14px; } .readout { min-width:0; width:190px; font-size:12px; } .readout small { font-size:11px; }
+ .footer { grid-template-columns:1fr; gap:10px; font-size:10px; }
+}
+@media print { body { padding:0; background:var(--paper); } .poster { box-shadow:none; max-width:none; } .explorer { display:none; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<noscript>This poster needs JavaScript to draw its chart. Atmospheric CO₂ rose from 316.9 ppm in 1960 to 424.6 ppm in 2024. The annual mean first passed 400 ppm in 2015 (400.8 ppm), compared with about 280 ppm before industrialization.</noscript>
+<script type="module">
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Place, slat, html, render, createSignal } from '@bezda/rhp/standalone';
+
+// Data: supplied NOAA annual mean CO2 at Mauna Loa, in ppm.
+const DATA = [[1960,316.9],[1965,320.0],[1970,325.7],[1975,331.1],[1980,338.8],[1985,346.1],[1990,354.5],[1995,360.8],[2000,369.7],[2005,379.8],[2010,389.9],[2015,400.8],[2020,414.2],[2024,424.6]].sort((a,b)=>a[0]-b[0]);
+const FIRST=DATA[0], LAST=DATA.at(-1), BASE=280, MILESTONE=DATA.find(d=>d[0]===2015);
+const X=[FIRST[0],LAST[0]];
+// A focused line-chart scale includes the reference and gives the endpoint labels headroom.
+const Y=[Math.floor((BASE-10)/10)*10, Math.ceil((Math.max(...DATA.map(d=>d[1]))+15)/10)*10];
+const fmt=new Intl.NumberFormat('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});
+const theme={font:'"DM Mono",monospace',ink:'#263b35',muted:'#5c645a',grid:'#d8d9cc',surface:'#f6f3e9',series:['#aa422c']};
+
+// Slats: the trace, date axis, reference, permanent annotations and selected reading.
+const Curve=slat({room:{},css:'.curve { stroke-width:3px; }'},d=>html`<div><${Line} points=${()=>d.points} class="curve" /></div>`);
+const YearTick=slat({room:{after:29},css:`
+ .mark { top:100%; height:5px; translate:-50% 0; --rhp-tick-width:1px; background:var(--rhp-muted); }
+ .year { top:calc(100% + 10px); translate:-50% 0; --rhp-label-gap:0px; font-size:11px; color:var(--rhp-muted); }
+ .first .year { translate:0 0; } .last .year { translate:-100% 0; }
+`},d=>html`<div class=${()=>d.first?'first':d.last?'last':''}><${Tick} at=${()=>d.at} class="mark"/><${Label} at=${()=>d.at} class="year">${()=>d.at}<//></div>`);
+const Reference=slat({room:{},css:`
+ .reference-line { stroke-width:1px; }
+ .ref-label { position:absolute; top:7px; left:0; font:11px/1.4 'DM Mono',monospace; color:var(--rhp-muted); white-space:nowrap; }
+`},()=>html`<div><${Place} at=${FIRST[0]} cross=${BASE}><div class="ref-label">≈280 ppm · Pre-industrial<//><//><${Line} points=${[[FIRST[0],BASE],[LAST[0],BASE]]} color="muted" class="reference-line" /></div>`);
+const Sample=slat({room:{},css:'.sample { background:var(--rhp-surface); border:1.5px solid var(--rhp-series-1); }'},d=>html`<div><${Dot} at=${()=>d.year} cross=${()=>d.ppm} size="5px" class="sample" /></div>`);
+const Endpoints=slat({room:{before:25,end:8},css:`
+ .caption { position:absolute; bottom:15px; left:0; color:var(--rhp-series-1); white-space:nowrap; font:500 12px/1.5 'DM Mono',monospace; }
+ .end .caption { left:auto; right:0; }
+ .caption small { display:block; font-size:10px; font-weight:400; color:var(--rhp-muted); }
+`},d=>html`<div class=${()=>d.year===LAST[0]?'end':''}><${Dot} at=${()=>d.year} cross=${()=>d.ppm} size="7px"/><${Place} at=${()=>d.year} cross=${()=>d.ppm}><div class="caption">${()=>fmt.format(d.ppm)}<small>${()=>d.year}<//></div><//></div>`);
+const Milestone=slat({room:{},css:`
+ .milestone-dot { background:var(--rhp-surface); border:2.5px solid var(--rhp-series-1); }
+ .annotation { position:absolute; top:110px; right:0; width:176px; border-top:1px solid var(--rhp-series-1); padding-top:8px; color:var(--rhp-ink); font:13px/1.4 'DM Sans',sans-serif; }
+ .annotation::before { content:''; position:absolute; right:0; top:-104px; height:103px; border-right:1px solid var(--rhp-series-1); }
+ .annotation b { display:block; font:500 13px/1.6 'DM Mono',monospace; color:var(--rhp-series-1); }
+ @container (max-width:480px) { .annotation { width:148px; font-size:11px; } .annotation b { font-size:11px; } }
+`},()=>html`<div><${Dot} at=${MILESTONE[0]} cross=${MILESTONE[1]} size="12px" class="milestone-dot"/><${Place} at=${MILESTONE[0]} cross=${MILESTONE[1]}><div class="annotation"><b>2015 · 400.8 ppm</b>First annual mean<br/>above 400 ppm</div><//></div>`);
+const Reading=slat({room:{},css:'.hair { --rhp-tick-width:1px; background:#8e8c87; } .picked { background:var(--rhp-series-1); box-shadow:0 0 0 3px var(--rhp-surface); }'},d=>html`<div><${Tick} at=${()=>d.year} thick=${1} class="hair"/><${Dot} at=${()=>d.year} cross=${()=>d.ppm} size="8px" class="picked"/></div>`);
+
+// Chart component: pointer, touch and a native year selector share the same reading.
+function CarbonPoster(){
+ const [selected,setSelected]=createSignal(DATA.length-1);
+ const [hovered,setHovered]=createSignal(null);
+ const i=()=>hovered()??selected();
+ let plot;
+ const point=e=>{
+   const r=plot.getBoundingClientRect();
+   if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;
+   const year=X[0]+(e.clientX-r.left)/r.width*(X[1]-X[0]);
+   const nearest=DATA.reduce((best,d,k)=>Math.abs(d[0]-year)<Math.abs(DATA[best][0]-year)?k:best,0);
+   if(e.type==='click'){setSelected(nearest);setHovered(null);}else setHovered(nearest);
+ };
+ return html`<main class="poster">
+  <header class="masthead"><div class="station"><svg viewBox="0 0 60 30" fill="none" aria-hidden="true"><path d="M1 25L17 17L30 12L42 17L59 25M24 12V7H35V13M29 7V2M3 29H57" stroke="currentColor" stroke-width="1.2"/></svg><span>Mauna Loa<br/>Hawaiʻi</span></div><span class="edition">Atmospheric record<br/>1960 to 2024</span></header>
+  <section class="hero" aria-labelledby="title"><div><p class="kicker">Carbon dioxide / A long view</p><h1 id="title">The air keeps<span> more carbon.</span></h1><p class="dek">Sixty-four years of measurements at Mauna Loa trace the rise of atmospheric CO₂, one annual average at a time.</p></div><div class="stat"><div class="stat-number">${fmt.format(LAST[1])}<small>ppm</small></div><p class="stat-label">Annual mean in ${LAST[0]}<br/>parts per million</p><p class="stat-change">${fmt.format(LAST[1]-FIRST[1])} ppm more than in ${FIRST[0]}.</p></div></section>
+  <section aria-label="Mauna Loa carbon dioxide chart">
+   <div class="chart-heading"><strong>Atmospheric CO₂ · ppm</strong><span>Annual means, selected years</span></div>
+   <div class="chart-shell" onPointerMove=${e=>e.pointerType!=='touch'&&point(e)} onClick=${point} onPointerLeave=${()=>setHovered(null)}>
+    <${Chart} scale=${X} cross=${Y} crossTicks=${[280,320,360,400,440]} height=${310} theme=${theme} label="Atmospheric carbon dioxide at Mauna Loa. Selected annual means rise from 316.9 ppm in 1960 to 424.6 ppm in 2024. The pre-industrial reference is approximately 280 ppm. 2015 first passed 400 ppm at 400.8.">
+     <${Scale} ticks=${[1960,1980,2000,2024]}>${YearTick}<//>
+     <${Plot} overlap=${true} slats=${1}>${Reference}<//>
+     <${Plot} overlap=${true} points=${[DATA]} ref=${el=>plot=el}>${Curve}<//>
+     <${Plot} overlap=${true} year=${DATA.map(d=>d[0])} ppm=${DATA.map(d=>d[1])}>${Sample}<//>
+     <${Plot} overlap=${true} slats=${1} year=${()=>DATA[i()][0]} ppm=${()=>DATA[i()][1]} animate=${['year','ppm']} style=${{'pointer-events':'none'}}>${Reading}<//>
+     <${Plot} overlap=${true} year=${[FIRST[0],LAST[0]]} ppm=${[FIRST[1],LAST[1]]} style=${{'pointer-events':'none'}}>${Endpoints}<//>
+     <${Plot} overlap=${true} slats=${1} style=${{'pointer-events':'none'}}>${Milestone}<//>
+    <//>
+   </div>
+   <div class="explorer"><div><label class="explore-label" for="year">Explore the record</label><span class="explore-hint">Point, tap or choose a year.</span></div><div class="explore-controls"><select id="year" aria-label="Choose a year" value=${()=>String(DATA[selected()][0])} onKeyDown=${e=>{const step={ArrowUp:-1,ArrowDown:1}; if(e.key in step||e.key==='Home'||e.key==='End'){e.preventDefault();setSelected(e.key==='Home'?0:e.key==='End'?DATA.length-1:Math.max(0,Math.min(DATA.length-1,selected()+step[e.key])));setHovered(null);}}} onChange=${e=>{setSelected(DATA.findIndex(d=>d[0]===+e.currentTarget.value));setHovered(null);}}>${DATA.map(d=>html`<option value=${String(d[0])} selected=${()=>d[0]===DATA[selected()][0]}>${d[0]}</option>`)}</select><output class="readout" for="year" aria-live="polite"><strong>${()=>DATA[i()][0]} · ${()=>fmt.format(DATA[i()][1])} ppm</strong><small>${()=>fmt.format(DATA[i()][1]-BASE)} ppm above the pre-industrial reference</small></output></div></div>
+  </section>
+  <footer class="footer"><p><strong>Source:</strong> NOAA, <a href="https://gml.noaa.gov/ccgg/trends/data.html">Mauna Loa annual mean CO₂</a>.<br/>The 14 supplied readings are shown exactly; lines connect the selected years.</p><p><strong>A reference, not a measurement in this series.</strong><br/>About 280 ppm represents the pre-industrial atmosphere. The vertical scale begins at ${Y[0]} ppm.</p></footer>
+ </main>`;
+}
+
+// Mount the self-contained poster.
+render(()=>html`<${CarbonPoster}/>`,document.getElementById('app'));
+</script>
+</body>
+</html>

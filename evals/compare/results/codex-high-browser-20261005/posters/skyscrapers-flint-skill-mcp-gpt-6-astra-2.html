@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f0e8">
+  <meta name="description" content="An editorial comparison of the world's ten tallest buildings, with heights, cities and completion years from CTBUH.">
+  <title>The height of ambition | Altitude</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f2f0e8; --ink:#20251f; --muted:#60645b; --line:#cecec3; --red:#d8442d; --mono:'IBM Plex Mono',monospace; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    .poster { max-width:1400px; margin:auto; padding:32px 56px 26px; }
+    .masthead { display:flex; justify-content:space-between; align-items:center; border-top:5px solid var(--ink); border-bottom:1px solid var(--ink); padding:13px 0; gap:20px; }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:700; font-size:21px; letter-spacing:-1px; }
+    .brand-icon { width:22px; height:24px; display:flex; gap:3px; align-items:flex-end; }
+    .brand-icon i { display:block; width:5px; background:var(--red); }
+    .brand-icon i:nth-child(1) { height:11px; } .brand-icon i:nth-child(2) { height:18px; } .brand-icon i:nth-child(3) { height:24px; }
+    .micro { font-family:var(--mono); font-size:10px; line-height:1.5; letter-spacing:1.1px; text-transform:uppercase; }
+    .masthead .edition { text-align:right; }
+    .hero { display:grid; grid-template-columns:minmax(0,1fr) 290px; gap:42px; padding:43px 0 37px; align-items:end; }
+    .eyebrow { color:var(--red); margin:0 0 16px; font-weight:500; }
+    h1 { font-family:'Barlow Condensed','Arial Narrow',sans-serif; font-size:clamp(78px,9.7vw,138px); font-weight:700; line-height:.86; letter-spacing:-1.8px; margin:0 0 24px -3px; text-transform:uppercase; }
+    h1 span { display:block; }
+    .deck { margin:0; font-size:21px; line-height:1.35; letter-spacing:-.65px; }
+    .intro { margin:0 0 23px; color:var(--muted); font-size:14px; line-height:1.7; max-width:32ch; }
+    .lead-stat { border-top:1px solid var(--ink); padding-top:14px; }
+    .lead-stat strong { font-family:'Barlow Condensed',sans-serif; font-size:68px; font-weight:600; color:var(--red); line-height:1; letter-spacing:-1px; }
+    .lead-stat strong small { font-size:30px; letter-spacing:0; }
+    .lead-stat p { font-size:11px; line-height:1.6; margin:6px 0 0; color:var(--muted); max-width:31ch; }
+    figure { margin:0; }
+    .chart-heading { border-top:1px solid var(--ink); display:flex; justify-content:space-between; gap:15px; padding:13px 0 0; }
+    .chart-heading h2 { margin:0; font-size:11px; font-weight:500; }
+    .chart-heading .key { display:flex; align-items:center; gap:7px; letter-spacing:.4px; }
+    .key::before { content:''; width:7px; height:7px; background:var(--red); }
+    .chart-frame { position:relative; padding-top:20px; }
+    #chart { width:100%; min-height:440px; }
+    #chart svg { display:block; }
+    .chart-loading { font:12px var(--mono); color:var(--muted); padding-top:150px; text-align:center; }
+    figcaption { display:flex; justify-content:space-between; gap:20px; padding:9px 0 24px; color:var(--muted); font-size:10px; line-height:1.6; }
+    .index-header { display:flex; justify-content:space-between; align-items:baseline; border-top:2px solid var(--ink); padding:13px 0 19px; }
+    .index-header h2 { margin:0; font-weight:500; font-size:11px; }
+    .index-header p { margin:0; color:var(--muted); font-size:10px; }
+    .building-index { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:0 27px; margin:0; padding:0; list-style:none; }
+    .building { border-top:1px solid var(--line); padding:12px 0 20px; }
+    .building .number { display:block; font:11px var(--mono); color:var(--muted); margin-bottom:10px; }
+    .building h3 { margin:0; font-size:15px; line-height:1.3; letter-spacing:-.35px; font-weight:600; min-height:40px; max-width:21ch; }
+    .building .location { margin:9px 0 12px; font-size:11px; line-height:1.5; color:var(--muted); }
+    .building .height { margin:0; font:500 17px var(--mono); letter-spacing:-.6px; }
+    .building .height small { font-size:11px; font-weight:400; }
+    .building:first-child .number,.building:first-child h3,.building:first-child .height { color:var(--red); }
+    .notes { display:grid; grid-template-columns:1.3fr 1fr; gap:50px; border-top:1px solid var(--ink); padding:17px 0 25px; }
+    .notes p { font-size:10px; line-height:1.65; color:var(--muted); margin:0; }
+    .notes strong { color:var(--ink); font-weight:600; }
+    .footer { display:flex; justify-content:space-between; gap:20px; border-top:1px solid var(--ink); padding-top:12px; font-size:9px; }
+    .footer span:last-child { text-align:right; }
+    #vg-tooltip-element { font-family:'Inter',sans-serif; border-radius:0; background:var(--paper); color:var(--ink); box-shadow:0 3px 18px #20251f18; }
+    @media(min-width:1400px) { .hero { padding-top:50px; } }
+    @media(max-width:1000px) { .poster { padding:25px 32px; } .hero { grid-template-columns:minmax(0,1fr) 240px; gap:25px; } h1 { font-size:10vw; } .deck { font-size:18px; } .building-index { gap:0 18px; } .building h3 { font-size:13px; min-height:51px; } }
+    @media(max-width:680px) {
+      .poster { padding:18px 20px 22px; } .masthead { padding:11px 0; } .brand { font-size:19px; } .masthead .subject { display:none; } .edition { font-size:8px; letter-spacing:.5px; }
+      .hero { display:block; padding:31px 0 25px; } .eyebrow { font-size:9px; margin-bottom:15px; letter-spacing:1px; } h1 { font-size:clamp(56px,17.45vw,105px); letter-spacing:-1px; margin-bottom:18px; } .deck { font-size:18px; letter-spacing:-.4px; }
+      .hero-aside { display:grid; grid-template-columns:1fr 1fr; gap:22px; border-top:1px solid var(--line); padding-top:20px; margin-top:25px; align-items:start; } .intro { font-size:12px; line-height:1.65; margin:0; } .lead-stat { border:0; padding:0; } .lead-stat strong { font-size:53px; } .lead-stat strong small { font-size:23px; } .lead-stat p { font-size:10px; }
+      .chart-heading h2 { font-size:9px; letter-spacing:.4px; } .chart-heading .key { font-size:8px; letter-spacing:0; } .chart-frame { padding-top:15px; } #chart { min-height:490px; }
+      figcaption { font-size:9px; padding-bottom:21px; } figcaption span:last-child { text-align:right; max-width:16ch; } .index-header { padding-bottom:15px; } .index-header h2 { font-size:10px; } .index-header p { font-size:8px; }
+      .building-index { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 22px; } .building { padding:12px 0 19px; } .building h3 { font-size:14px; min-height:37px; } .building .number { margin-bottom:8px; } .building .location { font-size:10px; } .building .height { font-size:17px; } .notes { grid-template-columns:1fr; gap:12px; padding-bottom:20px; } .footer { font-size:8px; letter-spacing:.5px; }
+    }
+    @media print { .poster { max-width:none; padding:15mm; } body { print-color-adjust:exact; -webkit-print-color-adjust:exact; } .building,.notes { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="masthead">
+      <div class="brand"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span>ALTITUDE</div>
+      <span class="micro subject">Observations on the built world</span>
+      <span class="micro edition">The vertical issue<br>No. 001 / Architecture</span>
+    </header>
+    <section class="hero" aria-labelledby="headline">
+      <div>
+        <p class="eyebrow micro">Ten buildings. One shared sky.</p>
+        <h1 id="headline"><span>The height</span><span>of ambition.</span></h1>
+        <p class="deck">The world's ten tallest buildings, measured.</p>
+      </div>
+      <aside class="hero-aside">
+        <p class="intro">A race above the clouds, from Dubai to Beijing. Every tower clears half a kilometre. One still stands in a class of its own.</p>
+        <div class="lead-stat"><strong>149.1 <small>m</small></strong><p>Burj Khalifa's lead over Merdeka 118, the second tallest building.</p></div>
+      </aside>
+    </section>
+    <figure aria-labelledby="chart-title" aria-describedby="chart-caption">
+      <div class="chart-heading"><h2 id="chart-title" class="micro">01 / The skyline, to scale</h2><span class="micro key">Burj Khalifa · 828 m</span></div>
+      <div class="chart-frame"><div id="chart" role="img" aria-label="Height comparison of ten buildings. Burj Khalifa is tallest at 828 metres; CITIC Tower is shortest in this group at 527.7 metres. Full data is in the building index below."><div class="chart-loading">Drawing the skyline…</div></div></div>
+      <figcaption id="chart-caption"><span>Architectural height in metres · Baseline: ground level (0 m)</span><span>Numbers refer to the index below</span></figcaption>
+    </figure>
+    <section aria-labelledby="index-title">
+      <div class="index-header"><h2 id="index-title" class="micro">02 / The building index</h2><p class="micro">City / Year completed</p></div>
+      <ol class="building-index" id="building-index"></ol>
+    </section>
+    <div class="notes">
+      <p><strong>Reading the heights.</strong> Architectural height includes spires but excludes antennas and other technical equipment. The two CTF towers share the same height, 530 m; their index numbers are identifiers, not a tie-break.</p>
+      <p><strong>Source:</strong> Council on Tall Buildings and Urban Habitat (CTBUH). Heights and completion years follow the supplied ten-building dataset.</p>
+    </div>
+    <footer class="footer micro"><span>Human ambition, in vertical metres.</span><span>Altitude / 01</span></footer>
+  </main>
+  <script>
+    const buildings = [
+      ['Burj Khalifa','Dubai',828,2010],
+      ['Merdeka 118','Kuala Lumpur',678.9,2023],
+      ['Shanghai Tower','Shanghai',632,2015],
+      ['Makkah Royal Clock Tower','Mecca',601,2012],
+      ['Ping An Finance Center','Shenzhen',599.1,2017],
+      ['Lotte World Tower','Seoul',554.5,2017],
+      ['One World Trade Center','New York City',541.3,2014],
+      ['Guangzhou CTF Finance Centre','Guangzhou',530,2016],
+      ['Tianjin CTF Finance Centre','Tianjin',530,2019],
+      ['CITIC Tower','Beijing',527.7,2018]
+    ].map(([building,city,height,year], i) => ({building,city,height,year,index:String(i+1).padStart(2,'0')}));
+    document.getElementById('building-index').innerHTML = buildings.map(d => `<li class="building"><span class="number">${d.index}</span><h3>${d.building}</h3><p class="location">${d.city} / ${d.year}</p><p class="height">${d.height} <small>m</small></p></li>`).join('');
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@6.2.0/build/vega.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.1/build/vega-lite.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.1.0/build/vega-embed.min.js"></script>
+  <script type="module">
+    const container = document.getElementById('chart');
+    try {
+      const { assembleVegaLite } = await import('https://cdn.jsdelivr.net/npm/flint-chart@0.5.1/+esm');
+      await document.fonts.ready;
+      const theme = {
+        extends:'swiss', id:'altitude-editorial', label:'Altitude Editorial',
+        ink:{ surface:{canvas:'#f2f0e8',plot:'#f2f0e8'}, text:{primary:'#20251f',secondary:'#60645b'}, series:{single:'#20251f'}, structure:{grid:'#d4d4c9',axis:'#20251f'}, accent:'#d8442d' },
+        type:{ axisLabel:{family:'IBM Plex Mono',size:11}, valueLabel:{family:'IBM Plex Mono',size:13} },
+        marks:{bandFraction:0.43,separator:{presence:'omit'}},
+        structure:{axis:{measure:{line:'omit',ticks:'omit'},categorical:{line:'full',ticks:'omit'}}},
+        annotation:{axisTitles:'omit',unit:'never',numberFormat:{precision:'one',thousands:'none'}},
+        legend:{show:'never'}, furniture:[]
+      };
+      let view;
+      let lastWidth = 0;
+      let rendering = false;
+      let pending = false;
+      async function render() {
+        if (rendering) { pending = true; return; }
+        const width = Math.floor(container.getBoundingClientRect().width);
+        if (width === lastWidth) return;
+        rendering = true;
+        try {
+          const mobile = window.matchMedia('(max-width:680px)').matches;
+          const measure = mobile ? 'x' : 'y';
+          const category = mobile ? 'y' : 'x';
+          const input = {
+            data:{values:buildings},
+            semantic_types:{building:'Name',city:'City',height:{semanticType:'Quantity',unit:'m'},year:'Year',index:'Category'},
+            chart_spec:{
+              chartType:'Bar Chart',
+              encodings:{[category]:{field:'index',sortOrder:'ascending'},[measure]:{field:'height'}},
+              baseSize:{width:width-46,height:mobile?460:420},
+              chartProperties:{showValueLabels:true,[`includeZero_${measure}`]:true}
+            },
+            theme_spec:theme
+          };
+          // Flint owns data, chart structure, field mappings and scales.
+          const spec = assembleVegaLite(input);
+          window.posterFlintInput = input;
+          // Presentation-only refinements to the compiled Vega-Lite output.
+          spec.width = width - (mobile ? 80 : 44);
+          spec.height = mobile ? 460 : 420;
+          spec.padding = mobile ? {top:5,left:0,right:48,bottom:5} : {top:12,left:0,right:5,bottom:5};
+          spec.autosize = {type:'pad',contains:'content'};
+          const layers = spec.layer || [spec];
+          for (const layer of layers) {
+            const mark = layer.mark;
+            const encoding = layer.encoding;
+            if (!encoding) continue;
+            if (encoding[measure]) encoding[measure].axis = {title:null,values:[0,200,400,600,800],format:'d',labelExpr:'datum.label',labelPadding:9,grid:true,ticks:false,domain:false,gridColor:'#d7d7cc',gridWidth:0.7,labelFontSize:10};
+            if (encoding[category]) encoding[category].axis = {title:null,labelAngle:0,labelPadding:mobile?10:13,labelFontSize:11,ticks:false,domain:!mobile};
+            if (mark?.type === 'bar') {
+              mark.color = {expr:"datum.index === '01' ? '#d8442d' : '#20251f'"};
+              encoding.tooltip = [
+                {field:'building',type:'nominal',title:'Building'},
+                {field:'city',type:'nominal',title:'City'},
+                {field:'height',type:'quantitative',title:'Height (m)',format:'.1~f'},
+                {field:'year',type:'nominal',title:'Completed'}
+              ];
+            }
+            if (mark?.type === 'text') {
+              encoding.text.format = '.1~f';
+              mark.fontSize = mobile ? 12 : 14;
+              mark.align = mobile ? 'left' : 'center';
+              mark.baseline = mobile ? 'middle' : 'bottom';
+              mark.dx = mobile ? 5 : 0;
+              mark.dy = mobile ? 0 : -5;
+              mark.color = {expr:"datum.index === '01' ? '#d8442d' : '#20251f'"};
+            }
+          }
+          if (view) view.finalize();
+          const result = await vegaEmbed(container, spec, {actions:false,renderer:'svg'});
+          view = result.view;
+          lastWidth = width;
+          document.documentElement.dataset.chartReady = 'true';
+        } finally {
+          rendering = false;
+          if (pending) { pending = false; render().catch(showError); }
+        }
+      }
+      function showError(error) {
+        console.error(error);
+        container.innerHTML = '<p class="chart-loading">The chart could not load. All ten buildings and their heights are listed below.</p>';
+      }
+      await render();
+      let resizeTimer;
+      new ResizeObserver(() => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => render().catch(showError),100); }).observe(container);
+    } catch (error) {
+      console.error(error);
+      container.innerHTML = '<p class="chart-loading">The chart could not load. All ten buildings and their heights are listed below.</p>';
+    }
+  </script>
+</body>
+</html>

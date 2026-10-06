@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e6">
+  <title>Coffee by numbers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --paper: #f5f0e6; --ink: #30271f; --muted: #71695e; --line: #d9d1c3; --orange: #c45a36; --green: #31574c; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e9e3d8; color: var(--ink); font-family: 'DM Sans', sans-serif; }
+    .poster { max-width: 1160px; margin: 28px auto; padding: 34px 48px 24px; background: var(--paper); box-shadow: 0 12px 60px #30271f0b; }
+    .masthead { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--ink); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .masthead span:first-child { display: flex; align-items: center; gap: 8px; }
+    .bean { width: 10px; height: 15px; border: 1.5px solid; border-radius: 50%; transform: rotate(35deg); background: linear-gradient(90deg, transparent 42%, var(--ink) 43%, var(--ink) 54%, transparent 55%); }
+    .intro { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 27px 0 29px; }
+    h1, h2, .big-number { font-family: 'Fraunces', Georgia, serif; font-weight: 500; }
+    h1 { font-size: clamp(44px, 6.4vw, 78px); line-height: 1.05; letter-spacing: -4px; margin: 0 0 14px; }
+    h1 span { color: var(--orange); }
+    .intro p { color: var(--muted); margin: 0; font-size: 14px; line-height: 1.65; }
+    .coffee-art { width: 150px; flex-shrink: 0; height: 142px; }
+    .charts { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .chart-section { min-width: 0; padding: 24px 30px 19px 0; }
+    .chart-section + .chart-section { border-left: 1px solid var(--line); padding: 24px 0 19px 30px; }
+    .eyebrow { color: var(--orange); font-size: 10px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; margin: 0 0 10px; }
+    .consumption .eyebrow { color: var(--green); }
+    .index { margin-right: 10px; opacity: .75; }
+    h2 { font-size: 29px; line-height: 1.2; letter-spacing: -.8px; margin: 0 0 7px; }
+    .unit { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.5; }
+    .chart { height: 286px; margin: 10px -5px 0 -10px; }
+    .insight { font-size: 12px; line-height: 1.6; margin: 9px 0 0; color: var(--muted); }
+    .insight strong { color: var(--ink); font-weight: 600; }
+    .daily { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; padding: 25px 32px 27px; background: var(--green); color: var(--paper); }
+    .daily .eyebrow { color: #d2d7bd; margin-bottom: 10px; }
+    .big-number { margin: 0; font-size: clamp(56px, 7vw, 86px); line-height: 1; letter-spacing: -3px; }
+    .big-number small { font-family: 'DM Sans', sans-serif; font-size: 12px; display: block; letter-spacing: .3px; color: #d2d7bd; margin-bottom: 7px; }
+    .daily-copy { max-width: 230px; font-size: 21px; line-height: 1.4; margin: 22px 0 0; }
+    .daily-copy span { display: block; color: #d2d7bd; font-size: 12px; margin-top: 7px; }
+    .cup-motif { width: 110px; height: 110px; flex-shrink: 0; margin-right: 5px; }
+    footer { display: flex; justify-content: space-between; gap: 24px; padding-top: 20px; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    footer p { margin: 0; }
+    footer .colophon { white-space: nowrap; letter-spacing: 1.4px; text-transform: uppercase; }
+    .fallback { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px; }
+    .fallback td, .fallback th { padding: 10px 4px; text-align: left; border-bottom: 1px solid var(--line); }
+    .fallback td:last-child, .fallback th:last-child { text-align: right; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .apexcharts-tooltip { box-shadow: 0 4px 16px #30271f15 !important; border-color: var(--line) !important; }
+    @media (max-width: 760px) {
+      .poster { margin: 0; padding: 24px; }
+      .masthead { font-size: 9px; letter-spacing: 1.3px; }
+      .intro { padding: 30px 0; }
+      h1 { letter-spacing: -2.5px; }
+      .coffee-art { width: 100px; height: 110px; }
+      .charts { grid-template-columns: 1fr; }
+      .chart-section, .chart-section + .chart-section { padding: 24px 0 20px; border-left: 0; }
+      .chart-section + .chart-section { border-top: 1px solid var(--line); }
+      .daily { padding: 25px; flex-wrap: wrap; gap: 16px; }
+      .daily-copy { margin: 0; font-size: 18px; max-width: 100%; }
+      .cup-motif { position: absolute; right: 22px; bottom: 25px; width: 75px; height: 75px; opacity: .2; }
+      footer { flex-direction: column; gap: 10px; }
+    }
+    @media (max-width: 420px) {
+      .poster { padding: 22px 20px; }
+      .intro { gap: 5px; }
+      h1 { font-size: 48px; max-width: 250px; }
+      .coffee-art { width: 63px; height: 100px; }
+      .intro p { font-size: 12px; max-width: 245px; }
+      h2 { font-size: 28px; }
+      .big-number { font-size: 57px; }
+      .daily { padding: 24px 20px; }
+    }
+    @media print {
+      @page { size: A4; margin: 8mm; }
+      body { background: var(--paper); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .poster { margin: 0; padding: 16px; box-shadow: none; }
+      .charts { grid-template-columns: 1fr 1fr; }
+      .chart-section { padding-right: 20px; }
+      .chart-section + .chart-section { padding-left: 20px; border-left: 1px solid var(--line); border-top: 0; }
+      .daily { flex-wrap: nowrap; }
+      .cup-motif { display: none; }
+      footer { flex-direction: row; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <div class="masthead"><span><i class="bean" aria-hidden="true"></i> The everyday, quantified</span><span>A global coffee snapshot</span></div>
+    <header class="intro">
+      <div><h1>Coffee <span>by numbers</span></h1><p>From the countries that grow it to the people who drink it.<br>A little perspective on the world's daily ritual.</p></div>
+      <svg class="coffee-art" viewBox="0 0 160 150" fill="none" aria-hidden="true">
+        <path d="M58 38C43 25 72 22 58 8M83 34C69 21 97 18 83 4M108 38C94 25 121 22 108 8" stroke="#c45a36" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="78" cy="126" rx="68" ry="13" fill="#ded7c8"/>
+        <path d="M119 60h13c27 0 26 39 0 40h-16" stroke="#30271f" stroke-width="6"/>
+        <path d="M28 56h94l-8 48c-4 22-73 22-78 0Z" fill="#c45a36" stroke="#30271f" stroke-width="2.5"/>
+        <ellipse cx="75" cy="56" rx="47" ry="13" fill="#f5f0e6" stroke="#30271f" stroke-width="2.5"/>
+        <ellipse cx="75" cy="58" rx="37" ry="8" fill="#30271f"/>
+        <path d="M45 79l4 22" stroke="#e7aa81" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+    </header>
+    <div class="charts">
+      <section class="chart-section" aria-labelledby="production-title">
+        <p class="eyebrow"><span class="index">01</span> From the source</p>
+        <h2 id="production-title">The biggest growers</h2>
+        <p class="unit">Top five producers · Million 60-kg bags per year</p>
+        <div id="production" class="chart" aria-label="Coffee production by country"></div>
+        <table class="fallback" id="production-data"><caption class="visually-hidden">Coffee production, million 60-kg bags per year</caption><thead><tr><th scope="col">Country</th><th scope="col">Million bags</th></tr></thead><tbody><tr><th scope="row">Brazil</th><td>66.3</td></tr><tr><th scope="row">Vietnam</th><td>27.5</td></tr><tr><th scope="row">Colombia</th><td>12.6</td></tr><tr><th scope="row">Indonesia</th><td>11.9</td></tr><tr><th scope="row">Ethiopia</th><td>8.4</td></tr></tbody></table>
+        <p class="insight"><strong>Brazil leads the way,</strong> producing more than twice as much as Vietnam.</p>
+      </section>
+      <section class="chart-section consumption" aria-labelledby="consumption-title">
+        <p class="eyebrow"><span class="index">02</span> By the cup</p>
+        <h2 id="consumption-title">A taste for coffee</h2>
+        <p class="unit">Coffee drunk per person · Kilograms per year</p>
+        <div id="consumption" class="chart" aria-label="Annual coffee consumption per person by country"></div>
+        <table class="fallback" id="consumption-data"><caption class="visually-hidden">Coffee drunk per person, kilograms per year</caption><thead><tr><th scope="col">Country</th><th scope="col">kg per person</th></tr></thead><tbody><tr><th scope="row">Finland</th><td>12.0</td></tr><tr><th scope="row">Norway</th><td>9.9</td></tr><tr><th scope="row">Iceland</th><td>9.0</td></tr><tr><th scope="row">Denmark</th><td>8.7</td></tr><tr><th scope="row">Netherlands</th><td>8.4</td></tr><tr><th scope="row">Sweden</th><td>8.2</td></tr></tbody></table>
+        <p class="insight"><strong>Finland tops this list:</strong> an average of one kilogram per person every month.</p>
+      </section>
+    </div>
+    <section class="daily" aria-labelledby="daily-title">
+      <div><h2 class="eyebrow" id="daily-title"><span class="index">03</span> One shared ritual</h2><p class="big-number"><small>About</small>2.25 billion</p></div>
+      <p class="daily-copy">cups of coffee drunk<br>every single day.<span>All around the world.</span></p>
+      <svg class="cup-motif" viewBox="0 0 120 120" fill="none" aria-hidden="true"><circle cx="56" cy="60" r="51" stroke="#a9bcaa" stroke-width="1"/><rect x="91" y="51" width="22" height="18" rx="8" fill="#f5f0e6"/><circle cx="56" cy="60" r="39" fill="#f5f0e6"/><circle cx="56" cy="60" r="30" fill="#30271f"/><path d="M38 42c7-8 23-8 30-2" stroke="#bf8b60" stroke-width="3" stroke-linecap="round"/><path d="M72 76c-4 4-10 6-16 6" stroke="#bf8b60" stroke-width="2" stroke-linecap="round"/></svg>
+    </section>
+    <footer><p><strong>A note on the numbers:</strong> All figures are approximate and for illustration only.<br>Annual figures are not tied to a specific reporting year.</p><p class="colophon">A world in every cup</p></footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    async function renderChart(id, data, color, max, tickAmount, unit) {
+      const element = document.getElementById(id);
+      const table = document.getElementById(id + '-data');
+      if (!window.ApexCharts) { element.hidden = true; return; }
+      const chart = new ApexCharts(element, {
+        chart: { type: 'bar', height: 286, fontFamily: "'DM Sans', sans-serif", foreColor: '#71695e', toolbar: { show: false }, zoom: { enabled: false }, animations: { enabled: false }, parentHeightOffset: 0 },
+        series: [{ name: unit, data: data.map(([x, y]) => ({ x, y })) }],
+        colors: [color],
+        plotOptions: { bar: { horizontal: true, barHeight: '48%', borderRadius: 2, dataLabels: { position: 'top' } } },
+        dataLabels: { enabled: true, formatter: value => value.toFixed(1), offsetX: 8, textAnchor: 'start', style: { fontSize: '12px', fontWeight: 700, colors: ['#30271f'] }, background: { enabled: false } },
+        xaxis: { min: 0, max, tickAmount, axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { fontSize: '10px' }, formatter: value => Number(value).toFixed(0) }, tooltip: { enabled: false }, crosshairs: { show: false } },
+        yaxis: { labels: { minWidth: 88, maxWidth: 100, style: { fontSize: '12px', fontWeight: 500, colors: ['#30271f'] } } },
+        grid: { borderColor: '#ded7cb', strokeDashArray: 3, xaxis: { lines: { show: true } }, yaxis: { lines: { show: false } }, padding: { top: -8, right: 27, bottom: -6, left: 0 } },
+        legend: { show: false },
+        fill: { opacity: 1 },
+        stroke: { width: 0 },
+        tooltip: { shared: false, intersect: false, theme: 'light', y: { formatter: value => value.toFixed(1) + ' ' + unit, title: { formatter: () => '' } }, marker: { show: false } },
+        states: { hover: { filter: { type: 'lighten', value: .08 } }, active: { filter: { type: 'none' } } }
+      });
+      try {
+        await chart.render();
+        table.classList.add('visually-hidden');
+      } catch (error) {
+        chart.destroy();
+        element.hidden = true;
+        console.error('Could not render coffee chart:', error);
+      }
+    }
+    async function init() {
+      await document.fonts.ready;
+      await Promise.all([
+        renderChart('production', [['Brazil', 66.3], ['Vietnam', 27.5], ['Colombia', 12.6], ['Indonesia', 11.9], ['Ethiopia', 8.4]], '#c45a36', 80, 4, 'million 60-kg bags'),
+        renderChart('consumption', [['Finland', 12.0], ['Norway', 9.9], ['Iceland', 9.0], ['Denmark', 8.7], ['Netherlands', 8.4], ['Sweden', 8.2]], '#31574c', 15, 5, 'kg per person')
+      ]);
+      document.documentElement.dataset.ready = 'true';
+    }
+    init();
+  </script>
+</body>
+</html>

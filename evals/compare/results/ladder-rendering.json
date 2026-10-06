@@ -1,0 +1,205 @@
+{
+  "date": "2026-10-05T18:43:06.809Z",
+  "widths": [
+    1280,
+    390
+  ],
+  "libs": {
+    "apexcharts": {
+      "step": "step-8-pictogram",
+      "summary": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 844
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/apexcharts@7",
+          "served": "apexcharts@7.8.0/dist/apexcharts.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 8,
+              "y": 275,
+              "w": 374,
+              "h": 300
+            }
+          ],
+          "sideways": false,
+          "overlapCount": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 280,
+              "y": 216,
+              "w": 720,
+              "h": 300
+            }
+          ],
+          "sideways": false,
+          "overlapCount": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    },
+    "chartjs": {
+      "step": "step-8-pictogram",
+      "summary": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 1,
+        "phoneHeight": 844
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/chart.js@4",
+          "served": "chart.js@4.5.1/dist/chart.umd.min.js",
+          "status": 200
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2",
+          "served": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+          "status": 200
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3",
+          "served": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "canvas",
+              "cls": "",
+              "x": 8,
+              "y": 275,
+              "w": 374,
+              "h": 360
+            }
+          ],
+          "sideways": false,
+          "overlapCount": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "canvas",
+              "cls": "",
+              "x": 280,
+              "y": 216,
+              "w": 720,
+              "h": 360
+            }
+          ],
+          "sideways": false,
+          "overlapCount": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    },
+    "d3": {
+      "step": "step-8-pictogram",
+      "summary": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 844
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/d3@7",
+          "served": "d3@7.9.0/dist/d3.min.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "",
+              "x": 8,
+              "y": 255,
+              "w": 374,
+              "h": 300
+            }
+          ],
+          "sideways": false,
+          "overlapCount": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "",
+              "x": 280,
+              "y": 196,
+              "w": 720,
+              "h": 300
+            }
+          ],
+          "sideways": false,
+          "overlapCount": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    }
+  }
+}

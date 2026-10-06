@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f2e9">
+  <title>CO₂ keeps climbing | Mauna Loa, 1960 to 2024</title>
+  <meta name="description" content="The rise in atmospheric carbon dioxide at Mauna Loa, from 316.9 ppm in 1960 to 424.6 ppm in 2024, with the 2015 milestone and a pre-industrial reference.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+  <style>
+    :root { --page: #dfddd4; --paper: #f6f2e9; --ink: #252b28; --soft: #5d625b; --rule: #d8d9cd; --accent: #a63f24; --text: "DM Sans", Arial, sans-serif; --mono: "IBM Plex Mono", monospace; --display: "Newsreader", Georgia, serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 40px 20px; background: var(--page); color: var(--ink); font: 16px/1.5 var(--text); }
+    .poster { max-width: 1040px; margin: 0 auto; padding: 32px 52px 28px; background: var(--paper); box-shadow: 0 14px 45px #252b2814; }
+    .masthead { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0 13px; border-top: 3px solid var(--ink); border-bottom: 1px solid var(--ink); font: 500 11px/1.4 var(--mono); letter-spacing: .09em; text-transform: uppercase; }
+    .masthead span:last-child { white-space: nowrap; }
+    .intro { display: grid; grid-template-columns: 1fr 225px; gap: 28px; align-items: end; margin: 30px 0 28px; }
+    .kicker { display: block; color: var(--accent); font: 600 12px/1.4 var(--text); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+    h1 { margin: 0; font: 500 clamp(46px, 6.7vw, 76px)/.98 var(--display); letter-spacing: -.035em; }
+    .dek { margin: 19px 0 0; max-width: 48ch; font-size: 16px; line-height: 1.55; color: var(--soft); }
+    .increase { padding: 0 0 5px 24px; border-left: 1px solid var(--rule); }
+    .increase strong { display: block; color: var(--accent); font: 500 70px/1 var(--display); letter-spacing: -.04em; }
+    .increase span { display: block; margin-top: 8px; font-size: 14px; }
+    .increase small { display: block; color: var(--soft); font: 12px/1.6 var(--mono); margin-top: 5px; }
+    .chart-label { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--rule); padding-top: 15px; margin-bottom: 8px; color: var(--soft); font: 12px/1.4 var(--mono); }
+    .plot { cursor: crosshair; touch-action: pan-y; }
+    .explore { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; margin: 18px 0 0; padding: 14px 0 16px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .explore label { font-size: 13px; font-weight: 600; }
+    .reading { margin: 0; font: 500 14px/1.5 var(--mono); color: var(--accent); min-width: 188px; text-align: right; white-space: nowrap; }
+    .explore input { width: 100%; margin: 0; min-width: 0; height: 28px; cursor: pointer; accent-color: var(--accent); }
+    .hint { margin: 0; color: var(--soft); font-size: 12px; align-self: center; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .note { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; color: var(--soft); font-size: 12px; line-height: 1.6; }
+    .note p { margin: 0; }
+    .note strong { color: var(--ink); font-weight: 600; }
+    a { color: inherit; text-underline-offset: 3px; }
+    .load-note { max-width: 1040px; padding: 40px; margin: auto; background: var(--paper); }
+    @media (max-width: 700px) {
+      body { padding: 16px 12px; }
+      .poster { padding: 20px 22px; }
+      .intro { grid-template-columns: 1fr 145px; gap: 18px; }
+      .increase { padding-left: 17px; }
+      .increase strong { font-size: 53px; }
+      .increase small { font-size: 11px; }
+    }
+    @media (max-width: 500px) {
+      .poster { padding: 17px 18px 20px; }
+      .masthead { font-size: 10px; letter-spacing: .03em; gap: 8px; }
+      .masthead .location { display: none; }
+      .intro { display: block; margin: 23px 0 20px; }
+      .kicker { font-size: 11px; margin-bottom: 10px; }
+      h1 { font-size: 49px; }
+      .dek { margin-top: 13px; font-size: 14px; }
+      .increase { display: flex; gap: 9px; align-items: baseline; padding: 0; margin-top: 16px; border: 0; }
+      .increase strong { font: 500 26px/1 var(--display); letter-spacing: -.025em; }
+      .increase span { margin: 0; font-size: 12px; }
+      .increase small { display: none; }
+      .chart-label { font-size: 11px; padding-top: 12px; }
+      .chart-label span:last-child { display: none; }
+      .explore { grid-template-columns: 1fr; gap: 7px; margin-top: 14px; }
+      .explore label { grid-column: 1; grid-row: 1; }
+      .reading { grid-column: 1; grid-row: 2; text-align: left; }
+      .hint { font-size: 11px; }
+      .note { grid-template-columns: 1fr; gap: 10px; font-size: 11px; }
+    }
+    @media print { body { padding: 0; background: var(--paper); } .poster { box-shadow: none; max-width: none; } .explore { display: none; } }
+  </style>
+</head>
+<body>
+  <main id="poster"><p class="load-note">Loading the Mauna Loa record… Internet access is needed to load the chart.</p></main>
+  <noscript><p>Enable JavaScript to view the interactive poster. CO₂ rose from 316.9 ppm in 1960 to 424.6 ppm in 2024. The 2015 annual mean was 400.8 ppm; the pre-industrial reference is about 280 ppm.</p></noscript>
+  <script type="module">
+    import { Chart, Plot, Scale, Line, Dot, Tick, Label, Place, slat, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
+
+    // Data: supplied NOAA annual means, retaining every value and its actual year.
+    const DATA = [
+      [1960, 316.9], [1965, 320.0], [1970, 325.7], [1975, 331.1],
+      [1980, 338.8], [1985, 346.1], [1990, 354.5], [1995, 360.8],
+      [2000, 369.7], [2005, 379.8], [2010, 389.9], [2015, 400.8],
+      [2020, 414.2], [2024, 424.6]
+    ].sort((a, b) => a[0] - b[0]);
+    const FIRST = DATA[0], LAST = DATA.at(-1), BASE = 280;
+    const MILESTONE = DATA.find(([year]) => year === 2015);
+    const YEARS = DATA.map(([year]) => year);
+    const X = [FIRST[0], LAST[0]];
+    // A nonzero concentration axis keeps the historical reference and the change legible.
+    const Y = [Math.floor((BASE - 10) / 10) * 10, Math.ceil((LAST[1] + 20) / 10) * 10];
+    const ppm = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+    const INCREASE = percent.format((LAST[1] - FIRST[1]) / FIRST[1]);
+    const THEME = { font: '"IBM Plex Mono", monospace', ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)"] };
+
+    // Slat types: the trend, calendar scale, reference, annotations, and selected observation.
+    const Curve = slat({ room: { end: 9 }, css: `.curve { stroke-width: 3px; }` }, (d) => html`
+      <div><${Line} points=${() => d.points} class="curve" /></div>`);
+
+    const YearTick = slat({ room: { after: 30 }, css: `
+      .mark { top: 100%; height: 5px; translate: -50% 0; --rhp-tick-width: 1px; background: var(--rhp-muted); }
+      .year { top: calc(100% + 11px); bottom: auto; translate: -50% 0; --rhp-label-gap: 0px; font-size: 11px; color: var(--rhp-muted); }
+      .first .year { translate: 0 0; }
+      .last .year { translate: -100% 0; }
+      @container (max-width: 480px) { .extra { display: none; } }
+    ` }, (d) => html`
+      <div class=${() => d.first ? "first" : d.last ? "last" : ""}>
+        <${Tick} at=${() => d.at} class=${() => d.at === 1970 || d.at === 1990 || d.at === 2010 ? "mark extra" : "mark"} />
+        <${Label} at=${() => d.at} class=${() => d.at === 1970 || d.at === 1990 || d.at === 2010 ? "year extra" : "year"}>${() => d.at}<//>
+      </div>`);
+
+    const Reference = slat({ css: `
+      .reference { stroke-width: 1.3px; stroke-dasharray: 5 5; }
+      .reference-note { position: absolute; left: 0; bottom: 10px; white-space: nowrap; color: var(--rhp-muted); font: 12px/1.4 "DM Sans", sans-serif; }
+    ` }, (d) => html`
+      <div>
+        <${Line} points=${() => d.points} color="muted" class="reference" />
+        <${Place} at=${FIRST[0]} cross=${BASE}><span class="reference-note">Pre-industrial ≈ ${BASE} ppm</span><//>
+      </div>`);
+
+    const Observation = slat({ css: `.point { border: 1.5px solid var(--rhp-surface); }` }, (d) => html`
+      <div><${Dot} at=${() => d.year} cross=${() => d.ppm} size="7px" class="point" /></div>`);
+
+    const EndLabel = slat({ room: { before: 12 }, css: `
+      .end-label { position: absolute; bottom: 14px; left: 0; white-space: nowrap; color: var(--rhp-series-1); }
+      .end-label b { display: block; font: 600 24px/1.1 "Newsreader", Georgia, serif; }
+      .end-label span { display: block; font-size: 11px; margin-top: 3px; color: var(--rhp-muted); }
+      .first .end-label { bottom: auto; top: 12px; }
+      .first .end-label b { font-size: 20px; }
+      .first .end-label span { display: none; }
+      .last .end-label { translate: -100% 0; text-align: right; }
+    ` }, (d) => html`
+      <div class=${() => d.year === LAST[0] ? "last" : "first"}>
+        <${Place} at=${() => d.year} cross=${() => d.ppm}>
+          <div class="end-label"><b>${() => ppm.format(d.ppm)} ppm</b><span>${() => d.year}</span></div>
+        <//>
+      </div>`);
+
+    const Milestone = slat({ css: `
+      .milestone-dot { background: var(--rhp-surface); border: 2px solid var(--rhp-series-1); }
+      .milestone-note { position: absolute; top: 90px; right: -7px; width: 125px; padding: 9px 0 0; border-top: 1px solid var(--rhp-series-1); color: var(--rhp-ink); font: 12px/1.45 "DM Sans", sans-serif; }
+      .milestone-note::before { content: ""; position: absolute; right: 6px; top: -90px; height: 89px; width: 1px; background: var(--rhp-series-1); }
+      .milestone-note b { display: block; color: var(--rhp-series-1); margin-bottom: 3px; font: 600 12px/1.5 "IBM Plex Mono", monospace; }
+    ` }, (d) => html`
+      <div>
+        <${Dot} at=${() => d.year} cross=${() => d.ppm} size="12px" class="milestone-dot" />
+        <${Place} at=${() => d.year} cross=${() => d.ppm}>
+          <div class="milestone-note"><b>${() => d.year} · ${() => ppm.format(d.ppm)} ppm</b>First annual mean<br>above 400 ppm</div>
+        <//>
+      </div>`);
+
+    const Reading = slat({ css: `
+      .hair { --rhp-tick-width: 1px; background: var(--rhp-muted); }
+      .picked { background: var(--rhp-series-1); border: 2px solid var(--rhp-surface); }
+    ` }, (d) => html`
+      <div style=${() => ({ visibility: d.active ? "visible" : "hidden" })}>
+        <${Tick} at=${() => d.year} thick=${1} class="hair" />
+        <${Dot} at=${() => d.year} cross=${() => d.ppm} size="12px" class="picked" />
+      </div>`);
+
+    // Chart component: pointer and touch find the nearest actual year; the range supports keys.
+    function CarbonPoster() {
+      const [picked, setPicked] = createSignal(null);
+      const i = () => picked() ?? DATA.length - 1;
+      const mq = matchMedia("(max-width: 500px)");
+      const [phone, setPhone] = createSignal(mq.matches);
+      const resize = (e) => setPhone(e.matches);
+      mq.addEventListener("change", resize);
+      onCleanup(() => mq.removeEventListener("change", resize));
+      let plot, slider;
+      const point = (e) => {
+        const rect = plot.getBoundingClientRect();
+        if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) return;
+        const year = X[0] + (e.clientX - rect.left) / rect.width * (X[1] - X[0]);
+        setPicked(YEARS.reduce((best, value, k) => Math.abs(value - year) < Math.abs(YEARS[best] - year) ? k : best, 0));
+      };
+      const leave = (e) => {
+        if (e.pointerType !== "touch" && !slider.matches(":focus-visible")) setPicked(null);
+      };
+      const say = () => `${DATA[i()][0]} · ${ppm.format(DATA[i()][1])} ppm`;
+      return html`
+        <figure class="poster">
+          <figcaption>
+            <div class="masthead"><span>Atmospheric record<span class="location"> / Hawai‘i</span></span><span>${FIRST[0]} to ${LAST[0]}</span></div>
+            <div class="intro">
+              <div><span class="kicker">Mauna Loa Observatory</span><h1>CO₂ keeps<br>climbing.</h1>
+                <p class="dek">Annual mean carbon dioxide in the atmosphere, measured at Mauna Loa. A record of change in the air we share.</p></div>
+              <div class="increase"><strong>+${INCREASE}</strong><span>since ${FIRST[0]}</span><small>${ppm.format(LAST[1] - FIRST[1])} ppm added</small></div>
+            </div>
+          </figcaption>
+          <div class="chart-label"><span>CO₂ concentration · parts per million</span><span>Annual means, selected years</span></div>
+          <div class="plot" onPointerMove=${(e) => e.pointerType !== "touch" && point(e)} onClick=${point} onPointerLeave=${leave}>
+            <${Chart} scale=${X} cross=${Y} crossTicks=${[300, 350, 400, 450]} height=${() => phone() ? 310 : 390} theme=${THEME}
+              label="Mauna Loa annual mean CO₂: 316.9 ppm in 1960 to 424.6 ppm in 2024; first annual mean above 400 ppm in 2015; pre-industrial reference about 280 ppm.">
+              <${Scale} ticks=${[1960, 1970, 1980, 1990, 2000, 2010, 2024]}>${YearTick}<//>
+              <${Plot} overlap=${true} points=${[[[FIRST[0], BASE], [LAST[0], BASE]]]} style=${{ "pointer-events": "none" }}>${Reference}<//>
+              <${Plot} overlap=${true} points=${[DATA]} ref=${(el) => plot = el}>${Curve}<//>
+              <${Plot} overlap=${true} year=${YEARS} ppm=${DATA.map((d) => d[1])} style=${{ "pointer-events": "none" }}>${Observation}<//>
+              <${Plot} overlap=${true} year=${[FIRST[0], LAST[0]]} ppm=${[FIRST[1], LAST[1]]} style=${{ "pointer-events": "none" }}>${EndLabel}<//>
+              <${Plot} overlap=${true} slats=${1} year=${MILESTONE[0]} ppm=${MILESTONE[1]} style=${{ "pointer-events": "none" }}>${Milestone}<//>
+              <${Plot} overlap=${true} slats=${1} year=${() => DATA[i()][0]} ppm=${() => DATA[i()][1]} active=${() => picked() !== null}
+                animate=${["year", "ppm"]} style=${{ "pointer-events": "none" }}>${Reading}<//>
+            <//>
+          </div>
+          <div class="explore">
+            <label for="year">Explore the record</label><output class="reading" for="year">${say}</output>
+            <input id="year" ref=${(el) => slider = el} type="range" min="0" max=${DATA.length - 1} step="1" value=${i}
+              aria-label="Selected observation year" aria-valuetext=${say} onInput=${(e) => setPicked(+e.currentTarget.value)}
+              onFocus=${(e) => setPicked(+e.currentTarget.value)} onBlur=${() => setPicked(null)}>
+            <p class="hint">Point or tap the plot. Use the slider or arrow keys.</p>
+          </div>
+          <footer class="note">
+            <p><strong>Source:</strong>${" "}<a href="https://gml.noaa.gov/ccgg/trends/">NOAA Global Monitoring Laboratory</a>.<br>Selected annual means, ${FIRST[0]} to ${LAST[0]}, as supplied. Lines connect observations; intervening years are not plotted.</p>
+            <p><strong>A longer perspective.</strong> Before industrialization, atmospheric CO₂ was about ${BASE} ppm. The ${LAST[0]} mean is about ${percent.format((LAST[1] - BASE) / BASE)} above that reference. The vertical axis begins at ${Y[0]} ppm.</p>
+          </footer>
+        </figure>`;
+    }
+
+    // Mount the complete poster. The only external assets are rhp and the fonts.
+    const root = document.getElementById("poster");
+    root.replaceChildren();
+    render(() => html`<${CarbonPoster} />`, root);
+  </script>
+</body>
+</html>

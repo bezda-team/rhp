@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="How Americans aged 15 and over spend an average 24-hour day, using approximate figures from the 2023 American Time Use Survey.">
+<title>24 hours in America | A day in the life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+  :root { --paper: #f8f5ed; --page: #dedfd9; --ink: #20323d; --soft: #586269; --blue: #235f83; --orange: #aa4929; --rule: #d6d8d1; --text: "DM Sans", Arial, sans-serif; --display: "DM Serif Display", Georgia, serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 36px 20px; background: var(--page); color: var(--ink); font: 16px/1.5 var(--text); }
+  .poster { max-width: 1080px; margin: auto; padding: 32px 48px 26px; background: var(--paper); border-top: 7px solid var(--ink); }
+  .masthead { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 48px; align-items: center; padding: 32px 0 30px; }
+  .kicker { margin: 0 0 12px; color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  h1 { margin: 0; font: 400 clamp(42px, 5.3vw, 66px)/1.02 var(--display); letter-spacing: -.035em; max-width: 650px; }
+  h1 em { color: var(--blue); font-weight: 400; }
+  .dek { margin: 20px 0 0; max-width: 50ch; color: var(--soft); font-size: 16px; line-height: 1.55; }
+  .clock { width: 200px; aspect-ratio: 1; position: relative; border: 1px solid var(--ink); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .clock::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: repeating-conic-gradient(from -1deg, var(--ink) 0deg 1deg, transparent 1deg 15deg); mask: radial-gradient(transparent 65%, #000 66%); }
+  .clock b { font: 400 91px/.9 var(--display); letter-spacing: -.07em; margin-left: -6px; }
+  .clock span { margin-top: 9px; font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+  .chart-layout { display: grid; grid-template-columns: minmax(0, 1fr) 206px; gap: 36px; border-top: 1px solid var(--ink); padding-top: 19px; }
+  .chart-panel { min-width: 0; }
+  .chart-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  h2 { margin: 0; font-size: 15px; font-weight: 700; }
+  .unit { font-size: 12px; color: var(--soft); }
+  .hint { margin: 0 0 14px; font-size: 12px; color: var(--soft); }
+  .tv-key { margin: 12px 0 16px; display: flex; align-items: baseline; gap: 8px; font-size: 12px; color: var(--soft); }
+  .tv-key i { display: inline-block; flex: none; width: 10px; height: 10px; background: var(--orange); }
+  .readout { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 66px; margin-bottom: 12px; padding: 12px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 14px; }
+  .readout .activity { display: block; font-weight: 700; }
+  .readout .duration { color: var(--soft); font-size: 12px; }
+  .share { white-space: nowrap; text-align: right; }
+  .share b { font: 400 30px/1 var(--display); }
+  .share small { display: block; font-size: 11px; color: var(--soft); }
+  .insights { border-left: 1px solid var(--rule); padding-left: 26px; }
+  .insight { padding: 0 0 24px; }
+  .insight + .insight { padding-top: 24px; border-top: 1px solid var(--rule); }
+  .insight .eyebrow { margin: 0 0 7px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .big { display: block; font: 400 61px/1 var(--display); letter-spacing: -.04em; color: var(--blue); }
+  .big small { margin-left: 4px; font: 500 15px var(--text); letter-spacing: 0; }
+  .insight p { margin: 10px 0 0; font-size: 14px; line-height: 1.55; }
+  .insight.tv .big { color: var(--orange); }
+  .context { font-size: 12px; color: var(--soft); line-height: 1.6; }
+  .context strong { color: var(--ink); display: block; margin-bottom: 4px; }
+  footer { display: flex; justify-content: space-between; gap: 30px; margin-top: 26px; padding-top: 14px; border-top: 1px solid var(--ink); color: var(--soft); font-size: 11px; line-height: 1.6; }
+  footer p { margin: 0; max-width: 72ch; }
+  footer a { color: inherit; text-underline-offset: 3px; }
+  .folio { white-space: nowrap; text-align: right; font-weight: 700; letter-spacing: .08em; color: var(--ink); }
+  @media (max-width: 850px) {
+    .poster { padding-inline: 28px; }
+    .intro { grid-template-columns: minmax(0, 1fr) 150px; gap: 28px; }
+    .clock { width: 150px; }
+    .clock b { font-size: 68px; }
+    .clock span { font-size: 10px; }
+    .chart-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .insights { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border: 0; padding: 0; }
+    .insight, .insight + .insight { border: 0; padding: 0; }
+    .context { grid-column: 1 / -1; }
+  }
+  @media (max-width: 520px) {
+    body { padding: 0; }
+    .poster { padding: 20px 20px 22px; }
+    .masthead { font-size: 10px; letter-spacing: .11em; padding-bottom: 12px; }
+    .intro { display: block; position: relative; padding: 25px 0; }
+    .kicker { font-size: 11px; padding-right: 42px; }
+    h1 { font-size: 46px; max-width: 310px; }
+    .dek { margin-top: 16px; font-size: 15px; }
+    .clock { position: absolute; top: 19px; right: 0; width: 35px; border: 0; }
+    .clock::before, .clock span { display: none; }
+    .clock b { font-size: 30px; margin: 0; }
+    .chart-layout { padding-top: 16px; }
+    .hint { max-width: 290px; }
+    .readout.picked { position: sticky; top: 0; z-index: 2; background: var(--paper); }
+    .big { font-size: 50px; }
+    .insights { gap: 22px; }
+    .insight p { font-size: 13px; }
+    footer { display: block; margin-top: 22px; }
+    .folio { margin-top: 12px; text-align: left; }
+  }
+  @media print { body { padding: 0; background: white; } .poster { max-width: none; } .readout { position: static; } }
+</style>
+</head>
+<body>
+<main id="app"></main>
+<noscript>This infographic needs JavaScript to display its interactive chart.</noscript>
+<script type="module">
+import { Chart, Plot, Bar, Label, Show, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: user-supplied approximate hours, American Time Use Survey, 2023, ages 15+.
+const DAY = [
+  { name: "Sleeping", hours: 9.0 },
+  { name: "Leisure and sports", hours: 5.1, tv: 2.6 },
+  { name: "Working", hours: 3.6 },
+  { name: "Household activities", hours: 2.0 },
+  { name: "Eating and drinking", hours: 1.1 },
+  { name: "Other personal care", hours: 0.8 },
+  { name: "Shopping", hours: 0.7 },
+  { name: "Caring for others", hours: 0.5 },
+  { name: "Education", hours: 0.4 },
+  { name: "Everything else", hours: 0.8 },
+];
+const total = DAY.reduce((sum, row) => sum + row.hours, 0);
+const ranked = [...DAY].sort((a, b) => b.hours - a.hours);
+const lead = DAY.indexOf(ranked[0]);
+const leisure = DAY.find(d => d.name === "Leisure and sports");
+const sleepLeisure = DAY.find(d => d.name === "Sleeping").hours + leisure.hours;
+const scale = nice(0, Math.max(...DAY.map(d => d.hours)), 5);
+const decimal = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 1 });
+const wholePercent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+const duration = hours => `${Math.floor(Math.round(hours * 60) / 60)} hr ${Math.round(hours * 60) % 60} min`;
+const describe = row => `${row.name}: ${decimal.format(row.hours)} hours, ${percent.format(row.hours / total)} of the day${row.tv ? `, including ${decimal.format(row.tv)} hours watching TV` : ""}.`;
+const THEME = { font: '"DM Sans", Arial, sans-serif', ink: "#20323d", muted: "#586269", grid: "#d6d8d1", surface: "#f8f5ed", series: ["#235f83", "#7e827b", "#aa4929"] };
+
+// Slat: one activity, a proportional bar, and an exact value. TV is part of leisure.
+const Activity = slat({
+  thickness: 43,
+  room: { start: "auto", end: 34 },
+  css: `
+    .activity { cursor: pointer; }
+    .name { font-size: 13px; font-weight: 500; line-height: 1.15; --rhp-label-gap: 13px; }
+    .bar { --rhp-radius: 0px; }
+    .value { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; --rhp-label-gap: 9px; }
+    .lead .name, .lead .value { color: var(--rhp-series-1); font-weight: 700; }
+    .picked { background: rgb(32 50 61 / .05); }
+    .picked .value { font-weight: 700; }
+    .activity:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: -2px; }
+    @container (max-width: 450px) {
+      .name { font-size: 12px; max-width: 8em; white-space: normal; --rhp-label-gap: 10px; }
+      .value { font-size: 13px; --rhp-label-gap: 7px; }
+    }
+  `,
+}, d => html`
+  <div class=${() => `activity${d.index === lead ? " lead" : ""}${d.picked ? " picked" : ""}`} data-row=${() => d.index} aria-label=${() => describe(d)}>
+    <${Label} edge="start" class="name">${() => d.name}<//>
+    <${Bar} to=${() => d.hours} thick="22px" class="bar" color=${() => d.index === lead ? "series-1" : "series-2"} />
+    <${Show} when=${() => d.tv}>
+      <${Bar} to=${() => d.tv} thick="22px" class="bar" color="series-3" />
+    <//>
+    <${Label} at=${() => d.hours} class="value">${() => decimal.format(d.hours)}<//>
+  </div>`);
+
+// Chart component: pointer, tap and keyboard all reveal the share of a full day.
+function DayPoster() {
+  const [picked, setPicked] = createSignal(null);
+  const current = () => DAY[picked() ?? lead];
+  const rowOf = el => {
+    const row = el?.closest?.("[data-row]");
+    return row ? Number(row.dataset.row) : null;
+  };
+  const pick = e => { const row = rowOf(e.target); if (row !== null) setPicked(row); };
+  const leave = e => {
+    if (e.pointerType !== "touch") setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  return html`
+    <article class="poster" aria-labelledby="title" onPointerMove=${e => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick} onPointerLeave=${leave} onFocusOut=${e => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="masthead"><span>A day in the life</span><span>United States / 2023</span></div>
+      <header class="intro">
+        <div>
+          <p class="kicker">The American time budget</p>
+          <h1 id="title"><em>Sleep</em> gets the<br>biggest share.</h1>
+          <p class="dek">How does America spend a day? A ${Math.round(total)}-hour portrait of everyday life, averaged across people aged 15 and over.</p>
+        </div>
+        <div class="clock" aria-label=${`${Math.round(total)} hours in a day`}><b>${Math.round(total)}</b><span>hours in a day</span></div>
+      </header>
+      <div class="chart-layout">
+        <section class="chart-panel" aria-labelledby="chart-title">
+          <div class="chart-heading"><h2 id="chart-title">Where the hours go</h2><span class="unit">Hours per day</span></div>
+          <p class="hint">Tap or point at a row, or use Tab and arrow keys.</p>
+          <div class=${() => picked() === null ? "readout" : "readout picked"} aria-hidden="true">
+            <div><span class="activity">${() => current().name}</span><span class="duration">${() => duration(current().hours)} per day</span></div>
+            <div class="share"><b>${() => percent.format(current().hours / total)}</b><small>of the full day</small></div>
+          </div>
+          <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} label="Average daily hours by activity, Americans aged 15 and over, 2023" theme=${THEME}>
+            <${Plot} rows=${DAY} picked=${d => d.index === picked()} keyboard=${true}>${Activity}<//>
+          <//>
+          <p class="tv-key"><i aria-hidden="true"></i><span>Watching TV: <strong>${decimal.format(leisure.tv)} h</strong>, included in leisure and sports.</span></p>
+        </section>
+        <aside class="insights" aria-label="A closer look at the day">
+          <div class="insight">
+            <p class="eyebrow">Rest & recreation</p>
+            <span class="big">${decimal.format(sleepLeisure)}<small> h</small></span>
+            <p>Sleep and leisure together take up <strong>${wholePercent.format(sleepLeisure / total)}</strong> of the average day.</p>
+          </div>
+          <div class="insight tv">
+            <p class="eyebrow">The TV habit</p>
+            <span class="big">${wholePercent.format(leisure.tv / leisure.hours)}</span>
+            <p>of leisure time goes to watching TV, about half of the ${decimal.format(leisure.hours)}-hour total.</p>
+          </div>
+          <div class="context"><strong>An average, not a schedule.</strong>These figures include weekdays, weekends and everyone surveyed, including people who did not work that day.</div>
+        </aside>
+      </div>
+      <footer>
+        <p>Source: <a href="https://www.bls.gov/tus/" target="_blank" rel="noopener noreferrer">U.S. Bureau of Labor Statistics, American Time Use Survey</a>, 2023.<br>Approximate hours supplied for people aged 15 and over. Categories total ${decimal.format(total)} hours. TV is a subset of leisure.</p>
+        <p class="folio">ONE DAY / ${Math.round(total)} HOURS</p>
+      </footer>
+    </article>`;
+}
+
+// Mount the standalone page.
+render(() => html`<${DayPoster} />`, document.getElementById("app"));
+</script>
+</body>
+</html>

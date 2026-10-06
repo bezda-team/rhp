@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e6">
+  <meta name="description" content="Coffee by numbers: a visual look at coffee production, consumption per person, and the world's daily coffee habit. Approximate figures for illustration.">
+  <title>Coffee by numbers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --paper: #f5f0e6; --ink: #302b24; --muted: #746c60; --rule: #d6cdbd; --orange: #b94e2e; --green: #485842; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e8e2d7; color: var(--ink); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+    .poster { max-width: 1160px; margin: 32px auto; padding: 32px 48px 24px; background: var(--paper); box-shadow: 0 8px 40px #302b240b; }
+    .eyebrow, .section-label, .unit, .footer-mark { font-size: 10px; font-weight: 700; letter-spacing: 1.9px; text-transform: uppercase; }
+    .masthead { display: flex; justify-content: space-between; align-items: center; padding-bottom: 17px; border-bottom: 1px solid var(--ink); }
+    .brand { display: flex; align-items: center; gap: 9px; }
+    .bean { width: 22px; height: 25px; }
+    .edition { color: var(--muted); font-size: 10px; letter-spacing: 1.7px; }
+    .intro { padding: 27px 0 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    h1, h2, .big-number, .billion { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; }
+    h1 { font-size: clamp(46px, 6.2vw, 76px); letter-spacing: -3.5px; line-height: 1.12; margin: 0 0 13px; }
+    h1 span { color: var(--orange); }
+    .intro p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .seal { width: 98px; height: 98px; flex: 0 0 98px; border: 1px solid var(--orange); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; color: var(--orange); transform: rotate(9deg); }
+    .seal span { font-size: 9px; font-weight: 700; letter-spacing: 1.8px; }
+    .seal svg { width: 32px; height: 30px; }
+    .rankings { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .panel { min-width: 0; padding: 25px 29px 23px 0; }
+    .panel + .panel { border-left: 1px solid var(--rule); padding: 25px 0 23px 29px; }
+    .section-label { display: flex; align-items: center; gap: 10px; color: var(--orange); margin-bottom: 12px; }
+    .section-label .index { border: 1px solid currentColor; border-radius: 50%; width: 23px; height: 23px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: 0; }
+    .panel + .panel .section-label { color: var(--green); }
+    h2 { font-size: 29px; letter-spacing: -.8px; margin: 0 0 7px; line-height: 1.25; }
+    .subtitle { font-size: 12px; margin: 0; color: var(--muted); line-height: 1.5; }
+    .unit { font-size: 9px; letter-spacing: 1.15px; color: var(--muted); margin: 22px 0 0; }
+    .chart { width: 100%; height: 264px; margin-top: 0; }
+    .insight { margin: 12px 0 0; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 12px; line-height: 1.7; color: var(--muted); }
+    .insight strong { color: var(--ink); font-weight: 600; }
+    .daily { position: relative; display: grid; grid-template-columns: 1fr 230px; gap: 20px; margin-top: 25px; padding: 26px 32px 28px; background: #293e33; color: var(--paper); overflow: hidden; }
+    .daily .section-label { color: #dbc9a8; margin-bottom: 5px; }
+    .daily-stat { display: flex; align-items: baseline; gap: 19px; }
+    .big-number { font-size: 104px; line-height: 1.15; letter-spacing: -5px; color: #e5ad73; }
+    .billion { font-size: 49px; letter-spacing: -1.5px; }
+    .daily p { margin: 3px 0 0; font-size: 14px; line-height: 1.5; color: #e6e6d8; }
+    .cup-art { align-self: center; justify-self: center; width: 210px; height: 175px; color: #dbc9a8; }
+    footer { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding-top: 19px; }
+    footer p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .footer-mark { white-space: nowrap; font-size: 9px; letter-spacing: 1.2px; }
+    .fallback { margin: 18px 0; font-size: 13px; width: 100%; border-collapse: collapse; }
+    .fallback td { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+    .fallback td:last-child { text-align: right; font-weight: 700; }
+    .chart-ready .fallback { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); }
+    .chart:not(.chart-ready) { height: auto; min-height: 264px; }
+    .apexcharts-tooltip { box-shadow: 0 4px 16px #302b2418 !important; border-color: var(--rule) !important; }
+    .apexcharts-tooltip-title { font-family: 'DM Sans', sans-serif !important; }
+    @media (max-width: 760px) {
+      body { background: var(--paper); }
+      .poster { margin: 0; padding: 25px 23px; box-shadow: none; }
+      .intro { padding: 26px 0; }
+      h1 { max-width: 470px; font-size: 60px; }
+      .seal { width: 80px; height: 80px; flex-basis: 80px; }
+      .rankings { grid-template-columns: 1fr; }
+      .panel, .panel + .panel { padding: 25px 0; border-left: 0; }
+      .panel + .panel { border-top: 1px solid var(--rule); }
+      .daily { grid-template-columns: 1fr 150px; padding: 24px; }
+      .cup-art { width: 150px; }
+      .big-number { font-size: 90px; }
+      .billion { font-size: 40px; }
+    }
+    @media (max-width: 480px) {
+      .edition { font-size: 8px; letter-spacing: 1px; }
+      .eyebrow { font-size: 9px; letter-spacing: 1.5px; }
+      h1 { font-size: 54px; letter-spacing: -2.5px; }
+      h1 span { display: block; }
+      .intro { gap: 5px; align-items: flex-start; position: relative; }
+      .intro p { font-size: 13px; max-width: 275px; margin-top: 17px; }
+      .seal { position: absolute; right: 0; top: 35px; width: 64px; height: 64px; gap: 4px; }
+      .seal span { font-size: 6px; letter-spacing: 1px; }
+      .seal svg { width: 23px; height: 23px; }
+      h2 { font-size: 29px; }
+      .daily { grid-template-columns: 1fr; gap: 0; padding: 23px 21px; }
+      .daily-stat { gap: 14px; }
+      .big-number { font-size: clamp(64px, 21.5vw, 84px); letter-spacing: -4px; }
+      .billion { font-size: clamp(28px, 9vw, 35px); }
+      .cup-art { display: none; }
+      .daily p { max-width: 240px; font-size: 13px; }
+      footer { align-items: flex-start; }
+      .footer-mark { display: none; }
+    }
+    @media print {
+      @page { size: A4; margin: 10mm; }
+      body { background: var(--paper); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .poster { margin: 0; padding: 20px; box-shadow: none; }
+      .rankings { grid-template-columns: 1fr 1fr; }
+      .panel { padding-right: 20px; }
+      .panel + .panel { border-left: 1px solid var(--rule); border-top: 0; padding-left: 20px; }
+      .daily { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header>
+      <div class="masthead">
+        <div class="brand eyebrow">
+          <svg class="bean" viewBox="0 0 26 30" aria-hidden="true"><ellipse cx="13" cy="15" rx="9" ry="13" transform="rotate(32 13 15)" fill="#b94e2e"/><path d="M18 4C9 10 18 19 7 26" fill="none" stroke="#f5f0e6" stroke-width="1.6"/></svg>
+          A world in a cup
+        </div>
+        <span class="edition">THE COFFEE EDITION / 01</span>
+      </div>
+      <div class="intro">
+        <div>
+          <h1>Coffee <span>by numbers</span></h1>
+          <p>From the countries that grow it to the people who pour it.<br>A little perspective on our daily ritual.</p>
+        </div>
+        <div class="seal" aria-hidden="true">
+          <span>GLOBALLY</span>
+          <svg viewBox="0 0 40 36" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 12h24v9a12 12 0 0 1-24 0Z M30 14h3a5 5 0 0 1 0 10h-3 M3 34h30 M13 2v5 M21 1v6"/></svg>
+          <span>CONNECTED</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="rankings">
+      <section class="panel" aria-labelledby="production-title">
+        <div class="section-label"><span class="index">01</span> The growers</div>
+        <h2 id="production-title">Where coffee begins</h2>
+        <p class="subtitle">The world's top five coffee producers.</p>
+        <p class="unit">Million 60-kg bags per year</p>
+        <div id="production" class="chart">
+          <table class="fallback"><caption class="sr-only" hidden>Annual production, million 60-kg bags</caption><tbody>
+            <tr><td>Brazil</td><td>66.3</td></tr><tr><td>Vietnam</td><td>27.5</td></tr><tr><td>Colombia</td><td>12.6</td></tr><tr><td>Indonesia</td><td>11.9</td></tr><tr><td>Ethiopia</td><td>8.4</td></tr>
+          </tbody></table>
+        </div>
+        <p class="insight"><strong>Brazil leads the pack.</strong> Its output is more than twice Vietnam's, the next largest producer.</p>
+      </section>
+      <section class="panel" aria-labelledby="consumption-title">
+        <div class="section-label"><span class="index">02</span> The drinkers</div>
+        <h2 id="consumption-title">A taste for coffee</h2>
+        <p class="subtitle">Annual coffee consumption per person.</p>
+        <p class="unit">Kilograms per person per year</p>
+        <div id="consumption" class="chart">
+          <table class="fallback"><caption hidden>Annual consumption, kilograms per person</caption><tbody>
+            <tr><td>Finland</td><td>12.0</td></tr><tr><td>Norway</td><td>9.9</td></tr><tr><td>Iceland</td><td>9.0</td></tr><tr><td>Denmark</td><td>8.7</td></tr><tr><td>Netherlands</td><td>8.4</td></tr><tr><td>Sweden</td><td>8.2</td></tr>
+          </tbody></table>
+        </div>
+        <p class="insight"><strong>Finland sets the pace.</strong> At about 12 kg a year, that's roughly a kilogram per person each month.</p>
+      </section>
+    </div>
+
+    <section class="daily" aria-labelledby="daily-title">
+      <div>
+        <h2 id="daily-title" class="section-label" style="font-family: 'DM Sans', sans-serif; font-weight: 700; letter-spacing: 1.9px; font-size: 10px;"><span class="index">03</span> One planet. A daily ritual.</h2>
+        <div class="daily-stat"><span class="big-number">2.25</span><span class="billion">billion</span></div>
+        <p>About 2.25 billion cups of coffee are drunk every day worldwide.</p>
+      </div>
+      <svg class="cup-art" viewBox="0 0 220 185" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M71 48c-14-16 15-20 2-36M104 43c-14-17 17-23 3-40M135 48c-14-16 15-20 3-36" opacity=".65"/>
+          <ellipse cx="104" cy="78" rx="65" ry="18"/>
+          <ellipse cx="104" cy="80" rx="53" ry="11" fill="#e5ad73" stroke="none"/>
+          <path d="M39 78l9 49c5 23 108 23 113 0l8-49M169 88c43-16 47 35-5 38M58 140c-57 9-35 28 48 28s105-19 49-28"/>
+          <path d="M47 153c28 13 88 12 119 0" opacity=".5"/>
+          <path d="M61 103l4 20" stroke-width="3" opacity=".5"/>
+        </g>
+      </svg>
+    </section>
+    <footer>
+      <p><strong>A note on the numbers:</strong> All figures are approximate and provided for illustration.</p>
+      <span class="footer-mark">From bean to cup.</span>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const datasets = [
+      { id: 'production', name: 'Production', unit: 'million 60-kg bags / year', max: 80, ticks: 4, colors: ['#b94e2e', '#c98763', '#c98763', '#c98763', '#c98763'] },
+      { id: 'consumption', name: 'Consumption', unit: 'kg / person / year', max: 15, ticks: 3, colors: ['#485842', '#929d7c', '#929d7c', '#929d7c', '#929d7c', '#929d7c'] }
+    ];
+    async function renderCharts() {
+      if (!window.ApexCharts) return;
+      await document.fonts.ready;
+      await Promise.all(datasets.map(async (dataset) => {
+        const container = document.getElementById(dataset.id);
+        const data = Array.from(container.querySelectorAll('tbody tr'), row => ({ x: row.cells[0].textContent, y: Number(row.cells[1].textContent) }));
+        const mount = document.createElement('div');
+        mount.setAttribute('aria-hidden', 'true');
+        container.appendChild(mount);
+        container.classList.add('chart-ready');
+        const chart = new ApexCharts(mount, {
+          chart: { type: 'bar', height: 264, fontFamily: 'DM Sans, sans-serif', foreColor: '#746c60', toolbar: { show: false }, animations: { enabled: false }, zoom: { enabled: false }, parentHeightOffset: 0 },
+          series: [{ name: dataset.name, data }],
+          colors: dataset.colors,
+          plotOptions: { bar: { horizontal: true, distributed: true, barHeight: '48%', borderRadius: 2, borderRadiusApplication: 'end', dataLabels: { position: 'top' } } },
+          dataLabels: { enabled: true, formatter: value => value.toFixed(1), textAnchor: 'start', offsetX: 7, style: { fontSize: '12px', fontWeight: 700, colors: ['#302b24'] }, background: { enabled: false } },
+          stroke: { width: 0 },
+          fill: { opacity: 1 },
+          legend: { show: false },
+          grid: { borderColor: '#ddd5c7', strokeDashArray: 3, xaxis: { lines: { show: true } }, yaxis: { lines: { show: false } }, padding: { top: -9, bottom: -8, left: 0, right: 15 } },
+          xaxis: { min: 0, max: dataset.max, tickAmount: dataset.ticks, labels: { style: { fontSize: '10px' }, formatter: value => Number(value).toFixed(0) }, axisBorder: { show: false }, axisTicks: { show: false }, tooltip: { enabled: false }, crosshairs: { show: false } },
+          yaxis: { labels: { minWidth: 104, maxWidth: 104, style: { fontSize: '12px', fontWeight: 500, colors: ['#302b24'] } } },
+          tooltip: { shared: false, intersect: false, marker: { show: false }, y: { formatter: value => value.toFixed(1) + ' ' + dataset.unit, title: { formatter: () => '' } } },
+          states: { hover: { filter: { type: 'darken', value: .9 } }, active: { filter: { type: 'none' } } }
+        });
+        try { await chart.render(); }
+        catch (error) { chart.destroy(); mount.remove(); container.classList.remove('chart-ready'); console.error(error); }
+      }));
+    }
+    renderCharts();
+  </script>
+</body>
+</html>

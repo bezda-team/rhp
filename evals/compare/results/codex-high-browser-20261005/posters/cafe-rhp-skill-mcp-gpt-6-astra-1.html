@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A week at our neighbourhood café: an interactive heatmap of average customers per hour, Monday to Sunday. Illustrative data.">
+<title>A later start at the weekend | Neighbourhood café</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+:root { --page:#ded8cd; --paper:#faf5e9; --ink:#302319; --soft:#6b5747; --accent:#97401f; --rule:#cdbda6; --text:"DM Sans",Arial,sans-serif; --display:"Instrument Serif",Georgia,serif; --row-height:49px; }
+* { box-sizing:border-box; }
+body { margin:0; padding:36px 24px; background:var(--page); color:var(--ink); font:15px/1.5 var(--text); }
+.poster { max-width:1100px; margin:auto; padding:32px 48px 25px; background:var(--paper); box-shadow:0 10px 40px #30231912; }
+.masthead { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 0 16px; border-bottom:3px double var(--ink); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
+.hero { display:grid; grid-template-columns:1fr 160px; align-items:center; gap:35px; padding:28px 0 30px; }
+h1 { margin:0; font:400 clamp(48px,6.3vw,79px)/.98 var(--display); letter-spacing:-.025em; }
+h1 em { color:var(--accent); font-weight:400; }
+.dek { max-width:590px; margin:18px 0 0; font-size:16px; line-height:1.55; color:var(--soft); }
+.cup { width:142px; color:var(--accent); text-align:center; transform:rotate(-7deg); }
+.cup svg { width:130px; height:108px; }
+.cup p { margin:0; font:italic 25px/1.1 var(--display); }
+.chart-heading { display:flex; justify-content:space-between; align-items:center; gap:15px; padding-top:19px; border-top:1px solid var(--ink); }
+h2 { font-size:14px; font-weight:700; margin:0; }
+.legend { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--soft); font-variant-numeric:tabular-nums; }
+.legend i { width:115px; height:10px; background:linear-gradient(90deg in oklab,#ead8bc,#622a16); }
+.axis-note { font-size:12px; color:var(--soft); margin:5px 0 0; }
+.chart { width:100%; }
+.readout { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:15px; padding:12px 0 14px; border-bottom:1px solid var(--rule); }
+.readout output { font-size:15px; font-variant-numeric:tabular-nums; }
+.readout b { color:var(--accent); }
+.hint { color:var(--soft); font-size:11px; text-align:right; max-width:230px; }
+.findings { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; padding:23px 0 24px; }
+.finding + .finding { border-left:1px solid var(--rule); padding-left:28px; }
+.eyebrow { display:block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.13em; color:var(--soft); }
+.stat { display:block; font:400 41px/1.1 var(--display); margin:6px 0; }
+.finding p { margin:0; font-size:13px; line-height:1.5; max-width:240px; color:var(--soft); }
+footer { display:flex; justify-content:space-between; gap:12px; padding-top:12px; border-top:3px double var(--ink); font-size:11px; color:var(--soft); }
+@media(max-width:700px) { body { padding:18px 14px; } .poster { padding:24px; } .hero { grid-template-columns:1fr; gap:0; } .cup { display:none; } h1 { font-size:60px; } .legend i { width:75px; } .findings { gap:18px; } .finding + .finding { padding-left:18px; } .readout { align-items:flex-start; flex-direction:column; gap:4px; } .hint { max-width:none; text-align:left; } }
+@media(max-width:480px) { :root { --row-height:35px; } body { padding:12px 8px; } .poster { padding:20px 14px 17px; } .masthead { font-size:9px; letter-spacing:.1em; gap:8px; padding-bottom:12px; } .hero { padding:22px 0; } h1 { font-size:49px; } .dek { font-size:14px; margin-top:13px; } .chart-heading { flex-wrap:wrap; gap:7px; padding-top:15px; } h2 { font-size:13px; } .legend { font-size:11px; } .legend i { width:80px; } .axis-note { font-size:11px; margin-top:7px; } .readout { margin-top:10px; min-height:73px; } .readout output { font-size:13px; } .hint { font-size:10px; } .findings { grid-template-columns:1fr; gap:16px; padding:20px 0; } .finding { display:grid; grid-template-columns:83px 1fr; column-gap:13px; } .finding + .finding { border:0; padding:0; } .eyebrow { grid-column:1/-1; font-size:10px; } .stat { font-size:34px; margin:4px 0 0; } .finding p { margin-top:5px; font-size:12px; } footer { font-size:10px; } }
+@media print { body { padding:0; background:var(--paper); } .poster { box-shadow:none; max-width:none; } .hint { visibility:hidden; } * { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
+</style>
+</head>
+<body>
+<main id="app"><noscript>Please enable JavaScript to view the café heatmap.</noscript></main>
+<script type="module">
+import { Chart, Plot, Cell, Label, slat, nice, html, render, createSignal, Show } from "@bezda/rhp/standalone";
+
+// Illustrative data: each value is the average customer count in the hour starting at 7 + its index.
+const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const CUSTOMERS = [
+  [12,32,27,7,8,20,22,10,10,15,10,6,2,4],
+  [11,32,27,11,8,20,27,8,14,14,10,6,1,4],
+  [12,34,27,8,8,19,22,9,13,15,11,8,2,1],
+  [15,35,25,9,7,23,26,9,14,13,12,9,1,2],
+  [11,35,27,9,9,20,26,11,13,17,19,15,4,3],
+  [3,8,17,35,41,28,21,24,19,14,6,4,1,3],
+  [3,5,14,31,33,26,19,23,21,15,6,5,1,4]
+];
+const SCALE = nice(0,Math.max(...CUSTOMERS.flat()));
+const count = new Intl.NumberFormat("en-GB",{maximumFractionDigits:1});
+const clock = h => String(h).padStart(2,"0")+":00";
+const ranked = CUSTOMERS.flatMap((row,day)=>row.map((value,hour)=>({day,hour,value}))).sort((a,b)=>b.value-a.value);
+const peak = ranked[0];
+const groupPeak = rows => Array.from({length:14},(_,hour)=>({hour,value:rows.reduce((sum,row)=>sum+row[hour],0)/rows.length})).sort((a,b)=>b.value-a.value)[0];
+const weekdayPeak = groupPeak(CUSTOMERS.slice(0,5));
+const weekendPeak = groupPeak(CUSTOMERS.slice(5));
+const quietHour = Array.from({length:14},(_,hour)=>({hour,value:CUSTOMERS.reduce((sum,row)=>sum+row[hour],0)/7})).sort((a,b)=>a.value-b.value)[0];
+
+// Slat types: a day contains fourteen hour cells, always running from left to right.
+const Hour = slat({css:`
+  .cell { --rhp-cell-gap:2px; --rhp-radius:2px; display:flex; align-items:center; justify-content:center; }
+  .number { color:#18110a; font-size:13px; font-weight:500; font-variant-numeric:tabular-nums; }
+  .dark .number { color:#fffdf7; }
+  .on .cell { outline:2px solid #302319; outline-offset:-2px; }
+  .peak .cell { box-shadow:inset 0 0 0 2px #faf5e9, inset 0 0 0 3px #622a16; }
+  .hour:focus-visible { outline:2px solid #302319; outline-offset:1px; z-index:2; }
+  .clock { font-size:11px; color:var(--rhp-muted); --rhp-label-gap:10px; overflow:visible; }
+  @media(max-width:700px) { .clock span { display:inline-block; writing-mode:vertical-rl; transform:rotate(180deg); } }
+  @media(max-width:480px) { .cell { --rhp-cell-gap:1px; --rhp-radius:1px; } .number { font-size:11px; } }
+`},h=>html`
+  <div class=${()=>`hour${h.value>=30?" dark":""}${h.on?" on":""}${h.day===peak.day&&h.index===peak.hour?" peak":""}`}
+    data-day=${()=>h.day} data-hour=${()=>h.index} role="button"
+    tabindex=${()=>h.day===peak.day&&h.index===peak.hour?0:-1}
+    aria-label=${()=>`${DAYS[h.day]}, ${clock(h.index+7)} to ${clock(h.index+8)}: ${h.value} average customers`}>
+    <${Cell} class="cell" value=${()=>h.value}><span class="number">${()=>count.format(h.value)}</span><//>
+    <${Show} when=${()=>h.day===0}><${Label} edge="end" class="clock"><span>${()=>clock(h.index+7)}</span><//><//>
+  </div>`);
+const Day = slat({thickness:"var(--row-height)",room:{start:40,end:0,before:55,after:0},css:`
+  .name { font-size:12px; font-weight:600; --rhp-label-gap:7px; }
+`},d=>html`
+  <div class="day" data-row=${()=>d.index}>
+    <${Label} edge="start" class="name">${()=>d.day.slice(0,3)}<//>
+    <${Plot} orientation="across" day=${()=>d.index} value=${()=>d.hours} on=${h=>d.selected===h.index}>${Hour}<//>
+  </div>`);
+
+// Chart component: pointer, tap and arrow keys all read the same cell.
+function CafePoster() {
+  const [at,setAt] = createSignal(null);
+  const current = () => at() ?? [peak.day,peak.hour];
+  const cellOf = el => el?.closest?.("[data-hour]");
+  const pick = e => { const cell=cellOf(e.target); if(cell) setAt([+cell.dataset.day,+cell.dataset.hour]); };
+  const click = e => { const cell=cellOf(e.target); if(cell) { e.currentTarget.querySelectorAll('[data-hour][tabindex="0"]').forEach(el=>el.tabIndex=-1); cell.tabIndex=0; cell.focus({preventScroll:true}); pick(e); } };
+  const key = e => {
+    const cell=cellOf(e.target); if(!cell || e.altKey || e.ctrlKey || e.metaKey) return;
+    let day=+cell.dataset.day,hour=+cell.dataset.hour;
+    if(e.key==="ArrowRight") hour=Math.min(13,hour+1);
+    else if(e.key==="ArrowLeft") hour=Math.max(0,hour-1);
+    else if(e.key==="ArrowDown") day=Math.min(6,day+1);
+    else if(e.key==="ArrowUp") day=Math.max(0,day-1);
+    else if(e.key==="Home") hour=0;
+    else if(e.key==="End") hour=13;
+    else if(e.key==="Enter" || e.key===" ") { e.preventDefault(); pick(e); return; }
+    else return;
+    e.preventDefault();
+    const next=e.currentTarget.querySelector(`[data-day="${day}"][data-hour="${hour}"]`);
+    cell.tabIndex=-1; next.tabIndex=0; next.focus({preventScroll:true});
+  };
+  const leave = e => { if(e.pointerType==="touch") return; const cell=cellOf(document.activeElement); setAt(cell?[+cell.dataset.day,+cell.dataset.hour]:null); };
+  return html`
+  <article class="poster" onPointerMove=${e=>e.pointerType!=="touch"&&pick(e)} onClick=${click} onFocusIn=${pick}
+    onPointerLeave=${leave} onFocusOut=${e=>!e.currentTarget.contains(e.relatedTarget)&&setAt(null)} onKeyDown=${key}>
+    <header class="masthead"><span>Our neighbourhood café</span><span>The weekly rhythm</span></header>
+    <section class="hero">
+      <div><h1>Weekends take<br/>their coffee <em>later.</em></h1>
+      <p class="dek">The weekday rush starts with breakfast. At the weekend, it waits for brunch. Find your moment in the rhythm of our café.</p></div>
+      <div class="cup" aria-hidden="true"><svg viewBox="0 0 150 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 44H107V64C107 87 94 95 74 95S40 85 40 64Z"/><path d="M107 49H116C133 49 132 75 115 75H106"/><path d="M26 102C50 112 104 112 125 102"/><path d="M58 31C46 20 66 16 58 6M77 31C65 20 85 16 77 6M96 31C84 20 104 16 96 6"/></svg><p>A little less rush.</p></div>
+    </section>
+    <section aria-labelledby="heatmap-title">
+      <div class="chart-heading"><h2 id="heatmap-title">Average customers per hour</h2><div class="legend" aria-label=${`Colour scale from 0 to ${SCALE.max} customers; darker is busier`}><span>Quiet</span><span>0</span><i></i><span>${SCALE.max}</span><span>Busy</span></div></div>
+      <p class="axis-note">Each column is the hour starting at the time shown.</p>
+      <${Chart} class="chart" scale=${[SCALE.min,SCALE.max]} ticks=${false} label="Average customers per hour, Monday to Sunday, from 07:00 through 20:00"
+        theme=${{font:"var(--text)",ink:"#302319",muted:"#6b5747",surface:"#faf5e9",low:"#ead8bc",high:"#622a16"}}>
+        <${Plot} day=${DAYS} hours=${CUSTOMERS} selected=${d=>current()[0]===d.index?current()[1]:-1}>${Day}<//>
+      <//>
+      <div class="readout"><output aria-live="polite">${()=>`${DAYS[current()[0]]} · ${clock(current()[1]+7)} to ${clock(current()[1]+8)}`}${" · "}<b>${()=>count.format(CUSTOMERS[current()[0]][current()[1]])} customers</b></output><span class="hint">Point or tap to explore. Tab, then arrow keys to move.</span></div>
+    </section>
+    <section class="findings" aria-label="Patterns in the week">
+      <div class="finding"><span class="eyebrow">The weekday ritual</span><span class="stat">${clock(weekdayPeak.hour+7)}</span><p>The busiest hour on every weekday. Coffee before the day begins.</p></div>
+      <div class="finding"><span class="eyebrow">The weekend slow start</span><span class="stat">${clock(weekendPeak.hour+7)}</span><p>Both weekend days peak here. ${count.format(peak.value)} customers on ${DAYS[peak.day]}, the week’s high.</p></div>
+      <div class="finding"><span class="eyebrow">Room to linger</span><span class="stat">${clock(quietHour.hour+7)}</span><p>The quietest hour across the week, averaging ${count.format(quietHour.value)} customers.</p></div>
+    </section>
+    <footer><span>Illustrative data · Not observed café traffic.</span><span>Seven days. One neighbourhood.</span></footer>
+  </article>`;
+}
+
+// Mount the self-contained poster.
+render(()=>html`<${CafePoster}/>`,document.getElementById("app"));
+</script>
+</body>
+</html>

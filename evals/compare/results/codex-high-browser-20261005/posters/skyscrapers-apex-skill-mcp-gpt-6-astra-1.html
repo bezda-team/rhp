@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f1e8">
+  <title>A Race to the Sky | The world's ten tallest buildings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f3f1e8; --ink:#242b27; --muted:#656a61; --rule:#cccfc1; --lime:#c3e747; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#dfdfd5; color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
+    .poster { max-width:1440px; margin:0 auto; padding:32px 64px 26px; background:var(--paper); position:relative; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:19px; border-bottom:1px solid var(--ink); }
+    .brand { display:flex; align-items:center; gap:11px; font-size:12px; font-weight:700; letter-spacing:2px; }
+    .brand svg { width:24px; height:25px; }
+    .mono { font-family:'IBM Plex Mono',monospace; }
+    .edition { font-size:10px; letter-spacing:1.3px; text-transform:uppercase; }
+    .hero { display:grid; grid-template-columns:1fr 290px; gap:40px; padding:33px 0 30px; align-items:end; }
+    .eyebrow { font-size:11px; text-transform:uppercase; letter-spacing:1.8px; margin:0 0 13px; }
+    h1 { font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(88px,10.3vw,148px); font-weight:700; line-height:.86; letter-spacing:-2.8px; margin:0; }
+    h1 span { display:block; }
+    .hero-copy { padding-bottom:3px; }
+    .hero-copy h2 { font-size:25px; line-height:1.16; letter-spacing:-.7px; margin:0 0 13px; font-weight:500; }
+    .hero-copy p { color:var(--muted); font-size:13px; line-height:1.7; margin:0; }
+    .hero-copy .small-rule { width:37px; height:4px; background:var(--lime); margin-bottom:21px; }
+    .chart-section { border-top:1px solid var(--ink); margin-top:10px; }
+    .chart-heading { display:flex; justify-content:space-between; gap:15px; align-items:center; padding:15px 0 0; }
+    .chart-heading h2 { font-size:10px; font-weight:500; letter-spacing:1.25px; text-transform:uppercase; margin:0; }
+    .legend { display:flex; align-items:center; gap:7px; font-size:10px; color:var(--muted); }
+    .swatch { width:8px; height:8px; background:var(--lime); border:1px solid #8d9f49; }
+    .plot { position:relative; }
+    #height-chart { width:100%; min-height:408px; }
+    .chart-note { display:flex; justify-content:space-between; color:var(--muted); font-size:9px; line-height:1.5; letter-spacing:.15px; padding:3px 0 17px; }
+    .insights { display:grid; grid-template-columns:1fr 1fr 1fr; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); padding:20px 0; }
+    .insight { display:flex; align-items:center; gap:18px; padding:0 25px; border-left:1px solid var(--rule); }
+    .insight:first-child { padding-left:0; border:0; }
+    .insight:last-child { padding-right:0; }
+    .stat { font-family:'Barlow Condensed',Impact,sans-serif; font-size:52px; font-weight:600; letter-spacing:-1px; line-height:1; white-space:nowrap; }
+    .stat small { font-family:'DM Sans',sans-serif; font-size:14px; letter-spacing:0; margin-left:3px; }
+    .insight p { font-size:11px; line-height:1.55; margin:0; color:var(--muted); max-width:155px; }
+    .insight p strong { color:var(--ink); font-weight:500; }
+    .index-heading { display:flex; justify-content:space-between; align-items:center; padding:23px 0 17px; }
+    .index-heading h2 { font-size:10px; font-weight:500; letter-spacing:1.4px; margin:0; text-transform:uppercase; }
+    .index-heading span { font-size:9px; color:var(--muted); }
+    .building-index { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); column-gap:25px; row-gap:22px; }
+    .building { border-top:1px solid var(--rule); padding-top:10px; display:grid; grid-template-columns:27px 1fr; gap:9px; }
+    .number { font-family:'IBM Plex Mono',monospace; width:26px; height:26px; display:flex; justify-content:center; align-items:center; font-size:10px; border:1px solid #b8bdb0; border-radius:50%; }
+    .building:first-child .number { background:var(--lime); border-color:var(--lime); }
+    .building h3 { font-size:12px; line-height:1.4; margin:1px 0 6px; min-height:34px; font-weight:600; }
+    .building p { font-size:10px; line-height:1.6; margin:0; color:var(--muted); }
+    .building .height { color:var(--ink); font-size:11px; font-weight:500; margin-top:7px; }
+    footer { border-top:1px solid var(--ink); margin-top:28px; padding-top:15px; display:flex; justify-content:space-between; gap:25px; }
+    footer p { margin:0; font-size:9px; color:var(--muted); line-height:1.6; max-width:740px; }
+    footer a { color:inherit; text-underline-offset:2px; }
+    .folio { white-space:nowrap; text-transform:uppercase; font-size:10px; letter-spacing:1px; }
+    .apexcharts-tooltip { border:1px solid var(--ink)!important; border-radius:0!important; box-shadow:3px 3px 0 #242b2720!important; }
+    .tip { background:var(--paper); padding:13px 16px; font-size:12px; }
+    .tip strong { display:block; margin-bottom:5px; }
+    .tip span { display:block; font-size:10px; color:var(--muted); }
+    .tip b { display:block; margin-top:9px; font-family:'IBM Plex Mono',monospace; font-weight:500; }
+    .error { font-size:13px; padding:40px 0; }
+    @media (min-width:1441px) { .poster { margin:28px auto; box-shadow:0 5px 40px #242b2712; } }
+    @media (max-width:1000px) {
+      .poster { padding:26px 34px; }
+      .hero { grid-template-columns:1fr 240px; gap:25px; }
+      h1 { font-size:110px; }
+      .insight { gap:12px; padding:0 17px; }
+      .stat { font-size:43px; }
+      .building-index { column-gap:15px; }
+      .building { grid-template-columns:1fr; gap:5px; }
+      .building h3 { min-height:50px; }
+    }
+    @media (max-width:650px) {
+      .poster { padding:22px 22px 24px; }
+      .masthead { padding-bottom:15px; }
+      .brand { font-size:10px; letter-spacing:1.3px; gap:8px; }
+      .edition { font-size:8px; letter-spacing:.5px; }
+      .edition .desktop { display:none; }
+      .hero { grid-template-columns:1fr; gap:24px; padding:29px 0 23px; }
+      .eyebrow { font-size:9px; margin-bottom:15px; }
+      h1 { font-size:clamp(78px,20vw,128px); letter-spacing:-1.7px; }
+      .hero-copy { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+      .hero-copy .small-rule { display:none; }
+      .hero-copy h2 { font-size:21px; margin:0; }
+      .hero-copy p { font-size:11px; line-height:1.65; }
+      .chart-heading h2 { font-size:9px; letter-spacing:.5px; }
+      .legend { font-size:9px; }
+      #height-chart { min-height:480px; }
+      .chart-note { display:block; font-size:8px; }
+      .chart-note span { display:block; margin:3px 0; }
+      .insights { padding:16px 0; gap:13px; }
+      .insight { display:block; padding:0 0 0 12px; }
+      .insight:first-child { padding:0; }
+      .stat { font-size:38px; letter-spacing:-.7px; margin-bottom:8px; }
+      .stat small { font-size:11px; }
+      .insight p { font-size:9px; line-height:1.5; }
+      .index-heading { padding-top:24px; }
+      .index-heading span { font-size:8px; }
+      .building-index { grid-template-columns:repeat(2,minmax(0,1fr)); gap:21px 20px; }
+      .building { grid-template-columns:24px 1fr; gap:7px; }
+      .number { width:23px; height:23px; font-size:9px; }
+      .building h3 { font-size:11px; min-height:32px; }
+      .building p { font-size:9px; }
+      footer { gap:15px; margin-top:25px; }
+      footer p { font-size:8px; }
+      .folio { font-size:8px; }
+    }
+    @media print {
+      body { background:var(--paper); }
+      .poster { margin:0; box-shadow:none; padding:20px; }
+      * { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      .building, .insights { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="masthead">
+      <div class="brand"><svg viewBox="0 0 24 25" fill="none" aria-hidden="true"><path d="M2 24V14h5v10M10 24V7h5v17M18 24V1h4v23" stroke="currentColor" stroke-width="2"/></svg>THE VERTICAL ATLAS</div>
+      <div class="edition mono"><span class="desktop">Architecture &amp; ambition / </span>No. 001</div>
+    </header>
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <p class="eyebrow mono">Ten buildings. One extraordinary ascent.</p>
+        <h1 id="title"><span>A RACE TO</span><span>THE SKY.</span></h1>
+      </div>
+      <div class="hero-copy">
+        <div class="small-rule"></div>
+        <h2>The world’s ten<br>tallest buildings.</h2>
+        <p>From Dubai to Beijing, a study in vertical ambition. Ten landmarks that push the limits of the built world.</p>
+      </div>
+    </section>
+    <section class="chart-section" aria-labelledby="chart-title">
+      <div class="chart-heading">
+        <h2 id="chart-title" class="mono">01 / The height of ambition</h2>
+        <div class="legend"><span class="swatch"></span>Above them all</div>
+      </div>
+      <div class="plot">
+        <div id="height-chart" role="img" aria-label="Heights in metres, descending from Burj Khalifa at 828 metres to CITIC Tower at 527.7 metres. Full figures are in the building index below."></div>
+      </div>
+      <div class="chart-note mono"><span>ARCHITECTURAL HEIGHT / METRES / BASELINE = 0</span><span>Numbers correspond to the building index below.</span></div>
+    </section>
+    <section class="insights" aria-label="At a glance">
+      <div class="insight"><div class="stat">149.1<small>m</small></div><p><strong>A league of its own.</strong><br>Burj Khalifa’s lead over the second-tallest building.</p></div>
+      <div class="insight"><div class="stat">9<small>/ 10</small></div><p><strong>Asia’s upward rise.</strong><br>Nine of these ten towers stand in Asia.</p></div>
+      <div class="insight"><div class="stat">530<small>m</small></div><p><strong>Level at the top.</strong><br>Guangzhou and Tianjin’s CTF towers share a height.</p></div>
+    </section>
+    <section aria-labelledby="index-title">
+      <div class="index-heading"><h2 id="index-title" class="mono">02 / The building index</h2><span class="mono">CITY / YEAR COMPLETED</span></div>
+      <ol class="building-index">
+        <li class="building"><span class="number" aria-hidden="true">01</span><div><h3>Burj Khalifa</h3><p>Dubai / 2010</p><p class="height mono">828 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">02</span><div><h3>Merdeka 118</h3><p>Kuala Lumpur / 2023</p><p class="height mono">678.9 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">03</span><div><h3>Shanghai Tower</h3><p>Shanghai / 2015</p><p class="height mono">632 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">04</span><div><h3>Makkah Royal Clock Tower</h3><p>Mecca / 2012</p><p class="height mono">601 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">05</span><div><h3>Ping An Finance Center</h3><p>Shenzhen / 2017</p><p class="height mono">599.1 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">06</span><div><h3>Lotte World Tower</h3><p>Seoul / 2017</p><p class="height mono">554.5 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">07</span><div><h3>One World Trade Center</h3><p>New York City / 2014</p><p class="height mono">541.3 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">08</span><div><h3>Guangzhou CTF Finance Centre</h3><p>Guangzhou / 2016</p><p class="height mono">530 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">09</span><div><h3>Tianjin CTF Finance Centre</h3><p>Tianjin / 2019</p><p class="height mono">530 m</p></div></li>
+        <li class="building"><span class="number" aria-hidden="true">10</span><div><h3>CITIC Tower</h3><p>Beijing / 2018</p><p class="height mono">527.7 m</p></div></li>
+      </ol>
+    </section>
+    <footer>
+      <p><strong>Source: CTBUH</strong> (Council on Tall Buildings and Urban Habitat), supplied dataset.<br>Completed buildings, ordered by architectural height. Includes spires; excludes antennas and other technical equipment.</p>
+      <span class="folio mono">Built to rise ↗<br>001 / 001</span>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const buildings = [
+      { name:'Burj Khalifa', city:'Dubai', height:828, year:2010 },
+      { name:'Merdeka 118', city:'Kuala Lumpur', height:678.9, year:2023 },
+      { name:'Shanghai Tower', city:'Shanghai', height:632, year:2015 },
+      { name:'Makkah Royal Clock Tower', city:'Mecca', height:601, year:2012 },
+      { name:'Ping An Finance Center', city:'Shenzhen', height:599.1, year:2017 },
+      { name:'Lotte World Tower', city:'Seoul', height:554.5, year:2017 },
+      { name:'One World Trade Center', city:'New York City', height:541.3, year:2014 },
+      { name:'Guangzhou CTF Finance Centre', city:'Guangzhou', height:530, year:2016 },
+      { name:'Tianjin CTF Finance Centre', city:'Tianjin', height:530, year:2019 },
+      { name:'CITIC Tower', city:'Beijing', height:527.7, year:2018 }
+    ];
+    const options = {
+      chart: { type:'bar', height:408, fontFamily:'IBM Plex Mono, monospace', foreColor:'#656a61', toolbar:{show:false}, zoom:{enabled:false}, animations:{enabled:false}, parentHeightOffset:0 },
+      series:[{ name:'Architectural height', data:buildings.map((b,i)=>({ x:String(i+1).padStart(2,'0'), y:b.height })) }],
+      colors:['#c3e747', '#293c33', '#33463b', '#3d5043', '#475a4b', '#516453', '#5b6e5b', '#657863', '#6f826b', '#798c73'],
+      plotOptions:{ bar:{ horizontal:false, columnWidth:'45%', distributed:true, borderRadius:0, dataLabels:{position:'top'} } },
+      dataLabels:{ enabled:true, formatter:value=>String(value), offsetY:-21, style:{fontSize:'12px',fontWeight:500,colors:['#242b27']}, background:{enabled:false} },
+      stroke:{width:0},
+      fill:{opacity:1},
+      legend:{show:false},
+      grid:{ borderColor:'#d6d8cd', strokeDashArray:3, padding:{left:6,right:4,top:18,bottom:0}, xaxis:{lines:{show:false}}, yaxis:{lines:{show:true}} },
+      xaxis:{ type:'category', labels:{style:{fontSize:'11px'},trim:false,rotate:0}, axisTicks:{show:false}, axisBorder:{show:true,color:'#8a9285'}, crosshairs:{show:false}, tooltip:{enabled:false} },
+      yaxis:{ min:0,max:900,tickAmount:3,labels:{formatter:value=>String(Math.round(value)),style:{fontSize:'10px'}} },
+      tooltip:{shared:false,intersect:true,custom:({dataPointIndex})=>{
+        const b=buildings[dataPointIndex];
+        return b ? `<div class="tip"><strong>${b.name}</strong><span>${b.city} / Completed ${b.year}</span><b>${b.height} m</b></div>` : '';
+      }},
+      states:{hover:{filter:{type:'lighten',value:.07}},active:{filter:{type:'none'}}},
+      responsive:[{breakpoint:650,options:{
+        chart:{height:480},
+        plotOptions:{bar:{horizontal:true,barHeight:'46%',dataLabels:{position:'top'}}},
+        dataLabels:{offsetX:8,offsetY:0,textAnchor:'start',style:{fontSize:'10px'}},
+        grid:{padding:{top:10,right:32,left:0,bottom:0},xaxis:{lines:{show:true}},yaxis:{lines:{show:false}}},
+        xaxis:{min:0,max:1000,tickAmount:4,labels:{formatter:value=>String(Math.round(Number(value))),style:{fontSize:'9px'}},axisBorder:{show:false}},
+        yaxis:{min:0,max:1000,labels:{formatter:value=>String(value).padStart(2,'0'),style:{fontSize:'10px'}}}
+      }}]
+    };
+    async function renderPoster() {
+      try {
+        if (!window.ApexCharts) throw new Error('Chart library unavailable');
+        await document.fonts.ready;
+        const chart = new ApexCharts(document.querySelector('#height-chart'), options);
+        await chart.render();
+      } catch (error) {
+        document.querySelector('#height-chart').innerHTML='<p class="error">The height chart could not load. All ten buildings and their heights are listed below.</p>';
+        console.error(error);
+      }
+    }
+    renderPoster();
+  </script>
+</body>
+</html>

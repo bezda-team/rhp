@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f3">
+  <title>The price of the gap | Gender pay gap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --paper: #f8f7f3; --ink: #24272b; --muted: #64686b; --red: #db252b; --rule: #d7d7d1; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e8e8e3; color: var(--ink); font-family: Inter, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .poster { max-width: 1040px; margin: 40px auto; padding: 0 56px 32px; background: var(--paper); box-shadow: 0 5px 35px #24272b0a; }
+    .red-tab { width: 78px; height: 12px; background: var(--red); margin-bottom: 28px; }
+    .masthead { display: flex; justify-content: space-between; gap: 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 15px; }
+    .masthead span:first-child { color: var(--red); }
+    h1 { font-size: clamp(38px, 5.8vw, 62px); line-height: 1.04; letter-spacing: -2.9px; font-weight: 800; margin: 32px 0 16px; }
+    .standfirst { font-size: 19px; line-height: 1.5; margin: 0; max-width: 680px; }
+    .chart-heading { margin-top: 36px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+    h2 { font-size: 16px; line-height: 1.5; font-weight: 600; margin: 0; }
+    .unit { color: var(--muted); font-size: 13px; margin: 3px 0 0; }
+    .legend { display: flex; gap: 22px; font-size: 13px; padding-bottom: 4px; }
+    .legend span { display: inline-flex; align-items: center; gap: 7px; }
+    .dot { height: 10px; width: 10px; border-radius: 50%; background: var(--red); }
+    .dot.men { background: var(--ink); }
+    figure { margin: 12px 0 0; }
+    #chart { min-height: 570px; }
+    .chart-note { margin: 2px 0 23px; font-size: 11px; color: var(--muted); text-align: right; }
+    .insights { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); padding: 23px 0; gap: 35px; }
+    .insight + .insight { border-left: 1px solid var(--rule); padding-left: 35px; }
+    .overline { font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.5px; margin: 0 0 9px; }
+    .stat { font-weight: 700; font-size: 40px; letter-spacing: -1.8px; line-height: 1.1; color: var(--red); }
+    .stat span { font-size: 13px; letter-spacing: 0; font-weight: 400; color: var(--muted); }
+    .insight p:last-child { font-size: 13px; line-height: 1.6; margin: 9px 0 0; max-width: 350px; }
+    footer { margin-top: 19px; font-size: 11px; line-height: 1.7; color: var(--muted); }
+    footer p { margin: 0; }
+    .footer-line { display: flex; justify-content: space-between; gap: 15px; margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 9px; letter-spacing: 1.3px; text-transform: uppercase; }
+    .footer-mark { width: 22px; height: 5px; background: var(--red); display: inline-block; align-self: center; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .error { padding: 30px 0; line-height: 1.6; }
+    .apexcharts-tooltip { font-family: Inter, Arial, sans-serif !important; }
+    @media (max-width: 650px) {
+      body { background: var(--paper); }
+      .poster { padding: 0 20px 25px; margin: 0; box-shadow: none; }
+      .red-tab { width: 58px; height: 9px; margin-bottom: 23px; }
+      .masthead { font-size: 9px; letter-spacing: 1.25px; padding-bottom: 13px; }
+      h1 { margin-top: 27px; font-size: 43px; letter-spacing: -2px; max-width: 340px; }
+      .standfirst { font-size: 16px; line-height: 1.5; }
+      .chart-heading { margin-top: 29px; display: block; }
+      h2 { font-size: 14px; }
+      .unit { font-size: 11px; }
+      .legend { margin-top: 16px; font-size: 12px; }
+      figure { margin-top: 3px; }
+      #chart { min-height: 670px; margin-left: -8px; margin-right: -7px; }
+      .chart-note { font-size: 10px; text-align: left; }
+      .insights { gap: 19px; padding: 20px 0; }
+      .insight + .insight { padding-left: 19px; }
+      .overline { font-size: 9px; letter-spacing: .8px; line-height: 1.5; }
+      .stat { font-size: 33px; }
+      .stat span { display: block; font-size: 11px; margin-top: 5px; }
+      .insight p:last-child { font-size: 12px; }
+      footer { font-size: 10px; }
+      .footer-line { font-size: 8px; letter-spacing: 1px; }
+    }
+    @media print {
+      @page { size: A4 portrait; margin: 10mm; }
+      body { background: var(--paper); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .poster { margin: 0 auto; padding: 0 16px 12px; box-shadow: none; }
+      h1 { font-size: 46px; margin-top: 24px; }
+      .chart-heading { margin-top: 24px; }
+      .insights { break-inside: avoid; }
+      footer { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <div class="red-tab" aria-hidden="true"></div>
+    <header>
+      <div class="masthead"><span>Work &amp; pay</span><span>Eight occupations</span></div>
+      <h1>The price of the gap</h1>
+      <p class="standfirst">Women earn less in every occupation shown.<br>The size of the divide varies sharply.</p>
+    </header>
+    <section aria-labelledby="chart-title">
+      <div class="chart-heading">
+        <div><h2 id="chart-title">Median weekly earnings</h2><p class="unit">US dollars · Women compared with men</p></div>
+        <div class="legend" aria-label="Chart key"><span><i class="dot" aria-hidden="true"></i>Women</span><span><i class="dot men" aria-hidden="true"></i>Men</span></div>
+      </div>
+      <figure aria-labelledby="chart-title" aria-describedby="data-note">
+        <div id="chart" role="img" aria-label="Dumbbell chart comparing women's and men's weekly earnings in eight occupations. Exact values are provided in the following accessible table."></div>
+        <div class="sr-only" id="accessible-data"><table>
+          <caption>Illustrative median weekly earnings, US dollars</caption>
+          <thead><tr><th scope="col">Occupation</th><th scope="col">Women</th><th scope="col">Men</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Physicians</th><td>1,950</td><td>2,800</td></tr>
+            <tr><th scope="row">Lawyers</th><td>1,880</td><td>2,450</td></tr>
+            <tr><th scope="row">Software developers</th><td>1,850</td><td>2,100</td></tr>
+            <tr><th scope="row">Accountants</th><td>1,300</td><td>1,600</td></tr>
+            <tr><th scope="row">Registered nurses</th><td>1,400</td><td>1,550</td></tr>
+            <tr><th scope="row">Elementary school teachers</th><td>1,150</td><td>1,250</td></tr>
+            <tr><th scope="row">Chefs and head cooks</th><td>700</td><td>850</td></tr>
+            <tr><th scope="row">Retail salespersons</th><td>650</td><td>820</td></tr>
+          </tbody>
+        </table></div>
+        <figcaption class="chart-note">Ordered by men’s earnings · Lines connect the two medians</figcaption>
+      </figure>
+    </section>
+    <section class="insights" aria-label="Key comparisons">
+      <div class="insight"><p class="overline">Widest dollar gap</p><div class="stat">$850 <span>per week</span></div><p>Women physicians earn <strong>30.4% less</strong> than men in these illustrative figures.</p></div>
+      <div class="insight"><p class="overline">Narrowest dollar gap</p><div class="stat">$100 <span>per week</span></div><p>Women elementary school teachers earn <strong>8.0% less</strong> than men.</p></div>
+    </section>
+    <footer>
+      <p id="data-note"><strong>Note:</strong> All figures are illustrative, supplied for this chart. They are not observed labour-market statistics.</p>
+      <p>Percentage gap = (men’s earnings − women’s earnings) ÷ men’s earnings × 100. Comparisons are unadjusted.</p>
+      <div class="footer-line"><span>The gender pay gap · An illustrative comparison</span><span class="footer-mark" aria-hidden="true"></span></div>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    const occupations = [
+      { name: 'Physicians', women: 1950, men: 2800 },
+      { name: 'Lawyers', women: 1880, men: 2450 },
+      { name: 'Software developers', women: 1850, men: 2100 },
+      { name: 'Accountants', women: 1300, men: 1600 },
+      { name: 'Registered nurses', women: 1400, men: 1550 },
+      { name: 'Elementary school teachers', women: 1150, men: 1250 },
+      { name: 'Chefs and head cooks', women: 700, men: 850 },
+      { name: 'Retail salespersons', women: 650, men: 820 }
+    ];
+    const number = value => Number(value).toLocaleString('en-US');
+    const compactLabels = {
+      'Software developers': ['Software', 'developers'],
+      'Registered nurses': ['Registered', 'nurses'],
+      'Elementary school teachers': ['Elementary', 'school', 'teachers'],
+      'Chefs and head cooks': ['Chefs and', 'head cooks'],
+      'Retail salespersons': ['Retail', 'salespersons']
+    };
+    async function renderPoster() {
+      const target = document.querySelector('#chart');
+      try {
+        await document.fonts.ready;
+        const compact = window.matchMedia('(max-width: 650px)').matches;
+        if (window.posterChart) window.posterChart.destroy();
+        const chart = new ApexCharts(target, {
+          chart: {
+            type: 'dumbbell', height: compact ? 670 : 570, fontFamily: 'Inter, Arial, sans-serif', foreColor: '#64686b',
+            background: 'transparent', toolbar: { show: false }, animations: { enabled: false },
+            zoom: { enabled: false }, parentHeightOffset: 0
+          },
+          series: [
+            { name: 'Women', data: occupations.map(d => ({ x: d.name, y: d.women })) },
+            { name: 'Men', data: occupations.map(d => ({ x: d.name, y: d.men })) }
+          ],
+          colors: ['#db252b', '#24272b'],
+          plotOptions: { bar: {
+            horizontal: true, barHeight: compact ? '3%' : '5%',
+            dumbbell: {
+              connector: { color: '#a8aaa7', opacity: 1 },
+              dataLabels: { enabled: true, offset: compact ? 5 : 8, colorFromMarker: true, formatter: value => number(value) }
+            }
+          } },
+          markers: { size: compact ? 8 : 10, strokeWidth: 0, hover: { sizeOffset: 1 } },
+          stroke: { width: 0 },
+          dataLabels: { enabled: false, style: { fontSize: compact ? '10px' : '12px', fontWeight: 500 } },
+          legend: { show: false },
+          grid: { borderColor: '#deded8', strokeDashArray: 0, xaxis: { lines: { show: true } }, yaxis: { lines: { show: false } }, padding: { top: 2, right: compact ? 8 : 15, bottom: 0, left: 0 } },
+          xaxis: { min: 0, max: compact ? 3600 : 3500, tickAmount: compact ? 3 : 7, position: 'top',
+            labels: { formatter: number, style: { fontSize: '11px' }, offsetY: -3 },
+            axisBorder: { show: false }, axisTicks: { show: false }, tooltip: { enabled: false }, crosshairs: { show: false }
+          },
+          yaxis: { labels: { minWidth: compact ? 100 : 220, maxWidth: compact ? 100 : 220, align: 'left', offsetX: compact ? -15 : -25, formatter: value => compact ? (compactLabels[value] || value) : value, style: { fontSize: compact ? '11px' : '13px', fontWeight: 500, colors: Array(8).fill('#24272b') } } },
+          tooltip: { shared: false, intersect: true, y: { formatter: value => '$' + number(value) } },
+          states: { hover: { filter: { type: 'none' } }, active: { filter: { type: 'none' } } }
+        });
+        await chart.render();
+        window.posterChart = chart;
+      } catch (error) {
+        target.innerHTML = '<p class="error">The chart could not load. Please check your internet connection and reload.</p>';
+        document.querySelector('#accessible-data').classList.remove('sr-only');
+        console.error(error);
+      }
+    }
+    window.matchMedia('(max-width: 650px)').addEventListener('change', renderPoster);
+    renderPoster();
+  </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+{
+  "file": "/tmp/rhp-codex-high-20261005/skyscrapers-semiotic-skill-mcp-gpt-6-astra-1/project/poster.html",
+  "widths": {
+    "1280": {
+      "width": 1280,
+      "pageHeight": 1486,
+      "sideways": false,
+      "charts": [
+        {
+          "tag": "svg",
+          "cls": "",
+          "x": 64,
+          "y": 455,
+          "w": 1152,
+          "h": 520
+        },
+        {
+          "tag": "svg",
+          "cls": "",
+          "x": 64,
+          "y": 455,
+          "w": 1152,
+          "h": 520
+        },
+        {
+          "tag": "canvas",
+          "cls": "",
+          "x": 64,
+          "y": 455,
+          "w": 1152,
+          "h": 520
+        },
+        {
+          "tag": "svg",
+          "cls": "",
+          "x": 64,
+          "y": 455,
+          "w": 1152,
+          "h": 520
+        }
+      ],
+      "canvasCharts": 1,
+      "firstScreenChart": true,
+      "textCount": 111,
+      "tiny": [],
+      "cut": [
+        {
+          "t": "Burj Khalifa leads at 828 metres, 149.1 metres tal",
+          "why": "outside the page"
+        }
+      ],
+      "overlaps": [],
+      "overlapCount": 0,
+      "title": "A race to the sky | The world's ten tallest buildings",
+      "headings": [
+        "A race tothe sky.",
+        "The world\u2019s tentallest buildings.",
+        "Burj Khalifa",
+        "Merdeka 118",
+        "Shanghai Tower",
+        "Makkah Royal Clock Tower",
+        "Ping An Finance Center",
+        "Lotte World Tower"
+      ],
+      "watermark": false,
+      "lowContrast": [],
+      "loadMs": 3412,
+      "errors": [],
+      "failed": []
+    }
+  },
+  "cdnMode": "direct",
+  "cdn": [
+    {
+      "url": "https://cdn.jsdelivr.net/npm/react@19.2.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "f784b89c4f98dbf8eb070bb801326f7fe3da697b47e6b84beb5fdad45100e18c"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/react-dom@19.2.0/client/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "0259be5d0bbb86c45f5af45b75b30f8636336ce5c74c0e9f132bbdd5633d7d35"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/semiotic@3.12.0/ordinal/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "b3beb11904a20c7bfe6bff2f7f396981b27d29cca4cef0d7fb9e6afba35951f5"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/scheduler@0.27.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "fad17d6f8d2f069e0628ea613d2cbf0716fb4c9bf250f28f3d43000f911175b5"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-scale@4.0.2/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "1c833c42197b5733e4daa9901e3152ad20cf5dc40fd29401f4ac1f404bb86ae7"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-interpolate@3.0.1/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "7f600e69f10272fdcb8c09d3a6f94475242b860e1e2305a1af5433f692c8e63a"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-array@3.0.4/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "2aeb1448572b5c4de5fa07c1115ba0a47c107a42716e3a22b70e78dbb87691c6"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-quadtree@3.0.1/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "0aafaeff16bd344880f9be177ffc6ed89d4182e303c96450e9ead76b7839fd9c"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-shape@3.2.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "1d147fdf265c8793950961a0d5bc0e93a5a5e0d3e971e21544f7fb08223c39f5"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-hierarchy@3.1.2/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "872632cadb5e9197c9b8b5ef9c187d49e8a424f489f6d72917f6d8778a15f0e9"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/internmap@2.0.3/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "2809979e4bda50bae77cbe33a926556ff4459e60a9f91f7a62de1392881e7679"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-color@3.0.1/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "6977bea1d44836f243a39770a5cbd0198dd0aa4fe6b85fc9f45b7c0edab406d5"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-array@3.2.4/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "aa6aea4f00ab2763f66b9c107e712d2cb2364ca30a2490651f09f0fecee4d90b"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-time@3.0.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "667c66c7425fa149e5fb3911c1af7a0c870411ce63f4a48e5bbd6a18ea7764c6"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-format@3.0.1/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "03554aabc4a5e73c3e3ae8fdfc563361722ddac1d983bc437102142c5c81e125"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-path@3.1.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "e3c198594f5556887e2073d33407c4a2d138ad07cb9099246391e77b7de76c8c"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-time-format@4.0.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "b27115c08af6217f59dde603589f5ddd21987479cb18b7a557de79bfa07095f3"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/react-dom@19.2.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "bfeee6f21a45e6e8d42a2055e1747eceb159308217138130d0b8dd934b3cadab"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/d3-array@3.0.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "ed5e49e9955418e8341c3f6cea5a7b558ab1793005dd1e1bf58b2806bc706adf"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/internmap@2.0.0/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "2d2a46f7c1b25b4462c2a6c30bb0b59ac7f94a688cb1ec6a4b96b89ba39004fe"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/react@19.2.0/jsx-runtime/+esm",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8",
+      "sha256": "6c1c5778aac4e50c7e8c6f405e79f6c7751d221c828bb23e502bf533acb4738a"
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "note": "Infrastructure diagnostic on unchanged pilot HTML: exact CDN assets render, whereas the legacy ESM reconstruction omits React DOM createRoot. Excluded from corrected cohort."
+}

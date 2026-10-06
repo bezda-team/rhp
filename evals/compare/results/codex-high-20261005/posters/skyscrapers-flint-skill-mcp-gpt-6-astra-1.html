@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f0e7">
+  <meta name="description" content="An editorial portrait of the world's ten tallest buildings, with heights, cities and completion years from CTBUH.">
+  <title>Above it all. | The world's ten tallest buildings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f3f0e7; --ink:#202a29; --muted:#53605a; --rule:#caccc0; --accent:#d94a2f; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:"DM Sans",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    ::selection { background:var(--accent); color:var(--paper); }
+    .poster { max-width:1440px; padding:30px 64px 28px; margin:auto; }
+    .mono { font-family:"IBM Plex Mono",monospace; font-weight:400; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; gap:20px; border-top:5px solid var(--ink); border-bottom:1px solid var(--ink); padding:13px 0; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; }
+    .brand { display:flex; align-items:center; gap:9px; font-weight:700; }
+    .brand-symbol { width:15px; height:15px; background:var(--accent); display:inline-block; }
+    .hero { display:grid; grid-template-columns:1.6fr 1fr; align-items:end; gap:6%; padding:38px 0 40px; }
+    h1 { font-family:"Barlow Condensed","Arial Narrow",Impact,sans-serif; font-weight:800; font-size:clamp(110px,15.6vw,220px); letter-spacing:-.025em; line-height:.79; margin:0 0 4px -5px; text-transform:uppercase; }
+    h1 span { display:block; }
+    .intro { padding-bottom:3px; max-width:400px; }
+    .eyebrow { font-size:10px; line-height:1.5; letter-spacing:1.5px; text-transform:uppercase; margin:0 0 12px; }
+    h2 { margin:0; font-size:clamp(25px,2.65vw,36px); font-weight:500; letter-spacing:-1.1px; line-height:1.14; }
+    .intro-copy { color:var(--muted); font-size:14px; line-height:1.65; max-width:340px; margin:17px 0 21px; }
+    .record { display:flex; align-items:flex-end; gap:20px; padding-top:13px; border-top:1px solid var(--rule); }
+    .record-number { font-family:"Barlow Condensed",Impact,sans-serif; font-weight:600; color:var(--accent); font-size:92px; line-height:.85; letter-spacing:-2px; white-space:nowrap; }
+    .record-number small { font-family:"IBM Plex Mono",monospace; font-size:18px; letter-spacing:0; }
+    .record-copy { font-size:10px; line-height:1.65; padding-bottom:1px; }
+    .record-copy strong { font-weight:500; }
+    figure { margin:0; }
+    .chart-header { display:flex; justify-content:space-between; align-items:center; gap:20px; border-top:1px solid var(--ink); padding:14px 0 0; font-size:10px; letter-spacing:1px; text-transform:uppercase; }
+    .chart-header .key { color:var(--muted); font-size:9px; letter-spacing:.3px; display:flex; align-items:center; gap:7px; }
+    .key i { display:inline-block; width:7px; height:7px; background:var(--accent); }
+    #chart { width:100%; min-height:430px; margin:8px 0 0; }
+    #chart .vega-embed, #chart svg { display:block; }
+    .chart-status { min-height:430px; display:grid; place-content:center; color:var(--muted); font-size:12px; text-align:center; padding:30px; }
+    .chart-footer { display:flex; justify-content:space-between; gap:24px; color:var(--muted); font-size:10px; line-height:1.6; padding:12px 0 25px; }
+    .chart-footer p { margin:0; }
+    .chart-footer strong { color:var(--accent); font-weight:500; }
+    .index-heading { display:flex; justify-content:space-between; gap:20px; align-items:baseline; border-top:3px solid var(--ink); padding-top:14px; margin-bottom:22px; }
+    .index-heading h2 { font-size:12px; font-weight:700; letter-spacing:1.3px; text-transform:uppercase; }
+    .index-heading p { margin:0; color:var(--muted); font-size:9px; }
+    .building-index { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); column-gap:25px; row-gap:24px; list-style:none; padding:0; margin:0; }
+    .building { border-top:1px solid var(--rule); padding:10px 0 0; min-width:0; }
+    .building-top { display:flex; align-items:baseline; justify-content:space-between; gap:5px; }
+    .index-number { font-size:11px; color:var(--muted); }
+    .height { font-family:"Barlow Condensed",Impact,sans-serif; font-size:32px; font-weight:600; line-height:1; }
+    .height small { font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:400; margin-left:3px; }
+    .building h3 { font-size:14px; line-height:1.25; font-weight:600; letter-spacing:-.2px; min-height:35px; margin:12px 0 7px; }
+    .building p { color:var(--muted); font-size:11px; line-height:1.6; margin:0; }
+    .building .completion { font-size:9px; margin-top:2px; }
+    .building:first-child { border-top-color:var(--accent); }
+    .building:first-child .index-number, .building:first-child .height { color:var(--accent); }
+    .closing { display:grid; grid-template-columns:1fr 1fr; gap:10%; border-top:1px solid var(--ink); margin-top:30px; padding:20px 0; }
+    .closing p { margin:0; font-size:13px; line-height:1.6; }
+    .closing .note { font-size:10px; color:var(--muted); }
+    .closing strong { font-weight:600; }
+    .footer { border-top:1px solid var(--rule); padding-top:14px; display:flex; justify-content:space-between; gap:15px; font-size:9px; color:var(--muted); line-height:1.5; }
+    .footer a { color:inherit; text-decoration-thickness:1px; text-underline-offset:3px; }
+    a:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+    .footer-mark { color:var(--accent); font-weight:500; white-space:nowrap; }
+    #vg-tooltip-element { font-family:"DM Sans",Arial,sans-serif; background:var(--paper); color:var(--ink); border:1px solid var(--rule); border-radius:0; box-shadow:0 5px 20px #202a2915; padding:12px; }
+    @media (min-width:1440px) { .hero { padding-top:48px; padding-bottom:48px; } }
+    @media (max-width:1000px) {
+      .poster { padding:24px 35px; }
+      .hero { gap:5%; }
+      .record-number { font-size:76px; }
+      .intro-copy { font-size:13px; }
+      .building-index { column-gap:16px; }
+      .building h3 { font-size:12px; min-height:45px; }
+    }
+    @media (max-width:640px) {
+      .poster { padding:18px 22px 24px; }
+      .masthead { font-size:8px; letter-spacing:1px; padding:10px 0; gap:10px; }
+      .masthead .edition { display:none; }
+      .brand { gap:7px; }
+      .brand-symbol { width:11px; height:11px; }
+      .hero { display:block; padding:30px 0 25px; }
+      h1 { font-size:clamp(110px,27vw,172px); margin-left:-2px; line-height:.8; }
+      .intro { margin-top:29px; max-width:none; display:grid; grid-template-columns:1fr auto; gap:0 20px; align-items:end; }
+      .eyebrow { grid-column:1 / -1; font-size:9px; margin-bottom:9px; }
+      .intro h2 { font-size:25px; letter-spacing:-.7px; }
+      .intro-copy { grid-column:1 / -1; grid-row:3; font-size:12px; line-height:1.65; margin:16px 0 0; max-width:none; }
+      .record { display:block; border:0; padding:0; }
+      .record-number { font-size:62px; letter-spacing:-1px; }
+      .record-number small { font-size:12px; }
+      .record-copy { font-size:8px; margin-top:6px; line-height:1.4; }
+      .record-copy .extra { display:none; }
+      .chart-header { font-size:9px; letter-spacing:.4px; padding-top:13px; }
+      .chart-header .key { font-size:8px; }
+      #chart, .chart-status { min-height:305px; }
+      .chart-footer { display:block; padding:9px 0 24px; font-size:9px; }
+      .chart-footer p + p { margin-top:5px; }
+      .index-heading { margin-bottom:16px; }
+      .index-heading h2 { font-size:11px; }
+      .index-heading p { font-size:8px; }
+      .building-index { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:22px; row-gap:22px; }
+      .building h3 { font-size:14px; min-height:35px; }
+      .building p { font-size:11px; }
+      .height { font-size:34px; }
+      .closing { display:block; margin-top:25px; padding:18px 0; }
+      .closing p { font-size:12px; }
+      .closing .note { margin-top:12px; font-size:10px; }
+      .footer { font-size:8px; }
+      .footer .source { max-width:235px; }
+    }
+    @media print {
+      .poster { max-width:none; padding:0; }
+      body { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      .building, figure, .hero { break-inside:avoid; }
+      .footer a { text-decoration:none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="masthead mono">
+      <div class="brand"><span class="brand-symbol" aria-hidden="true"></span>Built environment</div>
+      <span class="edition">An atlas of ambition</span>
+      <span>Structures / 001</span>
+    </header>
+    <section class="hero" aria-labelledby="poster-title">
+      <h1 id="poster-title"><span>Above</span><span>it all.</span></h1>
+      <div class="intro">
+        <p class="eyebrow mono">Architecture at its extremes</p>
+        <h2>The world’s ten<br>tallest buildings.</h2>
+        <p class="intro-copy">Ten towers. Ten cities. One relentless pursuit of height. From Dubai to Beijing, these structures redraw the limits of the skyline.</p>
+        <div class="record">
+          <div class="record-number">828<small> m</small></div>
+          <div class="record-copy mono"><strong>The high-water mark</strong><br>Burj Khalifa, Dubai<span class="extra"><br>Completed 2010</span></div>
+        </div>
+      </div>
+    </section>
+    <figure aria-labelledby="chart-title" aria-describedby="chart-description">
+      <figcaption class="chart-header mono">
+        <span id="chart-title">01 / Height, in metres</span>
+        <span class="key"><i aria-hidden="true"></i>Burj Khalifa</span>
+      </figcaption>
+      <div id="chart" aria-label="Height comparison of ten buildings, from 828 to 527.7 metres. Full data follows in the building index.">
+        <div class="chart-status mono" role="status">Drawing the skyline…</div>
+        <noscript><style>.chart-status { display:none; }</style><p class="mono">Enable JavaScript to see the height chart. The complete building index is available below.</p></noscript>
+      </div>
+      <div class="chart-footer mono" id="chart-description">
+        <p><strong>149.1 m clear of the field.</strong> Burj Khalifa stands 22% taller than Merdeka 118.</p>
+        <p>One shared scale. All heights measured from zero.</p>
+      </div>
+    </figure>
+    <section aria-labelledby="index-title">
+      <div class="index-heading">
+        <h2 id="index-title">02 / The building index</h2>
+        <p class="mono">City / year completed</p>
+      </div>
+      <ol class="building-index" id="building-index">
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">01</span><span class="height">828<small>m</small></span></div>
+          <h3>Burj Khalifa</h3>
+          <p>Dubai</p><p class="completion mono">Completed 2010</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">02</span><span class="height">678.9<small>m</small></span></div>
+          <h3>Merdeka 118</h3>
+          <p>Kuala Lumpur</p><p class="completion mono">Completed 2023</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">03</span><span class="height">632<small>m</small></span></div>
+          <h3>Shanghai Tower</h3>
+          <p>Shanghai</p><p class="completion mono">Completed 2015</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">04</span><span class="height">601<small>m</small></span></div>
+          <h3>Makkah Royal Clock Tower</h3>
+          <p>Mecca</p><p class="completion mono">Completed 2012</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">05</span><span class="height">599.1<small>m</small></span></div>
+          <h3>Ping An Finance Center</h3>
+          <p>Shenzhen</p><p class="completion mono">Completed 2017</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">06</span><span class="height">554.5<small>m</small></span></div>
+          <h3>Lotte World Tower</h3>
+          <p>Seoul</p><p class="completion mono">Completed 2017</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">07</span><span class="height">541.3<small>m</small></span></div>
+          <h3>One World Trade Center</h3>
+          <p>New York City</p><p class="completion mono">Completed 2014</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">08</span><span class="height">530<small>m</small></span></div>
+          <h3>Guangzhou CTF Finance Centre</h3>
+          <p>Guangzhou</p><p class="completion mono">Completed 2016</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">09</span><span class="height">530<small>m</small></span></div>
+          <h3>Tianjin CTF Finance Centre</h3>
+          <p>Tianjin</p><p class="completion mono">Completed 2019</p>
+        </li>
+        <li class="building">
+          <div class="building-top"><span class="index-number mono">10</span><span class="height">527.7<small>m</small></span></div>
+          <h3>CITIC Tower</h3>
+          <p>Beijing</p><p class="completion mono">Completed 2018</p>
+        </li>
+      </ol>
+    </section>
+    <aside class="closing" aria-label="Notes on the buildings">
+      <p><strong>A new scale of city.</strong> Every building in this collection rises beyond half a kilometre. Nine of the ten are in Asia.</p>
+      <p class="note">Heights refer to architectural tops, including spires. Buildings are ordered by height; Guangzhou and Tianjin share the 530 m mark. The numbered index identifies each building in the chart.</p>
+    </aside>
+    <footer class="footer mono">
+      <span class="source">Source: CTBUH, Council on Tall Buildings and Urban Habitat.<br>Based on the supplied ten-building dataset.</span>
+      <span class="footer-mark">REACHING UP. ↑<br><a href="https://microsoft.github.io/flint-chart/" target="_blank" rel="noopener noreferrer">Made with Flint</a></span>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.33.0/build/vega.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.23.0/build/vega-lite.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.29.0/build/vega-embed.min.js"></script>
+  <script type="module">
+    const rows = [{"building": "Burj Khalifa", "city": "Dubai", "height": 828, "year": 2010, "index": "01"}, {"building": "Merdeka 118", "city": "Kuala Lumpur", "height": 678.9, "year": 2023, "index": "02"}, {"building": "Shanghai Tower", "city": "Shanghai", "height": 632, "year": 2015, "index": "03"}, {"building": "Makkah Royal Clock Tower", "city": "Mecca", "height": 601, "year": 2012, "index": "04"}, {"building": "Ping An Finance Center", "city": "Shenzhen", "height": 599.1, "year": 2017, "index": "05"}, {"building": "Lotte World Tower", "city": "Seoul", "height": 554.5, "year": 2017, "index": "06"}, {"building": "One World Trade Center", "city": "New York City", "height": 541.3, "year": 2014, "index": "07"}, {"building": "Guangzhou CTF Finance Centre", "city": "Guangzhou", "height": 530, "year": 2016, "index": "08"}, {"building": "Tianjin CTF Finance Centre", "city": "Tianjin", "height": 530, "year": 2019, "index": "09"}, {"building": "CITIC Tower", "city": "Beijing", "height": 527.7, "year": 2018, "index": "10"}];
+    const theme = {"extends": "swiss", "id": "skyline-editorial", "label": "Skyline editorial", "ink": {"surface": {"canvas": "#f3f0e7", "plot": "#f3f0e7"}, "text": {"primary": "#202a29", "secondary": "#53605a"}, "structure": {"grid": "#d5d5c9", "axis": "#202a29"}, "series": {"single": "#202a29", "categorical": ["#d94a2f", "#202a29"], "categoricalExtended": ["#d94a2f", "#202a29"]}, "accent": "#d94a2f"}, "type": {"axisLabel": {"family": "IBM Plex Mono", "size": 11}, "valueLabel": {"family": "IBM Plex Mono", "size": 12, "weight": "medium"}}, "marks": {"bandFraction": 0.5}, "legend": {"show": "never"}, "annotation": {"axisTitles": "omit"}, "structure": {"axis": {"measure": {"line": "omit", "ticks": "omit"}}, "grid": {"measure": "quiet", "zero": "full"}}, "labels": {"angle": "horizontal"}};
+    const host = document.querySelector('#chart');
+    let activeView;
+    let resizeTimer;
+    let lastWidth = 0;
+    let revision = 0;
+
+    try {
+      const { assembleVegaLite } = await import('https://cdn.jsdelivr.net/npm/flint-chart@0.5.1/+esm');
+      await document.fonts.ready;
+
+      async function render() {
+        const width = Math.floor(host.getBoundingClientRect().width);
+        if (!width || width === lastWidth) return;
+        lastWidth = width;
+        const version = ++revision;
+        const compact = width < 600;
+        const height = compact ? 305 : 430;
+
+        // Flint owns the data, semantic types, chart structure and responsive sizing.
+        const input = {
+          data: { values: rows },
+          semantic_types: {
+            building: 'Name', city: 'City', year: 'Year',
+            height: { semanticType: 'Quantity', unit: 'm' },
+            index: { semanticType: 'Category', sortOrder: rows.map(row => row.index) }
+          },
+          field_display_names: { height: 'Height (m)', index: 'Building' },
+          chart_spec: {
+            chartType: 'Bar Chart',
+            encodings: { x: { field: 'index' }, y: { field: 'height' } },
+            baseSize: { width, height }, canvasSize: { width, height },
+            chartProperties: { includeZero_y: true, showValueLabels: !compact }
+          },
+          theme_spec: theme
+        };
+        const spec = assembleVegaLite(input);
+
+        // Presentation-only adjustments to the compiled chart: precise label
+        // formatting, editorial emphasis, axes and fitting the available HTML slot.
+        spec.width = width;
+        spec.height = height;
+        spec.autosize = { type: 'fit', contains: 'padding' };
+        spec.padding = { left: 0, right: 0, top: 20, bottom: 0 };
+        spec.config.axisX = { ...spec.config.axisX, labelFontSize: compact ? 10 : 11, labelPadding: 10 };
+        spec.config.axisY = { ...spec.config.axisY, labelFontSize: 10, ticks: false, labelPadding: 8 };
+        const layers = spec.layer || [spec];
+        for (const layer of layers) {
+          if (layer.encoding?.y) {
+            layer.encoding.y.axis = { ...layer.encoding.y.axis, title: null, values: [0, 200, 400, 600, 800] };
+          }
+          const markType = typeof layer.mark === 'string' ? layer.mark : layer.mark?.type;
+          if (markType === 'bar') {
+            layer.mark = { ...layer.mark, strokeWidth: 0 };
+            layer.encoding.color = { condition: { test: "datum.index === '01'", value: '#d94a2f' }, value: '#202a29' };
+            layer.encoding.tooltip = [
+              { field: 'building', type: 'nominal', title: 'Building' },
+              { field: 'city', type: 'nominal', title: 'City' },
+              { field: 'height', type: 'quantitative', title: 'Height (m)', format: '.12~g' },
+              { field: 'year', type: 'nominal', title: 'Completed' }
+            ];
+          }
+          if (markType === 'text') {
+            layer.encoding.text.format = '.12~g';
+            layer.mark = { ...layer.mark, fontSize: width < 850 ? 11 : 13, dy: -9 };
+          }
+        }
+        // Compile afresh on resize so phone and desktop share the same source spec.
+        const staging = document.createElement('div');
+        const result = await vegaEmbed(staging, spec, { actions: false, renderer: 'svg', tooltip: { theme: 'light' } });
+        if (version !== revision) { result.view.finalize(); return; }
+        activeView?.finalize();
+        activeView = result.view;
+        host.replaceChildren(staging);
+        host.dataset.ready = 'true';
+      }
+
+      await render();
+      new ResizeObserver(() => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => render().catch(showError), 100);
+      }).observe(host);
+    } catch (error) { showError(error); }
+
+    function showError(error) {
+      console.error('Poster chart could not render:', error);
+      const notice = document.createElement('p');
+      notice.className = 'chart-status mono';
+      notice.textContent = 'The chart could not load. Check your connection and reload. All ten buildings and their measurements are listed below.';
+      host.replaceChildren(notice);
+      host.dataset.ready = 'error';
+    }
+  </script>
+</body>
+</html>

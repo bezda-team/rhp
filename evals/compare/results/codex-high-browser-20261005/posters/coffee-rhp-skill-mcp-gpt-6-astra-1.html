@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Coffee by numbers: the biggest producers, coffee consumed per person, and the world's daily cups. Approximate figures for illustration.">
+<meta name="theme-color" content="#f5efdf">
+<title>Coffee by numbers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+  :root { --paper: #f5efdf; --ink: #35251d; --soft: #6a5749; --rule: #d7cbb5; --accent: #a64020; --quiet: #92775e; --text: 'DM Sans', Arial, sans-serif; --display: 'DM Serif Display', Georgia, serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 24px; background: #ddd5c5; color: var(--ink); font-family: var(--text); }
+  .poster { max-width: 1120px; margin: auto; padding: 32px 44px 24px; background: var(--paper); box-shadow: 0 12px 45px #35251d14; }
+  .masthead { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-bottom: 15px; border-bottom: 1px solid var(--ink); }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+  .masthead .edition { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--soft); }
+  .bean { width: 25px; height: 25px; color: var(--accent); }
+  .intro { padding: 22px 0 28px; }
+  h1 { margin: 0 0 11px; font: 400 clamp(54px, 7.1vw, 88px)/1.04 var(--display); letter-spacing: -.035em; }
+  h1 em { color: var(--accent); font-weight: 400; }
+  .intro p { margin: 0; font-size: 16px; line-height: 1.5; color: var(--soft); }
+  .charts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; border-top: 1px solid var(--rule); padding: 24px 0 25px; }
+  .chart-panel { min-width: 0; }
+  .chart-panel + .chart-panel { border-left: 1px solid var(--rule); padding-left: 36px; }
+  .section-kicker { display: flex; gap: 10px; align-items: center; margin-bottom: 11px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  .section-number { display: inline-flex; width: 26px; height: 26px; align-items: center; justify-content: center; border: 1px solid var(--accent); border-radius: 50%; color: var(--accent); font-size: 11px; letter-spacing: 0; }
+  h2 { margin: 0 0 8px; font: 400 31px/1.12 var(--display); letter-spacing: -.015em; }
+  .unit { margin: 0 0 13px; color: var(--soft); font-size: 13px; line-height: 1.45; }
+  .chart-space { min-height: 287px; }
+  .readout { margin: 6px 0 0; min-height: 42px; padding: 11px 0 0; border-top: 1px solid var(--rule); font-size: 13px; line-height: 1.5; color: var(--accent); }
+  .hint { margin: 4px 0 0; color: var(--soft); font-size: 11px; line-height: 1.5; }
+  .daily { position: relative; display: grid; grid-template-columns: 1fr 230px; align-items: center; gap: 20px; background: var(--ink); color: var(--paper); padding: 26px 32px; }
+  .daily .section-kicker { color: #e9c3a0; margin-bottom: 12px; }
+  .daily .section-number { border-color: #c9936f; color: #f2c7a4; }
+  .big-number { margin: 0; font: 400 clamp(58px, 7vw, 88px)/1 var(--display); letter-spacing: -.025em; }
+  .big-number .about { display: block; margin-bottom: 7px; font: 500 12px/1.2 var(--text); letter-spacing: .1em; text-transform: uppercase; color: #e9c3a0; }
+  .daily-copy { margin: 10px 0 0; font-size: 16px; line-height: 1.4; color: #f0dcc7; }
+  .cup { width: 220px; height: 176px; justify-self: end; }
+  footer { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; margin-top: 18px; color: var(--soft); font-size: 11px; line-height: 1.5; }
+  footer p { margin: 0; }
+  footer .colophon { white-space: nowrap; font-style: italic; font-family: var(--display); font-size: 15px; }
+  @media (max-width: 900px) and (min-width: 701px) {
+    .poster { padding-inline: 28px; }
+    .charts { gap: 23px; }
+    .chart-panel + .chart-panel { padding-left: 23px; }
+    h2 { font-size: 27px; }
+    .readout { min-height: 55px; }
+  }
+  @media (max-width: 700px) {
+    body { padding: 12px; }
+    .poster { padding: 22px 20px 20px; }
+    .masthead { gap: 8px; }
+    .eyebrow { font-size: 10px; letter-spacing: .12em; }
+    .masthead .edition { font-size: 11px; gap: 5px; }
+    .bean { width: 21px; height: 21px; }
+    .intro { padding: 23px 0 24px; }
+    h1 { max-width: 6em; font-size: clamp(52px, 12vw, 72px); margin-bottom: 15px; }
+    .intro p { font-size: 14px; max-width: 30ch; }
+    .charts { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-top: 23px; }
+    .chart-panel + .chart-panel { padding: 23px 0 0; border-left: 0; border-top: 1px solid var(--rule); }
+    h2 { font-size: 31px; }
+    .chart-space { min-height: 0; }
+    .readout { min-height: 53px; }
+    .daily { grid-template-columns: 1fr; padding: 24px; overflow: hidden; }
+    .big-number { font-size: clamp(55px, 13.5vw, 76px); }
+    .daily-copy { max-width: 20ch; font-size: 15px; }
+    .cup { width: 110px; height: 88px; position: absolute; bottom: 8px; right: -12px; opacity: .2; pointer-events: none; }
+    footer { align-items: start; }
+    footer .colophon { display: none; }
+  }
+  @media print {
+    @page { size: A4 landscape; margin: 8mm; }
+    body { padding: 0; background: white; }
+    .poster { box-shadow: none; max-width: none; padding: 12px 24px; }
+    .intro { padding: 14px 0; }
+    h1 { font-size: 62px; }
+    .charts { padding-block: 14px; }
+    .daily { padding-block: 16px; }
+    .hint { display: none; }
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<main class="poster">
+  <header>
+    <div class="masthead">
+      <span class="eyebrow">A world of coffee</span>
+      <span class="edition"><svg class="bean" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="16" rx="10" ry="14" transform="rotate(35 16 16)" fill="currentColor"/><path d="M22 5C10 13 22 19 10 27" fill="none" stroke="#f5efdf" stroke-width="2"/></svg>From crop to cup</span>
+    </div>
+    <div class="intro">
+      <h1>Coffee by <em>numbers</em></h1>
+      <p>Grown by the millions. Savored by the billions. A look at our daily ritual.</p>
+    </div>
+  </header>
+  <div class="charts">
+    <section class="chart-panel" aria-labelledby="production-title">
+      <div class="section-kicker"><span class="section-number">01</span>Where it grows</div>
+      <h2 id="production-title">Brazil leads the harvest</h2>
+      <p class="unit">Top five producers · million 60-kg bags a year</p>
+      <div id="production"></div>
+    </section>
+    <section class="chart-panel" aria-labelledby="consumption-title">
+      <div class="section-kicker"><span class="section-number">02</span>Who drinks the most</div>
+      <h2 id="consumption-title">Finland fills up first</h2>
+      <p class="unit">Coffee drunk per person per year · kg</p>
+      <div id="consumption"></div>
+    </section>
+  </div>
+  <section class="daily" aria-labelledby="daily-title">
+    <div>
+      <div class="section-kicker"><span class="section-number">03</span>The daily ritual</div>
+      <h2 class="big-number" id="daily-title"><span class="about">About</span>2.25 billion</h2>
+      <p class="daily-copy">cups of coffee drunk every day worldwide.</p>
+    </div>
+    <svg class="cup" viewBox="0 0 240 192" fill="none" aria-hidden="true">
+      <path d="M89 16c-16 14 14 18 0 34M121 7c-17 16 15 22 0 38M151 18c-15 13 13 17 0 31" stroke="#c9936f" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="113" cy="166" rx="94" ry="15" stroke="#c9936f" stroke-width="2"/>
+      <path d="M181 77h17c35 0 30 49-7 49h-18" stroke="#f5efdf" stroke-width="9"/>
+      <path d="M44 71h139l-9 59c-4 25-20 37-60 37s-58-12-61-37Z" fill="#f5efdf"/>
+      <ellipse cx="113.5" cy="72" rx="69.5" ry="18" fill="#f5efdf"/>
+      <ellipse cx="113.5" cy="72" rx="59" ry="12" fill="#a64020"/>
+      <path d="M62 101l4 27c2 12 9 19 22 23" stroke="#c9b99c" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </section>
+  <footer>
+    <p>Note: All figures are approximate and provided for illustration.</p>
+    <span class="colophon">A little perspective with your coffee.</span>
+  </footer>
+  <noscript><p>Enable JavaScript to view the country charts.</p></noscript>
+</main>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, nice, html, render, createSignal } from '@bezda/rhp/standalone';
+
+// Data: approximate figures supplied for illustration.
+const PRODUCERS = [
+  { name: 'Brazil', value: 66.3 },
+  { name: 'Vietnam', value: 27.5 },
+  { name: 'Colombia', value: 12.6 },
+  { name: 'Indonesia', value: 11.9 },
+  { name: 'Ethiopia', value: 8.4 },
+];
+const CONSUMPTION = [
+  { name: 'Finland', value: 12.0 },
+  { name: 'Norway', value: 9.9 },
+  { name: 'Iceland', value: 9.0 },
+  { name: 'Denmark', value: 8.7 },
+  { name: 'Netherlands', value: 8.4 },
+  { name: 'Sweden', value: 8.2 },
+];
+const decimal = new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const percentage = new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 0 });
+const THEME = { font: 'var(--text)', ink: 'var(--ink)', muted: 'var(--soft)', grid: 'var(--rule)', surface: 'var(--paper)', series: ['var(--accent)', 'var(--quiet)'] };
+
+// Slat type: a country, a flat bar, and its directly labeled value.
+const Country = slat({
+  thickness: 43,
+  inset: '11px',
+  room: { start: 'auto', end: 40 },
+  css: `
+    .country { cursor: pointer; }
+    .name { font-size: 14px; font-weight: 600; }
+    .bar { --rhp-radius: 1px; }
+    .value { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; --rhp-label-gap: 7px; }
+    .lit .name, .lit .value { color: var(--rhp-series-1); }
+    .country:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: -2px; border-radius: 2px; }
+    @container (max-width: 350px) { .name, .value { font-size: 13px; } }
+  `,
+}, (d) => html`
+  <div class=${() => d.lit ? 'country lit' : 'country'} data-row=${() => d.index}
+    aria-label=${() => `${d.name}: ${decimal.format(d.value)} ${d.unit}. ${d.comparison}`}>
+    <${Label} edge="start" class="name">${() => d.name}<//>
+    <${Bar} to=${() => d.value} color=${() => d.lit ? 'series-1' : 'series-2'} class="bar" />
+    <${Label} at=${() => d.value} class="value">${() => decimal.format(d.value)}<//>
+  </div>`);
+
+// Chart component: pointer, touch, and keyboard selection show a comparison with the leader.
+function CoffeeChart(props) {
+  const rows = [...props.rows].sort((a, b) => b.value - a.value);
+  const leader = rows[0];
+  const values = rows.map(d => d.value);
+  const scale = nice(Math.min(0, ...values), Math.max(0, ...values), 4);
+  const [picked, setPicked] = createSignal(null);
+  const compare = (d) => d.name === leader.name
+    ? `${leader.name} leads this group of ${rows.length}.`
+    : `${d.name}: ${percentage.format(d.value / leader.value)} of ${leader.name}'s ${props.measure}.`;
+  const rowOf = (el) => {
+    const root = el?.closest('[data-row]');
+    return root ? Number(root.dataset.row) : null;
+  };
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row !== null) setPicked(row);
+  };
+  const leave = (e) => {
+    if (e.pointerType === 'touch') return;
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  return html`
+    <div onPointerMove=${(e) => e.pointerType !== 'touch' && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <div class="chart-space">
+        <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} theme=${THEME} label=${props.label}>
+          <${Plot} rows=${rows} unit=${props.unit} comparison=${(d) => compare(d)} lit=${(d) => d.index === (picked() ?? 0)} keyboard=${true}>${Country}<//>
+        <//>
+      </div>
+      <p class="readout" aria-live="polite">${() => compare(rows[picked() ?? 0])}</p>
+      <p class="hint">Tap, point, or use Tab + arrow keys to compare.</p>
+    </div>`;
+}
+
+// Mount the two independent charts.
+render(() => CoffeeChart({ rows: PRODUCERS, unit: 'million 60-kg bags a year', measure: 'output', label: 'Top five coffee producers, million 60-kg bags a year' }), document.getElementById('production'));
+render(() => CoffeeChart({ rows: CONSUMPTION, unit: 'kg per person per year', measure: 'consumption', label: 'Coffee drunk per person per year, in kilograms' }), document.getElementById('consumption'));
+</script>
+</body>
+</html>

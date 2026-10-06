@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f2eb">
+  <meta name="description" content="An illustrated comparison of the world's ten tallest buildings, with architectural heights, cities and completion years from CTBUH.">
+  <title>The height of ambition | Ten tallest buildings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f4f2eb; --ink:#242b2e; --muted:#626968; --line:#cbcfc9; --accent:#6794dc; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#dedfd9; color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
+    .poster { max-width:1440px; margin:24px auto; padding:30px 56px 24px; background:var(--paper); }
+    .masthead { display:flex; align-items:center; justify-content:space-between; border-top:3px solid var(--ink); border-bottom:1px solid var(--ink); padding:13px 0; gap:20px; }
+    .publication { display:flex; align-items:center; gap:12px; font-size:13px; font-weight:700; letter-spacing:.12em; }
+    .mark { display:flex; gap:3px; align-items:flex-end; height:19px; }
+    .mark i { display:block; width:4px; background:var(--ink); height:10px; }
+    .mark i:nth-child(2) { height:19px; }.mark i:nth-child(3) { height:14px; }
+    .mono { font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:400; letter-spacing:.09em; text-transform:uppercase; }
+    .masthead .mono { text-align:right; }
+    .hero { display:grid; grid-template-columns:1.6fr 1fr; gap:40px; align-items:end; padding:36px 0 30px; }
+    .eyebrow { margin:0 0 15px; font-size:11px; letter-spacing:.17em; font-weight:600; text-transform:uppercase; }
+    h1 { font-family:'Barlow Condensed','Arial Narrow',sans-serif; font-size:clamp(76px,8.8vw,126px); font-weight:600; text-transform:uppercase; line-height:.88; letter-spacing:-.025em; margin:0; }
+    h1 span { color:var(--accent); }
+    .intro { max-width:330px; padding-bottom:4px; justify-self:end; }
+    .intro .ten { font-family:'Barlow Condensed',sans-serif; font-size:73px; font-weight:500; line-height:1; letter-spacing:-.035em; }
+    .intro .ten span { font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.07em; vertical-align:middle; padding-left:13px; text-transform:uppercase; }
+    .intro p { margin:15px 0 0; font-size:15px; line-height:1.65; }
+    figure { margin:0; border-top:1px solid var(--ink); position:relative; }
+    #skyline { width:100%; height:565px; }
+    .annotation { position:absolute; top:72px; left:35%; width:260px; pointer-events:none; }
+    .annotation .measure { font-family:'Barlow Condensed',sans-serif; font-size:45px; font-weight:500; line-height:1; }
+    .annotation .measure span { font-family:'DM Sans',sans-serif; font-size:15px; }
+    .annotation p { font-size:12px; line-height:1.6; max-width:225px; margin:8px 0 0; color:var(--muted); }
+    .annotation:before { content:''; position:absolute; left:-20px; top:4px; width:1px; height:77px; background:var(--accent); }
+    figcaption { display:flex; justify-content:space-between; gap:15px; border-bottom:1px solid var(--ink); padding:9px 0 15px; color:var(--muted); }
+    .index-heading { display:flex; justify-content:space-between; align-items:center; padding:22px 0 16px; }
+    h2 { margin:0; font-size:11px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; }
+    .building-index { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); column-gap:24px; margin:0; padding:0; list-style:none; }
+    .building { border-top:1px solid var(--line); padding:15px 0 20px; min-width:0; }
+    .building-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:11px; }
+    .number { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); }
+    .country { font-size:9px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; }
+    .building h3 { font-size:15px; line-height:1.3; font-weight:600; min-height:39px; margin:0 0 8px; }
+    .height { font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:37px; line-height:1.1; letter-spacing:-.015em; }
+    .height small { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--muted); margin-left:4px; }
+    .location { margin:9px 0 0; font-size:11px; color:var(--muted); line-height:1.6; }
+    .location span { white-space:nowrap; }
+    .insight { display:grid; grid-template-columns:1fr 1fr 1fr; gap:26px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); padding:22px 0; margin-top:3px; }
+    .fact { display:flex; align-items:center; gap:15px; }
+    .fact strong { font-family:'Barlow Condensed',sans-serif; font-size:48px; font-weight:500; line-height:1; white-space:nowrap; }
+    .fact p { font-size:12px; line-height:1.5; margin:0; max-width:170px; color:var(--muted); }
+    footer { display:grid; grid-template-columns:1fr auto; gap:30px; padding-top:18px; }
+    footer p { margin:0; font-size:10px; line-height:1.7; color:var(--muted); max-width:790px; }
+    footer a { color:inherit; text-underline-offset:3px; }
+    .folio { text-align:right; white-space:nowrap; padding-top:3px; }
+    .fallback { display:none; position:absolute; top:70px; left:0; right:0; padding:25px; border:1px solid var(--line); font-size:14px; line-height:1.6; }
+    .failed #skyline { height:180px; }.failed .fallback { display:block; }.failed .annotation { display:none; }
+    @media (min-width:1500px) { .poster { margin:40px auto; } }
+    @media (max-width:1000px) {
+      .poster { margin:0; padding:25px 30px; }
+      .hero { gap:25px; }.intro { max-width:260px; }.intro p { font-size:13px; }
+      #skyline { height:515px; }.building-index { column-gap:17px; }.building h3 { font-size:13px; min-height:51px; }
+      .country { font-size:8px; }.annotation { left:39%; top:67px; }
+    }
+    @media (max-width:600px) {
+      .poster { padding:20px; }
+      .masthead { padding:11px 0; }.publication { font-size:10px; letter-spacing:.1em; gap:8px; }.masthead .mono { font-size:8px; letter-spacing:.02em; max-width:95px; line-height:1.5; }
+      .hero { display:block; padding:28px 0 24px; }.eyebrow { font-size:9px; margin-bottom:13px; }
+      h1 { font-size:clamp(65px,17vw,100px); }.intro { max-width:none; display:flex; gap:20px; align-items:center; margin-top:23px; padding:0; }
+      .intro .ten { font-size:58px; flex-shrink:0; }.intro .ten span { display:block; font-size:8px; padding:3px 0 0; }
+      .intro p { font-size:12px; line-height:1.6; margin:0; }
+      #skyline { height:375px; }.annotation { left:48%; top:60px; width:49%; }.annotation .measure { font-size:31px; }.annotation .measure span { font-size:11px; }.annotation p { font-size:10px; line-height:1.5; margin-top:5px; }.annotation:before { left:-12px; height:68px; }
+      figcaption { padding-top:6px; gap:13px; }.mono { font-size:8px; letter-spacing:.035em; line-height:1.5; }
+      figcaption span { max-width:56%; }.index-heading { padding:20px 0 13px; }h2 { font-size:10px; }
+      .building-index { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:22px; }.building { padding:13px 0 17px; }.building h3 { font-size:14px; min-height:37px; }.building-top { margin-bottom:9px; }.height { font-size:35px; }.country { font-size:8px; }.location { font-size:10px; }
+      .insight { gap:14px; padding:18px 0; }.fact { display:block; }.fact strong { font-size:38px; }.fact p { font-size:10px; margin-top:8px; }
+      footer { gap:15px; padding-top:15px; }footer p { font-size:9px; }.folio { font-size:8px; }
+    }
+    @media print { body { background:var(--paper); } .poster { margin:0; max-width:none; padding:20px; } * { print-color-adjust:exact; -webkit-print-color-adjust:exact; } .building,.insight { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+<main class="poster">
+  <header class="masthead">
+    <div class="publication"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span> THE BUILT WORLD</div>
+    <div class="mono">An atlas of human ambition / No. 01</div>
+  </header>
+  <section class="hero" aria-labelledby="title">
+    <div><p class="eyebrow">Architecture / The vertical frontier</p><h1 id="title">The height<br>of <span>ambition.</span></h1></div>
+    <div class="intro"><div class="ten">10<span>buildings</span></div><p>The world's tallest buildings, brought together on one horizon. A study in scale, engineering, and the pursuit of the sky.</p></div>
+  </section>
+  <figure aria-label="Height comparison of the ten tallest buildings" aria-describedby="chart-note">
+    <div id="skyline"></div>
+    <div class="annotation"><div class="measure">149.1 <span>metres</span></div><p>The gap between Burj Khalifa and its nearest rival, Merdeka 118.</p></div>
+    <div class="fallback" role="status">The skyline could not load. All ten buildings and their measurements are listed below.</div>
+    <noscript><p>Enable JavaScript to see the skyline. The complete building index is below.</p></noscript>
+    <figcaption id="chart-note"><span class="mono">Heights to scale · Silhouettes schematic</span><span class="mono">Hover or tap a tower to explore</span></figcaption>
+  </figure>
+  <section aria-labelledby="index-title">
+    <div class="index-heading"><h2 id="index-title">The high-rise index</h2><span class="mono">City / Year completed</span></div>
+    <ol class="building-index">
+      <li class="building"><div class="building-top"><span class="number">01</span><span class="country">UAE</span></div><h3>Burj Khalifa</h3><div class="height">828<small>m</small></div><p class="location">Dubai <span>· 2010</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">02</span><span class="country">Malaysia</span></div><h3>Merdeka 118</h3><div class="height">678.9<small>m</small></div><p class="location">Kuala Lumpur <span>· 2023</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">03</span><span class="country">China</span></div><h3>Shanghai Tower</h3><div class="height">632<small>m</small></div><p class="location">Shanghai <span>· 2015</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">04</span><span class="country">Saudi Arabia</span></div><h3>Makkah Royal<br>Clock Tower</h3><div class="height">601<small>m</small></div><p class="location">Mecca <span>· 2012</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">05</span><span class="country">China</span></div><h3>Ping An<br>Finance Center</h3><div class="height">599.1<small>m</small></div><p class="location">Shenzhen <span>· 2017</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">06</span><span class="country">South Korea</span></div><h3>Lotte World Tower</h3><div class="height">554.5<small>m</small></div><p class="location">Seoul <span>· 2017</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">07</span><span class="country">USA</span></div><h3>One World<br>Trade Center</h3><div class="height">541.3<small>m</small></div><p class="location">New York City <span>· 2014</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">08</span><span class="country">China</span></div><h3>Guangzhou CTF<br>Finance Centre</h3><div class="height">530<small>m</small></div><p class="location">Guangzhou <span>· 2016</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">09</span><span class="country">China</span></div><h3>Tianjin CTF<br>Finance Centre</h3><div class="height">530<small>m</small></div><p class="location">Tianjin <span>· 2019</span></p></li>
+      <li class="building"><div class="building-top"><span class="number">10</span><span class="country">China</span></div><h3>CITIC Tower</h3><div class="height">527.7<small>m</small></div><p class="location">Beijing <span>· 2018</span></p></li>
+    </ol>
+  </section>
+  <aside class="insight" aria-label="The skyline in numbers">
+    <div class="fact"><strong>828 m</strong><p>The highest point in this extraordinary skyline.</p></div>
+    <div class="fact"><strong>9 / 10</strong><p>Of these buildings stand in Asia.</p></div>
+    <div class="fact"><strong>5 / 10</strong><p>Are in China, across five different cities.</p></div>
+  </aside>
+  <footer><p><strong>Source: <a href="https://www.skyscrapercenter.com/" target="_blank" rel="noopener noreferrer">CTBUH</a></strong> (Council on Tall Buildings and Urban Habitat), supplied dataset.<br>Architectural height in metres, including spires but excluding antennas. Years indicate completion. Index numbers identify buildings; the two 530 m towers share a height.</p><div class="folio mono">Structures<br>001 / 010</div></footer>
+</main>
+<!-- Resolve the npm package as one shared module graph through jsDelivr. -->
+<script type="importmap">
+{
+  "imports": {
+    "tslib": "https://cdn.jsdelivr.net/npm/tslib@2.8.1/+esm",
+    "d3-shape": "https://cdn.jsdelivr.net/npm/d3-shape@3.2.0/+esm",
+    "svg-arc-to-cubic-bezier": "https://cdn.jsdelivr.net/npm/svg-arc-to-cubic-bezier@3.2.0/+esm",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/backend/CanvasRenderer": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/backend/CanvasRenderer.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/backend/Renderer": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/backend/Renderer.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/gradients/Gradient": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/gradients/Gradient.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/gradients/LinearGradient": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/gradients/LinearGradient.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/gradients/RadialGradient": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/gradients/RadialGradient.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/CirclePattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/CirclePattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/GrainPattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/GrainPattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/LinePattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/LinePattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/PathPattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/PathPattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/Pattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/Pattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/PicturePattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/PicturePattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/RectanglePattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/RectanglePattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/StarPattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/StarPattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/TrianglePattern": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/patterns/TrianglePattern.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Bullet": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Bullet.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Button": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Button.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Chart": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Chart.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Circle": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Circle.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Component": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Component.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ConfirmButton": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ConfirmButton.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Container": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Container.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/EditableLabel": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/EditableLabel.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Ellipse": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Ellipse.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Graphics": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Graphics.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/GridLayout": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/GridLayout.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/HeatLegend": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/HeatLegend.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/HorizontalLayout": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/HorizontalLayout.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Label": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Label.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Layout": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Layout.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Legend": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Legend.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Line": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Line.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Link": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Link.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/MonotoneXTension": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/MonotoneXTension.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/MonotoneYTension": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/MonotoneYTension.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/NumericStepper": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/NumericStepper.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/OrthogonalLine": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/OrthogonalLine.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Picture": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Picture.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/PointedRectangle": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/PointedRectangle.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Polygon": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Polygon.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ProgressPie": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ProgressPie.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/RadialLabel": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/RadialLabel.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/RadialText": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/RadialText.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Rectangle": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Rectangle.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/RoundedRectangle": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/RoundedRectangle.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Scrollbar": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Scrollbar.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/SerialChart": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/SerialChart.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/SerialChartContainer": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/SerialChartContainer.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Series": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Series.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Slice": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Slice.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Slider": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Slider.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Sprite": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Sprite.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/SpriteResizer": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/SpriteResizer.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Star": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Star.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Text": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Text.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Tick": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Tick.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Tooltip": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Tooltip.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Triangle": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/Triangle.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/VerticalLayout": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/VerticalLayout.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ZoomableContainer": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ZoomableContainer.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ZoomTools": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/render/ZoomTools.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Animation": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Animation.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Array": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Array.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Children": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Children.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Color": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Color.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/ColorSet": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/ColorSet.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Data": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Data.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DataParser": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DataParser.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DataProcessor": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DataProcessor.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DateFormatter": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DateFormatter.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Disposer": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Disposer.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Draw": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Draw.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DurationFormatter": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/DurationFormatter.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Ease": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Ease.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Entity": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Entity.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/EventDispatcher": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/EventDispatcher.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/InterfaceColors": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/InterfaceColors.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Language": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Language.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/List": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/List.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Math": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Math.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Matrix": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Matrix.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Modal": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Modal.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Net": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Net.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/NumberFormatter": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/NumberFormatter.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Object": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Object.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Order": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Order.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/PatternSet": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/PatternSet.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Percent": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Percent.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/PopulateString": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/PopulateString.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/ResizeSensor": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/ResizeSensor.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/States": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/States.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Template": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Template.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/TextFormatter": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/TextFormatter.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Time": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Time.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Timezone": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Timezone.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Type": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Type.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Utils": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Utils.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/Registry": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/Registry.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/Root": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/Root.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/Theme": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/Theme.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/BaseColumnSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/BaseColumnSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/Candlestick": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/Candlestick.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/CandlestickSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/CandlestickSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/ColumnSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/ColumnSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/LineSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/LineSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/OHLC": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/OHLC.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/OHLCSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/OHLCSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/SmoothedXLineSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/SmoothedXLineSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/SmoothedXYLineSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/SmoothedXYLineSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/SmoothedYLineSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/SmoothedYLineSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/StepLineSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/StepLineSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/XYSeries": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/series/XYSeries.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/Axis": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/Axis.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisBullet": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisBullet.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisLabel": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisLabel.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisLabelRadial": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisLabelRadial.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisRenderer": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisRenderer.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisRendererX": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisRendererX.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisRendererY": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisRendererY.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisTick": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/AxisTick.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/CategoryAxis": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/CategoryAxis.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/CategoryDateAxis": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/CategoryDateAxis.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/DateAxis": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/DateAxis.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/DurationAxis": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/DurationAxis.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/EditableAxisLabel": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/EditableAxisLabel.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/GaplessDateAxis": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/GaplessDateAxis.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/Grid": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/Grid.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/ValueAxis": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/axes/ValueAxis.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYChart": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYChart.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYChartDefaultTheme": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYChartDefaultTheme.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYChartScrollbar": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYChartScrollbar.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYCursor": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/charts/xy/XYCursor.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/themes/DefaultTheme": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/themes/DefaultTheme.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/locales/en": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/locales/en.js",
+    "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util//Type": "https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/.internal/core/util/Type.js"
+  }
+}
+</script>
+<script type="module">
+(() => {
+  'use strict';
+  const data = [
+    {id:'01',name:'Burj Khalifa',city:'Dubai',height:828,year:2010},
+    {id:'02',name:'Merdeka 118',city:'Kuala Lumpur',height:678.9,year:2023},
+    {id:'03',name:'Shanghai Tower',city:'Shanghai',height:632,year:2015},
+    {id:'04',name:'Makkah Royal Clock Tower',city:'Mecca',height:601,year:2012},
+    {id:'05',name:'Ping An Finance Center',city:'Shenzhen',height:599.1,year:2017},
+    {id:'06',name:'Lotte World Tower',city:'Seoul',height:554.5,year:2017},
+    {id:'07',name:'One World Trade Center',city:'New York City',height:541.3,year:2014},
+    {id:'08',name:'Guangzhou CTF Finance Centre',city:'Guangzhou',height:530,year:2016},
+    {id:'09',name:'Tianjin CTF Finance Centre',city:'Tianjin',height:530,year:2019},
+    {id:'10',name:'CITIC Tower',city:'Beijing',height:527.7,year:2018}
+  ];
+  // Normalized architectural outlines, with y=0 at ground and y=1 at the tip.
+  const outlines = [
+    [[-.5,0],[-.5,.12],[-.40,.12],[-.40,.27],[-.32,.27],[-.32,.41],[-.25,.41],[-.25,.55],[-.18,.55],[-.18,.68],[-.12,.68],[-.12,.78],[-.06,.78],[-.06,.88],[0,1],[.025,.88],[.06,.88],[.06,.76],[.14,.76],[.14,.62],[.22,.62],[.22,.48],[.31,.48],[.31,.32],[.40,.32],[.40,.16],[.5,.16],[.5,0]],
+    [[-.43,0],[-.43,.68],[-.29,.80],[.03,.86],[.13,1],[.15,.84],[.35,.75],[.45,.12],[.43,0]],
+    [[-.46,0],[-.5,.14],[-.49,.32],[-.43,.51],[-.34,.70],[-.21,.89],[-.08,.98],[.15,1],[.32,.97],[.39,.91],[.38,.80],[.29,.60],[.26,.38],[.34,.16],[.45,0]],
+    [[-.55,0],[-.55,.52],[-.43,.52],[-.43,.66],[-.35,.66],[-.35,.79],[-.27,.79],[-.27,.84],[-.13,.88],[-.045,.95],[0,1],[.045,.95],[.13,.88],[.27,.84],[.27,.79],[.35,.79],[.35,.66],[.43,.66],[.43,.52],[.55,.52],[.55,0]],
+    [[-.42,0],[-.42,.78],[-.31,.88],[-.13,.96],[0,1],[.13,.96],[.31,.88],[.42,.78],[.42,0]],
+    [[-.48,0],[-.45,.26],[-.38,.52],[-.27,.78],[-.14,.95],[-.045,1],[.045,.98],[.14,.95],[.27,.78],[.38,.52],[.45,.26],[.48,0]],
+    [[-.43,0],[-.46,.1],[-.3,.76],[-.04,.76],[-.025,1],[.025,1],[.04,.76],[.3,.76],[.46,.1],[.43,0]],
+    [[-.44,0],[-.44,.85],[-.34,.85],[-.34,.97],[-.24,.97],[-.24,1],[.30,1],[.30,.94],[.44,.94],[.44,0]],
+    [[-.46,0],[-.46,.27],[-.42,.5],[-.34,.68],[-.24,.81],[-.20,.95],[-.12,1],[.12,1],[.20,.95],[.24,.81],[.34,.68],[.42,.5],[.46,.27],[.46,0]],
+    [[-.48,0],[-.41,.16],[-.33,.37],[-.31,.55],[-.35,.75],[-.45,.94],[-.48,1],[.48,1],[.45,.94],[.35,.75],[.31,.55],[.33,.37],[.41,.16],[.48,0]]
+  ];
+  let root, am5, am5xy;
+  async function init() {
+    [am5, am5xy] = await Promise.all([
+      import('https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/index.js'),
+      import('https://cdn.jsdelivr.net/npm/@amcharts/amcharts5@5.20.8/xy.js')
+    ]);
+    await document.fonts.ready;
+    root = am5.Root.new('skyline');
+    const theme = am5.Theme.new(root);
+    theme.rule('Label').setAll({fontFamily:'IBM Plex Mono',fontSize:11,fill:am5.color(0x626968)});
+    root.setThemes([theme]);
+    root.numberFormatter.set('numberFormat','#,###.#');
+    root.container.set('layout',root.verticalLayout);
+    const title = root.container.children.push(am5.Label.new(root,{text:'A SKYLINE WITHOUT BORDERS',fontSize:11,fontWeight:'500',paddingTop:18,paddingBottom:17,paddingLeft:0}));
+    const chart = root.container.children.push(am5xy.XYChart.new(root,{panX:false,panY:false,wheelX:'none',wheelY:'none',paddingLeft:0,paddingRight:0,paddingTop:20,paddingBottom:23}));
+    const xRenderer = am5xy.AxisRendererX.new(root,{minGridDistance:10});
+    xRenderer.grid.template.set('forceHidden',true);
+    xRenderer.labels.template.setAll({paddingTop:12,fontSize:11});
+    const xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root,{categoryField:'id',renderer:xRenderer}));
+    const yRenderer = am5xy.AxisRendererY.new(root,{minGridDistance:90});
+    yRenderer.labels.template.setAll({fontSize:10,paddingRight:12});
+    yRenderer.grid.template.setAll({strokeOpacity:.13,strokeDasharray:[2,4]});
+    const yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root,{min:0,max:900,strictMinMax:true,renderer:yRenderer,numberFormat:'#\' m\''}));
+    const base = yAxis.makeDataItem({value:0});
+    yAxis.createAxisRange(base);
+    base.get('grid').setAll({strokeOpacity:.7,strokeDasharray:[]});
+    const tooltip = am5.Tooltip.new(root,{labelText:'[bold]{name}[/]\n{height} m · {city}\nCompleted {year.formatNumber("0")}',getFillFromSprite:false});
+    tooltip.get('background').setAll({fill:am5.color(0xf4f2eb),fillOpacity:1,strokeOpacity:.3,cornerRadius:0});
+    tooltip.label.setAll({fontFamily:'DM Sans',fontSize:12,maxWidth:260,oversizedBehavior:'wrap'});
+    const series = chart.series.push(am5xy.ColumnSeries.new(root,{name:'Architectural height',xAxis,yAxis,valueYField:'height',categoryXField:'id',maskBullets:false,tooltip}));
+    const blue = chart.get('colors').getIndex(0);
+    document.documentElement.style.setProperty('--accent',blue.toCSSHex());
+    series.columns.template.setAll({fillOpacity:0,strokeOpacity:0,tooltipText:'[bold]{name}[/]\n{height} m · {city}\nCompleted {year.formatNumber("0")}',focusable:true,ariaLabel:'{name}, {height} metres, {city}, completed {year}',role:'img'});
+    const towerSprites = [];
+    series.bullets.push(function(root,series,dataItem) {
+      const index = Number(dataItem.dataContext.id)-1;
+      const container = am5.Container.new(root,{});
+      const shape = container.children.push(am5.Graphics.new(root,{fill:blue,fillOpacity:.93,stroke:blue,strokeWidth:.65}));
+      const detail = container.children.push(am5.Graphics.new(root,{stroke:am5.color(0xf4f2eb),strokeOpacity:.55,strokeWidth:.7}));
+      const label = container.children.push(am5.Label.new(root,{text:String(dataItem.dataContext.height),fontFamily:'IBM Plex Mono',fontSize:14,fontWeight:'500',centerX:am5.p50,centerY:am5.p100,paddingBottom:9,fill:am5.color(0x242b2e)}));
+      towerSprites.push({shape,detail,label,index,height:dataItem.dataContext.height});
+      return am5.Bullet.new(root,{locationY:0,sprite:container});
+    });
+    // Every silhouette uses the same value-axis conversion, including after resize.
+    function drawTowers() {
+      const compact = document.getElementById('skyline').clientWidth < 560;
+      const plotHeight = chart.plotContainer.height();
+      const width = chart.plotContainer.width()/10*(compact ? .65 : .54);
+      towerSprites.forEach(({shape,detail,label,index,height}) => {
+        const h = plotHeight*height/900;
+        const points = outlines[index];
+        shape.set('draw', display => {
+          points.forEach(([x,y],i) => display[i ? 'lineTo' : 'moveTo'](x*width,-y*h));
+          display.lineTo(points[0][0]*width,-points[0][1]*h);
+        });
+        detail.set('draw', display => {
+          // Intersect each floor line with the outline to keep facade marks inside it.
+          if (!compact) {
+            for(let y=.035;y<.96;y+=.019) {
+              const hits=[];
+              points.forEach(([ax,ay],i) => {
+                const [bx,by]=points[(i+1)%points.length];
+                if ((ay<=y && by>y)||(by<=y && ay>y)) hits.push(ax+(y-ay)*(bx-ax)/(by-ay));
+              });
+              hits.sort((a,b)=>a-b);
+              if(hits.length>=2) { display.moveTo(hits[0]*width+1,-y*h); display.lineTo(hits[hits.length-1]*width-1,-y*h); }
+            }
+          }
+          display.moveTo(0,0); display.lineTo(0,-h*(index===6 ? .76 : .82));
+          if(index===1 || index===6) { display.moveTo(-width*.35,0); display.lineTo(width*.25,-h*.73); }
+          if(index===3) {
+            display.drawCircle(0,-h*.745,width*.21);
+            display.moveTo(0,-h*.745); display.lineTo(0,-h*.772);
+            display.moveTo(0,-h*.745); display.lineTo(width*.11,-h*.745);
+          }
+        });
+        label.setAll({y:-h,forceHidden:compact});
+      });
+      title.set('fontSize',compact ? 9 : 11);
+      yRenderer.set('minGridDistance',compact ? 50 : 90);
+      yRenderer.labels.template.setAll({fontSize:compact ? 8 : 10,paddingRight:compact ? 6 : 12});
+      xRenderer.labels.template.set('fontSize',compact ? 8 : 11);
+    }
+    chart.plotContainer.events.on('boundschanged',drawTowers);
+    series.events.on('datavalidated',drawTowers);
+    xAxis.data.setAll(data);
+    series.data.setAll(data);
+    root.events.once('frameended',() => {drawTowers(); document.documentElement.dataset.chartReady='true';});
+  }
+  init().catch(error => { console.error(error); if(root) root.dispose(); document.querySelector('figure').classList.add('failed'); });
+})();
+</script>
+</body>
+</html>

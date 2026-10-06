@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-05T19:10:27.124Z",
+  "packages": {
+    "@bezda/rhp-mcp": "0.1.0",
+    "apexcharts": "7.8.0",
+    "apexcharts-mcp": "0.9.1",
+    "apexcharts-skill": "3.1.0",
+    "flint-chart": "0.5.1",
+    "flint-chart-mcp": "0.5.1",
+    "@amcharts/amcharts5-mcp": "1.6.0",
+    "semiotic": "3.12.0"
+  },
+  "skills": {
+    "rhp": {
+      "source": "skills/rhp",
+      "files": {
+        "SKILL.md": "3c9dd6a84738176746aa175dd6b42e0647765953e3673327f2c1cd51f971bc8a",
+        "recipes/area.html": "5164dd2b734853a0f3ad53035241ea96ea9f53b51ee99bf64f31498728cdaf99",
+        "recipes/bar.html": "bdd211b66590a4a6788d11c235af656180c74e79e5c9e36f657be06b27e3110b",
+        "recipes/box-plot.html": "d3ce3646f9ad127dcbf600b0d932733c73b581e110eaaa85ec1289de38c41c16",
+        "recipes/bubble.html": "8736f1023e6322c7431b7fd6a3696d912c16da1a5a0b589abf2252ec48e9869e",
+        "recipes/bullet.html": "5420995aad1c85f656d39bf5c7b8acc2a3ee817af1bcb5daa0b9b998baa07332",
+        "recipes/candlestick.html": "07ac0c320552a6dd639b8533b6871df7de2eef5196dc8e703e46d99fbb626b58",
+        "recipes/column.html": "07749ad20cb9271d95e564b0f314182c3390ea17986d8c1d681a8073580e6f61",
+        "recipes/diverging-bars.html": "90c972c502c223ed4509c3dfbabf983cf18632aa5d00c4e5544e0df6df3de70e",
+        "recipes/donut.html": "daf2a7fe10a24278c468809dbfefaa6564ce2616e8f3ac6d59fb54aa984157fa",
+        "recipes/dumbbell.html": "6a56a82af397aec6e768fb9dc43d7007cb3310a9c10dd296bcc101d80fa870b1",
+        "recipes/gantt.html": "7675c565615e1cc311e382abba6a7da4d78d092bca8fb178e6f9eaa29fd01527",
+        "recipes/grouped-bars.html": "cd18c858e33f18cfc9836363055cbdd19281a1dc3ad06c1242a670616bd77138",
+        "recipes/heatmap.html": "236b99c8b9652a5fb164df598d44644e650bbc1790b921c90582962508e1eb6b",
+        "recipes/histogram.html": "c5b3f29baac694ad5d3b27984c033eebabe737e5d8b62260b8580add752b1e05",
+        "recipes/line.html": "b3c56d6203a3b88d8977869fe86c21f5d5f6d09e52728d14c1e27379112ebe1a",
+        "recipes/live.html": "adde9ecd1a18398a4ecbd2a85771f83a0752c4a904d3b0981707b07dd56dd686",
+        "recipes/lollipop.html": "01ad36817d60c8ace90599c5291030645fb4dfa9438c5991b956daf10b928cd4",
+        "recipes/multi-line.html": "144b5b6373d5430880c904771f8774879cdc944173d681aa7ee4601a0ecae6b0",
+        "recipes/pyramid.html": "ba954072f548c182037ee9b5486c8b2da6d4733bec0c401732552ab6c272afc4",
+        "recipes/race.html": "36e1746d4d3de3e07dad46776b399dbef03caa7070c158957284ae03a9cead88",
+        "recipes/radial-bars.html": "5e7b1ee38a9fe6e4e7e1f4e22d6b98a5f9108edf3db723ce857829e56e7e21e4",
+        "recipes/scatter.html": "ddc9e8842224a22d9ee07e70af711304e9fac6468edc07843fa68bb799c8d3f9",
+        "recipes/slope.html": "850f268235c5c6403fd41621eaf0a570b32a087a0d4e90a4f400a251b7b2ddad",
+        "recipes/sparklines.html": "1fbd30b053fcdac59dbfb819a95fe4a4fc6d5824921daf8a791dfbe95851ea86",
+        "recipes/stacked-100.html": "d77720a4e913929b5b9db741d2161983cba4a683d3db703dd7e7800fc75fe315",
+        "recipes/stacked-bars.html": "048c149f37bbb030898f1c0adcf8ceb519502a083cdeeed6b58277a11eab8d4d",
+        "recipes/strip.html": "56e3f3dc285f194aa3d97808caf40dbbebd8f01e3ba7a27b55b5fbe0949a6136",
+        "recipes/violin.html": "2313d5489ce1b0251bf31628947e999f2b0e4f8a5cfd3dfb97cc02290283eea3",
+        "recipes/waffle.html": "13249376579b0db2178a2a8e256b21d1c54cb7ae2cede9348b464f64a9491fd0",
+        "recipes/waterfall.html": "ccd76d920fa9cdaeb30a65b9ce8b61732bae1d11d7800326bd7840ee2869d9f2",
+        "references/api.md": "fd5b6bfbf815879e039737137abd43c474757f5c3f1206838026c67bbf848989",
+        "references/design.md": "ea2364f38aec2ea492c563b23e4baa0c1c988cc141e3eec519a56545e9e5caeb",
+        "references/environments.md": "aeb7981e7943d9e99dcd02e59be71d743661ce213edbe161006d878867068a60",
+        "references/forms.md": "45352c690735cdbd052655cbf7d800aa4faec637b4e48e9e86a7524c8cd3bbe5",
+        "references/interaction.md": "019dc5ded88e78aceba106763bf900c7c49a801686cc6b42c3e0845f58a83ae3",
+        "references/pitfalls.md": "95cfce45f0da3c805299580351b3f10c292063a95986d9c6266e470072aaccb2"
+      }
+    },
+    "apex": {
+      "source": "evals/compare/node_modules/apexcharts-skill",
+      "files": {
+        ".cursorrules": "ff4c41621773c21001afe1c35444dd9dcfb3bd82914a1fd48aba741d7045ecda",
+        "LICENSE": "0b588053718c66d602b1e6e838064d00d971ea9078706cd8360034d46b559ddd",
+        "README.md": "de06cee8d131c41ade6daccd8bd1e14f5152f03b3f1b73907472135940bbe89b",
+        "SKILL.md": "029307186ab925f5a71f3fbd7aadd585b0f086b15c88d256f28fd1c325bf0e29",
+        "index.js": "0808831bb064db328be92b448e97dc54254ae730af0092cd24df529c5a9e32a3",
+        "install/claude-code.md": "45ffa2c737a84cdb4d42675896fa7f6bb8d29a9b498348c117d5cb806573b40a",
+        "install/copilot.md": "52cca2cfcddae8ad9b0b7392f6c2f8545341a7a6a813ad70918868204d327bc1",
+        "install/cursor.md": "74711708179e66cff48ca408355ad9d27621e8583d8e22a5b6714e5e469c4d02",
+        "package.json": "61987664a3f5a1d800330c59b04aa0118d7b316c00e0f3729bd8e1890529138d",
+        "references/bar-charts.md": "a6ba40d8b003195f90e42f5f500bd71d41ca1f711421be05f2851550d1ca1638",
+        "references/cartesian-charts.md": "28b12add0f22b4299ad1a2ec06c8ba201d8a514d56be6b11dbfdbb81e1f7217c",
+        "references/circular-charts.md": "47152ed361a8abf19c8cd58b07d3bd3fe3e79339c612c34d13f3e6835c64f07d",
+        "references/feature-platform.md": "9e8e23df6ce04efaba128e2abad718993fa51fc0381811b3d6df03af3e4b5b37",
+        "references/financial-charts.md": "0947ffba5845c022b569acf68156766b75b33a80d2467e52987513712d91f8cf",
+        "references/framework-wrappers.md": "8b29e1e483d6903c93381cc8d3b51bf1f3d5dfec8f08e41e73285d73b6bb787f",
+        "references/grid-charts.md": "021c522acc5b886a8dc3e95e2d126756cafefbf20fcdbbf12cdffdaa08b76b25",
+        "references/radar-charts.md": "f74a0c6f8dfa6bd6c028761fe286e6651bdbfc395a5587726c3903cd369bd36d",
+        "references/ssr.md": "9c00b645ef33c6c318b10243ef89d3f7205be8df0712819bcefb827fbd0fc58e",
+        "references/tree-shaking.md": "1d6f32db044103d0a822176a65e5dd83580926395265e23e72f244eaee6abe37"
+      }
+    },
+    "flintAuthor": {
+      "source": "evals/compare/skills/flint-chart-author",
+      "files": {
+        "SKILL.md": "e2156165b9543e67e2437a72197d8165712f78bb0cf3994963c8ad0f6f5c089d"
+      }
+    },
+    "flintTheme": {
+      "source": "evals/compare/skills/flint-theme-author",
+      "files": {
+        "SKILL.md": "e1d84f72850f94994885f72d8fa7e46660241b37f5ce9bd7c85b5f15a4360c63"
+      }
+    },
+    "amcharts": {
+      "source": "evals/compare/skills/amcharts5-skill",
+      "files": {
+        "SKILL.md": "29d2d95dc6ee24758fba3baf0d69a6b4e8b2d74a5f439938e63b48f9125939d0",
+        "references/flow.md": "73b719b141963950ca769be11020dd59ae6c368c6c57748dffe4d8b189bab6b5",
+        "references/gantt.md": "1e249cc70bb20392435a7184bb529ef9d75707789cb468b02001d4e1deb52eaf",
+        "references/hierarchy.md": "16cb53c97d3b2840b20ee9bb89586466c2374868d50dce9ed828a7f2ba1ae89d",
+        "references/map.md": "2944333e418679b343c359e6faaea6422a4561680686b1718e70f98025d9e4df",
+        "references/pie.md": "99f692a632af5919beeebc243e1d1becf177304267c1b1759d07f4e79b070979",
+        "references/radar.md": "71b68d30b69ddb7457fe5f8dbd6a2c768da647792369bea237600034e7634101",
+        "references/stock.md": "8c1127032ec4735f77e8bc1061324964bcae51a536e1495faa5ef567cf0bf670",
+        "references/timeline.md": "2ff8163a6f643b24bc2ed57437088b0405c263da2931930c9938935ed93213b3",
+        "references/ui-elements.md": "868b51eba2eabfef104206efc40d2859a572c7a326a6d76cb5198a75fc068c6c",
+        "references/venn.md": "6c9fe073e51c174b7c205a5a23cf100a0f316c6fe9cb476c7c41604cbbf380d9",
+        "references/wordcloud.md": "a73b2d1e92c2ffcdeaea500b0a39780f862a9e6515b2a5333b58b566ed1f2b9e",
+        "references/xy.md": "b2199b26431641f8119216c5d0d04cc60d37cac122aace05a1dfd51f426273f1"
+      }
+    },
+    "semiotic": {
+      "source": "evals/compare/skills/semiotic-charts",
+      "files": {
+        "SKILL.md": "d22b5220e0450b168c1f00e0bf2c6bbc8da9fcea92a778daac9ccb986287300b"
+      }
+    }
+  }
+}

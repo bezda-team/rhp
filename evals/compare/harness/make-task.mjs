@@ -17,6 +17,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const lab = path.join(here, "..");
 const RUNS = process.env.RUNS ?? path.join(os.tmpdir(), "rhp-compare-runs");
 const HEADLESS = !!process.env.HEADLESS;
+const CODEX = process.env.EVAL_CLIENT === "codex";
 const REPO = path.join(lab, "..", "..");
 const [condition, posterId, rep = "1", model = "sonnet"] = process.argv.slice(2);
 
@@ -57,14 +58,14 @@ const sections = [];
 if (tooling.includes("skill")) {
   const listed = [];
   for (const sk of lib.skills) {
-    const dest = path.join(project, ".claude/skills", sk.name);
+    const dest = path.join(project, CODEX ? ".agents/skills" : ".claude/skills", sk.name);
     fs.cpSync(sk.dir, dest, { recursive: true, filter: (src) => !path.relative(sk.dir, src).includes("node_modules") });
     listed.push({ ...sk, dest, description: frontmatter(path.join(dest, "SKILL.md")) });
   }
   const one = listed.length === 1;
   sections.push(`## ${one ? `The ${listed[0].name} Agent Skill` : `${lib.short}: ${listed.length} Agent Skills`} (installed in this project)
 
-Claude Code lists ${one ? "this skill" : "these skills"} for you as:
+The coding client lists ${one ? "this skill" : "these skills"} for you as:
 
 ${listed.map((sk) => `- ${sk.name}: ${sk.description}`).join("\n")}
 
@@ -95,15 +96,15 @@ if (tooling === "none") sections.push(`No skill and no MCP server for ${lib.shor
 const request = `${poster.prompt.split("\n").map((l) => "> " + l).join("\n")}`;
 const deliverable = `Make it with ${lib.name}. Save it as ${project}/poster.html: one self-contained HTML page that loads ${lib.short} from jsDelivr (https://cdn.jsdelivr.net/npm/...) and, if you like, fonts from Google Fonts. It should look good on a desktop and on a phone. When you are done, reply with your handoff to the user, in a few lines.`;
 // The machine notes describe the sandbox the published runs used (CDNs blocked, npm reachable); SANDBOX_NOTE=0 drops them
-const machine = process.env.SANDBOX_NOTE === "0" ? "" : `
+const boundary = `\n- Work only in ${run}${HEADLESS ? "" : " and the paths this file names"}. Nothing else on this machine belongs to the task: do not read any other folder.\n`;
+const machine = (process.env.SANDBOX_NOTE === "0" ? "\n# Working directory\n" : `
 # The machine (the same for every agent given this task)
 
 - Node 22 and npm work, and the npm registry is reachable. A headless Chromium is installed for Playwright.
 - This sandbox blocks CDNs (cdn.jsdelivr.net, unpkg.com) and most websites, so a page that loads a library from a CDN cannot load it here, though Google Fonts works. The user's own browser will load the page from jsDelivr as usual.
-${HEADLESS ? "" : "- Use only the Bash, Read, Write, Edit, Glob and Grep tools. Do not use web search or web fetch, the Skill tool, subagents, workflows, artifacts, ToolSearch or any MCP tool: the tools named above are all you have, and they run from Bash.\n"}- Work only in ${run}${HEADLESS ? "" : " and the paths this file names"}. Nothing else on this machine belongs to the task: do not read any other folder.
-`;
+${HEADLESS ? "" : "- Use only the Bash, Read, Write, Edit, Glob and Grep tools. Do not use web search or web fetch, the Skill tool, subagents, workflows, artifacts, ToolSearch or any MCP tool: the tools named above are all you have, and they run from Bash.\n"}`) + boundary;
 const task = HEADLESS
-  ? `${request.replace(/^> /gm, "")}\n\n${deliverable}\n${machine}`
+  ? `${request.replace(/^> /gm, "")}\n\n${deliverable}\n${CODEX ? "\n# Your tools\n\n" + sections.join("\n\n") + "\n" : ""}${machine}`
   : `# Your task
 
 You are a coding agent working for a user. The project folder is ${project} (empty${tooling.includes("skill") ? " apart from the installed skill" : ""}). The user asked:

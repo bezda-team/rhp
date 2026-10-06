@@ -1,0 +1,1544 @@
+{
+  "date": "2026-10-05T18:41:14.302Z",
+  "browser": "153.0.8010.12",
+  "libs": {
+    "rhp": {
+      "step-6-readout": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-7-animate": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024, 0 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024, 0 points since 2024",
+              "Vienna: 72% in 2024, 0 points since 2024",
+              "Oslo: 61% in 2024, 0 points since 2024",
+              "Prague: 55% in 2024, 0 points since 2024",
+              "Dublin: 39% in 2024, 0 points since 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-8-pictogram": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024, 0 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024, 0 points since 2024",
+              "Vienna: 72% in 2024, 0 points since 2024",
+              "Oslo: 61% in 2024, 0 points since 2024",
+              "Prague: 55% in 2024, 0 points since 2024",
+              "Dublin: 39% in 2024, 0 points since 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.2/dist/standalone.js",
+              "source": "@bezda/rhp@2.0.2/dist/standalone.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      }
+    },
+    "apexcharts": {
+      "step-6-readout": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-7-animate": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024, 0 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024, 0 points since 2024",
+              "Vienna: 72% in 2024, 0 points since 2024",
+              "Oslo: 61% in 2024, 0 points since 2024",
+              "Prague: 55% in 2024, 0 points since 2024",
+              "Dublin: 39% in 2024, 0 points since 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-8-pictogram": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024, 0 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024, 0 points since 2024",
+              "Vienna: 72% in 2024, 0 points since 2024",
+              "Oslo: 61% in 2024, 0 points since 2024",
+              "Prague: 55% in 2024, 0 points since 2024",
+              "Dublin: 39% in 2024, 0 points since 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0",
+              "source": "apexcharts@7.8.0/dist/apexcharts.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      }
+    },
+    "chartjs": {
+      "step-6-readout": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-7-animate": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024",
+              "Vienna: 72% in 2024",
+              "Oslo: 61% in 2024",
+              "Prague: 55% in 2024",
+              "Dublin: 39% in 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-8-pictogram": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024",
+              "Vienna: 72% in 2024",
+              "Oslo: 61% in 2024",
+              "Prague: 55% in 2024",
+              "Dublin: 39% in 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1",
+              "source": "chart.js@4.5.1/dist/chart.umd.min.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0",
+              "source": "chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.js",
+              "status": 200
+            },
+            {
+              "url": "https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0",
+              "source": "chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      }
+    },
+    "d3": {
+      "step-6-readout": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-7-animate": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024",
+              "Vienna: 72% in 2024",
+              "Oslo: 61% in 2024",
+              "Prague: 55% in 2024",
+              "Dublin: 39% in 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      },
+      "step-8-pictogram": {
+        "mouse": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "yearSwitch": {
+          "changed": true,
+          "returned": true,
+          "values2024": {
+            "initial": [
+              "Lisbon: 48% in 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 48% in 2024",
+              "Vienna: 72% in 2024",
+              "Oslo: 61% in 2024",
+              "Prague: 55% in 2024",
+              "Dublin: 39% in 2024"
+            ],
+            "passed": true
+          },
+          "values2025": {
+            "initial": [
+              "Lisbon: 57% in 2025, +9 points since 2024"
+            ],
+            "citiesReached": [
+              "Vienna",
+              "Oslo",
+              "Lisbon",
+              "Prague",
+              "Dublin"
+            ],
+            "readouts": [
+              "Lisbon: 57% in 2025, +9 points since 2024",
+              "Vienna: 70% in 2025, -2 points since 2024",
+              "Oslo: 64% in 2025, +3 points since 2024",
+              "Prague: 52% in 2025, -3 points since 2024",
+              "Dublin: 45% in 2025, +6 points since 2024"
+            ],
+            "passed": true
+          },
+          "passed": true
+        },
+        "touch": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "keyboard": {
+          "initial": [
+            "Lisbon: 57% in 2025, +9 points since 2024"
+          ],
+          "citiesReached": [
+            "Vienna",
+            "Oslo",
+            "Lisbon",
+            "Prague",
+            "Dublin"
+          ],
+          "readouts": [
+            "Lisbon: 57% in 2025, +9 points since 2024",
+            "Vienna: 70% in 2025, -2 points since 2024",
+            "Oslo: 64% in 2025, +3 points since 2024",
+            "Prague: 52% in 2025, -3 points since 2024",
+            "Dublin: 45% in 2025, +6 points since 2024"
+          ],
+          "passed": true,
+          "sideways": false,
+          "errors": [],
+          "cdn": [
+            {
+              "url": "https://cdn.jsdelivr.net/npm/d3@7.9.0",
+              "source": "d3@7.9.0/dist/d3.min.js",
+              "status": 200
+            }
+          ]
+        },
+        "passed": true
+      }
+    }
+  }
+}

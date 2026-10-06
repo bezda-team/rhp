@@ -1,0 +1,880 @@
+{
+  "collected": "2026-10-05T21:13:13.507Z",
+  "method": "Independent ephemeral model sessions; anonymous shuffled entries; visible library credit text and identifiable vector logos hidden in separate screenshots. Visual style may reveal the library. Desktop and phone crops follow the fixed rubric.",
+  "scores": [
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E01",
+      "runId": "skyscrapers-rhp-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 6,
+      "overall": 8,
+      "issues": [
+        "Small rotated building names, cities and years on phone",
+        "Phone gridlines lose their scale labels"
+      ],
+      "strengths": [
+        "Forceful headline with a precise supporting comparison",
+        "Distinctive silhouettes aligned to a common baseline",
+        "All requested data visible in a compact poster",
+        "Explicit and correct treatment of the eighth-place tie"
+      ],
+      "rank": 2,
+      "of": 6,
+      "rankScore": 0.8
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E02",
+      "runId": "skyscrapers-apex-skill-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Tiny vertical building names on phone",
+        "Phone skyline omits city and completion-year labels",
+        "Repeated lead statistics and generous gaps lengthen the layout",
+        "Equal-height towers receive different rank numbers despite the tie annotation"
+      ],
+      "strengths": [
+        "Strong headline and disciplined orange emphasis",
+        "Accurate zero-based bars and highlighted lead interval",
+        "Useful completion timeline and numerical observations",
+        "Readable desktop table includes all requested values"
+      ],
+      "rank": 4,
+      "of": 6,
+      "rankScore": 0.4
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E03",
+      "runId": "skyscrapers-apex-skill-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Oversized phone headline delays the main chart",
+        "Small vertical building names and tiny years on phone",
+        "City labels disappear from the phone chart",
+        "Several sections repeat the same lead comparison"
+      ],
+      "strengths": [
+        "Clear visual comparison of the lead and the remaining height spread",
+        "Purposeful color encoding identifies the Chinese towers",
+        "Refined typography and strong editorial hierarchy",
+        "Complete desktop table explicitly identifies the height tie"
+      ],
+      "rank": 3,
+      "of": 6,
+      "rankScore": 0.6
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E04",
+      "runId": "skyscrapers-rhp-skill-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop building names require reading vertically",
+        "Sideways tower silhouettes on phone are visually unconventional"
+      ],
+      "strengths": [
+        "Insightful headline directly supported by comparison brackets",
+        "Phone chart switches orientation to preserve readable labels",
+        "All names, cities, years and exact heights visible on both screens",
+        "Accurate common-baseline scaling",
+        "Compact composition with restrained color and clear hierarchy"
+      ],
+      "rank": 1,
+      "of": 6,
+      "rankScore": 1
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E05",
+      "runId": "skyscrapers-rhp-skill-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 5,
+      "overall": 7,
+      "issues": [
+        "Extremely small rotated names, cities and years on phone",
+        "Phone values and scale labels are very small",
+        "Desktop building metadata is also undersized",
+        "Axis extends to 1000 m, leaving avoidable empty chart space"
+      ],
+      "strengths": [
+        "Cohesive blue accent and framed poster composition",
+        "Correct common-baseline silhouette scaling",
+        "Precise lead bracket and reference line",
+        "All requested data present with correct shared eighth place"
+      ],
+      "rank": 6,
+      "of": 6,
+      "rankScore": 0
+    },
+    {
+      "judging": "skyscrapers-p1",
+      "label": "E06",
+      "runId": "skyscrapers-apex-none-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 6,
+      "overall": 7,
+      "issues": [
+        "Very small desktop city and year labels",
+        "Narrow vertical building names on phone",
+        "Muted explanatory text has weak contrast on the dark panel",
+        "Phone skyline omits city and completion-year labels",
+        "Equal-height towers receive different ranks without a visible tie marker",
+        "Long composition disperses the requested information across sections"
+      ],
+      "strengths": [
+        "Bold cream and dark panel composition",
+        "Accurate height bars with useful 500 m reference",
+        "Completion scatterplot and country counts add meaningful context",
+        "Correct lead and combined-height calculations"
+      ],
+      "rank": 5,
+      "of": 6,
+      "rankScore": 0.19999999999999996
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E01",
+      "runId": "skyscrapers-rhp-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Small vertical building names and city/year labels on phone",
+        "Phone height labels are tightly packed"
+      ],
+      "strengths": [
+        "Clear factual headline and precise lead annotation",
+        "Distinctive silhouettes aligned to a common baseline",
+        "All requested data visible in a compact poster",
+        "Explicit treatment of the 530 m tie"
+      ],
+      "rank": 2,
+      "of": 6,
+      "rankScore": 0.8
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E02",
+      "runId": "skyscrapers-apex-none-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Narrow vertical building labels on both screens",
+        "Very small desktop city and year labels",
+        "Phone chart omits city and year labels",
+        "Repeated statistics and ranking make the presentation lengthy"
+      ],
+      "strengths": [
+        "Accurate zero-based height comparison",
+        "Strong cream, black and orange hierarchy",
+        "Useful completion-year and country comparisons",
+        "Correct lead and combined-height calculations"
+      ],
+      "rank": 5,
+      "of": 6,
+      "rankScore": 0.19999999999999996
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E03",
+      "runId": "skyscrapers-apex-skill-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Tiny vertical building labels on phone",
+        "Phone skyline replaces city and year labels with ranks",
+        "Large introductory section delays the main comparison on phone"
+      ],
+      "strengths": [
+        "Strong headline supported by the 149.1 m versus 151.2 m comparison",
+        "Accurate zero-based chart and complete desktop ranking",
+        "Useful completion timeline",
+        "Specific observations explain ties and near ties"
+      ],
+      "rank": 4,
+      "of": 6,
+      "rankScore": 0.4
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E04",
+      "runId": "skyscrapers-rhp-skill-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 6,
+      "overall": 7,
+      "issues": [
+        "Extremely small vertical building and city/year labels on phone",
+        "Small height labels and fine annotation text on phone",
+        "Desktop building labels are also undersized"
+      ],
+      "strengths": [
+        "Compact composition with all requested data",
+        "Purposeful blue emphasis on the leader",
+        "Common ground line and accurate height scale",
+        "Shared eighth place clearly explained"
+      ],
+      "rank": 6,
+      "of": 6,
+      "rankScore": 0
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E05",
+      "runId": "skyscrapers-apex-skill-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Oversized phone headline occupies much of the first screen",
+        "Small vertical building labels on phone",
+        "Phone chart omits city labels",
+        "Several sections repeat the same lead statistic"
+      ],
+      "strengths": [
+        "Paired height bands directly support the editorial argument",
+        "Color use reveals the five Chinese buildings",
+        "Complete and readable desktop ranking",
+        "Accurate values and useful tie annotations"
+      ],
+      "rank": 3,
+      "of": 6,
+      "rankScore": 0.6
+    },
+    {
+      "judging": "skyscrapers-p2",
+      "label": "E06",
+      "runId": "skyscrapers-rhp-skill-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Vertical building names require extra reading effort on desktop"
+      ],
+      "strengths": [
+        "Phone layout uses horizontal comparisons with readable labels",
+        "All ten buildings and every requested value visible on both screens",
+        "Precise brackets compare the lead with the remaining field",
+        "Focused editorial argument and restrained visual hierarchy",
+        "Accurate common-baseline silhouettes"
+      ],
+      "rank": 1,
+      "of": 6,
+      "rankScore": 1
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E01",
+      "runId": "skyscrapers-apex-skill-sonnet-1",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 6,
+      "overall": 7,
+      "issues": [
+        "Very small vertical building labels on phone",
+        "Phone skyline omits city and completion labels",
+        "Repeated lead statistics and generous gaps lengthen the poster"
+      ],
+      "strengths": [
+        "Forceful headline with a meaningful numerical comparison",
+        "Accurate zero-baseline height chart and complete desktop data",
+        "Useful completion timeline and concise supporting observations"
+      ],
+      "rank": 5,
+      "of": 6,
+      "rankScore": 0.19999999999999996
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E02",
+      "runId": "skyscrapers-rhp-skill-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 7,
+      "overall": 8,
+      "issues": [
+        "Tiny rotated names, cities, and years on phone",
+        "Desktop labels are crowded beneath adjacent silhouettes"
+      ],
+      "strengths": [
+        "Compact and cohesive editorial composition",
+        "Accurate common-baseline silhouettes with clear scale ticks",
+        "Explicit lead annotation and correct shared eighth place",
+        "All requested data visible on both screens"
+      ],
+      "rank": 3,
+      "of": 6,
+      "rankScore": 0.6
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E03",
+      "runId": "skyscrapers-rhp-skill-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 10,
+      "design": 9,
+      "legibility": 9,
+      "overall": 9,
+      "issues": [
+        "Desktop building names require reading vertically",
+        "Sideways tower silhouettes on phone take a moment to interpret"
+      ],
+      "strengths": [
+        "Strong editorial comparison of the lead against the remaining field",
+        "Exact proportional heights and directly comparable interval brackets",
+        "Phone layout places readable names, cities, years, and values together",
+        "Restrained color and balanced single-poster composition"
+      ],
+      "rank": 1,
+      "of": 6,
+      "rankScore": 1
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E04",
+      "runId": "skyscrapers-apex-none-sonnet-1",
+      "fidelity": 10,
+      "data": 8,
+      "design": 8,
+      "legibility": 6,
+      "overall": 7,
+      "issues": [
+        "Phone chart has small vertical names and no city or year labels",
+        "Muted supporting text has weak contrast in the dark section",
+        "Long sequence of charts, statistics, and ranking repeats information",
+        "Desktop chart metadata and secondary-chart labels are very small"
+      ],
+      "strengths": [
+        "Bold typographic hierarchy and striking light-dark section contrast",
+        "Accurate heights, lead annotation, and combined-height statistic",
+        "Completion and country charts provide useful additional perspectives",
+        "All requested data appears in the desktop skyline"
+      ],
+      "rank": 6,
+      "of": 6,
+      "rankScore": 0
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E05",
+      "runId": "skyscrapers-apex-skill-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 8,
+      "legibility": 6,
+      "overall": 8,
+      "issues": [
+        "Oversized phone headline delays the data substantially",
+        "Phone building labels are small and vertical",
+        "Phone chart omits cities from its static labels",
+        "Repeated lead and height statistics make the composition lengthy"
+      ],
+      "strengths": [
+        "Purposeful color identifies the five Chinese buildings",
+        "Accurate zero-baseline bars and two meaningful comparison bands",
+        "Complete desktop ranking with exact values and explicit tie labels",
+        "Confident typography and useful explanatory observations"
+      ],
+      "rank": 4,
+      "of": 6,
+      "rankScore": 0.4
+    },
+    {
+      "judging": "skyscrapers-p3",
+      "label": "E06",
+      "runId": "skyscrapers-rhp-mcp-sonnet-1",
+      "fidelity": 10,
+      "data": 9,
+      "design": 9,
+      "legibility": 8,
+      "overall": 9,
+      "issues": [
+        "Phone names, cities, and years require sideways reading",
+        "Phone gridlines lack numerical scale labels"
+      ],
+      "strengths": [
+        "Clear takeaway headline and disciplined red emphasis",
+        "Accurate common-baseline skyline with a precise lead bracket",
+        "All requested data visible in a compact layout on both screens",
+        "Readable desktop labels and clearly explained shared eighth place"
+      ],
+      "rank": 2,
+      "of": 6,
+      "rankScore": 0.8
+    }
+  ],
+  "sessions": [
+    {
+      "packet": "skyscrapers-p1",
+      "key": {
+        "E01": "skyscrapers-rhp-mcp-sonnet-1",
+        "E02": "skyscrapers-apex-skill-sonnet-1",
+        "E03": "skyscrapers-apex-skill-mcp-sonnet-1",
+        "E04": "skyscrapers-rhp-skill-mcp-sonnet-1",
+        "E05": "skyscrapers-rhp-skill-sonnet-1",
+        "E06": "skyscrapers-apex-none-sonnet-1"
+      },
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cli": "codex-cli 0.153.4",
+      "images": {
+        "E01-desktop.jpg": "b09d1325784f8c5a92f17e329b79c270e4f1b0809203a0486f819684e22fbaa9",
+        "E01-phone.jpg": "2e7e5f8788d7252c220dc569b81dcb479aa34d245ffdafa7de3e0472611625b9",
+        "E02-desktop.jpg": "c2c127d0e8c865406d47e170cd55ce44858682b3f1e43ef4c4789b77b93671f3",
+        "E02-phone.jpg": "8134d477e1afd9c160a41381e1a338abbc1b73935af09db32d388d8f2de79455",
+        "E03-desktop.jpg": "490f28635f4b96ac1d22a343fc20d850ab011ddd40c999deec7156929983a249",
+        "E03-phone.jpg": "c3658467e2595ee030214a8f4ec5a3765f4e7d3f362fe668b6d14719b1cba1c0",
+        "E04-desktop.jpg": "59f774e654c8caf67553faf812e523c7170291d75a7b1ec7f5ef834ac0775e43",
+        "E04-phone.jpg": "02876605e967e4f9306b045a3469a3c42299a08fdf208b7b1dc0705510a8d0be",
+        "E05-desktop.jpg": "d30a24ae8ecba53dead961c9f1580eb190d52c0d1ce23ec739434b443dd9b3fc",
+        "E05-phone.jpg": "f1ac8c587fd5b09cb5a9c88040bdc8c362ac865343dd53ff3fdcf32ebbfb8ced",
+        "E06-desktop.jpg": "a181be396f9dfcc335ece442822adf2028e6963deb94a378355f6d7740fe721e",
+        "E06-phone.jpg": "203641ea1ac0f0bf2e00d17aec6eeb50ea4943b0c8c4614630b4600a3e3dcfe3"
+      },
+      "redactionEvidence": {
+        "E01": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E02": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "ApexCharts, loaded from jsDelivr. Type set in Big Shoulders and Newsreader.",
+                "x": 17.15625,
+                "y": 3321.09375,
+                "width": 305.6875,
+                "height": 35.109375
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "ApexCharts, loaded from jsDelivr. Type set in Big Shoulders and Newsreader.",
+                "x": 861.328125,
+                "y": 2560.59375,
+                "width": 305.6875,
+                "height": 35.109375
+              }
+            ]
+          }
+        },
+        "E03": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Chart: ApexCharts.",
+                "x": 16.375,
+                "y": 3453.875,
+                "width": 136.09375,
+                "height": 15
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Chart: ApexCharts.",
+                "x": 1090.15625,
+                "y": 2373.71875,
+                "width": 136.09375,
+                "height": 15
+              }
+            ]
+          }
+        },
+        "E04": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E05": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E06": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "ApexCharts. Type set in Big Shoulders Display, Newsreader and IBM Plex Mono.",
+                "x": 18,
+                "y": 4284.875,
+                "width": 347.765625,
+                "height": 34.1875
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "ApexCharts. Type set in Big Shoulders Display, Newsreader and IBM Plex Mono.",
+                "x": 862.078125,
+                "y": 3282.875,
+                "width": 347.765625,
+                "height": 34.1875
+              }
+            ]
+          }
+        }
+      },
+      "notes": "E04 best combines a substantive headline, accurate comparison and a phone layout that keeps all requested data readable. E01 is a strong compact poster, while E03 and E02 offer polished editorial analysis at the cost of length and small vertical chart labels. E06 adds useful context but has weaker secondary-text legibility; E05 compresses essential phone labels the most. Scores reflect only the supplied screenshots, without assuming content or interaction beyond their visible boundaries.",
+      "result": {
+        "exitCode": 0,
+        "status": "complete",
+        "started": "2026-10-05T20:55:11.822Z",
+        "ended": "2026-10-05T20:56:32.471Z",
+        "wallSeconds": 80.649,
+        "usage": {
+          "input_tokens": 143437,
+          "cached_input_tokens": 87296,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2560,
+          "reasoning_output_tokens": 604
+        },
+        "costUSD": null,
+        "error": null,
+        "finalText": "done",
+        "transcript": "/Users/anasb/repositories/rhp/evals/compare/out/published-judging-blind/sessions/skyscrapers-p1/transcript.jsonl"
+      }
+    },
+    {
+      "packet": "skyscrapers-p2",
+      "key": {
+        "E01": "skyscrapers-rhp-mcp-sonnet-1",
+        "E02": "skyscrapers-apex-none-sonnet-1",
+        "E03": "skyscrapers-apex-skill-sonnet-1",
+        "E04": "skyscrapers-rhp-skill-sonnet-1",
+        "E05": "skyscrapers-apex-skill-mcp-sonnet-1",
+        "E06": "skyscrapers-rhp-skill-mcp-sonnet-1"
+      },
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cli": "codex-cli 0.153.4",
+      "images": {
+        "E01-desktop.jpg": "b09d1325784f8c5a92f17e329b79c270e4f1b0809203a0486f819684e22fbaa9",
+        "E01-phone.jpg": "2e7e5f8788d7252c220dc569b81dcb479aa34d245ffdafa7de3e0472611625b9",
+        "E02-desktop.jpg": "a181be396f9dfcc335ece442822adf2028e6963deb94a378355f6d7740fe721e",
+        "E02-phone.jpg": "203641ea1ac0f0bf2e00d17aec6eeb50ea4943b0c8c4614630b4600a3e3dcfe3",
+        "E03-desktop.jpg": "c2c127d0e8c865406d47e170cd55ce44858682b3f1e43ef4c4789b77b93671f3",
+        "E03-phone.jpg": "8134d477e1afd9c160a41381e1a338abbc1b73935af09db32d388d8f2de79455",
+        "E04-desktop.jpg": "d30a24ae8ecba53dead961c9f1580eb190d52c0d1ce23ec739434b443dd9b3fc",
+        "E04-phone.jpg": "f1ac8c587fd5b09cb5a9c88040bdc8c362ac865343dd53ff3fdcf32ebbfb8ced",
+        "E05-desktop.jpg": "490f28635f4b96ac1d22a343fc20d850ab011ddd40c999deec7156929983a249",
+        "E05-phone.jpg": "c3658467e2595ee030214a8f4ec5a3765f4e7d3f362fe668b6d14719b1cba1c0",
+        "E06-desktop.jpg": "59f774e654c8caf67553faf812e523c7170291d75a7b1ec7f5ef834ac0775e43",
+        "E06-phone.jpg": "02876605e967e4f9306b045a3469a3c42299a08fdf208b7b1dc0705510a8d0be"
+      },
+      "redactionEvidence": {
+        "E01": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E02": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "ApexCharts. Type set in Big Shoulders Display, Newsreader and IBM Plex Mono.",
+                "x": 18,
+                "y": 4284.875,
+                "width": 347.765625,
+                "height": 34.1875
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "ApexCharts. Type set in Big Shoulders Display, Newsreader and IBM Plex Mono.",
+                "x": 862.078125,
+                "y": 3282.875,
+                "width": 347.765625,
+                "height": 34.1875
+              }
+            ]
+          }
+        },
+        "E03": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "ApexCharts, loaded from jsDelivr. Type set in Big Shoulders and Newsreader.",
+                "x": 17.15625,
+                "y": 3321.09375,
+                "width": 305.6875,
+                "height": 35.109375
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "ApexCharts, loaded from jsDelivr. Type set in Big Shoulders and Newsreader.",
+                "x": 861.328125,
+                "y": 2560.59375,
+                "width": 305.6875,
+                "height": 35.109375
+              }
+            ]
+          }
+        },
+        "E04": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E05": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Chart: ApexCharts.",
+                "x": 16.375,
+                "y": 3453.875,
+                "width": 136.09375,
+                "height": 15
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Chart: ApexCharts.",
+                "x": 1090.15625,
+                "y": 2373.71875,
+                "width": 136.09375,
+                "height": 15
+              }
+            ]
+          }
+        },
+        "E06": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        }
+      },
+      "notes": "E06 leads because its phone layout preserves readable names, cities, years and heights while making the central comparison immediately clear. E01 is the strongest compact vertical poster, while E05 and E03 add useful editorial interpretation at the cost of length and small phone labels. The visible height values and scales are consistently accurate across the entries, so hierarchy, economy and mobile readability determine most of the ranking. Screenshot cutoffs and hidden credit areas were not treated as defects.",
+      "result": {
+        "exitCode": 0,
+        "status": "complete",
+        "started": "2026-10-05T20:58:53.029Z",
+        "ended": "2026-10-05T21:00:43.130Z",
+        "wallSeconds": 110.101,
+        "resumed": false,
+        "usage": {
+          "input_tokens": 179437,
+          "cached_input_tokens": 139776,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 3221,
+          "reasoning_output_tokens": 895
+        },
+        "costUSD": null,
+        "error": null,
+        "finalText": "done",
+        "transcript": "/Users/anasb/repositories/rhp/evals/compare/out/published-judging-blind/sessions/skyscrapers-p2/transcript.jsonl"
+      }
+    },
+    {
+      "packet": "skyscrapers-p3",
+      "key": {
+        "E01": "skyscrapers-apex-skill-sonnet-1",
+        "E02": "skyscrapers-rhp-skill-sonnet-1",
+        "E03": "skyscrapers-rhp-skill-mcp-sonnet-1",
+        "E04": "skyscrapers-apex-none-sonnet-1",
+        "E05": "skyscrapers-apex-skill-mcp-sonnet-1",
+        "E06": "skyscrapers-rhp-mcp-sonnet-1"
+      },
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cli": "codex-cli 0.153.4",
+      "images": {
+        "E01-desktop.jpg": "c2c127d0e8c865406d47e170cd55ce44858682b3f1e43ef4c4789b77b93671f3",
+        "E01-phone.jpg": "8134d477e1afd9c160a41381e1a338abbc1b73935af09db32d388d8f2de79455",
+        "E02-desktop.jpg": "d30a24ae8ecba53dead961c9f1580eb190d52c0d1ce23ec739434b443dd9b3fc",
+        "E02-phone.jpg": "f1ac8c587fd5b09cb5a9c88040bdc8c362ac865343dd53ff3fdcf32ebbfb8ced",
+        "E03-desktop.jpg": "59f774e654c8caf67553faf812e523c7170291d75a7b1ec7f5ef834ac0775e43",
+        "E03-phone.jpg": "02876605e967e4f9306b045a3469a3c42299a08fdf208b7b1dc0705510a8d0be",
+        "E04-desktop.jpg": "a181be396f9dfcc335ece442822adf2028e6963deb94a378355f6d7740fe721e",
+        "E04-phone.jpg": "203641ea1ac0f0bf2e00d17aec6eeb50ea4943b0c8c4614630b4600a3e3dcfe3",
+        "E05-desktop.jpg": "490f28635f4b96ac1d22a343fc20d850ab011ddd40c999deec7156929983a249",
+        "E05-phone.jpg": "c3658467e2595ee030214a8f4ec5a3765f4e7d3f362fe668b6d14719b1cba1c0",
+        "E06-desktop.jpg": "b09d1325784f8c5a92f17e329b79c270e4f1b0809203a0486f819684e22fbaa9",
+        "E06-phone.jpg": "2e7e5f8788d7252c220dc569b81dcb479aa34d245ffdafa7de3e0472611625b9"
+      },
+      "redactionEvidence": {
+        "E01": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "ApexCharts, loaded from jsDelivr. Type set in Big Shoulders and Newsreader.",
+                "x": 17.15625,
+                "y": 3321.09375,
+                "width": 305.6875,
+                "height": 35.109375
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "ApexCharts, loaded from jsDelivr. Type set in Big Shoulders and Newsreader.",
+                "x": 861.328125,
+                "y": 2560.59375,
+                "width": 305.6875,
+                "height": 35.109375
+              }
+            ]
+          }
+        },
+        "E02": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E03": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        },
+        "E04": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "ApexCharts. Type set in Big Shoulders Display, Newsreader and IBM Plex Mono.",
+                "x": 18,
+                "y": 4284.875,
+                "width": 347.765625,
+                "height": 34.1875
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "ApexCharts. Type set in Big Shoulders Display, Newsreader and IBM Plex Mono.",
+                "x": 862.078125,
+                "y": 3282.875,
+                "width": 347.765625,
+                "height": 34.1875
+              }
+            ]
+          }
+        },
+        "E05": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [
+              {
+                "kind": "text",
+                "text": "Chart: ApexCharts.",
+                "x": 16.375,
+                "y": 3453.875,
+                "width": 136.09375,
+                "height": 15
+              }
+            ],
+            "1280": [
+              {
+                "kind": "text",
+                "text": "Chart: ApexCharts.",
+                "x": 1090.15625,
+                "y": 2373.71875,
+                "width": 136.09375,
+                "height": 15
+              }
+            ]
+          }
+        },
+        "E06": {
+          "creditsRedacted": true,
+          "redactions": {
+            "390": [],
+            "1280": []
+          }
+        }
+      },
+      "notes": "All six show the supplied heights, cities, and completion years correctly in the desktop images. E03 leads because its mobile layout makes the complete data easy to read while preserving the central numerical comparison. E06 and E02 deliver cohesive, compact posters, though their phone labels remain rotated. E05, E01, and E04 have strong editorial styling but lose clarity through small mobile chart labels and repeated information spread over much longer pages. Screenshot cutoffs and blank credit areas were not treated as defects.",
+      "result": {
+        "exitCode": 0,
+        "status": "complete",
+        "started": "2026-10-05T21:00:43.133Z",
+        "ended": "2026-10-05T21:02:07.939Z",
+        "wallSeconds": 84.806,
+        "resumed": false,
+        "usage": {
+          "input_tokens": 175344,
+          "cached_input_tokens": 124800,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2650,
+          "reasoning_output_tokens": 546
+        },
+        "costUSD": null,
+        "error": null,
+        "finalText": "done",
+        "transcript": "/Users/anasb/repositories/rhp/evals/compare/out/published-judging-blind/sessions/skyscrapers-p3/transcript.jsonl"
+      }
+    }
+  ]
+}

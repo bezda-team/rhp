@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <title>The weekly divide | Gender pay gap</title>
+  <style>
+    :root { color-scheme: light; --paper: #f7f5ef; --ink: #20272b; --red: #d52228; --muted: #62676a; --rule: #cecfc9; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e7e7e2; color: var(--ink); font-family: Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+    .poster { max-width: 1060px; margin: 40px auto; padding: 0 62px 32px; background: var(--paper); box-shadow: 0 8px 35px #20272b12; }
+    .accent { width: 76px; height: 10px; background: var(--red); margin-bottom: 28px; }
+    .eyebrow { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 25px; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; }
+    .eyebrow span:first-child { color: var(--red); }
+    h1 { margin: 0 0 14px; font-size: clamp(43px, 6.8vw, 72px); letter-spacing: -3px; line-height: 1.02; font-weight: 700; }
+    .intro { max-width: 660px; margin: 0; font-size: 21px; line-height: 1.4; }
+    .standfirst { display: grid; grid-template-columns: 155px 1fr; gap: 24px; align-items: center; margin-top: 28px; padding: 19px 0 20px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); }
+    .stat { color: var(--red); font-size: 53px; font-weight: 700; line-height: 1; letter-spacing: -2px; }
+    .standfirst p { max-width: 570px; margin: 0; font-size: 15px; line-height: 1.5; }
+    .standfirst strong { font-weight: 700; }
+    figure { margin: 28px 0 0; }
+    .chart-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 13px 24px; align-items: baseline; }
+    h2 { margin: 0; font-size: 18px; line-height: 1.4; }
+    .unit { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
+    .legend { display: flex; gap: 22px; font-size: 14px; }
+    .legend span { display: inline-flex; gap: 8px; align-items: center; }
+    .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--ink); }
+    .dot.women { background: var(--red); }
+    #chart { margin: 12px -12px 0; min-height: 490px; }
+    .reading-note { margin: 0 0 23px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .chart-error { padding: 30px 12px; font-size: 15px; line-height: 1.5; }
+    footer { border-top: 1px solid var(--ink); padding-top: 15px; }
+    footer p { margin: 0 0 8px; font-size: 12px; line-height: 1.55; color: var(--muted); }
+    footer strong { color: var(--ink); }
+    .colophon { display: flex; justify-content: space-between; gap: 16px; padding-top: 14px; margin-top: 17px; border-top: 1px solid var(--rule); font-size: 10px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
+    .colophon span:last-child { color: var(--red); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    .pay-tooltip { padding: 12px 15px; font-size: 12px; line-height: 1.7; background: var(--paper); color: var(--ink); }
+    .pay-tooltip strong { display: block; margin-bottom: 4px; }
+    .pay-tooltip .female { color: var(--red); }
+    .apexcharts-tooltip { border: 1px solid var(--rule) !important; box-shadow: 0 3px 12px #00000012 !important; border-radius: 0 !important; }
+    @media (max-width: 700px) {
+      .poster { margin: 0; padding: 0 24px 26px; box-shadow: none; }
+      .accent { margin-bottom: 23px; width: 58px; height: 8px; }
+      .eyebrow { font-size: 10px; letter-spacing: 1.3px; margin-bottom: 23px; }
+      h1 { letter-spacing: -1.8px; }
+      .intro { font-size: 18px; }
+      .standfirst { grid-template-columns: 110px 1fr; gap: 15px; margin-top: 24px; }
+      .stat { font-size: 43px; }
+      .standfirst p { font-size: 13px; }
+      figure { margin-top: 23px; }
+      h2 { font-size: 16px; }
+      .legend { font-size: 12px; gap: 18px; }
+      #chart { margin-left: -16px; margin-right: -16px; min-height: 570px; }
+      .colophon { font-size: 9px; letter-spacing: 1px; }
+    }
+    @media (max-width: 370px) {
+      .poster { padding-left: 18px; padding-right: 18px; }
+      h1 { font-size: 40px; }
+      .standfirst { grid-template-columns: 95px 1fr; }
+      .stat { font-size: 38px; }
+    }
+    @page { size: A4 portrait; margin: 10mm; }
+    @media print {
+      body { background: var(--paper); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .poster { max-width: none; margin: 0; padding: 0 15px 10px; box-shadow: none; }
+      h1 { font-size: 56px; }
+      .accent { margin-bottom: 18px; }
+      .eyebrow { margin-bottom: 18px; }
+      .intro { font-size: 18px; }
+      .standfirst { margin-top: 20px; padding: 14px 0; }
+      figure { margin-top: 20px; }
+      footer, figure { break-inside: avoid; }
+    }
+  </style>
+  <noscript><style>#data-table { position: static; width: 100%; height: auto; margin: 0 0 20px; clip-path: none; white-space: normal; } #chart { display: none; }</style></noscript>
+</head>
+<body>
+  <main class="poster">
+    <header>
+      <div class="accent" aria-hidden="true"></div>
+      <div class="eyebrow"><span>Work &amp; inequality</span><span>Eight occupations</span></div>
+      <h1>The weekly divide</h1>
+      <p class="intro">The gender pay gap, illustrated across eight occupations.</p>
+      <div class="standfirst">
+        <div class="stat">$850</div>
+        <p><strong>The largest weekly gap in this illustration.</strong><br>Women physicians earn $1,950 to men’s $2,800, a difference of 30.4% of men’s earnings.</p>
+      </div>
+    </header>
+    <figure aria-labelledby="chart-title" aria-describedby="chart-note data-note">
+      <div class="chart-heading">
+        <div><h2 id="chart-title">Median weekly earnings</h2><span class="unit">US dollars · Ordered by men’s earnings, highest first</span></div>
+        <div class="legend" aria-label="Chart legend"><span><i class="dot women" aria-hidden="true"></i>Women</span><span><i class="dot" aria-hidden="true"></i>Men</span></div>
+      </div>
+      <div id="chart" aria-label="Dumbbell chart comparing women’s and men’s median weekly earnings in eight occupations"></div>
+      <noscript><p>Enable JavaScript to view the chart. The earnings data are listed below.</p></noscript>
+      <figcaption id="chart-note" class="reading-note">Each line connects women’s and men’s earnings within an occupation. A longer line means a larger dollar gap.</figcaption>
+      <table class="sr-only" id="data-table">
+        <caption>Illustrative median weekly earnings, US dollars</caption>
+        <thead><tr><th scope="col">Occupation</th><th scope="col">Women</th><th scope="col">Men</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Physicians</th><td>1,950</td><td>2,800</td></tr>
+          <tr><th scope="row">Lawyers</th><td>1,880</td><td>2,450</td></tr>
+          <tr><th scope="row">Software developers</th><td>1,850</td><td>2,100</td></tr>
+          <tr><th scope="row">Accountants</th><td>1,300</td><td>1,600</td></tr>
+          <tr><th scope="row">Registered nurses</th><td>1,400</td><td>1,550</td></tr>
+          <tr><th scope="row">Elementary school teachers</th><td>1,150</td><td>1,250</td></tr>
+          <tr><th scope="row">Chefs and head cooks</th><td>700</td><td>850</td></tr>
+          <tr><th scope="row">Retail salespersons</th><td>650</td><td>820</td></tr>
+        </tbody>
+      </table>
+    </figure>
+    <footer>
+      <p id="data-note"><strong>Note:</strong> These figures are illustrative, supplied for this poster. They are not official statistics and do not establish differences in pay for identical work.</p>
+      <p>Percentage gap = (men’s earnings − women’s earnings) ÷ men’s earnings × 100.</p>
+      <div class="colophon"><span>The gender pay gap</span><span>An illustrative comparison · 01</span></div>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js"></script>
+  <script>
+    (() => {
+      const rows = Array.from(document.querySelectorAll('#data-table tbody tr'), row => ({
+        occupation: row.cells[0].textContent,
+        women: Number(row.cells[1].textContent.replaceAll(',', '')),
+        men: Number(row.cells[2].textContent.replaceAll(',', ''))
+      }));
+      const number = value => Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 });
+      const container = document.querySelector('#chart');
+      function showFallback() {
+        container.innerHTML = '<p class="chart-error">The chart could not load. Median weekly earnings are shown in the table below.</p>';
+        container.style.minHeight = '0';
+        document.querySelector('#data-table').classList.remove('sr-only');
+      }
+      if (!window.ApexCharts) { showFallback(); return; }
+      const options = {
+        chart: {
+          type: 'dumbbell', height: 490, background: 'transparent',
+          fontFamily: 'Arial, Helvetica, sans-serif', foreColor: '#62676a',
+          toolbar: { show: false }, zoom: { enabled: false },
+          animations: { enabled: false }, parentHeightOffset: 0,
+          print: { enabled: true, width: 680 }
+        },
+        series: [
+          { name: 'Women', data: rows.map(row => ({ x: row.occupation, y: row.women })) },
+          { name: 'Men', data: rows.map(row => ({ x: row.occupation, y: row.men })) }
+        ],
+        colors: ['#d52228', '#20272b'],
+        plotOptions: {
+          bar: {
+            horizontal: true, barHeight: '5%',
+            dumbbell: {
+              connector: { color: '#939b9e', opacity: 0.8 },
+              dataLabels: { enabled: true, offset: 7, colorFromMarker: true, formatter: number, style: { fontSize: '12px', fontWeight: 600 } }
+            }
+          }
+        },
+        markers: { size: 10, strokeWidth: 0, hover: { sizeOffset: 1 } },
+        stroke: { width: 0 },
+        dataLabels: { enabled: false, style: { fontSize: '12px', fontWeight: 600 }, background: { enabled: false } },
+        fill: { opacity: 1 },
+        legend: { show: false },
+        xaxis: {
+          type: 'numeric', min: 0, max: 3000, tickAmount: 6,
+          labels: { formatter: number, style: { fontSize: '11px' } },
+          axisBorder: { show: false }, axisTicks: { show: false },
+          tooltip: { enabled: false }, crosshairs: { show: false }
+        },
+        yaxis: {
+          labels: { minWidth: 190, maxWidth: 210, align: 'left', style: { colors: '#20272b', fontSize: '13px', fontWeight: 400 } }
+        },
+        grid: {
+          borderColor: '#dedfd9', strokeDashArray: 0,
+          xaxis: { lines: { show: true } }, yaxis: { lines: { show: false } },
+          padding: { left: 5, right: 32, top: 0, bottom: 0 }
+        },
+        states: { hover: { filter: { type: 'none' } }, active: { filter: { type: 'none' } } },
+        tooltip: {
+          shared: false, intersect: true,
+          custom: ({ dataPointIndex }) => {
+            const row = rows[dataPointIndex];
+            if (!row) return '';
+            return '<div class="pay-tooltip"><strong>' + row.occupation + '</strong>' +
+              '<span class="female">Women: $' + number(row.women) + '</span><br>Men: $' + number(row.men) +
+              '<br>Weekly gap: $' + number(row.men - row.women) + ' (' + ((row.men - row.women) / row.men * 100).toFixed(1) + '%)</div>';
+          }
+        },
+        responsive: [{
+          breakpoint: 700,
+          options: {
+            chart: { height: 570 },
+            markers: { size: 8 },
+            yaxis: { labels: { minWidth: 106, maxWidth: 124, style: { fontSize: '11px' }, formatter: value => {
+              const wraps = {
+                'Software developers': ['Software', 'developers'],
+                'Registered nurses': ['Registered', 'nurses'],
+                'Elementary school teachers': ['Elementary school', 'teachers'],
+                'Chefs and head cooks': ['Chefs and', 'head cooks'],
+                'Retail salespersons': ['Retail', 'salespersons']
+              };
+              return wraps[value] || value;
+            } } },
+            xaxis: { tickAmount: 3, labels: { style: { fontSize: '10px' } } },
+            dataLabels: { style: { fontSize: '10px' } },
+            plotOptions: { bar: { barHeight: '4%', dumbbell: { dataLabels: { offset: 5, style: { fontSize: '10px' } } } } },
+            grid: { padding: { left: 0, right: 28 } }
+          }
+        }]
+      };
+      const chart = new ApexCharts(container, options);
+      chart.render().catch(showFallback);
+    })();
+  </script>
+</body>
+</html>

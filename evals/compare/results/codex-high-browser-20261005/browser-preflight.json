@@ -1,0 +1,21 @@
+{
+  "exitCode": 0,
+  "status": "complete",
+  "started": "2026-10-05T21:19:45.806Z",
+  "ended": "2026-10-05T21:20:13.621Z",
+  "wallSeconds": 27.815,
+  "resumed": false,
+  "usage": {
+    "input_tokens": 63809,
+    "cached_input_tokens": 48128,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 821,
+    "reasoning_output_tokens": 0
+  },
+  "costUSD": null,
+  "error": null,
+  "warnings": [],
+  "finalText": "READY",
+  "transcript": "/tmp/rhp-browser-eval-preflight/session/transcript.jsonl",
+  "purpose": "Infrastructure preflight only, excluded from generation and judging usage."
+}

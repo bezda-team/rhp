@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Atmospheric carbon dioxide at Mauna Loa, 1960 to 2024. A NOAA annual-mean record with the 2015 milestone and pre-industrial reference.">
+<title>Carbon dioxide keeps climbing | Mauna Loa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js"}}</script>
+<style>
+:root { --page:#dedbd2; --paper:#f7f3e9; --ink:#242b28; --soft:#596059; --accent:#ad4229; --rule:#d9d8ce; --text:'DM Sans',sans-serif; --mono:'IBM Plex Mono',monospace; --display:'Libre Caslon Display',Georgia,serif; }
+* { box-sizing:border-box; }
+body { margin:0; padding:36px 24px; background:var(--page); color:var(--ink); font:16px/1.5 var(--text); }
+.poster { max-width:1120px; margin:auto; padding:32px 58px 28px; background:var(--paper); box-shadow:0 12px 44px #242b2810; }
+.masthead { display:flex; justify-content:space-between; gap:12px; padding:0 0 17px; border-bottom:2px solid var(--ink); font:500 11px/1.5 var(--mono); letter-spacing:.1em; text-transform:uppercase; }
+.location { text-align:right; }
+.intro { display:grid; grid-template-columns:1fr 236px; gap:32px; align-items:end; margin:29px 0 34px; }
+h1 { margin:0 0 18px; font:400 clamp(52px,6.3vw,80px)/.96 var(--display); letter-spacing:-.035em; }
+h1 em { color:var(--accent); font-style:normal; }
+.dek { max-width:530px; margin:0; color:var(--soft); font-size:16px; line-height:1.55; }
+.latest { padding:4px 0 5px 28px; border-left:1px solid var(--rule); }
+.eyebrow { font:500 11px/1.5 var(--mono); text-transform:uppercase; letter-spacing:.07em; }
+.big-number { margin:3px 0; color:var(--accent); font:400 68px/1.1 var(--display); letter-spacing:-.045em; }
+.big-number small { font:400 16px var(--mono); letter-spacing:0; }
+.stat-note { margin:0; font-size:14px; color:var(--soft); }
+.chart-heading { display:flex; justify-content:space-between; gap:10px; margin-bottom:14px; font:500 11px/1.5 var(--mono); color:var(--soft); }
+.plot { touch-action:pan-y; cursor:crosshair; }
+.explore { display:grid; grid-template-columns:1fr 1.4fr; align-items:center; gap:40px; margin-top:24px; padding:17px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+.readout { margin:0; font:500 17px/1.5 var(--mono); font-variant-numeric:tabular-nums; }
+.readout strong { color:var(--accent); font-weight:600; }
+.change { font-size:12px; color:var(--soft); margin-top:3px; }
+.control { display:grid; gap:4px; font-size:12px; color:var(--soft); }
+input[type=range] { display:block; width:100%; height:26px; margin:0; accent-color:var(--accent); cursor:pointer; }
+input:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
+.context { display:grid; grid-template-columns:1fr 1fr; gap:36px; margin:22px 0; }
+.context p { font-size:13px; line-height:1.55; margin:0; color:var(--soft); }
+.context b { color:var(--ink); font-weight:600; }
+footer { display:flex; justify-content:space-between; gap:18px; border-top:1px solid var(--ink); padding-top:14px; color:var(--soft); font-size:11px; line-height:1.6; }
+footer a { color:inherit; text-decoration-thickness:1px; text-underline-offset:3px; }
+.folio { white-space:nowrap; font-family:var(--mono); }
+@media(max-width:760px) { body { padding:18px 16px; } .poster { padding:26px 30px; } .intro { grid-template-columns:1fr 180px; gap:20px; } .latest { padding-left:20px; } .big-number { font-size:54px; } h1 { font-size:58px; } }
+@media(max-width:540px) {
+ body { padding:0; } .poster { padding:21px 20px; box-shadow:none; }
+ .masthead { font-size:9px; letter-spacing:.04em; padding-bottom:12px; }
+ .intro { display:block; margin:23px 0 25px; } h1 { font-size:53px; margin-bottom:14px; }
+ .dek { font-size:14px; line-height:1.5; }
+ .latest { display:grid; grid-template-columns:1fr auto; column-gap:12px; align-items:center; margin-top:20px; padding:12px 0 0; border-left:0; border-top:1px solid var(--rule); }
+ .latest .eyebrow { font-size:10px; } .big-number { grid-column:2; grid-row:1 / 3; font-size:43px; margin:0; } .big-number small { font-size:12px; } .stat-note { font-size:12px; }
+ .chart-heading { font-size:10px; margin-bottom:15px; } .chart-heading span:last-child { display:none; }
+ .explore { grid-template-columns:1fr; gap:13px; margin-top:19px; padding:14px 0; }
+ .readout { font-size:16px; } .change { font-size:11px; }
+ .context { grid-template-columns:1fr; gap:13px; margin:19px 0; } .context p { font-size:12px; }
+ footer { display:block; font-size:10px; } .folio { display:block; margin-top:9px; }
+}
+@media print { body { padding:0; background:var(--paper); } .poster { max-width:none; box-shadow:none; } .control { display:none; } }
+</style>
+</head>
+<body>
+<main id="poster"></main>
+<noscript>This poster needs JavaScript to display its interactive chart.</noscript>
+<script type="module">
+import { Chart, Plot, Scale, Line, Dot, Tick, Label, Place, slat, html, render, createSignal, onCleanup } from '@bezda/rhp/standalone';
+
+// NOAA annual means supplied for this poster, in parts per million.
+const DATA = [[1960,316.9],[1965,320.0],[1970,325.7],[1975,331.1],[1980,338.8],[1985,346.1],[1990,354.5],[1995,360.8],[2000,369.7],[2005,379.8],[2010,389.9],[2015,400.8],[2020,414.2],[2024,424.6]];
+const rows = DATA.map(([year,ppm]) => ({year,ppm})).sort((a,b) => a.year-b.year);
+const first=rows[0], last=rows.at(-1), milestone=rows.find(d=>d.ppm>400), baseline=280;
+const xDomain=[first.year,last.year];
+// A focused concentration axis includes the historical reference, with space for labels.
+const yDomain=[baseline-10,Math.ceil(Math.max(...rows.map(d=>d.ppm))/20)*20];
+const number=new Intl.NumberFormat('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});
+const pct=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
+const theme={font:'var(--mono)',ink:'var(--ink)',muted:'var(--soft)',grid:'var(--rule)',surface:'var(--paper)',series:['var(--accent)']};
+
+// Slat types: the record, annual observations, axis, and permanent annotations.
+const Curve=slat({room:{before:22,end:9},css:'.curve { stroke-width:3px; }'},d=>html`<div><${Line} points=${()=>d.points} class="curve" /></div>`);
+const Observation=slat({css:'.point { background:var(--rhp-surface); border:1.5px solid var(--rhp-series-1); }'},d=>html`<div><${Dot} at=${()=>d.year} cross=${()=>d.ppm} size="6px" class="point" /></div>`);
+const YearAxis=slat({room:{after:30},css:`
+ .mark { top:100%; height:5px; translate:-50% 0; background:var(--rhp-muted); --rhp-tick-width:1px; }
+ .year { top:calc(100% + 12px); translate:-50% 0; --rhp-label-gap:0px; font-size:11px; color:var(--rhp-muted); }
+ .first .year { translate:0 0; } .last .year { translate:-100% 0; }
+ @container(max-width:500px) { .optional { display:none; } }
+`},d=>html`<div class=${()=>d.first?'first':d.last?'last':''}><${Tick} at=${()=>d.at} class="mark" /><${Label} at=${()=>d.at} class=${()=>[1970,1990,2010].includes(d.at)?'year optional':'year'}>${()=>d.at}<//></div>`);
+const Annotations=slat({css:`
+ .reference { stroke-width:1px; }
+ .caption { position:absolute; white-space:nowrap; font-size:12px; line-height:1.4; }
+ .baseline { left:0; bottom:9px; color:var(--rhp-muted); }
+ .start { left:0; bottom:13px; font-weight:600; color:var(--rhp-ink); }
+ .end { right:0; bottom:14px; color:var(--rhp-series-1); font-weight:600; }
+ .milestone-dot { background:var(--rhp-series-1); box-shadow:0 0 0 3px var(--rhp-surface),0 0 0 4px var(--rhp-series-1); }
+ .milestone { position:absolute; top:0; right:0; width:175px; padding:8px 12px 8px 0; border-right:1px solid var(--rhp-series-1); text-align:right; color:var(--rhp-ink); font:13px/1.45 'DM Sans',sans-serif; }
+ .milestone b { display:block; color:var(--rhp-series-1); font:600 13px/1.6 'IBM Plex Mono',monospace; }
+ .milestone:before { content:''; position:absolute; right:-1px; bottom:100%; height:var(--leader); border-right:1px solid var(--rhp-series-1); }
+ @container(max-width:500px) { .caption { font-size:11px; } .milestone { width:148px; font-size:12px; } }
+`},d=>html`<div style=${()=>({"--leader":d.leaderPx+"px"})}>
+ <${Line} points=${[[first.year,baseline],[last.year,baseline]]} color="muted" class="reference" />
+ <${Place} at=${first.year} cross=${baseline}><span class="caption baseline">≈280 ppm · pre-industrial<//><//>
+ <${Place} at=${first.year} cross=${first.ppm}><span class="caption start">${number.format(first.ppm)}<//><//>
+ <${Place} at=${last.year} cross=${last.ppm}><span class="caption end">${number.format(last.ppm)}<//><//>
+ <${Dot} at=${milestone.year} cross=${milestone.ppm} size="9px" class="milestone-dot" />
+ <${Place} at=${milestone.year} cross=${340}><div class="milestone"><b>${milestone.year} · ${number.format(milestone.ppm)} ppm</b>First annual mean<br />above 400 ppm</div><//>
+ </div>`);
+const Reading=slat({css:'.hair { background:#8e8c87; --rhp-tick-width:1px; } .selected { background:var(--rhp-series-1); border:2px solid var(--rhp-surface); }'},d=>html`<div><${Tick} at=${()=>d.year} thick=${1} class="hair" /><${Dot} at=${()=>d.year} cross=${()=>d.ppm} size="11px" class="selected" /></div>`);
+
+// Chart component: true time spacing, nearest supplied year on hover or tap, keyboard slider.
+function CarbonPoster() {
+ const [picked,setPicked]=createSignal(rows.length-1);
+ const media=matchMedia('(max-width:540px)');
+ const [phone,setPhone]=createSignal(media.matches);
+ const resize=()=>setPhone(media.matches);
+ media.addEventListener('change',resize);
+ onCleanup(()=>media.removeEventListener('change',resize));
+ let plot,slider;
+ const selected=()=>rows[picked()];
+ const say=()=>`${selected().year}: ${number.format(selected().ppm)} parts per million`;
+ const point=e=>{
+  const r=plot.getBoundingClientRect();
+  if(e.clientX<r.left || e.clientX>r.right || e.clientY<r.top || e.clientY>r.bottom) return;
+  const year=xDomain[0]+(e.clientX-r.left)/r.width*(xDomain[1]-xDomain[0]);
+  setPicked(rows.reduce((best,d,i)=>Math.abs(d.year-year)<Math.abs(rows[best].year-year)?i:best,0));
+ };
+ const leave=e=>{ if(e.pointerType!=='touch' && document.activeElement!==slider) setPicked(rows.length-1); };
+ return html`<article class="poster" aria-labelledby="title" onPointerLeave=${leave}>
+  <header class="masthead"><span>Atmospheric record · 01</span><span class="location">Mauna Loa, Hawai‘i<br />1960 to 2024</span></header>
+  <div class="intro"><div><h1 id="title">Carbon dioxide<br /><em>keeps climbing.</em></h1><p class="dek">Measured high on Mauna Loa, the record traces a steady rise in atmospheric CO₂. Each point is an annual mean, in parts per million (ppm).</p></div>
+   <aside class="latest" aria-label="Latest annual mean"><div class="eyebrow">${last.year} annual mean</div><div class="big-number">${number.format(last.ppm)} <small>ppm</small></div><p class="stat-note">${pct.format((last.ppm/first.ppm-1)*100)}% higher than ${first.year}</p></aside>
+  </div>
+  <div class="chart-heading"><span>Atmospheric CO₂ · parts per million</span><span>Selected annual means / NOAA</span></div>
+  <div class="plot" onPointerMove=${e=>e.pointerType!=='touch'&&point(e)} onClick=${point}>
+   <${Chart} scale=${xDomain} cross=${yDomain} crossTicks=${[280,320,360,400,440]} height=${()=>phone()?285:335} theme=${theme} label="Atmospheric carbon dioxide at Mauna Loa, selected annual means from 1960 to 2024, in ppm. Reference: approximately 280 ppm before industrialization.">
+    <${Scale} ticks=${[1960,1970,1980,1990,2000,2010,2024]}>${YearAxis}<//>
+    <${Plot} overlap=${true} points=${[DATA]} ref=${el=>plot=el}>${Curve}<//>
+    <${Plot} overlap=${true} rows=${rows} style=${{'pointer-events':'none'}}>${Observation}<//>
+    <${Plot} overlap=${true} slats=${1} year=${()=>selected().year} ppm=${()=>selected().ppm} style=${{'pointer-events':'none'}}>${Reading}<//>
+    <${Plot} overlap=${true} slats=${1} leaderPx=${()=>(milestone.ppm-340)/(yDomain[1]-yDomain[0])*(phone()?285:335)} style=${{'pointer-events':'none'}}>${Annotations}<//>
+   <//>
+  </div>
+  <div class="explore"><div><p class="readout"><span>${()=>selected().year}</span> <span aria-hidden="true"> / </span> <strong>${()=>number.format(selected().ppm)} ppm</strong></p><div class="change">${()=>number.format(selected().ppm-baseline)} ppm above the pre-industrial reference</div></div>
+   <label class="control">Explore the record: point, tap, or use the slider.
+    <input ref=${el=>slider=el} aria-label="Year in the CO2 record" type="range" min="0" max=${rows.length-1} step="1" value=${picked} aria-valuetext=${say} onInput=${e=>setPicked(+e.currentTarget.value)} />
+   </label></div>
+  <div class="context"><p><b>A new threshold in 2015.</b> The annual mean first passed 400 ppm, reaching ${number.format(milestone.ppm)} ppm. By ${last.year}, it was ${number.format(last.ppm-milestone.ppm)} ppm higher still.</p><p><b>A longer perspective.</b> Before industrialization, atmospheric CO₂ was about 280 ppm. The ${last.year} reading is approximately ${pct.format((last.ppm/baseline-1)*100)}% above that reference.</p></div>
+  <footer><span>Source: <a href="https://gml.noaa.gov/ccgg/trends/data.html">NOAA Global Monitoring Laboratory</a>, Mauna Loa annual means.<br />Selected years and values as supplied. Straight segments connect observations; the reference is approximate.</span><span class="folio">CO₂ / 1960–2024</span></footer>
+ </article>`;
+}
+
+// Mount the poster. All data, styling, and application code live in this file.
+render(CarbonPoster,document.getElementById('poster'));
+</script>
+</body>
+</html>

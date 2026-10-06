@@ -1,0 +1,459 @@
+{
+  "date": "2026-10-05T19:23:33.384Z",
+  "browser": "153.0.8010.12",
+  "widths": [
+    1280,
+    390
+  ],
+  "kind": "published-poster-rendering",
+  "notes": [
+    "Fresh browser scans of existing posters; no new generation, usage accounting or blind judging."
+  ],
+  "posters": {
+    "skyscrapers-apex-none-sonnet-1.html": {
+      "sha256": "5c6628848b5e9bde3649a6c765e118143fd76d9d53e70eed8fddad5d822b6c31",
+      "summary": {
+        "renders": true,
+        "charts": 3,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 1,
+        "canvas": 0,
+        "phoneHeight": 4351
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.8.0/dist/apexcharts.min.js",
+          "served": "apexcharts@7.8.0/dist/apexcharts.min.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 18,
+              "y": 680,
+              "w": 354,
+              "h": 520
+            },
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 18,
+              "y": 1912,
+              "w": 354,
+              "h": 380
+            },
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 18,
+              "y": 2525,
+              "w": 354,
+              "h": 380
+            }
+          ],
+          "pageHeight": 4351,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [
+            {
+              "t": "+149.1 m ahead of No. 2",
+              "contrast": 4.1,
+              "size": 14
+            }
+          ],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 54,
+              "y": 644,
+              "w": 821,
+              "h": 640
+            },
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 54,
+              "y": 1643,
+              "w": 548,
+              "h": 440
+            },
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 678,
+              "y": 1615,
+              "w": 548,
+              "h": 440
+            }
+          ],
+          "pageHeight": 3386,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    },
+    "skyscrapers-apex-skill-mcp-sonnet-1.html": {
+      "sha256": "6a60c0b10ffdec6194346393fc488b5c30e8a932a8e5f049bf11f8037c2610bc",
+      "summary": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 1,
+        "canvas": 0,
+        "phoneHeight": 3499
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js",
+          "served": "apexcharts@7.6.1/dist/apexcharts.min.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 17,
+              "y": 684,
+              "w": 357,
+              "h": 560
+            }
+          ],
+          "pageHeight": 3499,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [
+            {
+              "t": "828",
+              "contrast": 4.13,
+              "size": 13
+            }
+          ],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 54,
+              "y": 461,
+              "w": 1173,
+              "h": 700
+            }
+          ],
+          "pageHeight": 2476,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    },
+    "skyscrapers-apex-skill-sonnet-1.html": {
+      "sha256": "1135b7de946537eddbf0621d9bb8dec4965c2fb94e4b83764b44d2983e84dc8d",
+      "summary": {
+        "renders": true,
+        "charts": 2,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 3404
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/apexcharts@7.6.1/dist/apexcharts.min.js",
+          "served": "apexcharts@7.6.1/dist/apexcharts.min.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 17,
+              "y": 794,
+              "w": 356,
+              "h": 506
+            },
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 17,
+              "y": 1525,
+              "w": 356,
+              "h": 190
+            }
+          ],
+          "pageHeight": 3404,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 56,
+              "y": 804,
+              "w": 1168,
+              "h": 640
+            },
+            {
+              "tag": "svg",
+              "cls": "apexcharts-svg",
+              "x": 56,
+              "y": 1724,
+              "w": 556,
+              "h": 200
+            }
+          ],
+          "pageHeight": 2644,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    },
+    "skyscrapers-rhp-mcp-sonnet-1.html": {
+      "sha256": "a6e289fac17258ad14872f3d1ebb77e12cad9621b5562b19e58710c3e1622f82",
+      "summary": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 1116
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js",
+          "served": "@bezda/rhp@2.0.2/dist/standalone.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "div",
+              "cls": "rhp-chart",
+              "x": 24,
+              "y": 409,
+              "w": 342,
+              "h": 556
+            }
+          ],
+          "pageHeight": 1116,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "div",
+              "cls": "rhp-chart",
+              "x": 192,
+              "y": 505,
+              "w": 896,
+              "h": 620
+            }
+          ],
+          "pageHeight": 1271,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    },
+    "skyscrapers-rhp-skill-mcp-sonnet-1.html": {
+      "sha256": "0c38f7ff4650ac9e1dcaaa3ed2934e587b4f01554cc6efa3bd56d1da9a069c15",
+      "summary": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 1112
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js",
+          "served": "@bezda/rhp@2.0.2/dist/standalone.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "div",
+              "cls": "rhp-chart",
+              "x": 28,
+              "y": 408,
+              "w": 334,
+              "h": 584
+            }
+          ],
+          "pageHeight": 1112,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "div",
+              "cls": "rhp-chart",
+              "x": 182,
+              "y": 487,
+              "w": 916,
+              "h": 538
+            }
+          ],
+          "pageHeight": 1165,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    },
+    "skyscrapers-rhp-skill-sonnet-1.html": {
+      "sha256": "c815b6bb1fa455209b29a3cef4ca373aad27e2a4648af41fcf677b46179dc37f",
+      "summary": {
+        "renders": true,
+        "charts": 1,
+        "errors": 0,
+        "sideways": [],
+        "overlaps": 0,
+        "cut": 0,
+        "tiny": 0,
+        "lowContrast": 0,
+        "canvas": 0,
+        "phoneHeight": 1082
+      },
+      "cdn": [
+        {
+          "url": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js",
+          "served": "@bezda/rhp@2.0.2/dist/standalone.js",
+          "status": 200
+        }
+      ],
+      "widths": {
+        "390": {
+          "charts": [
+            {
+              "tag": "div",
+              "cls": "rhp-chart",
+              "x": 28,
+              "y": 399,
+              "w": 334,
+              "h": 504
+            }
+          ],
+          "pageHeight": 1082,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        },
+        "1280": {
+          "charts": [
+            {
+              "tag": "div",
+              "cls": "rhp-chart",
+              "x": 192,
+              "y": 418,
+              "w": 896,
+              "h": 546
+            }
+          ],
+          "pageHeight": 1114,
+          "sideways": false,
+          "overlaps": 0,
+          "cut": [],
+          "tiny": [],
+          "lowContrast": [],
+          "errors": [],
+          "failed": []
+        }
+      }
+    }
+  },
+  "completed": "2026-10-05T19:24:17.155Z"
+}
