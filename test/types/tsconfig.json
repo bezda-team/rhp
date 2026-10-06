@@ -12,6 +12,7 @@
   },
   "files": [
     "app.tsx",
-    "package.tsx"
+    "package.tsx",
+    "manydots.tsx"
   ]
 }

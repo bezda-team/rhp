@@ -8,6 +8,7 @@ import { execFileSync } from "child_process";
 import { chromium, webkit, firefox } from "playwright";
 import { page as bundle, standalone, ssrServer, ssrClient, ssrPackage } from "../scripts/bundle.mjs";
 import { build } from "esbuild";
+import { runDevChecks } from "./vite/dev.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
 for (const t of ["core", "cost", "mount", "edges"]) {
@@ -677,9 +678,20 @@ for (const motion of ["css", "js"]) {
 
   await hover('#violin [data-instrument="3"] .median');
   check(`${M}, strings: pointing at an instrument lights the keys it reaches, and names its lowest and highest`, await p.evaluate(() => {
-    const lit = [...document.querySelectorAll("#violin .rhp-scale > .lit")], names = [...document.querySelectorAll("#violin .rhp-scale .c")].map((e) => e.textContent);
-    return lit.length > 20 && lit.length < 45 && names.length === 2 && document.querySelectorAll('#violin [data-instrument].off').length === 3;
-  }), true);
+    return {
+      lit: [...document.querySelectorAll("#violin .rhp-scale > .lit")].map((e) => +e.querySelector(".key").style.getPropertyValue("--rhp-from")),
+      names: [...document.querySelectorAll("#violin .rhp-scale .c")].map((e) => ({ at: +e.style.getPropertyValue("--rhp-at"), text: e.textContent })),
+      on: [...document.querySelectorAll('#violin [data-instrument].on')].map((e) => e.dataset.instrument),
+      off: [...document.querySelectorAll('#violin [data-instrument].off')].map((e) => e.dataset.instrument),
+    };
+  }), ({ lit, names, on, off }) => {
+    // The random samples can span fewer than 21 notes; assert the range's meaning rather than its likely size.
+    const note = (at) => ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"][at % 12] + (Math.floor(at / 12) - 1);
+    const ends = [...new Set([lit[0], lit.at(-1)])];
+    return lit.length > 0 && lit.every((at, i) => Number.isInteger(at) && at === lit[0] + i) &&
+      JSON.stringify(names) === JSON.stringify(ends.map((at) => ({ at, text: note(at) }))) &&
+      on.join() === "3" && off.join() === "0,1,2";
+  });
   await away();
   check(`${M}, strings: leaving puts the C's back`, await p.evaluate(() => [document.querySelectorAll("#violin .rhp-scale > .lit").length, [...document.querySelectorAll("#violin .rhp-scale .c")].map((e) => e.textContent).join()]),
     [0, "C2,C3,C4,C5,C6,C7"]);
@@ -1238,6 +1250,13 @@ const dom = (p, charts) => p.evaluate((charts) => {
   check("vite: taken over, the chart follows its data", await server.evaluate(() => [...document.querySelectorAll("#fruit .rhp-plot > *")].map((e) => e.style.getPropertyValue("--rhp-position"))), ["0", "3", "2", "1"]);
   check("vite: no page errors", [...alone.errors, ...server.errors, ...fresh.errors], []);
   for (const p of [alone, server, fresh]) await p.close();
+}
+
+// The actual development server keeps application HMR while blocks remain native slat roots.
+try {
+  await runDevChecks({ browser, check });
+} catch (e) {
+  check("vite dev: development checks complete", e.message, "");
 }
 
 // What a screen reader gets, from Chromium's accessibility tree

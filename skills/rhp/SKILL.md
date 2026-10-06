@@ -328,7 +328,13 @@ The html template (every format except Solid JSX):
 
 Structure and layout:
 
-12. **One root element per slat**, holding its blocks (`<div>`); never return a block itself (only an `overlap` Plot may). Give the Plot the slat type `slat()` returns, not the function you passed to it.
+12. **One root element per slat.**
+    In an ordinary Plot, use a wrapper (`<div>`) holding its blocks.
+    In an `overlap` Plot or a Scale, a single block can be the root itself, including its own children, so avoid an extra wrapper.
+    Those children use the block's box, not the full slat's band.
+    Several blocks still need a common root.
+    Keep a wrapper for a full-band hover or pointer target, even with one block.
+    Give the Plot the slat type `slat()` returns, not the function you passed to it.
 13. **Import from one place.** In a Solid app, import rhp from `@bezda/rhp` and Solid from `solid-js`. Everywhere else, import everything from `@bezda/rhp/standalone` (rhp, `html`, `render`, `createSignal`, `createMemo`, `createEffect`, `Show`, `For`, `Index`, `onMount`, `onCleanup`, `batch`, `untrack`, `createStore`, `reconcile`), which carries its own Solid: never add a second `solid-js` beside it. From rhp 2.0.2 it also has `createSelector`, `createComputed`, `on`, `mergeProps`, `splitProps`, `Switch` and `Match` (2.0.1 lacks them); it has no `Dynamic`, `Portal`, `createResource` or `ErrorBoundary`. For the slat the reader is on, a per-row comparison (`on=${(d) => on() === d.index}`) works with every rhp 2.
 14. **Make room for text.** Names before the plot need `room.start` (px or "auto"), numbers past the bars need `room.end`. A `room` you give replaces the defaults on every side, so set each side you need. "auto" measures only edge Labels that are direct children of the slat's root. Long names need `max-width` with an ellipsis, or wrapping, in the slat CSS.
 15. **Size the chart.** A horizontal chart without `height` gives each slat 32px unless the slat type sets `thickness`; a vertical chart is 240px tall unless you set `height`. A chart inside a flex row, an inline-block or a `fit-content` box collapses: give it `flex: 1; min-width: 0` or a width.

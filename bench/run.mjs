@@ -1,20 +1,27 @@
 // Runs every library through every scenario in one browser and writes results/<browser>.json.
-//   node run.mjs chrome | firefox | webkit | safari      (safari is the real Safari, see safari.mjs)
-// Chrome also reports main-thread time and runs the drag again on a CPU slowed 4x, like a mid-range phone.
+//   node run.mjs chrome | chromium | firefox | webkit | safari      (safari is the real Safari, see safari.mjs)
+// chrome is the installed Chrome, headed; chromium is Playwright's own Chromium, headless (for machines without Chrome,
+// such as a Linux container). Both also report main-thread time and run the drag again on a CPU slowed 4x, like a
+// mid-range phone. BENCH_RESULTS names the folder the results go to (results/ by default).
 import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
+import os from "node:os";
 import { fileURLToPath } from "node:url";
 import { chromium, firefox, webkit } from "playwright";
 import { withSafari } from "./safari.mjs";
+import { idleGate } from "./idle.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
+const inputs = process.env.BENCH_INPUTS ? path.resolve(process.env.BENCH_INPUTS) : here;
+const bundle = (f) => path.join(inputs, "out", f);
 const engine = process.argv[2] ?? "chrome", only = process.argv[3]?.split(",");
-const LIBS = fs.readdirSync(at("out")).filter((f) => f.endsWith(".html")).map((f) => f.slice(0, -5)).filter((l) => !only || only.includes(l));
+const LIBS = fs.readdirSync(bundle("")).filter((f) => f.endsWith(".html")).map((f) => f.slice(0, -5)).filter((l) => !only || only.includes(l));
 const REPS = { mount: 10, large: 5, dashboard: 5 };
+const CDP = engine === "chrome" || engine === "chromium";
 
 // The pages are served over http since Safari can't open files
 const server = http.createServer((q, r) => {
-  const f = at("out" + new URL(q.url, "http://x").pathname);
+  const f = bundle(new URL(q.url, "http://x").pathname);
   if (!fs.existsSync(f)) return r.writeHead(404).end();
   r.writeHead(200, { "content-type": f.endsWith(".html") ? "text/html" : "text/javascript" }).end(fs.readFileSync(f));
 }).listen(0, "127.0.0.1");
@@ -39,14 +46,16 @@ async function session() {
       end: async () => { finish(); await run; },
     };
   }
-  const type = { chrome: chromium, firefox, webkit }[engine];
-  const browser = await type.launch(engine === "chrome" ? { channel: "chrome", headless: false } : {});
+  const type = { chrome: chromium, chromium, firefox, webkit }[engine];
+  // BENCH_BROWSER runs another build of the engine, such as an older Playwright Chromium already on the machine
+  const browser = await type.launch(engine === "chrome" ? { channel: "chrome", headless: false } : { executablePath: process.env.BENCH_BROWSER });
   return {
+    version: browser.version(),
     open: async (u) => {
       const page = await browser.newPage({ viewport: { width: 1000, height: 900 } });
       page.on("pageerror", (e) => console.log("  page error:", e.message));
       await page.goto(u);
-      const cdp = engine === "chrome" ? await page.context().newCDPSession(page) : null;
+      const cdp = CDP ? await page.context().newCDPSession(page) : null;
       if (cdp) await cdp.send("Performance.enable");
       return {
         call: (fn, arg) => page.evaluate(([fn, arg]) => window.bench[fn](arg), [fn, arg]),
@@ -64,9 +73,14 @@ async function session() {
 const spent = (a, b) => a && b && Object.fromEntries(["TaskDuration", "ScriptDuration", "RecalcStyleDuration", "LayoutDuration"].map((k) => [k.replace("Duration", ""), +((b[k] - a[k]) * 1000).toFixed(1)]));
 const per = (o, n) => o && Object.fromEntries(Object.entries(o).map(([k, v]) => [k, +(v / n).toFixed(2)]));
 
-const S = await session(), results = { engine, date: new Date().toISOString(), libs: {} };
+const S = await session(), results = { engine, browser: S.version, date: new Date().toISOString(), loadStart: os.loadavg(), libs: {} };
+const dir = process.env.BENCH_RESULTS ?? "results";
+fs.mkdirSync(at(dir), { recursive: true });
+const save = () => fs.writeFileSync(at(`${dir}/${engine}.json`), JSON.stringify(results, null, 2));
+try {
 for (const lib of LIBS) {
   const r = (results.libs[lib] = {});
+  r.idleGate = await idleGate(lib);
   // A fresh page per run. We time the frame the chart is made in, and in Chrome all main-thread time in the second
   // after, which includes work a library defers to later frames and its entry animation.
   const fresh = async (fn, arg) => {
@@ -83,7 +97,7 @@ for (const lib of LIBS) {
       a.push(await fresh(fn, arg));
     }
     const t = a.map((x) => x.total).filter((x) => x != null);
-    return { frame: +median(a.map((x) => x.frame)).toFixed(1), total: t.length ? +median(t).toFixed(1) : null };
+    return { frame: +median(a.map((x) => x.frame)).toFixed(1), total: t.length ? +median(t).toFixed(1) : null, samples: a };
   };
   r.mount = await rep(REPS.mount, "mount", { n: 20 });
   r.large = await rep(REPS.large, "mount", { n: 1000, band: 8 });
@@ -95,7 +109,7 @@ for (const lib of LIBS) {
     r.update = { latency: +median(lat).toFixed(1), perChange: per(spent(m0, m1), 20) };
     await p.close();
   }
-  for (const rate of engine === "chrome" ? [1, 4] : [1]) { // a drag: one value changes every frame for 240 frames
+  for (const rate of CDP ? [1, 4] : [1]) { // a drag: one value changes every frame for 240 frames
     const p = await S.open(url(lib));
     await p.call("prepare", { n: 20 });
     if (rate > 1) await p.throttle(rate);
@@ -103,7 +117,7 @@ for (const lib of LIBS) {
     r[rate > 1 ? "drag4x" : "drag"] = { ...frames(gaps), perFrame: per(spent(m0, m1), 240) };
     await p.close();
   }
-  if (engine === "chrome") { // memory and DOM size with the 50-chart dashboard
+  if (CDP) { // memory and DOM size with the 50-chart dashboard
     const p = await S.open(url(lib));
     const h0 = await p.heap(), n0 = await p.nodes();
     await p.call("dashboard", { k: 50, n: 7 });
@@ -112,8 +126,16 @@ for (const lib of LIBS) {
     await p.close();
   }
   console.log(lib, JSON.stringify(r));
+  save();
 }
-await S.end();
-server.close();
-fs.mkdirSync(at("results"), { recursive: true });
-fs.writeFileSync(at(`results/${engine}.json`), JSON.stringify(results, null, 2));
+results.completed = new Date().toISOString();
+results.loadEnd = os.loadavg();
+save();
+} catch (error) {
+  results.failure = { message: error.message, idleSamples: error.samples, at: new Date().toISOString() };
+  save();
+  throw error;
+} finally {
+  await S.end();
+  server.close();
+}

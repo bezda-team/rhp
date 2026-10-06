@@ -1,0 +1,1873 @@
+{
+  "started": "2026-10-05T23:16:05.997Z",
+  "inputs": {
+    "snapshot": "/var/folders/h7/8z8nc01n3n77k9t2q52w68dr0000gn/T/rhp-manydots-akZNie",
+    "captured": "2026-10-05T23:12:44.396Z",
+    "commit": "6e4d2c200f5cf0a5dff574d0c33949ec1336529a",
+    "dirty": true,
+    "sourceHashes": {
+      "src/animate.js": "a25d7180287038b891dfc17e6eb3641947a6fd0bad7e32f73009f023b72bb543",
+      "src/blocks.jsx": "c1591464561b3cf198f23146ff819759978c7a8d46147f4c31b3b99e812d453d",
+      "src/cross.css": "d8f3e2e77028359bf02f260791b005d4fb9f74b5ed0eff0fda86b16bd8f001df",
+      "src/data.js": "abb1d28f4528b776b5a991038cef8506091a82a1f1ba778e09fde0b782a187a1",
+      "src/env.js": "c6664a033e9995ba59c5ded78d23f9411803dc6263224f319dfd94d63e728434",
+      "src/frame.js": "20eda8fc2c8404dbf6761096a15a43c5b6a32b541f0b26b26328a2b1d1a8b914",
+      "src/gutters.css": "aaf8e15c3db8567f697e0d251737d8609f0f0d3202a214830efc54d56d64429a",
+      "src/index.d.ts": "c0104bfb74b286634560c094039b0e5743664551d79dd89765ff1fa15648587f",
+      "src/index.js": "49d8ff90ca6bd907729cdcde2a7edfa8a4b8845c194af3c9fcde803fe0675188",
+      "src/manydots.css": "bf9388579d625693a7351fb5aaf0afb61bdca7c4db6cc6ef9ea6c91ef7f2e92c",
+      "src/manydots.d.ts": "7c43ea493d5db2f4c004103db6baec0a45252bc3e81152d564f4ceb2e8dbc260",
+      "src/manydots.jsx": "2556ae16f30cf68c4a659697ccd4a04cd2c5130866a0dc4cd38dd75d1b96e2d9",
+      "src/plot.jsx": "6928a7c8db018e44d01abe24f7939aea6d7454601305c61f8f393af250ad95da",
+      "src/poster.jsx": "58b620748facd0247b9960194887bb58021457508b2701402eb7985cd8d6bd39",
+      "src/posters.css": "e259613db4e36011fbb64a7724d308c298dfeff5fcd34dbf017f76ec88c75eb8",
+      "src/rhp.css": "064fd218cbb6a532cc96f1fdaa534ffbda671c52db28f65a45c0da03e7110464",
+      "src/shape.js": "2b38c8866cf715281a140f3be976ecbd1476c1b31b114109df16f771ce89f8b9",
+      "src/standalone.d.ts": "4009b1833443a310b8455ebc8b6fdab3168fd2ef64a006130c77fdcaaab87038",
+      "src/standalone.js": "aee3e2af610de80a9011234ee63a73160047ad8619c2cb458d5dcf669c7a5201",
+      "src/style.js": "c90282b5d19edeb9cf56022024e361e76bea4a66ff9272bebaddea82b9c179ac",
+      "bench/manydots.mjs": "ed68d80ab72fc3841edff9f1049c68714c6151edcef46ece51ed1a16dfe2ab0d",
+      "bench/manydots/README.md": "7674d019d81a45e0c0735c5d5a84bb16ecbbd5fb2f6c1c3a70b1fa9e3cbe1ad7",
+      "bench/manydots/adapter.solid.jsx": "ed013a93922308592b8e6b4dd62b62c4bba475ddb8fbbdc5c42e8465e5affae8",
+      "bench/manydots/harness.js": "1878e2c69b9886504ffcd9e6ff796427f0bc75f53be60cc53e3ea43a1191968a"
+    },
+    "packageLockHash": "2a16558674a44a862c939da49433189722cb03f48ff1d41a1a890bc554c4d62a",
+    "packages": {
+      "@babel/core": "7.29.7",
+      "babel-preset-solid": "1.9.15",
+      "esbuild": "0.28.2",
+      "playwright": "1.63.0",
+      "playwright-core": "1.63.0",
+      "solid-js": "1.9.15"
+    },
+    "bundleHash": "1ee0c835069f1e91e1aac336009b34c4ce9819f56c77b1640ac95210bc3418e0",
+    "notes": [
+      "Both variants and the original wrapped reference share every library source file, including pre-existing working-tree edits.",
+      "The original wrapped reference runs for the 10,000-point uniform scenario only.",
+      "One browser bundle includes all variants, so loading and parsing code do not favor one variant."
+    ]
+  },
+  "machine": {
+    "cpu": "Apple M5",
+    "cores": 10,
+    "memoryGiB": 24,
+    "platform": "darwin",
+    "release": "25.5.0",
+    "node": "v24.15.0",
+    "loadStart": [
+      3.044921875,
+      2.875,
+      3.130859375
+    ],
+    "macos": {
+      "version": "26.5.2",
+      "build": "25F84"
+    },
+    "browser": "153.0.8010.12",
+    "loadEnd": [
+      2.8515625,
+      2.80615234375,
+      3.05029296875
+    ]
+  },
+  "method": {
+    "repeats": 5,
+    "freshPages": true,
+    "alternatingOrder": true,
+    "viewport": {
+      "width": 1000,
+      "height": 900
+    },
+    "seed": 42,
+    "static": true,
+    "chart": {
+      "width": 600,
+      "height": 400,
+      "scale": [
+        0,
+        100
+      ],
+      "cross": [
+        0,
+        100
+      ]
+    },
+    "totalWindowMs": 2000,
+    "frameHarness": "Same requestAnimationFrame and MessageChannel protocol as bench/scale/harness.js",
+    "nodeMetrics": [
+      "connected-elements",
+      "all-connected-DOM-nodes"
+    ],
+    "quietBaseline": false,
+    "notes": "Paired comparison under recorded background activity. CPU idle is recorded per measured sample. No quiet-machine claim is made. Timing starts after correctness checks finish."
+  },
+  "correctness": {
+    "checked": "2026-10-05T23:12:53.764Z",
+    "bundleHash": "1ee0c835069f1e91e1aac336009b34c4ce9819f56c77b1640ac95210bc3418e0",
+    "viewport": {
+      "width": 1000,
+      "height": 900
+    },
+    "cases": [
+      {
+        "n": 1000,
+        "appearance": "uniform",
+        "variant": "dot",
+        "points": 1000,
+        "maximumPositionError": 0.015613187977578491,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 1000,
+        "appearance": "uniform",
+        "variant": "manydots",
+        "points": 1000,
+        "maximumPositionError": 0.015613187977578491,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 1000,
+        "appearance": "categories",
+        "variant": "dot",
+        "points": 1000,
+        "maximumPositionError": 0.015613187977578491,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 1000,
+        "appearance": "categories",
+        "variant": "manydots",
+        "points": 1000,
+        "maximumPositionError": 0.015613187977578491,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 1000,
+        "appearance": "unique",
+        "variant": "dot",
+        "points": 1000,
+        "maximumPositionError": 0.015613187977578491,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 1000,
+        "appearance": "unique",
+        "variant": "manydots",
+        "points": 1000,
+        "maximumPositionError": 0.015613187977578491,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 10000,
+        "appearance": "uniform",
+        "variant": "wrapped",
+        "points": 10000,
+        "maximumPositionError": 0.015620819183823187,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 10000,
+        "appearance": "uniform",
+        "variant": "dot",
+        "points": 10000,
+        "maximumPositionError": 0.015620819183823187,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 10000,
+        "appearance": "uniform",
+        "variant": "manydots",
+        "points": 10000,
+        "maximumPositionError": 0.015620819183823187,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 10000,
+        "appearance": "categories",
+        "variant": "dot",
+        "points": 10000,
+        "maximumPositionError": 0.015620819183823187,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 10000,
+        "appearance": "categories",
+        "variant": "manydots",
+        "points": 10000,
+        "maximumPositionError": 0.015620819183823187,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 10000,
+        "appearance": "unique",
+        "variant": "dot",
+        "points": 10000,
+        "maximumPositionError": 0.015620819183823187,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      },
+      {
+        "n": 10000,
+        "appearance": "unique",
+        "variant": "manydots",
+        "points": 10000,
+        "maximumPositionError": 0.015620819183823187,
+        "wrongSizes": 0,
+        "wrongColors": 0,
+        "collection": {
+          "left": 50,
+          "top": 16,
+          "width": 544,
+          "height": 400
+        },
+        "chart": {
+          "left": 8,
+          "top": 8,
+          "width": 600,
+          "height": 432
+        },
+        "errors": []
+      }
+    ],
+    "pixelComparisons": [
+      {
+        "n": 1000,
+        "appearance": "uniform",
+        "variant": "manydots",
+        "width": 600,
+        "height": 432,
+        "differentPixels": 0,
+        "differentChannels": 0,
+        "maxDifference": 0
+      },
+      {
+        "n": 1000,
+        "appearance": "categories",
+        "variant": "manydots",
+        "width": 600,
+        "height": 432,
+        "differentPixels": 0,
+        "differentChannels": 0,
+        "maxDifference": 0
+      },
+      {
+        "n": 1000,
+        "appearance": "unique",
+        "variant": "manydots",
+        "width": 600,
+        "height": 432,
+        "differentPixels": 0,
+        "differentChannels": 0,
+        "maxDifference": 0
+      },
+      {
+        "n": 10000,
+        "appearance": "uniform",
+        "variant": "wrapped",
+        "width": 600,
+        "height": 432,
+        "differentPixels": 0,
+        "differentChannels": 0,
+        "maxDifference": 0
+      },
+      {
+        "n": 10000,
+        "appearance": "uniform",
+        "variant": "manydots",
+        "width": 600,
+        "height": 432,
+        "differentPixels": 0,
+        "differentChannels": 0,
+        "maxDifference": 0
+      },
+      {
+        "n": 10000,
+        "appearance": "categories",
+        "variant": "manydots",
+        "width": 600,
+        "height": 432,
+        "differentPixels": 0,
+        "differentChannels": 0,
+        "maxDifference": 0
+      },
+      {
+        "n": 10000,
+        "appearance": "unique",
+        "variant": "manydots",
+        "width": 600,
+        "height": 432,
+        "differentPixels": 0,
+        "differentChannels": 0,
+        "maxDifference": 0
+      }
+    ],
+    "browser": "153.0.8010.12",
+    "completed": "2026-10-05T23:12:59.704Z"
+  },
+  "cases": {
+    "1000-uniform": {
+      "n": 1000,
+      "appearance": "uniform",
+      "samples": {
+        "dot": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 46.19999980926514,
+            "total": 49.40899999999999,
+            "script": 21.506999999999998,
+            "style": 15.202,
+            "layout": 7.09,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 76.05238540692237,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 24.40000009536743,
+            "total": 25.842,
+            "script": 9.549,
+            "style": 10.132,
+            "layout": 2.9520000000000004,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.25272124940842,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 26.09999990463257,
+            "total": 27.312,
+            "script": 10.228,
+            "style": 10.285,
+            "layout": 3.716,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 78.97727272727273,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 24.40000009536743,
+            "total": 25.787999999999997,
+            "script": 9.498,
+            "style": 9.997,
+            "layout": 3.052,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.14116532449076,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 26.199999809265137,
+            "total": 27.48,
+            "script": 10.252,
+            "style": 10.019,
+            "layout": 3.994,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.83687943262412,
+            "errors": []
+          }
+        ],
+        "manydots": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 14,
+            "total": 15.910999999999998,
+            "script": 5.928,
+            "style": 3.85,
+            "layout": 2.734,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 80.6942463147884,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 16.59999990463257,
+            "total": 18.163000000000004,
+            "script": 7.603000000000001,
+            "style": 3.296,
+            "layout": 3.732,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 83.26200665715643,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 14.900000095367432,
+            "total": 16.678,
+            "script": 5.585999999999999,
+            "style": 3.6180000000000003,
+            "layout": 3.6229999999999998,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 82.3585354255825,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 15.900000095367432,
+            "total": 17.554,
+            "script": 6.832999999999999,
+            "style": 3.4299999999999997,
+            "layout": 4.021,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 83.02425106990015,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 13.300000190734863,
+            "total": 14.943999999999999,
+            "script": 5.623,
+            "style": 3.246,
+            "layout": 2.794,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 80.57142857142857,
+            "errors": []
+          }
+        ]
+      },
+      "backgroundCPU": {
+        "at": "2026-10-05T23:16:08.216Z",
+        "idlePercent": 79.5557799091368
+      },
+      "medians": {
+        "dot": {
+          "frame": 26.09999990463257,
+          "total": 27.312,
+          "script": 10.228,
+          "style": 10.132,
+          "layout": 3.716,
+          "elements": 1031,
+          "connectedNodes": 1045
+        },
+        "manydots": {
+          "frame": 14.900000095367432,
+          "total": 16.678,
+          "script": 5.928,
+          "style": 3.4299999999999997,
+          "layout": 3.6229999999999998,
+          "elements": 1032,
+          "connectedNodes": 1046
+        }
+      },
+      "pairedRatios": {
+        "dot": {
+          "frame": 0.5708812317935213,
+          "total": 0.6106473345049795,
+          "script": 0.5484783456886461,
+          "style": 0.3253059613106988,
+          "layout": 0.9749730893433799
+        }
+      }
+    },
+    "1000-categories": {
+      "n": 1000,
+      "appearance": "categories",
+      "samples": {
+        "dot": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 27.40000009536743,
+            "total": 29.211000000000002,
+            "script": 11.045,
+            "style": 10.83,
+            "layout": 3.747,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 79.94323557237465,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 30.300000190734863,
+            "total": 31.850000000000005,
+            "script": 15.427,
+            "style": 10.196,
+            "layout": 2.972,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 78.65593942262187,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 26.700000286102295,
+            "total": 28.474,
+            "script": 11.283,
+            "style": 10.354000000000001,
+            "layout": 3.296,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.65595463137996,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 25.59999990463257,
+            "total": 27.434,
+            "script": 11.627,
+            "style": 9.693,
+            "layout": 2.931,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.52013263855993,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 26.700000286102295,
+            "total": 28.201,
+            "script": 11.199,
+            "style": 10.13,
+            "layout": 3.4979999999999998,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.96261239943209,
+            "errors": []
+          }
+        ],
+        "manydots": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 20.300000190734863,
+            "total": 21.537,
+            "script": 12.356,
+            "style": 3.697,
+            "layout": 2.7520000000000002,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 81.90023752969121,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 16.199999809265137,
+            "total": 17.549,
+            "script": 7.792000000000001,
+            "style": 3.313,
+            "layout": 3.076,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 82.47619047619048,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 18.200000286102295,
+            "total": 19.522000000000002,
+            "script": 10.923,
+            "style": 3.143,
+            "layout": 2.7230000000000003,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 81.42857142857143,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 16,
+            "total": 17.243,
+            "script": 8.272,
+            "style": 3.212,
+            "layout": 2.881,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 82.25499524262607,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 17,
+            "total": 18.408,
+            "script": 9.596,
+            "style": 3.166,
+            "layout": 2.9450000000000003,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 82.38933841028083,
+            "errors": []
+          }
+        ]
+      },
+      "backgroundCPU": {
+        "at": "2026-10-05T23:16:32.224Z",
+        "idlePercent": 79.13306451612904
+      },
+      "medians": {
+        "dot": {
+          "frame": 26.700000286102295,
+          "total": 28.474,
+          "script": 11.283,
+          "style": 10.196,
+          "layout": 3.296,
+          "elements": 1031,
+          "connectedNodes": 1045
+        },
+        "manydots": {
+          "frame": 17,
+          "total": 18.408,
+          "script": 9.596,
+          "style": 3.212,
+          "layout": 2.881,
+          "elements": 1032,
+          "connectedNodes": 1046
+        }
+      },
+      "pairedRatios": {
+        "dot": {
+          "frame": 0.6367041130276214,
+          "total": 0.6527428105386334,
+          "script": 0.8568622198410573,
+          "style": 0.3249313456257356,
+          "layout": 0.8419096626643798
+        }
+      }
+    },
+    "1000-unique": {
+      "n": 1000,
+      "appearance": "unique",
+      "samples": {
+        "dot": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 27.90000009536743,
+            "total": 29.977999999999998,
+            "script": 11.698,
+            "style": 10.764,
+            "layout": 3.8240000000000003,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 81.61625708884688,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 26.59999990463257,
+            "total": 28.094,
+            "script": 12.777000000000001,
+            "style": 9.414,
+            "layout": 2.892,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.63954588457901,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 26,
+            "total": 27.738,
+            "script": 11.188,
+            "style": 9.785,
+            "layout": 3.191,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.6086956521739,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 24.800000190734863,
+            "total": 26.538,
+            "script": 10.241999999999999,
+            "style": 9.483,
+            "layout": 3.472,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 82.28327806726669,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 26.299999713897705,
+            "total": 27.668000000000003,
+            "script": 10.973,
+            "style": 10.129000000000001,
+            "layout": 3.4099999999999997,
+            "elements": 1031,
+            "connectedNodes": 1045,
+            "cdpNodesDelta": 1073,
+            "aggregateCPUIdlePercent": 81.41843971631205,
+            "errors": []
+          }
+        ],
+        "manydots": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 13.199999809265137,
+            "total": 14.886999999999999,
+            "script": 5.749,
+            "style": 3.312,
+            "layout": 2.754,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 80.18147086914995,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 15.5,
+            "total": 17.244000000000003,
+            "script": 7.165,
+            "style": 3.267,
+            "layout": 3.1870000000000003,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 82.85035629453682,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 20.09999990463257,
+            "total": 22.234,
+            "script": 11.914,
+            "style": 3.506,
+            "layout": 2.869,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 82.21906116642958,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 15.299999713897705,
+            "total": 16.766,
+            "script": 7.119000000000001,
+            "style": 3.317,
+            "layout": 3.111,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 77.13196760362078,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 13.099999904632568,
+            "total": 14.815999999999999,
+            "script": 5.534,
+            "style": 3.097,
+            "layout": 2.867,
+            "elements": 1032,
+            "connectedNodes": 1046,
+            "cdpNodesDelta": 1071,
+            "aggregateCPUIdlePercent": 80.23809523809524,
+            "errors": []
+          }
+        ]
+      },
+      "backgroundCPU": {
+        "at": "2026-10-05T23:16:56.101Z",
+        "idlePercent": 81.25
+      },
+      "medians": {
+        "dot": {
+          "frame": 26.299999713897705,
+          "total": 27.738,
+          "script": 11.188,
+          "style": 9.785,
+          "layout": 3.4099999999999997,
+          "elements": 1031,
+          "connectedNodes": 1045
+        },
+        "manydots": {
+          "frame": 15.299999713897705,
+          "total": 16.766,
+          "script": 7.119000000000001,
+          "style": 3.312,
+          "layout": 2.869,
+          "elements": 1032,
+          "connectedNodes": 1046
+        }
+      },
+      "pairedRatios": {
+        "dot": {
+          "frame": 0.5827067690064379,
+          "total": 0.6137965401865167,
+          "script": 0.5607732644595758,
+          "style": 0.34703632887189295,
+          "layout": 0.8960253456221199
+        }
+      }
+    },
+    "10000-uniform": {
+      "n": 10000,
+      "appearance": "uniform",
+      "samples": {
+        "wrapped": [
+          {
+            "rep": 1,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 260.09999990463257,
+            "total": 266.722,
+            "script": 35.708,
+            "style": 151.778,
+            "layout": 38.711000000000006,
+            "elements": 20031,
+            "connectedNodes": 20045,
+            "cdpNodesDelta": 20054,
+            "aggregateCPUIdlePercent": 82.41056218057922,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot",
+              "wrapped"
+            ],
+            "frame": 241.39999961853027,
+            "total": 246.914,
+            "script": 31.607999999999997,
+            "style": 139.81199999999998,
+            "layout": 31.906999999999996,
+            "elements": 20031,
+            "connectedNodes": 20045,
+            "cdpNodesDelta": 20054,
+            "aggregateCPUIdlePercent": 76.19252256123764,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 247.30000019073486,
+            "total": 252.732,
+            "script": 35.022,
+            "style": 143.961,
+            "layout": 36.239,
+            "elements": 20031,
+            "connectedNodes": 20045,
+            "cdpNodesDelta": 20054,
+            "aggregateCPUIdlePercent": 79.62328767123287,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot",
+              "wrapped"
+            ],
+            "frame": 245.90000009536743,
+            "total": 251.32700000000003,
+            "script": 32.788,
+            "style": 143.505,
+            "layout": 36.992,
+            "elements": 20031,
+            "connectedNodes": 20045,
+            "cdpNodesDelta": 20054,
+            "aggregateCPUIdlePercent": 79.77720651242502,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 262.30000019073486,
+            "total": 267.959,
+            "script": 45.275999999999996,
+            "style": 144.093,
+            "layout": 38.397,
+            "elements": 20031,
+            "connectedNodes": 20045,
+            "cdpNodesDelta": 20054,
+            "aggregateCPUIdlePercent": 77.65505522514869,
+            "errors": []
+          }
+        ],
+        "dot": [
+          {
+            "rep": 1,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 164.5,
+            "total": 168.886,
+            "script": 32.292,
+            "style": 92.171,
+            "layout": 17.482,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 79.76031957390146,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot",
+              "wrapped"
+            ],
+            "frame": 168.90000009536743,
+            "total": 174.325,
+            "script": 33.730000000000004,
+            "style": 95.629,
+            "layout": 17.543,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 81.31380381713271,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 163.59999990463257,
+            "total": 168.05599999999998,
+            "script": 32.358,
+            "style": 91.565,
+            "layout": 18.194,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 80.42609853528629,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot",
+              "wrapped"
+            ],
+            "frame": 173.19999980926514,
+            "total": 177.767,
+            "script": 37.568,
+            "style": 96.567,
+            "layout": 17.63,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 80.13274336283186,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 177,
+            "total": 181.765,
+            "script": 36.747,
+            "style": 96.057,
+            "layout": 20.108999999999998,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 81.19469026548673,
+            "errors": []
+          }
+        ],
+        "manydots": [
+          {
+            "rep": 1,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 74,
+            "total": 76.992,
+            "script": 16.192999999999998,
+            "style": 29.549,
+            "layout": 10.635,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 81.4643188137164,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot",
+              "wrapped"
+            ],
+            "frame": 71.7999997138977,
+            "total": 75.102,
+            "script": 15.907000000000002,
+            "style": 29.39,
+            "layout": 10.174000000000001,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 80.0925925925926,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 72,
+            "total": 75.639,
+            "script": 15.14,
+            "style": 29.971999999999998,
+            "layout": 10.366,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 81.11368909512761,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot",
+              "wrapped"
+            ],
+            "frame": 72,
+            "total": 74.624,
+            "script": 13.193,
+            "style": 30.19,
+            "layout": 10.978,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 83.25602968460112,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "wrapped",
+              "dot",
+              "manydots"
+            ],
+            "frame": 68.09999990463257,
+            "total": 70.56,
+            "script": 12.546,
+            "style": 28.526,
+            "layout": 10.183,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 83.58831710709318,
+            "errors": []
+          }
+        ]
+      },
+      "backgroundCPU": {
+        "at": "2026-10-05T23:17:19.949Z",
+        "idlePercent": 83.08934881373044
+      },
+      "medians": {
+        "wrapped": {
+          "frame": 247.30000019073486,
+          "total": 252.732,
+          "script": 35.022,
+          "style": 143.961,
+          "layout": 36.992,
+          "elements": 20031,
+          "connectedNodes": 20045
+        },
+        "dot": {
+          "frame": 168.90000009536743,
+          "total": 174.325,
+          "script": 33.730000000000004,
+          "style": 95.629,
+          "layout": 17.63,
+          "elements": 10031,
+          "connectedNodes": 10045
+        },
+        "manydots": {
+          "frame": 72,
+          "total": 75.102,
+          "script": 15.14,
+          "style": 29.549,
+          "layout": 10.366,
+          "elements": 10032,
+          "connectedNodes": 10046
+        }
+      },
+      "pairedRatios": {
+        "wrapped": {
+          "frame": 0.2911443588534922,
+          "total": 0.2969199489111794,
+          "script": 0.4322996973331049,
+          "style": 0.20819527510923094,
+          "layout": 0.2860454206793786
+        },
+        "dot": {
+          "frame": 0.42510360967055455,
+          "total": 0.43081600458912955,
+          "script": 0.46789047530749744,
+          "style": 0.3126326799010014,
+          "layout": 0.5799464173744514
+        }
+      }
+    },
+    "10000-categories": {
+      "n": 10000,
+      "appearance": "categories",
+      "samples": {
+        "dot": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 170.69999980926514,
+            "total": 182.88199999999998,
+            "script": 32.722,
+            "style": 96.503,
+            "layout": 17.956,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 81.25,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 165.30000019073486,
+            "total": 175.964,
+            "script": 31.347,
+            "style": 95.46300000000001,
+            "layout": 15.539000000000001,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 79.54646509559804,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 165.7000002861023,
+            "total": 181.902,
+            "script": 31.958000000000002,
+            "style": 94.651,
+            "layout": 15.546000000000001,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 64.58610004426738,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 175.2999997138977,
+            "total": 188.99200000000002,
+            "script": 35.553000000000004,
+            "style": 97.923,
+            "layout": 15.637000000000002,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 80.18617021276596,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 166.10000038146973,
+            "total": 177.355,
+            "script": 32.247,
+            "style": 95.697,
+            "layout": 16.953,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 80.25732031943213,
+            "errors": []
+          }
+        ],
+        "manydots": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 68,
+            "total": 70.425,
+            "script": 13.867,
+            "style": 27.915,
+            "layout": 9.859,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 78.77380399442639,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 72.09999990463257,
+            "total": 75.524,
+            "script": 15.172,
+            "style": 29.193,
+            "layout": 10.411999999999999,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 82.00371057513914,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 68.09999990463257,
+            "total": 70.51,
+            "script": 14.831999999999999,
+            "style": 27.493,
+            "layout": 9.802999999999999,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 78.62772369031062,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 74.39999961853027,
+            "total": 77.14999999999999,
+            "script": 16.094,
+            "style": 29.727,
+            "layout": 10.925,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 81.27896200185357,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 69.40000009536743,
+            "total": 71.741,
+            "script": 14.061,
+            "style": 29.217,
+            "layout": 10.279,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 81.61559888579387,
+            "errors": []
+          }
+        ]
+      },
+      "backgroundCPU": {
+        "at": "2026-10-05T23:17:57.054Z",
+        "idlePercent": 82.22557905337362
+      },
+      "medians": {
+        "dot": {
+          "frame": 166.10000038146973,
+          "total": 181.902,
+          "script": 32.247,
+          "style": 95.697,
+          "layout": 15.637000000000002,
+          "elements": 10031,
+          "connectedNodes": 10045
+        },
+        "manydots": {
+          "frame": 69.40000009536743,
+          "total": 71.741,
+          "script": 14.831999999999999,
+          "style": 29.193,
+          "layout": 10.279,
+          "elements": 10032,
+          "connectedNodes": 10046
+        }
+      },
+      "pairedRatios": {
+        "dot": {
+          "frame": 0.4178205896205992,
+          "total": 0.40450508866397905,
+          "script": 0.452676286108064,
+          "style": 0.30357525811096475,
+          "layout": 0.630580213559758
+        }
+      }
+    },
+    "10000-unique": {
+      "n": 10000,
+      "appearance": "unique",
+      "samples": {
+        "dot": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 174.39999961853027,
+            "total": 183.137,
+            "script": 39.574999999999996,
+            "style": 95.306,
+            "layout": 16.156,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 80.06189213085764,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 172.59999990463257,
+            "total": 181.428,
+            "script": 37.44,
+            "style": 93.715,
+            "layout": 15.315000000000001,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 82.21238938053096,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 168.5,
+            "total": 176.13500000000002,
+            "script": 37.066,
+            "style": 92.808,
+            "layout": 15.521,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 82.039911308204,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 168.7000002861023,
+            "total": 176.417,
+            "script": 36.117999999999995,
+            "style": 93.043,
+            "layout": 15.763,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 81.49134487350199,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 169,
+            "total": 176.004,
+            "script": 36.788000000000004,
+            "style": 93.753,
+            "layout": 15.925999999999998,
+            "elements": 10031,
+            "connectedNodes": 10045,
+            "cdpNodesDelta": 10051,
+            "aggregateCPUIdlePercent": 81.71327119396359,
+            "errors": []
+          }
+        ],
+        "manydots": [
+          {
+            "rep": 1,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 67.90000009536743,
+            "total": 70.48899999999999,
+            "script": 14.687999999999999,
+            "style": 26.967000000000002,
+            "layout": 10.415000000000001,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 81.58627087198515,
+            "errors": []
+          },
+          {
+            "rep": 2,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 73.30000019073486,
+            "total": 76.978,
+            "script": 17.343999999999998,
+            "style": 28.335,
+            "layout": 10.434000000000001,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 79.4253938832252,
+            "errors": []
+          },
+          {
+            "rep": 3,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 68.19999980926514,
+            "total": 70.608,
+            "script": 14.633000000000001,
+            "style": 27.222,
+            "layout": 10.307,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 82.07152810032512,
+            "errors": []
+          },
+          {
+            "rep": 4,
+            "order": [
+              "manydots",
+              "dot"
+            ],
+            "frame": 72.2000002861023,
+            "total": 74.86999999999999,
+            "script": 16.807,
+            "style": 28.448999999999998,
+            "layout": 10.425,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 81.44377602961592,
+            "errors": []
+          },
+          {
+            "rep": 5,
+            "order": [
+              "dot",
+              "manydots"
+            ],
+            "frame": 71.09999990463257,
+            "total": 74.54100000000001,
+            "script": 15.509,
+            "style": 28.177,
+            "layout": 9.99,
+            "elements": 10032,
+            "connectedNodes": 10046,
+            "cdpNodesDelta": 10071,
+            "aggregateCPUIdlePercent": 80.43579044969866,
+            "errors": []
+          }
+        ]
+      },
+      "backgroundCPU": {
+        "at": "2026-10-05T23:18:21.946Z",
+        "idlePercent": 80.2015113350126
+      },
+      "medians": {
+        "dot": {
+          "frame": 169,
+          "total": 176.417,
+          "script": 37.066,
+          "style": 93.715,
+          "layout": 15.763,
+          "elements": 10031,
+          "connectedNodes": 10045
+        },
+        "manydots": {
+          "frame": 71.09999990463257,
+          "total": 74.54100000000001,
+          "script": 15.509,
+          "style": 28.177,
+          "layout": 10.415000000000001,
+          "elements": 10032,
+          "connectedNodes": 10046
+        }
+      },
+      "pairedRatios": {
+        "dot": {
+          "frame": 0.4207100586072933,
+          "total": 0.42351878366400775,
+          "script": 0.4215776883766445,
+          "style": 0.30054504922509145,
+          "layout": 0.6613588783860941
+        }
+      }
+    }
+  },
+  "completed": "2026-10-05T23:18:44.866Z"
+}

@@ -1,0 +1,66 @@
+{
+  "apex": {
+    "total": 284587,
+    "withoutFramework": 284587
+  },
+  "chartjs": {
+    "total": 47873,
+    "withoutFramework": 47873
+  },
+  "chartscss": {
+    "total": 6311,
+    "withoutFramework": 6311
+  },
+  "d3": {
+    "total": 18744,
+    "withoutFramework": 18744
+  },
+  "echarts": {
+    "total": 161222,
+    "withoutFramework": 161222
+  },
+  "g2": {
+    "total": 407598,
+    "withoutFramework": 407598
+  },
+  "highcharts": {
+    "total": 104878,
+    "withoutFramework": 104878
+  },
+  "nivo": {
+    "total": 159826,
+    "withoutFramework": 90744
+  },
+  "plot": {
+    "total": 93100,
+    "withoutFramework": 93100
+  },
+  "recharts": {
+    "total": 164184,
+    "withoutFramework": 95880
+  },
+  "rhp-css": {
+    "total": 27555,
+    "withoutFramework": 18235
+  },
+  "rhp-js": {
+    "total": 27559,
+    "withoutFramework": 18240
+  },
+  "rhp-static": {
+    "total": 27566,
+    "withoutFramework": 18242
+  },
+  "vanilla": {
+    "total": 440,
+    "withoutFramework": 440
+  },
+  "vegalite": {
+    "total": 303999,
+    "withoutFramework": 303999
+  },
+  "victory": {
+    "total": 147977,
+    "withoutFramework": 78720
+  }
+}

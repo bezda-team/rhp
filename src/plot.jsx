@@ -39,6 +39,13 @@ export const useCrossed = () => {
   const frame = useContext(Around).frame;
   return () => frame?.crossed() ?? false;
 };
+
+// Bulk points read the chart's resolved values once per collection update.
+export const usePointFrame = () => {
+  const around = useContext(Around), frame = around.frame;
+  if (!frame) throw new Error("rhp: ManyDots must be inside a Chart with a cross scale.");
+  return { orientation: around.orientation, scale: frame.shown, cross: frame.crossShown, theme: frame.theme, static: around.still };
+};
 export const short = (o) => (o === "vertical" ? "v" : "h");
 
 // Plot settings. Every other prop of a Plot is a data group.
@@ -888,6 +895,8 @@ export function Chart(props) {
     orientation,
     domain,
     shown,
+    crossShown: () => crossed() ? crossShown() : null,
+    theme: () => ({ ...theme(), ...props.style }),
     length,
     crossed,
     sheet: (fn) => fn?.scope && slats.add(fn),

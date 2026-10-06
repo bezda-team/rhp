@@ -1,6 +1,7 @@
 // rhp's types. A plot is a stack of slats: a slat is a function of one row of data (d) that returns one element, and
 // blocks (Bar, Dot, Tick, Label, Cell, Area) draw inside it.
 import type { JSX } from "solid-js";
+export { ManyDots, type ManyDotsProps, type ManyDotsValue } from "./manydots.js";
 
 /** "horizontal": bars run left to right and slats stack top to bottom, as rows. "vertical": bars run bottom to top, slats side by side, as columns. */
 export type Orientation = "horizontal" | "vertical";

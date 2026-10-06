@@ -1,0 +1,47 @@
+{
+  "snapshot": "/var/folders/h7/8z8nc01n3n77k9t2q52w68dr0000gn/T/rhp-manydots-akZNie",
+  "captured": "2026-10-05T23:12:44.396Z",
+  "commit": "6e4d2c200f5cf0a5dff574d0c33949ec1336529a",
+  "dirty": true,
+  "sourceHashes": {
+    "src/animate.js": "a25d7180287038b891dfc17e6eb3641947a6fd0bad7e32f73009f023b72bb543",
+    "src/blocks.jsx": "c1591464561b3cf198f23146ff819759978c7a8d46147f4c31b3b99e812d453d",
+    "src/cross.css": "d8f3e2e77028359bf02f260791b005d4fb9f74b5ed0eff0fda86b16bd8f001df",
+    "src/data.js": "abb1d28f4528b776b5a991038cef8506091a82a1f1ba778e09fde0b782a187a1",
+    "src/env.js": "c6664a033e9995ba59c5ded78d23f9411803dc6263224f319dfd94d63e728434",
+    "src/frame.js": "20eda8fc2c8404dbf6761096a15a43c5b6a32b541f0b26b26328a2b1d1a8b914",
+    "src/gutters.css": "aaf8e15c3db8567f697e0d251737d8609f0f0d3202a214830efc54d56d64429a",
+    "src/index.d.ts": "c0104bfb74b286634560c094039b0e5743664551d79dd89765ff1fa15648587f",
+    "src/index.js": "49d8ff90ca6bd907729cdcde2a7edfa8a4b8845c194af3c9fcde803fe0675188",
+    "src/manydots.css": "bf9388579d625693a7351fb5aaf0afb61bdca7c4db6cc6ef9ea6c91ef7f2e92c",
+    "src/manydots.d.ts": "7c43ea493d5db2f4c004103db6baec0a45252bc3e81152d564f4ceb2e8dbc260",
+    "src/manydots.jsx": "2556ae16f30cf68c4a659697ccd4a04cd2c5130866a0dc4cd38dd75d1b96e2d9",
+    "src/plot.jsx": "6928a7c8db018e44d01abe24f7939aea6d7454601305c61f8f393af250ad95da",
+    "src/poster.jsx": "58b620748facd0247b9960194887bb58021457508b2701402eb7985cd8d6bd39",
+    "src/posters.css": "e259613db4e36011fbb64a7724d308c298dfeff5fcd34dbf017f76ec88c75eb8",
+    "src/rhp.css": "064fd218cbb6a532cc96f1fdaa534ffbda671c52db28f65a45c0da03e7110464",
+    "src/shape.js": "2b38c8866cf715281a140f3be976ecbd1476c1b31b114109df16f771ce89f8b9",
+    "src/standalone.d.ts": "4009b1833443a310b8455ebc8b6fdab3168fd2ef64a006130c77fdcaaab87038",
+    "src/standalone.js": "aee3e2af610de80a9011234ee63a73160047ad8619c2cb458d5dcf669c7a5201",
+    "src/style.js": "c90282b5d19edeb9cf56022024e361e76bea4a66ff9272bebaddea82b9c179ac",
+    "bench/manydots.mjs": "ed68d80ab72fc3841edff9f1049c68714c6151edcef46ece51ed1a16dfe2ab0d",
+    "bench/manydots/README.md": "7674d019d81a45e0c0735c5d5a84bb16ecbbd5fb2f6c1c3a70b1fa9e3cbe1ad7",
+    "bench/manydots/adapter.solid.jsx": "ed013a93922308592b8e6b4dd62b62c4bba475ddb8fbbdc5c42e8465e5affae8",
+    "bench/manydots/harness.js": "1878e2c69b9886504ffcd9e6ff796427f0bc75f53be60cc53e3ea43a1191968a"
+  },
+  "packageLockHash": "2a16558674a44a862c939da49433189722cb03f48ff1d41a1a890bc554c4d62a",
+  "packages": {
+    "@babel/core": "7.29.7",
+    "babel-preset-solid": "1.9.15",
+    "esbuild": "0.28.2",
+    "playwright": "1.63.0",
+    "playwright-core": "1.63.0",
+    "solid-js": "1.9.15"
+  },
+  "bundleHash": "1ee0c835069f1e91e1aac336009b34c4ce9819f56c77b1640ac95210bc3418e0",
+  "notes": [
+    "Both variants and the original wrapped reference share every library source file, including pre-existing working-tree edits.",
+    "The original wrapped reference runs for the 10,000-point uniform scenario only.",
+    "One browser bundle includes all variants, so loading and parsing code do not favor one variant."
+  ]
+}

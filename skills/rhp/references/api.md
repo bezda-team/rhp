@@ -72,7 +72,9 @@ The rules, in full:
    The helpers `sortBy()`, `series()`, `cycle()` and `every()` already return such functions.
 3. On a plain element (`<div>`, `<button>`), handlers attach normally, with or without a parameter.
 4. Booleans are written out: `overlap=${true}`, `keyboard=${true}`, `static=${true}`, `animate=${true}`, `mirror=${true}`, `fill=${true}`, `smooth=${true}`.
-5. A slat returns one element, a `<div>` holding the rest; whitespace around it is fine, and two elements side by side throw.
+5. A slat returns one element; whitespace around it is fine, and two elements side by side throw.
+   Use a wrapper for an ordinary Plot or several blocks.
+   In an `overlap` Plot or a Scale, a single block can be the root itself, with no extra wrapper.
 6. Never destructure `d`: `({ sold }) => …` reads each value once.
    Read `d.sold` inside a function.
 7. Use `class`, never `className`: on a block, `className` replaces rhp's class and the block is no longer drawn; on a plain element it does nothing.
@@ -265,7 +267,9 @@ Without `overlap` its slats divide the band (grouped bars); with `overlap` they 
 `orientation="across"` turns it, so its slats run along the value axis (one Cell per hour).
 `thick` uses a part of the band.
 A Plot inside a slat asks for no room, is not a list for screen readers, and does not take the Chart's `animate`.
-A slat of an `overlap` Plot may return a block itself (the stacked bars in section 9 do); anywhere else, a block as the slat's root warns and loses part of its placing.
+A slat of an `overlap` Plot or a Scale may return a block itself (the stacked bars in section 9 do), including that block's own children.
+Use that direct root for a single mark to avoid an extra wrapper; several blocks still need a common root.
+In a Plot without `overlap`, keep the wrapper: a block as the slat's root loses part of its placing and may warn.
 
 ```js
 import { Chart, Plot, Bar, Label, Tick, slat, sortBy, html, render, createSignal } from "@bezda/rhp/standalone";
@@ -286,7 +290,7 @@ const City = slat({ thickness: 34, room: { start: 64, end: 48 } }, (d) => html`
     <${Label} at=${() => d.temp}>${() => d.temp} ${() => d.unit}<//>
   </div>`);
 // One line across the whole plot: an overlay Plot with one slat, asking for no room
-const Mean = slat({ room: {} }, (d) => html`<div><${Tick} at=${() => d.mean} thick=${1} color="muted" /></div>`);
+const Mean = slat({ room: {} }, (d) => html`<${Tick} at=${() => d.mean} thick=${1} color="muted" />`);
 
 // Chart component: rows with a key, a shared value, a per-row function, a sort that changes
 const CityChart = () => {
@@ -368,9 +372,13 @@ Read it inside functions (`${() => d.sold}`) and never destructure it.
 
 **What it returns.**
 One element, the slat's root, usually a `<div>` holding blocks and any other elements.
+For a single block in an `overlap` Plot or a Scale, return that block directly instead.
 rhp sets on the root: `data-rhp-slat` (the type's CSS scope), `data-rhp-o` (`h` or `v`), `role="listitem"` in a top-level Plot without `overlap` (unless the root has a role), an `id` when the slats are sorted (unless it has one), `hidden` when its position is `null`, `tabindex` with `keyboard`, and the style `--rhp-position`.
-rhp places and sizes the root, absolutely, in its band: the slat's CSS can style it (background, border, radius, hover) but cannot move or resize it.
-Elements of your own inside the root are positioned by your CSS, against the slat's band.
+rhp places and sizes an ordinary Plot's root, absolutely, in its band: the slat's CSS can style it (background, border, radius, hover) but cannot move or resize it.
+An `overlap` Plot or a Scale leaves a direct block's own geometry in control.
+Elements of your own inside a wrapper are positioned by your CSS against the full slat's band.
+Children inside a direct block use that block's box instead; keep a wrapper for independently positioned sibling marks or labels.
+Keep a wrapper when a single mark needs a full-band hover or pointer target.
 
 ```js
 import { Chart, Plot, Bar, Label, slat, series, html, render, createSignal } from "@bezda/rhp/standalone";
@@ -745,9 +753,9 @@ const HighChart = () => html`
   <${Chart} scale=${[0.5, 12.5]} ticks=${month} format=${(m) => "JFMAMJJASOND"[m - 1]}
     cross=${[10, 30]} crossTicks=${[10, 20, 30]} crossFormat=${(t) => t + "°"} height=${200}>
     <${Plot} overlap=${true} points=${[month.map((m, i) => [m, high[i]])]}>${(d) => html`
-      <div><${Line} points=${() => d.points} fill=${true} base=${10} /></div>`}<//>
+      <${Line} points=${() => d.points} fill=${true} base=${10} />`}<//>
     <${Plot} overlap=${true} month=${month} high=${high}>${(d) => html`
-      <div><${Dot} at=${() => d.month} cross=${() => d.high} size="8px" /></div>`}<//>
+      <${Dot} at=${() => d.month} cross=${() => d.high} size="8px" />`}<//>
   <//>`;
 
 render(HighChart, document.getElementById("chart"));
@@ -1524,11 +1532,12 @@ Every one of these was found by running rhp 2.0.1.
 21. **Page CSS cannot restyle bars, labels, slats or the axis**, even with `!important`.
     It can set `opacity`, `cursor`, `filter`, `transform`, `z-index` and `pointer-events`; it also reaches rhp's `--rhp-*` variables, but those belong in the slat's `css` or the theme, never in page CSS.
     Style the inside of a chart in the slat's `css`.
-22. **A `transition` on a block replaces rhp's own**, and the block jumps to new values; one on a slat's root is ignored (rhp keeps the root's slide).
+22. **A `transition` on a block replaces rhp's own**, and the block jumps to new values.
+    A transition on an ordinary Plot's slat root is ignored (rhp keeps the root's slide).
     Transition an element inside a block.
     Focus styles for slats go in the slat's `css`: rhp's core CSS resets `outline` on slat roots, so a page `:focus-visible` rule never reaches them.
-23. **Slat CSS cannot move or resize a slat's root** (`top`, `left`, `width`, `height` are rhp's).
-    It can move blocks (a pie's wedge takes over its Bar's box).
+23. **Slat CSS cannot move or resize an ordinary Plot's slat root** (`top`, `left`, `width`, `height` are rhp's).
+    It can move blocks, including a direct block root in an `overlap` Plot or a Scale (a pie's wedge takes over its Bar's box).
 24. **A chart collapses in a shrink-to-fit box.**
     As a plain flex item, in an `inline-block`, a float or a `width: fit-content` box, it is only as wide as its room (148px by default) with a plot 0px wide.
     Give it `flex: 1; min-width: 0`, or a width.
@@ -1541,14 +1550,16 @@ Every one of these was found by running rhp 2.0.1.
     For the slat the reader is on, a per-row data group works with every rhp 2: `on=${(d) => on() === d.index}`; `createSelector` saves work when a chart has hundreds of slats.
 29. **A Plot outside a Chart draws nothing usable**, and a Scale outside one throws.
 30. **A slat must return one element.**
-    Two top-level elements or text throw "rhp: a slat must return one element"; a block as the root outside an `overlap` Plot warns and loses its placing.
+    Two top-level elements or text throw "rhp: a slat must return one element".
+    Return a single block directly only in an `overlap` Plot or a Scale.
+    An ordinary Plot needs a wrapper to preserve the block's placing.
 31. **The Poster brings no CSS**: a bare `<figure>` keeps 40px side margins and its caption spans run inline.
     Style `.poster`, `figcaption`, `.kicker`, `.headline`, `.dek` and `.note`.
 32. **An overlay Plot with a plain slat function asks for the default room** (104px and 44px).
     Give its slat `room: {}` when the chart's room is smaller, and `style=${{ "pointer-events": "none" }}`.
 33. **`static` charts ignore other signals.**
     A per-row function that reads a signal (a hovered row) runs once on a static chart, so keep interactive charts off `static`.
-34. **Warnings rhp prints** (each once per page), all worth fixing: a block as a slat's root; an edge Label inside another element with room "auto"; `aspect` with `height`, with slats that have a `thickness`, or not above 0; a page variable as a color; `--rhp-radius` with several lengths; an unknown ease; `linkedCss()` without the stylesheet.
+34. **Warnings rhp prints** (each once per page), all worth fixing: a block as an ordinary Plot's slat root; an edge Label inside another element with room "auto"; `aspect` with `height`, with slats that have a `thickness`, or not above 0; a page variable as a color; `--rhp-radius` with several lengths; an unknown ease; `linkedCss()` without the stylesheet.
 35. **A space that stands alone between two tags is dropped** in the html template.
     `<b>${() => d.name}</b> <em>12</em>` renders "Name12".
     Write the space as `${" "}`, or keep it next to other text (`<b>Name</b>: <em>12</em>`).

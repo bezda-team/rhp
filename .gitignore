@@ -2,3 +2,4 @@ node_modules/
 dist/
 out/
 *.png
+out-scale/

@@ -1,9 +1,10 @@
 // rhp brings its own CSS, so there is nothing to import. The core is one stylesheet, and each slat type with `css` adds
 // its own. Each is built once and adopted by every document (or shadow root) that shows a chart.
-// NOTE: A page can't change a chart because every declaration is made !important inside rhp's cascade layers. For
-// !important the first declared layer wins and any layered !important beats an unlayered one, so no page rule wins.
-// The page reaches a chart only through the theme and props.
+// Chart and slat layout is protected by !important declarations inside rhp's cascade layers. The first declared
+// layer wins for !important, and layered !important beats unlayered rules. Bulk points protect their geometry
+// explicitly, leaving their appearance defaults open to ordinary application classes.
 import CORE from "./rhp.css";
+import MANYDOTS from "./manydots.css";
 import GUTTERS from "./gutters.css";
 import CROSS from "./cross.css";
 
@@ -459,8 +460,8 @@ let coreText;
 let guttersText;
 let crossText;
 
-// rhp's core stylesheet (its layers first, then every declaration made !important)
-export const coreSheet = () => (coreText ??= LAYERS + "\n" + important(CORE));
+// The core reset is protected wholesale. Bulk points specify their own narrow geometry protection.
+export const coreSheet = () => (coreText ??= LAYERS + "\n" + important(CORE) + "\n" + MANYDOTS);
 
 // The rules for gutters sized by their labels (room "auto"), added when a chart first asks for them
 export const gutterSheet = () => (guttersText ??= important(GUTTERS));
