@@ -157,7 +157,7 @@ Read [design.md](references/design.md) and make its five decisions, in the brief
   Flat and honest: the value is still read from a length, a position or a count.
 - **Composition.** Where the headline, the chart, the key number and the note sit, taken from the idea and not from the recipe.
   The idea must still be there at 390px.
-- **Palette.** The subject's paper and ink, one accent the subject owns for the story, and context marks quiet without being a wall of gray.
+- **Palette.** The subject's own ground as the paper (a colored paper when the subject has a color; design.md lists fourteen that pass), its ink, one accent the subject owns for the story, and context marks quiet without being a wall of gray.
 - **Type.** A display face with the subject's voice and a plain text face, neither of them the recipe's.
 
 What the user or the project has fixed stays fixed, and the rest is still designed:

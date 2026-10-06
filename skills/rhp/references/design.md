@@ -86,7 +86,7 @@ body { margin: 0; padding: 48px 16px; background: var(--page); }
 
 | Token | Use | Rule |
 |---|---|---|
-| `--page` | the page around the poster | darker or lighter than the paper, near neutral |
+| `--page` | the page around the poster | a deeper or a paler shade of the paper, about 1.2 to 1.5:1 from it |
 | `--paper` | the poster's background (a look adds texture as `background-image`) | near neutral, or the material's own color (kraft, blueprint blue, slate): never a hue the marks use |
 | `--ink` | headline, labels, the strongest marks | 7:1 or more on the paper |
 | `--soft` | dek, note, axis numbers, small secondary text in the chart | 4.5:1 on flat paper, 5:1 on textured paper |
@@ -161,8 +161,10 @@ Make them in this order and write them in the brief's Design lines; each comes f
    At most one ornament, at the edge and away from the data (a torn edge, a staple, corner brackets): it finishes the object, and it is never the idea.
    Then decide the phone: the idea is still there at 390px (the silhouettes carried into the turned bars, the ring kept and its labels moved below it), never a fallback to plain bars.
 
-4. **Palette.** The subject's paper and ink: thermal white, blueprint blue, a chalkboard's slate, kraft, pink newsprint, a jersey's color.
-   A paper with a color of its own is fine when no mark shares its hue and every floor of section 4 holds.
+4. **Palette.** The subject's paper and ink first, and the paper is not white, cream or black by default.
+   Ask what color the subject's own ground has: the object the idea names (blueprint blue, a chalkboard's green, kraft, pink newsprint, a ticket's stock), the scene (a night sky, grass, the sea, a clay court), or a color the subject owns (a team, a crop, a flag, a brand's packaging).
+   When it has one, the paper takes it, in a shade that keeps the floors of section 4, with the ink light on a deep paper and dark on a pale one; section 4 lists fourteen colored papers that pass, from blueprint to kraft.
+   Neutral paper is for subjects whose own ground is paper (a report, a receipt, a ledger), not the fallback for everything.
    One accent the subject owns (the register's red, a team's color, the fruit's color) for the story; up to two more hues only when several series are the story.
    Context marks are quiet, and need not be gray: a tint of the accent, an outline in ink or the material's second ink keeps them back without turning the chart into a wall of gray slabs.
    Check every color against the token rules (section 1).
@@ -277,7 +279,32 @@ How a look goes onto a page:
 - Color several series only when comparing them is the story, six at most; with more, label the marks directly and group the small ones as "Other" in the quiet color.
 - Give meaning a second channel where it matters: filled against hollow, solid against dashed, a label.
 - Never red against green as the only difference; use blue against orange for good and bad, up and down.
-- The paper and the page stay quiet: near neutral, or the material's own color when it has one (section 2), and never a hue the marks use.
+- The paper and the page stay quiet: neutral, or the subject's own color (section 2), and never the hue of a mark that has to stand out from it.
+  On a colored paper the accent is a hue from the other side of the wheel (yellow on blue, red on mint, teal on salmon) and the quiet marks are a tint or a shade of the paper itself, so the page reads as one material.
+
+**Colored papers that pass.** Fourteen grounds with an ink, a secondary text color, a rule, an accent and a quiet mark that meet the token rules of section 1 (ink 7:1 or more, soft 5:1, rule about 1.4:1, accent 4.5:1, quiet 3.3:1), each checked on a poster page.
+Take one as it is, or shift its hue toward the subject's and check again.
+
+| Paper | `--paper` | `--page` | `--ink` | `--soft` | `--rule` | `--accent` | `--quiet` |
+|---|---|---|---|---|---|---|---|
+| blueprint | `#1d3f8c` | `#102659` | `#f4f6fb` | `#c9d4ee` | `#3a5aa6` | `#ffd45c` | `#8fa5db` |
+| navy night | `#0f1f3d` | `#080f1f` | `#eef2fa` | `#b9c4dc` | `#283a5e` | `#ffb547` | `#7f8fb3` |
+| sea | `#0f4c5c` | `#08303a` | `#eaf4f4` | `#b8d3d6` | `#2a6472` | `#f6c344` | `#7bacb5` |
+| chalkboard | `#2b4a3c` | `#1b2f26` | `#f3efe3` | `#c4d1c6` | `#3f604f` | `#f4c95d` | `#8fae98` |
+| forest | `#1f4d2e` | `#143320` | `#f0f5ec` | `#bfd3c2` | `#346343` | `#ffcf5c` | `#86a98e` |
+| plum | `#4a1f4e` | `#32153a` | `#f7eef7` | `#d9c3da` | `#633868` | `#ffc46b` | `#a680a9` |
+| oxblood | `#6b1d22` | `#4a1316` | `#fbeeea` | `#e8c4bd` | `#843a3e` | `#ffd1a1` | `#c98b84` |
+| brick | `#8a2d1c` | `#6b2114` | `#fff3ea` | `#f0c9bc` | `#a2463a` | `#ffd166` | `#d99a8a` |
+| salmon | `#f8dcc8` | `#e9c3aa` | `#2a1c15` | `#6b5248` | `#e2bba3` | `#0f5f63` | `#96705f` |
+| mustard | `#e9bc3f` | `#c99e2e` | `#231a05` | `#4a3a0e` | `#cfa533` | `#1d3b8f` | `#6b5617` |
+| powder blue | `#d7e6f4` | `#b9cfe4` | `#0f2540` | `#44607f` | `#b7cde2` | `#c8102e` | `#5b789c` |
+| mint | `#dfeee0` | `#c6dfc8` | `#14301c` | `#4a6650` | `#bcd6bf` | `#b8233a` | `#568466` |
+| lavender | `#e6e0f3` | `#d2c9ea` | `#221a3a` | `#5a5273` | `#c9bfe0` | `#9c3a1a` | `#76699e` |
+| kraft | `#cfa76b` | `#b58f55` | `#2a1a0a` | `#3b2a10` | `#b89054` | `#7a160f` | `#634a1e` |
+
+The eight deep papers set `color-scheme: dark` on `:root`; on them the accent is a light warm hue and the quiet marks a tint of the paper.
+On the six pale papers the accent is a deep hue and the quiet marks a shade of the paper.
+A second and a third series on these papers need their own check (section 4's floors and the color-blind distances).
 
 What the checker measures, and the floor for each:
 
@@ -683,7 +710,8 @@ render(() => html`<${Bars} />`, document.getElementById("chart"));
 | a rainbow, or a color per bar of one series | color with no meaning | one accent for the story, the quiet color for the rest |
 | gradients, textures or shadows on data marks; 3D | they distort the values and the comparison | flat marks; texture belongs to the paper |
 | heavy or colored shadows | a shadow takes the color of the surface it falls on: a colored one reads as neon | a soft shadow in a darker shade of the page, or none |
-| a background that shares the chart's hues (a blue page for blue bars) | the marks lose contrast and the page fights the data | neutral paper and page |
+| a background that shares the chart's hues (a blue page for blue bars) | the marks lose contrast and the page fights the data | a paper in the subject's color with the marks in a hue from the other side of the wheel (section 4), or neutral paper |
+| white, cream or black paper for every chart | the posters all look like the same stock | the subject's own ground: a colored paper that passes (section 4) when the subject has a color |
 | a legend far from the data, or a legend for a single series | the eye travels back and forth | direct labels; a key right above the chart, in the marks' order |
 | grid lines everywhere, a box around the plot | clutter that outweighs the data | a few hairlines along the value axis |
 | centered paragraphs, sentences in capitals | slow to read | left-aligned text; capitals only for short labels |
