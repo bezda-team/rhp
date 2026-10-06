@@ -1,0 +1,1617 @@
+{
+  "started": "2026-10-06T00:24:06.058Z",
+  "diagnostic": true,
+  "inputs": {
+    "snapshot": "/var/folders/h7/8z8nc01n3n77k9t2q52w68dr0000gn/T/rhp-manydots-akZNie",
+    "captured": "2026-10-05T23:12:44.396Z",
+    "commit": "6e4d2c200f5cf0a5dff574d0c33949ec1336529a",
+    "dirty": true,
+    "sourceHashes": {
+      "src/animate.js": "a25d7180287038b891dfc17e6eb3641947a6fd0bad7e32f73009f023b72bb543",
+      "src/blocks.jsx": "c1591464561b3cf198f23146ff819759978c7a8d46147f4c31b3b99e812d453d",
+      "src/cross.css": "d8f3e2e77028359bf02f260791b005d4fb9f74b5ed0eff0fda86b16bd8f001df",
+      "src/data.js": "abb1d28f4528b776b5a991038cef8506091a82a1f1ba778e09fde0b782a187a1",
+      "src/env.js": "c6664a033e9995ba59c5ded78d23f9411803dc6263224f319dfd94d63e728434",
+      "src/frame.js": "20eda8fc2c8404dbf6761096a15a43c5b6a32b541f0b26b26328a2b1d1a8b914",
+      "src/gutters.css": "aaf8e15c3db8567f697e0d251737d8609f0f0d3202a214830efc54d56d64429a",
+      "src/index.d.ts": "c0104bfb74b286634560c094039b0e5743664551d79dd89765ff1fa15648587f",
+      "src/index.js": "49d8ff90ca6bd907729cdcde2a7edfa8a4b8845c194af3c9fcde803fe0675188",
+      "src/manydots.css": "bf9388579d625693a7351fb5aaf0afb61bdca7c4db6cc6ef9ea6c91ef7f2e92c",
+      "src/manydots.d.ts": "7c43ea493d5db2f4c004103db6baec0a45252bc3e81152d564f4ceb2e8dbc260",
+      "src/manydots.jsx": "2556ae16f30cf68c4a659697ccd4a04cd2c5130866a0dc4cd38dd75d1b96e2d9",
+      "src/plot.jsx": "6928a7c8db018e44d01abe24f7939aea6d7454601305c61f8f393af250ad95da",
+      "src/poster.jsx": "58b620748facd0247b9960194887bb58021457508b2701402eb7985cd8d6bd39",
+      "src/posters.css": "e259613db4e36011fbb64a7724d308c298dfeff5fcd34dbf017f76ec88c75eb8",
+      "src/rhp.css": "064fd218cbb6a532cc96f1fdaa534ffbda671c52db28f65a45c0da03e7110464",
+      "src/shape.js": "2b38c8866cf715281a140f3be976ecbd1476c1b31b114109df16f771ce89f8b9",
+      "src/standalone.d.ts": "4009b1833443a310b8455ebc8b6fdab3168fd2ef64a006130c77fdcaaab87038",
+      "src/standalone.js": "aee3e2af610de80a9011234ee63a73160047ad8619c2cb458d5dcf669c7a5201",
+      "src/style.js": "c90282b5d19edeb9cf56022024e361e76bea4a66ff9272bebaddea82b9c179ac",
+      "bench/manydots.mjs": "ed68d80ab72fc3841edff9f1049c68714c6151edcef46ece51ed1a16dfe2ab0d",
+      "bench/manydots/README.md": "7674d019d81a45e0c0735c5d5a84bb16ecbbd5fb2f6c1c3a70b1fa9e3cbe1ad7",
+      "bench/manydots/adapter.solid.jsx": "ed013a93922308592b8e6b4dd62b62c4bba475ddb8fbbdc5c42e8465e5affae8",
+      "bench/manydots/harness.js": "1878e2c69b9886504ffcd9e6ff796427f0bc75f53be60cc53e3ea43a1191968a"
+    },
+    "packageLockHash": "2a16558674a44a862c939da49433189722cb03f48ff1d41a1a890bc554c4d62a",
+    "packages": {
+      "@babel/core": "7.29.7",
+      "babel-preset-solid": "1.9.15",
+      "esbuild": "0.28.2",
+      "playwright": "1.63.0",
+      "playwright-core": "1.63.0",
+      "solid-js": "1.9.15"
+    },
+    "bundleHash": "1ee0c835069f1e91e1aac336009b34c4ce9819f56c77b1640ac95210bc3418e0",
+    "notes": [
+      "Both variants and the original wrapped reference share every library source file, including pre-existing working-tree edits.",
+      "The original wrapped reference runs for the 10,000-point uniform scenario only.",
+      "One browser bundle includes all variants, so loading and parsing code do not favor one variant."
+    ]
+  },
+  "categories": [
+    "-*",
+    "devtools.timeline",
+    "disabled-by-default-devtools.timeline",
+    "disabled-by-default-devtools.timeline.frame",
+    "blink.user_timing",
+    "v8.execute",
+    "v8",
+    "cppgc",
+    "toplevel"
+  ],
+  "machine": {
+    "cpu": "Apple M5",
+    "cores": 10,
+    "node": "v24.15.0",
+    "platform": "darwin",
+    "release": "25.5.0",
+    "loadStart": [
+      2.833984375,
+      2.9052734375,
+      3.1962890625
+    ],
+    "browser": "153.0.8010.12",
+    "loadEnd": [
+      2.6318359375,
+      2.85888671875,
+      3.17578125
+    ]
+  },
+  "method": {
+    "n": 10000,
+    "variant": "manydots",
+    "freshPages": true,
+    "viewport": {
+      "width": 1000,
+      "height": 900
+    },
+    "totalWindowMs": 2000,
+    "immutableSnapshot": true,
+    "markers": "Injected diagnostic hooks only, frozen source and bundle untouched",
+    "note": "Tracing changes overhead. These are attribution diagnostics, not comparable untraced benchmark timings. Renderer-main synchronous intervals are attributed exclusively; raster/GPU threads are kept separate."
+  },
+  "cases": {
+    "uniform": {
+      "frame": 103.10000038146973,
+      "errors": [],
+      "aggregateCPUIdlePercent": 76.89514298683613,
+      "initialMetrics": {
+        "Timestamp": 2914050.472181,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 4,
+        "Frames": 4,
+        "JSEventListeners": 0,
+        "LayoutObjects": 9,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 24,
+        "Resources": 1,
+        "ContextLifecycleStateObservers": 4,
+        "V8PerContextDatas": 4,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 4,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 2,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 0,
+        "RecalcStyleCount": 0,
+        "LayoutDuration": 0,
+        "RecalcStyleDuration": 0,
+        "DevToolsCommandDuration": 0.00312,
+        "ScriptDuration": 0,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.003654,
+        "TaskOtherDuration": 0.000534,
+        "ThreadTime": 0.001315,
+        "ProcessTime": 0.051363,
+        "JSHeapUsedSize": 1266820,
+        "JSHeapTotalSize": 2097152,
+        "FirstMeaningfulPaint": 0,
+        "DomContentLoaded": 2914050.442153,
+        "NavigationStart": 2914050.408664
+      },
+      "finalMetrics": {
+        "Timestamp": 2914052.692924,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 5,
+        "Frames": 4,
+        "JSEventListeners": 1,
+        "LayoutObjects": 10052,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 10095,
+        "Resources": 1,
+        "ContextLifecycleStateObservers": 6,
+        "V8PerContextDatas": 4,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 5,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 2,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 2,
+        "LayoutDuration": 0.013106,
+        "RecalcStyleDuration": 0.039169,
+        "DevToolsCommandDuration": 0.012746,
+        "ScriptDuration": 0.030964,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.118234,
+        "TaskOtherDuration": 0.022249,
+        "ThreadTime": 0.090217,
+        "ProcessTime": 0.18121,
+        "JSHeapUsedSize": 5524604,
+        "JSHeapTotalSize": 9945088,
+        "FirstMeaningfulPaint": 2914050.695241,
+        "DomContentLoaded": 2914050.442153,
+        "NavigationStart": 2914050.408664
+      },
+      "metricDeltas": {
+        "Timestamp": 2.2207430000416934,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 1,
+        "Frames": 0,
+        "JSEventListeners": 1,
+        "LayoutObjects": 10043,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 10071,
+        "Resources": 0,
+        "ContextLifecycleStateObservers": 2,
+        "V8PerContextDatas": 0,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 1,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 0,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 2,
+        "LayoutDuration": 0.013106,
+        "RecalcStyleDuration": 0.039169,
+        "DevToolsCommandDuration": 0.009626000000000001,
+        "ScriptDuration": 0.030964,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.11458,
+        "TaskOtherDuration": 0.021715,
+        "ThreadTime": 0.08890200000000001,
+        "ProcessTime": 0.12984700000000002,
+        "JSHeapUsedSize": 4257784,
+        "JSHeapTotalSize": 7847936,
+        "FirstMeaningfulPaint": 2914050.695241,
+        "DomContentLoaded": 0,
+        "NavigationStart": 0
+      },
+      "durationDeltasMs": {
+        "LayoutDuration": 13.106,
+        "RecalcStyleDuration": 39.169000000000004,
+        "DevToolsCommandDuration": 9.626000000000001,
+        "ScriptDuration": 30.964,
+        "V8CompileDuration": 0,
+        "TaskDuration": 114.58,
+        "TaskOtherDuration": 21.715000000000003,
+        "ThreadTime": 88.90200000000002,
+        "ProcessTime": 129.847
+      },
+      "traceBytes": 448374,
+      "traceDataLossOccurred": false,
+      "analysis": {
+        "rendererMain": {
+          "pid": 44608,
+          "tid": 101824011,
+          "name": "CrRendererMain"
+        },
+        "markerOffsetsMs": {
+          "rhp-request-start": 0,
+          "rhp-data-ready": 6.631,
+          "rhp-mount-start": 108.088,
+          "rhp-mount-end": 138.668,
+          "rhp-harness-end": 211.269,
+          "rhp-window-end": 2216.317
+        },
+        "segments": {
+          "all": {
+            "windowMs": 2216.317,
+            "taskUnionMs": 111.991,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "OtherTask": 8.16,
+              "GC": 3.65,
+              "Script": 30.653,
+              "PrePaint": 6.104,
+              "Paint": 6.969,
+              "Layerize": 4.124,
+              "Commit": 0.09,
+              "LayerUpdateOrComposite": 0.002,
+              "ExplicitStyleSpan": 2.765,
+              "LayoutIncludingInterleavedStyle": 49.474
+            },
+            "exclusiveByEventMs": {
+              "Layout": 49.474,
+              "FunctionCall": 30.005,
+              "UnattributedTaskSelfTime": 8.16,
+              "Paint": 6.969,
+              "PrePaint": 6.104,
+              "Layerize": 4.124,
+              "UpdateLayoutTree": 2.765,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.979,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.559,
+              "RunMicrotasks": 0.55,
+              "V8.GCScavenger": 0.504,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 0.484,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.387,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.171,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.152,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.137,
+              "Commit": 0.09,
+              "MinorGC": 0.075,
+              "TimerFire": 0.073,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.055,
+              "V8.GC_SCAVENGER": 0.028,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.028,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.025,
+              "FireAnimationFrame": 0.025,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.02,
+              "V8.GC_HEAP_EPILOGUE": 0.013,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.009,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.008,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.004,
+              "V8.GC_HEAP_PROLOGUE": 0.003,
+              "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 0.003,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.003,
+              "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 0.002,
+              "UpdateLayer": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 0.001
+            }
+          },
+          "preparation": {
+            "windowMs": 108.088,
+            "taskUnionMs": 7.598,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "OtherTask": 4.508,
+              "GC": 2.381,
+              "Script": 0.709
+            },
+            "exclusiveByEventMs": {
+              "UnattributedTaskSelfTime": 4.508,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.717,
+              "V8.GCScavenger": 0.49,
+              "RunMicrotasks": 0.369,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.321,
+              "FunctionCall": 0.281,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.258,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.162,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.116,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.114,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 0.058,
+              "MinorGC": 0.05,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.042,
+              "TimerFire": 0.042,
+              "FireAnimationFrame": 0.017,
+              "V8.GC_SCAVENGER": 0.013,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.01,
+              "V8.GC_HEAP_EPILOGUE": 0.01,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.005,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.003,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.002,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.002,
+              "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 0.002,
+              "V8.GC_HEAP_PROLOGUE": 0.001,
+              "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 0.001,
+              "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 0.001,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.001
+            }
+          },
+          "mountScript": {
+            "windowMs": 30.58,
+            "taskUnionMs": 30.58,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 29.311,
+              "GC": 1.269
+            },
+            "exclusiveByEventMs": {
+              "FunctionCall": 29.311,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 0.426,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.301,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.262,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.066,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.036,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.026,
+              "MinorGC": 0.025,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.023,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.018,
+              "V8.GC_SCAVENGER": 0.015,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.015,
+              "V8.GCScavenger": 0.014,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.013,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.009,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.005,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.004,
+              "V8.GC_HEAP_EPILOGUE": 0.003,
+              "V8.GC_HEAP_PROLOGUE": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.002,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.002,
+              "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 0.001,
+              "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 0.001
+            }
+          },
+          "renderToHarnessEnd": {
+            "windowMs": 72.601,
+            "taskUnionMs": 72.597,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 0.371,
+              "OtherTask": 2.718,
+              "PrePaint": 6.101,
+              "Paint": 6.969,
+              "Layerize": 4.123,
+              "Commit": 0.074,
+              "LayerUpdateOrComposite": 0.002,
+              "ExplicitStyleSpan": 2.765,
+              "LayoutIncludingInterleavedStyle": 49.474
+            },
+            "exclusiveByEventMs": {
+              "Layout": 49.474,
+              "Paint": 6.969,
+              "PrePaint": 6.101,
+              "Layerize": 4.123,
+              "UpdateLayoutTree": 2.765,
+              "UnattributedTaskSelfTime": 2.718,
+              "FunctionCall": 0.357,
+              "Commit": 0.074,
+              "FireAnimationFrame": 0.008,
+              "RunMicrotasks": 0.006,
+              "UpdateLayer": 0.002
+            }
+          },
+          "tail": {
+            "windowMs": 2005.048,
+            "taskUnionMs": 1.216,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 0.262,
+              "OtherTask": 0.934,
+              "PrePaint": 0.003,
+              "Layerize": 0.001,
+              "Commit": 0.016
+            },
+            "exclusiveByEventMs": {
+              "UnattributedTaskSelfTime": 0.934,
+              "RunMicrotasks": 0.175,
+              "FunctionCall": 0.056,
+              "TimerFire": 0.031,
+              "Commit": 0.016,
+              "PrePaint": 0.003,
+              "Layerize": 0.001
+            }
+          }
+        },
+        "mainEventCounts": {
+          "BlinkScheduler_PerformMicrotaskCheckpoint": 15,
+          "ClearWeaknessProcessor start": 1,
+          "Closed mojo endpoint": 1,
+          "Commit": 2,
+          "ComputeWeaknessProcessor start": 2,
+          "FireAnimationFrame": 1,
+          "FunctionCall": 6,
+          "Layerize": 2,
+          "Layout": 1,
+          "MinorGC": 5,
+          "Paint": 1,
+          "Parallel scavenge started": 2,
+          "ParseHTML": 8,
+          "PrePaint": 3,
+          "Receive mojo message": 2,
+          "RunMicrotasks": 3,
+          "RunTask": 30,
+          "SimpleWatcher::OnHandleReady": 2,
+          "ThreadControllerImpl::RunTask": 27,
+          "TimerFire": 2,
+          "UpdateLayer": 1,
+          "UpdateLayoutTree": 1,
+          "V8.BytecodeBudgetInterrupt": 44,
+          "V8.BytecodeBudgetInterruptWithStackCheck": 43,
+          "V8.DeoptimizeCode": 2,
+          "V8.GCScavenger": 5,
+          "V8.GC_HEAP_EPILOGUE": 5,
+          "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 3,
+          "V8.GC_HEAP_EXTERNAL_EPILOGUE": 5,
+          "V8.GC_HEAP_EXTERNAL_PROLOGUE": 4,
+          "V8.GC_HEAP_PROLOGUE": 3,
+          "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 2,
+          "V8.GC_SCAVENGER": 5,
+          "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 5,
+          "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 3,
+          "V8.GC_SCAVENGER_SCAVENGE": 5,
+          "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 5,
+          "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 5,
+          "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 1,
+          "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 5,
+          "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 5,
+          "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 5,
+          "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 4,
+          "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 4,
+          "V8.GC_TIME_TO_SAFEPOINT": 5,
+          "V8.HandleInterrupts": 24,
+          "V8.StackGuard": 25,
+          "v8.callFunction": 6,
+          "v8.newInstance": 14
+        },
+        "otherThreads": [
+          {
+            "pid": 0,
+            "tid": 0,
+            "name": "swapper"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824028,
+            "name": "Compositor"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823950,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823892,
+            "name": "CrBrowserMain"
+          },
+          {
+            "pid": 44607,
+            "tid": 101823985,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44606,
+            "tid": 101823971,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44607,
+            "tid": 101823989,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44609,
+            "tid": 101824036,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44609,
+            "tid": 101824032,
+            "name": "tracing.CrUtilityMain"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824020,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823978,
+            "name": "DevToolsPipeHandlerWriteThread"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824024,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823955,
+            "name": "Chrome_IOThread"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824022,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824025,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44606,
+            "tid": 101824016,
+            "name": "VizCompositorThread"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824031,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824042,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824041,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44608,
+            "tid": 101824043,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44606,
+            "tid": 101824015,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44606,
+            "tid": 101823961,
+            "name": "CrGpuMain"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823957,
+            "name": "NetworkConfigWatcher"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823965,
+            "name": "NetworkConfigWatcher"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823974,
+            "name": "NetworkConfigWatcher"
+          },
+          {
+            "pid": 44607,
+            "tid": 101823990,
+            "name": "NetworkConfigWatcher"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823998,
+            "name": "NetworkConfigWatcher"
+          }
+        ],
+        "styleLayoutInterpretation": "Layout trace spans include interleaved size-container style recalculation. ExplicitStyleSpan is not total style time. Use the separately attributed CDP RecalcStyleDuration and LayoutDuration counters for their split."
+      }
+    },
+    "categories": {
+      "frame": 71.90000009536743,
+      "errors": [],
+      "aggregateCPUIdlePercent": 80.50691244239631,
+      "initialMetrics": {
+        "Timestamp": 2914052.77343,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 4,
+        "Frames": 4,
+        "JSEventListeners": 0,
+        "LayoutObjects": 9,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 24,
+        "Resources": 1,
+        "ContextLifecycleStateObservers": 4,
+        "V8PerContextDatas": 4,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 4,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 2,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 0,
+        "RecalcStyleCount": 0,
+        "LayoutDuration": 0,
+        "RecalcStyleDuration": 0,
+        "DevToolsCommandDuration": 0.000555,
+        "ScriptDuration": 0,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.000636,
+        "TaskOtherDuration": 0.000081,
+        "ThreadTime": 0.000656,
+        "ProcessTime": 0.032539,
+        "JSHeapUsedSize": 1266820,
+        "JSHeapTotalSize": 2097152,
+        "FirstMeaningfulPaint": 0,
+        "DomContentLoaded": 2914052.767849,
+        "NavigationStart": 2914052.76303
+      },
+      "finalMetrics": {
+        "Timestamp": 2914054.956246,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 5,
+        "Frames": 4,
+        "JSEventListeners": 1,
+        "LayoutObjects": 10052,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 10095,
+        "Resources": 1,
+        "ContextLifecycleStateObservers": 6,
+        "V8PerContextDatas": 4,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 5,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 2,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 2,
+        "LayoutDuration": 0.010022,
+        "RecalcStyleDuration": 0.028798,
+        "DevToolsCommandDuration": 0.003659,
+        "ScriptDuration": 0.015858,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.07702,
+        "TaskOtherDuration": 0.018683,
+        "ThreadTime": 0.074809,
+        "ProcessTime": 0.138722,
+        "JSHeapUsedSize": 6163976,
+        "JSHeapTotalSize": 9945088,
+        "FirstMeaningfulPaint": 2914052.954207,
+        "DomContentLoaded": 2914052.767849,
+        "NavigationStart": 2914052.76303
+      },
+      "metricDeltas": {
+        "Timestamp": 2.182815999723971,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 1,
+        "Frames": 0,
+        "JSEventListeners": 1,
+        "LayoutObjects": 10043,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 10071,
+        "Resources": 0,
+        "ContextLifecycleStateObservers": 2,
+        "V8PerContextDatas": 0,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 1,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 0,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 2,
+        "LayoutDuration": 0.010022,
+        "RecalcStyleDuration": 0.028798,
+        "DevToolsCommandDuration": 0.003104,
+        "ScriptDuration": 0.015858,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.07638400000000001,
+        "TaskOtherDuration": 0.018602,
+        "ThreadTime": 0.074153,
+        "ProcessTime": 0.10618300000000001,
+        "JSHeapUsedSize": 4897156,
+        "JSHeapTotalSize": 7847936,
+        "FirstMeaningfulPaint": 2914052.954207,
+        "DomContentLoaded": 0,
+        "NavigationStart": 0
+      },
+      "durationDeltasMs": {
+        "LayoutDuration": 10.022,
+        "RecalcStyleDuration": 28.798000000000002,
+        "DevToolsCommandDuration": 3.104,
+        "ScriptDuration": 15.858,
+        "V8CompileDuration": 0,
+        "TaskDuration": 76.38400000000001,
+        "TaskOtherDuration": 18.602,
+        "ThreadTime": 74.15299999999999,
+        "ProcessTime": 106.183
+      },
+      "traceBytes": 486159,
+      "traceDataLossOccurred": false,
+      "analysis": {
+        "rendererMain": {
+          "pid": 44681,
+          "tid": 101824222,
+          "name": "CrRendererMain"
+        },
+        "markerOffsetsMs": {
+          "rhp-request-start": 0,
+          "rhp-data-ready": 1.512,
+          "rhp-mount-start": 103.454,
+          "rhp-mount-end": 119.079,
+          "rhp-harness-end": 175.301,
+          "rhp-window-end": 2179.89
+        },
+        "segments": {
+          "all": {
+            "windowMs": 2179.89,
+            "taskUnionMs": 75.121,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "OtherTask": 4.16,
+              "GC": 1.423,
+              "PrePaint": 5.146,
+              "Paint": 6.688,
+              "Layerize": 3.289,
+              "Commit": 0.088,
+              "Script": 15.517,
+              "LayerUpdateOrComposite": 0.003,
+              "ExplicitStyleSpan": 0.284,
+              "LayoutIncludingInterleavedStyle": 38.523
+            },
+            "exclusiveByEventMs": {
+              "Layout": 38.523,
+              "FunctionCall": 15.132,
+              "Paint": 6.688,
+              "PrePaint": 5.146,
+              "UnattributedTaskSelfTime": 4.16,
+              "Layerize": 3.289,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.818,
+              "RunMicrotasks": 0.306,
+              "UpdateLayoutTree": 0.284,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 0.202,
+              "Commit": 0.088,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.078,
+              "TimerFire": 0.073,
+              "MinorGC": 0.06,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.047,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.041,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.033,
+              "V8.GCScavenger": 0.029,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.018,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.018,
+              "V8.GC_SCAVENGER": 0.014,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.014,
+              "V8.GC_HEAP_EPILOGUE": 0.011,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.009,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.008,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.007,
+              "FireAnimationFrame": 0.006,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.004,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.004,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.003,
+              "UpdateLayer": 0.003,
+              "V8.GC_HEAP_PROLOGUE": 0.002,
+              "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 0.001,
+              "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 0.001,
+              "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 0.001
+            }
+          },
+          "preparation": {
+            "windowMs": 103.454,
+            "taskUnionMs": 2.236,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "OtherTask": 1.294,
+              "GC": 0.645,
+              "PrePaint": 0.021,
+              "Paint": 0.014,
+              "Layerize": 0.002,
+              "Commit": 0.022,
+              "Script": 0.238
+            },
+            "exclusiveByEventMs": {
+              "UnattributedTaskSelfTime": 1.294,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.44,
+              "RunMicrotasks": 0.142,
+              "TimerFire": 0.057,
+              "MinorGC": 0.038,
+              "FunctionCall": 0.037,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.036,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.034,
+              "Commit": 0.022,
+              "PrePaint": 0.021,
+              "V8.GCScavenger": 0.019,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.019,
+              "Paint": 0.014,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.011,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.01,
+              "V8.GC_HEAP_EPILOGUE": 0.009,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.009,
+              "V8.GC_SCAVENGER": 0.007,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.003,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.002,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.002,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.002,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.002,
+              "Layerize": 0.002,
+              "FireAnimationFrame": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.001,
+              "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 0.001
+            }
+          },
+          "mountScript": {
+            "windowMs": 15.625,
+            "taskUnionMs": 15.625,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 14.847,
+              "GC": 0.778
+            },
+            "exclusiveByEventMs": {
+              "FunctionCall": 14.847,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.378,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 0.202,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.042,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.033,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.022,
+              "MinorGC": 0.022,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.013,
+              "V8.GCScavenger": 0.01,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.008,
+              "V8.GC_SCAVENGER": 0.007,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.007,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.007,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.006,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.005,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.004,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.002,
+              "V8.GC_HEAP_PROLOGUE": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.002,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.002,
+              "V8.GC_HEAP_EPILOGUE": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 0.001,
+              "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 0.001
+            }
+          },
+          "renderToHarnessEnd": {
+            "windowMs": 56.222,
+            "taskUnionMs": 56.219,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 0.23,
+              "OtherTask": 2.05,
+              "PrePaint": 5.122,
+              "Paint": 6.674,
+              "Layerize": 3.286,
+              "Commit": 0.047,
+              "LayerUpdateOrComposite": 0.003,
+              "ExplicitStyleSpan": 0.284,
+              "LayoutIncludingInterleavedStyle": 38.523
+            },
+            "exclusiveByEventMs": {
+              "Layout": 38.523,
+              "Paint": 6.674,
+              "PrePaint": 5.122,
+              "Layerize": 3.286,
+              "UnattributedTaskSelfTime": 2.05,
+              "UpdateLayoutTree": 0.284,
+              "FunctionCall": 0.217,
+              "Commit": 0.047,
+              "RunMicrotasks": 0.009,
+              "FireAnimationFrame": 0.004,
+              "UpdateLayer": 0.003
+            }
+          },
+          "tail": {
+            "windowMs": 2004.589,
+            "taskUnionMs": 1.041,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 0.202,
+              "OtherTask": 0.816,
+              "PrePaint": 0.003,
+              "Layerize": 0.001,
+              "Commit": 0.019
+            },
+            "exclusiveByEventMs": {
+              "UnattributedTaskSelfTime": 0.816,
+              "RunMicrotasks": 0.155,
+              "FunctionCall": 0.031,
+              "Commit": 0.019,
+              "TimerFire": 0.016,
+              "PrePaint": 0.003,
+              "Layerize": 0.001
+            }
+          }
+        },
+        "mainEventCounts": {
+          "BlinkScheduler_PerformMicrotaskCheckpoint": 14,
+          "ClearWeaknessProcessor start": 1,
+          "Closed mojo endpoint": 1,
+          "Commit": 3,
+          "ComputeWeaknessProcessor start": 3,
+          "FireAnimationFrame": 1,
+          "FunctionCall": 6,
+          "Layerize": 3,
+          "Layout": 1,
+          "MinorGC": 4,
+          "Paint": 3,
+          "Parallel scavenge started": 1,
+          "ParseHTML": 8,
+          "PrePaint": 4,
+          "Receive mojo message": 2,
+          "RunMicrotasks": 3,
+          "RunTask": 33,
+          "SimpleWatcher::OnHandleReady": 2,
+          "ThreadControllerImpl::RunTask": 29,
+          "TimerFire": 2,
+          "UpdateLayer": 1,
+          "UpdateLayoutTree": 1,
+          "V8.BytecodeBudgetInterrupt": 49,
+          "V8.BytecodeBudgetInterruptWithStackCheck": 35,
+          "V8.DeoptimizeCode": 4,
+          "V8.GCScavenger": 4,
+          "V8.GC_HEAP_EPILOGUE": 4,
+          "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 4,
+          "V8.GC_HEAP_EXTERNAL_EPILOGUE": 4,
+          "V8.GC_HEAP_EXTERNAL_PROLOGUE": 4,
+          "V8.GC_HEAP_PROLOGUE": 1,
+          "V8.GC_HEAP_PROLOGUE_SAFEPOINT": 1,
+          "V8.GC_SCAVENGER": 4,
+          "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 3,
+          "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 1,
+          "V8.GC_SCAVENGER_SCAVENGE": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 3,
+          "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 2,
+          "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 1,
+          "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 4,
+          "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 3,
+          "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 4,
+          "V8.GC_TIME_TO_SAFEPOINT": 2,
+          "V8.HandleInterrupts": 25,
+          "V8.InvokeApiInterruptCallbacks": 1,
+          "V8.StackGuard": 25,
+          "v8.callFunction": 6,
+          "v8.newInstance": 10
+        },
+        "otherThreads": [
+          {
+            "pid": 0,
+            "tid": 0,
+            "name": "swapper"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824233,
+            "name": "Compositor"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823892,
+            "name": "CrBrowserMain"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824227,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44606,
+            "tid": 101823971,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44609,
+            "tid": 101824036,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44609,
+            "tid": 101824032,
+            "name": "tracing.CrUtilityMain"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823950,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44607,
+            "tid": 101823985,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44607,
+            "tid": 101823989,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823978,
+            "name": "DevToolsPipeHandlerWriteThread"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824231,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823955,
+            "name": "Chrome_IOThread"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824229,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824232,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44606,
+            "tid": 101824016,
+            "name": "VizCompositorThread"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824235,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824238,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824240,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44681,
+            "tid": 101824239,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44606,
+            "tid": 101824015,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44606,
+            "tid": 101823961,
+            "name": "CrGpuMain"
+          },
+          {
+            "pid": 44591,
+            "tid": 101824221,
+            "name": "NetworkConfigWatcher"
+          }
+        ],
+        "styleLayoutInterpretation": "Layout trace spans include interleaved size-container style recalculation. ExplicitStyleSpan is not total style time. Use the separately attributed CDP RecalcStyleDuration and LayoutDuration counters for their split."
+      }
+    },
+    "unique": {
+      "frame": 75.09999990463257,
+      "errors": [],
+      "aggregateCPUIdlePercent": 80.62875635691171,
+      "initialMetrics": {
+        "Timestamp": 2914055.056407,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 4,
+        "Frames": 4,
+        "JSEventListeners": 0,
+        "LayoutObjects": 9,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 24,
+        "Resources": 1,
+        "ContextLifecycleStateObservers": 4,
+        "V8PerContextDatas": 4,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 4,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 2,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 0,
+        "RecalcStyleCount": 0,
+        "LayoutDuration": 0,
+        "RecalcStyleDuration": 0,
+        "DevToolsCommandDuration": 0.000694,
+        "ScriptDuration": 0,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.000758,
+        "TaskOtherDuration": 0.000064,
+        "ThreadTime": 0.000638,
+        "ProcessTime": 0.040757,
+        "JSHeapUsedSize": 1266820,
+        "JSHeapTotalSize": 2097152,
+        "FirstMeaningfulPaint": 0,
+        "DomContentLoaded": 2914055.052581,
+        "NavigationStart": 2914055.045695
+      },
+      "finalMetrics": {
+        "Timestamp": 2914057.239007,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 5,
+        "Frames": 4,
+        "JSEventListeners": 1,
+        "LayoutObjects": 10052,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 10095,
+        "Resources": 1,
+        "ContextLifecycleStateObservers": 6,
+        "V8PerContextDatas": 4,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 5,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 2,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 2,
+        "LayoutDuration": 0.010554,
+        "RecalcStyleDuration": 0.029795,
+        "DevToolsCommandDuration": 0.003734,
+        "ScriptDuration": 0.016557,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.080271,
+        "TaskOtherDuration": 0.019631,
+        "ThreadTime": 0.078709,
+        "ProcessTime": 0.155182,
+        "JSHeapUsedSize": 5519832,
+        "JSHeapTotalSize": 9682944,
+        "FirstMeaningfulPaint": 2914055.242038,
+        "DomContentLoaded": 2914055.052581,
+        "NavigationStart": 2914055.045695
+      },
+      "metricDeltas": {
+        "Timestamp": 2.1825999999418855,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 1,
+        "Frames": 0,
+        "JSEventListeners": 1,
+        "LayoutObjects": 10043,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 10071,
+        "Resources": 0,
+        "ContextLifecycleStateObservers": 2,
+        "V8PerContextDatas": 0,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 1,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 0,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 2,
+        "LayoutDuration": 0.010554,
+        "RecalcStyleDuration": 0.029795,
+        "DevToolsCommandDuration": 0.00304,
+        "ScriptDuration": 0.016557,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.079513,
+        "TaskOtherDuration": 0.019566999999999998,
+        "ThreadTime": 0.078071,
+        "ProcessTime": 0.11442499999999999,
+        "JSHeapUsedSize": 4253012,
+        "JSHeapTotalSize": 7585792,
+        "FirstMeaningfulPaint": 2914055.242038,
+        "DomContentLoaded": 0,
+        "NavigationStart": 0
+      },
+      "durationDeltasMs": {
+        "LayoutDuration": 10.553999999999998,
+        "RecalcStyleDuration": 29.794999999999998,
+        "DevToolsCommandDuration": 3.04,
+        "ScriptDuration": 16.557,
+        "V8CompileDuration": 0,
+        "TaskDuration": 79.513,
+        "TaskOtherDuration": 19.566999999999997,
+        "ThreadTime": 78.071,
+        "ProcessTime": 114.42499999999998
+      },
+      "traceBytes": 493646,
+      "traceDataLossOccurred": false,
+      "analysis": {
+        "rendererMain": {
+          "pid": 44722,
+          "tid": 101824367,
+          "name": "CrRendererMain"
+        },
+        "markerOffsetsMs": {
+          "rhp-request-start": 0,
+          "rhp-data-ready": 2.157,
+          "rhp-mount-start": 104.074,
+          "rhp-mount-end": 120.404,
+          "rhp-harness-end": 179.225,
+          "rhp-window-end": 2181.111
+        },
+        "segments": {
+          "all": {
+            "windowMs": 2181.111,
+            "taskUnionMs": 78.797,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "OtherTask": 4.347,
+              "GC": 1.503,
+              "PrePaint": 5.284,
+              "Paint": 6.805,
+              "Layerize": 4.143,
+              "Commit": 0.09,
+              "Script": 16.281,
+              "LayerUpdateOrComposite": 0.002,
+              "ExplicitStyleSpan": 0.277,
+              "LayoutIncludingInterleavedStyle": 40.065
+            },
+            "exclusiveByEventMs": {
+              "Layout": 40.065,
+              "FunctionCall": 15.968,
+              "Paint": 6.805,
+              "PrePaint": 5.284,
+              "UnattributedTaskSelfTime": 4.347,
+              "Layerize": 4.143,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.687,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.295,
+              "UpdateLayoutTree": 0.277,
+              "RunMicrotasks": 0.257,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 0.163,
+              "Commit": 0.09,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.062,
+              "MinorGC": 0.057,
+              "TimerFire": 0.049,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.044,
+              "V8.GCScavenger": 0.027,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.027,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.022,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.022,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.017,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.017,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.015,
+              "V8.GC_SCAVENGER": 0.013,
+              "V8.GC_HEAP_EPILOGUE": 0.012,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.007,
+              "FireAnimationFrame": 0.007,
+              "V8.GC_HEAP_PROLOGUE": 0.004,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.004,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.003,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.003,
+              "UpdateLayer": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 0.001,
+              "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 0.001
+            }
+          },
+          "preparation": {
+            "windowMs": 104.074,
+            "taskUnionMs": 2.581,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "OtherTask": 1.482,
+              "GC": 0.87,
+              "PrePaint": 0.025,
+              "Paint": 0.016,
+              "Layerize": 0.003,
+              "Commit": 0.028,
+              "Script": 0.157
+            },
+            "exclusiveByEventMs": {
+              "UnattributedTaskSelfTime": 1.482,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.268,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.255,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 0.163,
+              "RunMicrotasks": 0.098,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.051,
+              "MinorGC": 0.037,
+              "FunctionCall": 0.029,
+              "Commit": 0.028,
+              "TimerFire": 0.027,
+              "PrePaint": 0.025,
+              "V8.GCScavenger": 0.02,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.018,
+              "Paint": 0.016,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.01,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.009,
+              "V8.GC_HEAP_EPILOGUE": 0.009,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.008,
+              "V8.GC_SCAVENGER": 0.006,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.004,
+              "Layerize": 0.003,
+              "FireAnimationFrame": 0.003,
+              "V8.GC_HEAP_PROLOGUE": 0.002,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.002,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.002,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.002,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.001,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.001,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.001,
+              "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 0.001
+            }
+          },
+          "mountScript": {
+            "windowMs": 16.33,
+            "taskUnionMs": 16.33,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 15.697,
+              "GC": 0.633
+            },
+            "exclusiveByEventMs": {
+              "FunctionCall": 15.697,
+              "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 0.419,
+              "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 0.04,
+              "V8.GC_SCAVENGER_SCAVENGE": 0.026,
+              "V8.GC_TIME_TO_SAFEPOINT": 0.025,
+              "MinorGC": 0.02,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 0.016,
+              "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 0.015,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 0.013,
+              "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 0.012,
+              "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 0.011,
+              "V8.GCScavenger": 0.007,
+              "V8.GC_SCAVENGER": 0.007,
+              "V8.GC_HEAP_EXTERNAL_EPILOGUE": 0.007,
+              "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 0.003,
+              "V8.GC_HEAP_EPILOGUE": 0.003,
+              "V8.GC_HEAP_EXTERNAL_PROLOGUE": 0.002,
+              "V8.GC_HEAP_PROLOGUE": 0.002,
+              "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 0.002,
+              "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.002,
+              "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 0.001
+            }
+          },
+          "renderToHarnessEnd": {
+            "windowMs": 58.821,
+            "taskUnionMs": 58.816,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 0.215,
+              "OtherTask": 2.023,
+              "PrePaint": 5.256,
+              "Paint": 6.789,
+              "Layerize": 4.139,
+              "Commit": 0.05,
+              "LayerUpdateOrComposite": 0.002,
+              "ExplicitStyleSpan": 0.277,
+              "LayoutIncludingInterleavedStyle": 40.065
+            },
+            "exclusiveByEventMs": {
+              "Layout": 40.065,
+              "Paint": 6.789,
+              "PrePaint": 5.256,
+              "Layerize": 4.139,
+              "UnattributedTaskSelfTime": 2.023,
+              "UpdateLayoutTree": 0.277,
+              "FunctionCall": 0.2,
+              "Commit": 0.05,
+              "RunMicrotasks": 0.011,
+              "FireAnimationFrame": 0.004,
+              "UpdateLayer": 0.002
+            }
+          },
+          "tail": {
+            "windowMs": 2001.886,
+            "taskUnionMs": 1.07,
+            "phaseOutsideTasksMs": 0,
+            "exclusiveMs": {
+              "Script": 0.212,
+              "OtherTask": 0.842,
+              "PrePaint": 0.003,
+              "Layerize": 0.001,
+              "Commit": 0.012
+            },
+            "exclusiveByEventMs": {
+              "UnattributedTaskSelfTime": 0.842,
+              "RunMicrotasks": 0.148,
+              "FunctionCall": 0.042,
+              "TimerFire": 0.022,
+              "Commit": 0.012,
+              "PrePaint": 0.003,
+              "Layerize": 0.001
+            }
+          }
+        },
+        "mainEventCounts": {
+          "BlinkScheduler_PerformMicrotaskCheckpoint": 17,
+          "Closed mojo endpoint": 1,
+          "Commit": 3,
+          "ComputeWeaknessProcessor start": 2,
+          "FireAnimationFrame": 1,
+          "FunctionCall": 6,
+          "Layerize": 3,
+          "Layout": 1,
+          "MinorGC": 4,
+          "Paint": 3,
+          "Parallel scavenge started": 1,
+          "ParseHTML": 6,
+          "PrePaint": 4,
+          "Receive mojo message": 2,
+          "RunMicrotasks": 3,
+          "RunTask": 33,
+          "SimpleWatcher::OnHandleReady": 2,
+          "ThreadControllerImpl::RunTask": 29,
+          "TimerFire": 2,
+          "UpdateLayer": 1,
+          "UpdateLayoutTree": 1,
+          "V8.BytecodeBudgetInterrupt": 52,
+          "V8.BytecodeBudgetInterruptWithStackCheck": 40,
+          "V8.DeoptimizeCode": 4,
+          "V8.GCScavenger": 4,
+          "V8.GC_HEAP_EPILOGUE": 4,
+          "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 3,
+          "V8.GC_HEAP_EXTERNAL_EPILOGUE": 4,
+          "V8.GC_HEAP_EXTERNAL_PROLOGUE": 3,
+          "V8.GC_HEAP_PROLOGUE": 4,
+          "V8.GC_SCAVENGER": 4,
+          "V8.GC_SCAVENGER_FREE_REMEMBERED_SET": 4,
+          "V8.GC_SCAVENGER_RESIZE_NEW_SPACE": 1,
+          "V8.GC_SCAVENGER_SCAVENGE": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_COLLECT_OLD_TO_NEW_PAGES": 3,
+          "V8.GC_SCAVENGER_SCAVENGE_FINALIZE": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_PARALLEL": 2,
+          "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_RESTORE_AND_QUARANTINE_PINNED": 1,
+          "V8.GC_SCAVENGER_SCAVENGE_ROOTS": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY": 4,
+          "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS": 4,
+          "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL": 4,
+          "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL": 3,
+          "V8.GC_TIME_TO_SAFEPOINT": 3,
+          "V8.HandleInterrupts": 25,
+          "V8.InvokeApiInterruptCallbacks": 1,
+          "V8.StackGuard": 25,
+          "v8.callFunction": 6,
+          "v8.newInstance": 10
+        },
+        "otherThreads": [
+          {
+            "pid": 0,
+            "tid": 0,
+            "name": "swapper"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824379,
+            "name": "Compositor"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823892,
+            "name": "CrBrowserMain"
+          },
+          {
+            "pid": 44606,
+            "tid": 101823971,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44607,
+            "tid": 101823985,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44607,
+            "tid": 101823989,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44609,
+            "tid": 101824032,
+            "name": "tracing.CrUtilityMain"
+          },
+          {
+            "pid": 44609,
+            "tid": 101824036,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823950,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824372,
+            "name": "PerfettoTrace"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823978,
+            "name": "DevToolsPipeHandlerWriteThread"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824376,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823955,
+            "name": "Chrome_IOThread"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824374,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824377,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44606,
+            "tid": 101824016,
+            "name": "VizCompositorThread"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824381,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824382,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44722,
+            "tid": 101824383,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44606,
+            "tid": 101824015,
+            "name": "Chrome_ChildIOThread"
+          },
+          {
+            "pid": 44606,
+            "tid": 101823961,
+            "name": "CrGpuMain"
+          },
+          {
+            "pid": 44591,
+            "tid": 101823952,
+            "name": "ThreadPoolForegroundWorker"
+          },
+          {
+            "pid": 44591,
+            "tid": 101824366,
+            "name": "NetworkConfigWatcher"
+          }
+        ],
+        "styleLayoutInterpretation": "Layout trace spans include interleaved size-container style recalculation. ExplicitStyleSpan is not total style time. Use the separately attributed CDP RecalcStyleDuration and LayoutDuration counters for their split."
+      }
+    }
+  },
+  "completed": "2026-10-06T00:24:13.209Z",
+  "analysisCorrected": "Only phase labels and interpretation corrected from existing traces; no new trace or timing runs."
+}

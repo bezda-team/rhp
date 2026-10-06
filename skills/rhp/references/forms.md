@@ -56,7 +56,8 @@ Use a donut only for two to six parts with one or two of them the story; otherwi
 
 ## The compositions rhp charts are made of
 
-Every rhp chart is one or more Plots of slats inside a Chart.
+The slat compositions below use one or more Plots inside a Chart.
+For bulk scatter points, an experimental [ManyDots collection](api.md#manydots-experimental-point-collection) can instead sit directly inside a Chart with `cross`, without a Plot or per-point slat.
 These are the patterns the recipes use; recognizing them lets you build a chart no recipe has.
 
 1. **One value per slat**: an edge Label for the name, a Bar from 0 (or `from`) to the value, a value Label at its end.
@@ -69,6 +70,7 @@ These are the patterns the recipes use; recognizing them lets you build a chart 
    Recipes: `heatmap` (days by hours), `waffle` (ten slats of ten people).
 5. **Points on two axes**: `cross={[min, max]}` on the Chart adds a second axis across the slats; an `overlap` Plot's slats then share the whole plot, and a Dot or Label takes `at` (along the scale) and `cross` (across it), a Line takes `[x, y]` points.
    Recipes: `scatter`, `bubble` (Dot size from a value), `line`, `multi-line`, `area` (a filled Line), `slope` (a Line of two points per item).
+   `ManyDots` is an explicit alternative for bulk points with individual colors, sizes, shapes, classes, and styles; keep `Dot` for rich point content and Plot's automatic interaction features.
 6. **Every value of a group in its band**: an `overlap` Plot of Dots inside each group's slat.
    Recipe: `strip`.
 7. **A distribution's outline**: an Area from `density()` points, `mirror` for violins.

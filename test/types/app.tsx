@@ -43,7 +43,7 @@ export function App() {
         <Plot v={running([1, -2]).to} color={series(3)} static>{(d) => <div><Area points={density(samples)} mirror /><Bar to={d.v as number} /></div>}</Plot>
         <Plot slats={bins(samples).tally.length} rows={[{ a: 1 }]}>{(d) => <div data-i={d.index} data-p={d.position ?? -1} />}</Plot>
       </Chart>
-      <Chart scale={[0, 10]} cross={[0, 50]} crossTicks={every(10)} crossFormat={(v) => v + "%"}>
+      <Chart scale={[0, 10]} cross={[0, 50]} grid={false} crossGrid={false} crossTicks={every(10)} crossFormat={(v) => v + "%"}>
         <Plot overlap x={[1, 2]} y={[10, 40]}>{(d) => <div><Dot at={d.x as number} cross={d.y as number} /><Label at={d.x as number} cross={d.y as number}>{String(d.y)}</Label></div>}</Plot>
         <Plot overlap pts={[[[0, 5], [10, 45]]]}>{(d) => <div><Line points={d.pts as [number, number][]} fill base={0} color="series-3" /></div>}</Plot>
       </Chart>

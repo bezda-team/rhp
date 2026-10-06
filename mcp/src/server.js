@@ -112,7 +112,7 @@ async function images(browser, shots) {
 }
 
 // Checks a chart: the report, then each screenshot as an image after a line saying what it shows
-async function checkTool({ file, code, format, widths, dark, interact }) {
+async function checkTool({ file, code, format, widths, dark, interact, settleTimeout }) {
 
   if (file && code) return failure("Give file or code, not both.");
   if (!file && !code) return failure("Give the chart to check: file (the absolute path of its file) or code (its code).");
@@ -131,7 +131,7 @@ async function checkTool({ file, code, format, widths, dark, interact }) {
   const { check } = await import("./check/index.js");
   const got = await sharedBrowser();
   const browser = got.browser;
-  const running = check({ file, code, format, widths, dark, interact, browser }).then((result) => ({ result }), (error) => ({ error }));
+  const running = check({ file, code, format, widths, dark, interact, settleTimeout, browser }).then((result) => ({ result }), (error) => ({ error }));
   let timer;
   const late = new Promise((resolve) => {
     timer = setTimeout(resolve, LIMIT * 1000, { late: true });
@@ -223,6 +223,7 @@ server.registerTool("rhp_check", {
     widths: z.array(z.number().int().min(200).max(2560)).min(1).max(4).optional().describe("Page widths in px, [1280, 390] by default; the interactions are tried at the first, and slats are tapped at phone widths (600px or less)"),
     dark: z.boolean().optional().describe("Render with a dark color scheme (prefers-color-scheme: dark)"),
     interact: z.boolean().optional().describe("Try the chart's interactions (true by default)"),
+    settleTimeout: z.number().int().min(100).max(30000).optional().describe("Maximum milliseconds per readiness wait, 10000 by default. Increase for a slow machine; the overall check still has a 50-second limit."),
   },
   annotations: { readOnlyHint: true, openWorldHint: true },
 }, checkTool);

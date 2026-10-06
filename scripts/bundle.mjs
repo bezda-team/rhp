@@ -1,6 +1,6 @@
 // The build steps. JSX is compiled by babel-preset-solid, and rhp.css is minified and embedded as a string (style.js injects it).
 import { build, transform } from "esbuild";
-import { transformAsync } from "@babel/core";
+import { parseSync, transformAsync, traverse } from "@babel/core";
 import fs from "fs";
 
 // JSX for the browser, or for a server with { generate: "ssr" }. hydratable means it can also take over a server's HTML.
@@ -83,19 +83,45 @@ const solidNotice = () => {
   return `/*! Includes Solid ${version} (https://github.com/solidjs/solid):\n\n${fs.readFileSync(new URL("LICENSE", dir), "utf8").trim()}\n*/`;
 };
 
-export const standalone = (entry, outfile) => build({
-  entryPoints: [entry],
-  outfile,
-  bundle: true,
-  format: "esm",
-  minify: true,
-  platform: "browser",
-  target: "es2020",
-  plugins: [solid, cssText],
-  define: { "process.env.NODE_ENV": '"production"' },
-  banner: { js: solidNotice() },
-  logLevel: "warning",
-});
+export const standalone = async (entry, outfile) => {
+  const result = await build({
+    entryPoints: [entry],
+    outfile,
+    bundle: true,
+    format: "esm",
+    minify: true,
+    platform: "browser",
+    target: "es2020",
+    plugins: [solid, cssText],
+    define: { "process.env.NODE_ENV": '"production"' },
+    banner: { js: solidNotice() },
+    logLevel: "warning",
+  });
+  // Encode trailing spaces in generated template strings without changing their values or tagged raw text.
+  let text = await fs.promises.readFile(outfile, "utf8");
+  const edits = [];
+  const before = [];
+  const parse = (code) => parseSync(code, { configFile: false, babelrc: false });
+  traverse(parse(text), {
+    TemplateElement(path) { before.push(path.node.value.cooked); },
+    TemplateLiteral(path) {
+      if (path.parentPath.isTaggedTemplateExpression()) return;
+      for (const part of path.node.quasis) {
+        if (!/[ \t]+\r?\n/.test(part.value.raw)) continue;
+        const raw = JSON.stringify(part.value.cooked).slice(1, -1).replace(/`|\$\{/g, (value) => String.fromCharCode(92) + value);
+        edits.push({ start: part.start, end: part.end, raw });
+      }
+    },
+  });
+  if (edits.length) {
+    for (const edit of edits.sort((a, b) => b.start - a.start)) text = text.slice(0, edit.start) + edit.raw + text.slice(edit.end);
+    const values = [];
+    traverse(parse(text), { TemplateElement(path) { values.push(path.node.value.cooked); } });
+    if (values.length !== before.length || values.some((value, index) => value !== before[index])) throw new Error("Template whitespace encoding changed a string value");
+    await fs.promises.writeFile(outfile, text);
+  }
+  return result;
+};
 
 // The package: one module for the browser (it can take over a server's HTML) and one for a server. Solid is left to the app.
 export const lib = (entry, outfile) => build({

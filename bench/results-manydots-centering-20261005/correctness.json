@@ -1,0 +1,176 @@
+{
+  "checked": "2026-10-06T01:04:29.399Z",
+  "bundleHash": "715cc786a72f321358362cc22922534b170071aeb374d4a3e186a06e3925dee0",
+  "viewport": {
+    "width": 1000,
+    "height": 900
+  },
+  "cases": [
+    {
+      "n": 10000,
+      "appearance": "uniform",
+      "variant": "before",
+      "points": 10000,
+      "maximumPositionError": 0.015620819183823187,
+      "wrongSizes": 0,
+      "wrongColors": 0,
+      "collection": {
+        "left": 50,
+        "top": 16,
+        "width": 544,
+        "height": 400
+      },
+      "chart": {
+        "left": 8,
+        "top": 8,
+        "width": 600,
+        "height": 432
+      },
+      "errors": []
+    },
+    {
+      "n": 10000,
+      "appearance": "uniform",
+      "variant": "after",
+      "points": 10000,
+      "maximumPositionError": 0.015620819183823187,
+      "wrongSizes": 0,
+      "wrongColors": 0,
+      "collection": {
+        "left": 50,
+        "top": 16,
+        "width": 544,
+        "height": 400
+      },
+      "chart": {
+        "left": 8,
+        "top": 8,
+        "width": 600,
+        "height": 432
+      },
+      "errors": []
+    },
+    {
+      "n": 10000,
+      "appearance": "categories",
+      "variant": "before",
+      "points": 10000,
+      "maximumPositionError": 0.015620819183823187,
+      "wrongSizes": 0,
+      "wrongColors": 0,
+      "collection": {
+        "left": 50,
+        "top": 16,
+        "width": 544,
+        "height": 400
+      },
+      "chart": {
+        "left": 8,
+        "top": 8,
+        "width": 600,
+        "height": 432
+      },
+      "errors": []
+    },
+    {
+      "n": 10000,
+      "appearance": "categories",
+      "variant": "after",
+      "points": 10000,
+      "maximumPositionError": 0.015620819183823187,
+      "wrongSizes": 0,
+      "wrongColors": 0,
+      "collection": {
+        "left": 50,
+        "top": 16,
+        "width": 544,
+        "height": 400
+      },
+      "chart": {
+        "left": 8,
+        "top": 8,
+        "width": 600,
+        "height": 432
+      },
+      "errors": []
+    },
+    {
+      "n": 10000,
+      "appearance": "unique",
+      "variant": "before",
+      "points": 10000,
+      "maximumPositionError": 0.015620819183823187,
+      "wrongSizes": 0,
+      "wrongColors": 0,
+      "collection": {
+        "left": 50,
+        "top": 16,
+        "width": 544,
+        "height": 400
+      },
+      "chart": {
+        "left": 8,
+        "top": 8,
+        "width": 600,
+        "height": 432
+      },
+      "errors": []
+    },
+    {
+      "n": 10000,
+      "appearance": "unique",
+      "variant": "after",
+      "points": 10000,
+      "maximumPositionError": 0.015620819183823187,
+      "wrongSizes": 0,
+      "wrongColors": 0,
+      "collection": {
+        "left": 50,
+        "top": 16,
+        "width": 544,
+        "height": 400
+      },
+      "chart": {
+        "left": 8,
+        "top": 8,
+        "width": 600,
+        "height": 432
+      },
+      "errors": []
+    }
+  ],
+  "pixelComparisons": [
+    {
+      "n": 10000,
+      "appearance": "uniform",
+      "variant": "after",
+      "width": 600,
+      "height": 432,
+      "differentPixels": 0,
+      "differentChannels": 0,
+      "maxDifference": 0
+    },
+    {
+      "n": 10000,
+      "appearance": "categories",
+      "variant": "after",
+      "width": 600,
+      "height": 432,
+      "differentPixels": 0,
+      "differentChannels": 0,
+      "maxDifference": 0
+    },
+    {
+      "n": 10000,
+      "appearance": "unique",
+      "variant": "after",
+      "width": 600,
+      "height": 432,
+      "differentPixels": 0,
+      "differentChannels": 0,
+      "maxDifference": 0
+    }
+  ],
+  "browser": "153.0.8010.12",
+  "completed": "2026-10-06T01:04:32.070Z"
+}

@@ -14,6 +14,7 @@ const USAGE = `rhp-mcp: make charts with rhp from an AI agent.
       --widths 1280,390       page widths to check (the interaction pass runs at the first)
       --dark                  emulate a dark color scheme
       --no-interact           skip the interaction pass
+      --settle-timeout <ms>   readiness wait budget, 100 to 30000 ms (default 10000)
       --format <format>       html, solid, react or module (found from the file when left out)
       --json                  print the whole result as JSON
       --out <dir>             where the screenshots go (left out: a folder in the system's temp dir, so nothing is
@@ -24,7 +25,7 @@ const USAGE = `rhp-mcp: make charts with rhp from an AI agent.
 `;
 
 const FLAGS = ["--dark", "--no-interact", "--json"];
-const VALUES = ["--widths", "--format", "--out"];
+const VALUES = ["--widths", "--format", "--out", "--settle-timeout"];
 const FORMATS = ["html", "solid", "react", "module"];
 
 function usageError(message) {
@@ -57,9 +58,11 @@ async function runCheck(argv) {
   }
 
   const widths = value["--widths"]?.split(",").map(Number);
+  const settleTimeout = value["--settle-timeout"] === undefined ? undefined : Number(value["--settle-timeout"]);
   if (files.length !== 1) return usageError(files.length ? `check takes one file, not ${files.length}` : "check needs the chart's file");
   if (widths && !widths.every((w) => Number.isInteger(w) && w >= 200 && w <= 2560)) return usageError("--widths takes page widths in px from 200 to 2560, for example 1280,390");
   if (value["--format"] && !FORMATS.includes(value["--format"])) return usageError(`--format is one of ${FORMATS.join(", ")}`);
+  if (settleTimeout !== undefined && (!Number.isInteger(settleTimeout) || settleTimeout < 100 || settleTimeout > 30000)) return usageError("--settle-timeout takes milliseconds from 100 to 30000");
 
   const { check } = await import("../src/check/index.js");
   const result = await check({
@@ -68,6 +71,7 @@ async function runCheck(argv) {
     widths,
     dark: argv.includes("--dark"),
     interact: !argv.includes("--no-interact"),
+    settleTimeout,
     outDir: value["--out"],
   });
 

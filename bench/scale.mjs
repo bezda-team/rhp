@@ -2,14 +2,17 @@
 //   node scale.mjs build                 bundles out-scale/<lib>.js and its page
 //   node scale.mjs run [libs]            Chromium (BENCH_BROWSER to pick a build), writes <BENCH_RESULTS>/scale.json
 // The chart is made at the start of a frame; "frame" is that frame's work until it is drawn, "total" all main-thread
-// time in the 2 seconds after (deferred drawing and entry animations), "nodes" the DOM elements it added. Median of 5.
+// time in the 2 seconds after (deferred drawing and entry animations), "nodes" the connected DOM elements it added. Median of 5.
 import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
+import os from "node:os";
 import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
 import { transformAsync } from "@babel/core";
+import { idleGate } from "./idle.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
+const inputs = process.env.BENCH_INPUTS ? path.resolve(process.env.BENCH_INPUTS) : here;
 const [cmd = "run", only] = process.argv.slice(2);
 const LIBS = fs.readdirSync(at("scale")).filter((f) => /\.(js|jsx)$/.test(f) && f !== "harness.js").map((f) => f.replace(/(\.solid)?\.jsx?$/, ""));
 const file = (name) => fs.readdirSync(at("scale")).find((f) => f.replace(/(\.solid)?\.jsx?$/, "") === name);
@@ -36,17 +39,22 @@ if (cmd === "build") {
 } else {
   const { chromium } = await import("playwright");
   const server = http.createServer((q, r) => {
-    const f = at("out-scale" + new URL(q.url, "http://x").pathname);
+    const f = path.join(inputs, "out-scale", new URL(q.url, "http://x").pathname);
     if (!fs.existsSync(f)) return r.writeHead(404).end();
     r.writeHead(200, { "content-type": f.endsWith(".html") ? "text/html" : "text/javascript" }).end(fs.readFileSync(f));
   }).listen(0, "127.0.0.1");
   await new Promise((r) => server.on("listening", r));
   const browser = await chromium.launch({ executablePath: process.env.BENCH_BROWSER });
   const median = (a) => { const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
-  const results = { engine: "chromium", date: new Date().toISOString(), libs: {} };
+  const results = { engine: "chromium", browser: browser.version(), date: new Date().toISOString(), loadStart: os.loadavg(), nodeMetric: "connected-elements", libs: {} };
+  const dir = process.env.BENCH_RESULTS ?? "results";
+  fs.mkdirSync(at(dir), { recursive: true });
+  const save = () => fs.writeFileSync(at(`${dir}/scale.json`), JSON.stringify(results, null, 2));
+  try {
   for (const lib of LIBS.filter((l) => !only || only.split(",").includes(l))) {
     const r = (results.libs[lib] = {});
     for (const [kind, n] of SCENARIOS) {
+      const idle = await idleGate(`${lib} ${kind}-${n}`);
       const runs = [];
       for (let i = 0; i < REPS; i++) {
         const page = await browser.newPage({ viewport: { width: 1000, height: 900 } });
@@ -56,19 +64,34 @@ if (cmd === "build") {
         const cdp = await page.context().newCDPSession(page);
         await cdp.send("Performance.enable");
         const metric = async (k) => (await cdp.send("Performance.getMetrics")).metrics.find((m) => m.name === k).value;
-        const n0 = await metric("Nodes"), t0 = await metric("TaskDuration");
-        const frame = await Promise.race([page.evaluate(([kind, n]) => window.bench.run({ kind, n }), [kind, n]), new Promise((res) => setTimeout(() => res(null), 60000))]);
+        // Chromium's Nodes counter includes detached nodes and can shrink after GC.
+        // Count connected elements outside the timing window instead.
+        const nodes = () => page.evaluate(() => document.querySelectorAll("*").length);
+        const n0 = await nodes(), t0 = await metric("TaskDuration");
+        let timeout;
+        const frame = await Promise.race([
+          page.evaluate(([kind, n]) => window.bench.run({ kind, n }), [kind, n]),
+          new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error(`${lib} ${kind}-${n} timed out`)), 60000); }),
+        ]).finally(() => clearTimeout(timeout));
         await new Promise((res) => setTimeout(res, 2000));
-        runs.push({ frame, total: ((await metric("TaskDuration")) - t0) * 1000, nodes: (await metric("Nodes")) - n0, errors: errors.length });
+        const total = ((await metric("TaskDuration")) - t0) * 1000;
+        runs.push({ frame, total, nodes: (await nodes()) - n0, errors: errors.length });
         await page.close();
       }
-      r[`${kind}-${n}`] = { frame: +median(runs.map((x) => x.frame ?? Infinity)).toFixed(1), total: +median(runs.map((x) => x.total)).toFixed(1), nodes: median(runs.map((x) => x.nodes)), errors: Math.max(...runs.map((x) => x.errors)) };
+      r[`${kind}-${n}`] = { frame: +median(runs.map((x) => x.frame ?? Infinity)).toFixed(1), total: +median(runs.map((x) => x.total)).toFixed(1), nodes: median(runs.map((x) => x.nodes)), errors: Math.max(...runs.map((x) => x.errors)), idleGate: idle, samples: runs };
     }
     console.log(lib, JSON.stringify(r));
+    save();
   }
-  await browser.close();
-  server.close();
-  const dir = process.env.BENCH_RESULTS ?? "results";
-  fs.mkdirSync(at(dir), { recursive: true });
-  fs.writeFileSync(at(`${dir}/scale.json`), JSON.stringify(results, null, 2));
+  results.completed = new Date().toISOString();
+  results.loadEnd = os.loadavg();
+  save();
+  } catch (error) {
+    results.failure = { message: error.message, idleSamples: error.samples, at: new Date().toISOString() };
+    save();
+    throw error;
+  } finally {
+    await browser.close();
+    server.close();
+  }
 }

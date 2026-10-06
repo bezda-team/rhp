@@ -1,0 +1,10 @@
+<!doctype html>
+<!-- A page whose DOM never comes to rest. expect: page-unsettled:error; widths: 900; interact: false -->
+<html lang="en"><head><meta charset="utf-8"><title>Unsettled page</title></head>
+<body><p>Updating continuously</p><script>
+function update() {
+  document.body.dataset.tick = performance.now();
+  requestAnimationFrame(update);
+}
+update();
+</script></body></html>

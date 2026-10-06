@@ -49,10 +49,32 @@ npm run report             # RESULTS.md from results/ and out/sizes.json
 `safari` runs the real Safari through `safaridriver` (enable it once with `safaridriver --enable`, and allow remote automation in Safari's Develop menu).
 Close other apps while it runs: timings are only as steady as the machine.
 
+For a repeat with recorded idle baselines and exact input hashes:
+
+```sh
+npm ci
+npm run build
+node scale.mjs build
+export BENCH_RESULTS=results-local-repeat
+node snapshot.mjs
+BENCH_IDLE=1 node run.mjs chromium
+BENCH_IDLE=1 node scale.mjs run
+```
+
+`BENCH_IDLE=1` requires at least 90% aggregate CPU idle for three consecutive two-second samples before each bar adapter and each scale scenario.
+The samples are saved alongside the measurements.
+If the baseline does not qualify within two minutes, the run stops and records the failed samples.
+This establishes a measured baseline without claiming exclusive use of the machine during a scenario.
+New results retain individual mount and scale samples as well as medians.
+`snapshot.mjs` records dependency versions, source and bundle hashes, machine details and the bundle-size snapshot.
+`BENCH_INPUTS` can point to a frozen directory containing copies of `out/` and `out-scale/`, so concurrent development cannot change benchmark inputs during a run.
+
 ## Scale: scatter plots and lines with many points
 
 `scale.mjs` draws one chart of many points in each library of `scale/`: a scatter plot of 1,000 and 10,000 dots, and a line of 1,000 and 100,000 points, with each library's defaults (rhp's charts are `static`, as its docs say for data that never changes).
 It reports the frame the chart is made in, all main-thread time in the 2 seconds after, and the DOM elements it adds, the median of 5 fresh pages.
+DOM size counts connected elements before and after drawing, outside the timing window.
+The earlier Chromium `Nodes` counter included detached nodes awaiting garbage collection and could report negative changes for canvas charts.
 
 ```sh
 node scale.mjs build                       # out-scale/: one page per library
@@ -60,3 +82,22 @@ node scale.mjs run                         # Chromium; BENCH_BROWSER and BENCH_R
 ```
 
 An rhp scatter plot is one slat per point, each an HTML element, so its cost grows with the points the way the DOM's does; a Line is one SVG path, whatever its length.
+
+
+## Local comparison run (October 5, 2026)
+
+The Apple M5 measurements are stored separately in `results-macos-m5-20261005/`.
+That folder includes the browser version, start/end load averages, dependency versions and the bundle-size snapshot used by the report.
+Other desktop applications were active; no poster-generation agents ran during the timings.
+The bar and scale runners save a checkpoint after each library, and add `completed` only after every requested library finishes.
+
+```sh
+BENCH_RESULTS=results-macos-m5-20261005 node run.mjs chromium
+BENCH_RESULTS=results-macos-m5-20261005 node scale.mjs run
+BENCH_RESULTS=results-macos-m5-20261005 BENCH_OUT=RESULTS-MACOS-M5-20261005.md BENCH_MACHINE="Apple M5, 10 logical CPUs, 24 GiB, macOS 26.5.2" npm run report
+```
+
+The report includes both bar-chart and large-point scenarios.
+The completed run covers sixteen bar-chart adapters and forty scale combinations across ten libraries, with no observed page errors.
+The original scale measurements using Chromium's detached-node counter are retained in `scale-cdp-nodes.json`; the report uses the corrected `scale.json`.
+It uses the saved `sizes.json` in the results directory when present, so rebuilding another version does not silently change a saved run's bundle-size comparison.

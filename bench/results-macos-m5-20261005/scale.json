@@ -1,0 +1,279 @@
+{
+  "engine": "chromium",
+  "browser": "153.0.8010.12",
+  "date": "2026-10-05T19:24:26.990Z",
+  "loadStart": [
+    1.8115234375,
+    2.0185546875,
+    2.14453125
+  ],
+  "nodeMetric": "connected-elements",
+  "libs": {
+    "apex": {
+      "scatter-1000": {
+        "frame": 32.1,
+        "total": 314.8,
+        "nodes": 1092,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 129.4,
+        "total": 1125.5,
+        "nodes": 10092,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 19,
+        "total": 50.9,
+        "nodes": 94,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 55.1,
+        "total": 819.3,
+        "nodes": 91,
+        "errors": 0
+      }
+    },
+    "chartjs": {
+      "scatter-1000": {
+        "frame": 25.8,
+        "total": 333.1,
+        "nodes": 3,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 88.6,
+        "total": 808.5,
+        "nodes": 3,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 24.5,
+        "total": 271.3,
+        "nodes": 3,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 565.1,
+        "total": 1141.3,
+        "nodes": 3,
+        "errors": 0
+      }
+    },
+    "d3": {
+      "scatter-1000": {
+        "frame": 9.5,
+        "total": 10.6,
+        "nodes": 1073,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 27.6,
+        "total": 29.7,
+        "nodes": 10073,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 9.3,
+        "total": 10.4,
+        "nodes": 64,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 30.9,
+        "total": 37.7,
+        "nodes": 64,
+        "errors": 0
+      }
+    },
+    "echarts": {
+      "scatter-1000": {
+        "frame": 31,
+        "total": 337.1,
+        "nodes": 4,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 27.6,
+        "total": 125,
+        "nodes": 5,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 21.5,
+        "total": 157.9,
+        "nodes": 4,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 92,
+        "total": 109.4,
+        "nodes": 4,
+        "errors": 0
+      }
+    },
+    "g2": {
+      "scatter-1000": {
+        "frame": 54.1,
+        "total": 224.2,
+        "nodes": 2,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 253.8,
+        "total": 2257.5,
+        "nodes": 2,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 25.3,
+        "total": 74,
+        "nodes": 2,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 154.4,
+        "total": 275.4,
+        "nodes": 2,
+        "errors": 0
+      }
+    },
+    "highcharts": {
+      "scatter-1000": {
+        "frame": 26.1,
+        "total": 144.7,
+        "nodes": 1057,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 73.8,
+        "total": 232.5,
+        "nodes": 10057,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 19.4,
+        "total": 45.7,
+        "nodes": 57,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 112.7,
+        "total": 572.5,
+        "nodes": 61,
+        "errors": 0
+      }
+    },
+    "plot": {
+      "scatter-1000": {
+        "frame": 11.9,
+        "total": 13,
+        "nodes": 1046,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 26.8,
+        "total": 29,
+        "nodes": 10046,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 10.3,
+        "total": 11.4,
+        "nodes": 47,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 44.7,
+        "total": 57.8,
+        "nodes": 37,
+        "errors": 0
+      }
+    },
+    "recharts": {
+      "scatter-1000": {
+        "frame": 76.8,
+        "total": 517.9,
+        "nodes": 3084,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 551.4,
+        "total": 1606.6,
+        "nodes": 30084,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 23.9,
+        "total": 374.6,
+        "nodes": 84,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 352.3,
+        "total": 1899.5,
+        "nodes": 84,
+        "errors": 0
+      }
+    },
+    "rhp": {
+      "scatter-1000": {
+        "frame": 31.6,
+        "total": 32.7,
+        "nodes": 2031,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 238.5,
+        "total": 243.2,
+        "nodes": 20031,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 12.9,
+        "total": 14.3,
+        "nodes": 31,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 39.7,
+        "total": 56.3,
+        "nodes": 31,
+        "errors": 0
+      }
+    },
+    "vegalite": {
+      "scatter-1000": {
+        "frame": 29.4,
+        "total": 30.7,
+        "nodes": 1112,
+        "errors": 0
+      },
+      "scatter-10000": {
+        "frame": 70.8,
+        "total": 72.1,
+        "nodes": 10112,
+        "errors": 0
+      },
+      "line-1000": {
+        "frame": 25.5,
+        "total": 26.6,
+        "nodes": 122,
+        "errors": 0
+      },
+      "line-100000": {
+        "frame": 120,
+        "total": 152.4,
+        "nodes": 107,
+        "errors": 0
+      }
+    }
+  },
+  "completed": "2026-10-05T19:32:01.681Z",
+  "loadEnd": [
+    2.72314453125,
+    2.20263671875,
+    2.1513671875
+  ]
+}

@@ -1,0 +1,645 @@
+{
+  "started": "2026-10-05T21:24:03.195Z",
+  "source_commit": "6e4d2c200f5cf0a5dff574d0c33949ec1336529a",
+  "source_dirty": true,
+  "source_hashes": {
+    "src/standalone.js": "aee3e2af610de80a9011234ee63a73160047ad8619c2cb458d5dcf669c7a5201",
+    "src/gutters.css": "aaf8e15c3db8567f697e0d251737d8609f0f0d3202a214830efc54d56d64429a",
+    "src/animate.js": "a25d7180287038b891dfc17e6eb3641947a6fd0bad7e32f73009f023b72bb543",
+    "src/plot.jsx": "e003f8387571fa73dc7e3830fc1962c640d907297d2cc28d87b019248ee669d9",
+    "src/standalone.d.ts": "4009b1833443a310b8455ebc8b6fdab3168fd2ef64a006130c77fdcaaab87038",
+    "src/index.js": "0046d11c3041162dc74d56f10d5ec55cb5d566c77ce7f4eb9da3b7be511b6625",
+    "src/style.js": "944478b6f2c7cb4e9435d835c15fd883baa07c201c03f4e23842c389b4f2ebab",
+    "src/env.js": "c6664a033e9995ba59c5ded78d23f9411803dc6263224f319dfd94d63e728434",
+    "src/rhp.css": "064fd218cbb6a532cc96f1fdaa534ffbda671c52db28f65a45c0da03e7110464",
+    "src/blocks.jsx": "c1591464561b3cf198f23146ff819759978c7a8d46147f4c31b3b99e812d453d",
+    "src/data.js": "abb1d28f4528b776b5a991038cef8506091a82a1f1ba778e09fde0b782a187a1",
+    "src/posters.css": "e259613db4e36011fbb64a7724d308c298dfeff5fcd34dbf017f76ec88c75eb8",
+    "src/poster.jsx": "58b620748facd0247b9960194887bb58021457508b2701402eb7985cd8d6bd39",
+    "src/index.d.ts": "c2cd4734db17e511fc5660acf8fbcd8dc697944e5d2ffc59dbac795e68958133",
+    "src/cross.css": "d8f3e2e77028359bf02f260791b005d4fb9f74b5ed0eff0fda86b16bd8f001df",
+    "src/shape.js": "2b38c8866cf715281a140f3be976ecbd1476c1b31b114109df16f771ce89f8b9",
+    "src/frame.js": "20eda8fc2c8404dbf6761096a15a43c5b6a32b541f0b26b26328a2b1d1a8b914"
+  },
+  "adapter_before": "// rhp: a scatter plot is an overlap Plot of one slat per point, each a Dot; a line is one Line block (an SVG path).\n// Both static, as rhp's docs say for a chart whose data never changes.\nimport { render } from \"solid-js/web\";\nimport { Chart, Plot, Dot, Line, slat } from \"../../src/index.js\";\nconst Point = slat({}, (d) => <div><Dot at={d.x} cross={d.y} size=\"4px\" /></div>);\nconst Curve = slat({}, (d) => <div><Line points={d.points} /></div>);\nexport default {\n  name: \"rhp\",\n  scatter: (el, pts) => render(() => (\n    <Chart scale={[0, 100]} cross={[0, 100]} height={400} static={true}><Plot overlap={true} rows={pts}>{Point}</Plot></Chart>\n  ), el),\n  line: (el, pts) => render(() => (\n    <Chart scale={[0, pts.length - 1]} cross={[-2, 2]} height={400} static={true}><Plot overlap={true} points={[pts.map((p) => [p.x, p.y])]}>{Curve}</Plot></Chart>\n  ), el),\n};\n",
+  "adapter_after": "// rhp: a scatter plot is an overlap Plot of one slat per point, each a Dot; a line is one Line block (an SVG path).\n// Both static, as rhp's docs say for a chart whose data never changes.\nimport { render } from \"solid-js/web\";\nimport { Chart, Plot, Dot, Line, slat } from \"../../src/index.js\";\nconst Point = slat({}, (d) => <Dot at={d.x} cross={d.y} size=\"4px\" />);\nconst Curve = slat({}, (d) => <div><Line points={d.points} /></div>);\nexport default {\n  name: \"rhp\",\n  scatter: (el, pts) => render(() => (\n    <Chart scale={[0, 100]} cross={[0, 100]} height={400} static={true}><Plot overlap={true} rows={pts}>{Point}</Plot></Chart>\n  ), el),\n  line: (el, pts) => render(() => (\n    <Chart scale={[0, pts.length - 1]} cross={[-2, 2]} height={400} static={true}><Plot overlap={true} points={[pts.map((p) => [p.x, p.y])]}>{Curve}</Plot></Chart>\n  ), el),\n};\n",
+  "harness_sha256": "64e8485ea0d7d677b439bda7b7ae44131dc7ad8e394faf6dbc4db905254afe3d",
+  "machine": {
+    "cpu": "Apple M5",
+    "cores": 10,
+    "memoryGiB": 24,
+    "platform": "darwin",
+    "release": "25.5.0",
+    "node": "v24.15.0",
+    "loadStart": [
+      2.990234375,
+      3.29833984375,
+      3.1123046875
+    ],
+    "browser": "153.0.8010.12",
+    "loadEnd": [
+      2.93798828125,
+      3.271484375,
+      3.1142578125
+    ]
+  },
+  "method": {
+    "repeats": 5,
+    "freshPages": true,
+    "alternatingOrder": true,
+    "viewport": {
+      "width": 1000,
+      "height": 900
+    },
+    "static": true,
+    "totalWindowMs": 2000,
+    "frameHarness": "Original bench/scale/harness.js",
+    "nodeMetric": "connected-elements",
+    "quietBaseline": false,
+    "notes": "Paired comparison under current background activity; the optional 90% idle check timed out. CPU idle is recorded per measured sample."
+  },
+  "bundles": {
+    "before": "792578d74dd49c5fc911434a32820142c4a6735cf07dcb85ed482d67dd6fdeef",
+    "after": "1207a36456887c2a072a2308b6df3d198b99bcc8f776eda334a79bfeb87570cc"
+  },
+  "cases": {
+    "1000": {
+      "baselineCPU": {
+        "at": "2026-10-05T21:24:05.288Z",
+        "idlePercent": 80.85642317380352
+      },
+      "before": [
+        {
+          "rep": 1,
+          "frame": 32.40000009536743,
+          "total": 34.05499999999999,
+          "script": 10.883000000000001,
+          "style": 14.349,
+          "layout": 4.837,
+          "nodes": 2031,
+          "aggregateCPUIdlePercent": 76.50943396226415,
+          "errors": []
+        },
+        {
+          "rep": 2,
+          "frame": 29.799999713897705,
+          "total": 30.881000000000004,
+          "script": 9.072999999999999,
+          "style": 14.489,
+          "layout": 3.945,
+          "nodes": 2031,
+          "aggregateCPUIdlePercent": 81.62008526764566,
+          "errors": []
+        },
+        {
+          "rep": 3,
+          "frame": 28.699999809265137,
+          "total": 29.692999999999998,
+          "script": 9.737,
+          "style": 13.229,
+          "layout": 3.641,
+          "nodes": 2031,
+          "aggregateCPUIdlePercent": 79.87689393939394,
+          "errors": []
+        },
+        {
+          "rep": 4,
+          "frame": 31.5,
+          "total": 32.772000000000006,
+          "script": 10.503,
+          "style": 14.770999999999999,
+          "layout": 4.029,
+          "nodes": 2031,
+          "aggregateCPUIdlePercent": 80.15122873345936,
+          "errors": []
+        },
+        {
+          "rep": 5,
+          "frame": 28.700000286102295,
+          "total": 29.779,
+          "script": 8.996,
+          "style": 13.521999999999998,
+          "layout": 3.9690000000000003,
+          "nodes": 2031,
+          "aggregateCPUIdlePercent": 80.70754716981132,
+          "errors": []
+        }
+      ],
+      "after": [
+        {
+          "rep": 1,
+          "frame": 21.90000009536743,
+          "total": 23.113000000000003,
+          "script": 8.301,
+          "style": 9.385,
+          "layout": 2.765,
+          "nodes": 1031,
+          "aggregateCPUIdlePercent": 79.46894262683738,
+          "errors": []
+        },
+        {
+          "rep": 2,
+          "frame": 24,
+          "total": 25.293,
+          "script": 9.41,
+          "style": 9.994,
+          "layout": 3.175,
+          "nodes": 1031,
+          "aggregateCPUIdlePercent": 80.31309297912713,
+          "errors": []
+        },
+        {
+          "rep": 3,
+          "frame": 26.200000286102295,
+          "total": 27.779999999999998,
+          "script": 11.046999999999999,
+          "style": 10.319999999999999,
+          "layout": 3.121,
+          "nodes": 1031,
+          "aggregateCPUIdlePercent": 78.328611898017,
+          "errors": []
+        },
+        {
+          "rep": 4,
+          "frame": 22.09999990463257,
+          "total": 23.096,
+          "script": 8.456999999999999,
+          "style": 9.291,
+          "layout": 2.706,
+          "nodes": 1031,
+          "aggregateCPUIdlePercent": 77.59355755566082,
+          "errors": []
+        },
+        {
+          "rep": 5,
+          "frame": 24,
+          "total": 25.083,
+          "script": 9.658,
+          "style": 9.848,
+          "layout": 2.974,
+          "nodes": 1031,
+          "aggregateCPUIdlePercent": 79.18444760550024,
+          "errors": []
+        }
+      ],
+      "medians": {
+        "before": {
+          "frame": 29.799999713897705,
+          "total": 30.881000000000004,
+          "script": 9.737,
+          "style": 14.349,
+          "layout": 3.9690000000000003,
+          "nodes": 2031
+        },
+        "after": {
+          "frame": 24,
+          "total": 25.083,
+          "script": 9.41,
+          "style": 9.848,
+          "layout": 2.974,
+          "nodes": 1031
+        }
+      }
+    },
+    "10000": {
+      "baselineCPU": {
+        "at": "2026-10-05T21:24:29.366Z",
+        "idlePercent": 81.82275931520645
+      },
+      "before": [
+        {
+          "rep": 1,
+          "frame": 250.59999990463257,
+          "total": 256.05,
+          "script": 36.807,
+          "style": 145.537,
+          "layout": 30.540000000000003,
+          "nodes": 20031,
+          "aggregateCPUIdlePercent": 79.9057412167952,
+          "errors": []
+        },
+        {
+          "rep": 2,
+          "frame": 236.80000019073486,
+          "total": 241.93200000000002,
+          "script": 32.978,
+          "style": 140.579,
+          "layout": 28.534,
+          "nodes": 20031,
+          "aggregateCPUIdlePercent": 85.40051679586563,
+          "errors": []
+        },
+        {
+          "rep": 3,
+          "frame": 240.80000019073486,
+          "total": 246.20199999999997,
+          "script": 31.447000000000003,
+          "style": 145.112,
+          "layout": 29.578,
+          "nodes": 20031,
+          "aggregateCPUIdlePercent": 82.40103270223752,
+          "errors": []
+        },
+        {
+          "rep": 4,
+          "frame": 239.89999961853027,
+          "total": 244.93599999999998,
+          "script": 32.757,
+          "style": 142.33599999999998,
+          "layout": 29.42,
+          "nodes": 20031,
+          "aggregateCPUIdlePercent": 80.66322136089578,
+          "errors": []
+        },
+        {
+          "rep": 5,
+          "frame": 235.5,
+          "total": 240.702,
+          "script": 29.606,
+          "style": 141.088,
+          "layout": 29.724,
+          "nodes": 20031,
+          "aggregateCPUIdlePercent": 80.82901554404145,
+          "errors": []
+        }
+      ],
+      "after": [
+        {
+          "rep": 1,
+          "frame": 156.90000009536743,
+          "total": 165.249,
+          "script": 29.866,
+          "style": 93.88199999999999,
+          "layout": 13.868,
+          "nodes": 10031,
+          "aggregateCPUIdlePercent": 72.73131672597864,
+          "errors": []
+        },
+        {
+          "rep": 2,
+          "frame": 151.80000019073486,
+          "total": 160.51399999999998,
+          "script": 26.872,
+          "style": 90.897,
+          "layout": 13.484,
+          "nodes": 10031,
+          "aggregateCPUIdlePercent": 80.23203926818384,
+          "errors": []
+        },
+        {
+          "rep": 3,
+          "frame": 156.09999990463257,
+          "total": 162.706,
+          "script": 32.073,
+          "style": 92.021,
+          "layout": 13.171000000000001,
+          "nodes": 10031,
+          "aggregateCPUIdlePercent": 81.45665773011618,
+          "errors": []
+        },
+        {
+          "rep": 4,
+          "frame": 165.90000009536743,
+          "total": 181.673,
+          "script": 29.613,
+          "style": 97.031,
+          "layout": 16.246,
+          "nodes": 10031,
+          "aggregateCPUIdlePercent": 75.81147176522899,
+          "errors": []
+        },
+        {
+          "rep": 5,
+          "frame": 154.40000009536743,
+          "total": 163.11700000000002,
+          "script": 29.544,
+          "style": 91.559,
+          "layout": 13.870000000000001,
+          "nodes": 10031,
+          "aggregateCPUIdlePercent": 77.05646954201868,
+          "errors": []
+        }
+      ],
+      "medians": {
+        "before": {
+          "frame": 239.89999961853027,
+          "total": 244.93599999999998,
+          "script": 32.757,
+          "style": 142.33599999999998,
+          "layout": 29.578,
+          "nodes": 20031
+        },
+        "after": {
+          "frame": 156.09999990463257,
+          "total": 163.11700000000002,
+          "script": 29.613,
+          "style": 92.021,
+          "layout": 13.868,
+          "nodes": 10031
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "n": 1000,
+      "variant": "before",
+      "maximumError": 0.015613187977578491,
+      "wrongSizes": 0
+    },
+    {
+      "n": 1000,
+      "variant": "after",
+      "maximumError": 0.015613187977578491,
+      "wrongSizes": 0
+    },
+    {
+      "n": 10000,
+      "variant": "before",
+      "maximumError": 0.015620819183823187,
+      "wrongSizes": 0
+    },
+    {
+      "n": 10000,
+      "variant": "after",
+      "maximumError": 0.015620819183823187,
+      "wrongSizes": 0
+    }
+  ],
+  "priorIdleCheck": {
+    "message": "scatter 1000: machine did not meet the CPU idle criterion within 120 seconds",
+    "idleSamples": [
+      {
+        "at": "2026-10-05T21:16:25.688Z",
+        "idlePercent": 80.7
+      },
+      {
+        "at": "2026-10-05T21:16:27.691Z",
+        "idlePercent": 78.38
+      },
+      {
+        "at": "2026-10-05T21:16:29.692Z",
+        "idlePercent": 79.71
+      },
+      {
+        "at": "2026-10-05T21:16:31.694Z",
+        "idlePercent": 80.75
+      },
+      {
+        "at": "2026-10-05T21:16:33.695Z",
+        "idlePercent": 83.56
+      },
+      {
+        "at": "2026-10-05T21:16:35.695Z",
+        "idlePercent": 82.17
+      },
+      {
+        "at": "2026-10-05T21:16:37.697Z",
+        "idlePercent": 81.74
+      },
+      {
+        "at": "2026-10-05T21:16:39.698Z",
+        "idlePercent": 83.43
+      },
+      {
+        "at": "2026-10-05T21:16:41.699Z",
+        "idlePercent": 77.81
+      },
+      {
+        "at": "2026-10-05T21:16:43.701Z",
+        "idlePercent": 82.91
+      },
+      {
+        "at": "2026-10-05T21:16:45.701Z",
+        "idlePercent": 82.96
+      },
+      {
+        "at": "2026-10-05T21:16:47.702Z",
+        "idlePercent": 81.97
+      },
+      {
+        "at": "2026-10-05T21:16:49.703Z",
+        "idlePercent": 82.02
+      },
+      {
+        "at": "2026-10-05T21:16:51.704Z",
+        "idlePercent": 81.67
+      },
+      {
+        "at": "2026-10-05T21:16:53.705Z",
+        "idlePercent": 74.29
+      },
+      {
+        "at": "2026-10-05T21:16:55.706Z",
+        "idlePercent": 64.45
+      },
+      {
+        "at": "2026-10-05T21:16:57.707Z",
+        "idlePercent": 57.89
+      },
+      {
+        "at": "2026-10-05T21:16:59.707Z",
+        "idlePercent": 62.06
+      },
+      {
+        "at": "2026-10-05T21:17:01.708Z",
+        "idlePercent": 63.07
+      },
+      {
+        "at": "2026-10-05T21:17:03.709Z",
+        "idlePercent": 65.29
+      },
+      {
+        "at": "2026-10-05T21:17:05.711Z",
+        "idlePercent": 69.52
+      },
+      {
+        "at": "2026-10-05T21:17:07.711Z",
+        "idlePercent": 79.37
+      },
+      {
+        "at": "2026-10-05T21:17:09.713Z",
+        "idlePercent": 80.46
+      },
+      {
+        "at": "2026-10-05T21:17:11.713Z",
+        "idlePercent": 79.44
+      },
+      {
+        "at": "2026-10-05T21:17:13.714Z",
+        "idlePercent": 73.66
+      },
+      {
+        "at": "2026-10-05T21:17:15.715Z",
+        "idlePercent": 67.28
+      },
+      {
+        "at": "2026-10-05T21:17:17.717Z",
+        "idlePercent": 71.96
+      },
+      {
+        "at": "2026-10-05T21:17:19.718Z",
+        "idlePercent": 72.03
+      },
+      {
+        "at": "2026-10-05T21:17:21.718Z",
+        "idlePercent": 65.77
+      },
+      {
+        "at": "2026-10-05T21:17:23.720Z",
+        "idlePercent": 73.44
+      },
+      {
+        "at": "2026-10-05T21:17:25.720Z",
+        "idlePercent": 79.63
+      },
+      {
+        "at": "2026-10-05T21:17:27.721Z",
+        "idlePercent": 81.02
+      },
+      {
+        "at": "2026-10-05T21:17:29.723Z",
+        "idlePercent": 73.2
+      },
+      {
+        "at": "2026-10-05T21:17:31.724Z",
+        "idlePercent": 76.01
+      },
+      {
+        "at": "2026-10-05T21:17:33.725Z",
+        "idlePercent": 70.65
+      },
+      {
+        "at": "2026-10-05T21:17:35.724Z",
+        "idlePercent": 76.48
+      },
+      {
+        "at": "2026-10-05T21:17:37.726Z",
+        "idlePercent": 78.89
+      },
+      {
+        "at": "2026-10-05T21:17:39.727Z",
+        "idlePercent": 76.61
+      },
+      {
+        "at": "2026-10-05T21:17:41.729Z",
+        "idlePercent": 71.75
+      },
+      {
+        "at": "2026-10-05T21:17:43.732Z",
+        "idlePercent": 71.62
+      },
+      {
+        "at": "2026-10-05T21:17:45.734Z",
+        "idlePercent": 75.83
+      },
+      {
+        "at": "2026-10-05T21:17:47.737Z",
+        "idlePercent": 74.43
+      },
+      {
+        "at": "2026-10-05T21:17:49.739Z",
+        "idlePercent": 81.23
+      },
+      {
+        "at": "2026-10-05T21:17:51.741Z",
+        "idlePercent": 83.38
+      },
+      {
+        "at": "2026-10-05T21:17:53.743Z",
+        "idlePercent": 73.5
+      },
+      {
+        "at": "2026-10-05T21:17:55.745Z",
+        "idlePercent": 82.83
+      },
+      {
+        "at": "2026-10-05T21:17:57.747Z",
+        "idlePercent": 81.29
+      },
+      {
+        "at": "2026-10-05T21:17:59.749Z",
+        "idlePercent": 81.93
+      },
+      {
+        "at": "2026-10-05T21:18:01.751Z",
+        "idlePercent": 77.74
+      },
+      {
+        "at": "2026-10-05T21:18:03.751Z",
+        "idlePercent": 79.33
+      },
+      {
+        "at": "2026-10-05T21:18:05.752Z",
+        "idlePercent": 77.53
+      },
+      {
+        "at": "2026-10-05T21:18:07.754Z",
+        "idlePercent": 71.19
+      },
+      {
+        "at": "2026-10-05T21:18:09.756Z",
+        "idlePercent": 78.93
+      },
+      {
+        "at": "2026-10-05T21:18:11.757Z",
+        "idlePercent": 80.04
+      },
+      {
+        "at": "2026-10-05T21:18:13.759Z",
+        "idlePercent": 72.87
+      },
+      {
+        "at": "2026-10-05T21:18:15.760Z",
+        "idlePercent": 81.17
+      },
+      {
+        "at": "2026-10-05T21:18:17.761Z",
+        "idlePercent": 83.78
+      },
+      {
+        "at": "2026-10-05T21:18:19.763Z",
+        "idlePercent": 84.32
+      },
+      {
+        "at": "2026-10-05T21:18:21.765Z",
+        "idlePercent": 85.46
+      },
+      {
+        "at": "2026-10-05T21:18:23.765Z",
+        "idlePercent": 75.64
+      }
+    ]
+  },
+  "pixelComparison": {
+    "width": 600,
+    "height": 432,
+    "differentChannels": 0,
+    "maxDifference": 0
+  },
+  "completed": "2026-10-05T21:24:53.119Z",
+  "correctness": {
+    "geometryChecks": 72,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "cases": 12,
+    "operations": [
+      "initial",
+      "single coordinate update",
+      "append",
+      "remove",
+      "scale change",
+      "orientation change",
+      "click",
+      "keyboard"
+    ]
+  },
+  "versions": {
+    "root": "2.0.2",
+    "solid": "1.9.15",
+    "esbuild": "0.28.2",
+    "playwright": "1.63.0"
+  }
+}

@@ -1,0 +1,1442 @@
+[
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "chromium",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "webkit",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "static",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "css",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "horizontal",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": false,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "line",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "marks",
+    "leaves": 12,
+    "removed": 12,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "hair",
+    "leaves": 1,
+    "removed": 1,
+    "pixels": true
+  },
+  {
+    "engine": "firefox",
+    "mode": "js",
+    "orientation": "vertical",
+    "updated": true,
+    "name": "pie",
+    "leaves": 9,
+    "removed": 3,
+    "pixels": true
+  }
+]

@@ -105,7 +105,7 @@ const Country = slat({
 
 // The year being read: a hairline down every slat
 const Crosshair = slat({ room: {}, css: `.hair { --rhp-tick-width: 1px; background: #c2410c; opacity: .55; }` }, (d) => html`
-  <div><${Tick} at=${() => d.year} thick=${1} class="hair" /></div>`);
+  <${Tick} at=${() => d.year} thick=${1} class="hair" />`);
 
 // Chart component: hovering previews a year; a click, tap, sideways drag or the arrow keys saves it for every slat.
 // With no saved year, the latest shows. The year in the table's head is a slider for the keyboard and screen readers.

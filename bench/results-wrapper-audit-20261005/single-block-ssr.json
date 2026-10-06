@@ -1,0 +1,7 @@
+{
+  "cases": 4,
+  "engine": "chromium",
+  "serverHydratedFreshPixelsIdentical": true,
+  "hydrationKeepsLeaves": true,
+  "errors": []
+}

@@ -50,7 +50,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "gallery": "node examples/gallery/make.mjs",
-    "test": "node test/run.mjs",
+    "test": "node test/comparison-regressions.mjs && node test/manydots-run.mjs && node test/run.mjs",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {

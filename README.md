@@ -48,6 +48,10 @@ export default function App() {
 Each prop of the Plot is a column of data, and each slat reads its row's values as `d.name` and `d.sold`.
 [Your first chart](https://rhp.vercel.app/start/first-chart/) builds this up step by step.
 
+For a large scatter plot, the experimental [`ManyDots`](examples/manydots/README.md) collection renders plain HTML points without a slat or Solid computation for each point.
+It supports shared styling, category classes, and per-point colors, sizes, and shapes.
+Choose it explicitly, or keep `Dot` for individual blocks and custom slat content at any point count.
+
 ## Good to know
 
 - Charts are plain DOM with no shadow root: `querySelector`, Testing Library and your page's event listeners all work.
@@ -100,6 +104,7 @@ The code:
 |---|---|
 | `src/plot.jsx` | Chart, Plot, Scale, Axis and Theme |
 | `src/blocks.jsx` | the blocks |
+| `src/manydots.jsx`, `src/manydots.css` | the experimental bulk HTML scatter collection and its narrow geometry rules |
 | `src/style.js` | how CSS gets into the page: `slat()`, `restyle()`, scoping a slat's CSS, and the CSS a server writes |
 | `src/rhp.css` | the core CSS; `gutters.css` and `cross.css` are added when a chart first needs them |
 | `src/frame.js`, `src/animate.js` | when changes are written, and the JS version's clock |

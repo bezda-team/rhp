@@ -2,8 +2,8 @@
 // Both static, as rhp's docs say for a chart whose data never changes.
 import { render } from "solid-js/web";
 import { Chart, Plot, Dot, Line, slat } from "../../src/index.js";
-const Point = slat({}, (d) => <div><Dot at={d.x} cross={d.y} size="4px" /></div>);
-const Curve = slat({}, (d) => <div><Line points={d.points} /></div>);
+const Point = slat({}, (d) => <Dot at={d.x} cross={d.y} size="4px" />);
+const Curve = slat({}, (d) => <Line points={d.points} />);
 export default {
   name: "rhp",
   scatter: (el, pts) => render(() => (

@@ -1,0 +1,1247 @@
+[
+  {
+    "name": "chromium",
+    "states": [
+      {
+        "orientation": "horizontal",
+        "mode": "server",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 114,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ]
+      },
+      {
+        "orientation": "horizontal",
+        "mode": "hydrated",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "horizontal",
+        "mode": "fresh",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "vertical",
+        "mode": "server",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 114,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ]
+      },
+      {
+        "orientation": "vertical",
+        "mode": "hydrated",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "vertical",
+        "mode": "fresh",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      }
+    ],
+    "errors": [],
+    "warnings": []
+  },
+  {
+    "name": "webkit",
+    "states": [
+      {
+        "orientation": "horizontal",
+        "mode": "server",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 114,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ]
+      },
+      {
+        "orientation": "horizontal",
+        "mode": "hydrated",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "horizontal",
+        "mode": "fresh",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "vertical",
+        "mode": "server",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 114,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ]
+      },
+      {
+        "orientation": "vertical",
+        "mode": "hydrated",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "vertical",
+        "mode": "fresh",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      }
+    ],
+    "errors": [],
+    "warnings": []
+  },
+  {
+    "name": "firefox",
+    "states": [
+      {
+        "orientation": "horizontal",
+        "mode": "server",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ]
+      },
+      {
+        "orientation": "horizontal",
+        "mode": "hydrated",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "horizontal",
+        "mode": "fresh",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              432
+            ],
+            "x": 329.5,
+            "y": 0,
+            "width": 1,
+            "height": 432,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "vertical",
+        "mode": "server",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ]
+      },
+      {
+        "orientation": "vertical",
+        "mode": "hydrated",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": true,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      },
+      {
+        "orientation": "vertical",
+        "mode": "fresh",
+        "initial": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "update": [
+          {
+            "variant": "wrapped",
+            "elements": 113,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs",
+            "parent": "",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          },
+          {
+            "variant": "direct",
+            "elements": 112,
+            "body": [
+              660,
+              280
+            ],
+            "x": 0,
+            "y": 139.5,
+            "width": 660,
+            "height": 1,
+            "color": "rgba(128, 128, 128, 0.22)",
+            "scope": "rhp-s1gwnzfs-2",
+            "parent": "rhp-plot rhp-scale",
+            "reused": false,
+            "role": null,
+            "scaleHidden": "true"
+          }
+        ],
+        "events": 1
+      }
+    ],
+    "errors": [],
+    "warnings": []
+  }
+]

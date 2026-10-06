@@ -1,0 +1,834 @@
+{
+  "engine": "chromium",
+  "browser": "153.0.8010.12",
+  "date": "2026-10-05T19:00:05.117Z",
+  "loadStart": [
+    1.8095703125,
+    1.83056640625,
+    2.1767578125
+  ],
+  "libs": {
+    "apex": {
+      "mount": {
+        "frame": 20.1,
+        "total": 90.8
+      },
+      "large": {
+        "frame": 159.9,
+        "total": 445.5
+      },
+      "dashboard": {
+        "frame": 112.3,
+        "total": 390.9
+      },
+      "update": {
+        "latency": 16.1,
+        "perChange": {
+          "Task": 48.73,
+          "Script": 8.81,
+          "RecalcStyle": 7.53,
+          "Layout": 3.48
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 5.58,
+          "Script": 3.16,
+          "RecalcStyle": 0.95,
+          "Layout": 0.77
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 3,
+        "fps": 59.3,
+        "perFrame": {
+          "Task": 14.24,
+          "Script": 8.34,
+          "RecalcStyle": 2.19,
+          "Layout": 1.82
+        }
+      },
+      "memory": {
+        "heapMB": 5.62,
+        "nodes": 7402
+      }
+    },
+    "chartjs": {
+      "mount": {
+        "frame": 17.6,
+        "total": 93.4
+      },
+      "large": {
+        "frame": 33.1,
+        "total": 344.4
+      },
+      "dashboard": {
+        "frame": 46,
+        "total": 284.4
+      },
+      "update": {
+        "latency": 15.8,
+        "perChange": {
+          "Task": 54.1,
+          "Script": 18.41,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 3.94,
+          "Script": 3.11,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": {
+          "Task": 2.77,
+          "Script": 1.97,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "memory": {
+        "heapMB": 4.36,
+        "nodes": 150
+      }
+    },
+    "chartscss": {
+      "mount": {
+        "frame": 5.1,
+        "total": 6.8
+      },
+      "large": {
+        "frame": 18.9,
+        "total": 26.8
+      },
+      "dashboard": {
+        "frame": 8.8,
+        "total": 10.4
+      },
+      "update": {
+        "latency": 1.9,
+        "perChange": {
+          "Task": 1.91,
+          "Script": 0.13,
+          "RecalcStyle": 0.25,
+          "Layout": 0.26
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.75,
+          "Script": 0.09,
+          "RecalcStyle": 0.1,
+          "Layout": 0.13
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.26,
+          "Script": 0.03,
+          "RecalcStyle": 0.03,
+          "Layout": 0.04
+        }
+      },
+      "memory": {
+        "heapMB": 0.08,
+        "nodes": 2250
+      }
+    },
+    "d3": {
+      "mount": {
+        "frame": 9.6,
+        "total": 11.3
+      },
+      "large": {
+        "frame": 23.8,
+        "total": 25.8
+      },
+      "dashboard": {
+        "frame": 18.4,
+        "total": 20.2
+      },
+      "update": {
+        "latency": 2.8,
+        "perChange": {
+          "Task": 8.82,
+          "Script": 1.09,
+          "RecalcStyle": 0.55,
+          "Layout": 1.15
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 1.61,
+          "Script": 0.53,
+          "RecalcStyle": 0.09,
+          "Layout": 0.35
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.69,
+          "Script": 0.2,
+          "RecalcStyle": 0.02,
+          "Layout": 0.14
+        }
+      },
+      "memory": {
+        "heapMB": 0.46,
+        "nodes": 3550
+      }
+    },
+    "echarts": {
+      "mount": {
+        "frame": 23.4,
+        "total": 108.5
+      },
+      "large": {
+        "frame": 52.7,
+        "total": 370.7
+      },
+      "dashboard": {
+        "frame": 63.2,
+        "total": 318.8
+      },
+      "update": {
+        "latency": 15.7,
+        "perChange": {
+          "Task": 47.55,
+          "Script": 19.31,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": {
+          "Task": 4.65,
+          "Script": 3.96,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": {
+          "Task": 3.28,
+          "Script": 2.66,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "memory": {
+        "heapMB": 6.72,
+        "nodes": 201
+      }
+    },
+    "g2": {
+      "mount": {
+        "frame": 33.1,
+        "total": 85.9
+      },
+      "large": {
+        "frame": 232.4,
+        "total": 626.1
+      },
+      "dashboard": {
+        "frame": 243.3,
+        "total": 547
+      },
+      "update": {
+        "latency": 22.6,
+        "perChange": {
+          "Task": 72.82,
+          "Script": 33.73,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 3.62,
+          "Script": 1.69,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 7,
+        "fps": 58.1,
+        "perFrame": {
+          "Task": 3.36,
+          "Script": 0.85,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "memory": {
+        "heapMB": 27.75,
+        "nodes": 150
+      }
+    },
+    "highcharts": {
+      "mount": {
+        "frame": 20.5,
+        "total": 68
+      },
+      "large": {
+        "frame": 112.9,
+        "total": 369.8
+      },
+      "dashboard": {
+        "frame": 139.9,
+        "total": 419.8
+      },
+      "update": {
+        "latency": 7.6,
+        "perChange": {
+          "Task": 32.55,
+          "Script": 4.5,
+          "RecalcStyle": 2.83,
+          "Layout": 1.63
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 5.09,
+          "Script": 2.96,
+          "RecalcStyle": 0.89,
+          "Layout": 0.48
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 4.19,
+          "Script": 2.3,
+          "RecalcStyle": 0.73,
+          "Layout": 0.45
+        }
+      },
+      "memory": {
+        "heapMB": 5.64,
+        "nodes": 7250
+      }
+    },
+    "nivo": {
+      "mount": {
+        "frame": 19.3,
+        "total": 98.4
+      },
+      "large": {
+        "frame": 247.6,
+        "total": 760.7
+      },
+      "dashboard": {
+        "frame": 111.6,
+        "total": 297.5
+      },
+      "update": {
+        "latency": 9.5,
+        "perChange": {
+          "Task": 42.11,
+          "Script": 5.13,
+          "RecalcStyle": 1.6,
+          "Layout": 2.66
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 5.61,
+          "Script": 4.66,
+          "RecalcStyle": 0.04,
+          "Layout": 0.06
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": {
+          "Task": 5.82,
+          "Script": 4.68,
+          "RecalcStyle": 0.04,
+          "Layout": 0.06
+        }
+      },
+      "memory": {
+        "heapMB": 21.77,
+        "nodes": 5900
+      }
+    },
+    "plot": {
+      "mount": {
+        "frame": 8.9,
+        "total": 10.2
+      },
+      "large": {
+        "frame": 24.5,
+        "total": 26
+      },
+      "dashboard": {
+        "frame": 26,
+        "total": 27.4
+      },
+      "update": {
+        "latency": 5.2,
+        "perChange": {
+          "Task": 5.46,
+          "Script": 0.11,
+          "RecalcStyle": 0.57,
+          "Layout": 0.53
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 3.79,
+          "Script": 1.61,
+          "RecalcStyle": 0.55,
+          "Layout": 0.52
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 2.65,
+          "Script": 0.85,
+          "RecalcStyle": 0.43,
+          "Layout": 0.32
+        }
+      },
+      "memory": {
+        "heapMB": 1.75,
+        "nodes": 3800
+      }
+    },
+    "recharts": {
+      "mount": {
+        "frame": 23.7,
+        "total": 94.6
+      },
+      "large": {
+        "frame": 110.7,
+        "total": 564.4
+      },
+      "dashboard": {
+        "frame": 143.8,
+        "total": 368.8
+      },
+      "update": {
+        "latency": 11.6,
+        "perChange": {
+          "Task": 81.37,
+          "Script": 56.14,
+          "RecalcStyle": 1.42,
+          "Layout": 1.17
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 5.16,
+          "Script": 4.58,
+          "RecalcStyle": 0.07,
+          "Layout": 0.03
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": {
+          "Task": 7.39,
+          "Script": 6.67,
+          "RecalcStyle": 0.09,
+          "Layout": 0.03
+        }
+      },
+      "memory": {
+        "heapMB": 28.92,
+        "nodes": 6552
+      }
+    },
+    "rhp-css": {
+      "mount": {
+        "frame": 12.4,
+        "total": 14.2
+      },
+      "large": {
+        "frame": 63.6,
+        "total": 65.5
+      },
+      "dashboard": {
+        "frame": 26.7,
+        "total": 28.9
+      },
+      "update": {
+        "latency": 2.4,
+        "perChange": {
+          "Task": 8.77,
+          "Script": 0.25,
+          "RecalcStyle": 1.46,
+          "Layout": 1.33
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 1.47,
+          "Script": 0.23,
+          "RecalcStyle": 0.45,
+          "Layout": 0.17
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.47,
+          "Script": 0.07,
+          "RecalcStyle": 0.14,
+          "Layout": 0.04
+        }
+      },
+      "memory": {
+        "heapMB": 2.83,
+        "nodes": 3373
+      }
+    },
+    "rhp-js": {
+      "mount": {
+        "frame": 11.3,
+        "total": 12.8
+      },
+      "large": {
+        "frame": 65.3,
+        "total": 67
+      },
+      "dashboard": {
+        "frame": 27.4,
+        "total": 29.3
+      },
+      "update": {
+        "latency": 1.2,
+        "perChange": {
+          "Task": 12.77,
+          "Script": 1.27,
+          "RecalcStyle": 3.27,
+          "Layout": 1.93
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 1.25,
+          "Script": 0.31,
+          "RecalcStyle": 0.28,
+          "Layout": 0.17
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.45,
+          "Script": 0.09,
+          "RecalcStyle": 0.08,
+          "Layout": 0.05
+        }
+      },
+      "memory": {
+        "heapMB": 3.02,
+        "nodes": 3373
+      }
+    },
+    "rhp-static": {
+      "mount": {
+        "frame": 12.3,
+        "total": 14.4
+      },
+      "large": {
+        "frame": 61.4,
+        "total": 63.2
+      },
+      "dashboard": {
+        "frame": 27.7,
+        "total": 29.4
+      },
+      "update": {
+        "latency": 4.9,
+        "perChange": {
+          "Task": 5.15,
+          "Script": 0.11,
+          "RecalcStyle": 1.41,
+          "Layout": 0.56
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 3.72,
+          "Script": 0.85,
+          "RecalcStyle": 1.31,
+          "Layout": 0.47
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 2.42,
+          "Script": 0.28,
+          "RecalcStyle": 0.88,
+          "Layout": 0.31
+        }
+      },
+      "memory": {
+        "heapMB": 1.67,
+        "nodes": 3373
+      }
+    },
+    "vanilla": {
+      "mount": {
+        "frame": 5.3,
+        "total": 7
+      },
+      "large": {
+        "frame": 17.7,
+        "total": 26.4
+      },
+      "dashboard": {
+        "frame": 9.8,
+        "total": 11.4
+      },
+      "update": {
+        "latency": 1.4,
+        "perChange": {
+          "Task": 1.44,
+          "Script": 0.11,
+          "RecalcStyle": 0.08,
+          "Layout": 0.19
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.61,
+          "Script": 0.07,
+          "RecalcStyle": 0.04,
+          "Layout": 0.1
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.2,
+          "Script": 0.03,
+          "RecalcStyle": 0.01,
+          "Layout": 0.03
+        }
+      },
+      "memory": {
+        "heapMB": 0.13,
+        "nodes": 2150
+      }
+    },
+    "vegalite": {
+      "mount": {
+        "frame": 23.3,
+        "total": 25
+      },
+      "large": {
+        "frame": 49.7,
+        "total": 51.7
+      },
+      "dashboard": {
+        "frame": 104.4,
+        "total": 119.9
+      },
+      "update": {
+        "latency": 2,
+        "perChange": {
+          "Task": 2.26,
+          "Script": 0.11,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.74,
+          "Script": 0.52,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.37,
+          "Script": 0.24,
+          "RecalcStyle": 0,
+          "Layout": 0
+        }
+      },
+      "memory": {
+        "heapMB": 13.78,
+        "nodes": 6104
+      }
+    },
+    "victory": {
+      "mount": {
+        "frame": 17.7,
+        "total": 19.3
+      },
+      "large": {
+        "frame": 100.5,
+        "total": 102
+      },
+      "dashboard": {
+        "frame": 63,
+        "total": 64.2
+      },
+      "update": {
+        "latency": 8.4,
+        "perChange": {
+          "Task": 8.36,
+          "Script": 0.1,
+          "RecalcStyle": 0.08,
+          "Layout": 0.14
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 5.84,
+          "Script": 5.31,
+          "RecalcStyle": 0.04,
+          "Layout": 0.07
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 4.51,
+          "Script": 3.99,
+          "RecalcStyle": 0.03,
+          "Layout": 0.06
+        }
+      },
+      "memory": {
+        "heapMB": 5.36,
+        "nodes": 4352
+      }
+    }
+  },
+  "completed": "2026-10-05T19:14:53.419Z",
+  "loadEnd": [
+    4.83740234375,
+    3.1767578125,
+    2.4794921875
+  ]
+}

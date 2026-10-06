@@ -728,7 +728,7 @@ const Column = slat({
     <${Bar} to=${() => d.value} class="bar" color="#808080" />
     <${Label} at=${() => d.value} class="value">${() => d.value}<//>
   </div>`);
-const Baseline = slat({ room: {} }, () => html`<div><${Tick} at=${0} thick=${1} /></div>`);
+const Baseline = slat({ room: {} }, () => html`<${Tick} at=${0} thick=${1} />`);
 
 // Chart component
 const Bars = () => html`

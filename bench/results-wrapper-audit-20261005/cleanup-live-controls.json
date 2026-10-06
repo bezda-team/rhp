@@ -1,0 +1,38 @@
+[
+  {
+    "name": "live",
+    "width": 1280,
+    "advances": true,
+    "pauseStops": true,
+    "resumeAdvances": true,
+    "pausedPixelsStable": true
+  },
+  {
+    "name": "race",
+    "width": 1280,
+    "advances": true,
+    "pauseStops": true,
+    "resumeAdvances": true,
+    "sliderWorks": true,
+    "keyboardWorks": true,
+    "pausedPixelsStable": true
+  },
+  {
+    "name": "live",
+    "width": 390,
+    "advances": true,
+    "pauseStops": true,
+    "resumeAdvances": true,
+    "pausedPixelsStable": true
+  },
+  {
+    "name": "race",
+    "width": 390,
+    "advances": true,
+    "pauseStops": true,
+    "resumeAdvances": true,
+    "sliderWorks": true,
+    "keyboardWorks": true,
+    "pausedPixelsStable": true
+  }
+]

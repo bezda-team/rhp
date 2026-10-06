@@ -140,14 +140,13 @@ const CountryCode = country(52, (d) => d.code);
 
 // The year picked: a hairline across the plot, then a dot on each line
 const Crosshair = slat({ css: `.hair { --rhp-tick-width: 1px; background: #1b1d22; opacity: .45; }` }, (d) => html`
-  <div><${Tick} at=${() => d.year} thick=${1} class="hair" /></div>`);
+  <${Tick} at=${() => d.year} thick=${1} class="hair" />`);
 
 const Mark = slat({
-  css: `.dot { box-shadow: 0 0 0 2px #faf8f3; } .story .dot { z-index: 1; }`,
+  css: `.dot { box-shadow: 0 0 0 2px #faf8f3; } .dot.story { z-index: 1; }`,
 }, (d) => html`
-  <div class=${() => (d.name === STORY ? "story" : "")}>
-    <${Dot} at=${() => d.year} cross=${() => d.values[d.i]} color=${() => d.color} size="9px" class="dot" />
-  </div>`);
+  <${Dot} at=${() => d.year} cross=${() => d.values[d.i]} color=${() => d.color} size="9px"
+    class=${() => (d.name === STORY ? "dot story" : "dot")} />`);
 
 // One invisible column per year: what the pointer, a tap and the keyboard pick, and what a screen reader reads
 const Year = slat({

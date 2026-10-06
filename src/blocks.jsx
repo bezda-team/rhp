@@ -1,3 +1,5 @@
+/* @refresh skip */
+// Slat roots need native elements; Solid Refresh wraps named components in accessors.
 // Blocks are the pieces a slat is built from. Each block writes its raw numbers as CSS variables (--rhp-from, --rhp-to,
 // --rhp-at, --rhp-value) and the CSS turns them into positions using the scale (--rhp-min, --rhp-max) set on the Chart.
 // Blocks also take class, style, ref, children and any other attribute or handler, like a plain element.
@@ -140,7 +142,7 @@ const loose = (v) => {
 
   return quote !== null || depth !== 0;
 };
-const safe = (v) => v != null && !(typeof v === "string" && /[;!{}]/.test(v) && loose(v));
+export const safeCssValue = (v) => v != null && !(typeof v === "string" && /[;!{}]/.test(v) && loose(v));
 
 // On a server, the style attribute of an element: its style prop (an object or a string) and its CSS variables
 export function withVars(st, vars) {
@@ -149,12 +151,12 @@ export function withVars(st, vars) {
 
   if (st && typeof st === "object") {
     for (const key in st) {
-      if (safe(st[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + st[key];
+      if (safeCssValue(st[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + st[key];
     }
   }
 
   for (const key in vars) {
-    if (safe(vars[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + vars[key];
+    if (safeCssValue(vars[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + vars[key];
   }
 
   return css || undefined;

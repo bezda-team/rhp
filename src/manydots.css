@@ -1,0 +1,44 @@
+/* Bulk HTML points use concrete coordinates and a few collection-wide appearance defaults.
+   Only their geometry is protected. Page classes can still set fill, opacity, outlines and transforms. */
+@layer rhp.core {
+  .rhp-manydots {
+    position: relative !important;
+    z-index: 1;
+  }
+
+  .rhp-manydot {
+    position: absolute !important;
+    box-sizing: border-box !important;
+    /* These box properties protect marker geometry from ordinary page-wide div rules. */
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 solid transparent !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    top: auto !important;
+    right: auto !important;
+    width: var(--rhp-manydot-size, 4px) !important;
+    height: var(--rhp-manydot-size, 4px) !important;
+    margin-left: -2px !important;
+    margin-bottom: -2px !important;
+    translate: none !important;
+    border-radius: 50%;
+    background-color: var(--rhp-manydot-color, #2a78d6);
+    clip-path: var(--rhp-manydot-clip, none);
+  }
+
+  :where(.rhp-manydots-points[data-rhp-offset]) > .rhp-manydot {
+    margin-left: var(--rhp-manydot-offset) !important;
+    margin-bottom: var(--rhp-manydot-offset) !important;
+  }
+
+  @media (forced-colors: active) {
+    .rhp-manydot {
+      forced-color-adjust: none !important;
+      outline: 1px solid CanvasText !important;
+      outline-offset: -1px !important;
+    }
+  }
+}

@@ -29,6 +29,12 @@ The CLI (`rhp-mcp check`) and the MCP tool (`rhp_check`) print the same report.
 ### Screenshots, and the page they move
 
 A full-page screenshot of a page taller than the window makes Chromium lay the page out at another size for a moment (1 by 1 px, after most captures), so the page's resize, ResizeObserver and matchMedia handlers run: a chart whose orientation follows the width turns and turns back.
+The checker waits up to ten seconds for fonts, finite entry animations and two unchanged DOM frames, and checks the result of that wait.
+`settleTimeout` overrides this budget in `check()` and the MCP tool.
+The CLI exposes the same setting as `--settle-timeout <ms>`.
+The CLI and MCP accept 100 to 30,000ms; the MCP's overall 50-second deadline still applies.
+An unfinished wait produces `page-unsettled` instead of layout or color conclusions from a moving page.
+Geometry and text colors are read after the initial screenshots have settled, so responsive capture handlers cannot leave stale coordinates in the color probes.
 So every screenshot goes through `capture()` (index.js), which lets the page come to rest again when the capture made it change (`calm()` in inpage.js), and `hide()` and `show()` put back only the style properties they set, never a whole `style` attribute saved before (that undid what the page did meanwhile and left such a chart drawn wrong).
 
 ## Levels
@@ -100,6 +106,7 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 |---|---|---|---|
 | `no-chart` | error | No `.rhp-chart` in the page (not reported when the code can't load, since that reason is reported instead). | Render into an element the page has, or fix the errors above. |
 | `empty-plot` | error | A Plot with no slats shown (an empty overlap Plot is fine: a readout drawn only while pointing). | Give the Plot its data. |
+| `page-unsettled` | error | Fonts, finite animations or DOM changes did not settle within the measurement budget. | Finish entry animations, honor reduced motion for continuous updates, or increase `settleTimeout` for a slow machine. |
 | `small-plot` | error | A plot under 40px along its value axis, or slats under 2px thick (3px slats are fine: a histogram's many bins, a line chart's slats for pointing). | A height or an aspect, a thickness, or fewer rows. |
 | `collapsed-chart` | error | A chart whose plot is under 2px wide: it sits in a flex row, an inline-block or a float that shrinks it to its room. | `flex: 1; min-width: 0`, or a box with a width. |
 | `plot-outside-chart` | error | A `.rhp-plot` with no `.rhp-chart` around it: no scale and none of rhp's CSS. | Put the Plot in a Chart. |

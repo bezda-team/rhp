@@ -384,7 +384,7 @@ const WEEKS = VISITORS.map((v, i) => i + 1);
 const X = [1, 52];
 
 // Slat types: the line, and the week picked (a hairline and a dot) on an overlay Plot
-const Trend = (d) => html`<div><${Line} points=${() => d.points} /></div>`;
+const Trend = (d) => html`<${Line} points=${() => d.points} />`;
 const Picked = (d) => html`
   <div>
     <${Tick} at=${() => d.week} thick=${1} color="muted" />

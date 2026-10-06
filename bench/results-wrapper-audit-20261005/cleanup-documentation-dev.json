@@ -1,0 +1,77 @@
+[
+  {
+    "engine": "chromium",
+    "ok": true,
+    "checked": {
+      "line": 1,
+      "dots": 12,
+      "libraryHotWrapped": false,
+      "appHotActive": true,
+      "mounts": [
+        {
+          "orientation": "horizontal",
+          "direct": true,
+          "svg": true,
+          "path": true
+        },
+        {
+          "orientation": "vertical",
+          "direct": true,
+          "svg": true,
+          "path": true
+        }
+      ]
+    },
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "ok": true,
+    "checked": {
+      "line": 1,
+      "dots": 12,
+      "libraryHotWrapped": false,
+      "appHotActive": true,
+      "mounts": [
+        {
+          "orientation": "horizontal",
+          "direct": true,
+          "svg": true,
+          "path": true
+        },
+        {
+          "orientation": "vertical",
+          "direct": true,
+          "svg": true,
+          "path": true
+        }
+      ]
+    },
+    "errors": []
+  },
+  {
+    "engine": "firefox",
+    "ok": true,
+    "checked": {
+      "line": 1,
+      "dots": 12,
+      "libraryHotWrapped": false,
+      "appHotActive": true,
+      "mounts": [
+        {
+          "orientation": "horizontal",
+          "direct": true,
+          "svg": true,
+          "path": true
+        },
+        {
+          "orientation": "vertical",
+          "direct": true,
+          "svg": true,
+          "path": true
+        }
+      ]
+    },
+    "errors": []
+  }
+]

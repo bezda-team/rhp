@@ -8,8 +8,8 @@
 //   const arrow = shape(["M", 0, 0], ["L", "-26px", 0], ["L", 1, .5], ["L", "-26px", 1], ["L", 0, 1], ["Z"]);  // a pointed end
 //
 // Commands are SVG's, with the same coordinates: M (move), L (line), Q and C (curves) and Z (close).
-// A shape of straight lines becomes clip-path: polygon(), which every browser takes. One with a curve becomes
-// clip-path: shape(), and where that is missing the curve is drawn as a run of short lines instead.
+// A single outline of straight lines becomes clip-path: polygon(), which every browser takes.
+// Curves and multiple subpaths use clip-path: shape(); its fallback flattens curves and joins subpaths with doubled bridges.
 
 const PAIRS = { M: 1, L: 1, Q: 2, C: 3, Z: 0 };
 
@@ -53,13 +53,18 @@ const straighten = (from, cmd) => {
   return out;
 };
 
-// Every point of the shape in order, with any curve flattened: what polygon() needs.
+// Every subpath, with curves flattened and its closing point retained.
 const points = (cmds) => {
-  const out = [];
+  const paths = [];
+  let out;
   let at = [0, 0];
   for (const c of cmds) {
-    if (c[0] === "Z") continue;
-    if (c[0] === "M" || c[0] === "L") at = [c[1], c[2]];
+    if (c[0] === "M") {
+      out = [];
+      paths.push(out);
+      at = [c[1], c[2]];
+    } else if (c[0] === "Z") at = out[0];
+    else if (c[0] === "L") at = [c[1], c[2]];
     else {
       // a curve can only be flattened between numbers; a length in one is drawn as the straight line to its end
       const numeric = c.slice(1).every((v) => typeof v === "number") && at.every((v) => typeof v === "number");
@@ -72,7 +77,11 @@ const points = (cmds) => {
     }
     out.push(at);
   }
-  return out;
+  if (paths.length === 1) return paths[0].at(-1) === paths[0][0] ? paths[0].slice(0, -1) : paths[0];
+  // Join closed subpaths with a bridge traversed in both directions. Its winding
+  // cancels, preserving separate islands and oppositely wound holes in polygon().
+  const anchor = paths[0][0];
+  return paths.flatMap((p) => [...p, p[0], anchor]);
 };
 
 const polygon = (cmds, vertical, back) =>
@@ -82,7 +91,7 @@ const shapeFn = (cmds, vertical, back) => {
   const parts = [];
   for (const c of cmds) {
     const pt = (i) => place(c[i], c[i + 1], vertical, back).join(" ");
-    if (c[0] === "M") parts.unshift("from " + pt(1));
+    if (c[0] === "M") parts.push((parts.length ? "move to " : "from ") + pt(1));
     else if (c[0] === "L") parts.push("line to " + pt(1));
     else if (c[0] === "Q") parts.push("curve to " + pt(3) + " with " + pt(1));
     else if (c[0] === "C") parts.push("curve to " + pt(5) + " with " + pt(1) + " / " + pt(3));
@@ -94,6 +103,7 @@ const shapeFn = (cmds, vertical, back) => {
 // A shape, ready to be worn by a block: shape(["M", 0, 0], ["L", 1, 0], …) or shape([[…], […]]).
 export function shape(...cmds) {
   const list = (Array.isArray(cmds[0]) && Array.isArray(cmds[0][0]) ? cmds[0] : cmds).map((c) => (typeof c === "string" ? [c] : c));
+  if (list[0]?.[0] !== "M") throw new Error("rhp: a shape must start with M");
 
   for (const c of list) {
     const n = PAIRS[c[0]];
@@ -102,6 +112,7 @@ export function shape(...cmds) {
   }
 
   const curved = list.some((c) => c[0] === "Q" || c[0] === "C");
+  const compound = list.filter((c) => c[0] === "M").length > 1;
   const made = new Map(); // orientation and direction -> the clip it compiles to
 
   return {
@@ -112,7 +123,7 @@ export function shape(...cmds) {
       const key = (vertical ? 2 : 0) + (back ? 1 : 0);
       let out = made.get(key);
       if (out === undefined) {
-        out = curved && supportsShape() ? shapeFn(list, vertical, back) : polygon(list, vertical, back);
+        out = (curved || compound) && supportsShape() ? shapeFn(list, vertical, back) : polygon(list, vertical, back);
         made.set(key, out);
       }
       return out;

@@ -770,7 +770,7 @@ const SampleSlat = slat({
 ));
 
 // The resting line
-const RestSlat = slat({ css: `.rest { background: var(--rhp-grid); --rhp-tick-width: 1px; }` }, () => <div><Tick at={0} thick={1} class="rest" /></div>);
+const RestSlat = slat({ css: `.rest { background: var(--rhp-grid); --rhp-tick-width: 1px; }` }, () => <Tick at={0} thick={1} class="rest" />);
 
 export function Stem(p) {
   const [strikes, setStrikes] = createSignal(0); // each strike rings with a new pitch and decay

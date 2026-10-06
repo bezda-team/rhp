@@ -1,0 +1,5418 @@
+{
+  "checks": 762,
+  "failed": 0,
+  "results": [
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "lisbon",
+      "state": "initial",
+      "pixels": {
+        "dimensions": [
+          [
+            730,
+            269
+          ],
+          [
+            730,
+            269
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 13
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "lisbon",
+      "state": "initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1050,
+            807
+          ],
+          [
+            1050,
+            807
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 13
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "chromium",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "lisbon",
+      "state": "initial",
+      "pixels": {
+        "dimensions": [
+          [
+            730,
+            269
+          ],
+          [
+            730,
+            269
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 13
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "lisbon",
+      "state": "initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1050,
+            807
+          ],
+          [
+            1050,
+            807
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 13
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "webkit",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "lisbon",
+      "state": "initial",
+      "pixels": {
+        "dimensions": [
+          [
+            730,
+            269
+          ],
+          [
+            730,
+            269
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 13
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            587
+          ],
+          [
+            552,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-gallery",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            552,
+            455
+          ],
+          [
+            552,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            587
+          ],
+          [
+            732,
+            587
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "stem-examples",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            455
+          ],
+          [
+            732,
+            455
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "horizontal-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            213
+          ],
+          [
+            732,
+            213
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "desktop",
+      "target": "linked",
+      "state": "vertical-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            732,
+            337
+          ],
+          [
+            732,
+            337
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "lisbon",
+      "state": "initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1050,
+            807
+          ],
+          [
+            1050,
+            807
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 13
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1746
+          ],
+          [
+            1056,
+            1746
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-gallery",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1350
+          ],
+          [
+            1056,
+            1350
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "horizontal-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1743
+          ],
+          [
+            1056,
+            1743
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-CSS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "stem-examples",
+      "state": "vertical-JS-strike-after-new",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1347
+          ],
+          [
+            1056,
+            1347
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 1
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "horizontal-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            639
+          ],
+          [
+            1056,
+            639
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-CSS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-initial",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-new-data",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-selected",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    },
+    {
+      "engine": "firefox",
+      "device": "mobile",
+      "target": "linked",
+      "state": "vertical-JS-reset",
+      "pixels": {
+        "dimensions": [
+          [
+            1056,
+            1011
+          ],
+          [
+            1056,
+            1011
+          ]
+        ],
+        "max": 0,
+        "changed": 0
+      },
+      "geometryEqual": true,
+      "removed": 3
+    }
+  ]
+}

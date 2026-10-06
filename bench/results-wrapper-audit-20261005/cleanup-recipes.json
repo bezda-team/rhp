@@ -1,0 +1,1298 @@
+[
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 1200,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "horizontal",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "initial",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "click",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "multi-line",
+    "state": "touch",
+    "pixels": true,
+    "removed": 6
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "initial",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "click",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "keyboard",
+    "pixels": true,
+    "removed": 1
+  },
+  {
+    "engine": "firefox",
+    "width": 390,
+    "orientation": "vertical",
+    "name": "sparklines",
+    "state": "touch",
+    "pixels": true,
+    "removed": 1
+  }
+]
