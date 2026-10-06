@@ -185,6 +185,10 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .rhp-axis[data-rhp-grid="off"]>.rhp-gridline {
+    border-color: transparent;
+  }
+
   .rhp-gridline[data-rhp-o="h"]>span {
     top: calc(100% + 5px);
     left: 0;

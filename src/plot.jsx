@@ -1027,8 +1027,8 @@ export function Chart(props) {
         <div class="rhp-body">
           {props.children}
           {/* after the children, so that a Scale among them has registered first */}
-          <Show when={axis()}><Axis ticks={ticks()} format={props.format} /></Show>
-          <Show when={crossAxis()}><Axis cross ticks={tickValues(props.crossTicks, crossShown(), props.cross)} format={props.crossFormat} /></Show>
+          <Show when={axis()}><Axis ticks={ticks()} format={props.format} grid={props.grid} /></Show>
+          <Show when={crossAxis()}><Axis cross ticks={tickValues(props.crossTicks, crossShown(), props.cross)} format={props.crossFormat} grid={props.crossGrid} /></Show>
         </div>
         {/* after the body, since a server only knows the slat types once they are drawn */}
         {isServer && <style data-rhp-server="" innerHTML={serverSheets(slats, sharedConfig.context?.assets, arranged().gutters, crossed())} />}
@@ -1087,7 +1087,7 @@ export function Axis(props) {
   const orientation = () => (!props.cross ? along() : along() === "vertical" ? "horizontal" : "vertical");
 
   return (
-    <div class="rhp-axis" data-rhp-cross={props.cross ? "" : undefined} aria-hidden="true">
+    <div class="rhp-axis" data-rhp-cross={props.cross ? "" : undefined} data-rhp-grid={props.grid === false ? "off" : undefined} aria-hidden="true">
       <For each={props.ticks}>
         {(t) => {
           // On a server the number is made inside the line, as in a browser, so the browser finds each element where

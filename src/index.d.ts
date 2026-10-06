@@ -120,6 +120,8 @@ export interface ChartProps {
   aspect?: number;
   /** The axis' ticks (5 round values by default); a Scale inside draws its own instead. */
   ticks?: Ticks;
+  /** false hides the value-axis grid lines, keeping tick labels and their room. */
+  grid?: boolean;
   format?: Format;
   /** true for the JS version, where the numbers themselves move; or its timing. The Plots inside take it too. */
   animate?: boolean | Timing;
@@ -132,6 +134,8 @@ export interface ChartProps {
   cross?: readonly [number, number];
   /** The cross axis' ticks (5 round values by default, false for none). */
   crossTicks?: Ticks;
+  /** false hides the cross-axis grid lines, keeping its labels. */
+  crossGrid?: boolean;
   crossFormat?: Format;
   /** Names the chart for screen readers, which then read it as a figure. */
   label?: string;
@@ -312,7 +316,7 @@ export function Poster(props: PosterProps): JSX.Element;
 export function Plot<T extends object = Record<string, any>>(props: PlotProps<T>): JSX.Element;
 export function Scale(props: ScaleProps): JSX.Element;
 export function Theme(props: { value: ThemeValues; children?: JSX.Element }): JSX.Element;
-export function Axis(props: { ticks: readonly number[]; format?: Format }): JSX.Element;
+export function Axis(props: { ticks: readonly number[]; format?: Format; grid?: boolean; cross?: boolean }): JSX.Element;
 
 export const Bar: (props: BarProps) => JSX.Element;
 export const Dot: (props: DotProps) => JSX.Element;

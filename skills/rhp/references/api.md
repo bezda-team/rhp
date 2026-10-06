@@ -164,12 +164,14 @@ export default function FruitChart() {
 | `height` | px | 240 when vertical or with `cross` | the **plot's** height (room and axis come on top). Horizontal: slats without `thickness` share it; slats with one keep theirs and `height` does nothing. |
 | `aspect` | number above 0 | none | the **whole** chart's width over its height (`16 / 9`), room and axis included, at any width. `height` is then ignored (with a warning). Horizontal slats without `thickness` share the height; slats with one keep it (with a warning). |
 | `ticks` | `number[]`, a count, `([min, max]) => number[]`, or `false` | about 5 round values | the axis: grid lines and numbers. A list keeps only values inside the scale. `false` draws no axis and leaves no room for it. |
+| `grid` | boolean | `true` | `false` hides the value-axis grid lines while keeping the numbers and axis room. |
 | `format` | `(value) => text or element` | the number as is | the text of each axis number |
 | `animate` | `true` or `{ duration, ease, slide }` | off | the JS version of motion (section 12); the Plots inside take it |
 | `theme` | theme object (section 8) | `THEME` | colors and font, over those of a `<Theme>` around it |
 | `static` | boolean | `false` | for data that never changes: slats are drawn once and keep no signals; a data change draws them all again, without motion |
 | `cross` | `[min, max]` | none | a second axis across the band (scatter plots, line charts; section 7) |
 | `crossTicks`, `crossFormat` | like `ticks`, `format` | about 5, the number | the second axis |
+| `crossGrid` | boolean | `true` | `false` hides only the second axis' grid lines, keeping its numbers. |
 | `label` | string | none | names the chart for screen readers: the chart gets `role="figure"` and `aria-label` |
 | `aria-labelledby`, `aria-describedby`, any `aria-*` | string | none | set on the chart's element; `aria-labelledby` also makes it a figure |
 | `id`, `class`, `role` | string | none | set on the chart's element |
@@ -963,6 +965,10 @@ When their input changes, call them inside `createMemo` so they run once per cha
 | `useOrientation()` | the orientation of the Plot around, as an accessor | call it in a slat: `const o = useOrientation();` then `o()` |
 | `restyle(slatType, css)` | gives a slat type made with `css` new CSS; its slats restyle in place | for style editors |
 | `linkedCss()` | tells rhp the page links `@bezda/rhp/rhp.css` itself | call before the first chart; without the link rhp warns and adds its CSS anyway |
+
+A shape must start with `M`.
+Further `M` commands start separate subpaths, allowing disconnected pieces or holes with the opposite winding direction.
+These work with native CSS `shape()` and the polygon fallback; curves in the fallback retain the existing approximation.
 
 Stacked bars: `stackUp` per slat, and an overlap Plot whose slats are Bars:
 
