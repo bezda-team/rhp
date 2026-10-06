@@ -163,7 +163,7 @@ Make them in this order and write them in the brief's Design lines; each comes f
 
 4. **Palette.** The subject's paper and ink first, and the paper is not white, cream or black by default.
    Ask what color the subject's own ground has: the object the idea names (blueprint blue, a chalkboard's green, kraft, pink newsprint, a ticket's stock), the scene (a night sky, grass, the sea, a clay court), or a color the subject owns (a team, a crop, a flag, a brand's packaging).
-   When it has one, the paper takes it, in a shade that keeps the floors of section 4, with the ink light on a deep paper and dark on a pale one; section 4 lists fourteen colored papers that pass, from blueprint to kraft.
+   When it has one, the paper takes it, pale or deep, with the ink light on a deep paper and dark on a pale one; section 4 says how to build the rest of the palette from that color so that every floor holds.
    Neutral paper is for subjects whose own ground is paper (a report, a receipt, a ledger), not the fallback for everything.
    One accent the subject owns (the register's red, a team's color, the fruit's color) for the story; up to two more hues only when several series are the story.
    Context marks are quiet, and need not be gray: a tint of the accent, an outline in ink or the material's second ink keeps them back without turning the chart into a wall of gray slabs.
@@ -282,30 +282,37 @@ How a look goes onto a page:
 - The paper and the page stay quiet: neutral, or the subject's own color (section 2), and never the hue of a mark that has to stand out from it.
   On a colored paper the accent is a hue from the other side of the wheel (yellow on blue, red on mint, teal on salmon) and the quiet marks are a tint or a shade of the paper itself, so the page reads as one material.
 
-**Colored papers that pass.** Fourteen grounds with an ink, a secondary text color, a rule, an accent and a quiet mark that meet the token rules of section 1 (ink 7:1 or more, soft 5:1, rule about 1.4:1, accent 4.5:1, quiet 3.3:1), each checked on a poster page.
-Take one as it is, or shift its hue toward the subject's and check again.
-Keep a colored paper pale or deep: a paper of middle lightness (a saturated tan, yellow or red) gets neither a dark nor a light ink far enough from it, and its text looks muddy even where the numbers pass.
+**A colored paper, built from the subject's color.** The paper's hue is the subject's own (section 2), and the rest follows from it:
 
-| Paper | `--paper` | `--page` | `--ink` | `--soft` | `--rule` | `--accent` | `--quiet` |
+1. Keep the paper pale or deep, never in the middle: a paper of middle lightness (a saturated tan, yellow or red) gets neither a dark nor a light ink far enough from it, and its text looks muddy even where the numbers pass.
+2. The ink is near white on a deep paper and near black on a pale one, tinted a little toward the paper's hue, at 7:1 or more (10:1 reads as crisp).
+3. The soft text is the ink moved a third of the way toward the paper (5:1 or more), and the rule the paper moved a little toward the ink (about 1.4:1).
+4. The accent comes from the other side of the color wheel (yellow on blue, red on mint, teal on salmon), light on a deep paper and deep on a pale one, at 4.5:1 or more.
+5. The quiet marks are the paper itself moved toward the ink until they reach 3.3:1 or more, so the context stays the material's own.
+6. The page around the poster is the paper moved a little toward the ink (about 1.2 to 1.5:1).
+7. Run the checker; a second and a third series need their own check (the floors above and the color-blind distances).
+
+The fourteen rows below show that the range works, from deep blue to pale tan, with values measured against the floors and checked on a poster page.
+They are anchors, not a menu: a reader will meet them again, so take the row nearest the subject's hue as the starting lightness and move its hue to the subject's own color (the sea of this coast, the green of this team, the red of this label), then check.
+
+| Hue | `--paper` | `--page` | `--ink` | `--soft` | `--rule` | `--accent` | `--quiet` |
 |---|---|---|---|---|---|---|---|
-| blueprint | `#1d3f8c` | `#102659` | `#f4f6fb` | `#c9d4ee` | `#3a5aa6` | `#ffd45c` | `#8fa5db` |
-| navy night | `#0f1f3d` | `#080f1f` | `#eef2fa` | `#b9c4dc` | `#283a5e` | `#ffb547` | `#7f8fb3` |
-| sea | `#0f4c5c` | `#08303a` | `#eaf4f4` | `#b8d3d6` | `#2a6472` | `#f6c344` | `#7bacb5` |
-| chalkboard | `#2b4a3c` | `#1b2f26` | `#f3efe3` | `#c4d1c6` | `#3f604f` | `#f4c95d` | `#8fae98` |
-| forest | `#1f4d2e` | `#143320` | `#f0f5ec` | `#bfd3c2` | `#346343` | `#ffcf5c` | `#86a98e` |
-| plum | `#4a1f4e` | `#32153a` | `#f7eef7` | `#d9c3da` | `#633868` | `#ffc46b` | `#a680a9` |
-| oxblood | `#6b1d22` | `#4a1316` | `#fbeeea` | `#e8c4bd` | `#843a3e` | `#ffd1a1` | `#c98b84` |
-| brick | `#8a2d1c` | `#6b2114` | `#fff3ea` | `#f0c9bc` | `#a2463a` | `#ffd166` | `#d99a8a` |
-| salmon | `#f8dcc8` | `#e9c3aa` | `#2a1c15` | `#6b5248` | `#e2bba3` | `#0f5f63` | `#96705f` |
-| mustard | `#edc965` | `#d1ad44` | `#231a05` | `#4a3a0e` | `#d4b33c` | `#163077` | `#6b5617` |
-| powder blue | `#d7e6f4` | `#b9cfe4` | `#0f2540` | `#44607f` | `#b7cde2` | `#c8102e` | `#5b789c` |
-| mint | `#dfeee0` | `#c6dfc8` | `#14301c` | `#4a6650` | `#bcd6bf` | `#b8233a` | `#568466` |
-| lavender | `#e6e0f3` | `#d2c9ea` | `#221a3a` | `#5a5273` | `#c9bfe0` | `#9c3a1a` | `#76699e` |
-| kraft | `#e2caa6` | `#cdb08a` | `#2a1a0a` | `#4a3618` | `#cbb08a` | `#7a160f` | `#6a5020` |
+| deep blue | `#1d3f8c` | `#102659` | `#f4f6fb` | `#c9d4ee` | `#3a5aa6` | `#ffd45c` | `#8fa5db` |
+| deep navy | `#0f1f3d` | `#080f1f` | `#eef2fa` | `#b9c4dc` | `#283a5e` | `#ffb547` | `#7f8fb3` |
+| deep teal | `#0f4c5c` | `#08303a` | `#eaf4f4` | `#b8d3d6` | `#2a6472` | `#f6c344` | `#7bacb5` |
+| deep gray-green | `#2b4a3c` | `#1b2f26` | `#f3efe3` | `#c4d1c6` | `#3f604f` | `#f4c95d` | `#8fae98` |
+| deep green | `#1f4d2e` | `#143320` | `#f0f5ec` | `#bfd3c2` | `#346343` | `#ffcf5c` | `#86a98e` |
+| deep violet | `#4a1f4e` | `#32153a` | `#f7eef7` | `#d9c3da` | `#633868` | `#ffc46b` | `#a680a9` |
+| deep wine | `#6b1d22` | `#4a1316` | `#fbeeea` | `#e8c4bd` | `#843a3e` | `#ffd1a1` | `#c98b84` |
+| deep red | `#8a2d1c` | `#6b2114` | `#fff3ea` | `#f0c9bc` | `#a2463a` | `#ffd166` | `#d99a8a` |
+| pale pink | `#f8dcc8` | `#e9c3aa` | `#2a1c15` | `#6b5248` | `#e2bba3` | `#0f5f63` | `#96705f` |
+| pale yellow | `#edc965` | `#d1ad44` | `#231a05` | `#4a3a0e` | `#d4b33c` | `#163077` | `#6b5617` |
+| pale blue | `#d7e6f4` | `#b9cfe4` | `#0f2540` | `#44607f` | `#b7cde2` | `#c8102e` | `#5b789c` |
+| pale green | `#dfeee0` | `#c6dfc8` | `#14301c` | `#4a6650` | `#bcd6bf` | `#b8233a` | `#568466` |
+| pale violet | `#e6e0f3` | `#d2c9ea` | `#221a3a` | `#5a5273` | `#c9bfe0` | `#9c3a1a` | `#76699e` |
+| pale tan | `#e2caa6` | `#cdb08a` | `#2a1a0a` | `#4a3618` | `#cbb08a` | `#7a160f` | `#6a5020` |
 
-The eight deep papers set `color-scheme: dark` on `:root`; on them the accent is a light warm hue and the quiet marks a tint of the paper.
-On the six pale papers the accent is a deep hue and the quiet marks a shade of the paper.
-A second and a third series on these papers need their own check (section 4's floors and the color-blind distances).
+The deep papers set `color-scheme: dark` on `:root`.
 
 What the checker measures, and the floor for each:
 
@@ -712,7 +719,8 @@ render(() => html`<${Bars} />`, document.getElementById("chart"));
 | gradients, textures or shadows on data marks; 3D | they distort the values and the comparison | flat marks; texture belongs to the paper |
 | heavy or colored shadows | a shadow takes the color of the surface it falls on: a colored one reads as neon | a soft shadow in a darker shade of the page, or none |
 | a background that shares the chart's hues (a blue page for blue bars) | the marks lose contrast and the page fights the data | a paper in the subject's color with the marks in a hue from the other side of the wheel (section 4), or neutral paper |
-| white, cream or black paper for every chart | the posters all look like the same stock | the subject's own ground: a colored paper that passes (section 4) when the subject has a color |
+| white, cream or black paper for every chart | the posters all look like the same stock | the subject's own ground: a colored paper built from the subject's color (section 4) |
+| one of section 4's fourteen papers taken as it is, chart after chart | they become the stock too | the subject's own hue, with a row of the table only as its starting lightness |
 | a legend far from the data, or a legend for a single series | the eye travels back and forth | direct labels; a key right above the chart, in the marks' order |
 | grid lines everywhere, a box around the plot | clutter that outweighs the data | a few hairlines along the value axis |
 | centered paragraphs, sentences in capitals | slow to read | left-aligned text; capitals only for short labels |
