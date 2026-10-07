@@ -24,7 +24,7 @@
     --ground: #0f2540; --on-ground: #e4edf7; --ground-soft: #a9bdd6;
     --display: "League Gothic", "Arial Narrow", Impact, sans-serif;
     --text: Barlow, "Helvetica Neue", Arial, sans-serif;
-    --pad: 52px;
+    --pad: 60px;
   }
   * { box-sizing: border-box; }
   body { margin: 0; padding: 48px 16px; background: var(--page, #9fb9d4); }
@@ -58,11 +58,11 @@
   .poster :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   /* Wide screens: the kicker and the headline float in the sky over the five lowest towers, the dek over the next three.
-     The columns follow the towers: the plot is the stage less the 38px room after the last tower, one tenth per tower.
+     The columns follow the towers: the plot is the whole stage, one tenth per tower.
      This place suits these heights: with other data, check that the words still clear the tips (pitfalls.md, "Text and
      layers laid over the chart"). */
   @media (min-width: 980px) {
-    .poster { grid-template-columns: calc((100% - 38px) * .5) calc((100% - 38px) * .3) minmax(0, 1fr); grid-template-rows: auto auto 1fr auto auto;
+    .poster { grid-template-columns: calc(100% * .5) calc(100% * .3) minmax(0, 1fr); grid-template-rows: auto auto 1fr auto auto;
       grid-template-areas: "kicker dek ." "headline dek ." ". . ." "readout readout readout" "note note note"; }
     .poster .headline, .poster .kicker, .poster .dek { position: relative; z-index: 2; }
     .poster .headline { padding-right: 28px; }
@@ -265,7 +265,7 @@ const tower = (d) => html`
     <//>
   </div>`;
 // The same tower with the room each width needs: names on the street on wide screens, ranks on narrow ones
-const TowerNamed = slat({ room: { start: 88, end: 32, after: 38 }, css: TOWER_CSS }, tower);
+const TowerNamed = slat({ room: { start: 88, end: 0, after: 0 }, css: TOWER_CSS }, tower);
 const TowerRanked = slat({ room: { start: 32, end: 32, after: 46 }, css: TOWER_CSS }, tower);
 
 // The chart's font and colors, read from the page's tokens
