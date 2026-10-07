@@ -14,6 +14,7 @@ Every cause here was reproduced with rhp 2.0.1; the numbers in brackets point to
 - Values never update, or the chart jumps
 - A click, hover, tap or key does nothing, or the wrong thing
 - The layout jumps when the reader interacts
+- Text and layers laid over the chart
 - Styles or colors do not apply
 - Console warnings rhp prints
 - Mistakes in the work itself
@@ -112,6 +113,24 @@ The checker warns (`layout-jump`) when a control or the chart moves after one of
 2. **A readout that wraps on a phone pushes the chart down**: give it a `min-height` for its longest text (`min-height: 2lh`).
 3. **Numbers that change width shift what follows them**: use `font-variant-numeric: tabular-nums`, and give a column of numbers a fixed room; in an "auto" end room, align them across slats with `justify-self: stretch` and `justify-content: flex-end` on the label.
 
+## Text and layers laid over the chart
+
+A bold composition sets a headline, a picture or a key over the plot's empty part.
+These are the traps it brings.
+
+1. **A focus ring strikes through the text laid over the plot**: an outline on the slat's root runs the whole length of the plot.
+   Draw the ring on the mark instead: `.slat:focus-visible { outline: none; }` and `.slat:focus-visible .bar { outline: 2px solid var(--rhp-ink); outline-offset: 2px; }`, with `class="bar"` on the Bar.
+   Never take the slat's ring away without drawing another.
+2. **Gridlines run through the value labels**: a label just past a bar's end sits on the next gridline when the value is near a tick.
+   Give the label the paper as its background, `.value { padding: 0 3px; background: var(--rhp-surface); }`: the grid is drawn under the slats, so the line stops at the text.
+   Not next to a reference line, which stays whole (design.md section 7).
+3. **Taps on the marks pick nothing**: a layer laid over the chart (a picture, a glow, a caption box) at `z-index: 2` or more is above rhp's plot (`z-index: 1`) and takes every pointer event.
+   Give it `pointer-events: none`.
+   What the reader picks is the slat or an element inside it: a mark that takes no pointer events, over a face that cannot take focus, sends the press to the face, and the pick clears.
+4. **The text laid over the plot runs into the marks with other data**: its place was set by hand (a fixed `top`, a share of the width) for these values.
+   Work out the empty part from the sorted data (above the shortest marks, beside the longest), set the text there, and below the width where it no longer fits, put it above the chart.
+   Check it with the hardest data (SKILL.md step 8).
+
 ## Styles or colors do not apply
 
 1. **Page CSS aimed at bars, labels or the axis** [21]: it cannot change their color, background, font, border, radius, shadow, padding or transition, even with `!important`. Move those rules into the slat type's `css`.
@@ -128,6 +147,8 @@ The checker warns (`layout-jump`) when a control or the chart moves after one of
 12. **A transition on the slat's root does nothing** [22]: rhp keeps the root's own transition (its slide). Transition an element inside a block instead.
 13. **A rule in the slat's CSS matches nothing**: the class is on a different element than you think. Classes you put on blocks go on the block's own element (`.rhp-bar.bar`); `:horizontal` and `:vertical` go on the slat or a block, not on an element inside a block.
 14. **A pinned readout or a menu over the chart is drawn under the bars** [36]: give it `z-index: 2` or more.
+15. **The marks are invisible when the component is shown on its own**: its theme reads the app's variables with no fallback (`ink: "var(--foreground)"`), so on a page without the app's CSS (the checker's page, a test, Storybook) every mark is transparent.
+    Give each a fallback with the app's own value: `"var(--foreground, #0a0a0a)"`.
 
 ## Console warnings rhp prints
 

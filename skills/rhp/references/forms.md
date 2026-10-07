@@ -35,6 +35,7 @@ rhp draws all of these; the recipe named has the technique, not the design.
 - The native form is the hero, and the numbers still have to be read: print each value on or beside its mark, since a ring, an outline or a tile is read less exactly than a bar on a shared baseline.
 - When an exact comparison is the whole point, keep bars from one baseline and let the subject show in how the marks are drawn (design.md section 2).
 - When the subject has no form of its own (abstract values, quarters of a year, A against B), the form comes from the reader's question below, and the idea from what the numbers do: the gap, the turn, the outlier.
+- A ring of the parts of a day reads as a clock: a part drawn from midnight to 9 is read as "from midnight to 9". Put each part where it happens in the day, or keep the ring in order of size and leave the hour numerals off it.
 - Never bend the data to fit the form: a ring is for parts of a cycle or of a whole, an outline is scaled in one direction only, and units are all one size.
 
 ## Start from the reader's question

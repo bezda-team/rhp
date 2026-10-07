@@ -597,6 +597,7 @@ const appTheme = () => ({
 });
 ```
 
+   - Give each variable a fallback with the app's value (`"var(--foreground, #0a0a0a)"`): without one, a page that lacks the app's CSS (the checker's, a test, Storybook) draws every mark transparent.
    - shadcn/ui on Tailwind 3 stores bare numbers (`--foreground: 222 47% 11%`): wrap them, `"hsl(var(--foreground))"`.
    - With fixed colors only (a `tailwind.config` palette, a design token file), copy the hex values into the theme.
    - Check the app's colors like any other: shadcn/ui's default `--chart-4` and `--chart-5` are yellow and amber at 1.7:1 and 2.1:1 on white, so `appTheme` takes the first three and the muted foreground for the rest; run the checker in both of the app's themes.
