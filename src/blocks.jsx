@@ -94,8 +94,8 @@ function cssTransition(path) {
 // An outline's points as they should be drawn now: in Safari moving to each new outline, elsewhere as they are
 const drawn = (read, path) => (noCssD ? transitioned(read, () => cssTransition(path())) : read);
 
-// Preserve the property tracking Solid's JSX style handling provided on the paths using writeVars.
-// A stable object may contain reactive getters; keep reading them and retain the last values separately.
+// A stable style object may contain reactive getters; keep reading them on every rendering path.
+// Retain the last values separately from the bookkeeping Solid's style helper mutates.
 function readStyle(st, prev) {
 
   if (!st || typeof st !== "object") return st;
@@ -238,7 +238,7 @@ function browserBlock(props, mine, base, vars, attrs, back) {
   createRenderEffect((prev) => {
     const c = cls(base, props.class);
     const dir = short(orientation());
-    const st = props.style;
+    const st = readStyle(props.style, prev?.st);
     const a = attrs?.();
     const v = vars(orientation() === "vertical");
 
