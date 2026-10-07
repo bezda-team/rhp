@@ -67,7 +67,7 @@
     .poster .headline, .poster .kicker, .poster .dek { position: relative; z-index: 2; }
     .poster .headline { padding-right: 28px; }
     .poster .dek { align-self: start; margin-top: 2px; padding-right: 20px; font-size: 16px; }
-    .poster .stage { grid-area: 1 / 1 / 4 / 4; align-self: end; margin-top: 0; }
+    .poster .stage { grid-area: 1 / 1 / 4 / 4; align-self: end; margin-top: 64px; }
     .poster .readout { min-height: calc(2lh + 18px); }
     .poster .key { display: none; }
   }
@@ -119,12 +119,13 @@ const PROFILE = {
   },
   "Menara Merdeka Maybank": { left: [[0, 34], [90, 37], [260, 35], [380, 30], [460, 24], [510, 16], [540, 8], [560, 4], [679, 0.6]] },
   "Shanghai Tower": {
-    left: [[0, 42], [150, 40], [300, 36], [450, 31], [560, 27], [632, 24]],
-    right: [[0, 42], [150, 40], [300, 36.5], [450, 32], [560, 28], [588, 27]],
+    left: [[0, 42], [120, 39.5], [250, 35.5], [380, 31], [480, 27], [560, 23.5], [632, 21]],
+    right: [[0, 42], [120, 39.5], [250, 35.5], [380, 31], [480, 27], [560, 23.5], [580, 22.5]],
   },
   "Makkah Royal Clock Tower": { left: [[0, 74], [75, 74], [75, 50], [115, 50], [115, 30], [385, 30], [385, 35], [455, 35], [455, 27], [485, 21], [505, 14], [520, 8], [530, 4], [601, 0.8]] },
-  "Ping An Finance Center": { left: [[0, 37], [200, 35], [400, 31], [500, 27], [545, 21], [575, 12], [592, 4], [599, 0.8]] },
-  "Lotte World Tower": { left: [[0, 36], [100, 35], [200, 32.5], [300, 28], [400, 21.5], [470, 15.5], [520, 10], [555, 5]] },
+  "Ping An Finance Center": { left: [[0, 37], [200, 35], [400, 31.5], [520, 27.5], [599, 0.8]] },
+  // Lotte's top is split by a slit: its outline ends below the tip, in the middle, so the two sides meet in a notch
+  "Lotte World Tower": { left: [[0, 36], [100, 35], [200, 32.5], [300, 28], [400, 21.5], [470, 15.5], [520, 10], [555, 5], [535, 0.4]] },
   "One World Trade Center": { left: [[0, 31], [57, 31], [410, 21], [410, 22.5], [417, 22.5], [417, 3], [541, 0.6]] },
   "Guangzhou CTF Finance Centre": { left: [[0, 34], [135, 34], [135, 32], [270, 32], [270, 30], [395, 30], [395, 27], [478, 27], [530, 15]] },
   "Tianjin CTF Finance Centre": { left: [[0, 29], [90, 31.5], [190, 31], [290, 28], [380, 23.5], [450, 19], [495, 14], [518, 8], [530, 0.8]] },
@@ -267,7 +268,7 @@ function Skyline() {
       onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <div class="stage" style=${() => `--street: ${wide() ? 88 : 32}px`}>
-        <${Chart} orientation="vertical" height=${() => (wide() ? 560 : 360)} scale=${[scale.min, scale.max]} ticks=${false}
+        <${Chart} orientation="vertical" height=${() => (wide() ? 680 : 420)} scale=${[scale.min, scale.max]} ticks=${false}
           label=${`The ${word(BUILDINGS.length)} tallest completed buildings in the world, by height in metres`} theme=${THEME}>
           <${Show} when=${wide} fallback=${() => towers(TowerRanked)}>${() => towers(TowerNamed)}<//>
         <//>
