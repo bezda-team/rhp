@@ -97,6 +97,19 @@ const Shaped = slat({}, (d) => (
     <Area points={[[0, 1], [4, 3], [8, 2]]} class="st" />
   </div>
 ));
+// A block's style prop that changes, from a string to a string, to an object, to none and back, on each kind of block
+// element (one that only gets its own props, one with another prop, a Label, an Area and a Line); and with a value
+const [blockStyle, setBlockStyle] = createSignal("--n: 1");
+const [styledV, setStyledV] = createSignal(6);
+const Styled = (d) => (
+  <div>
+    <Bar to={d.v} color="red" class="sty-bar" style={blockStyle()} />
+    <Bar to={d.v} class="sty-spread" title="t" style={blockStyle()} />
+    <Label at={d.v} class="sty-label" style={blockStyle()}>x</Label>
+    <Area points={[[0, 1], [d.v, 2]]} class="sty-area" style={blockStyle()} />
+    <Line points={[[0, 1], [d.v, 2]]} class="sty-line" style={blockStyle()} />
+  </div>
+);
 const edges = (Row) => render(() => <Chart scale={[0, 10]}><Plot n={["a", "b"]} v={[3, 7]}>{Row}</Plot></Chart>, document.body.appendChild(document.createElement("div")));
 render(() => (
   <div>
@@ -152,6 +165,7 @@ render(() => (
     <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Listed}</Plot></Chart>
     <Chart class="look" scale={[0, 10]}><Plot v={[6]}>{Relisted}</Plot></Chart>
     <Chart class="looked" scale={[0, 10]}><Plot v={[6]}>{Looked}</Plot></Chart>
+    <Chart class="styled" scale={[0, 10]} ticks={false}><Plot v={[styledV()]}>{Styled}</Plot></Chart>
     <div class="asp" style={{ width: "400px" }}>
       <Chart class="asp-v" orientation="vertical" aspect={2} scale={[0, 10]}><Plot v={[3, 6]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
       <Chart class="asp-h" aspect={2} scale={[0, 10]} ticks={false}><Plot v={[1, 2, 3, 4]}>{Fit}</Plot></Chart>
@@ -172,4 +186,5 @@ render(() => (
     </div>
   </div>
 ), document.body);
-Object.assign(T, { setAsked, setOutline, setOutlineO, setRetarget, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
+T.styleAndMove = (st, v) => batch(() => { setBlockStyle(st); setStyledV(v); });
+Object.assign(T, { setBlockStyle, setAsked, setOutline,setOutlineO, setRetarget, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

@@ -143,6 +143,19 @@ const open = async (url, opts = {}) => {
     T.setLit(false); await new Promise((r) => setTimeout(r, 20));
     return [a, b.className];
   }), ["rhp-bar kb lit", "rhp-bar kb"]);
+  check("a block's style that changes (a string, an object, none) keeps the block's own variables and size, on every kind of block; and with a value", await p.evaluate(async () => {
+    const frames = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const els = [".sty-bar", ".sty-spread", ".sty-label", ".sty-area", ".sty-line"].map((q) => document.querySelector(".styled " + q));
+    const own = (el) => [...el.style].filter((k) => k.startsWith("--rhp-")).sort().map((k) => k + ":" + el.style.getPropertyValue(k)).join(";");
+    const look = () => els.map((el) => [own(el), Math.round(el.getBoundingClientRect().width)]);
+    const first = look(), steps = [];
+    for (const st of ["--n: 2", { "--n": "3" }, undefined, "--n: 4"]) {
+      T.setBlockStyle(st); await frames();
+      steps.push([JSON.stringify(look()) === JSON.stringify(first), els[0].style.getPropertyValue("--n").trim()]);
+    }
+    T.styleAndMove("--n: 5", 8); await frames();
+    return [steps, [["--rhp-to", 0], ["--rhp-to", 1], ["--rhp-at", 2], ["--rhp-to", 3], ["--rhp-to", 4]].map(([k, i]) => els[i].style.getPropertyValue(k)).concat(els[0].style.getPropertyValue("--n").trim())];
+  }), [[[true, "2"], [true, "3"], [true, ""], [true, "4"]], ["8", "8", "8", "8", "8", "5"]]);
   check("an axis format can return elements", await p.evaluate(() => [...document.querySelectorAll(".kept .rhp-gridline .fmt")].map((e) => e.textContent).join(" ")), "0 5 10");
   check("slat CSS can place things by --rhp-p and --rhp-lo", await p.evaluate(() => {
     const dot = document.querySelector(".kept .rhp-dot"), pin = dot.querySelector(".pin"), from = document.querySelector(".kept .from"), bar = from.parentElement;
