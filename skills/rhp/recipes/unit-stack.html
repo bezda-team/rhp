@@ -207,8 +207,8 @@ const Month = slat({
   <div class=${() => ["month", d.most && "most", DATED && "dated"].filter(Boolean).join(" ")}
     aria-label=${() => `${longYear.format(d.date)}: ${money.format(d.total)} in all. ` + RANKED.map((c) => `${CATEGORIES[c]} ${money.format(d.amounts[c])}`).join(", ")}>
     <${Label} edge="start" class="name"><span class="m">${() => d.month}</span><span class="amt">${() => amount(d.lit)}</span><//>
-    <${Bar} to=${() => d.lit} color="series-1" class="coins" style=${() => `--n: ${coins(d.lit)}`} />
-    <${Bar} from=${() => d.lit} to=${() => d.total} color="series-2" class="coins rest" style=${() => `--n: ${coins(d.total - d.lit)}`} />
+    <${Bar} to=${() => d.lit} color="series-1" class="coins" style=${() => ({ "--n": coins(d.lit) })} />
+    <${Bar} from=${() => d.lit} to=${() => d.total} color="series-2" class="coins rest" style=${() => ({ "--n": coins(d.total - d.lit) })} />
     <${Label} at=${() => d.total} class="total">${() => amount(d.total)}<//>
   </div>`);
 
