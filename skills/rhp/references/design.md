@@ -135,9 +135,9 @@ Make them in this order and write them in the brief's Design lines; each comes f
 
 2. **Marks.** Draw the marks so that they carry the idea: this is where a reader meets it first.
    - **Its own outline.** When the items are things a reader knows by their shape (buildings, animals, ships, bottles), each wears its own simple silhouette, drawn roughly to proportion: a `shape()` per row, passed as data and read with `shape=${() => d.outline}`.
-     One shared outline for every item is a bar with a hat.
+     One shared outline for every item is a bar with a hat; `silhouettes` draws ten towers this way.
    - **Counted units.** A bar cut into the subject's units (hours, coins, floors, seats) by a mask, so the reader can count them.
-     Cut each bar into its rounded count of equal parts (the code below): the bar keeps its exact length, and no sliver is left after the last whole unit.
+     Cut each bar into its rounded count of equal parts (the code below, and `unit-stack`): the bar keeps its exact length, and no sliver is left after the last whole unit.
    - **A container and its content.** A Bar to the top of the scale as the vessel and a Bar to the value inside it (a gauge, a tank, a battery, a glass), as `column` does.
    - **One small picture per unit.** An inline SVG in each Cell, as `waffle` does with its drops.
    - **The stroke of the subject's instrument.** Dotted leaders for a receipt, round caps for a transit line, hollow bodies for the days a stock rose, a slanted end for speed.
