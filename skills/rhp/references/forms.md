@@ -22,7 +22,7 @@ rhp draws all of these; the recipe named has the technique, not the design.
 
 | The subject has | The form that carries it | Technique |
 |---|---|---|
-| a cycle that turns (hours of a day, days of a week, months, seasons, a rotation) | a ring or a dial with the cycle around it, or a calendar grid | `donut` (wedges from shares), `radial-bars` (arcs), `heatmap` (a grid of Cells) |
+| a cycle that turns (hours of a day, days of a week, months, seasons, a rotation) | a ring or a dial with the cycle around it, or a calendar grid | `dial` (arcs around a 24-hour face), `donut` (wedges from shares), `radial-bars` (arcs), `heatmap` (a grid of Cells) |
 | things known by their outline (buildings, mountains, animals, ships, bottles) | each one drawn in its own outline, to scale, on one ground line | `silhouettes` (a `shape()` per row on a vertical Bar) |
 | units a reader can count (people, seats, days, coins, floors) | one small mark per unit, or a bar cut into units | `waffle` (Cells, a picture in each), `unit-stack` (a Bar cut by a mask) |
 | something that fills (rain, fuel, a battery, a budget, a quota) | a vessel up to the top of the scale, with its content inside | `column` (a tube and its water), `bullet` (bands and a target) |
@@ -58,6 +58,7 @@ The headline will be its answer.
 | see progress toward goals | a share of a target per goal | radial bars, or bullets | `radial-bars`, `bullet` |
 | see actual against target | actual, target, quality bands | bullet | `bullet` |
 | follow one measure over time | a value per date | line | `line` |
+| follow a measure that grows by multiples, and its falls | a value per date, over a wide range | a line on a log scale | `log-line` |
 | compare a few measures over time | a value per date per series | multi-line | `multi-line` |
 | see a quantity's volume over time | a value per hour or day | area | `area` |
 | see change between two dates per item | two values per item | slope | `slope` |
@@ -74,6 +75,7 @@ The headline will be its answer.
 | see a value over two categories | a grid of values (day by hour) | heatmap | `heatmap` |
 | see two groups across ordered bands | two values per band | pyramid | `pyramid` |
 | see things known by their shape at their size | one value per item, each item with an outline | silhouettes to scale | `silhouettes` |
+| see how a day or another cycle splits | parts that add up to the cycle | a dial | `dial` |
 | follow one part of a total over periods, and count it | parts per period that add up | unit stacks with the part at the foot | `unit-stack` |
 | see a schedule and its progress | tasks with start, end, progress | gantt | `gantt` |
 | follow prices with their range | open, high, low, close per day | candlestick | `candlestick` |
@@ -145,7 +147,9 @@ The interaction listed is the recipe's; interaction.md has the others.
 | `violin` | full distributions of groups | 7, `density()` | a switch that morphs the shapes |
 | `strip` | every value of a few groups | 6 | readout of a dot |
 | `pyramid` | two sides of a population by age | 2 | an age picked lights everyone that age or older |
-| `silhouettes` | ten towers to scale, each in its own outline, on one ground line | 1, vertical, `shape()` per row | readout of the tower picked; a dimension bracket |
+| `silhouettes` | ten towers to scale, each in its own outline, on one street | 1, vertical, `shape()` per row | readout of the tower picked, its level carried to the tallest |
+| `dial` | the parts of a day around a 24-hour dial | 10 + 9 | a hand that turns to the part picked, a readout in the hub |
+| `log-line` | ten years of a price on a ladder of doublings, its falls shaded | 5 + 7 + 8 + 9, log scale | a crosshair readout by pointer, tap, drag or keys |
 | `unit-stack` | monthly spending as piles of coins, one part at the foot of every pile | 3 (stack), units by a mask | a picker of parts |
 | `gantt` | tasks over weeks, progress, today | 2 + 8 + 9 | readout of a task and its dependencies |
 | `candlestick` | daily open, high, low, close | 2 + 8 | a crosshair and price readout |

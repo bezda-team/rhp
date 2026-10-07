@@ -4,215 +4,242 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The world's tallest buildings</title>
-<meta name="description" content="Silhouettes: each item drawn in its own outline (a shape() per row on a vertical Bar) to one scale on one ground line, its value on its tip, a dimension bracket between two values, and a readout of the item the reader points at, taps or reaches with the keyboard. Use it for things a reader knows by their shape: buildings, mountains, ships, bottles, animals.">
+<meta name="description" content="Silhouettes: each item drawn in its own outline (a shape() per row on a vertical Bar) to one scale on one street, its height on its top, the picked one's level carried across to the tallest with a dimension line, names on the street on wide screens and ranks with a key on narrow ones. Use it for things a reader knows by their shape: buildings, mountains, ships, bottles, animals.">
 <!--
   A recipe gives technique, not a design.
-  Take: each item drawn in its own outline with a shape() per row on a vertical Bar, to scale on one ground line, its value on its tip; a dimension bracket between two values; a readout plaque; and a narrow layout that keeps the outlines, numbers them and lists the names under the chart.
-  Leave: the design. This poster was made for its own subject (the ten tallest buildings as a comparative-heights plate: towers in a hazy sky, the headline set in the empty sky beside the tallest spire, a street-level plaque).
+  Take: an outline per row built from measured profiles with shape(), drawn to one scale on one ground line; a dashed level from the picked item's top across to the leader, with a dimension line for the gap; a slat type per width (names on the street, or ranks with a key below); and a readout of the picked item.
+  Leave: the design. This poster was made for its own subject (the ten tallest buildings as a skyline on one street under a pale blue sky, the headline set in the sky over the lowest towers, the street a dark band holding the names, the readout and the note).
   Its look, the place of its parts and the way its marks are drawn say that subject: design yours from your own (design.md, section 2).
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Hanken+Grotesk:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Barlow:wght@400;500;600;700&display=swap">
 <script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
 <style>
-  /* The look: a hazy sky as the paper, the towers in its own deeper haze, the tallest in the orange of the low sun */
+  /* Look: the sky over one imaginary street. A pale daytime sky for the paper, the towers in its own haze,
+     the one in focus in deep navy, the street a navy ground, and a surveyor's red for the measurement. */
   :root {
-    --page: #aec1cc;
-    --paper: #d5e5ec;
-    --ink: #0c2230;
-    --soft: #4b6170;
-    --rule: #b4c7d1;
-    --accent: #a6390d;
-    --quiet: #5b7b8e;
-    --display: "League Gothic", "Arial Narrow", "Roboto Condensed", sans-serif;
-    --text: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
-    --ruler: 46px; /* the room left of the towers for the height scale, the same as the Level slat's room */
+    --page: #9fb9d4; --sky: #c4d9ee; --paper: #dbe8f5; --ink: #0f2540; --soft: #3d5878; --rule: #b7cde2;
+    --accent: #c8102e; --quiet: #5b789c;
+    --ground: #0f2540; --on-ground: #e4edf7; --ground-soft: #a9bdd6;
+    --display: "League Gothic", "Arial Narrow", Impact, sans-serif;
+    --text: Barlow, "Helvetica Neue", Arial, sans-serif;
+    --pad: 52px;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; padding: 48px 16px; background: var(--page, #aec1cc); }
+  body { margin: 0; padding: 48px 16px; background: var(--page, #9fb9d4); }
 
-  /* The poster: on a phone its parts stack; from 900px the words float in the empty sky beside Burj Khalifa's spire */
-  .poster { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 1040px; margin: 0 auto; padding: 40px 48px 26px; background: var(--paper); color: var(--ink); font: 16px/1.5 var(--text); }
+  /* The poster: sky on top, the street at the foot. Every part is a grid item, placed per width below. */
+  .poster { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 1120px; margin: 0 auto; padding: var(--pad) var(--pad) 0; overflow: hidden;
+    color: var(--ink); font: 16px/1.5 var(--text); background: linear-gradient(var(--sky), var(--paper) 72%);
+    box-shadow: 0 30px 60px -34px rgb(15 37 64 / .6);
+    grid-template-areas: "kicker" "headline" "dek" "stage" "readout" "key" "note"; }
   .poster figcaption { display: contents; }
-  .poster .kicker { font: 700 12px/1.3 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
-  .poster .headline { margin-top: 10px; max-width: 15em; font: 400 clamp(40px, 5.2vw, 58px)/.95 var(--display); letter-spacing: .005em; text-wrap: balance; }
-  .poster .dek { margin-top: 12px; max-width: 54ch; font-size: 16px; line-height: 1.45; color: var(--soft); }
-  .poster .stage { min-width: 0; margin-top: 22px; }
-  .poster .note { display: block; margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--rule); font-size: 12px; line-height: 1.5; color: var(--soft); }
+  .poster .kicker { grid-area: kicker; margin-bottom: 12px; font: 700 13px/1.3 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+  .poster .kicker::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 10px; border-radius: 50%; background: var(--accent); vertical-align: 1px; }
+  .poster .headline { grid-area: headline; max-width: 13em; font: 400 clamp(44px, 5.6vw, 66px)/.95 var(--display); letter-spacing: .005em; text-wrap: balance; }
+  .poster .dek { grid-area: dek; max-width: 46ch; margin-top: 16px; font-size: 17px; line-height: 1.45; color: var(--soft); }
+  .poster .stage { grid-area: stage; position: relative; min-width: 0; margin-top: 18px; }
+  /* The street: a navy ground under the towers, from edge to edge of the poster, as tall as the room for the names */
+  .poster .stage::before { content: ""; position: absolute; left: calc(-1 * var(--pad)); right: calc(-1 * var(--pad)); bottom: 0; height: var(--street); background: var(--ground); }
+  /* Everything after the chart stands on the street */
+  .poster .readout, .poster .key, .poster .note { margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); background: var(--ground); color: var(--on-ground); }
+  .poster .readout { grid-area: readout; min-height: calc(3lh + 18px); margin-top: 0; margin-bottom: 0; padding-top: 8px; padding-bottom: 10px; font-size: 17px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  .poster .readout b { font-weight: 700; }
+  .poster .readout span { display: block; color: var(--ground-soft); }
+  .poster .key { grid-area: key; margin-block: 0; padding-block: 6px 4px; list-style: none; font-size: 15px; line-height: 1.35; }
+  .poster .key li { display: grid; grid-template-columns: 1.6em minmax(0, 1fr) auto; column-gap: 8px; padding: 5px 0; border-top: 1px solid rgb(255 255 255 / .12); cursor: default; }
+  .poster .key li b { font: 400 19px/1 var(--display); color: var(--ground-soft); }
+  .poster .key li em { font-style: normal; color: var(--ground-soft); }
+  .poster .key li span { font-variant-numeric: tabular-nums; }
+  .poster .key li.lit { font-weight: 700; }
+  .poster .key li.lit b { color: var(--on-ground); }
+  .poster .note { grid-area: note; display: block; padding-top: 12px; padding-bottom: 26px; border-top: 1px solid rgb(255 255 255 / .16); font-size: 12.5px; line-height: 1.5; color: var(--ground-soft); }
   .poster :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-  /* The readout: a plaque at street level, under the ground line. Every tower's plaque is drawn in the same cell and
-     only the lit one is shown, so the cell is always as tall as the longest and nothing under it moves */
-  .plaque { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 24px; margin-top: 14px; padding: 10px 0 4px; }
-  .plaque .versions { display: grid; }
-  .plaque .version { grid-area: 1 / 1; display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: center; column-gap: 14px; margin: 0; visibility: hidden; }
-  .plaque .version.on { visibility: visible; }
-  .plaque .metres { font: 400 52px/1 var(--display); color: var(--accent); white-space: nowrap; }
-  .plaque .metres small { font-size: 28px; }
-  .plaque .about { display: grid; min-width: 0; font-size: 14.5px; line-height: 1.4; color: var(--soft); }
-  .plaque .about strong { font-size: 17px; color: var(--ink); }
-  .plaque .hint { max-width: 15em; font-size: 13px; line-height: 1.4; color: var(--soft); text-align: right; }
-
-  /* The key: on narrow screens the towers carry their rank, and the names are listed here, in columns that read down */
-  .key { columns: 2 17em; column-gap: 24px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 13.5px; line-height: 1.35; }
-  .key li { display: flex; gap: 8px; padding: 1px 0; break-inside: avoid; }
-  .key b { min-width: 1.4em; font-variant-numeric: tabular-nums; text-align: right; }
-  .key span { color: var(--soft); }
-  .key .on, .key .on span { color: var(--accent); }
-
-  @media (min-width: 900px) {
-    .poster { grid-template-columns: calc(var(--ruler) + (100% - var(--ruler)) * .3) minmax(0, 1fr); grid-template-rows: auto auto auto 1fr auto auto; }
-    .poster .stage { grid-column: 1 / -1; grid-row: 1 / 5; margin-top: 0; }
-    .poster .kicker, .poster .headline, .poster .dek { grid-column: 2; position: relative; z-index: 2; padding-left: 14px; }
-    .poster .kicker { grid-row: 1; margin-top: 30px; }
-    .poster .headline { grid-row: 2; }
-    .poster .dek { grid-row: 3; }
-    .plaque, .poster .note { grid-column: 1 / -1; }
-    .key { display: none; }
-  }
-  @media (max-width: 899px) {
-    .poster .headline, .poster .dek { max-width: none; }
-    .plaque { grid-template-columns: minmax(0, 1fr); row-gap: 8px; }
-    .plaque .hint { max-width: none; text-align: left; }
+  /* Wide screens: the kicker and the headline float in the sky over the five lowest towers, the dek over the next three.
+     The columns follow the towers: the plot is the stage less the 76px room after the last tower, one tenth per tower.
+     This place suits these heights: with other data, check that the words still clear the tips (pitfalls.md, "Text and
+     layers laid over the chart"). */
+  @media (min-width: 980px) {
+    .poster { grid-template-columns: calc((100% - 76px) * .5) calc((100% - 76px) * .3) minmax(0, 1fr); grid-template-rows: auto auto 1fr auto auto;
+      grid-template-areas: "kicker dek ." "headline dek ." ". . ." "readout readout readout" "note note note"; }
+    .poster .headline, .poster .kicker, .poster .dek { position: relative; z-index: 2; }
+    .poster .headline { padding-right: 28px; }
+    .poster .dek { align-self: start; margin-top: 2px; padding-right: 20px; font-size: 16px; }
+    .poster .stage { grid-area: 1 / 1 / 4 / 4; align-self: end; margin-top: 0; }
+    .poster .readout { min-height: calc(2lh + 18px); }
+    .poster .key { display: none; }
   }
   @media (max-width: 640px) {
     body { padding: 16px 16px 32px; }
-    .poster { padding: 26px 18px 18px; }
-    .poster .dek { font-size: 15px; }
-    .plaque .version { grid-template-columns: 74px minmax(0, 1fr); align-items: start; column-gap: 12px; }
-    .plaque .metres { font-size: 44px; }
-    .plaque .metres small { font-size: 24px; }
+    :root { --pad: 16px; }
+    .poster { padding-top: 24px; }
+    .poster .kicker { font-size: 12px; margin-bottom: 10px; }
+    .poster .dek { margin-top: 12px; font-size: 15px; }
+    .poster .stage { margin-top: 14px; }
+    .poster .readout { font-size: 15px; }
+  }
+  /* The longest names take four lines on the narrowest phones */
+  @media (max-width: 360px) {
+    .poster .readout { min-height: calc(4lh + 18px); }
   }
 </style>
 </head>
 <body>
 <div id="chart"></div>
 <script type="module">
-import { Chart, Scale, Plot, Bar, Tick, Label, Place, Poster, Show, slat, shape, nice, every, sortBy, html, render, createSignal } from "@bezda/rhp/standalone";
+import { Chart, Plot, Bar, Tick, Label, Place, Poster, Show, slat, shape, nice, html, render, createSignal } from "@bezda/rhp/standalone";
 
-// A tower's outline: [share of its height, half its width as a share of the bar] from the ground up,
-// drawn up the left side and mirrored down the right
-const tower = (...profile) => shape(
-  ...profile.map(([up, half], i) => [i ? "L" : "M", up, 0.5 - half]),
-  ...profile.slice().reverse().map(([up, half]) => ["L", up, 0.5 + half]),
-  ["Z"],
-);
-
-// Data: the ten tallest completed buildings, height to the architectural top in metres (spires count, antennas do not).
-// Source: CTBUH, The Skyscraper Center, the 100 tallest completed buildings in the world, 2026.
-const DATA_YEAR = 2026;
-const TOWERS = [
-  { name: "Burj Khalifa", city: "Dubai", country: "United Arab Emirates", year: 2010, floors: 163, height: 828,
-    outline: tower([0, .46], [.07, .46], [.07, .4], [.17, .4], [.17, .34], [.27, .34], [.27, .28], [.37, .28], [.37, .23], [.47, .23], [.47, .18],
-      [.56, .18], [.56, .13], [.64, .13], [.64, .09], [.71, .09], [.71, .06], [.8, .045], [.9, .025], [1, .008]) },
-  { name: "Merdeka 118", listed: "Menara Merdeka Maybank", city: "Kuala Lumpur", country: "Malaysia", year: 2023, floors: 118, height: 679,
-    outline: tower([0, .37], [.58, .33], [.68, .26], [.75, .13], [.77, .05], [1, .008]) },
-  { name: "Shanghai Tower", city: "Shanghai", country: "China", year: 2015, floors: 128, height: 632,
-    outline: shape(["M", 0, .06], ["L", .45, .11], ["L", .8, .19], ["L", 1, .25], ["L", .95, .75], ["L", .8, .81], ["L", .45, .89], ["L", 0, .94], ["Z"]) },
-  { name: "Makkah Royal Clock Tower", short: "Makkah Clock Tower", city: "Mecca", country: "Saudi Arabia", year: 2012, floors: 120, height: 601, clock: .69,
-    outline: tower([0, .48], [.11, .48], [.11, .34], [.42, .34], [.42, .3], [.62, .3], [.62, .32], [.76, .32], [.76, .22], [.8, .18], [.83, .11],
-      [.87, .09], [.88, .045], [.96, .025], [1, .01]) },
-  { name: "Ping An Finance Center", short: "Ping An Finance", city: "Shenzhen", country: "China", year: 2017, floors: 115, height: 599,
-    outline: tower([0, .4], [.06, .4], [.74, .33], [.88, .25], [.94, .12], [.955, .04], [1, .012]) },
-  { name: "Lotte World Tower", city: "Seoul", country: "South Korea", year: 2017, floors: 123, height: 555,
-    outline: tower([0, .38], [.3, .35], [.6, .28], [.82, .19], [.94, .12], [1, .085], [.965, 0]) },
-  { name: "One World Trade Center", short: "One World Trade", city: "New York", country: "United States", year: 2014, floors: 94, height: 541,
-    outline: tower([0, .35], [.105, .35], [.105, .33], [.77, .24], [.77, .08], [.79, .07], [.79, .02], [1, .008]) },
-  { name: "Guangzhou CTF Finance Centre", short: "Guangzhou CTF", city: "Guangzhou", country: "China", year: 2016, floors: 111, height: 530,
-    outline: tower([0, .38], [.6, .37], [.6, .345], [.78, .335], [.78, .3], [.9, .29], [.9, .25], [1, .23]) },
-  { name: "Tianjin CTF Finance Centre", short: "Tianjin CTF", city: "Tianjin", country: "China", year: 2019, floors: 97, height: 530,
-    outline: tower([0, .36], [.15, .39], [.4, .385], [.65, .335], [.82, .26], [.92, .18], [.97, .11], [1, .05]) },
-  { name: "CITIC Tower", city: "Beijing", country: "China", year: 2018, floors: 109, height: 528,
-    outline: tower([0, .41], [.2, .37], [.48, .325], [.75, .35], [.95, .385], [.95, .37], [1, .37]) },
+// Data: the ten tallest completed buildings in the world, height to the architectural top in metres
+// (spires count, antennas do not), from the Council on Tall Buildings and Urban Habitat, October 2026.
+const BUILDINGS = [
+  { name: "Burj Khalifa", city: "Dubai", year: 2010, floors: 163, height: 828 },
+  { name: "Menara Merdeka Maybank", formerly: "Merdeka 118", city: "Kuala Lumpur", year: 2023, floors: 118, height: 679 },
+  { name: "Shanghai Tower", city: "Shanghai", year: 2015, floors: 128, height: 632 },
+  { name: "Makkah Royal Clock Tower", city: "Mecca", year: 2012, floors: 120, height: 601 },
+  { name: "Ping An Finance Center", city: "Shenzhen", year: 2017, floors: 115, height: 599 },
+  { name: "Lotte World Tower", city: "Seoul", year: 2017, floors: 123, height: 555 },
+  { name: "One World Trade Center", city: "New York", year: 2014, floors: 94, height: 541 },
+  { name: "Guangzhou CTF Finance Centre", city: "Guangzhou", year: 2016, floors: 111, height: 530 },
+  { name: "Tianjin CTF Finance Centre", city: "Tianjin", year: 2019, floors: 97, height: 530 },
+  { name: "CITIC Tower", city: "Beijing", year: 2018, floors: 109, height: 528 },
 ];
+const AS_OF = 2026;
+const SOURCE = "Source: Council on Tall Buildings and Urban Habitat (CTBUH), The Skyscraper Center, completed buildings, October 2026. "
+  + "Height to the architectural top: spires count, antennas do not. Merdeka 118 was renamed Menara Merdeka Maybank in July 2026. "
+  + "Outlines are simplified side views, all drawn to one scale.";
 
-// What the headline, the dek and the readout say, computed from a sorted copy of the data
-const count = new Intl.NumberFormat("en-US");
-const WORDS = ["None", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
-const ranked = TOWERS.map((t, i) => ({ ...t, i })).sort((a, b) => b.height - a.height);
-const top = ranked[0];
-const SECOND = ranked[1];
-const gap = top.height - SECOND.height;
-const rankOf = (t) => 1 + TOWERS.filter((o) => o.height > t.height).length; // ties share a rank, as in CTBUH's table
-const inChina = TOWERS.filter((t) => t.country === "China").length;
-const LEAD = top.i; // the tower the headline names: lit until the reader picks another
-const fullName = (t) => (t.listed ? `${t.name} (${t.listed})` : t.name);
-const against = (t) => (t === TOWERS[LEAD] ? `${gap} m taller than any other building` : `${count.format(top.height - t.height)} m shorter than ${top.name}`);
-const facts = (t) => `${t.city}, ${t.country} · finished ${t.year} · ${t.floors} floors`;
-const say = (t) => `${rankOf(t)}. ${fullName(t)}, ${t.city}: ${count.format(t.height)} m, finished ${t.year}, ${t.floors} floors`;
-const scale = nice(0, top.height); // 0 to 1,000 m
+// Outlines: each building seen from the side, simplified, as [metres above the street, half its width in metres]
+// from the street up; the left side, and the right side when it differs. Every outline is drawn on one scale, BOX metres wide.
+const PROFILE = {
+  "Burj Khalifa": {
+    left: [[0, 72], [150, 72], [150, 60], [260, 60], [260, 48], [365, 48], [365, 37], [455, 37], [455, 27], [530, 27], [530, 18], [590, 18], [590, 11], [640, 11], [640, 6], [828, 0.6]],
+    right: [[0, 72], [100, 72], [100, 64], [205, 64], [205, 52], [310, 52], [310, 42], [410, 42], [410, 31], [495, 31], [495, 22], [560, 22], [560, 14], [615, 14], [615, 9], [650, 9], [650, 5], [828, 0.6]],
+  },
+  "Menara Merdeka Maybank": { left: [[0, 34], [90, 37], [260, 35], [380, 30], [460, 24], [510, 16], [540, 8], [560, 4], [679, 0.6]] },
+  "Shanghai Tower": {
+    left: [[0, 42], [150, 40], [300, 36], [450, 31], [560, 27], [632, 24]],
+    right: [[0, 42], [150, 40], [300, 36.5], [450, 32], [560, 28], [588, 27]],
+  },
+  "Makkah Royal Clock Tower": { left: [[0, 74], [75, 74], [75, 50], [115, 50], [115, 30], [385, 30], [385, 35], [455, 35], [455, 27], [485, 21], [505, 14], [520, 8], [530, 4], [601, 0.8]] },
+  "Ping An Finance Center": { left: [[0, 37], [200, 35], [400, 31], [500, 27], [545, 21], [575, 12], [592, 4], [599, 0.8]] },
+  "Lotte World Tower": { left: [[0, 36], [100, 35], [200, 32.5], [300, 28], [400, 21.5], [470, 15.5], [520, 10], [555, 5]] },
+  "One World Trade Center": { left: [[0, 31], [57, 31], [410, 21], [410, 22.5], [417, 22.5], [417, 3], [541, 0.6]] },
+  "Guangzhou CTF Finance Centre": { left: [[0, 34], [135, 34], [135, 32], [270, 32], [270, 30], [395, 30], [395, 27], [478, 27], [530, 15]] },
+  "Tianjin CTF Finance Centre": { left: [[0, 29], [90, 31.5], [190, 31], [290, 28], [380, 23.5], [450, 19], [495, 14], [518, 8], [530, 0.8]] },
+  "CITIC Tower": { left: [[0, 39], [110, 34], [230, 29.5], [330, 28], [410, 29.5], [470, 32.5], [510, 35], [528, 36]] },
+};
+const BOX = 150;
+// A profile as a Bar's outline: along runs from the street (0) to the top (1), across from the left (0) to the right (1)
+const outline = ({ left, right = left }) => {
+  const top = Math.max(...left.map(([h]) => h), ...right.map(([h]) => h));
+  return shape(
+    ...left.map(([h, w], i) => [i ? "L" : "M", h / top, 0.5 - w / BOX]),
+    ...[...right].reverse().map(([h, w]) => ["L", h / top, 0.5 + w / BOX]),
+    ["Z"],
+  );
+};
 
-// The chart's font and colors, read from the page's tokens
-const THEME = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--quiet)"] };
-const ACCENT = "series-1";
-const QUIET = "series-2";
+// What depends on the data: ranks, places on the street (lowest on the left), the leader and the runner-up
+const HEIGHT = BUILDINGS.map((b) => b.height);
+const scale = nice(0, Math.max(...HEIGHT)); // 0 to 1,000 m: the sky above the towers holds the headline
+const byHeight = BUILDINGS.map((b, i) => i).sort((a, b) => HEIGHT[b] - HEIGHT[a]); // tallest first
+const LEAD = byHeight[0];
+const SECOND = byHeight[1];
+const RANK = HEIGHT.map((h) => 1 + HEIGHT.filter((other) => other > h).length); // ties share a rank, as in CTBUH's table
+const POS = BUILDINGS.map((b, i) => BUILDINGS.length - 1 - byHeight.indexOf(i)); // place on screen, lowest first
+const OUTLINE = BUILDINGS.map((b) => outline(PROFILE[b.name] ?? { left: [[0, 30], [b.height, 30]] }));
+const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve",
+  "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"];
+const word = (n) => WORDS[n] ?? String(n);
+const cap = (s) => s[0].toUpperCase() + s.slice(1);
+const metres = (m) => `${m} m`;
+const fullName = (i) => BUILDINGS[i].name + (BUILDINGS[i].formerly ? ` (formerly ${BUILDINGS[i].formerly})` : "");
+const lead = BUILDINGS[LEAD];
+const margin = lead.height - BUILDINGS[SECOND].height;
+const cities = new Set(BUILDINGS.map((b) => b.city)).size;
+// The tower the picked one is measured against the leader with: itself, or the runner-up when the leader is picked
+const against = (i) => (i === LEAD ? SECOND : i);
+const compare = (i) => (i === LEAD
+  ? `${metres(margin)} taller than ${BUILDINGS[SECOND].name}`
+  : `${metres(lead.height - HEIGHT[i])} shorter than the ${lead.name}`);
+const facts = (i) => `${metres(HEIGHT[i])}, ${BUILDINGS[i].floors} floors, finished ${BUILDINGS[i].year}`;
+const say = (i) => `${RANK[i]}. ${fullName(i)}, ${BUILDINGS[i].city}: ${facts(i)}; ${compare(i)}.`;
 
-// Slat types
-// A tower: its outline to its height, its height on its tip, and under the ground line its name and city
-// (wide screens) or its rank (narrow screens, with the names in the key under the chart)
+// Slat type: one tower in its own outline, its height over its top, its name on the street. The level of the tower the
+// reader picked runs from its top across to the leader, where a red dimension line measures what is left above it.
 const TOWER_CSS = `
   .tower { cursor: default; }
-  .tower:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: -2px; }
-  .clock { position: absolute; left: 50%; bottom: calc(var(--at) * 100%); width: 44%; aspect-ratio: 1; translate: -50% 50%; border: 1.5px solid var(--rhp-surface); border-radius: 50%; }
-  .height { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .lit .height { font-size: 15px; font-weight: 700; color: var(--rhp-series-1); }
-  .name { padding-top: 7px; white-space: normal; text-align: center; line-height: 1.2; }
-  .name b { display: block; font-size: 12.5px; font-weight: 600; text-wrap: balance; }
-  .name small { display: block; margin-top: 2px; font-size: 11.5px; color: var(--rhp-muted); }
-  .rank { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .lit .name b, .lit .rank { color: var(--rhp-series-1); }
-  /* The headline's gap, drawn as an architect's dimension line between the two tallest tips, at the lead's right edge */
-  .dim { background: none; }
-  .dim::before { content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: 7px; border: solid var(--rhp-series-1); border-width: 1px 1px 1px 0; }
-  .gap { position: absolute; left: 100%; top: 50%; translate: 5px -50%; font-size: 12px; font-weight: 700; line-height: 1; color: var(--rhp-series-1); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  @container (max-width: 560px) { .unit { display: none; } .height, .lit .height, .gap { font-size: 11px; } .gap { translate: 3px -50%; } }
+  /* Focus rings the name on the street: a ring round the whole tower would cross the headline set in the sky */
+  .tower:focus-visible { outline: none; }
+  .tower:focus-visible .name { outline: 2px solid var(--rhp-surface); outline-offset: 3px; }
+  .tip { --rhp-label-gap: 5px; font: 400 21px/1 "League Gothic", "Arial Narrow", sans-serif; letter-spacing: .02em; color: var(--rhp-muted); }
+  .lit .tip { color: var(--rhp-ink); font-size: 25px; }
+  .level { --rhp-tick-width: 2px; background: repeating-linear-gradient(90deg, var(--rhp-ink) 0 5px, transparent 5px 9px); }
+  .level.none { visibility: hidden; }
+  .level.first { translate: 0 50%; }
+  .level.last { translate: -100% 50%; }
+  .dim { translate: var(--dx) 0; }
+  .cap { translate: 0 50%; }
+  .gap { position: absolute; left: calc(var(--dx) + 7px); top: 0; translate: 0 -50%; font: 400 36px/1 "League Gothic", "Arial Narrow", sans-serif; color: var(--rhp-series-1); white-space: nowrap; }
+  .name { --rhp-label-gap: 10px; white-space: normal; text-align: center; line-height: 1.15; font-size: 12.5px; color: var(--rhp-surface); }
+  .name b { display: block; padding-bottom: 4px; font-weight: 600; }
+  .name i, .name small { display: block; font-style: normal; font-size: 11.5px; color: color-mix(in oklab, var(--rhp-surface) 72%, var(--rhp-ink)); }
+  .lit .name b { font-weight: 700; text-decoration: underline 2px; text-underline-offset: 2px; }
+  .rank { font: 400 19px/1 "League Gothic", "Arial Narrow", sans-serif; color: color-mix(in oklab, var(--rhp-surface) 72%, var(--rhp-ink)); }
+  .lit .rank { color: var(--rhp-surface); }
+  @container (max-width: 640px) {
+    .tip { font-size: 16px; }
+    .lit .tip { font-size: 19px; }
+    .tip .u { display: none; }
+    .gap { font-size: 26px; }
+  }
 `;
-const towerSlat = (named) => (d) => html`
-  <div class=${() => (d.lit ? "tower lit" : "tower")} data-row=${() => d.index} aria-label=${() => say(TOWERS[d.index])}>
-    <${Bar} to=${() => d.height} shape=${() => d.outline} color=${() => (d.lit ? ACCENT : QUIET)}>
-      ${() => (d.clock ? html`<i class="clock" style=${`--at: ${d.clock}`}></i>` : null)}
+const tower = (d) => html`
+  <div class=${() => (d.lit ? "tower lit" : "tower")} data-row=${() => d.index} aria-label=${() => say(d.index)}
+    style=${() => `--dx: ${d.wide ? 14 : 8}px`}>
+    <${Bar} to=${() => d.height} thick=${1} shape=${() => d.outline} color=${() => (d.lit ? "ink" : "series-2")} />
+    <${Tick} at=${() => d.level} thick=${() => (d.span === "mid" ? 1 : 0.5)} class=${() => "level " + d.span} />
+    <${Label} at=${() => d.height} class="tip">${() => d.height}<span class="u"> m</span><//>
+    <${Label} edge="start" class="name">
+      <${Show} when=${() => d.wide} fallback=${html`<b class="rank">${() => d.rank}</b>`}>
+        <b>${() => d.name}</b>
+        <${Show} when=${() => d.formerly}><i>(${() => d.formerly})</i><//>
+        <small>${() => d.city}</small>
+      <//>
     <//>
-    <${Show} when=${() => d.index === LEAD}>
-      <${Bar} from=${SECOND.height} to=${top.height} thick=${1} class="dim"><span class="gap">${gap}<span class="unit">${"\u00a0m"}</span></span><//>
+    <${Show} when=${() => d.lead}>
+      <${Bar} from=${() => d.level} to=${() => d.height} thick="2px" color="series-1" class="dim" />
+      <${Tick} at=${() => d.level} thick=${() => `${d.wide ? 22 : 14}px`} color="series-1" class="cap" />
+      <${Tick} at=${() => d.height} thick=${() => `${d.wide ? 22 : 14}px`} color="series-1" class="cap" />
+      <${Place} at=${() => (d.level + d.height) / 2}><b class="gap">${() => metres(d.height - d.level)}</b><//>
     <//>
-    <${Label} at=${() => d.height} class="height">${() => count.format(d.height)}<span class="unit">${" m"}</span><//>
-    ${named
-      ? html`<${Label} edge="start" class="name" aria-hidden="true"><b>${() => d.short ?? d.name}</b><small>${() => d.city}</small><//>`
-      : html`<${Label} edge="start" class="name rank" aria-hidden="true">${() => rankOf(TOWERS[d.index])}<//>`}
   </div>`;
-const NamedTower = slat({ inset: 0.19, room: { start: 58, end: 28 }, css: TOWER_CSS }, towerSlat(true));
-const RankedTower = slat({ inset: 0.19, room: { start: 26, end: 22 }, css: TOWER_CSS }, towerSlat(false));
+// The same tower with the room each width needs: names on the street on wide screens, ranks on narrow ones
+const TowerNamed = slat({ room: { start: 88, end: 8, after: 76 }, css: TOWER_CSS }, tower);
+const TowerRanked = slat({ room: { start: 32, end: 8, after: 46 }, css: TOWER_CSS }, tower);
 
-// The height scale: a short mark every 100 m along the left edge, numbered every 200 m
-const Level = slat({
-  room: { before: 46 },
-  css: `
-    .level { position: absolute; right: 2px; top: 0; translate: 0 -50%; display: flex; align-items: center; gap: 5px;
-      font-size: 11px; line-height: 1; color: var(--rhp-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .level::after { content: ""; width: 7px; height: 1px; background: currentColor; }
-    .level.minor::after { width: 4px; }
-  `,
-}, (t) => html`
-  <div>
-    <${Place} at=${() => t.at} across=${0}>
-      <span class=${() => (t.at % 200 ? "level minor" : "level")}>${() => (t.at % 200 ? "" : count.format(t.at))}</span>
-    <//>
-  </div>`);
+// The chart's font and colors, read from the page's tokens
+const THEME = {
+  font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--on-ground)",
+  series: ["var(--accent)", "var(--quiet)"],
+};
 
-// The ground line every tower stands on
-const Ground = slat({ room: {}, css: `.ground { --rhp-tick-width: 2px; }` }, () => html`
-  <div><${Tick} at=${0} thick=${1} class="ground" /></div>`);
-
-// Chart component: the tower the reader points at, taps or reaches with the keyboard is lit and read out on the plaque
-function TallestBuildings() {
-  const wideQuery = matchMedia("(min-width: 900px)");
-  const [wide, setWide] = createSignal(wideQuery.matches);
-  wideQuery.addEventListener("change", (e) => setWide(e.matches));
-
+// Chart component: the tower the reader points at, taps or reaches with the keyboard is lit and measured against the leader
+function Skyline() {
+  const media = matchMedia("(min-width: 980px)");
+  const [wide, setWide] = createSignal(media.matches);
+  media.addEventListener("change", (e) => setWide(e.matches));
   const [picked, setPicked] = createSignal(null);
   const lit = () => picked() ?? LEAD;
-  // The row of the slat an element is in, or null (between towers, on the scale or the text)
+  const ref = () => against(lit());
+  // Where the level line runs: half of the measured tower's band (first), every band between (mid), half of the leader's (last)
+  const span = (i) => {
+    const p = POS[i], a = POS[ref()], b = POS[LEAD];
+    return p === a ? "first" : p === b ? "last" : p > a && p < b ? "mid" : "none";
+  };
+  // The row of the element an event landed on (a tower, or a line of the key), or null
   const rowOf = (el) => {
     const root = el.closest("[data-row]");
     return root ? +root.dataset.row : null;
@@ -227,44 +254,44 @@ function TallestBuildings() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
-  // The skyline: names under the towers on a wide screen, ranks on a narrow one (each with its own room)
-  const skyline = (Tower, height) => html`
-    <${Chart} orientation="vertical" height=${height} scale=${[scale.min, scale.max]}
-      label="The ten tallest completed buildings in the world, height in metres" theme=${THEME}>
-      <${Scale} ticks=${every(100)}>${Level}<//>
-      <${Plot} rows=${TOWERS} order=${sortBy("height", "desc")} keyboard=${true} lit=${(d) => d.index === lit()}>${Tower}<//>
-      <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${Ground}<//>
-    <//>`;
-
+  const towers = (type) => html`
+    <${Plot} rows=${BUILDINGS} order=${POS} keyboard=${true} rank=${RANK} outline=${OUTLINE}
+      lit=${(d) => d.index === lit()} lead=${(d) => d.index === LEAD} span=${(d) => span(d.index)}
+      level=${() => HEIGHT[ref()]} wide=${wide}>${type}<//>`;
   return html`
     <${Poster}
-      kicker=${`The world's tallest buildings, ${DATA_YEAR}`}
-      title=${`No other building comes within ${gap} m of ${top.name}`}
-      dek=${`The ten tallest finished buildings, drawn to one scale on one ground line, in metres to their architectural top: spires count, antennas do not. ${WORDS[inChina]} of the ten stand in China.`}
-      note=${`Source: Council on Tall Buildings and Urban Habitat (CTBUH), The Skyscraper Center, tallest completed buildings, ${DATA_YEAR}. Outlines are simplified drawings, to scale in height.`}
+      kicker=${`The world's tallest buildings, ${AS_OF}`}
+      title=${`${cap(word(AS_OF - lead.year))} years on, the ${lead.name} still tops the rest by ${metres(margin)}`}
+      dek=${`The ${word(BUILDINGS.length)} tallest finished buildings on Earth, from ${word(cities)} cities, share one street here, each in its own outline and all at one scale. Heights in metres.`}
+      note=${SOURCE}
       onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
-      <div class="stage">
-        <${Show} when=${wide} fallback=${() => skyline(RankedTower, 400)}>${() => skyline(NamedTower, 640)}<//>
+      <div class="stage" style=${() => `--street: ${wide() ? 88 : 32}px`}>
+        <${Chart} orientation="vertical" height=${() => (wide() ? 560 : 360)} scale=${[scale.min, scale.max]} ticks=${false}
+          label=${`The ${word(BUILDINGS.length)} tallest completed buildings in the world, by height in metres`} theme=${THEME}>
+          <${Show} when=${wide} fallback=${() => towers(TowerRanked)}>${() => towers(TowerNamed)}<//>
+        <//>
       </div>
-      <div class="plaque" aria-hidden="true">
-        <div class="versions">
-          ${TOWERS.map((t, i) => html`
-            <p class=${() => (lit() === i ? "version on" : "version")}>
-              <b class="metres">${count.format(t.height)}<small>${"\u00a0m"}</small></b>
-              <span class="about"><strong>${fullName(t)}</strong><span>${facts(t)}</span><span>${against(t)}</span></span>
-            </p>`)}
-        </div>
-        <span class="hint">Point at a tower or tap it; Tab and the arrow keys move along the skyline.</span>
-      </div>
-      <ol class="key" aria-hidden="true">
-        ${ranked.map((t) => html`
-          <li class=${() => (lit() === t.i ? "on" : "")}><b>${rankOf(t)}</b><span>${t.name}, ${t.city}</span></li>`)}
-      </ol>
+      <p class="readout" aria-hidden="true">
+        <${Show} when=${() => picked() != null} fallback="Tap or point at a tower to measure it against the Burj Khalifa.">
+          <b>${() => BUILDINGS[picked()].name}</b>, ${() => BUILDINGS[picked()].city}
+          <span>${() => `${facts(picked())}. ${cap(compare(picked()))}.`}</span>
+        <//>
+      </p>
+      <${Show} when=${() => !wide()}>
+        <ol class="key" aria-hidden="true">
+          ${byHeight.map((i) => html`
+            <li data-row=${i} class=${() => (lit() === i ? "lit" : "")}>
+              <b>${RANK[i]}</b>
+              <div>${fullName(i)}<em>, ${BUILDINGS[i].city}</em></div>
+              <span>${metres(HEIGHT[i])}</span>
+            </li>`)}
+        </ol>
+      <//>
     <//>`;
 }
 
-render(() => html`<${TallestBuildings} />`, document.getElementById("chart"));
+render(() => html`<${Skyline} />`, document.getElementById("chart"));
 </script>
 </body>
 </html>

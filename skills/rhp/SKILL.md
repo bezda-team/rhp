@@ -143,6 +143,8 @@ Its numeric sizes mean pixels, updates are immediate and scan the rows, and init
 | `bullet` | actual against target, with bands |
 | `pyramid` | two sides of one population by age |
 | `silhouettes` | things known by their shape (buildings, ships, bottles), each in its own outline to scale |
+| `dial` | how a day, a week or another cycle splits into parts, around a dial |
+| `log-line` | a quantity that grows by multiples over years, on a log scale, its falls measured |
 | `unit-stack` | a total made of parts over periods, counted out in units, one part to follow |
 
 The rhp MCP server's `rhp_recipe` tool (`rhp:rhp_recipe`) returns the same recipes when the files are not on disk.
