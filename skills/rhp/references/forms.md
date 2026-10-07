@@ -35,7 +35,8 @@ rhp draws all of these; the recipe named has the technique, not the design.
 - The native form is the hero, and the numbers still have to be read: print each value on or beside its mark, since a ring, an outline or a tile is read less exactly than a bar on a shared baseline.
 - When an exact comparison is the whole point, keep bars from one baseline and let the subject show in how the marks are drawn (design.md section 2).
 - When the subject has no form of its own (abstract values, quarters of a year, A against B), the form comes from the reader's question below, and the idea from what the numbers do: the gap, the turn, the outlier.
-- A ring of the parts of a day reads as a clock: a part drawn from midnight to 9 is read as "from midnight to 9". Put each part where it happens in the day, or keep the ring in order of size and leave the hour numerals off it.
+- A ring of the parts of a day reads as a clock: a part drawn from midnight to 9 is read as "from midnight to 9".
+  Put each part where it happens in the day, or keep the ring in order of size and leave the hour numerals off it.
 - Never bend the data to fit the form: a ring is for parts of a cycle or of a whole, an outline is scaled in one direction only, and units are all one size.
 
 ## Start from the reader's question
@@ -92,9 +93,9 @@ These are the patterns the recipes use; recognizing them lets you build a chart 
 1. **One value per slat**: an edge Label for the name, a Bar from 0 (or `from`) to the value, a value Label at its end.
    Recipes: `bar`, `column`, `lollipop` (a thin Bar and a Dot), `histogram`, `waterfall` (Bars from the running total before to the one after), `silhouettes` (a Bar wearing its row's `shape()`).
 2. **Several values on one slat, same scale**: several blocks in the same slat, each at its own value.
-   Recipes: `dumbbell` (two Dots and the Bar between them), `bullet` (band Bars, the actual Bar, a target Tick), `box-plot` (Bars for whiskers and box, Ticks for the median), `candlestick` (a thin Bar for the wick, a wide one for the body), `gantt` (planned, done and late Bars), `pyramid` (a Bar to each side of zero).
+   Recipes: `dumbbell` (two Dots and the Bar between them), `bullet` (band Bars, the actual Bar, a target Tick), `box-plot` (Bars for whiskers and box, Ticks for the median), `candlestick` (a thin Bar for the wick, a wide one for the body), `gantt` (planned, done and late Bars), `pyramid` (a Bar to each side of zero), `unit-stack` (a Bar to the picked part and a Bar from it to the total, each cut into coins by a mask).
 3. **Parts of each slat**: a Plot inside the slat, one inner slat per part.
-   An `overlap` inner Plot puts the parts in one band, which makes a stack (`stacked-bars`, `stacked-100`, with `stackUp()` and `shares()`; `unit-stack` cuts each part into counted units); an inner Plot without `overlap` lays the parts side by side across the band (`grouped-bars`).
+   An `overlap` inner Plot puts the parts in one band, which makes a stack (`stacked-bars`, `stacked-100`, with `stackUp()` and `shares()`); an inner Plot without `overlap` lays the parts side by side across the band (`grouped-bars`).
 4. **A grid**: a Plot of Cells inside each slat, one Cell per column of the grid.
    Recipes: `heatmap` (days by hours), `waffle` (ten slats of ten people).
 5. **Points on two axes**: `cross={[min, max]}` on the Chart adds a second axis across the slats; an `overlap` Plot's slats then share the whole plot, and a Dot or Label takes `at` (along the scale) and `cross` (across it), a Line takes `[x, y]` points.
@@ -149,8 +150,8 @@ The interaction listed is the recipe's; interaction.md has the others.
 | `pyramid` | two sides of a population by age | 2 | an age picked lights everyone that age or older |
 | `silhouettes` | ten towers to scale, each in its own outline, on one street | 1, vertical, `shape()` per row | readout of the tower picked, its level carried to the tallest |
 | `dial` | the parts of a day around a 24-hour dial | 10 + 9 | a hand that turns to the part picked, a readout in the hub |
-| `log-line` | ten years of a price on a ladder of doublings, its falls shaded | 5 + 7 + 8 + 9, log scale | a crosshair readout by pointer, tap, drag or keys |
-| `unit-stack` | monthly spending as piles of coins, one part at the foot of every pile | 3 (stack), units by a mask | a picker of parts |
+| `log-line` | ten years of a price on a log scale with a line at each doubling, its falls shaded | 5 (the falls as one filled Line) + 8 + 9, log scale | a crosshair readout by pointer, tap, drag or keys |
+| `unit-stack` | monthly spending as piles of coins, one part at the foot of every pile | 2 (the picked part and the rest), units by a mask | a picker of parts |
 | `gantt` | tasks over weeks, progress, today | 2 + 8 + 9 | readout of a task and its dependencies |
 | `candlestick` | daily open, high, low, close | 2 + 8 | a crosshair and price readout |
 | `sparklines` | a table of trends, one per slat, each scaled to itself | 1 + a Line in each slat + 8 | a year scrubber (pointer, tap, drag; a keyboard slider) |

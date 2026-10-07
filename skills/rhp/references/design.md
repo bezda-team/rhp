@@ -135,7 +135,7 @@ Make them in this order and write them in the brief's Design lines; each comes f
 
 2. **Marks.** Draw the marks so that they carry the idea: this is where a reader meets it first.
    - **Its own outline.** When the items are things a reader knows by their shape (buildings, animals, ships, bottles), each wears its own simple silhouette, drawn roughly to proportion: a `shape()` per row, passed as data and read with `shape=${() => d.outline}`.
-     One shared outline for every item is a bar with a hat; `silhouettes` draws ten towers this way.
+     One shared outline for every item is a bar with a hat; `silhouettes` gives each of its ten towers its own outline.
    - **Counted units.** A bar cut into the subject's units (hours, coins, floors, seats) by a mask, so the reader can count them.
      Cut each bar into its rounded count of equal parts (the code below, and `unit-stack`): the bar keeps its exact length, and no sliver is left after the last whole unit.
    - **A container and its content.** A Bar to the top of the scale as the vessel and a Bar to the value inside it (a gauge, a tank, a battery, a glass), as `column` does.
@@ -146,7 +146,7 @@ Make them in this order and write them in the brief's Design lines; each comes f
    // Slat CSS: the bar in --n equal parts, 2px apart, with no gap after the last one
    //   .bar:horizontal { mask: linear-gradient(to right, #000 calc(100% - 2px), #0000 0) 0 0 / calc((100% + 2px) / var(--n)) 100%; }
    //   .bar:vertical { mask: linear-gradient(to top, #000 calc(100% - 2px), #0000 0) 0 100% / 100% calc((100% + 2px) / var(--n)); }
-   html`<${Bar} to=${() => d.hours} class="bar" style=${() => `--n: ${Math.max(1, Math.round(d.hours))}`} />`
+   html`<${Bar} to=${() => d.hours} class="bar" style=${() => ({ "--n": Math.max(1, Math.round(d.hours)) })} />`
    ```
 
    One treatment for all the marks of a chart.
@@ -433,7 +433,7 @@ More lettering to start from, by where it comes from (each a Google Font; check 
 
 | Text | Desktop | Phone (390px) |
 |---|---|---|
-| headline, full width | 44 to 84px, condensed faces at the top of the range | 30 to 54px, two to five lines |
+| headline, full width | 44 to 84px, condensed faces at the top of the range | 30 to 54px, three lines at most |
 | headline beside the chart | about two thirds of the full-width size | as full width (the columns stack) |
 | dek | 16 to 21px, line-height 1.45 to 1.55, 40 to 60 characters a line | 15 to 17px |
 | kicker | 11 to 14px | 11 to 14px |
@@ -526,6 +526,11 @@ At 390px:
 
 - The base CSS gives a 16px gutter and about 18px of poster padding; nothing may scroll sideways (the checker fails it).
 - The chart is in the first screen: the headline, the dek, then the chart; tables, long keys and secondary text come after it.
+  A phone's first screen is about 390 by 660px (375 by 548 on a small iPhone), so the headline takes three lines at most and the dek two or three, and the plot's top and the lit mark show below them.
+- A phone layout may shorten what defines a number (its period, its unit, whether it is a total or an average: "per yr", "avg"), but never drops it.
+- A slat's `@container` rule and the page's `@media` rule that belong together switch at the same window width: the container's width is the chart's width at the media breakpoint (the breakpoint less the gutters and the poster's padding).
+  Otherwise, between the two, the slats have their phone layout in the desktop poster, or the reverse.
+- Check at 360 and 320px too (SKILL.md step 8): narrower phone layouts expose wrapping, and at 320px fixed room leaves the plot narrowest.
 - Two-column posters stack: caption, controls, chart, note.
 - Buttons at least 24px in both directions (44px for a play button), wrapping onto a second line when needed.
 - Long names: let them wrap onto two lines in slat CSS (`.name { max-width: 7em; white-space: normal; line-height: 1.1; }` under `@container (max-width: 420px)`), as `stacked-bars` does; or set the name above its bar in a thicker slat, as `diverging-bars` does.
@@ -553,8 +558,12 @@ The turned form keeps the idea: towers stay towers and gauges stay gauges (their
 
 - **The key value, on its slat.** The slat the headline is about gets the accent on its mark and its label, bolder, and a short note in the slat when it helps ("record", "since 2019"):
   `color=${() => (d.lit ? ACCENT : QUIET)}`, with `.lit .value { color: var(--rhp-series-1); font-weight: 700; }` in the slat CSS.
+  A name that turns bold in a `room.start` of "auto" widens the room and slides every bar: keep its bold width at rest (pitfalls.md, "The layout jumps").
 - **The rest muted.** Quiet marks, labels in ink at normal weight, secondary numbers in `var(--rhp-muted)`.
 - **Direct labels before legends.** Names at the start of bars, at the end of lines (`Label at=${last} cross=${value}`), inside a segment when the number fits (hide it with a class when the segment is narrow, as `stacked-100` does).
+- **Every part is named at rest, however small.** Hiding a label that does not fit is never the only fallback: a small slice or segment gets its name outside, with a short leader, or in a key beside the chart in the marks' order, so nothing needs a tap to be read.
+  Decide by the room the label has (its measured width against its mark's, with a few px to spare), not by a fixed value or one breakpoint.
+  On a phone, short codes come before dropping names, and a mark that stands alone (an outlier, the one dot far from the others) always keeps its name.
 - **A legend only when the marks cannot carry names** (stacked parts, dots in several colors): a `.keys` line right above the chart, in the marks' order, each swatch drawn like its mark (a dot, a short line, a square).
   Make its items buttons when picking a series helps (`stacked-bars`).
 - **Reference lines** (an average, a target, today): one slat in an overlap Plot, a dashed Tick and its name at the top, as `lollipop` draws its base price:
@@ -592,13 +601,14 @@ In an app with a look of its own, the chart takes the app's look; it is not a ma
 // (not at module level, which a server render runs without a document)
 const appTheme = () => ({
   font: getComputedStyle(document.body).fontFamily,
-  ink: "var(--foreground)", muted: "var(--muted-foreground)", grid: "var(--border)", surface: "var(--card)",
-  series: ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--muted-foreground)"],
+  ink: "var(--foreground, oklch(0.145 0 0))", muted: "var(--muted-foreground, oklch(0.556 0 0))",
+  grid: "var(--border, oklch(0.922 0 0))", surface: "var(--card, oklch(1 0 0))",
+  series: ["var(--chart-1, oklch(0.646 0.222 41.116))", "var(--chart-2, oklch(0.6 0.118 184.704))", "var(--chart-3, oklch(0.398 0.07 227.392))", "var(--muted-foreground, oklch(0.556 0 0))"],
 });
 ```
 
-   - Give each variable a fallback with the app's value (`"var(--foreground, #0a0a0a)"`): without one, a page that lacks the app's CSS (the checker's, a test, Storybook) draws every mark transparent.
-   - shadcn/ui on Tailwind 3 stores bare numbers (`--foreground: 222 47% 11%`): wrap them, `"hsl(var(--foreground))"`.
+   - Give each variable a fallback with the app's own value, as above (shadcn/ui's defaults on Tailwind 4; put in the app's): without one, a page that lacks the app's CSS (the checker's, a test, Storybook) draws every mark transparent.
+   - shadcn/ui on Tailwind 3 stores bare numbers (`--foreground: 222 47% 11%`): wrap them, with the fallback in the same bare numbers, `"hsl(var(--foreground, 222 47% 11%))"`; a hex inside `hsl()` is invalid and draws nothing.
    - With fixed colors only (a `tailwind.config` palette, a design token file), copy the hex values into the theme.
    - Check the app's colors like any other: shadcn/ui's default `--chart-4` and `--chart-5` are yellow and amber at 1.7:1 and 2.1:1 on white, so `appTheme` takes the first three and the muted foreground for the rest; run the checker in both of the app's themes.
 3. **Keep the editorial habits that help any chart**: a title that states the finding, in the app's card-title style; a one-line description with the unit; direct labels; the source in small muted text at the foot; the app's primary color (or `--chart-1`) for the story.
@@ -608,7 +618,7 @@ const appTheme = () => ({
    The idea, the marks and the composition inside the card are yours, and they are what keeps the chart from being a stock widget in the app's colors:
    - **The idea**, from the subject's own shape or object: storage as vessels filling toward their quotas, a release plan as the weeks it covers, depths hanging below a surface.
    - **The marks**, in the app's colors: each item's own outline, counted units, a container and its content.
-     The story takes the app's primary color, and the context marks a tint of it (`color-mix(in oklab, var(--primary) 40%, var(--card))`, at 3:1 on the card or with an outline), not rows of mid-gray slabs.
+     The story takes the app's primary color, and the context marks a tint of it (`color-mix(in oklab, var(--primary, oklch(0.205 0 0)) 40%, var(--card, oklch(1 0 0)))`, at 3:1 on the card or with an outline), not rows of mid-gray slabs.
    - **The composition**, with the app's own type scale: one key number in the app's heading font at its largest size; the fact the data is remembered for written on the mark it belongs to (a short note in the slat), not left in a footnote; a readout that says at rest something the title does not.
    - The reader sees the app's own component, and still could not take the chart for a library's default.
 

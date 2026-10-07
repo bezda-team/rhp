@@ -968,6 +968,9 @@ In `towers-chart.css`, the two font stacks become `var(--font-archivo), system-u
 - The server's HTML has no chart, so the content below it moves down once the chart is drawn; give the parent a `min-height` if that matters.
 - Development: StrictMode (on by default in the App Router) leaves one chart, and Fast Refresh updated the page after an edit to every file, without a reload (checked).
 - Keep the data out of `components/towers/`: a `towers.ts` beside `Towers.tsx` broke the build, because macOS and Windows ignore case in file names and `import("./Towers")` found the data file (TS1149, checked).
+- create-next-app's own page pads its `main` with `px-16` at every width, which leaves the chart 262px of a 390px phone and 192px of a 320px one.
+  When you add the chart to that page, let its box break out of the padding on phones: `<div className="-mx-12 self-stretch sm:mx-0">` around it (the `main` is a flex column, so the stretched box takes the margins back).
+  Measured in Next.js 16's starter: 358px at 390, 288px at 320, no sideways scroll, and the same box as before from 640px.
 
 **Pages Router** (`pages/`): a page may call `dynamic` with `ssr: false` itself.
 `Towers.jsx` is section 7's file with the wrapper imported from `@/lib/rhp/RhpChart.jsx` and no CSS import.
@@ -1536,10 +1539,12 @@ document.head.insertAdjacentHTML("beforeend", `
    In frameworks with scoped component CSS, put those application classes in the plain CSS file too.
 4. Only Solid draws the chart on the server (SolidStart, Astro islands).
    Everywhere else the server sends an empty box and the browser draws the chart, so the content below moves down once; give the box a `min-height` if that matters.
-5. macOS and Windows ignore case in file names: `towers.ts` beside `Towers.tsx` made `./Towers` load the data file (checked in Next.js).
+5. Data the app loads (a fetch, a Refresh button, a feed) has three more states than the chart: loading, failed and empty.
+   Draw each in the chart's place, at the chart's height: a quiet "Loading…", a line that says what failed with a way to try again, and a sentence for no data ("No activity yet"), never an empty plot, an axis of 0.2, 0.4…, or a headline computed from nothing.
+6. macOS and Windows ignore case in file names: `towers.ts` beside `Towers.tsx` made `./Towers` load the data file (checked in Next.js).
    Give such files different names or folders.
-6. In an app that is not a Solid app, import everything from `@bezda/rhp/standalone` and nothing from `solid-js` (api.md, section 2).
-7. Solid's html template compiles each template with `new Function`, so a page whose Content-Security-Policy forbids `unsafe-eval` cannot draw html-template charts: allow it for that page, or use a Solid app with JSX, which needs no eval.
+7. In an app that is not a Solid app, import everything from `@bezda/rhp/standalone` and nothing from `solid-js` (api.md, section 2).
+8. Solid's html template compiles each template with `new Function`, so a page whose Content-Security-Policy forbids `unsafe-eval` cannot draw html-template charts: allow it for that page, or use a Solid app with JSX, which needs no eval.
 
 ## 15. What was verified, and the versions
 

@@ -1,6 +1,6 @@
 ---
 name: rhp
-description: Makes charts, graphs, plots, infographics and data visualizations with rhp (@bezda/rhp, reactive html plots), charts built from HTML elements and CSS with SolidJS that run in a plain HTML page, React, Next.js, Vue, Svelte, Solid or Astro. Use it whenever the user asks to create, restyle, fix or extend a chart and rhp is the library to use, which is when they name rhp or @bezda/rhp, the project depends on @bezda/rhp, or the project has no chart library yet. Covers bar, column, grouped, stacked, 100% stacked, diverging, waterfall, line, area, scatter, bubble, slope, sparkline, histogram, box, violin, strip, dumbbell, gantt, candlestick, donut, radial, waffle, heatmap, lollipop, bullet and pyramid charts, bar chart races and live data, with magazine-style poster design, interaction, and a tool that renders the chart and reports problems.
+description: Makes charts, graphs, plots, infographics and data visualizations with rhp (@bezda/rhp, reactive html plots), charts built from HTML elements and CSS with SolidJS that run in a plain HTML page, React, Next.js, Vue, Svelte, Solid or Astro. Use it whenever the user asks to create, restyle, fix or extend a chart and rhp is the library to use, which is when they name rhp or @bezda/rhp, the project depends on @bezda/rhp, or the project has no chart library yet. Covers bar, column, grouped, stacked, 100% stacked, diverging, waterfall, line, area, scatter, bubble, slope, sparkline, histogram, box, violin, strip, dumbbell, gantt, candlestick, donut, radial, waffle, heatmap, lollipop, bullet and pyramid charts, dials, log-scale lines, silhouettes to scale, unit stacks, bar chart races and live data, with magazine-style poster design, interaction, and a tool that renders the chart and reports problems.
 license: MIT
 metadata:
   author: Bezda (rhp)
@@ -207,6 +207,13 @@ A chart with fixed data and no interaction gets `static=${true}` on its Chart: r
   The handoff says exactly how to put their own numbers in, or offers to read a file they point to.
 - Compute the scale from the data: `nice(Math.min(0, ...values), Math.max(0, ...values))` (rule 2 below).
 - Compute the ranks, the leader and every number in the headline and the dek from a sorted copy of the data, never from its input order: a Plot's `order` sorts only what it draws.
+- Text computed from the data (the headline, the dek, a readout, an `aria-label`) must stay true for any data it may get:
+  - A change from a zero or missing base prints "new" or "up from none", never ∞%, NaN% or "as many as"; a change in a rate is in percentage points ("down 0.8 points").
+  - A change computed from the first and last values names them ("22% above 12 weeks ago"), and "held steady" needs every value inside a narrow band, not two equal ends.
+  - A count over the chart's window ("led for eight years", "a record") names the window ("every year from 2015 to 2022") unless you checked it holds before the window too.
+  - Numbers in the text are rounded as the labels are, and labels use the fewest decimals that keep neighbors apart, with no trailing zeros.
+- Real data from yearly releases takes each year from the latest release that covers it, never a mix of first estimates and revisions.
+  When the user asks for brands and the source counts companies, the note names every merge shown ("Lenovo includes Motorola").
 - Look up anything you are unsure of in [api.md](references/api.md) rather than guessing a prop.
 - Keep the code short and plain: comments at section heads and where a reader needs one.
 
@@ -244,8 +251,9 @@ If the checker cannot run here (no Node, no browser, a chatbot without tools), g
 - Go through every **Asked** item of the brief against the final code and screenshots, and fix anything missing.
 - Recompute every number in the headline, the dek and the note from the final data: a claim must be true for the numbers shown.
 - Try every control once more and compare before and after: nothing else on the page may move (pitfalls.md, "The layout jumps").
-- Check once more at four widths (`--widths 1280,1024,768,390`, or `widths` in `rhp_check`): layouts that change between 390px and 1280px (a breakpoint, a turned chart, a panel beside the chart) are where most layout bugs are.
-- When the chart will take other data (the user's own, live or generated), check a copy with the hardest data it may get: the longest names, values ten times larger, twice as many rows.
+- Check once more at six widths (`--widths 1280,1024,768,390,360,320`): layouts that change between 320px and 1280px (a breakpoint, a turned chart, a panel beside the chart) are where most layout bugs are; 360px and 320px catch narrower phone layouts.
+  If `rhp_check` accepts only four widths per call, use two calls to cover all six.
+- When the chart will take other data (the user's own, live, loaded or generated, or a component that takes its rows as a prop even if the app's data is fixed today), check a copy with the hardest data it may get: the longest real names of the domain, values ten times larger, twice as many rows, one row and none, a first value of 0 and all zeros, the smallest parts (1 to 5%), and dates across a year's end.
 - Then tell the user, briefly: what you made, where it is and how to open or run it (an HTML file opens with a double-click, and needs a connection for rhp), what you chose for them (form, look, interaction, data source or "illustrative"), and anything you could not do, with the reason.
   For a short request, those few lines are the whole handoff: no test logs, tool versions or local paths.
   To name the checker, give the command anyone can run, `npx -y @bezda/rhp-mcp check <file>`.
@@ -383,7 +391,11 @@ The html template (every format except Solid JSX):
 8. **A handler on a component takes its event:** `onClick=${(e) => pick(e)}`. A function with no parameter on a component (a block or a Poster) runs once while drawing and is never attached. Handlers on plain elements (`div`, `button`) work either way, and the Chart takes none at all (rule 16).
 9. **`class`, never `className`**: on a block, `className` replaces rhp's own class and the block disappears.
 10. **A space between two tags disappears**: `<b>${() => d.name}</b> <em>12</em>` renders "Name12". Write the space as `${" "}` or keep text next to it (`<b>Name</b>: <em>`).
-11. **`style` on a Chart or a Plot is an object** (`style=${{ "pointer-events": "none" }}`); a string is dropped. Blocks and plain elements take either.
+11. **Chart, Plot and slat roots use style objects.**
+    On a Chart or a Plot, use `style=${{ "pointer-events": "none" }}`: a string is dropped.
+    On a slat's root, keep a changing style an object (`style=${() => ({ "--n": d.n })}`), because a string that changes or a style that becomes `undefined` erases its stack position.
+    On published rhp 2.0.2, the same replacement can erase a Block's position and color, so use objects there too; the Block bug is fixed in current source for the upcoming 2.0.3 release.
+    Other plain elements accept objects or strings.
 
 Structure and layout:
 
@@ -406,7 +418,12 @@ Style and color:
     Page CSS styles the poster around the chart and the chart's box.
     Focus styles for slats (`.slat:focus-visible`) go in the slat's `css` too: a page `:focus-visible` rule never reaches a slat.
     `ManyDots` instead uses `pointClass` and ordinary application CSS or `pointStyle` for appearance, while the collection guards point geometry.
-18. **Color with theme keys or CSS colors**: `color="series-2"`, `"positive"`, `"negative"`, `"muted"` or `"#c2410c"`. Set the palette in the Chart's `theme` (`series`, `ink`, `muted`, `grid`, `surface`, `positive`, `negative`, `low`, `high`, `font`). Theme values may read the page's own variables (`ink: "var(--ink)"`), so the poster and the chart share one set of tokens and dark mode is a few lines of CSS (design.md); a block's `color` may not (rhp warns), and page CSS never sets rhp's own `--rhp-*` variables. `series()` counts six colors: with a shorter `series` list, call `series(n)`. A Label does not take its Bar's color: color the slat root (`--rhp-color` in its style) or the Label's own text.
+18.
+    **Color with theme keys or CSS colors**: `color="series-2"`, `"positive"`, `"negative"`, `"muted"` or `"#c2410c"`.
+    Set the palette in the Chart's `theme` (`series`, `ink`, `muted`, `grid`, `surface`, `positive`, `negative`, `low`, `high`, `font`).
+    Theme values may read the page's own variables (`ink: "var(--ink)"`), so the poster and the chart share one set of tokens and dark mode is a few lines of CSS (design.md); a block's `color` may not (rhp warns), and page CSS never sets rhp's own `--rhp-*` variables.
+    `series()` counts six colors: with a shorter `series` list, call `series(n)`.
+    A Label does not take its Bar's color: give the slat's root `--rhp-color` in a style object (`style=${() => ({ "--rhp-color": d.on ? ACCENT : QUIET })}`) or color the Label's own text.
 19. **A Dot's `size` is a length** (`size="12px"`); a bare number stretches it into an oval.
 20. **Overlay Plots** (a crosshair, a marker over other Plots) need `style=${{ "pointer-events": "none" }}` so the pointer reaches the Plot under them.
 
