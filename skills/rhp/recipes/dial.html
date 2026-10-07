@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where the average day goes</title>
+<meta name="description" content="Dial: the parts of one whole drawn as arcs around a 24-hour dial (a Bar per row that gives up its box to an SVG arc), labels set along the arcs where they fit, a hand that turns the short way to the part picked, a readout in the hub and a grouped key. Use it for how a day, a week or any cycle splits into parts.">
+<!--
+  A recipe gives technique, not a design.
+  Take: Bars that give up their box to SVG arcs around a dial, labels set along the arcs only where they fit, a Scale of hours drawn as a bezel, picking by the pointer's angle, a hand that turns the short way round, a readout in the hub, and a key grouped by kind.
+  Leave: the design. This poster was made for its own subject (the average American day as the 24-hour dial of a watch: royal blue face, a navy bezel with its numerals and crown, a gold hand and arc for the part picked, a spec-sheet key beside it).
+  Its look, the place of its parts and the way its marks are drawn say that subject: design yours from your own (design.md, section 2).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;600;700&family=Saira:wdth,wght@100..125,500..700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  /* Tokens: a royal blue watch dial, a navy bezel, white printing and gold lume */
+  :root {
+    color-scheme: dark;
+    --page: #102659;
+    --paper: #1d3f8c;
+    --bezel: #0e2253;
+    --ink: #f4f6fb;
+    --soft: #c9d4ee;
+    --rule: #3a5aa6;
+    --accent: #ffd45c;
+    --quiet: #8fa5db;
+    --steel: #a9b8dc;
+    --display: "Saira", "Eurostile", "Arial Narrow", sans-serif;
+    --text: "Albert Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: var(--page, #102659); }
+
+  /* The poster: the parts are grid items, placed by the areas below */
+  .poster { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 14px; max-width: 1080px; margin: 0 auto; padding: 48px 52px 30px;
+    grid-template-areas: "kicker" "headline" "dek" "stage" "key" "note";
+    color: var(--ink); font: 16px/1.5 var(--text);
+    background: radial-gradient(110% 70% at 15% 0%, rgb(255 255 255 / .06), transparent 70%), var(--paper); }
+  .poster figcaption { display: contents; }
+  .poster .kicker { grid-area: kicker; font: 600 13px/1.3 var(--display); font-stretch: 125%; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+  .poster .headline { grid-area: headline; max-width: 19em; margin-bottom: 6px; font: 700 clamp(32px, 5vw, 56px)/1.02 var(--display); font-stretch: 105%; letter-spacing: -.01em; text-wrap: balance; }
+  .poster .dek { grid-area: dek; max-width: 34em; font-size: 17px; line-height: 1.5; color: var(--soft); }
+  .poster .stage { grid-area: stage; align-self: center; min-width: 0; margin-top: 10px; }
+  .poster .key { grid-area: key; min-width: 0; }
+  .poster .note { grid-area: note; display: block; margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 12px; line-height: 1.5; color: var(--soft); }
+  .poster :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* The watch: the chart is the dial, its element painted as the face, the minute track, the bezel and the case */
+  .face { position: relative; max-width: 580px; margin: 0 auto; }
+  .face .rhp-chart { border-radius: 50%;
+    background:
+      radial-gradient(closest-side, #22489a 0, #1c3d88 79.4%, transparent 79.6% 82.6%, var(--bezel) 82.8% 96.6%, var(--steel) 96.8% 98.8%, #7d8fbf 99%),
+      repeating-conic-gradient(from -.5deg, var(--ink) 0 1deg, transparent 0 15deg),
+      repeating-conic-gradient(from -.2deg, rgb(201 212 238 / .7) 0 .4deg, #1c3d88 0 2.5deg); }
+  /* The crown at three o'clock, knurled */
+  .face::after { content: ""; position: absolute; top: 50%; right: -9px; width: 11px; height: 9%; translate: 0 -50%; border-radius: 3px;
+    background: repeating-linear-gradient(0deg, var(--steel) 0 2px, #6f83b8 2px 4px); }
+  .hint { width: 200px; margin: 24px auto 0; font-size: 14px; text-align: center; color: var(--soft); }
+
+  /* The middle of the dial: the hand, and the activity it points at */
+  .center { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  /* The hand runs from the middle to just inside the band and turns about its foot; only its tip shows past the hub */
+  .hand { position: absolute; left: 48.6%; top: 20.6%; width: 2.8%; height: 29.4%; transform-origin: 50% 100%;
+    rotate: calc(var(--turn) * 1turn); transition: rotate .45s cubic-bezier(.25, .8, .3, 1); }
+  .hand i { position: absolute; left: 0; top: 0; width: 100%; height: 30%; background: var(--accent);
+    clip-path: polygon(50% 0, 100% 34%, 64% 34%, 64% 100%, 36% 100%, 36% 34%, 0 34%); }
+  .hub { position: absolute; inset: 29%; display: grid; place-content: center; justify-items: center; gap: 2px; border-radius: 50%; text-align: center;
+    container-type: inline-size; }
+  .hub small { max-width: 12ch; font: 600 clamp(9px, 5.4cqi, 12px)/1.25 var(--display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); text-wrap: balance; }
+  .hub strong { font: 600 clamp(13px, 7.6cqi, 19px)/1.2 var(--text); max-width: 15ch; text-wrap: balance; }
+  .hub b { font: 600 clamp(26px, 19cqi, 50px)/1 var(--display); font-stretch: 112%; font-variant-numeric: tabular-nums; color: var(--accent); white-space: nowrap; }
+  .hub b span { font-size: .48em; font-weight: 500; margin: 0 .12em 0 .06em; }
+  .hub em { font-style: normal; font-size: clamp(11px, 5.8cqi, 14px); line-height: 1.3; color: var(--soft); }
+  @media (prefers-reduced-motion: reduce) { .hand { transition: none; } }
+
+  /* The key: every activity, in the dial's order, under its group */
+  .key { display: grid; gap: 16px; align-content: start; }
+  .key section { display: grid; gap: 2px; }
+  .key h3 { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 2px; padding-bottom: 5px; border-bottom: 1px solid var(--rule);
+    font: 600 12px/1.3 var(--display); font-stretch: 118%; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); }
+  .key h3 span { font-variant-numeric: tabular-nums; letter-spacing: .04em; white-space: nowrap; }
+  .key ul { margin: 0; padding: 0; list-style: none; }
+  .key li { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; align-items: baseline; gap: 10px; padding: 3px 0; font-size: 15px; line-height: 1.35; cursor: default; }
+  .key li i { align-self: center; width: 16px; height: 7px; border-radius: 2px; background: var(--quiet); }
+  .key li b { font: 600 15px/1.35 var(--display); font-stretch: 108%; font-variant-numeric: tabular-nums; }
+  .key li.on { color: var(--accent); }
+  .key li.on i { background: var(--accent); }
+
+  /* Middle widths: the key in two columns under the dial, so each time stays near its name */
+  @media (min-width: 641px) and (max-width: 899px) {
+    .key { display: block; columns: 2; column-gap: 44px; }
+    .key section { break-inside: avoid; margin-bottom: 16px; }
+  }
+  /* Wide: the headline across the top, as on a watch advertisement; the dial below it, with the dek and the key beside it */
+  @media (min-width: 900px) {
+    .poster { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); column-gap: 56px; grid-template-rows: auto auto auto 1fr auto;
+      grid-template-areas: "kicker kicker" "headline headline" "stage dek" "stage key" "note note"; }
+    .poster .stage { margin-top: 18px; }
+    .poster .dek { margin-top: 18px; font-size: 16px; }
+    .poster .key { margin-top: 6px; }
+    .key li { padding: 2px 0; }
+  }
+  @media (max-width: 640px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 18px 18px; }
+    .poster .kicker { font-stretch: 100%; letter-spacing: .12em; }
+    .poster .dek { font-size: 15px; }
+    .key li, .key li b { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Scale, Bar, Place, Poster, slat, every, running, html, render, createSignal, createEffect } from "@bezda/rhp/standalone";
+
+// Data: average hours per day in 2025, for Americans aged 15 and older, over all seven days of the week, people with
+// and without jobs alike. U.S. Bureau of Labor Statistics, American Time Use Survey, 2025 results (released June 25,
+// 2026), table 1. Each activity includes the travel that goes with it. The rows run clockwise round the dial.
+const GROUPS = ["Sleep, meals & self-care", "Work & school", "Home & family", "Leisure & sports", "Everything else"];
+const DAY = [
+  { group: 0, name: "Sleep", short: "Sleep", hours: 9.03 },
+  { group: 0, name: "Eating and drinking", short: "Meals", hours: 1.21 },
+  { group: 0, name: "Grooming and health", short: "Grooming", hours: 0.77 }, // personal care (9.80) less sleep
+  { group: 1, name: "Paid work", short: "Work", hours: 3.32 }, // working and work-related activities
+  { group: 1, name: "Classes and homework", short: "School", hours: 0.44 },
+  { group: 2, name: "Housework, cooking and yard", short: "Chores", hours: 1.99 },
+  { group: 2, name: "Shopping and errands", short: "Errands", hours: 0.69 },
+  { group: 2, name: "Caring for others", short: "Care", hours: 0.64 }, // household members (0.49) and others (0.15)
+  { group: 3, name: "Watching TV", short: "TV", hours: 2.61 },
+  { group: 3, name: "Reading, games and other leisure", short: "Leisure", hours: 1.63 }, // leisure (5.16) less the three around it
+  { group: 3, name: "Socializing", short: "Social", hours: 0.58 },
+  { group: 3, name: "Sports and exercise", short: "Sport", hours: 0.34 },
+  { group: 4, name: "Worship, volunteering, calls, mail and other", short: "Other", hours: 0.74 }, // 0.28 + 0.19 + 0.27
+];
+const NOTE = "Source: U.S. Bureau of Labor Statistics, American Time Use Survey, 2025 results (June 2026), table 1: average hours per day, people aged 15 and older, all days of the week. Each activity includes the travel it takes. Times are rounded, so they may not add up to exactly 24 hours.";
+
+// What depends on the data: each activity's stretch of the dial, the group totals and the headline's numbers
+const { from, to } = running(DAY.map((a) => a.hours)); // where each activity starts and ends, in hours from the top
+const groupHours = GROUPS.map((_, g) => DAY.filter((a) => a.group === g).reduce((sum, a) => sum + a.hours, 0));
+const LEAD = DAY.findIndex((a) => a.name === "Watching TV"); // the activity the headline names: lit until the reader picks another
+const tvShare = DAY[LEAD].hours / groupHours[DAY[LEAD].group]; // 0.51 of leisure
+const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+const minutes = (hours) => Math.round(hours * 60);
+const short = (hours) => {
+  const m = minutes(hours);
+  return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")}`;
+};
+const long = (hours) => {
+  const m = minutes(hours), h = Math.floor(m / 60), r = m % 60;
+  return [h && `${h} hour${h > 1 ? "s" : ""}`, r && `${r} minute${r > 1 ? "s" : ""}`].filter(Boolean).join(" ");
+};
+const share = Math.abs(tvShare - 0.5) < 0.025 ? "Half" : percent.format(tvShare);
+const HEADLINE = `${share} of our leisure time goes to the TV: ${long(DAY[LEAD].hours)} a day`;
+const say = (i) => `${DAY[i].name}: ${long(DAY[i].hours)} a day, ${percent.format(DAY[i].hours / 24)} of the day`;
+
+// The dial's drawing, in a 100 x 100 box around the middle (radius 50): the activities' band runs from radius 30 to 38,
+// with a hairline gap at each end (under 2 minutes of the day, so even the shortest stretch keeps its length).
+// Angles are turns from twelve o'clock, clockwise.
+const TAU = Math.PI * 2;
+const R_IN = 30, R_OUT = 38, R_TEXT = 34, GAP = 0.0012;
+const xy = (t, r) => `${(r * Math.sin(t * TAU)).toFixed(3)},${(-r * Math.cos(t * TAU)).toFixed(3)}`;
+const band = (fromH, toH) => {
+  const a = fromH / 24 + GAP, b = toH / 24 - GAP, big = b - a > 0.5 ? 1 : 0;
+  return `M${xy(a, R_OUT)}A${R_OUT},${R_OUT} 0 ${big} 1 ${xy(b, R_OUT)}L${xy(b, R_IN)}A${R_IN},${R_IN} 0 ${big} 0 ${xy(a, R_IN)}Z`;
+};
+// The path a label runs along: clockwise on the top half, the other way on the bottom half, so the text stands upright
+const textPath = (fromH, toH) => {
+  const a = fromH / 24, b = toH / 24, mid = (a + b) / 2, big = b - a > 0.5 ? 1 : 0;
+  return mid > 0.25 && mid < 0.75
+    ? `M${xy(b, R_TEXT)}A${R_TEXT},${R_TEXT} 0 ${big} 0 ${xy(a, R_TEXT)}`
+    : `M${xy(a, R_TEXT)}A${R_TEXT},${R_TEXT} 0 ${big} 1 ${xy(b, R_TEXT)}`;
+};
+// A label goes on the band only where it fits, with room at both ends: its name and time, its name alone, or nothing.
+// Widths are measured in ems once the label font is in; until then no label is drawn.
+const FONT_PHONE = 3.6, FONT_WIDE = 2.9; // in the box's units: 11.6px on a 322px dial, 16px on a 560px one
+const LABEL_FONT = '600 100px "Albert Sans", Arial, sans-serif';
+const [ems, setEms] = createSignal(null);
+const pen = document.createElement("canvas").getContext("2d");
+document.fonts.load(LABEL_FONT).finally(() => {
+  pen.font = LABEL_FONT;
+  setEms(() => (text) => pen.measureText(text).width / 100);
+});
+const arcLength = (hours) => TAU * R_TEXT * (hours / 24 - 2 * GAP);
+const fits = (text, hours, size) => ems()(text) * size + 3 <= arcLength(hours);
+const labelOf = (a, size) => {
+  if (!ems()) return "";
+  const full = `${a.short} ${short(a.hours)}`;
+  return fits(full, a.hours, size) ? full : fits(a.short, a.hours, size) ? a.short : "";
+};
+
+const THEME = {
+  font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)",
+  series: ["var(--accent)", "var(--quiet)", "var(--bezel)"],
+};
+
+// Slat types
+// One hour of the bezel: a numeral every two hours, a dot between them, the bezel's triangle at the top.
+// The Place gives up its point to the middle of the dial and turns its mark round it by --rhp-p (its value, 0 to 1).
+const Hour = slat({
+  room: {},
+  css: `
+    .hour { pointer-events: none; container-type: size; }
+    .pt { left: 50%; top: 50%; }
+    .pt > * { position: absolute; left: 0; top: 0; translate: -50% -50%;
+      transform: rotate(calc(var(--rhp-p) * 1turn)) translateY(-45.4cqmin) rotate(calc(var(--rhp-p) * -1turn)); }
+    .num { font: 600 clamp(11px, 3.7cqmin, 18px)/1 "Saira", "Arial Narrow", sans-serif; font-stretch: 112%; color: var(--rhp-ink); font-variant-numeric: tabular-nums; }
+    .dot { width: 1.1cqmin; height: 1.1cqmin; border-radius: 50%; background: var(--rhp-muted); }
+    .tri { width: 4.4cqmin; height: 3.6cqmin; background: var(--rhp-series-1); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  `,
+}, (t) => html`
+  <div class="hour">
+    <${Place} at=${() => t.at} class="pt">
+      ${() => (t.last ? "" : t.at === 0 ? html`<i class="tri"></i>` : t.at % 2 ? html`<i class="dot"></i>` : html`<span class="num">${t.at}</span>`)}
+    <//>
+  </div>`);
+
+// One activity: a Bar from where it starts to where it ends on the 24 hours, which gives up its box to an SVG arc.
+// The arc is drawn in the Bar's color, so the lit one turns gold; the focused one gets an outline.
+const Activity = slat({
+  room: { start: 0, end: 0 },
+  css: `
+    .act { pointer-events: none; container-type: size; outline: none; }
+    .arc { inset: 0; width: 100%; height: 100%; translate: none; background: none; }
+    .arc svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .band { fill: var(--rhp-color); stroke: transparent; stroke-width: .9; transition: fill .2s; }
+    .act:focus-visible .band { stroke: var(--rhp-ink); }
+    .lab { font: 600 ${FONT_PHONE}px "Albert Sans", Arial, sans-serif; fill: var(--rhp-series-3); dominant-baseline: central; }
+    .lab.wide { display: none; }
+    @container (min-width: 460px) {
+      .lab { display: none; }
+      .lab.wide { display: inline; font-size: ${FONT_WIDE}px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .band { transition: none; } }
+  `,
+}, (d) => html`
+  <div class=${() => (d.on ? "act on" : "act")} data-row=${() => d.index} role="img" aria-label=${() => say(d.index)}>
+    <${Bar} from=${() => d.from} to=${() => d.to} color=${() => (d.on ? "series-1" : "series-2")} class="arc">
+      <svg viewBox="-50 -50 100 100" aria-hidden="true">
+        <path class="band" d=${() => band(d.from, d.to)} />
+        <path id=${() => `arc-${d.index}`} d=${() => textPath(d.from, d.to)} fill="none" />
+        <text class="lab"><textPath href=${() => `#arc-${d.index}`} startOffset="50%" text-anchor="middle">${() => labelOf(d, FONT_PHONE)}</textPath></text>
+        <text class="lab wide"><textPath href=${() => `#arc-${d.index}`} startOffset="50%" text-anchor="middle">${() => labelOf(d, FONT_WIDE)}</textPath></text>
+      </svg>
+    <//>
+  </div>`);
+
+// Chart component: the activity the reader points at, taps or reaches with the keyboard is lit, and the hand turns to it
+function DayDial() {
+  const [on, setOn] = createSignal(null);
+  const shown = () => on() ?? LEAD;
+  // The hand turns the short way round to the middle of the activity shown
+  const middle = (i) => (from[i] + to[i]) / 48;
+  const [turn, setTurn] = createSignal(middle(LEAD));
+  createEffect(() => {
+    const target = middle(shown());
+    setTurn((t) => t + ((((target - t) % 1) + 1.5) % 1) - 0.5);
+  });
+
+  // The activity under the pointer: on the dial, the one whose stretch holds the pointer's angle; in the key, its line
+  const rowAt = (e) => {
+    const face = e.target.closest?.(".face");
+    if (face) {
+      const box = face.getBoundingClientRect();
+      const x = e.clientX - box.left - box.width / 2, y = e.clientY - box.top - box.height / 2;
+      const r = Math.hypot(x, y) / (box.width / 2);
+      if (r > 1 || r < 0.12) return null;
+      const hour = ((Math.atan2(x, -y) / TAU + 1) % 1) * 24;
+      const i = to.findIndex((end) => hour < end);
+      return i < 0 ? DAY.length - 1 : i;
+    }
+    const line = e.target.closest?.("[data-row]");
+    return line ? +line.dataset.row : null;
+  };
+  const focused = (el) => el.closest(".poster").querySelector(".act[data-row]:focus");
+  // A mouse or a pen picks as it moves; a tap or a click picks and gives that activity focus; the keyboard picks
+  const point = (e) => {
+    const row = rowAt(e);
+    if (row != null) setOn(row);
+  };
+  const tap = (e) => {
+    const row = rowAt(e);
+    if (row == null) return;
+    setOn(row);
+    e.currentTarget.querySelector(`.act[data-row="${row}"]`)?.focus({ preventScroll: true });
+  };
+  const focus = (e) => {
+    const act = e.target.closest?.(".act[data-row]");
+    if (act) setOn(+act.dataset.row);
+  };
+  // Leaving the dial, the key or the poster: back to the activity that has focus (a keyboard's or a tap's pick), or to the lead
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    const act = focused(e.currentTarget);
+    setOn(act ? +act.dataset.row : null);
+  };
+
+  const a = () => DAY[shown()];
+  return html`
+    <${Poster}
+      kicker="The average American day, 2025"
+      title=${HEADLINE}
+      dek="How Americans aged 15 and older spend 24 hours, averaged over every day of the week and over people with and without jobs. Each stretch of the dial is how long an activity takes in all, not when it happens."
+      note=${NOTE}
+      onPointerMove=${(e) => e.pointerType !== "touch" && point(e)} onClick=${tap} onFocusIn=${focus}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <div class="stage">
+        <!-- A press on the face keeps focus where it is, so the pick goes straight from one activity to the next -->
+        <div class="face" onMouseDown=${(e) => e.preventDefault()} onPointerLeave=${leave}>
+          <${Chart} scale=${[0, 24]} aspect=${1} ticks=${false} theme=${THEME}
+            label="The average day in 24 hours: each activity's share of the dial">
+            <${Scale} ticks=${every(1)}>${Hour}<//>
+            <${Plot} overlap=${true} keyboard=${true} rows=${DAY} from=${from} to=${to} on=${(d) => shown() === d.index}>${Activity}<//>
+            <div class="center" aria-hidden="true">
+              <div class="hand" style=${() => ({ "--turn": turn() })}><i></i></div>
+              <div class="hub">
+                <small>${() => GROUPS[a().group]}</small>
+                <strong>${() => a().name}</strong>
+                <b>${() => {
+                  const m = minutes(a().hours);
+                  return m < 60 ? html`${m}<span>min</span>` : html`${Math.floor(m / 60)}<span>h</span>${String(m % 60).padStart(2, "0")}<span>min</span>`;
+                }}</b>
+                <em>${() => `${percent.format(a().hours / 24)} of the day`}</em>
+              </div>
+            </div>
+          <//>
+        </div>
+        <p class="hint">Point at the dial or tap it. With a keyboard, Tab to it and use the arrow keys.</p>
+      </div>
+      <div class="key" onPointerLeave=${leave}>
+        ${GROUPS.map((g, gi) => html`
+          <section>
+            <h3>${g}<span>${DAY.filter((x) => x.group === gi).length > 1 ? short(groupHours[gi]) : ""}</span></h3>
+            <ul>
+              ${DAY.map((x, i) => (x.group === gi ? html`
+                <li data-row=${i} class=${() => (shown() === i ? "on" : "")}><i></i><span>${x.name}</span><b>${short(x.hours)}</b></li>` : null))}
+            </ul>
+          </section>`)}
+      </div>
+    <//>`;
+}
+
+render(() => html`<${DayDial} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

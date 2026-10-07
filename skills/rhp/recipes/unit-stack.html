@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monthly spending</title>
+<meta name="description" content="Unit stack: stacked columns cut into counted units (coins), the picked part moved to the foot of every stack with its amount under the column, a picker of parts ranked by their total, and columns that lie down as rows on a phone. Use it for a total made of parts over periods, with one part to follow.">
+<!--
+  A recipe gives technique, not a design.
+  Take: stacked columns cut into units of one fixed amount by a mask (every full unit the same size, the last one of each part cut to what is left), a picked part moved to the foot of every stack with its amount printed under the column, a picker of parts ranked by their total, headline and figures computed from one data block, and columns that lie down as rows when they get too narrow.
+  Leave: the design. This poster was made for its own subject (a household's monthly spending as piles of coins on one counter: mint paper where coins are struck, copper for the picked category, milled edges top and bottom).
+  Its look, the place of its parts and the way its marks are drawn say that subject: design yours from your own (design.md, section 2).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  /* Tokens: mint paper (where coins are struck), deep green ink, copper for the coins of the picked category */
+  :root {
+    --page: #b9d3c1; --paper: #dcebdf; --ink: #11301f; --soft: #46634f; --rule: #b2ccb9;
+    --accent: #a03a14; --quiet: #5d8569;
+    --display: "Old Standard TT", "Iowan Old Style", Georgia, serif;
+    --text: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 48px 16px; background: var(--page, #b9d3c1); }
+
+  /* The poster, its top and bottom edges milled like the rim of a coin */
+  .poster { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 14px; max-width: 1080px; margin: 0 auto; padding: 50px 52px 34px;
+    background: var(--paper); color: var(--ink); font: 16px/1.5 var(--text);
+    grid-template-areas: "kicker" "headline" "dek" "rail" "stage" "average" "note"; }
+  .poster::before, .poster::after { content: ""; position: absolute; left: 0; right: 0; height: 7px;
+    background: repeating-linear-gradient(90deg, var(--quiet) 0 2px, transparent 2px 5px); }
+  .poster::before { top: 0; }
+  .poster::after { bottom: 0; }
+  .poster figcaption { display: contents; }
+  .poster .kicker { grid-area: kicker; font: 700 12px/1.3 var(--text); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+  .poster .headline { grid-area: headline; max-width: 17em; font: 700 clamp(31px, 4.3vw, 46px)/1.06 var(--display); letter-spacing: -.01em; text-wrap: balance; }
+  .poster .dek { grid-area: dek; max-width: 54ch; font-size: 17px; line-height: 1.5; color: var(--soft); }
+  .poster .note { grid-area: note; display: block; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 12px; line-height: 1.5; color: var(--soft); }
+  .stage { grid-area: stage; min-width: 0; }
+
+  /* The average month, set like the total on a statement */
+  .average { grid-area: average; display: grid; gap: 2px; margin: 0; padding-top: 14px; border-top: 2px solid var(--ink); }
+  .average b { font: 700 44px/1 var(--display); font-variant-numeric: tabular-nums; }
+  .average span { font-size: 14px; color: var(--soft); }
+  .average span:first-of-type { font-weight: 600; color: var(--ink); }
+
+  /* The rail: the categories ranked by their year, each a button that puts its coins at the foot of every month */
+  .rail { grid-area: rail; display: grid; align-content: start; gap: 10px; min-width: 0; }
+  .hint { margin: 0; font-size: 14px; font-weight: 600; }
+  .picker { display: flex; flex-wrap: wrap; gap: 6px; }
+  .picker button { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 6px 12px 6px 9px; border: 1px solid var(--rule); border-radius: 3px;
+    background: none; color: var(--ink); font: 500 14px/1.2 var(--text); text-align: left; cursor: pointer; }
+  .picker .coin { flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--quiet); }
+  .picker .sum { display: none; margin-left: auto; padding-left: 12px; font-variant-numeric: tabular-nums; color: var(--soft); }
+  .picker button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); color: var(--accent); font-weight: 700; }
+  .picker button[aria-pressed="true"] .coin { background: var(--accent); }
+  .picker button[aria-pressed="true"] .sum { color: var(--accent); }
+  .poster :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .readout { display: grid; margin: 0; font-size: 14px; line-height: 1.45; color: var(--soft); font-variant-numeric: tabular-nums; }
+  .readout span { grid-area: 1 / 1; }
+  .readout .off { visibility: hidden; }
+  .readout b { color: var(--ink); }
+
+  @media (min-width: 700px) {
+    .picker .sum { display: inline; }
+  }
+
+  /* From 1120px: the words over the chart on the left, the average beside the headline, the categories in a rail */
+  @media (min-width: 1120px) {
+    .poster { grid-template-columns: minmax(0, 1fr) 268px; column-gap: 56px;
+      grid-template-areas: "kicker kicker" "headline average" "dek average" "stage rail" "note note"; }
+    .poster .dek { margin-bottom: 18px; }
+    .average { align-self: end; margin-bottom: 18px; }
+    .average b { font-size: 58px; }
+    .rail { padding-top: 4px; }
+    .picker { display: grid; gap: 0; border-bottom: 1px solid var(--rule); }
+    .picker button { min-height: 40px; padding: 8px 6px; border: 0; border-top: 1px solid var(--rule); border-radius: 0; font-size: 15px; }
+    .picker button[aria-pressed="true"] { box-shadow: none; background: color-mix(in oklab, var(--accent) 9%, var(--paper)); }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 30px 18px 22px; row-gap: 12px; }
+    .poster .kicker { font-size: 11px; letter-spacing: .12em; }
+    .poster .dek { font-size: 15px; }
+    .rail { gap: 8px; }
+    .picker button { min-height: 30px; padding: 4px 10px 4px 8px; font-size: 13px; }
+    .picker .coin { width: 12px; height: 12px; }
+    .average b { font-size: 38px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Tick, Poster, slat, nice, html, render, createSignal, createMemo, onMount, onCleanup } from "@bezda/rhp/standalone";
+
+// Your data
+// Illustrative numbers for an invented household: put your own in their place. One line per month ("YYYY-MM"),
+// then what you spent in each category, in the order of CATEGORIES. Any number of months and categories works,
+// and every title and number on the page is worked out from these lines.
+const CURRENCY = "USD";
+const LOCALE = "en-US";
+const CATEGORIES = ["Rent", "Bills", "Groceries", "Eating out", "Transport", "Shopping", "Travel"];
+const MONTHS = [
+  ["2025-10", 1650, 196, 548, 286, 164, 212, 84],
+  ["2025-11", 1650, 238, 572, 254, 158, 468, 46],
+  ["2025-12", 1650, 284, 694, 412, 196, 836, 612],
+  ["2026-01", 1650, 302, 516, 168, 152, 124, 0],
+  ["2026-02", 1650, 288, 488, 236, 148, 146, 38],
+  ["2026-03", 1650, 246, 532, 248, 171, 198, 142],
+  ["2026-04", 1650, 208, 541, 274, 486, 236, 96],
+  ["2026-05", 1650, 182, 559, 318, 182, 184, 228],
+  ["2026-06", 1650, 176, 566, 342, 174, 252, 312],
+  ["2026-07", 1700, 214, 498, 296, 216, 208, 448],
+  ["2026-08", 1700, 226, 462, 188, 138, 316, 1864],
+  ["2026-09", 1700, 192, 551, 302, 168, 238, 72],
+];
+const NOTE = "Illustrative data for an invented household.";
+
+// What the page says, worked out from the data above
+const money = new Intl.NumberFormat(LOCALE, { style: "currency", currency: CURRENCY, maximumFractionDigits: 0 });
+const compact = new Intl.NumberFormat(LOCALE, { style: "currency", currency: CURRENCY, notation: "compact", maximumFractionDigits: 1 });
+const percent = new Intl.NumberFormat(LOCALE, { style: "percent" });
+const sum = (values) => values.reduce((a, b) => a + b, 0);
+
+const DATES = MONTHS.map(([ym]) => new Date(+ym.slice(0, 4), +ym.slice(5, 7) - 1, 1));
+const AMOUNTS = MONTHS.map(([, ...amounts]) => amounts);
+const TOTALS = AMOUNTS.map(sum);
+const ALL = sum(TOTALS);
+const AVERAGE = ALL / MONTHS.length;
+const short = new Intl.DateTimeFormat(LOCALE, { month: "short" });
+const shortYear = new Intl.DateTimeFormat(LOCALE, { month: "short", year: "numeric" });
+const long = new Intl.DateTimeFormat(LOCALE, { month: "long" });
+const longYear = new Intl.DateTimeFormat(LOCALE, { month: "long", year: "numeric" });
+const SHORT = DATES.map((d) => short.format(d));
+// A month named in a sentence takes its year when the data has that month twice, and so do the months under the coins
+const named = (i) => (SHORT.filter((m) => m === SHORT[i]).length > 1 ? longYear : long).format(DATES[i]);
+const DATED = new Set(SHORT).size < SHORT.length;
+const LABELS = DATED ? DATES.map((d) => new Intl.DateTimeFormat(LOCALE, { month: "short", year: "2-digit" }).format(d)) : SHORT;
+// Amounts under the coins: whole units, or compact with one decimal once they need five digits
+const BIG = Math.max(...TOTALS) >= 10000;
+const tenths = new Intl.NumberFormat(LOCALE, { style: "currency", currency: CURRENCY, notation: "compact", minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const amount = (v) => (BIG ? tenths : money).format(v);
+
+// Each category's year, ranked; and the one that swings most from month to month, which the headline is about
+const YEAR = CATEGORIES.map((_, c) => sum(AMOUNTS.map((a) => a[c])));
+const RANKED = CATEGORIES.map((_, c) => c).sort((a, b) => YEAR[b] - YEAR[a]);
+const column = (c) => AMOUNTS.map((a) => a[c]);
+const swing = (c) => Math.max(...column(c)) - Math.min(...column(c));
+const SWING = CATEGORIES.map((_, c) => c).reduce((best, c) => (swing(c) > swing(best) ? c : best), 0);
+// When a value came: "in August", or "in 3 months" when several months share it
+const when = (values, v) => {
+  const months = values.flatMap((x, i) => (x === v ? [i] : []));
+  return months.length > 1 ? `in ${months.length} months` : `in ${named(months[0])}`;
+};
+const headline = (() => {
+  const values = column(SWING);
+  const [low, high] = [Math.min(...values), Math.max(...values)];
+  return `${CATEGORIES[SWING]} swings your spending most: ${money.format(high)} ${when(values, high)}, ${low === 0 ? "nothing" : "as little as " + money.format(low)} ${when(values, low)}`;
+})();
+
+// The scale, and what one coin is worth: a round sum that keeps the tallest month under about 30 coins
+const scale = nice(0, Math.max(...TOTALS));
+const COIN = (() => {
+  for (let p = 1; ; p *= 10) for (const s of [1, 2, 2.5, 5]) if (s * p * 30 >= Math.max(...TOTALS)) return s * p;
+})();
+// A coin as a share of the part it is in: tiles that size, laid from the part's foot, make every full coin worth COIN
+// and cut the last one to what is left
+const coin = (v) => (v > 0 ? COIN / v : 1);
+const RANGE = `${longYear.format(DATES[0])} to ${longYear.format(DATES.at(-1))}`;
+
+// The chart's font and colors, read from the page's tokens
+const THEME = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--quiet)"] };
+
+// Slat types: a month is a pile of coins on the counter, the picked category's coins at its foot (series-1, copper) and
+// the rest of the month above them (series-2). A mask cuts each part into coins from its foot: every full coin is worth
+// the same and is the same size, and the last one is cut to what is left, so a part keeps its exact height and its coins
+// can be counted. Each coin is bevelled at its corners and stands 2px clear of what is under it, so a part's cut coin
+// never touches the next part's first one.
+const Month = slat({
+  inset: { vertical: 0.2, horizontal: 0.18 },
+  thickness: { horizontal: 30 },
+  room: { vertical: { start: 40, end: 22 }, horizontal: { start: "auto", end: 62 } },
+  css: `
+    .coins { --rhp-radius: 0px; }
+    .coins:vertical {
+      mask:
+        linear-gradient(to top, #0000 3px, #000 0 calc(100% - 1px), #0000 0) 0 100% / 100% calc(100% * var(--coin)),
+        linear-gradient(to top, #0000 2px, #000 0) 50% 100% / calc(100% - 3px) calc(100% * var(--coin)) repeat-y;
+    }
+    .coins:horizontal {
+      mask:
+        linear-gradient(to right, #0000 3px, #000 0 calc(100% - 1px), #0000 0) 0 0 / calc(100% * var(--coin)) 100%,
+        linear-gradient(to right, #0000 2px, #000 0) 0 50% / calc(100% * var(--coin)) calc(100% - 3px) repeat-x;
+    }
+    .name { --rhp-label-size: 13px; font-weight: 500; }
+    .name .amt { font-weight: 700; color: var(--rhp-series-1); font-variant-numeric: tabular-nums; }
+    .name:vertical .m, .name:vertical .amt { display: block; text-align: center; line-height: 1.3; }
+    .name:horizontal .m { display: inline-block; width: 2.4em; }
+    .dated .name:horizontal .m { width: 3.8em; }
+    .name:horizontal .amt { display: inline-block; min-width: 4.6em; text-align: right; }
+    .total { font-size: 12px; font-weight: 600; color: var(--rhp-muted); font-variant-numeric: tabular-nums; }
+    .most .total { font-weight: 700; color: var(--rhp-ink); }
+  `,
+}, (d) => html`
+  <div class=${() => ["month", d.most && "most", DATED && "dated"].filter(Boolean).join(" ")}
+    aria-label=${() => `${longYear.format(d.date)}: ${money.format(d.total)} in all. ` + RANKED.map((c) => `${CATEGORIES[c]} ${money.format(d.amounts[c])}`).join(", ")}>
+    <${Label} edge="start" class="name"><span class="m">${() => d.month}</span><span class="amt">${() => amount(d.lit)}</span><//>
+    <${Bar} to=${() => d.lit} color="series-1" class="coins" style=${() => ({ "--coin": coin(d.lit) })} />
+    <${Bar} from=${() => d.lit} to=${() => d.total} color="series-2" class="coins" style=${() => ({ "--coin": coin(d.total - d.lit) })} />
+    <${Label} at=${() => d.total} class="total">${() => amount(d.total)}<//>
+  </div>`);
+
+// The counter the coins stand on: one thick line at zero across the plot
+const Counter = slat({ room: {}, css: `.counter { --rhp-tick-width: 3px; }` }, () => html`
+  <div><${Tick} at=${0} thick=${1} class="counter" /></div>`);
+
+// Chart component: the picked category is the app's state. The months stand as columns while each has 44px or more,
+// and lie as rows when they do not (a phone, or many months).
+function Spending() {
+  const [pick, setPick] = createSignal(SWING);
+  const lit = createMemo(() => AMOUNTS.map((a) => a[pick()]));
+  const [width, setWidth] = createSignal(0);
+  const upright = () => width() - 42 >= MONTHS.length * 44;
+  let stage;
+  onMount(() => {
+    setWidth(stage.clientWidth);
+    const watch = new ResizeObserver(() => setWidth(stage.clientWidth));
+    watch.observe(stage);
+    onCleanup(() => watch.disconnect());
+  });
+  const most = Math.max(...TOTALS);
+  // What the picked category came to. Every category's line is laid in one grid cell and only the picked one shows,
+  // so the cell is as tall as the longest line and the chart under it never moves.
+  const said = (c) => {
+    const high = Math.max(...column(c));
+    return `${money.format(YEAR[c])} in all (${percent.format(YEAR[c] / ALL)}), most ${when(column(c), high)}: ${money.format(high)}.`;
+  };
+  return html`
+    <${Poster}
+      kicker=${`Monthly spending · ${shortYear.format(DATES[0])} to ${shortYear.format(DATES.at(-1))}`}
+      title=${headline}
+      dek=${`What went out each month, ${RANGE}, piled in coins of ${money.format(COIN)} on one counter.`}
+      note=${NOTE}>
+      <p class="average"><b>${money.format(AVERAGE)}</b><span>an average month</span><span>${money.format(ALL)} over ${MONTHS.length} months</span></p>
+      <div class="rail">
+        <p class="hint" id="pick-hint">Pick a category: its coins go in copper at the foot of each pile</p>
+        <div class="picker" role="group" aria-labelledby="pick-hint">
+          ${RANKED.map((c) => html`
+            <button type="button" aria-pressed=${() => pick() === c} onClick=${() => setPick(c)}>
+              <i class="coin" aria-hidden="true"></i><span>${CATEGORIES[c]}</span><span class="sum">${money.format(YEAR[c])}</span>
+            </button>`)}
+        </div>
+        <p class="readout" aria-live="polite">
+          ${RANKED.map((c) => html`<span class=${() => (pick() === c ? "" : "off")}><b>${CATEGORIES[c]}</b>: ${said(c)}</span>`)}
+        </p>
+      </div>
+      <div class="stage" ref=${(el) => (stage = el)}>
+        <${Chart} orientation=${() => (upright() ? "vertical" : "horizontal")} height=${360}
+          scale=${[scale.min, scale.max]} ticks=${() => (width() < 360 ? scale.ticks.filter((t, i) => i % 2 === 0) : scale.ticks)} format=${(v) => compact.format(v)}
+          label=${`Spending each month, ${RANGE}, in ${CURRENCY}`} theme=${THEME}>
+          <${Plot} month=${LABELS} date=${DATES} amounts=${AMOUNTS} total=${TOTALS} lit=${lit} most=${(d) => d.total === most}>${Month}<//>
+          <${Plot} overlap=${true} slats=${1} style=${{ "pointer-events": "none" }}>${Counter}<//>
+        <//>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${Spending} />`, document.getElementById("chart"));
+</script>
+</body>
+</html>

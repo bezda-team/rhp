@@ -427,7 +427,7 @@ render(MoonChart, document.getElementById("chart"));
 
 ## 6. Blocks
 
-Every block also takes `class`, `style` (an object or a string), `ref`, children, event handlers and any HTML attribute (`title`, `data-*`, `aria-*`).
+Every block also takes `class`, `style` (an object or a string; published rhp 2.0.2 needs objects for changing styles, gotcha 4), `ref`, children, event handlers and any HTML attribute (`title`, `data-*`, `aria-*`).
 `color` takes a theme key or any CSS color (section 8).
 Bar, Dot, Tick, Label and Cell take `shape` (an outline from `shape()`, section 9).
 Values are on the Chart's scale.
@@ -457,7 +457,7 @@ Where things sit:
   An Area is filled with its color at 35% and stroked 1.5px; a Line is stroked 2px, and with `fill` filled at 22%.
 - A Place's children are placed by your CSS from its point: `position: absolute; translate: -50% -50%` centers one.
 - `color` sets `--rhp-color` on that block only, so a Label next to a Bar does not see the Bar's color.
-  Set `--rhp-color` on the slat's root to share one.
+  Set `--rhp-color` on the slat's root to share one, in a style object (`style=${() => ({ "--rhp-color": … })}`).
 
 A Bar from one value to another, Dots at its ends, and a Tick:
 
@@ -1598,9 +1598,12 @@ Every one of these was found by running rhp 2.0.1.
 3. **`${d.sold}` never updates.**
    A value read without a function is read once.
    Wrap it, `${() => d.sold}`, and never destructure `d`.
-4. **Chart and Plot take a style object, not a string.**
+4. **Use style objects on Chart, Plot and a slat's root.**
    `style="pointer-events: none"` on a Plot or Chart is dropped without a message; write `style=${{ "pointer-events": "none" }}`.
-   Blocks take either.
+   On a slat's root, a string that changes or a style that becomes `undefined` replaces the whole style attribute and erases the stack position, so keep it an object.
+   Published rhp 2.0.2 has the same problem on Blocks: a Bar can disappear and SVG geometry can be lost, so use `style=${() => ({ "--n": d.n })}` there too.
+   Current source fixes the Block replacement bug for the upcoming 2.0.3 release; Blocks then retain their geometry when strings change or style is removed.
+   Plain children that hold no rhp geometry can use changing strings.
 5. **`className` breaks a block.**
    It replaces rhp's class, so the block is no longer drawn.
    Use `class`.
@@ -1639,7 +1642,7 @@ Every one of these was found by running rhp 2.0.1.
     With a theme of 4 series colors use `series(4)`, or rows 5 and 6 take `series-1`.
 19. **A Label does not see its Bar's color.**
     `color` sets `--rhp-color` on that block only, so `.value { color: var(--rhp-color) }` on a sibling Label stays ink.
-    Set `--rhp-color` on the slat's root (and leave `color` off the Bar), or color the Label itself.
+    Set `--rhp-color` on the slat's root in a style object (and leave `color` off the Bar), or color the Label itself.
 20. **The page's font, colors and `--rhp-*` variables stop at the chart.**
     Give the font with `theme.font` and the colors with the theme; theme values may read the page's own variables (`ink: "var(--ink)"`), which do reach the chart.
     `color="var(--brand)"` on a block works but warns.

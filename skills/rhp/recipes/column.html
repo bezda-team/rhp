@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A monsoon year</title>
 <meta name="description" content="Column chart of a value over twelve months, a season marked under its columns, with a scrub that reads out the running total by hover, focus and tap. Use it for values over periods (months, years) or a few categories.">
+<!--
+  A recipe gives technique, not a design.
+  Take: vertical Bars over twelve periods, a bracket under a group of columns, and a scrub that reads out a running total.
+  Leave: the design. This poster was made for its own subject (a monsoon year as twelve rain gauges in the night rain, each month a glass tube with its water inside).
+  Its look, the place of its parts and the way its marks are drawn say that subject: design yours from your own (design.md, section 2).
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
@@ -22,14 +28,16 @@
   .poster .dek { max-width: 54ch; font-size: 16px; line-height: 1.5; color: #b5bdc4; }
   .poster .note { display: block; margin-top: 24px; font-size: 12px; line-height: 1.5; color: #8d969e; }
   /* The readout: how much rain has fallen by the month in focus */
-  .readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; min-height: 2lh; margin: 0 0 22px; padding-top: 16px; border-top: 1px solid #2c3135; font-size: 15px; line-height: 1.4; color: #b5bdc4; }
+  .readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 0 0 22px; padding-top: 16px; border-top: 1px solid #2c3135; font-size: 15px; line-height: 1.4; color: #b5bdc4; }
   .readout b { font-size: 30px; font-weight: 700; font-stretch: 110%; color: #fff; font-variant-numeric: tabular-nums; }
+  /* Where the figure and its longest text no longer fit on one line, the text goes under the figure with two lines
+     kept, so the readout has one height whatever it says and the chart never moves */
+  @media (max-width: 720px) { .readout { flex-direction: column; align-items: start; } .readout span { min-height: 2lh; } }
   @media (max-width: 560px) {
     body { padding: 16px 16px 32px; }
     .poster { padding: 26px 16px 18px; }
     .poster .headline { font-size: 32px; }
     .poster .dek { font-size: 15px; }
-    .readout { min-height: 4lh; } /* the longest readout, so the chart never moves */
     .readout b { font-size: 24px; }
   }
 </style>
@@ -46,6 +54,8 @@ const SEASON = { name: "Monsoon", from: 5, to: 8 }; // June to September; null f
 
 const mm = new Intl.NumberFormat("en-US");
 const percent = new Intl.NumberFormat("en-US", { style: "percent" });
+// A share in whole percents that never rounds some rain to "0%" or a year not yet over to "100%"
+const share = (x) => (x > 0 && x < 0.005 ? "under 1%" : x >= 0.995 && x < 1 ? "over 99%" : percent.format(x));
 const year = RAIN.reduce((a, b) => a + b, 0);
 const scale = nice(0, Math.max(...RAIN), 4); // 0 to 1,000 mm, a line every 250
 
@@ -65,14 +75,17 @@ const Month = slat({
     .season { position: absolute; top: calc(100% + 30px); left: 24%; width: calc(var(--months) * 100% - 48%); height: 7px; border: 1.5px solid #6cc3ff; border-top: 0; }
     .season b { position: absolute; top: 13px; left: 50%; translate: -50% 0; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #6cc3ff; white-space: nowrap; }
     .month:focus-visible { outline: 2px solid #6cc3ff; outline-offset: -2px; border-radius: 4px; }
+    .name .short { display: none; }
     @container (max-width: 520px) { .name { font-size: 11px; font-stretch: 70%; letter-spacing: 0; } .mm { font-size: 11px; font-stretch: 80%; } }
+    /* Columns under about 21px: the month's first letter, the whole name staying in the readout and the slat's label */
+    @container (max-width: 293px) { .name .long { display: none; } .name .short { display: inline; } }
   `,
 }, (d) => html`
   <div class=${() => "month " + d.step} data-row=${() => d.index} aria-label=${() => `${d.month}: ${mm.format(d.mm)} mm`}>
     <${Bar} to=${scale.max} class="tube" />
     <${Bar} to=${() => d.mm} class="water" />
     <${Label} at=${() => d.mm} class="mm">${() => mm.format(d.mm)}<//>
-    <${Label} edge="start" class="name">${() => d.month.slice(0, 3)}<//>
+    <${Label} edge="start" class="name"><span class="long">${() => d.month.slice(0, 3)}</span><span class="short">${() => d.month[0]}</span><//>
     <${Show} when=${() => d.index === SEASON?.from}>
       <span class="season" style=${() => `--months: ${SEASON.to - SEASON.from + 1}`}><b>${() => SEASON.name}</b></span>
     <//>
@@ -103,12 +116,12 @@ function MonsoonYear() {
       kicker="A monsoon city · rain by month"
       title="Four months bring nearly all of the year's rain"
       dek="Each tube holds a month's rain in millimetres. From June to September the monsoon fills them; for the rest of the year they stay almost dry."
-      note="Illustrative data, shaped like a monsoon city's year. Point at a month, tap it, or Tab into the chart and use the arrow keys to add up the year."
+      note="Illustrative data, shaped like a monsoon city's year."
       onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setAt(null)}>
       <p class="readout" aria-live="polite">
         <b>${() => mm.format(sofar()) + " mm"}</b>
-        <span>${() => (at() == null ? "in the whole year" : `by the end of ${MONTHS[end()]}, ${percent.format(sofar() / year)} of the year's rain`)}</span>
+        <span>${() => (at() == null ? "in the whole year. Tap or point at a month to add it up." : `by the end of ${MONTHS[end()]}, ${share(sofar() / year)} of the year's rain`)}</span>
       </p>
       <${Chart} orientation="vertical" height=${300} scale=${[scale.min, scale.max]} ticks=${scale.ticks} format=${(v) => mm.format(v)}
         label="Rainfall by month, in millimetres"

@@ -1,17 +1,43 @@
 # Choosing the form: data, story, slat and recipe
 
 Use this file in step 3 of the workflow, after the brief.
-It goes from what the reader should see, to the form, to the slat that draws it, to the recipe to start from.
+It goes from the subject and what the reader should see, to the form, to the slat that draws it, to the recipe that has the technique.
 When the user named a form ("a donut", "a gantt"), use it, and start at the recipe catalog below.
 
 ## Contents
 
+- Start from the subject's own form
 - Start from the reader's question
 - The compositions rhp charts are made of
 - The recipe catalog
 - Orientation, size and phones
 - Combining recipes
 - What rhp does not draw, and the closest answer
+
+## Start from the subject's own form
+
+Before the data's shape, look at the subject's.
+A reader already knows what it looks like, and a chart that takes that form is recognized before a word is read.
+rhp draws all of these; the recipe named has the technique, not the design.
+
+| The subject has | The form that carries it | Technique |
+|---|---|---|
+| a cycle that turns (hours of a day, days of a week, months, seasons, a rotation) | a ring or a dial with the cycle around it, or a calendar grid | `dial` (arcs around a 24-hour face), `donut` (wedges from shares), `radial-bars` (arcs), `heatmap` (a grid of Cells) |
+| things known by their outline (buildings, mountains, animals, ships, bottles) | each one drawn in its own outline, to scale, on one ground line | `silhouettes` (a `shape()` per row on a vertical Bar) |
+| units a reader can count (people, seats, days, coins, floors) | one small mark per unit, or a bar cut into units | `waffle` (Cells, a picture in each), `unit-stack` (a Bar cut by a mask) |
+| something that fills (rain, fuel, a battery, a budget, a quota) | a vessel up to the top of the scale, with its content inside | `column` (a tube and its water), `bullet` (bands and a target) |
+| a level things rise above or sink below (sea level, ground, zero, par, a freezing point) | bars or lines hanging from, or standing on, that one line | `diverging-bars`; in a vertical chart, values below the level are negative and hang from it |
+| a route or a sequence in space (stops, stages, a course, a river) | one line with its stations in order | `stacked-100` (its key is a metro line), `gantt`, `slope` |
+| a document the reader knows (a receipt, a ledger, a timetable, a scoreboard, a league table, a menu) | the chart laid out as that document, its lines the slats | `lollipop`, `waterfall`, `sparklines`, `live` |
+| a place (states, districts, seats in a hall, a pitch, a shelf) | a grid of tiles that echoes the place | `heatmap`'s composition (a Plot of rows, each a Plot of Cells) |
+| an instrument that measures it (a thermometer, a gauge, a ruler, a clock, a scale) | the instrument's own scale and pointer | a `Scale` drawn your own way, a Tick as the pointer, `radial-bars` |
+
+- The native form is the hero, and the numbers still have to be read: print each value on or beside its mark, since a ring, an outline or a tile is read less exactly than a bar on a shared baseline.
+- When an exact comparison is the whole point, keep bars from one baseline and let the subject show in how the marks are drawn (design.md section 2).
+- When the subject has no form of its own (abstract values, quarters of a year, A against B), the form comes from the reader's question below, and the idea from what the numbers do: the gap, the turn, the outlier.
+- A ring of the parts of a day reads as a clock: a part drawn from midnight to 9 is read as "from midnight to 9".
+  Put each part where it happens in the day, or keep the ring in order of size and leave the hour numerals off it.
+- Never bend the data to fit the form: a ring is for parts of a cycle or of a whole, an outline is scaled in one direction only, and units are all one size.
 
 ## Start from the reader's question
 
@@ -33,6 +59,7 @@ The headline will be its answer.
 | see progress toward goals | a share of a target per goal | radial bars, or bullets | `radial-bars`, `bullet` |
 | see actual against target | actual, target, quality bands | bullet | `bullet` |
 | follow one measure over time | a value per date | line | `line` |
+| follow a measure that grows by multiples, and its falls | a value per date, over a wide range | a line on a log scale | `log-line` |
 | compare a few measures over time | a value per date per series | multi-line | `multi-line` |
 | see a quantity's volume over time | a value per hour or day | area | `area` |
 | see change between two dates per item | two values per item | slope | `slope` |
@@ -48,6 +75,9 @@ The headline will be its answer.
 | see two measures and a size | three values per item | bubble | `bubble` |
 | see a value over two categories | a grid of values (day by hour) | heatmap | `heatmap` |
 | see two groups across ordered bands | two values per band | pyramid | `pyramid` |
+| see things known by their shape at their size | one value per item, each item with an outline | silhouettes to scale | `silhouettes` |
+| see how a day or another cycle splits | parts that add up to the cycle | a dial | `dial` |
+| follow one part of a total over periods, and count it | parts per period that add up | unit stacks with the part at the foot | `unit-stack` |
 | see a schedule and its progress | tasks with start, end, progress | gantt | `gantt` |
 | follow prices with their range | open, high, low, close per day | candlestick | `candlestick` |
 
@@ -61,9 +91,9 @@ For bulk scatter points, an experimental [ManyDots collection](api.md#manydots-e
 These are the patterns the recipes use; recognizing them lets you build a chart no recipe has.
 
 1. **One value per slat**: an edge Label for the name, a Bar from 0 (or `from`) to the value, a value Label at its end.
-   Recipes: `bar`, `column`, `lollipop` (a thin Bar and a Dot), `histogram`, `waterfall` (Bars from the running total before to the one after).
+   Recipes: `bar`, `column`, `lollipop` (a thin Bar and a Dot), `histogram`, `waterfall` (Bars from the running total before to the one after), `silhouettes` (a Bar wearing its row's `shape()`).
 2. **Several values on one slat, same scale**: several blocks in the same slat, each at its own value.
-   Recipes: `dumbbell` (two Dots and the Bar between them), `bullet` (band Bars, the actual Bar, a target Tick), `box-plot` (Bars for whiskers and box, Ticks for the median), `candlestick` (a thin Bar for the wick, a wide one for the body), `gantt` (planned, done and late Bars), `pyramid` (a Bar to each side of zero).
+   Recipes: `dumbbell` (two Dots and the Bar between them), `bullet` (band Bars, the actual Bar, a target Tick), `box-plot` (Bars for whiskers and box, Ticks for the median), `candlestick` (a thin Bar for the wick, a wide one for the body), `gantt` (planned, done and late Bars), `pyramid` (a Bar to each side of zero), `unit-stack` (a Bar to the picked part and a Bar from it to the total, each cut into coins by a mask).
 3. **Parts of each slat**: a Plot inside the slat, one inner slat per part.
    An `overlap` inner Plot puts the parts in one band, which makes a stack (`stacked-bars`, `stacked-100`, with `stackUp()` and `shares()`); an inner Plot without `overlap` lays the parts side by side across the band (`grouped-bars`).
 4. **A grid**: a Plot of Cells inside each slat, one Cell per column of the grid.
@@ -88,6 +118,7 @@ Inside any slat, add ordinary elements where the story needs them: an icon or a 
 ## The recipe catalog
 
 Each recipe is a complete page in `recipes/<name>.html` with a designed poster, fixed data and one interaction.
+The comment at the top of each says what to take (its technique) and what to leave (its design, made for its own subject).
 The interaction listed is the recipe's; interaction.md has the others.
 
 | Recipe | Shows | Composition | Interaction |
@@ -117,6 +148,10 @@ The interaction listed is the recipe's; interaction.md has the others.
 | `violin` | full distributions of groups | 7, `density()` | a switch that morphs the shapes |
 | `strip` | every value of a few groups | 6 | readout of a dot |
 | `pyramid` | two sides of a population by age | 2 | an age picked lights everyone that age or older |
+| `silhouettes` | ten towers to scale, each in its own outline, on one street | 1, vertical, `shape()` per row | readout of the tower picked, its level carried to the tallest |
+| `dial` | the parts of a day around a 24-hour dial | 10 + 9 | a hand that turns to the part picked, a readout in the hub |
+| `log-line` | ten years of a price on a log scale with a line at each doubling, its falls shaded | 5 (the falls as one filled Line) + 8 + 9, log scale | a crosshair readout by pointer, tap, drag or keys |
+| `unit-stack` | monthly spending as piles of coins, one part at the foot of every pile | 2 (the picked part and the rest), units by a mask | a picker of parts |
 | `gantt` | tasks over weeks, progress, today | 2 + 8 + 9 | readout of a task and its dependencies |
 | `candlestick` | daily open, high, low, close | 2 + 8 | a crosshair and price readout |
 | `sparklines` | a table of trends, one per slat, each scaled to itself | 1 + a Line in each slat + 8 | a year scrubber (pointer, tap, drag; a keyboard slider) |

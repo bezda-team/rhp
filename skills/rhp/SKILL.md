@@ -1,6 +1,6 @@
 ---
 name: rhp
-description: Makes charts, graphs, plots, infographics and data visualizations with rhp (@bezda/rhp, reactive html plots), charts built from HTML elements and CSS with SolidJS that run in a plain HTML page, React, Next.js, Vue, Svelte, Solid or Astro. Use it whenever the user asks to create, restyle, fix or extend a chart and rhp is the library to use, which is when they name rhp or @bezda/rhp, the project depends on @bezda/rhp, or the project has no chart library yet. Covers bar, column, grouped, stacked, 100% stacked, diverging, waterfall, line, area, scatter, bubble, slope, sparkline, histogram, box, violin, strip, dumbbell, gantt, candlestick, donut, radial, waffle, heatmap, lollipop, bullet and pyramid charts, bar chart races and live data, with magazine-style poster design, interaction, and a tool that renders the chart and reports problems.
+description: Makes charts, graphs, plots, infographics and data visualizations with rhp (@bezda/rhp, reactive html plots), charts built from HTML elements and CSS with SolidJS that run in a plain HTML page, React, Next.js, Vue, Svelte, Solid or Astro. Use it whenever the user asks to create, restyle, fix or extend a chart and rhp is the library to use, which is when they name rhp or @bezda/rhp, the project depends on @bezda/rhp, or the project has no chart library yet. Covers bar, column, grouped, stacked, 100% stacked, diverging, waterfall, line, area, scatter, bubble, slope, sparkline, histogram, box, violin, strip, dumbbell, gantt, candlestick, donut, radial, waffle, heatmap, lollipop, bullet and pyramid charts, dials, log-scale lines, silhouettes to scale, unit stacks, bar chart races and live data, with magazine-style poster design, interaction, and a tool that renders the chart and reports problems.
 license: MIT
 metadata:
   author: Bezda (rhp)
@@ -34,11 +34,19 @@ Asked (must all be in the result):
 - "<the user's words>" -> what that means for the chart
 - ...
 Chosen (the user left these open):
-- form, environment and file, data, look, interaction, motion (CSS by default; JS for data that changes rapidly), size
+- form, environment and file, data, interaction, motion (CSS by default; JS for data that changes rapidly), size
+Design (from the subject; none of it the starting recipe's):
+- Idea: the subject's own shape, object or way of drawing this data, and how it helps the reading
+- Marks: how each mark is drawn to carry the idea
+- Composition: where the headline, the chart and the other parts sit, on a desktop and on a phone
+- Palette: the paper, the ink, the accent, and where each comes from
+- Type: the faces, and why these
 ```
 
 - Put under **Asked** every explicit request, quoting the user's words: the data and its numbers, the chart type, titles and text, colors, fonts, size, orientation, sort order, labels, legend, interactions, animation, framework, file name, and anything they said not to do.
 - Everything else goes under **Chosen**, filled with the defaults below.
+- The five **Design** lines are written at step 4, after you have looked at the subject (step 3) and at the starting recipe.
+  A line the user or the app has fixed says so ("Palette: theirs, exactly", "Type: the app's"); a "plain", "minimal" or "no poster" request has no Design lines.
 - A request is never dropped, swapped for something "better" or quietly reduced. If rhp cannot do something exactly, say so in the brief and do the closest thing.
 - A part of the data the user did not name (what is left when their parts do not reach 100%) is a quiet remainder: unlabeled, in the quiet color, with no key entry, and explained in the note, never a new series with its own color.
   Write it under **Asked**, beside the request it changes, as a deviation.
@@ -68,7 +76,13 @@ Look at the project before you write anything: read package.json (dependencies a
 Name a new file after its subject (`languages.html`, `RainfallChart.jsx`), and put it where the project keeps similar files.
 Install with the project's package manager (`npm install @bezda/rhp`) unless the chart is a plain HTML page, which loads rhp from jsDelivr.
 
-### 3. Design the slat, then pick the recipes to start from
+### 3. Find the subject's own form, design the slat, pick recipes for technique
+
+Look at the subject before you think of a chart type.
+A reader already knows what it looks like: its shape (a week is seven columns, a river runs from source to mouth, a depth hangs below the surface), its objects (a ticket, a scoreboard, a gauge, a ledger), and the way people who work with it already draw this data (a tide table, a score sheet, a growth chart at the doctor's).
+When one of those can hold the data honestly, it is the chart's form: [forms.md](references/forms.md) lists the shapes rhp draws and the recipe that has the technique for each.
+When none can, the form comes from the data alone, and the subject shows in the marks and the composition (step 4).
+The form the user named always wins.
 
 An rhp chart has no chart type to configure.
 It is one slat, the element drawn for each row of data, composed from blocks, so you design that slat:
@@ -78,9 +92,14 @@ It is one slat, the element drawn for each row of data, composed from blocks, so
 3. **What sits on top of the slats?** A second Plot over the first (`overlap`) draws layers: a scatter, a line, a crosshair, a marker for today.
 4. **What does each slat hold of its own?** A Plot inside a slat draws small multiples: a heatmap's cells, a grouped bar's bars, a strip of dots.
 
-[forms.md](references/forms.md) maps data and stories to forms and to these compositions; use the form the user named, if they named one.
+[forms.md](references/forms.md) maps subjects, data and stories to forms and to these compositions; use the form the user named, if they named one.
 Then open the closest recipe in `recipes/` and read it whole.
-Every recipe is a complete, tested, designed chart page, a worked example of one composition: start from it, keep its structure and its techniques, and replace its data, text, look and details.
+
+**A recipe gives technique, not a design.**
+Every recipe is a complete, tested chart page, and its comment at the top says which part is which.
+Take its technique: how the Plots and blocks are composed, the scale, the helpers, the interaction handlers, the accessibility, the phone rules.
+Leave its design: its look, the order and place of its parts, its readout band and controls row, the way its marks are drawn, and its wording were made for another subject.
+A chart that keeps them is that recipe with new data, and a reader can tell.
 When the story needs a slat no recipe has (a name, a bar, a sparkline and a target in one slat), combine the techniques of several recipes.
 
 For a bulk scatter collection, consider `ManyDots` instead of creating one slat per point.
@@ -123,27 +142,46 @@ Its numeric sizes mean pixels, updates are immediate and scan the rows, and init
 | `lollipop` | ranked values, lighter than bars |
 | `bullet` | actual against target, with bands |
 | `pyramid` | two sides of one population by age |
+| `silhouettes` | things known by their shape (buildings, ships, bottles), each in its own outline to scale |
+| `dial` | how a day, a week or another cycle splits into parts, around a dial |
+| `log-line` | a quantity that grows by multiples over years, on a log scale, its falls measured |
+| `unit-stack` | a total made of parts over periods, counted out in units, one part to follow |
 
 The rhp MCP server's `rhp_recipe` tool (`rhp:rhp_recipe`) returns the same recipes when the files are not on disk.
 
 ### 4. Design it
 
 Unless the user gave a style, the chart is an original **editorial poster**: a magazine, advertisement or feature-article infographic designed for this subject.
-Read [design.md](references/design.md) and follow its procedure; in short:
+Original means that a reader could not guess which recipe it started from, and that with its words covered it still says what it is about.
+Read [design.md](references/design.md) and make its five decisions, in the brief's Design lines, each from this subject and each different from the starting recipe's:
 
-- The poster carries a **kicker** (the topic, a few words), a **headline that states the finding** ("Bananas outsell everything else", not "Fruit sales"), a **dek** (context and how to read the chart), the chart, and a **note** (source and year, or "Illustrative data"; no source line when the user gave the data and no source).
-- Derive the look from the subject: a material or setting, a palette, a type pairing, how the marks are drawn, and one ornament.
-  Make it your own, not a copy of the recipe's look or of another chart you made: never reuse a recipe's headline formula, kicker wording or readout band as they are.
+- **Idea.** The subject's own shape, object or way of drawing this data (step 3), in one sentence, and how it helps the reading.
+  It is the one thing a reader remembers, and it shows in the form or the marks, not only in the frame.
+- **Marks.** Drawn to carry the idea: each item in its own outline, a bar counted out in units, a container and what fills it, the stroke of the subject's own instrument.
+  Flat and honest: the value is still read from a length, a position or a count.
+- **Composition.** Where the headline, the chart, the key number and the note sit, taken from the idea and not from the recipe.
+  The idea must still be there at 390px.
+- **Palette.** The subject's own ground as the paper (a colored paper built from the subject's own color when it has one; design.md section 4 says how), its ink, one accent the subject owns for the story, and context marks quiet without being a wall of gray.
+- **Type.** A display face with the subject's voice and a plain text face, neither of them the recipe's.
+
+What the user or the project has fixed stays fixed, and the rest is still designed:
+
+| The request | Fixed | Yours, from the subject |
+|---|---|---|
+| no style given | nothing | all five |
+| the user's colors, fonts, brand or "dark" | those, exactly | the idea, the marks, the composition, and what they left open |
+| a chart inside an app with a look of its own | the app's fonts, colors, card and spacing | the idea, the marks, and the composition inside the card |
+| "plain", "minimal", "no poster", "just the chart" | the plain chart of design.md section 9 | nothing: plain wins |
+
+Unless the request is plain (design.md section 9 says what a plain or a minimal chart keeps):
+
+- The chart carries a **headline that states the finding** ("Bananas outsell everything else", not "Fruit sales"), and a poster also a **kicker** (the topic, a few words), a **dek** (context and how to read the chart) and a **note** (source and year, or "Illustrative data"; no source line when the user gave the data and no source).
+  Write them for this subject: never a recipe's headline formula or kicker wording.
 - Color has a purpose: one accent for the story, quieter colors for the rest. Direct labels beat legends.
 - The series or item the headline names leads at rest: lit, labeled and in the accent before the reader does anything.
   When the user's color for it is weak on the background, keep the color and outline or label its marks.
 - It must read on a phone (390px wide) as well as on a desktop, with the chart in the phone's first screen.
-
-When the user gives a style, a brand, colors or fonts, use exactly those: the palette and the type are theirs.
-The layout, the frame, the marks and one idea from the subject are still yours to design, with design.md's legibility rules.
-
-Inside an existing app with a look of its own (its fonts, CSS variables, Tailwind theme or component library), the chart takes the app's fonts and colors instead of a poster's.
-Keep the editorial habits that help any chart: a title that states the finding, direct labels, a source line.
+- Legibility is never traded for the idea: design.md's contrast floors, text sizes and honesty rules hold for every design.
 
 ### 5. Give it an interaction
 
@@ -155,7 +193,7 @@ The hint for an interaction sits beside its control, in words that fit every dev
 When the user asks for a "static" chart, an image-like chart or no interaction, add none.
 A chart with fixed data and no interaction gets `static=${true}` on its Chart: rhp draws it once and keeps no signals.
 
-### 6. Build it from the recipe
+### 6. Build it, with the recipe's technique
 
 - Keep the recipe's code format and section order: data, then slat types, then the chart component, then mounting.
   With `ManyDots`, omit slat types and put the collection directly inside the Chart.
@@ -169,6 +207,13 @@ A chart with fixed data and no interaction gets `static=${true}` on its Chart: r
   The handoff says exactly how to put their own numbers in, or offers to read a file they point to.
 - Compute the scale from the data: `nice(Math.min(0, ...values), Math.max(0, ...values))` (rule 2 below).
 - Compute the ranks, the leader and every number in the headline and the dek from a sorted copy of the data, never from its input order: a Plot's `order` sorts only what it draws.
+- Text computed from the data (the headline, the dek, a readout, an `aria-label`) must stay true for any data it may get:
+  - A change from a zero or missing base prints "new" or "up from none", never ∞%, NaN% or "as many as"; a change in a rate is in percentage points ("down 0.8 points").
+  - A change computed from the first and last values names them ("22% above 12 weeks ago"), and "held steady" needs every value inside a narrow band, not two equal ends.
+  - A count over the chart's window ("led for eight years", "a record") names the window ("every year from 2015 to 2022") unless you checked it holds before the window too.
+  - Numbers in the text are rounded as the labels are, and labels use the fewest decimals that keep neighbors apart, with no trailing zeros.
+- Real data from yearly releases takes each year from the latest release that covers it, never a mix of first estimates and revisions.
+  When the user asks for brands and the source counts companies, the note names every merge shown ("Lenovo includes Motorola").
 - Look up anything you are unsure of in [api.md](references/api.md) rather than guessing a prop.
 - Keep the code short and plain: comments at section heads and where a reader needs one.
 
@@ -188,6 +233,14 @@ Its screenshots show the page with reduced motion asked for, so a chart that ani
 They go to a folder in the system's temp directory, and the report gives their paths; `--out <dir>` puts them elsewhere.
 Keep screenshots, and any test files of your own, out of the user's project.
 Then open the screenshots and look at them as a demanding art director would: hierarchy, spacing, alignment, color, legibility on the phone, and whether the headline is true for the data.
+Unless the request was plain or minimal, put the design to two tests:
+
+- **The recipe test.** Run the checker on the recipe you started from as well, and look at its 1280px screenshot beside yours.
+  If a reader could tell that yours started from it (the same parts in the same places, the same band above the chart, the same marks in new colors), change the composition or the marks; new colors and fonts do not pass this test.
+- **The subject test.** Look at your screenshots at 1280px and at 390px as if the words were covered.
+  What is left must still say what the chart is about.
+  If it could hold any data, the idea lives only in the text and the frame: carry it into the form or the marks.
+
 Fix what you see, and check again.
 
 Never make a warning go away by removing something the user asked for.
@@ -198,8 +251,9 @@ If the checker cannot run here (no Node, no browser, a chatbot without tools), g
 - Go through every **Asked** item of the brief against the final code and screenshots, and fix anything missing.
 - Recompute every number in the headline, the dek and the note from the final data: a claim must be true for the numbers shown.
 - Try every control once more and compare before and after: nothing else on the page may move (pitfalls.md, "The layout jumps").
-- Check once more at four widths (`--widths 1280,1024,768,390`, or `widths` in `rhp_check`): layouts that change between 390px and 1280px (a breakpoint, a turned chart, a panel beside the chart) are where most layout bugs are.
-- When the chart will take other data (the user's own, live or generated), check a copy with the hardest data it may get: the longest names, values ten times larger, twice as many rows.
+- Check once more at six widths (`--widths 1280,1024,768,390,360,320`): layouts that change between 320px and 1280px (a breakpoint, a turned chart, a panel beside the chart) are where most layout bugs are; 360px and 320px catch narrower phone layouts.
+  If `rhp_check` accepts only four widths per call, use two calls to cover all six.
+- When the chart will take other data (the user's own, live, loaded or generated, or a component that takes its rows as a prop even if the app's data is fixed today), check a copy with the hardest data it may get: the longest real names of the domain, values ten times larger, twice as many rows, one row and none, a first value of 0 and all zeros, the smallest parts (1 to 5%), and dates across a year's end.
 - Then tell the user, briefly: what you made, where it is and how to open or run it (an HTML file opens with a double-click, and needs a connection for rhp), what you chose for them (form, look, interaction, data source or "illustrative"), and anything you could not do, with the reason.
   For a short request, those few lines are the whole handoff: no test logs, tool versions or local paths.
   To name the checker, give the command anyone can run, `npx -y @bezda/rhp-mcp check <file>`.
@@ -337,7 +391,11 @@ The html template (every format except Solid JSX):
 8. **A handler on a component takes its event:** `onClick=${(e) => pick(e)}`. A function with no parameter on a component (a block or a Poster) runs once while drawing and is never attached. Handlers on plain elements (`div`, `button`) work either way, and the Chart takes none at all (rule 16).
 9. **`class`, never `className`**: on a block, `className` replaces rhp's own class and the block disappears.
 10. **A space between two tags disappears**: `<b>${() => d.name}</b> <em>12</em>` renders "Name12". Write the space as `${" "}` or keep text next to it (`<b>Name</b>: <em>`).
-11. **`style` on a Chart or a Plot is an object** (`style=${{ "pointer-events": "none" }}`); a string is dropped. Blocks and plain elements take either.
+11. **Chart, Plot and slat roots use style objects.**
+    On a Chart or a Plot, use `style=${{ "pointer-events": "none" }}`: a string is dropped.
+    On a slat's root, keep a changing style an object (`style=${() => ({ "--n": d.n })}`), because a string that changes or a style that becomes `undefined` erases its stack position.
+    On published rhp 2.0.2, the same replacement can erase a Block's position and color, so use objects there too; the Block bug is fixed in current source for the upcoming 2.0.3 release.
+    Other plain elements accept objects or strings.
 
 Structure and layout:
 
@@ -360,7 +418,12 @@ Style and color:
     Page CSS styles the poster around the chart and the chart's box.
     Focus styles for slats (`.slat:focus-visible`) go in the slat's `css` too: a page `:focus-visible` rule never reaches a slat.
     `ManyDots` instead uses `pointClass` and ordinary application CSS or `pointStyle` for appearance, while the collection guards point geometry.
-18. **Color with theme keys or CSS colors**: `color="series-2"`, `"positive"`, `"negative"`, `"muted"` or `"#c2410c"`. Set the palette in the Chart's `theme` (`series`, `ink`, `muted`, `grid`, `surface`, `positive`, `negative`, `low`, `high`, `font`). Theme values may read the page's own variables (`ink: "var(--ink)"`), so the poster and the chart share one set of tokens and dark mode is a few lines of CSS (design.md); a block's `color` may not (rhp warns), and page CSS never sets rhp's own `--rhp-*` variables. `series()` counts six colors: with a shorter `series` list, call `series(n)`. A Label does not take its Bar's color: color the slat root (`--rhp-color` in its style) or the Label's own text.
+18.
+    **Color with theme keys or CSS colors**: `color="series-2"`, `"positive"`, `"negative"`, `"muted"` or `"#c2410c"`.
+    Set the palette in the Chart's `theme` (`series`, `ink`, `muted`, `grid`, `surface`, `positive`, `negative`, `low`, `high`, `font`).
+    Theme values may read the page's own variables (`ink: "var(--ink)"`), so the poster and the chart share one set of tokens and dark mode is a few lines of CSS (design.md); a block's `color` may not (rhp warns), and page CSS never sets rhp's own `--rhp-*` variables.
+    `series()` counts six colors: with a shorter `series` list, call `series(n)`.
+    A Label does not take its Bar's color: give the slat's root `--rhp-color` in a style object (`style=${() => ({ "--rhp-color": d.on ? ACCENT : QUIET })}`) or color the Label's own text.
 19. **A Dot's `size` is a length** (`size="12px"`); a bare number stretches it into an oval.
 20. **Overlay Plots** (a crosshair, a marker over other Plots) need `style=${{ "pointer-events": "none" }}` so the pointer reaches the Plot under them.
 
@@ -375,12 +438,13 @@ The full list, with the mistake and the fix for each, is [pitfalls.md](reference
 
 Read the ones the chart needs; each is self-contained.
 
-- [forms.md](references/forms.md): which chart for which data and story, and which recipe to start from.
-- [design.md](references/design.md): the poster, art direction from the subject, look kits, palettes, type, layout, annotation, dark mode.
+- [forms.md](references/forms.md): the subject's own form, which chart for which data and story, and which recipe has the technique.
+- [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, color, type, layout, annotation, charts inside an app, a style the user asks for.
+- [looks.md](references/looks.md): eight looks written out in full (tokens, fonts, texture, type), as examples of how a look is written, not a menu.
 - [interaction.md](references/interaction.md): which interaction for which story, with complete code for each.
 - [environments.md](references/environments.md): plain HTML, Solid, Astro, React, Next.js, Vue, Svelte and Angular, each verified, and the html template to JSX rules.
 - [api.md](references/api.md): every component, prop, helper and CSS variable, exactly.
 - [pitfalls.md](references/pitfalls.md): mistakes and their fixes.
-- `recipes/*.html`: the tested starting points listed in step 3.
+- `recipes/*.html`: the tested pages listed in step 3, for technique.
 
 Live gallery and docs: https://rhp.vercel.app
