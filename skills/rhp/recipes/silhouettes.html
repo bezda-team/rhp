@@ -97,7 +97,7 @@ const BUILDINGS = [
   { name: "Burj Khalifa", city: "Dubai", year: 2010, floors: 163, height: 828 },
   { name: "Menara Merdeka Maybank", formerly: "Merdeka 118", city: "Kuala Lumpur", year: 2023, floors: 118, height: 679 },
   { name: "Shanghai Tower", city: "Shanghai", year: 2015, floors: 128, height: 632 },
-  { name: "Makkah Royal Clock Tower", city: "Mecca", year: 2012, floors: 120, height: 601 },
+  { name: "Makkah Royal Clock Tower", city: "Mecca", year: 2012, floors: 120, height: 601, clock: { at: 428, size: 43 } }, // its faces: 43 m across, their middle 428 m up
   { name: "Ping An Finance Center", city: "Shenzhen", year: 2017, floors: 115, height: 599 },
   { name: "Lotte World Tower", city: "Seoul", year: 2017, floors: 123, height: 555 },
   { name: "One World Trade Center", city: "New York", year: 2014, floors: 94, height: 541 },
@@ -227,6 +227,9 @@ const TOWER_CSS = `
   .level.first { translate: 0 50%; }
   .level.last { translate: -100% 50%; }
   .dim { translate: var(--dx) 0; }
+  /* A clock face: a ring cut out of the tower, round whatever the chart's proportions, in the sky's color */
+  .clock { position: absolute; left: calc(50% + var(--shift) * 100%); bottom: calc(var(--at) * 100%); width: calc(var(--size) * 100%); aspect-ratio: 1;
+    translate: -50% 50%; border: 2px solid #d0e1f2; border-radius: 50%; }
   /* The labels and lines follow the building's axis, moved across the slat by --shift for even gaps */
   .tip, .dim, .cap, .mark, .level.first, .level.last { margin-left: calc(var(--shift) * 100%); }
   .cap { translate: 0 50%; }
@@ -242,12 +245,17 @@ const TOWER_CSS = `
     .lit .tip { font-size: 19px; }
     .tip .u { display: none; }
     .gap { font-size: 26px; }
+    .clock { border-width: 1px; }
   }
 `;
 const tower = (d) => html`
   <div class=${() => (d.lit ? "tower lit" : "tower")} data-row=${() => d.index} aria-label=${() => say(d.index)}
     style=${() => `--dx: ${d.wide ? 14 : 8}px; --shift: ${d.shift}`}>
-    <${Bar} to=${() => d.height} thick=${1} shape=${() => d.outline} color=${() => (d.lit ? "ink" : "series-2")} />
+    <${Bar} to=${() => d.height} thick=${1} shape=${() => d.outline} color=${() => (d.lit ? "ink" : "series-2")}>
+      <${Show} when=${() => d.clock}>
+        <i class="clock" aria-hidden="true" style=${() => `--at: ${d.clock.at / d.height}; --size: ${d.clock.size / BOX}`}></i>
+      <//>
+    <//>
     <${Tick} at=${() => d.level} thick=${() => ({ mid: 1, first: 0.5 - d.shift, last: 0.5 + d.shift })[d.span] ?? 0.5} class=${() => "level " + d.span} />
     <${Label} at=${() => d.height} class="tip">${() => d.height}<span class="u"> m</span><//>
     <${Label} edge="start" class="name">
