@@ -275,7 +275,7 @@ function DayDial() {
     const line = e.target.closest?.("[data-row]");
     return line ? +line.dataset.row : null;
   };
-  const focused = (poster) => poster.querySelector(".act[data-row]:focus");
+  const focused = (el) => el.closest(".poster").querySelector(".act[data-row]:focus");
   // A mouse or a pen picks as it moves; a tap or a click picks and gives that activity focus; the keyboard picks
   const point = (e) => {
     const row = rowAt(e);
@@ -291,7 +291,7 @@ function DayDial() {
     const act = e.target.closest?.(".act[data-row]");
     if (act) setOn(+act.dataset.row);
   };
-  // Leaving the poster: back to the activity that has focus (a keyboard's or a tap's pick), or to the lead
+  // Leaving the dial, the key or the poster: back to the activity that has focus (a keyboard's or a tap's pick), or to the lead
   const leave = (e) => {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     const act = focused(e.currentTarget);
@@ -309,7 +309,7 @@ function DayDial() {
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <div class="stage">
         <!-- A press on the face keeps focus where it is, so the pick goes straight from one activity to the next -->
-        <div class="face" onMouseDown=${(e) => e.preventDefault()}>
+        <div class="face" onMouseDown=${(e) => e.preventDefault()} onPointerLeave=${leave}>
           <${Chart} scale=${[0, 24]} aspect=${1} ticks=${false} theme=${THEME}
             label="The average day in 24 hours: each activity's share of the dial">
             <${Scale} ticks=${every(1)}>${Hour}<//>
@@ -330,7 +330,7 @@ function DayDial() {
         </div>
         <p class="hint">Point at the dial or tap it. With a keyboard, Tab to it and use the arrow keys.</p>
       </div>
-      <div class="key">
+      <div class="key" onPointerLeave=${leave}>
         ${GROUPS.map((g, gi) => html`
           <section>
             <h3>${g}<span>${DAY.filter((x) => x.group === gi).length > 1 ? short(groupHours[gi]) : ""}</span></h3>
