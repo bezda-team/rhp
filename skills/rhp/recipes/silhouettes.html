@@ -149,8 +149,9 @@ const PROFILE = {
     right: [[0, 39.5], [437, 39.5], [438, 24], [500, 24], [508, 8.5], [512, -3], [526, -35.5], [530, -35.5]],
   },
   "Tianjin CTF Finance Centre": {
-    left: [[0, 38], [130, 38], [228, 29.5], [436, 23], [518, 15], [524, 12], [526, 9.5], [530, 1.5]],
-    right: [[0, 38], [130, 38], [216, 29.5], [308, 27], [328, 28], [438, 23], [518, 14.5], [524, 11], [530, 1.5]],
+    // its crown ends in two rounded lobes with a dip between them
+    left: [[0, 38], [130, 38], [228, 29.5], [436, 23], [518, 15], [524, 12], [528, 9], [530, 6], [529, 3.5], [525, 0.3]],
+    right: [[0, 38], [130, 38], [216, 29.5], [308, 27], [328, 28], [438, 23], [518, 14.5], [524, 11], [528, 8.5], [530, 6], [529, 3.5], [525, 0.3]],
   },
   "CITIC Tower": {
     left: [[0, 43.5], [32, 43.5], [108, 38], [138, 38], [140, 36.5], [150, 35.5], [264, 31], [460, 31], [520, 36.5], [528, 35.5]],
@@ -158,12 +159,13 @@ const PROFILE = {
   },
 };
 const BOX = 165;
-// A profile as a Bar's outline: along runs from the street (0) to the top (1), across from the left (0) to the right (1)
-const outline = ({ left, right = left }) => {
+// A profile as a Bar's outline: along runs from the street (0) to the top (1), across from the left (0) to the right (1);
+// shift moves the building's axis across its slat, in metres
+const outline = ({ left, right = left }, shift = 0) => {
   const top = Math.max(...left.map(([h]) => h), ...right.map(([h]) => h));
   return shape(
-    ...left.map(([h, w], i) => [i ? "L" : "M", h / top, 0.5 - w / BOX]),
-    ...[...right].reverse().map(([h, w]) => ["L", h / top, 0.5 + w / BOX]),
+    ...left.map(([h, w], i) => [i ? "L" : "M", h / top, 0.5 + (shift - w) / BOX]),
+    ...[...right].reverse().map(([h, w]) => ["L", h / top, 0.5 + (shift + w) / BOX]),
     ["Z"],
   );
 };
@@ -176,7 +178,24 @@ const LEAD = byHeight[0];
 const SECOND = byHeight[1];
 const RANK = HEIGHT.map((h) => 1 + HEIGHT.filter((other) => other > h).length); // ties share a rank, as in CTBUH's table
 const POS = BUILDINGS.map((b, i) => BUILDINGS.length - 1 - byHeight.indexOf(i)); // place on screen, lowest first
-const OUTLINE = BUILDINGS.map((b) => outline(PROFILE[b.name] ?? { left: [[0, 30], [b.height, 30]] }));
+const profileOf = (b) => PROFILE[b.name] ?? { left: [[0, 30], [b.height, 30]] };
+// Even gaps: every building's widest extent is laid along the street with the same space between each, and each axis
+// moves across its slat to where that puts it (SHIFT, a share of the slat, which the labels and lines follow)
+const EXTENT = BUILDINGS.map((b) => {
+  const { left, right = left } = profileOf(b);
+  return [Math.max(...left.map(([, w]) => w)), Math.max(...right.map(([, w]) => w))];
+});
+const SHIFT = new Array(BUILDINGS.length);
+{
+  const placed = POS.map((p, i) => [p, i]).sort((a, b) => a[0] - b[0]).map(([, i]) => i); // left to right
+  const space = (BUILDINGS.length * BOX - EXTENT.reduce((sum, [l, r]) => sum + l + r, 0)) / BUILDINGS.length;
+  let x = space / 2;
+  placed.forEach((i, place) => {
+    SHIFT[i] = (x + EXTENT[i][0] - BOX * (place + 0.5)) / BOX;
+    x += EXTENT[i][0] + EXTENT[i][1] + space;
+  });
+}
+const OUTLINE = BUILDINGS.map((b, i) => outline(profileOf(b), SHIFT[i] * BOX));
 const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve",
   "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"];
 const word = (n) => WORDS[n] ?? String(n);
@@ -208,6 +227,8 @@ const TOWER_CSS = `
   .level.first { translate: 0 50%; }
   .level.last { translate: -100% 50%; }
   .dim { translate: var(--dx) 0; }
+  /* The labels and lines follow the building's axis, moved across the slat by --shift for even gaps */
+  .tip, .dim, .cap, .mark, .level.first, .level.last { margin-left: calc(var(--shift) * 100%); }
   .cap { translate: 0 50%; }
   .gap { position: absolute; left: calc(var(--dx) + 7px); top: 0; translate: 0 -50%; font: 400 36px/1 "League Gothic", "Arial Narrow", sans-serif; color: var(--rhp-series-1); white-space: nowrap; }
   .name { --rhp-label-gap: 10px; white-space: normal; text-align: center; line-height: 1.15; font-size: 12.5px; color: var(--rhp-surface); }
@@ -225,9 +246,9 @@ const TOWER_CSS = `
 `;
 const tower = (d) => html`
   <div class=${() => (d.lit ? "tower lit" : "tower")} data-row=${() => d.index} aria-label=${() => say(d.index)}
-    style=${() => `--dx: ${d.wide ? 14 : 8}px`}>
+    style=${() => `--dx: ${d.wide ? 14 : 8}px; --shift: ${d.shift}`}>
     <${Bar} to=${() => d.height} thick=${1} shape=${() => d.outline} color=${() => (d.lit ? "ink" : "series-2")} />
-    <${Tick} at=${() => d.level} thick=${() => (d.span === "mid" ? 1 : 0.5)} class=${() => "level " + d.span} />
+    <${Tick} at=${() => d.level} thick=${() => ({ mid: 1, first: 0.5 - d.shift, last: 0.5 + d.shift })[d.span] ?? 0.5} class=${() => "level " + d.span} />
     <${Label} at=${() => d.height} class="tip">${() => d.height}<span class="u"> m</span><//>
     <${Label} edge="start" class="name">
       <${Show} when=${() => d.wide} fallback=${html`<b class="rank">${() => d.rank}</b>`}>
@@ -240,7 +261,7 @@ const tower = (d) => html`
       <${Bar} from=${() => d.level} to=${() => d.height} thick="2px" color="series-1" class="dim" />
       <${Tick} at=${() => d.level} thick=${() => `${d.wide ? 22 : 14}px`} color="series-1" class="cap" />
       <${Tick} at=${() => d.height} thick=${() => `${d.wide ? 22 : 14}px`} color="series-1" class="cap" />
-      <${Place} at=${() => (d.level + d.height) / 2}><b class="gap">${() => metres(d.height - d.level)}</b><//>
+      <${Place} at=${() => (d.level + d.height) / 2} class="mark"><b class="gap">${() => metres(d.height - d.level)}</b><//>
     <//>
   </div>`;
 // The same tower with the room each width needs: names on the street on wide screens, ranks on narrow ones
@@ -282,7 +303,7 @@ function Skyline() {
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   const towers = (type) => html`
-    <${Plot} rows=${BUILDINGS} order=${POS} keyboard=${true} rank=${RANK} outline=${OUTLINE}
+    <${Plot} rows=${BUILDINGS} order=${POS} keyboard=${true} rank=${RANK} outline=${OUTLINE} shift=${SHIFT}
       lit=${(d) => d.index === lit()} lead=${(d) => d.index === LEAD} span=${(d) => span(d.index)}
       level=${() => HEIGHT[ref()]} wide=${wide}>${type}<//>`;
   return html`
