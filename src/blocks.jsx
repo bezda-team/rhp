@@ -94,24 +94,43 @@ function cssTransition(path) {
 // An outline's points as they should be drawn now: in Safari moving to each new outline, elsewhere as they are
 const drawn = (read, path) => (noCssD ? transitioned(read, () => cssTransition(path())) : read);
 
+// Sets an element's style prop (an object or a string) where rhp also writes the element's CSS variables, the keys.
+// Solid sets a string, a change from a string, and no style at all by replacing the whole style attribute, which takes
+// the variables with it: those are put back as they were, so a value still waiting for the next frame lands there as
+// it would have, and nothing moves in between. prev is what the last call returned.
+function setStyle(el, st, prev, keys) {
+
+  const whole = typeof st === "string" || typeof prev === "string" || (!st && prev);
+  const kept = whole ? keys.map((key) => [key, el.style.getPropertyValue(key)]) : [];
+  const css = style(el, st, prev);
+
+  for (const [key, value] of kept) {
+    if (value) el.style.setProperty(key, value);
+  }
+
+  return css;
+}
+
 // Writes an element's CSS variables, and only the ones that changed (the first ones now, the rest in the next frame).
-// back(v) is for a Bar: whether it runs backward.
-export function writeVars(el, vars, back) {
+// back(v) is for a Bar: whether it runs backward. st() is the element's style prop, set with them.
+export function writeVars(el, vars, back, st) {
 
   if (isServer) return; // on a server they go into the element's style attribute (withVars)
 
   createRenderEffect((prev) => {
     const v = vars();
+    const s = st?.();
+    const css = s !== prev?.s ? setStyle(el, s, prev?.css, Object.keys(v)) : prev?.css;
 
     for (const key in v) {
-      if (v[key] === prev?.[key]) continue;
+      if (v[key] === prev?.v[key]) continue;
       if (prev) write(el, key, v[key]);
       else if (v[key] != null) el.style.setProperty(key, v[key]);
     }
 
     if (back) el.toggleAttribute("data-rhp-back", back(v));
 
-    return v;
+    return { v, s, css };
   });
 }
 
@@ -186,11 +205,11 @@ function browserBlock(props, mine, base, vars, attrs, back) {
     // The class comes before the spread so that a classList adds to it instead of replacing it
     const el = (
       <div class={cls(base, props.class)} data-rhp-o={short(orientation())} {...splitProps(props, [...mine])[1]} ref={(e) => props.ref?.(e)}
-        {...(attrs ? attrs() : {})} style={props.style}>
+        {...(attrs ? attrs() : {})}>
         {props.children}
       </div>
     );
-    writeVars(el, (v) => vars(v ?? orientation() === "vertical"), back);
+    writeVars(el, () => vars(orientation() === "vertical"), back, () => props.style);
     return el;
   }
 
@@ -213,7 +232,7 @@ function browserBlock(props, mine, base, vars, attrs, back) {
       else el.setAttribute(key, a[key]);
     }
 
-    if (st !== prev?.st) style(el, st, prev?.st);
+    const css = st !== prev?.st ? setStyle(el, st, prev?.css, Object.keys(v)) : prev?.css;
 
     for (const key in v) {
       if (v[key] === prev?.v[key]) continue;
@@ -223,7 +242,7 @@ function browserBlock(props, mine, base, vars, attrs, back) {
 
     if (back) el.toggleAttribute("data-rhp-back", back(v));
 
-    return { c, dir, a, st, v };
+    return { c, dir, a, st, css, v };
   });
 
   props.ref?.(el);
@@ -369,11 +388,11 @@ export function Area(props) {
   let el;
   const node = (
     <svg {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-area", p.class)} data-rhp-o={short(orientation())}
-      viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : p.style}>
+      viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : undefined}>
       <path ref={pathEl} d={path()} vector-effect="non-scaling-stroke" />
     </svg>
   );
-  writeVars(el, vars);
+  writeVars(el, vars, null, () => p.style);
 
   return node;
 }
@@ -457,12 +476,12 @@ export function Line(props) {
   let el;
   const node = (
     <svg {...rest} ref={(e) => { el = e; p.ref?.(e); }} class={cls("rhp-line", p.class)} data-rhp-o={short(orientation())}
-      viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : p.style}>
+      viewBox="0 0 1000 1000" preserveAspectRatio="none" style={isServer ? withVars(p.style, vars()) : undefined}>
       <path class="rhp-under" d={paths()[1]} />
       <path ref={pathEl} class="rhp-stroke" d={paths()[0]} vector-effect="non-scaling-stroke" />
     </svg>
   );
-  writeVars(el, vars);
+  writeVars(el, vars, null, () => p.style);
 
   return node;
 }
