@@ -110,28 +110,54 @@ const SOURCE = "Source: Council on Tall Buildings and Urban Habitat (CTBUH), The
   + "Height to the architectural top: spires count, antennas do not. Merdeka 118 was renamed Menara Merdeka Maybank in July 2026. "
   + "Outlines are simplified side views, all drawn to one scale.";
 
-// Outlines: each building seen from the side, simplified, as [metres above the street, half its width in metres]
-// from the street up; the left side, and the right side when it differs. Every outline is drawn on one scale, BOX metres wide.
+// Outlines: each building seen from the side, as [metres above the street, metres from its axis to its edge] from the
+// street up; the left side, and the right side when it differs (an edge past the axis has a negative distance).
+// Measured every 2 m from Phoenix CZE's to-scale elevation diagram, "Tallest buildings 2026" (Wikimedia Commons,
+// CC BY-SA 4.0), and simplified to within a metre; podiums are left out, and the Clock Tower's crescent, too small to draw,
+// ends its spire in a point. Every outline is drawn on one scale, BOX metres wide.
 const PROFILE = {
   "Burj Khalifa": {
-    left: [[0, 72], [150, 72], [150, 60], [260, 60], [260, 48], [365, 48], [365, 37], [455, 37], [455, 27], [530, 27], [530, 18], [590, 18], [590, 11], [640, 11], [640, 6], [828, 0.6]],
-    right: [[0, 72], [100, 72], [100, 64], [205, 64], [205, 52], [310, 52], [310, 42], [410, 42], [410, 31], [495, 31], [495, 22], [560, 22], [560, 14], [615, 14], [615, 9], [650, 9], [650, 5], [828, 0.6]],
+    left: [[0, 47], [125, 47], [126, 38], [223, 38], [224, 29.5], [349, 28.5], [350, 20], [504, 20], [506, 14.5], [568, 14.5], [570, 11], [604, 11], [606, 8.5], [740, 7], [742, 4], [776, 4], [778, 2.5], [790, 2.5], [792, 1], [828, 1]],
+    right: [[0, 47.5], [99, 47.5], [100, 39], [191, 39], [192, 30], [345, 30], [346, 21.5], [442, 21.5], [444, 16], [526, 16], [528, 12.5], [586, 12.5], [588, 9.5], [644, 9.5], [646, 7], [694, 6.5], [696, 5], [756, 4], [758, 2.5], [790, 2.5], [792, 1], [828, 1]],
   },
-  "Menara Merdeka Maybank": { left: [[0, 34], [90, 37], [260, 35], [380, 30], [460, 24], [510, 16], [540, 8], [560, 4], [679, 0.6]] },
+  "Menara Merdeka Maybank": {
+    left: [[0, -4.5], [76, 6], [152, -2], [222, 6], [294, -1], [310, -1], [346, 3.5], [380, 6], [452, -2], [566, 10], [568, 4.5], [584, 3], [676, 3], [679, 1.5]],
+    right: [[0, 81.5], [106, 81.5], [296, 61.5], [380, 68.5], [528, 53.5], [553, 53.5], [554, 7.5], [556, 5], [594, 3], [676, 3], [679, 1.5]],
+  },
   "Shanghai Tower": {
-    left: [[0, 42], [120, 39.5], [250, 35.5], [380, 31], [480, 27], [560, 23.5], [632, 21]],
-    right: [[0, 42], [120, 39.5], [250, 35.5], [380, 31], [480, 27], [560, 23.5], [580, 22.5]],
+    left: [[0, 36.5], [38, 36.5], [92, 39.5], [178, 39.5], [374, 24.5], [448, 21.5], [632, 21.5]],
+    right: [[0, 45.5], [38, 45.5], [96, 39.5], [388, 39.5], [396, 38], [480, 35.5], [536, 31], [588, 24.5], [612, 19], [616, 14.5], [618, 9.5], [620, 7], [632, 7]],
   },
-  "Makkah Royal Clock Tower": { left: [[0, 74], [75, 74], [75, 50], [115, 50], [115, 30], [385, 30], [385, 35], [455, 35], [455, 27], [485, 21], [505, 14], [520, 8], [530, 4], [601, 0.8]] },
-  "Ping An Finance Center": { left: [[0, 37], [200, 35], [400, 31.5], [520, 27.5], [599, 0.8]] },
-  // Lotte's top is split by a slit: its outline ends below the tip, in the middle, so the two sides meet in a notch
-  "Lotte World Tower": { left: [[0, 36], [100, 35], [200, 32.5], [300, 28], [400, 21.5], [470, 15.5], [520, 10], [555, 5], [535, 0.4]] },
-  "One World Trade Center": { left: [[0, 31], [57, 31], [410, 21], [410, 22.5], [417, 22.5], [417, 3], [541, 0.6]] },
-  "Guangzhou CTF Finance Centre": { left: [[0, 34], [135, 34], [135, 32], [270, 32], [270, 30], [395, 30], [395, 27], [478, 27], [530, 15]] },
-  "Tianjin CTF Finance Centre": { left: [[0, 29], [90, 31.5], [190, 31], [290, 28], [380, 23.5], [450, 19], [495, 14], [518, 8], [530, 0.8]] },
-  "CITIC Tower": { left: [[0, 39], [110, 34], [230, 29.5], [330, 28], [410, 29.5], [470, 32.5], [510, 35], [528, 36]] },
+  "Makkah Royal Clock Tower": {
+    left: [[0, 47], [357, 47.5], [358, 37.5], [397, 41], [398, 34.5], [402, 34.5], [404, 33], [452, 33], [458, 30], [463, 30], [464, 21], [469, 21], [470, 12.5], [472, 10.5], [486, 13], [490, 11.5], [496, 6], [558, 4.5], [601, 0.6]],
+    right: [[0, 48], [357, 48], [358, 37.5], [397, 41], [398, 34.5], [402, 34.5], [404, 33], [452, 33], [458, 30], [460, 30.5], [465, 28], [466, 21], [469, 21], [470, 11.5], [474, 10.5], [486, 13], [492, 10], [496, 6], [558, 4.5], [601, 0.6]],
+  },
+  "Ping An Finance Center": {
+    left: [[0, 41.5], [84, 39], [404, 39], [416, 37.5], [538, 32.5], [550, 31], [599, 0.6]],
+    right: [[0, 39.5], [402, 39], [404, 37.5], [412, 36.5], [540, 31], [550, 29.5], [599, 0.6]],
+  },
+  "Lotte World Tower": {
+    left: [[0, 44.5], [138, 44.5], [256, 37.5], [555, 10.5]],
+    right: [[0, 45.5], [140, 44.5], [254, 38], [555, 8.5]],
+  },
+  "One World Trade Center": {
+    left: [[0, 31.5], [413, 31.5], [414, 17], [424, 17], [426, 12.5], [452, 6], [464, 1], [541, 1]],
+    right: [[0, 31.5], [413, 31.5], [414, 17], [424, 17], [426, 11.5], [446, 7.5], [464, 1], [541, 1]],
+  },
+  "Guangzhou CTF Finance Centre": {
+    left: [[0, 39.5], [530, 39.5]],
+    right: [[0, 39.5], [437, 39.5], [438, 24], [500, 24], [508, 8.5], [512, -3], [526, -35.5], [530, -35.5]],
+  },
+  "Tianjin CTF Finance Centre": {
+    left: [[0, 38], [130, 38], [228, 29.5], [436, 23], [518, 15], [524, 12], [526, 9.5], [530, 1.5]],
+    right: [[0, 38], [130, 38], [216, 29.5], [308, 27], [328, 28], [438, 23], [518, 14.5], [524, 11], [530, 1.5]],
+  },
+  "CITIC Tower": {
+    left: [[0, 43.5], [32, 43.5], [108, 38], [138, 38], [140, 36.5], [150, 35.5], [264, 31], [460, 31], [520, 36.5], [528, 35.5]],
+    right: [[0, 44.5], [30, 44.5], [46, 42], [140, 35.5], [250, 32], [470, 32], [518, 35.5], [528, 35]],
+  },
 };
-const BOX = 150;
+const BOX = 165;
 // A profile as a Bar's outline: along runs from the street (0) to the top (1), across from the left (0) to the right (1)
 const outline = ({ left, right = left }) => {
   const top = Math.max(...left.map(([h]) => h), ...right.map(([h]) => h));
