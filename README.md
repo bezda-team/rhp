@@ -63,7 +63,7 @@ Choose it explicitly, or keep `Dot` for individual blocks and custom slat conten
 
 rhp comes with an Agent Skill and a checker, so an AI coding agent that has never seen rhp can make an rhp chart in one go.
 
-- **The skill** ([`skills/rhp/`](skills/rhp/)) teaches the agent how a chart is built, gives it 30 tested chart pages to start from, and makes it check its work. `npx skills add bezda-team/rhp` installs it into Claude Code, Codex, Cursor, Copilot, Gemini CLI and other agents.
+- **The skill** ([`skills/rhp/`](skills/rhp/)) teaches the agent how a chart is built, gives it tested chart pages to take technique from, and makes it check its work. `npx skills add bezda-team/rhp` installs it into Claude Code, Codex, Cursor, Copilot, Gemini CLI and other agents.
 - **The checker** ([`mcp/`](mcp/)) renders a chart in a browser at desktop and phone widths and reports what a reader would hit, with a fix for each: `npx -y @bezda/rhp-mcp check chart.html`. With no arguments it is an MCP server with the same check.
 - **Claude Code** installs both with `/plugin marketplace add bezda-team/rhp`, then `/plugin install rhp@rhp`.
 

@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- A readout after the chart, with nothing after it but the end of the page: the middle fruit's sentence takes a second line, and the page grows. expect: layout-jump -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>foot-jump</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 16px; font: 16px/1.5 monospace; background: #fff; color: #222; }
+  #chart { max-width: 640px; margin: 0 auto; }
+  .readout { width: 30ch; max-width: 100%; min-height: 1lh; margin: 8px 0; }
+
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries", "Dates", "Elderberries"];
+const sold = [12, 18, 7, 9, 4];
+// What the readout says for each fruit
+const says = ["12 sold.", "18 sold.", "7 sold today: the fewest of the five fruits here.", "9 sold.", "4 sold."];
+
+const Fruit = slat({ thickness: 36, room: { start: 140, end: 40 } }, (d) => html`
+  <div data-row=${() => d.index}>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} color=${() => (d.on ? "#1d4ed8" : "#8aa0b4")} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const [on, setOn] = createSignal(null);
+const rowOf = (el) => {
+  const root = el.closest("[data-row]");
+  return root ? +root.dataset.row : null;
+};
+const pick = (e) => {
+  const row = rowOf(e.target);
+  if (row != null) setOn(row);
+};
+const readout = () => html`<p class="readout">${() => (on() == null ? "Tap or point at a fruit." : says[on()])}</p>`;
+
+render(() => html`
+  <div onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}>
+    
+    <${Chart} scale=${[0, 20]} label="Fruit sold today">
+      <${Plot} fruit=${fruit} sold=${sold} on=${(d) => on() === d.index}>${Fruit}<//>
+    <//>
+    ${readout()}
+  </div>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

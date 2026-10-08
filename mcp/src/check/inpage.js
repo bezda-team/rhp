@@ -960,6 +960,62 @@ export function install() {
     return { left: left + scrollX, top: top + scrollY, right: right + scrollX, bottom: bottom + scrollY };
   }
 
+  // The slats of the main Plot, in screen order: the largest chart's (a size key drawn as a chart of its own comes before
+  // the chart it explains) first Plot with slats that takes the pointer (an overlay of guides or a readout takes none)
+  function mainSlats() {
+
+    const area = (el) => el.getBoundingClientRect().width * el.getBoundingClientRect().height;
+    const chart = all().filter((c) => visible(c) && !c.parentElement?.closest(".rhp-chart")).sort((a, b) => area(b) - area(a))[0];
+    const plots = chart ? [...chart.querySelectorAll(":scope > .rhp-body > .rhp-plot")].filter((p) => !p.classList.contains("rhp-scale") && [...p.children].some((s) => !s.hidden)) : [];
+    const plot = plots.find((p) => getComputedStyle(p).pointerEvents !== "none") ?? plots[0];
+    if (!plot) return [];
+    const vertical = plot.dataset.rhpO === "v";
+    const slats = [...plot.children].filter((s) => !s.hidden && visible(s));
+    slats.sort((a, b) => (vertical ? a.getBoundingClientRect().left - b.getBoundingClientRect().left : a.getBoundingClientRect().top - b.getBoundingClientRect().top));
+    return slats;
+  }
+
+  // The slats the sweep picks in turn (see sweep() in index.js): every slat of the main Plot, or max of them spread
+  // evenly from the first to the last
+  function sweepTargets(max = 32) {
+
+    const slats = mainSlats();
+    const list = (window.__rhpTargets ??= []);
+    const picks = slats.length <= max ? slats.map((_, i) => i) : [...new Set(Array.from({ length: max }, (_, k) => Math.round((k * (slats.length - 1)) / (max - 1))))];
+    return picks.map((i) => ({ index: i + 1, of: slats.length, name: snippet([...slats[i].querySelectorAll(".rhp-label")].map(seenText).find((x) => x) ?? ""), target: list.push(slats[i]) - 1 }));
+  }
+
+  // The window widths at which the page's own media queries switch: the last width of one layout and the first of the
+  // next (for max-width: N, N and N + 1; for min-width: N, N - 1 and N; the range forms likewise). An em counts 16px.
+  function breakpoints() {
+
+    const out = new Set();
+    const px = (v, unit) => (unit === "px" ? +v : +v * 16);
+    // the first width of the wider layout, from a bound and whether the narrow layout includes it
+    const add = (n, narrowHasIt) => {
+      const first = narrowHasIt ? Math.floor(n) + 1 : Math.ceil(n);
+      out.add(first - 1);
+      out.add(first);
+    };
+    const walk = (rules) => {
+      for (const r of rules ?? []) {
+        const text = r.media?.mediaText ?? "";
+        for (const m of text.matchAll(/(min|max)-width\s*:\s*([\d.]+)(px|r?em)/g)) add(px(m[2], m[3]), m[1] === "max");
+        for (const m of text.matchAll(/width\s*(<=|<|>=|>)\s*([\d.]+)(px|r?em)/g)) add(px(m[2], m[3]), m[1] === "<=" || m[1] === ">");
+        for (const m of text.matchAll(/([\d.]+)(px|r?em)\s*(<=|<|>=|>)\s*width/g)) add(px(m[1], m[2]), m[3] === ">=" || m[3] === "<");
+        if (r.cssRules) walk(r.cssRules);
+      }
+    };
+    for (const sheet of [...document.styleSheets, ...(document.adoptedStyleSheets ?? [])]) {
+      try {
+        walk(sheet.cssRules);
+      } catch {
+        // a style sheet from another origin (a font's CSS) cannot be read, and holds no layout
+      }
+    }
+    return [...out].filter((w) => w >= 200).sort((a, b) => b - a);
+  }
+
   // What the interaction pass works on: slats to point at (the first, the middle and the last of the largest chart, and
   // the one whose edge Label is widest: lit, a name that gets bolder can make room: "auto" measure again), buttons and
   // toggles, ranges, selects, a slider for the arrow keys, Plots with keyboard. Controls go by their accessible name.
@@ -970,16 +1026,8 @@ export function install() {
     const out = { slats: [], widest: null, buttons: [], ranges: [], selects: [], slider: null, keyboard: null };
     const label = (el) => (nameOf(el) ? `"${snippet(nameOf(el))}"` : describe(el));
 
-    // the largest chart (a size key drawn as a chart of its own comes before the chart it explains)
-    const area = (el) => el.getBoundingClientRect().width * el.getBoundingClientRect().height;
-    const chart = all().filter((c) => visible(c) && !c.parentElement?.closest(".rhp-chart")).sort((a, b) => area(b) - area(a))[0];
-    // its first Plot with slats that takes the pointer (an overlay of guides or a readout takes none)
-    const plots = chart ? [...chart.querySelectorAll(":scope > .rhp-body > .rhp-plot")].filter((p) => !p.classList.contains("rhp-scale") && [...p.children].some((s) => !s.hidden)) : [];
-    const plot = plots.find((p) => getComputedStyle(p).pointerEvents !== "none") ?? plots[0];
-    if (plot) {
-      const vertical = plot.dataset.rhpO === "v";
-      const slats = [...plot.children].filter((s) => !s.hidden && visible(s));
-      slats.sort((a, b) => (vertical ? a.getBoundingClientRect().left - b.getBoundingClientRect().left : a.getBoundingClientRect().top - b.getBoundingClientRect().top));
+    const slats = mainSlats();
+    if (slats.length) {
       const range = document.createRange();
       const nameWidth = (s) => Math.max(0, ...[...s.querySelectorAll(".rhp-label[data-rhp-edge]")].map((l) => {
         range.selectNodeContents(l);
@@ -1092,6 +1140,7 @@ export function install() {
   // moves with it (rows sorted or removed), so only what it moves apart from its slat counts. What is fixed or sticky
   // moves with scrolling, so it is left out.
   let placed = [];
+  let sections = [];
   const at = (el) => {
     const r = el.getBoundingClientRect();
     return { el, x: r.left + scrollX, y: r.top + scrollY };
@@ -1120,6 +1169,13 @@ export function install() {
       const slat = chart ? null : el.closest(".rhp-plot > *");
       return { ...at(el), chart, slat: slat && at(slat), gutters: chart ? gutters(el) : null };
     });
+    // the end of each chart's section (its outermost box inside the body): a readout after the chart that takes
+    // another line makes it longer, even on a page shorter than the window
+    sections = [...new Set(charts.map((c) => {
+      let a = c;
+      while (a.parentElement && a.parentElement !== document.body && a.parentElement !== document.documentElement) a = a.parentElement;
+      return a;
+    }))].map((el) => ({ el, end: el.getBoundingClientRect().bottom + scrollY }));
   }
 
   function moved(n, lit = false) {
@@ -1151,6 +1207,12 @@ export function install() {
       if (now.o === "h" && far(end)) out.push({ what: "the plot's right edge", dx: -end, dy: 0, plot: true });
       if (now.o === "v" && far(start)) out.push({ what: "the plot's bottom edge", dx: 0, dy: -start, plot: true });
       if (now.o === "v" && far(end)) out.push({ what: "the plot's top edge", dx: 0, dy: end, plot: true });
+    }
+    // lighting a slat makes no section longer or shorter: a readout after the chart that takes another line moves
+    // whatever follows it, which no control may show
+    for (const { el, end } of lit ? sections : []) {
+      const grew = Math.round(el.getBoundingClientRect().bottom + scrollY - end);
+      if (el.isConnected && far(grew)) out.push({ what: "the end of the chart's section", dx: 0, dy: grew });
     }
 
     return out;
@@ -1266,5 +1328,5 @@ export function install() {
     return { what: focusName(el), clip: box };
   }
 
-  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, pointAt, place, moved, record, stop, unseen, focused, focusStop };
+  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, sweepTargets, breakpoints, pointAt, place, moved, record, stop, unseen, focused, focusStop };
 }

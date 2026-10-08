@@ -21,7 +21,7 @@ const LIMIT = 50;
 const MAX_WIDTH = 1280;
 const MAX_HEIGHT = 2000;
 
-const INSTRUCTIONS = `rhp 2 (@bezda/rhp) makes charts out of HTML elements and CSS with SolidJS. It came out in September 2026, after your training data, so what you remember about rhp is wrong or belongs to the unrelated rhp 1. Before you write or change any rhp code, call rhp_guide and follow its workflow. Start each chart from the closest recipe (rhp_recipe), and look up every prop you are unsure of with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`;
+const INSTRUCTIONS = `rhp 2 (@bezda/rhp) makes charts out of HTML elements and CSS with SolidJS. It came out in September 2026, after your training data, so what you remember about rhp is wrong or belongs to the unrelated rhp 1. Before you write or change any rhp code, call rhp_guide and follow its workflow. Take each chart's technique from the closest recipe (rhp_recipe) and design the chart for its own subject, and look up every prop you are unsure of with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`;
 
 const text = (body) => ({ content: [{ type: "text", text: body }] });
 const failure = (body) => ({ content: [{ type: "text", text: body }], isError: true });
@@ -185,9 +185,9 @@ server.registerTool("rhp_guide", {
 
 server.registerTool("rhp_reference", {
   title: "rhp reference",
-  description: "Returns one of rhp's references by name: api (every component, prop, helper and CSS variable, exactly), design (the editorial poster, looks, color, type, layout), interaction (which interaction for which story, with code), environments (plain HTML, Solid, React, Next.js, Vue, Svelte, Angular, Astro), forms (which chart for which data and story), pitfalls (mistakes and their fixes). Look props up here instead of guessing. A long reference comes back as its list of sections: call again with section to get the one you need.",
+  description: "Returns one of rhp's references by name: api (every component, prop, helper and CSS variable, exactly), design (art direction from the subject, the editorial poster, color, type, layout), looks (eight looks written out in full, as examples), interaction (which interaction for which story, with code), environments (plain HTML, Solid, React, Next.js, Vue, Svelte, Angular, Astro), forms (the subject's own form, which chart for which data and story), pitfalls (mistakes and their fixes). Look props up here instead of guessing. A long reference comes back as its list of sections: call again with section to get the one you need.",
   inputSchema: {
-    name: z.string().describe("The reference: api, design, environments, forms, interaction or pitfalls"),
+    name: z.string().describe("The reference: api, design, environments, forms, interaction, looks or pitfalls"),
     section: z.string().optional().describe('One "##" section of the reference, by its number or title, for example "4" or "Plot"'),
   },
   annotations: { readOnlyHint: true, openWorldHint: false },
@@ -200,7 +200,7 @@ server.registerTool("rhp_reference", {
 
 server.registerTool("rhp_recipe", {
   title: "rhp recipe",
-  description: 'Lists rhp\'s recipes (call it with no type), or returns one recipe\'s complete HTML file (type, for example "bar"). A recipe is a tested, designed chart page, a worked example of one way to build a chart: start every chart from the closest recipe, keep its structure and techniques, and replace its data, text and look.',
+  description: 'Lists rhp\'s recipes (call it with no type), or returns one recipe\'s complete HTML file (type, for example "bar"). A recipe is a tested chart page that shows the technique for one kind of chart: take its technique (how its Plots, slats and blocks are composed, its interaction, its phone rules) and leave its design, which was made for its own subject.',
   inputSchema: {
     type: z.string().optional().describe('The recipe, for example "bar", "line" or "donut"; leave it out for the list'),
   },
@@ -220,7 +220,7 @@ server.registerTool("rhp_check", {
     file: z.string().optional().describe("The chart file's absolute path"),
     code: z.string().optional().describe("The chart's code, instead of a file, when you cannot write files"),
     format: z.enum(["html", "solid", "react", "module"]).optional().describe("What the code is; found from the file's extension and the code when left out"),
-    widths: z.array(z.number().int().min(200).max(2560)).min(1).max(4).optional().describe("Page widths in px, [1280, 390] by default; the interactions are tried at the first, and slats are tapped at phone widths (600px or less)"),
+    widths: z.array(z.number().int().min(200).max(2560)).min(1).max(6).optional().describe("Page widths in px, [1280, 390] by default; the interactions are tried at the first, and slats are tapped at phone widths (600px or less)"),
     dark: z.boolean().optional().describe("Render with a dark color scheme (prefers-color-scheme: dark)"),
     interact: z.boolean().optional().describe("Try the chart's interactions (true by default)"),
     settleTimeout: z.number().int().min(100).max(30000).optional().describe("Maximum milliseconds per readiness wait, 10000 by default. Increase for a slow machine; the overall check still has a 50-second limit."),
@@ -239,7 +239,7 @@ server.registerPrompt("chart", {
     role: "user",
     content: {
       type: "text",
-      text: `Make this chart with rhp (@bezda/rhp): ${request}\n\nFirst call rhp_guide and follow its workflow: write the brief, start from the closest recipe (rhp_recipe), and look up props with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`,
+      text: `Make this chart with rhp (@bezda/rhp): ${request}\n\nFirst call rhp_guide and follow its workflow: write the brief, take the technique from the closest recipe (rhp_recipe), design the chart for its own subject, and look up props with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`,
     },
   }],
 }));

@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The build is a week behind</title>
 <meta name="description" content="Gantt chart of a twelve-week product launch: a bar per task from its start to its end, the part done, the work that is late, a milestone, a today line drawn by an overlay Plot and week ticks drawn by a Scale, with a readout of the picked task and what it depends on. Use it for tasks over time and a schedule's progress.">
+<!--
+  A recipe gives technique, not a design.
+  Take: planned, done and late Bars per task, a milestone, a today line in an overlay Plot, week ticks from a Scale, and a readout with dependencies.
+  Leave: the design. This poster was made for its own subject (a launch plan on a sheet of dotted planner paper, held to the wall by a strip of tape).
+  Its look, the place of its parts and the way its marks are drawn say that subject: design yours from your own (design.md, section 2).
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap">
@@ -29,8 +35,11 @@
   .poster .dek i.late { background: #d93a32; }
   .poster .dek i.todo { background: #dcdad3; }
   .poster .note { display: block; margin-top: 14px; font-size: 12px; color: #63676e; }
-  /* The readout: the picked task in one line (two on a phone), so the chart never moves */
-  .readout { min-height: 2.2em; margin: 0 0 18px; padding: 9px 12px; border-radius: 6px; background: #1c1f24; color: #f4f4f1; font-size: 15px; }
+  /* The readout: every task's sentence in one grid cell, only the picked one shown, so it is as tall as the longest at
+     every width and the chart never moves */
+  .readout { display: grid; margin: 0 0 18px; padding: 9px 12px; border-radius: 6px; background: #1c1f24; color: #f4f4f1; font-size: 15px; }
+  .readout > .v { grid-area: 1 / 1; visibility: hidden; }
+  .readout > .v.on { visibility: visible; }
   .readout b { font-weight: 700; }
   .readout strong { font-weight: 400; }
   .readout .late { color: #ff8a80; font-weight: 700; }
@@ -43,7 +52,7 @@
     .poster .kicker { font-size: 11px; letter-spacing: .1em; }
     .poster .headline { font-size: 32px; }
     .poster .dek { font-size: 14.5px; }
-    .readout { position: sticky; top: 8px; z-index: 2; min-height: 4.6em; font-size: 14px; }
+    .readout { position: sticky; top: 8px; z-index: 2; font-size: 14px; }
   }
 </style>
 </head>
@@ -169,7 +178,8 @@ function LaunchPlan() {
       onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout">
-        <b>${() => shown().task}</b>, ${() => span(shown())}: <strong class=${() => (shown().late >= 0.5 ? "late" : "")}>${() => statusOf(shown())}</strong>${() => (shown().after.length ? html`<span class="after"> · after ${shown().after.join(" and ")}</span>` : "")}
+        ${ROWS.map((t) => html`
+          <span class=${() => (shown() === t ? "v on" : "v")}><b>${t.task}</b>, ${span(t)}: <strong class=${t.late >= 0.5 ? "late" : ""}>${statusOf(t)}</strong>${t.after.length ? html`<span class="after"> · after ${t.after.join(" and ")}</span>` : ""}</span>`)}
       </p>
       <${Chart} scale=${[0, WEEKS]} label="Gantt chart of a twelve-week product launch plan, with today marked"
         theme=${{ font: '"Space Grotesk", "Helvetica Neue", Arial, sans-serif', ink: "#1c1f24", muted: "#63676e", grid: "#e4e2dc", surface: "#fbfbf8" }}>
