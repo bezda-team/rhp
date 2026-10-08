@@ -7,7 +7,7 @@
 <meta name="description" content="Unit stack: stacked columns cut into counted units (coins), the picked part moved to the foot of every stack with its amount under the column, a picker of parts ranked by their total, and columns that lie down as rows on a phone. Use it for a total made of parts over periods, with one part to follow.">
 <!--
   A recipe gives technique, not a design.
-  Take: stacked columns cut into counted units by a mask (each bar its rounded count of equal parts), a picked part moved to the foot of every stack with its amount printed under the column, a picker of parts ranked by their total, headline and figures computed from one data block, and columns that lie down as rows when they get too narrow.
+  Take: stacked columns cut into units of one fixed amount by a mask (every full unit the same size, the last one of each part cut to what is left), a picked part moved to the foot of every stack with its amount printed under the column, a picker of parts ranked by their total, headline and figures computed from one data block, and columns that lie down as rows when they get too narrow.
   Leave: the design. This poster was made for its own subject (a household's monthly spending as piles of coins on one counter: mint paper where coins are struck, copper for the picked category, milled edges top and bottom).
   Its look, the place of its parts and the way its marks are drawn say that subject: design yours from your own (design.md, section 2).
 -->
@@ -168,31 +168,34 @@ const scale = nice(0, Math.max(...TOTALS));
 const COIN = (() => {
   for (let p = 1; ; p *= 10) for (const s of [1, 2, 2.5, 5]) if (s * p * 30 >= Math.max(...TOTALS)) return s * p;
 })();
-const coins = (v) => Math.max(1, Math.round(v / COIN));
+// A coin as a share of the part it is in: tiles that size, laid from the part's foot, make every full coin worth COIN
+// and cut the last one to what is left
+const coin = (v) => (v > 0 ? COIN / v : 1);
 const RANGE = `${longYear.format(DATES[0])} to ${longYear.format(DATES.at(-1))}`;
 
 // The chart's font and colors, read from the page's tokens
 const THEME = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--quiet)"] };
 
 // Slat types: a month is a pile of coins on the counter, the picked category's coins at its foot (series-1, copper) and
-// the rest of the month above them (series-2). Each pile is cut into its rounded count of coins by a mask, so it keeps
-// its exact height; each coin is bevelled at its corners and 2px from the next.
+// the rest of the month above them (series-2). A mask cuts each part into coins from its foot: every full coin is worth
+// the same and is the same size, and the last one is cut to what is left, so a part keeps its exact height and its coins
+// can be counted. Each coin is bevelled at its corners and stands 2px clear of what is under it, so a part's cut coin
+// never touches the next part's first one.
 const Month = slat({
   inset: { vertical: 0.2, horizontal: 0.18 },
   thickness: { horizontal: 30 },
   room: { vertical: { start: 40, end: 22 }, horizontal: { start: "auto", end: 62 } },
   css: `
     .coins { --rhp-radius: 0px; }
-    .rest { --rhp-gap: 3px; }
     .coins:vertical {
       mask:
-        linear-gradient(to top, #0000 1px, #000 0 calc(100% - 3px), #0000 0) 0 100% / 100% calc((100% + 2px) / var(--n)),
-        linear-gradient(to top, #000 calc(100% - 2px), #0000 0) 50% 100% / calc(100% - 3px) calc((100% + 2px) / var(--n)) repeat-y;
+        linear-gradient(to top, #0000 3px, #000 0 calc(100% - 1px), #0000 0) 0 100% / 100% calc(100% * var(--coin)),
+        linear-gradient(to top, #0000 2px, #000 0) 50% 100% / calc(100% - 3px) calc(100% * var(--coin)) repeat-y;
     }
     .coins:horizontal {
       mask:
-        linear-gradient(to right, #0000 1px, #000 0 calc(100% - 3px), #0000 0) 0 0 / calc((100% + 2px) / var(--n)) 100%,
-        linear-gradient(to right, #000 calc(100% - 2px), #0000 0) 0 50% / calc((100% + 2px) / var(--n)) calc(100% - 3px) repeat-x;
+        linear-gradient(to right, #0000 3px, #000 0 calc(100% - 1px), #0000 0) 0 0 / calc(100% * var(--coin)) 100%,
+        linear-gradient(to right, #0000 2px, #000 0) 0 50% / calc(100% * var(--coin)) calc(100% - 3px) repeat-x;
     }
     .name { --rhp-label-size: 13px; font-weight: 500; }
     .name .amt { font-weight: 700; color: var(--rhp-series-1); font-variant-numeric: tabular-nums; }
@@ -207,8 +210,8 @@ const Month = slat({
   <div class=${() => ["month", d.most && "most", DATED && "dated"].filter(Boolean).join(" ")}
     aria-label=${() => `${longYear.format(d.date)}: ${money.format(d.total)} in all. ` + RANKED.map((c) => `${CATEGORIES[c]} ${money.format(d.amounts[c])}`).join(", ")}>
     <${Label} edge="start" class="name"><span class="m">${() => d.month}</span><span class="amt">${() => amount(d.lit)}</span><//>
-    <${Bar} to=${() => d.lit} color="series-1" class="coins" style=${() => ({ "--n": coins(d.lit) })} />
-    <${Bar} from=${() => d.lit} to=${() => d.total} color="series-2" class="coins rest" style=${() => ({ "--n": coins(d.total - d.lit) })} />
+    <${Bar} to=${() => d.lit} color="series-1" class="coins" style=${() => ({ "--coin": coin(d.lit) })} />
+    <${Bar} from=${() => d.lit} to=${() => d.total} color="series-2" class="coins" style=${() => ({ "--coin": coin(d.total - d.lit) })} />
     <${Label} at=${() => d.total} class="total">${() => amount(d.total)}<//>
   </div>`);
 
