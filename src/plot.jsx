@@ -11,7 +11,6 @@ import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
 import { nice } from "./data.js";
 import { writeVars, withVars } from "./blocks.jsx";
-import { holdScale } from "./frame.js";
 
 const isList = (g) => Array.isArray(g) || (ArrayBuffer.isView(g) && !(g instanceof DataView));
 
@@ -34,7 +33,6 @@ export const at = (group, i) => {
 // (nested) and whether the Chart is static (still).
 const Around = createContext({ orientation: () => "horizontal", motion: () => undefined, frame: null, nested: false, still: false });
 export const useOrientation = () => useContext(Around).orientation;
-export const useChartFrame = () => useContext(Around).frame;
 
 // Whether the Chart around has a cross scale (a Line then draws its y on it)
 export const useCrossed = () => {
@@ -893,11 +891,7 @@ export function Chart(props) {
   };
   const crossAxis = () => crossed() && tickValues(props.crossTicks, props.cross).length > 0;
 
-  let written; // the scale last written on the chart (now or in the next frame)
   const frame = {
-    root: () => el,
-    written: () => written,
-    scaleNow: () => untrack(scaleVars),
     orientation,
     domain,
     shown,
@@ -1048,7 +1042,7 @@ export function Chart(props) {
     const [a, b] = crossShown();
     return { "--rhp-min": min(), "--rhp-max": max(), "--rhp-cross-min": a, "--rhp-cross-max": b };
   };
-  writeVars(el, () => (written = scaleVars()));
+  writeVars(el, scaleVars);
 
   if (!isServer && moreAria().length) {
     createRenderEffect(() => {
@@ -1090,11 +1084,10 @@ for (const name of ["color", "thick", "size", "across", "radius", "start-radius"
 export function Axis(props) {
 
   const along = useOrientation();
-  const chart = useChartFrame();
   const orientation = () => (!props.cross ? along() : along() === "vertical" ? "horizontal" : "vertical");
 
   return (
-    <div class="rhp-axis" data-rhp-cross={props.cross ? "" : undefined} data-rhp-grid={props.grid === false ? "off" : undefined} aria-hidden="true">
+    <div class="rhp-axis" data-rhp-o={short(orientation())} data-rhp-cross={props.cross ? "" : undefined} data-rhp-grid={props.grid === false ? "off" : undefined} aria-hidden="true">
       <For each={props.ticks}>
         {(t) => {
           // On a server the number is made inside the line, as in a browser, so the browser finds each element where
@@ -1110,7 +1103,6 @@ export function Axis(props) {
           const el = <div class="rhp-gridline"><span /></div>;
           const num = el.firstChild;
           el.style.setProperty("--rhp-at", t);
-          holdScale(el, chart);
 
           createRenderEffect(() => {
             el.setAttribute("data-rhp-o", short(orientation()));

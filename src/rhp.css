@@ -157,6 +157,16 @@
     pointer-events: none;
   }
 
+  /* Lines and numbers show along the scale's span only: when the scale changes they slide in from its ends, or out past
+     them, and are cut there. Each end keeps room for the first and last numbers, which are centered on it. */
+  .rhp-axis[data-rhp-o="h"] {
+    clip-path: inset(-100vh calc(-1 * var(--rhp-axis-ends, 28px)));
+  }
+
+  .rhp-axis[data-rhp-o="v"] {
+    clip-path: inset(calc(-1 * var(--rhp-axis-ends, 28px)) -100vw);
+  }
+
   .rhp-gridline {
     position: absolute;
     --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)));
