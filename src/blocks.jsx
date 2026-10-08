@@ -6,8 +6,8 @@
 import { createMemo, createRenderEffect, splitProps } from "solid-js";
 import { insert, style } from "solid-js/web";
 import { isServer } from "./env.js";
-import { useOrientation, useCrossed, short } from "./plot.jsx";
-import { write } from "./frame.js";
+import { useOrientation, useCrossed, useChartFrame, short } from "./plot.jsx";
+import { write, holdScale } from "./frame.js";
 import { transitioned, cssEase } from "./animate.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
@@ -136,6 +136,7 @@ export function writeVars(el, vars, back, st) {
 
   if (isServer) return; // on a server they go into the element's style attribute (withVars)
 
+  const chart = useChartFrame();
   createRenderEffect((prev) => {
     const v = vars();
     const s = readStyle(st?.(), prev?.s);
@@ -146,6 +147,7 @@ export function writeVars(el, vars, back, st) {
       if (prev) write(el, key, v[key]);
       else if (v[key] != null) el.style.setProperty(key, v[key]);
     }
+    if (!prev && chart && el !== chart.root()) holdScale(el, chart);
 
     if (back) el.toggleAttribute("data-rhp-back", back(v));
 
@@ -219,6 +221,7 @@ const MINE = ["class", "style", "ref", "children"];
 function browserBlock(props, mine, base, vars, attrs, back) {
 
   const orientation = useOrientation();
+  const chart = useChartFrame();
 
   if (others(props, mine)) {
     // The class comes before the spread so that a classList adds to it instead of replacing it
@@ -258,6 +261,7 @@ function browserBlock(props, mine, base, vars, attrs, back) {
       if (prev) write(el, key, v[key]);
       else if (v[key] != null) el.style.setProperty(key, v[key]);
     }
+    if (!prev) holdScale(el, chart);
 
     if (back) el.toggleAttribute("data-rhp-back", back(v));
 

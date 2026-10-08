@@ -71,3 +71,20 @@ function flush() {
 
   arm();
 }
+
+// A new element drawn while its chart's new scale waits for the next frame takes that scale itself until then, so the
+// browser can't give it a first style on the old scale (and transition it from there). frame.written() is the scale the
+// chart has written (none while it mounts) and frame.scaleNow() the one it is writing.
+export function holdScale(el, frame) {
+
+  const w = frame?.written();
+  if (!w) return;
+
+  const queued = queue.get(frame.root());
+  const v = frame.scaleNow();
+  for (const key in v) {
+    if (v[key] === w[key] && !queued?.has(key)) continue; // the chart shows this value already
+    put(el, key, v[key]);
+    write(el, key, null);
+  }
+}

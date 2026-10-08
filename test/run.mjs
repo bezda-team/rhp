@@ -399,6 +399,35 @@ const open = async (url, opts = {}) => {
       }
     }), [Array(4).fill("rgb(1, 2, 3)"), Array(4).fill("rgba(0, 0, 0, 0)")]);
   }
+  // New ticks take their place at once: none slides in from far outside the chart, with its number, when the unit changes
+  check("an axis that switches unit draws no number outside its chart while it moves", await p.evaluate(() => new Promise((done) => {
+    const chart = document.querySelector(".unit").getBoundingClientRect(), out = [];
+    T.setUnitB(true);
+    const t0 = performance.now();
+    const frame = () => {
+      for (const n of document.querySelectorAll(".unit .rhp-gridline > span")) {
+        const r = n.getBoundingClientRect();
+        if (r.left < chart.left - 2 || r.right > chart.right + 2) out.push(`${n.textContent} at ${Math.round(r.left)}`);
+      }
+      if (performance.now() - t0 < 500) requestAnimationFrame(frame); else done([...new Set(out)].slice(0, 4));
+    };
+    requestAnimationFrame(frame);
+  })), []);
+  // A slat that comes in with a new scale is drawn on that scale from its first frame: its value never flies in from
+  // where the old scale would put it
+  check("a slat that comes in while the scale grows draws its value inside its chart from the first frame", await p.evaluate(() => new Promise((done) => {
+    const chart = document.querySelector(".grown").getBoundingClientRect(), out = [];
+    T.setGrown(true);
+    const t0 = performance.now();
+    const frame = () => {
+      for (const n of document.querySelectorAll(".grown .gv")) {
+        const r = n.getBoundingClientRect();
+        if (r.left < chart.left - 2 || r.right > chart.right + 2) out.push(`${n.textContent} at ${Math.round(r.left)}`);
+      }
+      if (performance.now() - t0 < 500) requestAnimationFrame(frame); else done([...new Set(out)].slice(0, 4));
+    };
+    requestAnimationFrame(frame);
+  })), []);
   check("no page errors", p.errors, []);
   await p.close();
 }

@@ -14,6 +14,12 @@ const [pos, setPos] = createSignal([2, null, 0, 1]);
 // Computed groups
 T.computed = 0;
 const [vals, setVals] = createStore({ v: [5, 7, 9] });
+// An axis that switches unit: new scale, new ticks and new numbers at once, beside names in an "auto" room
+const [unitB, setUnitB] = createSignal(false);
+const Named = slat({ room: { start: "auto", end: 30 } }, (d) => <div><Label edge="start">{d.n}</Label><Bar to={d.v} /></div>);
+// A slat that comes in while the scale grows to hold it, with its value written at its end
+const [grown, setGrown] = createSignal(false);
+const Grown = slat({ room: { start: "auto", end: 30 } }, (d) => <div><Label edge="start">{d.n}</Label><Bar to={d.v} /><Label at={d.v} class="gv">{d.v}</Label></div>);
 // A Scale
 const [top, setTop] = createSignal(27);
 const Tk = (t) => <div class="tk" data-at={t.at} data-next={t.next} data-end={t.first ? "first" : t.last ? "last" : ""} />;
@@ -123,6 +129,13 @@ render(() => (
     <Chart><Plot name={["a", "b", "c", "d"]} v={[5, 5, 9, 5]} order={sortBy("v", "desc")}>{(d) => <div class="tie" data-n={d.name}>{d.name}</div>}</Plot></Chart>
     <Chart class="sc" scale={[0, top()]}><Scale ticks={every(5, { ends: true })}>{Tk}</Scale><Plot v={[3]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
     <Chart class="nosc" scale={[0, 10]}><Plot v={[3]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+    <Chart class="unit" scale={unitB() ? [-75, 50] : [0, 10]} ticks={unitB() ? [-75, -50, -25, 0, 25, 50] : [0, 2, 4, 6, 8, 10]}
+      format={(v) => (unitB() ? v + "%" : "$" + v)} style={{ "--rhp-length-time": "0.4s" }}>
+      <Plot n={["Alpha", "Beta"]} v={unitB() ? [-50, 25] : [3, 7]}>{Named}</Plot>
+    </Chart>
+    <Chart class="grown" scale={grown() ? [0, 50] : [0, 10]} ticks={false} style={{ "--rhp-length-time": "0.4s" }}>
+      <Plot n={grown() ? ["Alpha", "Beta", "Gamma"] : ["Alpha", "Beta"]} v={grown() ? [3, 7, 40] : [3, 7]}>{Grown}</Plot>
+    </Chart>
     <Chart class="rs"><Plot slats={1}>{Red}</Plot></Chart>
     <Chart class="rs"><Plot slats={1}>{Twin}</Plot></Chart>
     <Chart class="or-h" scale={[0, 10]}><Plot from={[0, 10]} to={[6, 2]}>{Turned}</Plot></Chart>
@@ -187,4 +200,4 @@ render(() => (
   </div>
 ), document.body);
 T.styleAndMove = (st, v) => batch(() => { setBlockStyle(st); setStyledV(v); });
-Object.assign(T, { setBlockStyle, setAsked, setOutline,setOutlineO, setRetarget, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
+Object.assign(T, { setBlockStyle, setUnitB, setGrown, setAsked, setOutline,setOutlineO, setRetarget, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
