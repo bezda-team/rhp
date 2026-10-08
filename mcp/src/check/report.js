@@ -88,6 +88,9 @@ export function report(r) {
       if (quiet.includes(x.kind)) continue;
       lines.push(`- ${x.kind} ${x.target}${x.width !== r.interactedAt ? ` at ${x.width}px` : ""}: ${x.how}${x.error ? `, and it threw: ${x.error}` : ""}`);
     }
+    // the sweep: one line, every width at which every slat was picked in turn
+    const swept = (r.swept ?? []).filter((x) => x.slats);
+    if (swept.length) lines.push(`- every slat picked in turn (${swept[0].slats}) at ${swept.map((x) => `${x.width}px`).join(", ")}: ${swept.some((x) => x.jumps) ? "the layout jumped (see the warnings)" : "nothing else moved"}`);
   } else if (r.charts?.length && r.interactedAt) {
     lines.push("", "Interactions: nothing to interact with (no slats to point at, no buttons, ranges or selects).");
   }

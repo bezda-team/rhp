@@ -220,7 +220,7 @@ server.registerTool("rhp_check", {
     file: z.string().optional().describe("The chart file's absolute path"),
     code: z.string().optional().describe("The chart's code, instead of a file, when you cannot write files"),
     format: z.enum(["html", "solid", "react", "module"]).optional().describe("What the code is; found from the file's extension and the code when left out"),
-    widths: z.array(z.number().int().min(200).max(2560)).min(1).max(4).optional().describe("Page widths in px, [1280, 390] by default; the interactions are tried at the first, and slats are tapped at phone widths (600px or less)"),
+    widths: z.array(z.number().int().min(200).max(2560)).min(1).max(6).optional().describe("Page widths in px, [1280, 390] by default; the interactions are tried at the first, and slats are tapped at phone widths (600px or less)"),
     dark: z.boolean().optional().describe("Render with a dark color scheme (prefers-color-scheme: dark)"),
     interact: z.boolean().optional().describe("Try the chart's interactions (true by default)"),
     settleTimeout: z.number().int().min(100).max(30000).optional().describe("Maximum milliseconds per readiness wait, 10000 by default. Increase for a slow machine; the overall check still has a 50-second limit."),

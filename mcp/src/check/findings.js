@@ -4,7 +4,7 @@
 const q = (text) => `"${text}"`;
 
 // What an interaction is, said as something a reader does ("clicking button "Q2"")
-const DOING = { hover: "pointing at", tap: "tapping", click: "clicking", input: "setting", select: "setting", key: "pressing" };
+const DOING = { hover: "pointing at", tap: "tapping", click: "clicking", input: "setting", select: "setting", key: "pressing", pick: "picking" };
 
 // How far something moved: "88px down", "12px right"
 const shift = ({ dx, dy }) => [dy && `${Math.abs(dy)}px ${dy > 0 ? "down" : "up"}`, dx && `${Math.abs(dx)}px ${dx > 0 ? "right" : "left"}`].filter(Boolean).join(" and ");

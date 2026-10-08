@@ -21,12 +21,14 @@
 //   browser   a Playwright Browser to use instead of launching one (it is left open)
 //   debug     also save the screenshots the color probes read (as drawn, with the text hidden, with the marks hidden)
 //
-// Result: { ok, file, format, rhpVersion, browser, findings, charts, interactions, interactedAt, screenshots, timings,
+// Result: { ok, file, format, rhpVersion, browser, findings, charts, interactions, interactedAt, swept, screenshots, timings,
 // text }
 //   ok            no finding is an error
 //   findings      [{ level: "error" | "warning" | "info", code, message, fix, width, widths }], errors first
 //   charts        [{ width, slats, blocks: { bar: 3, label: 6 }, box: { width, height } }]
 //   interactions  [{ width, kind, target, changed, how, error, moved, unseen }]
+//   swept         [{ width, breakpoint, slats, jumps }]: the widths at which every slat was picked in turn (each width
+//                 checked, and the page's own breakpoints between them), how many slats, and how many moved the layout
 //   screenshots   [{ width, dark, hover, path }]
 //   text          the report as plain text (what the CLI prints)
 import fs from "fs";
@@ -52,6 +54,12 @@ const LEVELS = { error: 0, warning: 1, info: 2 };
 const PHONE = 600;
 // The height of what a phone shows of a page (Safari on a 390 by 844 iPhone, its bars shown): where the taps are tried
 const PHONE_WINDOW = 664;
+// With motion on, the longest wait for a page to come to rest after it opens, and after a screenshot, in ms: a page
+// that moves on its own never does
+const MOVING_WAIT = 3000;
+const MOVING_CALM = 500;
+// The most breakpoint widths a width sweeps besides itself
+const MAX_BREAKPOINTS = 6;
 
 const shortHash = (text) => crypto.createHash("sha1").update(text).digest("hex").slice(0, 8);
 
@@ -79,6 +87,39 @@ function source({ file, code, format }) {
   fs.writeFileSync(abs, code);
 
   return { file: abs, text: code };
+}
+
+// Picks every slat of the page's main Plot in turn, as a reader going from one to the next (a tap on a touch screen,
+// the mouse elsewhere), on a page at rest with reduced motion asked for, where a pick shows at once; and lists what moved
+// outside the plot (moved() in inpage.js): a readout that takes another line for one slat, at one width. What a pick
+// throws is tagged with it in events, as the interaction pass does.
+async function sweep(page, touch, events) {
+
+  const slats = await page.evaluate(() => window.__rhpProbe.sweepTargets());
+  const jumps = [];
+  if (!touch) await page.mouse.move(0, 0);
+  await page.evaluate(() => window.__rhpProbe.place());
+  for (const s of slats) {
+    // (a slat that something covers has no point: pointing there would pick what covers it)
+    const point = await page.evaluate((n) => window.__rhpProbe.pointAt(n), s.target).catch(() => null);
+    if (!Number.isFinite(point?.x) || !Number.isFinite(point?.y)) continue;
+    const name = `slat ${s.index} of ${s.of}${s.name ? ` (${s.name})` : ""}`;
+    const before = events.length;
+    try {
+      if (touch) await page.touchscreen.tap(point.x, point.y);
+      else await page.mouse.move(point.x, point.y);
+      await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+    } catch {
+      continue;
+    }
+    for (const e of events.slice(before)) {
+      if (e.kind === "pageerror" || e.kind === "console-error") e.during ??= `${touch ? "tap" : "hover"} ${name}`;
+    }
+    const moved = await page.evaluate((n) => window.__rhpProbe.moved(n, true), s.target).catch(() => []);
+    if (moved.length) jumps.push({ target: name, moved });
+  }
+  if (!touch) await page.mouse.move(0, 0);
+  return { slats: slats.length, jumps };
 }
 
 export async function check(options = {}) {
@@ -195,7 +236,9 @@ export async function check(options = {}) {
   const isLocal = (u) => u.startsWith("file:") || u.startsWith(ORIGIN);
 
   // A page with the chart, the probe installed and at rest (in a window of another size when asked); what the page
-  // throws or prints goes to events
+  // throws or prints goes to events. The page that is measured, with reduced motion, must come to rest. With motion on
+  // (the interaction pass), a page that moves on its own (a live feed, a race that plays) never does: it gets a few
+  // seconds for its fonts and entry animations, and is then tried as it moves, as a reader gets it.
   const open = async (context, events, reducedMotion, viewport = null) => {
     const page = await context.newPage();
     if (viewport) await page.setViewportSize(viewport);
@@ -217,21 +260,25 @@ export async function check(options = {}) {
     await page.route("**/*", route);
     await page.goto(format === "html" ? pathToFileURL(file).href : ORIGIN + "/", { waitUntil: "load", timeout: 20000 }).catch((e) => events.push({ kind: "pageerror", text: "The page did not finish loading: " + String(e.message).split("\n")[0] }));
     await page.evaluate(install);
-    requireRest(await page.evaluate((max) => window.__rhpProbe.settle(max), settleTimeout));
+    const measured = reducedMotion === "reduce";
+    const rest = await page.evaluate((max) => window.__rhpProbe.settle(max), measured ? settleTimeout : Math.min(settleTimeout, MOVING_WAIT));
+    if (measured) requireRest(rest);
     return page;
   };
 
   // A screenshot, after which the page comes to rest again: taking one can lay the page out at another size for a
-  // moment (see calm() in inpage.js)
-  const capture = async (page, opts) => {
+  // moment (see calm() in inpage.js). In the interaction pass (moving: true) the page may move on its own, so it waits
+  // briefly and goes on.
+  const capture = async (page, opts, moving = false) => {
     const since = await page.evaluate(() => window.__rhpProbe.resized());
     const png = await page.screenshot(opts);
-    requireRest(await page.evaluate(([n, max]) => window.__rhpProbe.calm(n, max), [since, settleTimeout]));
+    const rest = await page.evaluate(([n, max]) => window.__rhpProbe.calm(n, max), [since, moving ? Math.min(settleTimeout, MOVING_CALM) : settleTimeout]);
+    if (!moving) requireRest(rest);
     return png;
   };
 
   // The screenshot the report gives, cropped to what the page draws
-  const save = async (page, width, suffix) => {
+  const save = async (page, width, suffix, moving = false) => {
     const box = await page.evaluate(() => window.__rhpProbe.contentBox());
     const size = await page.evaluate(() => ({ w: document.documentElement.scrollWidth, h: document.documentElement.scrollHeight }));
     const pad = 16;
@@ -242,7 +289,7 @@ export async function check(options = {}) {
       height: Math.min(size.h, Math.ceil(box.bottom + pad)) - Math.max(0, Math.floor(box.top - pad)),
     };
     const png = path.join(outDir, `${name}-${width}${dark ? "-dark" : ""}${suffix ? "-" + suffix : ""}.png`);
-    await capture(page, { type: "png", path: png, fullPage: true, animations: options.freeze ? "disabled" : "allow", ...(clip && clip.width > 0 && clip.height > 0 ? { clip } : {}) });
+    await capture(page, { type: "png", path: png, fullPage: true, animations: options.freeze ? "disabled" : "allow", ...(clip && clip.width > 0 && clip.height > 0 ? { clip } : {}) }, moving);
     screenshots.push({ width, dark, hover: suffix === "hover", path: png });
   };
 
@@ -284,6 +331,26 @@ export async function check(options = {}) {
       await page.evaluate(() => window.__rhpProbe.show());
       const colorFindings = [...textContrast(items, noText, 1), ...(noMarks ? faintMarks(items, drawn, noMarks, 1) : []), ...colorBlind(items, noMarks, 1)];
 
+      // Every slat picked in turn, here and at the page's own breakpoints between this width and the next narrower
+      // one checked (a page of its own at each), where a layout that only fits at the widths checked jumps
+      const swept = [];
+      if (wantInteract) {
+        swept.push({ width, ...(await sweep(page, phone, events)) });
+        const next = [...widths].sort((a, b) => b - a).find((w) => w < width);
+        const between = next == null ? [] : (await page.evaluate(() => window.__rhpProbe.breakpoints())).filter((b) => b < width && b > next && !widths.includes(b));
+        for (const b of between.slice(0, MAX_BREAKPOINTS)) {
+          let at = null;
+          try {
+            at = await open(context, events, "reduce", { width: b, height: 900 });
+            swept.push({ width: b, breakpoint: true, ...(await sweep(at, phone, events)) });
+          } catch (error) {
+            if (error.code !== "page-unsettled") throw error;
+          } finally {
+            await at?.close();
+          }
+        }
+      }
+
       // with reduced motion rhp turns every block's transition off, so a slat's own is read with motion on
       await page.emulateMedia({ reducedMotion: "no-preference" });
       seen.found.push(...(await page.evaluate(() => window.__rhpProbe.transitions())));
@@ -297,7 +364,7 @@ export async function check(options = {}) {
       const loaded = !events.some((e) => e.kind === "pageerror" && /^The page did not finish loading/.test(e.text));
       if (wantInteract && loaded && (i === 0 || phone)) {
         const fresh = await open(context, events, "no-preference", phone ? { width, height: PHONE_WINDOW } : null);
-        const pass = { events, capture: (opts) => capture(fresh, opts), shoot: (suffix) => save(fresh, width, suffix) };
+        const pass = { events, capture: (opts) => capture(fresh, opts, true), shoot: (suffix) => save(fresh, width, suffix, true) };
         const passes = [];
         if (i === 0) passes.push(await interactionPass(fresh, pass));
         if (phone) passes.push(await interactionPass(fresh, { ...pass, taps: true }));
@@ -310,7 +377,7 @@ export async function check(options = {}) {
         guarded.push(...(await fresh.evaluate(() => globalThis.__rhpCheck?.findings ?? []).catch(() => [])));
       }
 
-      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, ms: Math.round(performance.now() - w0) });
+      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, swept, ms: Math.round(performance.now() - w0) });
       } catch (error) {
         if (error.code !== "page-unsettled") throw error;
         findings.push({ level: "error", code: error.code, message: error.message, fix: "Let finite entry animations finish, honor prefers-reduced-motion for live updates, or increase the check's settleTimeout for a slow machine.", width });
@@ -377,6 +444,13 @@ export async function check(options = {}) {
       if (jumps.has(key)) jumps.get(key).more++;
       else jumps.set(key, { code: "layout-jump", kind: x.kind, target: x.target, moved: x.moved, more: 0 });
     }
+    for (const sw of r.swept) {
+      for (const j of sw.jumps) {
+        const key = j.moved.map((m) => m.what).join("\n");
+        if (jumps.has(key)) jumps.get(key).more++;
+        else jumps.set(key, { code: "layout-jump", kind: "pick", target: sw.breakpoint ? `${j.target} at ${sw.width}px, beside one of the page's own breakpoints` : j.target, moved: j.moved, more: 0 });
+      }
+    }
     for (const j of jumps.values()) {
       findings.push({ ...fromProbe(j, {}), width: r.width });
     }
@@ -391,9 +465,10 @@ export async function check(options = {}) {
 
   const charts = results.flatMap((r) => r.seen.charts.map((c) => ({ width: r.width, ...c })));
   const interactions = results.flatMap((r) => r.interactions);
+  const swept = results.flatMap((r) => r.swept.map(({ width, breakpoint, slats, jumps }) => ({ width, breakpoint: !!breakpoint, slats, jumps: jumps.length }))).sort((a, b) => b.width - a.width);
   timings.widths = Object.fromEntries(results.map((r) => [r.width, r.ms]));
 
-  return finish({ ...base, browser: launched.name, findings, charts, interactions, interactedAt: wantInteract ? widths[0] : null, screenshots, timings, started });
+  return finish({ ...base, browser: launched.name, findings, charts, interactions, interactedAt: wantInteract ? widths[0] : null, swept, screenshots, timings, started });
 }
 
 // Merges the same finding at several widths, sorts errors first, and writes the report
@@ -423,6 +498,7 @@ function finish({ findings, started, timings, ...rest }) {
     charts: rest.charts ?? [],
     interactions: rest.interactions ?? [],
     interactedAt: rest.interactedAt ?? null,
+    swept: rest.swept ?? [],
     screenshots: rest.screenshots ?? [],
     timings,
   };
