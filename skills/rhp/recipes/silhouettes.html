@@ -44,15 +44,20 @@
   .poster .stage::before { content: ""; position: absolute; left: calc(-1 * var(--pad)); right: calc(-1 * var(--pad)); bottom: 0; height: var(--street); background: var(--ground); }
   /* Everything after the chart stands on the street */
   .poster .readout, .poster .key, .poster .note { margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); background: var(--ground); color: var(--on-ground); }
-  .poster .readout { grid-area: readout; min-height: calc(3lh + 18px); margin-top: 0; margin-bottom: 0; padding-top: 8px; padding-bottom: 10px; font-size: 17px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  /* Every version of the readout in one grid cell, only the current one shown: it is as tall as the longest at every
+     width, so nothing under it moves whichever tower is picked */
+  .poster .readout { grid-area: readout; display: grid; margin-top: 0; margin-bottom: 0; padding-top: 8px; padding-bottom: 10px; font-size: 17px; line-height: 1.4; font-variant-numeric: tabular-nums; }
   .poster .readout b { font-weight: 700; }
-  .poster .readout span { display: block; color: var(--ground-soft); }
+  .poster .readout > .v { grid-area: 1 / 1; visibility: hidden; }
+  .poster .readout > .v.on { visibility: visible; }
+  .poster .readout .v span { display: block; color: var(--ground-soft); }
   .poster .key { grid-area: key; margin-block: 0; padding-block: 6px 4px; list-style: none; font-size: 15px; line-height: 1.35; }
   .poster .key li { display: grid; grid-template-columns: 1.6em minmax(0, 1fr) auto; column-gap: 8px; padding: 5px 0; border-top: 1px solid rgb(255 255 255 / .12); cursor: default; }
   .poster .key li b { font: 400 19px/1 var(--display); color: var(--ground-soft); }
   .poster .key li em { font-style: normal; color: var(--ground-soft); }
   .poster .key li span { font-variant-numeric: tabular-nums; }
-  .poster .key li.lit { font-weight: 700; }
+  /* The picked tower's line is marked by a band, not by weight: bold text would wrap and move what is under it */
+  .poster .key li.lit { background: rgb(255 255 255 / .1); box-shadow: -8px 0 0 rgb(255 255 255 / .1), 8px 0 0 rgb(255 255 255 / .1); }
   .poster .key li.lit b { color: var(--on-ground); }
   .poster .note { grid-area: note; display: block; padding-top: 12px; padding-bottom: 26px; border-top: 1px solid rgb(255 255 255 / .16); font-size: 12.5px; line-height: 1.5; color: var(--ground-soft); }
   .poster :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
@@ -68,7 +73,6 @@
     .poster .headline { padding-right: 28px; }
     .poster .dek { align-self: start; margin-top: 2px; padding-right: 20px; font-size: 16px; }
     .poster .stage { grid-area: 1 / 1 / 4 / 4; align-self: end; margin-top: 64px; }
-    .poster .readout { min-height: calc(2lh + 18px); }
     .poster .key { display: none; }
   }
   @media (max-width: 640px) {
@@ -79,10 +83,6 @@
     .poster .dek { margin-top: 12px; font-size: 15px; }
     .poster .stage { margin-top: 14px; }
     .poster .readout { font-size: 15px; }
-  }
-  /* The longest names take four lines on the narrowest phones */
-  @media (max-width: 360px) {
-    .poster .readout { min-height: calc(4lh + 18px); }
   }
 </style>
 </head>
@@ -329,10 +329,9 @@ function Skyline() {
         <//>
       </div>
       <p class="readout" aria-hidden="true">
-        <${Show} when=${() => picked() != null} fallback="Tap or point at a tower to measure it against the Burj Khalifa.">
-          <b>${() => BUILDINGS[picked()].name}</b>, ${() => BUILDINGS[picked()].city}
-          <span>${() => `${facts(picked())}. ${cap(compare(picked()))}.`}</span>
-        <//>
+        <span class=${() => (picked() == null ? "v on" : "v")}>Tap or point at a tower to measure it against the Burj Khalifa.</span>
+        ${BUILDINGS.map((b, i) => html`
+          <span class=${() => (picked() === i ? "v on" : "v")}><b>${b.name}</b>, ${b.city}<span>${facts(i)}. ${cap(compare(i))}.</span></span>`)}
       </p>
       <${Show} when=${() => !wide()}>
         <ol class="key" aria-hidden="true">
