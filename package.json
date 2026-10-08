@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "rhp (reactive html plots): plots as stacks of slats, built with SolidJS out of HTML elements and CSS",
   "keywords": [
     "solid",
