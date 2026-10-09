@@ -705,9 +705,11 @@ body {
   letter-spacing: -.02em;
 }
 
+/* An author given as a web address breaks anywhere, rather than run off a phone's screen */
 .credit {
   font: 400 12px/1.4 var(--ui);
   color: var(--soft);
+  overflow-wrap: anywhere;
 }
 
 .credit a {

@@ -69,7 +69,10 @@ const End = slat({
 const Name = slat({
   room: {},
   css: `
+    /* Lifted above the line's end so the name does not sit on the line; one on the before side also ends there (a
+       slat's translate replaces rhp's, which moves it there) */
     .tag { --rhp-label-gap: 8px; translate: 0 -50%; font-size: 12px; font-weight: 600; color: var(--rhp-series-8); white-space: nowrap; }
+    .tag[data-rhp-side="before"] { translate: -100% -50%; }
     .tag.median { color: var(--rhp-muted); font-weight: 400; }
   `,
 }, (d) => (
@@ -179,6 +182,45 @@ export function Dossier(props) {
     setPicked(i);
     setPinned(i);
   };
+  // A name with a word that would run past the page's edge (its 16px margin), which would let the page scroll sideways
+  // (CunninLynguists on a phone), is set smaller, just enough to end there; every other name keeps its size. Checked
+  // once it is laid out, and when the page's width changes.
+  const fitName = (h3) => {
+    // The room from where the name starts to the page's edge (its box grows to its longest word)
+    const room = () => document.documentElement.clientWidth - 16 - h3.getBoundingClientRect().left;
+    const fit = () => {
+      h3.style.fontSize = "";
+      for (let k = 0; k < 4 && h3.scrollWidth > room() + 0.5; k++) {
+        h3.style.fontSize = `${(parseFloat(getComputedStyle(h3).fontSize) * room()) / h3.scrollWidth}px`;
+      }
+    };
+    onMount(fit);
+    document.fonts?.ready.then(() => h3.isConnected && fit());
+    addEventListener("resize", fit);
+    onCleanup(() => removeEventListener("resize", fit));
+  };
+
+  // The growth chart's two names start at their line's end and run right; one that would run past the page's edge (its
+  // 16px margin), which would let the page scroll sideways, ends at its line's end instead. Checked after each layout,
+  // before it is drawn.
+  const [sides, setSides] = createSignal(["after", "after"], { equals: (p, q) => p[0] === q[0] && p[1] === q[1] });
+  const fitNames = (box) => {
+    const edge = document.documentElement.clientWidth - 16;
+    const tags = [box.querySelector(".tag.median"), box.querySelector(".tag:not(.median)")];
+    if (tags.some((t) => !t)) return;
+    setSides((now) => tags.map((tag, k) => {
+      const r = tag.getBoundingClientRect();
+      const right = now[k] === "after" ? r.right : r.right + r.width; // where it ends when it starts at the line's end
+      return right <= edge ? "after" : "before";
+    }));
+  };
+  const watchNames = (box) => {
+    const ro = new ResizeObserver(() => fitNames(box));
+    ro.observe(box);
+    document.fonts?.ready.then(() => box.isConnected && fitNames(box));
+    onCleanup(() => ro.disconnect());
+  };
+
   // The growth chart picks the album whose end is nearest the pointer, along the words rapped
   let growthPlot;
   const near = (e) => {
@@ -207,7 +249,7 @@ export function Dossier(props) {
       <div class="dossier-head">
         <Face name={a().name} class="portrait" />
         <div class="who">
-          <h3>{a().name}</h3>
+          <h3 ref={fitName}>{a().name}</h3>
           <p class="facts">{a().era} · {n()} albums, {a().first} to {a().last}</p>
           <Credit name={a().name} />
         </div>
@@ -257,7 +299,7 @@ export function Dossier(props) {
         <section>
           <p class="panel-title">How the vocabulary grew</p>
           <p class="panel-note">Different words so far, against words rapped so far; a dot ends each album. The faint lines are the other rappers.</p>
-          <div onPointerMove={(e) => e.pointerType !== "touch" && setPicked(near(e))} onClick={(e) => { const i = near(e); setPicked(i); setPinned(i); }}
+          <div ref={watchNames} onPointerMove={(e) => e.pointerType !== "touch" && setPicked(near(e))} onClick={(e) => { const i = near(e); setPicked(i); setPinned(i); }}
             onPointerLeave={(e) => e.pointerType !== "touch" && setPicked(null)}>
             <Chart scale={[0, x().max]} ticks={x().ticks.filter((_, i, t) => !narrow() || i % 2 === 0 || i === t.length - 1)} format={compact}
               cross={[0, y().max]} crossTicks={y().ticks} crossFormat={compact} height={narrow() ? 210 : 250} theme={THEME}
@@ -270,7 +312,7 @@ export function Dossier(props) {
                 style={{ "pointer-events": "none" }}>{End}</Plot>
               <Plot overlap slats={2} style={{ "pointer-events": "none" }}
                 at={[medianEnd()[0], a().words]} cross={[medianEnd()[1], a().unique]}
-                side={[medianEnd()[0] > x().max * 0.7 ? "before" : "after", a().words > x().max * 0.7 ? "before" : "after"]}
+                side={sides()}
                 median={[true, false]} text={["median rapper", a().name]}>{Name}</Plot>
             </Chart>
           </div>
