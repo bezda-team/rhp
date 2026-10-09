@@ -1,0 +1,822 @@
+/* Tokens: vinyl black with label cream and a gold-record accent; a liner-notes paper when the reader's system is light.
+   The charts read the same tokens through their theme (theme.js). */
+:root {
+  color-scheme: dark;
+  --paper: #151311;
+  --ink: #f2ebdf;
+  --soft: #a69d90;
+  --rule: #34302a;
+  --accent: #f0b545;
+  --accent-ink: #151311;
+  --lift: #1e1b18;
+  /* The spines of a shelf, from a career's first album (brightest) to its last */
+  --spine-1: #e6dccb;
+  --spine-2: #c9bfae;
+  --spine-3: #aca393;
+  --spine-4: #92897c;
+  --spine-5: #7d756a;
+  --spine-6: #6f685e;
+  /* The same shelf, lit */
+  --gold-1: #ffd27a;
+  --gold-2: #f0b545;
+  --gold-3: #c98f2a;
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --text: "Newsreader", Georgia, "Times New Roman", serif;
+  --ui: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+
+/* Light paper: when the reader's system is light, or when they choose light themselves */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --paper: #f6f2ea;
+    --ink: #1a1612;
+    --soft: #5d564c;
+    --rule: #d8cfc1;
+    --accent: #9a5700;
+    --accent-ink: #f6f2ea;
+    --lift: #ece6db;
+    --spine-1: #2a241d;
+    --spine-2: #463e35;
+    --spine-3: #5b5248;
+    --spine-4: #6c6358;
+    --spine-5: #7b7266;
+    --spine-6: #877e71;
+    --gold-1: #b86d00;
+    --gold-2: #9a5700;
+    --gold-3: #7a4400;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --paper: #f6f2ea;
+  --ink: #1a1612;
+  --soft: #5d564c;
+  --rule: #d8cfc1;
+  --accent: #9a5700;
+  --accent-ink: #f6f2ea;
+  --lift: #ece6db;
+  --spine-1: #2a241d;
+  --spine-2: #463e35;
+  --spine-3: #5b5248;
+  --spine-4: #6c6358;
+  --spine-5: #7b7266;
+  --spine-6: #877e71;
+  --gold-1: #b86d00;
+  --gold-2: #9a5700;
+  --gold-3: #7a4400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 19px/1.6 var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The page: prose in a reading column, charts wider */
+.article {
+  padding: 0 16px 64px;
+}
+
+.masthead {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(40px, 9vw, 96px) 0 clamp(28px, 5vw, 48px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.kicker {
+  margin: 0 0 18px;
+  font: 600 13px/1.2 var(--ui);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.kicker .back {
+  display: inline-block;
+  padding: 4px 0;
+  margin: -4px 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.kicker .back:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.kicker .back:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.masthead h1 {
+  max-width: 13em;
+  margin: 0;
+  font: 900 clamp(46px, 9.4vw, 116px)/.9 var(--display);
+  letter-spacing: -.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.masthead h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.masthead .dek {
+  max-width: 34em;
+  margin: 24px 0 0;
+  font-size: clamp(19px, 2.4vw, 23px);
+  line-height: 1.45;
+  color: var(--soft);
+}
+
+.masthead .byline {
+  margin: 22px 0 0;
+  font: 400 14px/1.4 var(--ui);
+  color: var(--soft);
+}
+
+.prose {
+  max-width: 660px;
+  margin: 40px auto;
+}
+
+.prose p {
+  margin: 0 0 1.05em;
+}
+
+.prose h2 {
+  margin: 64px 0 16px;
+  font: 800 clamp(30px, 5vw, 44px)/1 var(--display);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.prose a,
+.method a {
+  color: inherit;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.figure {
+  max-width: 1080px;
+  margin: 48px auto;
+}
+
+.figure-head {
+  margin: 0 0 18px;
+}
+
+.figure-head h3 {
+  margin: 0;
+  font: 800 clamp(24px, 3.4vw, 32px)/1.05 var(--display);
+  text-transform: uppercase;
+}
+
+.figure-head p {
+  max-width: 44em;
+  margin: 8px 0 0;
+  font: 400 16px/1.45 var(--ui);
+  color: var(--soft);
+}
+
+.source {
+  margin: 14px 0 0;
+  font: 400 13px/1.45 var(--ui);
+  color: var(--soft);
+}
+
+/* Controls: a row of choices, and a readout that keeps one line so nothing below it moves */
+.controls {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  display: grid;
+  gap: 10px;
+  margin: 0 -16px 10px;
+  padding: 12px 16px 10px;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* One row of groups, each with its label above its pills, and the search at the end; every control the same height,
+   all of them on the row's bottom line */
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 32px;
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.choice-label {
+  font: 600 12px/1 var(--ui);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.choice button {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: none;
+  color: var(--ink);
+  font: 500 14px/1 var(--ui);
+  cursor: pointer;
+}
+
+.choice button:hover {
+  border-color: var(--soft);
+}
+
+.choice button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.find {
+  display: flex;
+  margin-left: auto;
+}
+
+.find input {
+  width: 13em;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: var(--lift);
+  color: var(--ink);
+  font: 400 14px/1 var(--ui);
+}
+
+.find input::placeholder {
+  color: var(--soft);
+}
+
+.readout {
+  min-height: 22px;
+  margin: 0;
+  overflow: hidden;
+  font: 400 14px/22px var(--ui);
+  color: var(--soft);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.readout b {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.readout .lit {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.chart-readout {
+  margin: 0 0 12px;
+}
+
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font: 400 13px/1.4 var(--ui);
+  color: var(--soft);
+}
+
+.key i {
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+
+.key .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: -1px;
+}
+
+.key .rose {
+  background: var(--gold-2);
+}
+
+.key .fell {
+  background: var(--spine-5);
+}
+
+.callout .lit-name {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.key .arrow {
+  width: 22px;
+  height: 9px;
+  vertical-align: 0;
+  background: var(--ink);
+  clip-path: polygon(0 38%, 60% 38%, 60% 0, 100% 50%, 60% 100%, 60% 62%, 0 62%);
+}
+
+/* The album-number chart: its finding written over the empty top right of the chart */
+.albums {
+  position: relative;
+}
+
+.callout {
+  position: absolute;
+  top: 16px;
+  right: 0;
+  z-index: 2;
+  max-width: 17em;
+  margin: 0;
+  font: 400 21px/1.3 var(--text);
+  color: var(--soft);
+  text-align: right;
+  pointer-events: none;
+}
+
+.callout b {
+  font: 800 30px/1 var(--display);
+  color: var(--ink);
+}
+
+.more {
+  display: block;
+  margin: 18px auto 0;
+  padding: 10px 22px;
+  border: 1px solid var(--soft);
+  border-radius: 99px;
+  background: none;
+  color: var(--ink);
+  font: 600 15px/1 var(--ui);
+  cursor: pointer;
+}
+
+.more:hover {
+  border-color: var(--ink);
+}
+
+/* The breakdown that opens inside a rapper's slat: its own text, around its charts */
+.dossier {
+  font: 400 15px/1.45 var(--ui);
+  color: var(--ink);
+}
+
+.dossier-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dossier-head .who {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.dossier-head .portrait {
+  flex: none;
+  width: clamp(76px, 12vw, 112px);
+  height: clamp(76px, 12vw, 112px);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  box-shadow: 0 0 0 3px var(--accent);
+  animation: portrait-in .6s cubic-bezier(.2, .8, .2, 1) .15s backwards;
+}
+
+.dossier-head .initials {
+  display: grid;
+  place-items: center;
+  background: var(--lift);
+  color: var(--accent);
+  font: 800 34px/1 var(--display);
+}
+
+@keyframes portrait-in {
+  from {
+    opacity: 0;
+    scale: .6;
+  }
+}
+
+.dossier-head h3 {
+  margin: 0;
+  font: 900 clamp(38px, 6vw, 64px)/.9 var(--display);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.dossier-head .facts {
+  margin: 0;
+  color: var(--soft);
+}
+
+.dossier .close {
+  align-self: flex-start;
+  margin-left: auto;
+  padding: 7px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 14px/1 var(--ui);
+  cursor: pointer;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px 24px;
+  margin: 18px 0 22px;
+  padding: 14px 0;
+  border-block: 1px solid var(--rule);
+}
+
+.stat b {
+  display: block;
+  font: 800 34px/1 var(--display);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat span {
+  font-size: 13px;
+  color: var(--soft);
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 28px 40px;
+}
+
+.panel-title {
+  margin: 0 0 4px;
+  font: 600 12px/1.3 var(--ui);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.panel-note {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--soft);
+}
+
+.album-readout {
+  min-height: 3em;
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--soft);
+}
+
+.album-readout b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.album-readout i {
+  font: italic 400 16px/1 var(--text);
+  color: var(--accent);
+}
+
+/* Words only one rapper used, set like a dictionary's entries */
+.lexicon {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lexicon li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px dotted var(--rule);
+}
+
+.lexicon dfn {
+  overflow: hidden;
+  font: italic 600 19px/1.25 var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lexicon span {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.left-out {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--soft);
+}
+
+/* Method and notes */
+.method {
+  max-width: 660px;
+  margin: 72px auto 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  font: 400 15px/1.55 var(--ui);
+  color: var(--soft);
+}
+
+.method h2 {
+  margin: 0 0 14px;
+  font: 800 26px/1 var(--display);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.method p {
+  margin: 0 0 1em;
+}
+
+@media (max-width: 720px) {
+  body {
+    font-size: 18px;
+  }
+
+  .controls {
+    gap: 8px;
+    padding: 10px 16px 8px;
+  }
+
+  .choices {
+    gap: 10px 14px;
+  }
+
+  .choice {
+    gap: 6px;
+  }
+
+  .choice-label {
+    font-size: 11px;
+  }
+
+  /* On a phone a readout keeps two lines, so its longest text fits and a pick never moves what is below */
+  .readout {
+    display: -webkit-box;
+    min-height: 44px;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .choice button {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .find {
+    flex: 1 1 0;
+    min-width: 6.5rem;
+  }
+
+  .find input {
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .panels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lexicon {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .callout {
+    position: static;
+    max-width: none;
+    margin: 0 0 14px;
+    font-size: 18px;
+    text-align: left;
+  }
+
+  .callout b {
+    font-size: 26px;
+  }
+}
+
+/* Opening a rapper: the page changes at once, and only their albums fly between the shelf and the breakdown */
+::view-transition-old(root) {
+  display: none;
+}
+
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-group(*) {
+  animation-duration: .75s;
+  animation-timing-function: cubic-bezier(.25, .8, .25, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dossier-head .portrait {
+    animation: none;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* A rapper's face in a readout line */
+.readout .readout-face {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  vertical-align: -4px;
+}
+
+/* A rapper with no portrait gets initials in the same box as a photo, on the same baseline, so the line keeps its height */
+.readout .initials {
+  display: inline-block;
+  overflow: hidden;
+  background: var(--rule);
+  font: 700 9px/18px var(--ui);
+  text-align: center;
+  letter-spacing: -.02em;
+}
+
+.credit {
+  font: 400 12px/1.4 var(--ui);
+  color: var(--soft);
+}
+
+.credit a {
+  color: inherit;
+}
+
+/* The rapper picked, kept in a corner while the reader moves through the article */
+.picked {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  padding: 8px 8px 8px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 24px rgb(0 0 0 / .35);
+  font: 400 13px/1.25 var(--ui);
+  animation: picked-in .35s cubic-bezier(.2, .8, .2, 1);
+}
+
+.picked-face {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.picked .initials {
+  display: grid;
+  place-items: center;
+  background: var(--lift);
+  color: var(--accent);
+  font: 800 16px/1 var(--display);
+}
+
+.picked-text {
+  display: grid;
+  min-width: 0;
+}
+
+.picked-text b {
+  overflow: hidden;
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.picked-text small {
+  color: var(--soft);
+  white-space: nowrap;
+}
+
+.picked button {
+  flex: none;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: none;
+  color: var(--ink);
+  font: 500 13px/1 var(--ui);
+  cursor: pointer;
+}
+
+.picked .picked-close {
+  padding: 8px 11px;
+  font-size: 15px;
+}
+
+@keyframes picked-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  .picked-text small {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .picked {
+    animation: none;
+  }
+}
+
+.key .spine-key {
+  width: 12px;
+  height: 14px;
+  border-radius: 2px 2px 0 0;
+  background: var(--spine-2);
+}
+
+.key .hint {
+  font-style: italic;
+}
+
+.key .ring {
+  background: none;
+  box-shadow: inset 0 0 0 2px var(--gold-2);
+}

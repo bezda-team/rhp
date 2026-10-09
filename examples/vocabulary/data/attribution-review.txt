@@ -1,0 +1,199 @@
+21 Savage: kept 45479 of 61067 words (74%). Left out: 4826 Drake, 2036 Offset, 875 Drake & Lil Yachty, 853 Young Nudy, 685 Travis Scott, 598 Lil Baby, 505 Young Thug, 398 J. Cole, 357 Post Malone, 272 Lil Durk
+2 Chainz: kept 53235 of 78974 words (67%). Left out: 5984 Lil Wayne, 2089 Larry June, 1529 Worl, 1154 Sleepy Rose, 1044 Skooly, 806 Hott LockedN, 645 Travis Scott, 612 Quavo, 556 Drake, 495 Nicki Minaj
+2Pac: kept 46242 of 57258 words (81%). Left out: 3776 Young Noble, 2754 Napoleon, 2654 Kastro, 1868 Big Syke, 1839 Yaki Kadafi, 1629 E.D.I. Mean, 1124 Hussein Fatal, 905 E.D.I., 881 K-Ci & JoJo, 829 Kadafi
+  left out: The Don Killuminati: The 7 Day Theory (1996, posthumous), R U Still Down? (Remember Me) (1997, posthumous), Still I Rise (1999, posthumous), Until the End of Time (2001, posthumous), Better Dayz (2002, posthumous), Loyal to the Game (2004, posthumous), Pac’s Life (2006, posthumous)
+50 Cent: kept 46299 of 52165 words (89%). Left out: 1149 Eminem, 406 Kidd Kidd, 374 Akon, 321 Young Buck, 313 Lloyd Banks, 268 Ne-Yo, 227 Tony Yayo, 222 Justin Timberlake, 202 Governor, 199 Mary J. Blige
+Ab-Soul: kept 50870 of 62328 words (82%). Left out: 1163 Daylyt, 1078 Kendrick Lamar, 1029 Punch, 625 Jay Rock, 566 ScHoolboy Q, 347 Big Sean, 329 BR3, 274 Lupe Fiasco, 256 Joey Bada$$, 246 JID
+Action Bronson: kept 36869 of 43473 words (85%). Left out: 1649 Meyhem Lauren, 449 Big Body Bes, 364 Roc Marciano, 297 AG Da Coroner, 289 Hologram, 275 Shaz Illyork, 251 The Alchemist, 238 Maffew Ragazino, 226 Conway the Machine, 220 Paul Wall
+Aesop Rock: kept 101267 of 107198 words (94%). Left out: 849 El-P, 518 Homeboy Sandman, 424 billy woods, 407 Illogic, 305 C-Rayz Walz, 302 Rob Sonic, 294 Lupe Fiasco, 230 Vast Aire, 224 Aceyalone & Ladybug Mecca, 211 Hanni El Khatib
+  left out: Trouble Mountain (2026, lyrics for 1 of 17 songs)
+A$AP Rocky: kept 26160 of 33782 words (77%). Left out: 354 Lil Wayne, 307 Frank Ocean & Ms. Lauryn Hill, 305 Kendrick Lamar, 288 Big K.R.I.T., 283 Skepta, 271 Santigold, 259 Schoolboy Q, 255 Doechii, 248 2 Chainz & Drake & 2 Chainz & Drake, 215 BONES & A$AP Ferg
+A$AP Ferg: kept 17344 of 22769 words (76%). Left out: 413 ScHoolboy Q, 377 Bizzy Bone, 332 Future, 309 Lil Uzi Vert, 279 Krayzie Bone, 251 Chris Brown, 245 Elmiene, 195 Fredro Starr & Sticky Fingaz, 184 A$AP Rocky, 184 A$ton Matthews
+Atmosphere: kept 95672 of 102660 words (93%). Left out: 492 Musab, 479 Muja Messiah, 399 Haphduzn, 321 Sa-Roc, 315 Evidence, 299 Kim Manning, 287 MF DOOM, 279 Aesop Rock, 263 DeM atlaS, 245 Nino Bless
+Beastie Boys: kept 41436 of 42606 words (97%). Left out: 350 Nas, 304 Santigold, 195 Afrika Bambaataa & The Jazzy 5, 66 Eugene McDaniels & Q-Tip, 53 Sly Stone, 39 Only On Rare Versions, 35 DJ Hurricane scratching Biz Markie, 24 Q-Tip, 23 Kurtis Blow & various, 21 Sly Stone & Ballin' Jack
+  left out: The Mix‐Up (2007, instrumental)
+Big Daddy Kane: kept 53006 of 58987 words (90%). Left out: 921 Scoob Lover, 771 Scrap Lover, 318 Sha-Queen, 267 Busta Rhymes, 256 Biz Markie, 249 Q-Tip, 216 Karen Anderson & Laree Williams, 213 Scoob, 211 Sauce Money, 194 JAY-Z
+Big K.R.I.T.: kept 44924 of 54041 words (83%). Left out: 837 Wiz Khalifa, 587 Smoke DZA, 470 Bun B, 343 Big Sant, 323 Karlous Miller, 308 Rico Love, 288 Lloyd, 283 J. Cole, 281 Lupe Fiasco, 278 Joi
+Big L: kept 6704 of 8882 words (75%). Left out: 892 McGruff, 789 JAY-Z & Bobbito, 657 Guru, 557 O.C., 526 Kool G. Rap, 448 Herb McGruff, 434 Fat Joe, 330 Showbiz, 324 Lord Finesse, 315 A.G.
+  left out: The Big Picture (2000, posthumous), The Danger Zone (2011, posthumous), Harlem’s Finest: Return of the King (2025, posthumous)
+Big Sean: kept 53283 of 65090 words (82%). Left out: 1066 Eminem, 683 Lil Wayne, 457 Dave Chappelle, 388 Kanye West, 361 Kash Doll, 278 Payroll Giovanni, 258 Kid Cudi, 252 Stevie Wonder, 237 Jhené Aiko, 233 Travis Scott
+  left out: TWENTY88 (2016, lyrics for 0 of 8 songs)
+Biz Markie: kept 33737 of 36538 words (92%). Left out: 320 Slick Rick, 292 TJ Swan, 280 Biz singing, 264 Lil' Kal, 205 Diamond Shell, 202 Force Fell, 172 Coo Coo Cal, 169 Backspin, 165 Capital T, 142 Faison
+Blackalicious: kept 30370 of 35011 words (87%). Left out: 685 Saul Williams, 632 Lyrics Born, 404 Erinn Anova, 346 Vursatyl, 319 Jumbo, 276 Lateef the Truthspeaker, 238 Ben Harper, 157 Keke Wyatt, 152 Tracey Moore, 151 KWEEN
+B.o.B: kept 40611 of 48733 words (83%). Left out: 677 T.I., 387 Jace, 382 London Jae, 375 Playboy Tre, 370 Future, 330 Lil Wayne, 326 TTO K.T., 317 Big K.R.I.T., 241 Trey Songz, 223 Ryan Tedder
+  left out: A Town Full Of Nowhere (2023, instrumental)
+Bone Thugs-n-Harmony: kept 92834 of 96366 words (96%). Left out: 498 Swizz Beatz, 452 Wish, 386 Akon, 297 Maje$ty, 222 2Pac, 174 Sample, 142 Twista, 132 Big B, 118 David's Daughters, 113 Mariah Carey & JD
+  left out: New Waves (2017, lyrics for 0 of 15 songs)
+A Boogie wit da Hoodie: kept 46231 of 53214 words (87%). Left out: 818 Don Q, 737 Young Thug, 623 Lil Durk, 575 Lil Uzi Vert, 308 Trap Manny, 304 Kodak Black, 303 Roddy Ricch, 215 G Herbo, 212 Cash Cobain, 211 DaBaby
+Brand Nubian: kept 44685 of 46741 words (96%). Left out: 307 Positive K, 269 Loon, 253 Common, 209 Starr, 170 Snagglepuss, 161 Serge, 158 Busta Rhymes, 131 Maestro Manny, 128 Laura Alfored, 120 Buckshot sample
+  left out: Time’s Runnin’ Out (2007, lyrics for 3 of 15 songs)
+BROCKHAMPTON: kept 52105 of 54683 words (95%). Left out: 646 Ryan Beatty, 468 Victor Roberts, 240 JPEGMAFIA, 198 Cam'ron & DJ Whoo Kid, 153 Danny Brown, 151 SoGone SoFlexy, 138 ssgkobe, 102 SoGoneSoFlexy, 91 Baird, 84 London Community Gospel Choir
+Brother Ali: kept 57358 of 59645 words (96%). Left out: 280 Pharoahe Monch, 254 Casual, 244 Talib Kweli, 232 Evidence, 222 Aesop Rock, 181 Sa-Roc, 168 Amir Sulaiman, 168 deM atlaS, 153 Slug, 150 Idris Phillips
+  left out: Rites of Passage (2000, lyrics for 9 of 14 songs)
+Busdriver: kept 50901 of 53891 words (94%). Left out: 438 Abstract Rude, 302 Ellay Khule, 300 Myka 9, 247 Rheteric Ramirez, 241 Lorde Fredd33, 239 Radioinactive, 222 Denmark Vessey, 221 Danny Brown, 196 Hemlock Ernst, 188 Aceyalone
+  left out: Memoirs of the Elephant Man (1999, lyrics for 10 of 18 songs), Beaus$Eros (2012, lyrics for 9 of 14 songs), Made in Love (2023, lyrics for 7 of 11 songs)
+Busta Rhymes: kept 119053 of 147168 words (81%). Left out: 841 Rampage, 772 Lord Have Mercy, 589 Spliff Star, 552 Mike Epps, 522 Mary J. Blige, 500 Q-Tip, 491 Morray, 453 Anderson .Paak, 451 Jamal, 423 Raekwon
+Cam'ron: kept 67221 of 79596 words (84%). Left out: 2260 Vado, 2119 Juelz Santana, 1557 Jim Jones, 559 Max B, 513 Hell Rell, 480 Freekey Zekey, 378 Byrd Lady, 320 Twista & Yung Buk, 295 Twista, 263 Tiffany
+  left out: Gunz n' Butta (2011, lyrics for 11 of 16 songs)
+Canibus: kept 112174 of 133860 words (84%). Left out: 2052 Chino XL, 1495 Born Sun, 1300 Poet Laureate, 1228 Cambatta, 1013 Rip the Jacker, 960 Kurupt, 944 Killah Priest, 927 K-Solo, 834 Kool G Rap, 737 Ras Kass
+  left out: Lyrical Law (2011, lyrics for 15 of 32 songs), In Gods We Trust, Crush Microphones to Dust (2011, lyrics for 3 of 18 songs), Rip the Jacker: Evidence of Infinity 3 (2012, lyrics for 10 of 16 songs), Fait Accompli (Deluxe Edition) (2014, lyrics for 13 of 17 songs), Full Spectrum Dominance 2 (2018, lyrics for 6 of 8 songs), Full Spectrum Dominance Repolarization (2019, lyrics for 5 of 10 songs), MICROPHONE LAND (2021, lyrics for 4 of 14 songs)
+Childish Gambino: kept 20706 of 21903 words (95%). Left out: 188 21 Savage, 113 Kadhja Bonet & Ink, 109 Kai & Mystikal, 106 Miguel, 86 Ariana Grande, 80 Lloyd, 75 Jhené Aiko, 72 Brent Jones & the Best Life Singers, 57 Mystikal & Kai, 57 Steve G. Lover
+Common: kept 81411 of 109482 words (74%). Left out: 2515 PJ, 1530 Lonnie "Pops" Lynn, 1119 Bilal, 931 Kanye West, 834 Samora Pinderhughes, 831 Pharrell, 795 Cee-Lo, 728 Malik Yusef, 710 James Fauntleroy, 702 Jessica Care Moore
+CunninLynguists: kept 31712 of 38144 words (83%). Left out: 842 Tonedeff, 262 Cashmere the Professional, 255 Trizz, 252 Witchdoctor, 230 Sheisty Khrist, 229 Tim Means, 218 Immortal Technique, 208 Scratches, 197 Freddie Gibbs, 188 Inspectah Deck
+CupcakKe: kept 44545 of 44545 words (100%). Left out: 
+Cypress Hill: kept 74781 of 81975 words (91%). Left out: 687 Barron Ricks, 514 Sick Jacken, 476 Kurupt, 304 Yusak, 261 Freddie Gibbs, 228 Hustlers, 216 Prodigy, 206 Brevi, 198 MC Eiht, 194 MC Ren
+Danny Brown: kept 40198 of 49858 words (81%). Left out: 2870 JPEGMAFIA, 728 Angel Emoji, 348 underscores, 288 Kendrick Lamar, 278 ta Ukrainka, 264 Schoolboy Q, 251 8485, 249 ISSBROKIE, 243 Lulu Prost, 242 Blood Orange
+Das EFX: kept 30825 of 31595 words (98%). Left out: 210 KRS-One, 210 Queen, 132 Redman, 110 8-Off Aguilar, 103 Nocturnal, 5 Pete Rock
+  left out: How We Do (2003, lyrics for 2 of 13 songs)
+De La Soul: kept 60124 of 75438 words (80%). Left out: 900 (skit) , 562 Slick Rick, 555 Common, 436 Giancarlo Esposito, 413 Busta Rhymes, 366 Q-Tip, 363 Roc Marciano, 347 Bonz Malone, 344 STOUT, 328 Freddie Foxxx
+  left out: Cabin in the Sky (2025, posthumous)
+Death Grips: kept 31082 of 31418 words (99%). Left out: 191 Clementine Creevy, 88 Chebba Wassila, 34 Andrew Adamson, 23 Background
+Del the Funky Homosapien: kept 67458 of 79365 words (85%). Left out: 3156 Del as Deltron Osiris, 2440 Tame One, 376 Del as Deltron Zero & Battle Song Receptionist, 372 Soopa Feen & Spoken, 318 Del as Deltron Osiris & Jamie Cullum, 297 KU, 276 El-P, 250 Del as Deltron Osiris & Aaron Bruno, 237 Amber Tamblyn & David Cross, 231 Del as Deltron Osiris & Mike Patton
+  left out: Automatik Statik (2009, lyrics for 0 of 11 songs), It Ain't Illegal Yet (2010, lyrics for 1 of 11 songs), Golden Era (2011, lyrics for 5 of 10 songs), Root Stimulation (2012, lyrics for 0 of 20 songs), Attractive Sin (2012, lyrics for 3 of 11 songs)
+Denzel Curry: kept 33341 of 39077 words (85%). Left out: 422 JPEGMAFIA, 372 Rick Ross, 304 JID, 296 Joey Bada$$, 289 Nell, 282 J.K. The Reaper, 249 6LACK, 197 Green Store Skit, 189 (skit) Plus Pierre, 176 454
+Dizzee Rascal: kept 69665 of 77024 words (90%). Left out: 615 Bun B, 478 BackRoad Gee, 407 Teddy Sky, 364 Frisco, 341 Angel, 335 Ocean Wisdom, 311 Predz UK, 296 D Double E, 268 Lily Allen, 250 Jessie J
+DMX: kept 65355 of 74995 words (87%). Left out: 1161 Jadakiss, 942 Swizz Beatz, 837 Sheek Louch, 827 Styles P, 809 Big Stan, 572 Drag-On, 359 Busta Rhymes, 335 Mary J. Blige, 317 Regina Bell, 304 Kashmere
+  left out: Exodus (2021, posthumous)
+Drake: kept 97245 of 117128 words (83%). Left out: 2299 PARTYNEXTDOOR, 2042 21 Savage, 979 Future, 952 Lil Wayne, 643 JAY-Z, 573 Travis Scott, 474 Sexyy Red, 413 Popcaan, 397 Yeat, 361 Rick Ross
+E-40: kept 272386 of 381618 words (71%). Left out: 9269 Too $hort, 6429 B-Legit, 3746 Cousin Fik, 3237 Stresmatic, 2348 Turf Talk, 2315 Ice Cube, 2185 Snoop Dogg, 1367 T-Pain, 1220 Bun B, 1164 Droop-E
+Eminem: kept 135496 of 151876 words (89%). Left out: 793 Eye-Kyu, 569 Skylar Grey, 537 Joyner Lucas, 479 Dr. Dre, 461 Royce da 5'9", 429 50 Cent, 421 Obie Trice, 414 BabyTron, 410 Bizarre, 359 Ed Sheeran
+Eve: kept 23596 of 33872 words (70%). Left out: 1175 Swizz Beatz, 897 Mashonda, 875 Drag-On, 857 DMX, 534 Styles P, 388 Jadakiss, 351 Sheek Louch, 349 Beanie Sigel, 320 Missy Elliott, 320 Snoop Dogg
+Fat Joe: kept 70190 of 97680 words (72%). Left out: 3169 Dre, 2411 Remy Ma, 1717 Armageddon, 1185 Lil Wayne, 1009 Big Punisher, 900 Kent Jones, 884 Prospect, 648 Ty Dolla $ign, 518 Cuban Link, 468 Eminem
+  left out: What Would Big Do 2021 (2021, lyrics for 7 of 9 songs)
+Flatbush Zombies: kept 19358 of 21656 words (89%). Left out: 964 Fan Voicemails, 220 Portugal. The Man, 194 Dave B, 177 Bun B, 162 Denzel Curry, 154 Jadakiss, 153 A$AP Twelvyy, 148 Nyck Caution, 43 John Gourley, 37 Anthony Flammia
+Foxy Brown: kept 19739 of 27741 words (71%). Left out: 613 Foxy, 552 MJG, 552 Pretty Boy, 521 Baby Cham, 429 Mystikal, 427 Beanie Sigel, 289 Darius, 281 Wayne Wonder, 277 Kid Capri, 258 N.O.R.E.
+Future: kept 118373 of 131602 words (90%). Left out: 3821 Lil Uzi Vert, 644 Drake, 611 André 3000, 551 Travis Scott, 440 A$AP Rocky, 434 Lil Baby, 379 J. Cole, 375 Kanye West, 357 (skit) , 324 Prodigy of Mobb Deep
+G-Eazy: kept 44083 of 53484 words (82%). Left out: 557 Blair Taylor, 410 Erika Flowers, 396 Keyshia Cole, 388 Jay Ant, 362 E-40, 333 1, 319 (skit) Mr. Jangles, 303 Marc E. Bassy, 299 Slap Doctorz, 299 ShooterGang Kony & E-40
+  left out: The Epidemic LP (2009, lyrics for 15 of 19 songs)
+The Game: kept 97761 of 140108 words (70%). Left out: 1859 Big Hit, 1381 Lil Wayne, 1116 Anderson .Paak, 1006 Kendrick Lamar, 935 Kanye West, 739 Chris Brown, 719 will.i.am, 702 Marsha Ambrosius, 699 Nas, 677 50 Cent
+Gang Starr: kept 45278 of 54011 words (84%). Left out: 873 Big Shug, 841 Freddie Foxxx, 499 Jeru the Damaja, 478 Billy Danze, 470 Lil Dap, 448 Krumb Snatcha, 434 Shiggy Sha, 362 Jadakiss, 341 Panchi, 279 Lil' Fame
+  left out: One of the Best Yet (2019, posthumous)
+Geto Boys: kept 48734 of 56814 words (86%). Left out: 1055 DMG, 635 DJ Akshun, 476 Doracell, 411 Dee, 400 Yukmouth, 332 Larry Hoover & J. Prince, 321 Grand Wizard DJ Ready Red, 234 Smit-D, 223 Assassin, 203 Caine
+Ghostface Killah: kept 82660 of 139574 words (59%). Left out: 6417 Raekwon, 3710 Trife Diesel, 3677 Method Man, 2988 Cappadonna, 2926 Trife Da God, 2321 Inspectah Deck, 2020 Esoteric, 1663 RZA, 1575 Sun God, 1477 Shawn Wigs
+  left out: Twelve Reasons to Die II (2015, lyrics for 13 of 26 songs)
+Goodie Mob: kept 39947 of 43639 words (92%). Left out: 539 Big Boi, 536 André 3000, 469 Witchdoctor, 453 Cool Breeze, 264 Big Rube, 262 TLC, 245 Mario Simpson, 212 Janelle Monae, 170 MOB, 168 Backbone
+  left out: One Monkey Don't Stop No Show (2004, lyrics for 11 of 15 songs)
+Gucci Mane: kept 145342 of 181133 words (80%). Left out: 2625 Waka Flocka Flame, 1528 V-Nasty, 1111 Kodak Black, 1030 Young Thug, 911 Quavo, 797 Rich Homie Quan, 793 Lil Baby, 737 Young Dolph, 660 Slim Dunkin, 651 (skit) Gucci Mane & Big Cat
+GZA: kept 30421 of 41870 words (73%). Left out: 1617 Killah Priest, 1482 RZA, 861 Masta Killa, 822 Method Man, 530 Ka, 500 Ghostface Killah, 456 Inspectah Deck, 446 Raekwon, 431 Prodigal Sunn, 402 Njeri Earth
+Hopsin: kept 55778 of 58663 words (95%). Left out: 921 SwizZz, 414 Jarren Benton, 379 Dizzy Wright, 320 G-Mo Skee, 282 Passionate MC, 225 Tech N9ne, 158 Cryptic Wisdom, 114 Michael Speaks, 72 (skit) 
+Ice Cube: kept 99124 of 118095 words (84%). Left out: 2791 E-40, 2365 Snoop Dogg, 1981 Too $hort, 615 Mr. Short Khop, 552 George Clinton, 493 Mack 10, 434 W.C., 345 Jayo Felony, 326 WC, 324 Don Jagwarr
+Ice-T: kept 64371 of 68559 words (94%). Left out: 365 Bronx Style Bob, 344 Donald D, 334 Evil-E, 303 Hen-Gee, 244 Smoothe Da Hustler, 198 Ras Kass, 195 Brother Marquis, 180 Donald-D, 164 Sample, 161 Tash
+  left out: Gangsta Rap (2006, lyrics for 10 of 16 songs), Criminal Migraine (2026, lyrics for 3 of 24 songs)
+Immortal Technique: kept 25186 of 29635 words (85%). Left out: 611 Poison Pen, 444 Diabolic, 347 Jean Grae, 241 Pumpkinhead, 194 Chino XL, 184 DJ Green Lantern, 181 KXNG Crooked, 164 Ras Kass, 160 Sick Jacken, 159 Akir
+Insane Clown Posse: kept 146624 of 156334 words (94%). Left out: 1547 (skit) , 636 Legz Diamond, 622 Jamie Madrox, 466 John Kickjazz, 354 Cold 187um, 300 Esham, 299 sampled, 277 Young Wicked, 261 Jumpsteady, 253 Syn
+J. Cole: kept 63587 of 67479 words (94%). Left out: 512 kiLL edward, 259 21 Savage, 217 Bas, 214 Lil Baby, 195 T-Boz & Chilli & Jennifer Hudson, 192 Choir, 187 Drake, 182 Eve L. Fontes, 169 (skit) Lil Cole, 164 JAY-Z
+Jadakiss: kept 37626 of 55161 words (68%). Left out: 1721 Fabolous, 1100 Swizz Beatz, 1038 Sheek Louch, 716 Future, 649 Jeezy, 641 Pharrell Williams, 549 Ex.od.us, 499 Styles P, 461 Eminem, 377 Mary J. Blige
+Jay Rock: kept 19326 of 26650 words (73%). Left out: 1524 Kendrick Lamar, 815 Ab-Soul, 768 Lance Skiiiwalker, 369 Jeremih, 340 J. Black, 307 Busta Rhymes, 244 Tech N9ne, 228 will.i.am, 219 Chris Brown, 217 J. Cole
+Jay-Z: kept 115993 of 150887 words (77%). Left out: 6735 R. Kelly, 2792 Beanie Sigel, 1511 Kanye West, 1442 Memphis Bleek, 826 Beyoncé, 723 Amil, 605 Frank Ocean, 510 Mariah Carey, 507 Twista, 463 Nas
+Jean Grae: kept 22158 of 27034 words (82%). Left out: 2272 Quelle Chris, 334 Denmark Vessey, 237 Sample, 232 (skit) Nick Offerman, 214 Daily Planet, 197 Mosel, 171 Median, 150 Quelle Chris & sample, 147 Anna Wise, 145 Phonte
+Jedi Mind Tricks: kept 46069 of 65917 words (70%). Left out: 2749 Ikon the Verbal Hologram, 1342 Demoz, 828 Ikon the Hologram, 545 Planetary, 464 Sample, 453 Breath of Judah, 431 Esoteric, 411 Reef the Lost Cauze, 401 R.A. the Rugged Man, 373 Tragedy Khadafi
+Joe Budden: kept 63876 of 73169 words (87%). Left out: 769 Emanny, 727 Joell Ortiz, 535 Tank, 467 Fabolous, 434 Busta Rhymes, 429 Crooked I, 309 Tory Lanez, 299 Hitchcock, 295 Royce da 5′9″, 287 112
+Joey Bada$$: kept 23182 of 27125 words (85%). Left out: 321 Raury, 278 Chronixx, 250 Dyemond Lewis, 242 (skit) , 231 JID, 226 Ab-Soul, 224 Kiesza, 224 ScHoolboy Q, 209 J. Cole, 174 Larry June
+Juicy J: kept 64492 of 85982 words (75%). Left out: 5018 Project Pat, 3049 Wiz Khalifa, 2041 Xavier Wulf, 1418 Logic, 1055 Pi'erre Bourne, 521 The Showboys, 475 Jeezy, 461 Ty Dolla $ign, 430 A$AP Rocky, 335 V Slash
+  left out: Chronicles of the Juice Man: Underground Album (2002, lyrics for 2 of 10 songs)
+Juvenile: kept 73650 of 95959 words (77%). Left out: 3238 Lil Wayne, 3159 B.G., 2690 Birdman, 1791 Turk, 1264 Skip & Wacko, 1194 Mannie Fresh, 1060 Baby, 907 Lil' Wayne, 561 Soulja Slim, 543 Young Juve & Skip
+  left out: Being Myself (1995, lyrics for 5 of 10 songs), 600 Degreez (2002, lyrics for 5 of 15 songs), Beast Mode (2010, lyrics for 5 of 11 songs), The Fundamentals (2014, lyrics for 3 of 10 songs)
+K.A.A.N.: kept 139608 of 148151 words (94%). Left out: 2601 Blev, 2511 Bleverly Hills, 312 Locksmith, 267 Curt Chambers, 256 Dax, 232 RA The Rugged Man, 226 Blu, 224 Deca, 208 Tech N9ne, 190 Nevv
+  left out: Peace Of Minds (2024, lyrics for 9 of 15 songs), Delusions Of Grandeur (2024, lyrics for 8 of 12 songs), In Due Time (2024, lyrics for 2 of 14 songs), Anger Management (2025, lyrics for 9 of 13 songs), THE MODERN ODYSSEY (2026, lyrics for 11 of 15 songs)
+Kano: kept 39896 of 44008 words (91%). Left out: 499 Ghetts, 315 D Double E, 258 Vybz Kartel, 249 Giggs, 245 Hot Chip, 244 Leo The Lion, 219 Popcaan, 216 Craig David, 205 Wiley, 190 Kojo Funds
+Kanye West: kept 60639 of 87689 words (69%). Left out: 1397 JAY-Z, 699 Jay-Z, 656 Vory, 545 Fivio Foreign, 524 Jay Electronica, 495 Jamie Foxx & Luther Vandross, 480 Kid Cudi, 430 Common, 417 Shenseea, 413 Pusha T
+Kendrick Lamar: kept 54265 of 62469 words (87%). Left out: 818 (skit) , 449 Baby Keem, 334 Kodak Black & Sampha, 305 Carl Duckworth, 275 GLC, 246 Rapsody, 228 MC Eiht, 227 Pharrell Williams, 223 BJ the Chicago Kid, 205 Drake
+Kevin Gates: kept 46711 of 46949 words (99%). Left out: 121 Sexyy Red, 117 Juicy J
+Kid Cudi: kept 52506 of 59012 words (89%). Left out: 968 King Chip, 483 Chip Tha Ripper, 447 Common, 365 RZA, 357 André 3000, 284 Kanye West, 284 Trippie Redd, 264 (skit) Beavis & Butthead, 243 Kendrick Lamar, 183 GLC
+Kid Ink: kept 23968 of 26542 words (90%). Left out: 376 King Los, 344 August Alsina, 255 Trey Songz, 173 Tyga, 168 Machine Gun Kelly, 155 Elle Varner, 136 Rory Fresco, 134 R. Kelly, 131 Offset, 122 Chris Brown
+Killah Priest: kept 185404 of 202630 words (91%). Left out: 1436 Hell Razah, 1161 Chief Kamachi, 919 Canibus, 687 True Master, 651 Purpose, 563 Ras Kass, 511 Saulhaudin, 408 sample, 405 Inspectah Deck, 399 Ol' Dirty Bastard
+  left out: The Infinite Universe (2016, lyrics for 5 of 14 songs), Savage Sanctuary (2022, lyrics for 1 of 12 songs)
+Kodak Black: kept 58860 of 65224 words (90%). Left out: 506 Young Thug, 444 VVSNCE, 427 WizDaWizard, 332 LOE Shimmy, 323 Lil Yachty, 258 Jeezy, 254 TTO K.T., 250 Don Toliver, 241 EST Gee, 241 Chance the Rapper
+Kool G Rap: kept 59522 of 69330 words (86%). Left out: 2760 38 Spesh, 559 B1, 493 Big Daddy Kane, 444 Termanology, 405 G-Wise, 367 AZ, 318 Ransom, 259 MF Grimm, 258 Camileone, 245 B.E.N.N.Y. the Butcher
+  left out: Click of Respect (2003, lyrics for 1 of 18 songs), Return of the Don (2017, lyrics for 7 of 11 songs), Last Of A Dying Breed (2022, lyrics for 1 of 11 songs)
+Kool Keith: kept 93113 of 101917 words (91%). Left out: 1132 Sir Menelik, 462 Jacky Jasper, 383 Marc Live, 314 Big Sche Eastwood, 308 Esham, 302 Santa, 294 (skit) , 244 Kidmiddi, 213 Dirt Nasty, 210 MC Paul Barman
+  left out: Idea of a Master Piece (2009, lyrics for 0 of 10 songs), Bikinis N Thongs (2009, lyrics for 1 of 12 songs), Love and Danger (2012, lyrics for 5 of 15 songs), Magnetic Pimp Force Field (2013, lyrics for 0 of 17 songs), A Couple of Slices (2015, lyrics for 0 of 12 songs), Controller of Trap (2018, lyrics for 4 of 12 songs), KEITH (2019, lyrics for 4 of 14 songs), Computer Technology (2019, lyrics for 2 of 12 songs), Saks 5th Ave (2019, lyrics for 0 of 16 songs), Space Goretex (2020, lyrics for 0 of 15 songs), Keith’s Salon (2021, lyrics for 0 of 11 songs), Serpent (2023, lyrics for 1 of 12 songs), Black Elvis 2 (2023, lyrics for 4 of 16 songs), World Area (2023, lyrics for 3 of 14 songs)
+KRS-One: kept 81289 of 85902 words (95%). Left out: 1152 Buckshot, 406 Bumpy Knuckles, 361 Redman, 301 K'naan, 240 Joell Ortiz, 234 Rock, 226 Triune, 224 Raphi, 222 uncredited - possibly Priest, 216 Immortal Technique
+  left out: Spiritual Minded (2002, lyrics for 14 of 20 songs), Adventures in Emceein (2008, lyrics for 15 of 21 songs), Survival Skills (2009, lyrics for 11 of 14 songs), Meta‐Historical (2010, lyrics for 7 of 13 songs), Godsville (2011, lyrics for 2 of 11 songs), Royalty Check (2011, lyrics for 2 of 13 songs), The BDP Album (2012, lyrics for 5 of 14 songs), Never Forget (2013, lyrics for 9 of 13 songs), Now Hear This (2015, lyrics for 12 of 18 songs), Street Light |FIRST EDITION| (2019, lyrics for 1 of 12 songs), Temple of Hip Hop: Global Awareness (2025, lyrics for 1 of 14 songs)
+Lil Baby: kept 49032 of 62076 words (79%). Left out: 4306 Lil Durk, 927 Lil' Durk, 899 Young Thug, 647 Offset, 540 Future, 516 Gunna, 503 Travis Scott, 486 Hoodrich Pablo Juan, 388 Rylo Rodriguez, 374 Rylo Rodriguez & Billie Holiday
+Lil Durk: kept 72884 of 89902 words (81%). Left out: 6164 Lil Baby, 1203 Future, 1032 Lil' Baby, 679 Gunna, 625 King Von, 432 Meek Mill, 421 Jeremih, 400 Ty Dolla $ign, 361 J. Cole, 352 Young Thug
+Lil' Kim: kept 36654 of 47768 words (77%). Left out: 1571 (skit) , 773 Lil' Cease, 750 Puff Daddy, 477 The Notorious B.I.G., 474 Twista, 410 Sisqo, 409 Mary J. Blige, 364 (skit) Lil' Kim, 331 O.T. Genasis, 273 The Game
+Lil Uzi Vert: kept 50977 of 55368 words (92%). Left out: 3692 Future, 206 Pharrell Williams, 152 Nicki Minaj & Patty, 117 DreamDoll, 103 Syd, 82 Oli Sykes, 27 Charleston White, 10 Tyler & The Creator, 2 The Weeknd
+Lil Wayne: kept 146205 of 181362 words (81%). Left out: 3714 2 Chainz, 2894 Birdman, 1868 B.G., 1586 Mannie Fresh, 1277 Juvenile, 962 Turk, 830 Nicki Minaj, 813 T-Pain, 694 Baby, 625 Gudda Gudda
+Lil Yachty: kept 34096 of 42088 words (81%). Left out: 825 James Blake, 487 Offset, 471 Quavo, 434 Future, 420 Lil Baby, 254 Trippie Redd, 246 Tyler & The Creator, 234 Playboi Carti, 221 YoungBoy Never Broke Again, 221 Tierra Whack
+LL Cool J: kept 108691 of 121787 words (89%). Left out: 598 Prodigy, 545 Timbaland, 517 Q-Tip, 456 Snoop Dogg, 454 Candice Nelson, 357 Ne-Yo, 351 DMX, 263 7 Aurelius, 253 Brad Paisley, 251 Fat Joe
+Logic: kept 86956 of 107724 words (81%). Left out: 4323 Juicy J, 1067 (skit) , 561 The RattPack, 537 C Dot Castro, 521 Wiz Khalifa, 499 J. Cole, 450 Robert Ivory, 446 Eminem, 420 Alan Watts, 419 Lucy Rose
+Ludacris: kept 68051 of 86647 words (79%). Left out: 1467 I-20, 1224 Fate Wilson, 830 Shawnna, 695 Monica, 598 4-IZE, 497 Bishop Eddie Lee Long, 431 Timbaland, 426 Flo Rida, 420 Trey Songz, 415 Nas
+Lupe Fiasco: kept 68567 of 80823 words (85%). Left out: 746 Ayesha Jaco, 638 SIMON SAYZ, 633 Nikki Jean, 511 Matthew Santos, 372 Gemini, 352 Guy Sebastian, 340 Bishop Edgar Jackson, 302 Matt Mahaffey, 301 Trae tha Truth, 280 JR Get Money
+Mac Miller: kept 35946 of 39629 words (91%). Left out: 379 Delusional Thomas, 323 Marcia Weiss, 275 Ab-Soul, 272 Loaded Lux, 263 Ty Dolla $ign, 246 Action Bronson, 221 Jay Electronica, 173 ScHoolboy Q, 162 (skit) ScHoolboy Q & Mac Miller, 153 Chief Keef
+  left out: Balloonerism (2020, posthumous), Circles (2020, posthumous)
+Machine Gun Kelly: kept 39788 of 45719 words (87%). Left out: 335 Tech N9ne, 314 DMX, 307 James Arthur, 304 blackbear, 291 Twista, 232 Bun B, 223 Quavo, 205 Lil Jon, 203 Paper Chase & Slim Gudz, 193 Jo Jo
+Master P: kept 86229 of 108812 words (79%). Left out: 2876 Silkk the Shocker, 1264 Mystikal, 1207 Snoop Dogg, 1098 C-Murder, 1095 Mia, 1010 Mac, 932 Curren$y, 806 Silkk The Shocker, 719 Krazy, 581 Fiend
+  left out: 99 Ways to Die (1995, lyrics for 10 of 13 songs), Living Legend: Certified D-Boy (2005, lyrics for 1 of 12 songs), The Gift (2013, lyrics for 8 of 18 songs), The Gift Vol.1: The Return Of The Ice Cream Man (2014, lyrics for 2 of 21 songs), Empire, from the Hood to Hollywood (2015, lyrics for 4 of 19 songs)
+MC Lyte: kept 40785 of 43407 words (94%). Left out: 371 Ghostface Killah, 265 Common, 253 Xscape, 202 Queen Latifah, 198 10Beats, 192 Tina Campbell & Erica Campbell & Mary Mary, 182 Affion Crockett & Man 1 & Man 2 & Man 3, 173 Big V, 166 Kink E-Z, 164 Scarlet
+  left out: Ain't No Other (1993, lyrics for 12 of 17 songs), Da Undaground Heat, Volume 1 (2003, lyrics for 6 of 17 songs), Legend (2015, lyrics for 3 of 11 songs)
+Meek Mill: kept 48345 of 65843 words (73%). Left out: 5006 Rick Ross, 772 Drake, 772 Future, 632 Young Thug, 536 Quavo, 425 JAY-Z, 407 Teyana Taylor, 357 Roddy Ricch, 350 Kirko Bangz, 342 Lihtz Kamraz
+  left out: Championships 2 (2020, lyrics for 7 of 19 songs)
+Method Man: kept 52415 of 80936 words (65%). Left out: 5507 Redman, 2738 Streetlife, 2379 Ghostface Killah, 2156 Raekwon, 1362 Carlton Fisk, 1280 Hanz On, 972 iNTeLL, 693 Iron Mic, 673 Inspectah Deck, 493 Eazy Get Rite
+  left out: Meth Lab Season 2: The Lithium (2018, lyrics for 11 of 22 songs)
+MF DOOM: kept 47758 of 73948 words (65%). Left out: 3286 Esoteric, 2372 Bishop Nehru, 2142 Inspectah Deck, 1515 (skit) , 1285 MF Grimm, 728 Samples, 728 Hassan Chop, 618 Gigan, 508 StaHHr, 441 Ghostface Killah
+  left out: Special Herbs and Spices, Volume 1 (2004, lyrics for 3 of 14 songs)
+Migos: kept 53684 of 56309 words (95%). Left out: 519 Drake, 318 Cardi B, 253 Nicki Minaj, 247 2 Chainz, 200 Travis Scott, 144 Post Malone, 143 Pop Smoke, 132 Polo G, 116 Future, 112 Young Thug
+Missy Elliott: kept 36310 of 43468 words (84%). Left out: 667 Timbaland, 562 Busta Rhymes, 447 Da Brat, 446 Eminem, 405 Lil' Kim, 342 Ludacris, 325 702 & Timbaland, 302 (skit) , 276 Fatman Scoop, 273 Ms. Jade
+  left out: Miss E …So Addictive (2001, lyrics for 18 of 30 songs)
+Mobb Deep: kept 68105 of 79814 words (85%). Left out: 1427 Big Noyd, 1327 50 Cent, 1143 Nas, 587 Raekwon, 487 Nate Dogg, 394 Lil' Kim, 317 Littles, 294 Q-Tip, 276 Mack Wilds, 267 Mary J. Blige
+  left out: Infinite (2025, posthumous)
+Mos Def: kept 31742 of 33428 words (95%). Left out: 413 Talib Kweli, 353 Georgia Anne Muldrow, 320 Minnesota, 261 Busta Rhymes, 173 Slick Rick, 96 DJ Premier scratches, 70 Charlie Chaplin
+  left out: Negus (2019, lyrics for 0 of 8 songs)
+Murs: kept 117178 of 135363 words (87%). Left out: 2527 Dee-1, 1215 The Grouch, 766 Rapsody, 610 Luckyiam.PSC, 596 Kurupt, 483 Basik, 434 Curtiss King, 433 Rob & ure, 425 Asop, 395 Kirby Dominant
+  left out: Thees Handz (2019, lyrics for 5 of 10 songs), Love & Rockets 3:16 (The Emancipation) (2025, lyrics for 8 of 11 songs)
+Nas: kept 135483 of 160811 words (84%). Left out: 3607 Damian Marley, 803 AZ, 679 Quan, 560 Jessica Care Moore, 464 Swizz Beatz & Miguel, 450 (skit) , 445 Lauryn Hill, 443 Foxy Brown, 441 Eminem, 413 Busta Rhymes
+Nelly: kept 41434 of 54722 words (76%). Left out: 1213 Ali, 1197 Murphy Lee, 1079 T.I., 912 Kyjuan, 621 Usher, 517 Tyler Hubbard, 455 Florida Georgia Line, 330 City Spud, 310 Ronald Isley, 304 Trey Songz
+  left out: Country Grammar (2000, lyrics for 4 of 17 songs)
+NF: kept 54440 of 55629 words (98%). Left out: 195 Cordae, 184 Marty, 165 Jeremiah Carlson, 149 Fleurie, 146 Maggie Reed, 140 Andreas Moss, 132 Julia Michaels, 78 Sasha Alex Sloan
+Nicki Minaj: kept 36421 of 45158 words (81%). Left out: 873 Eminem, 735 Drake, 663 Lil Wayne, 528 Future, 413 Ariana Grande, 300 LunchMoney Lewis, 288 Tate Kobang, 276 J. Cole, 272 Kanye West, 271 Lourdiz
+Outkast: kept 42071 of 55881 words (75%). Left out: 1546 Sleepy Brown, 806 Big Rube, 724 Cee-Lo, 553 Khujo, 497 Khujo Goodie, 426 Big Gipp, 426 Sleepy Brown & Rico Wade, 425 Cee-Lo Green, 358 Cool Breeze, 352 Backbone
+Public Enemy: kept 103263 of 111302 words (93%). Left out: 691 Paris, 446 DMC, 391 (skit) , 277 Female w & minor variations, 256 Scott Ian, 251 Kam, 223 Bumpy Knuckles, 209 Brother Ali, 199 C-Doc, 196 KRS-One
+Raekwon: kept 45649 of 75081 words (61%). Left out: 6975 Ghostface Killah, 3574 Method Man, 1467 Inspectah Deck, 1039 Polite, 839 Masta Killa, 696 (skit) Ghostface Killah & Raekwon, 625 Nas, 622 (skit) Raekwon & Ghostface Killah, 570 Cappadonna, 520 French Montana
+Rakim: kept 49051 of 58164 words (84%). Left out: 765 Chino XL, 558 KXNG Crooked, 390 La the Darkman, 390 Lazarus, 377 Skyzoo, 338 Kool G Rap, 336 Prodigy, 327 Canibus, 324 Method Man, 310 Joell Ortiz
+Redman: kept 93319 of 114255 words (82%). Left out: 7442 Method Man, 1179 Keith Murray, 1032 Ready Roc, 971 Saukrates, 761 Erick Sermon, 519 Jamal, 500 Icarus, 421 Blam, 391 Dr. Trevis, 321 (skit) 
+Rick Ross: kept 83791 of 121340 words (69%). Left out: 3135 Meek Mill, 1217 Lil Wayne, 1215 Jeezy, 1143 Gunplay, 1129 Drake, 880 The-Dream, 807 Future, 776 Wale, 688 Jay-Z, 677 Ball Greezy
+Rittz: kept 76002 of 82871 words (92%). Left out: 750 Tech N9ne, 549 Twista, 536 Mike Posner, 431 Krizz Kaliko, 342 Yelawolf, 327 Twisted Insane, 294 Cheeto Gambine, 275 Kane, 269 Snak the Ripper, 255 Merkules
+  left out: Rittzmas (2020, lyrics for 7 of 10 songs)
+The Roots: kept 64343 of 87326 words (74%). Left out: 5283 Dice Raw, 1729 Greg Porn, 1396 Betty Wright, 1261 Ursula Rucker, 884 Amiri Baraka, 875 Common, 711 Truck North, 575 Q-Tip, 509 Talib Kweli, 483 Phonte
+  left out: Phrenology (2002, lyrics for 13 of 18 songs), undun (2011, lyrics for 10 of 13 songs)
+Royce da 5'9": kept 71023 of 90392 words (79%). Left out: 892 Mr. Porter, 776 Kid Vishis, 564 Juan, 537 Ashley Sorrell, 513 Joe Budden, 511 Joell Ortiz, 423 Eminem, 405 Crooked I, 387 K-Young, 371 J. Cole
+Run-D.M.C.: kept 38042 of 39727 words (96%). Left out: 298 Jermaine Dupri, 250 Fred Durst, 224 Nas, 144 Pete Rock, 136 Stephan Jenkins, 132 CL Smooth, 129 Prodigy, 91 Dig Dast  {Gold D}, 64 Johnny Mathis, 53 Run Run D.M.C.
+Russ: kept 84045 of 96008 words (88%). Left out: 2545 Bugus, 1151 Dartlin, 738 John Anthony, 650 Jalil, 338 Big Sean & Wale, 332 Joey Bada$$, 330 The Game, 328 Jadakiss, 317 Mozzy, 301 Snoop Dogg
+RZA: kept 28358 of 39175 words (72%). Left out: 830 Masta Killa, 445 Method Man, 429 Ghostface Killah, 371 Islord, 365 Beretta 9, 350 Daddy-O, 322 Thea, 302 Doc Doom, 298 Crisis, 261 Holocaust
+Sage Francis: kept 40663 of 41356 words (98%). Left out: 231 Saul Williams, 162 Will Oldham, 150 Buddy Wakefield, 58 1, 56 2, 21 Jolie Holland, 15 B. Dolan
+Salt-N-Pepa: kept 33483 of 34853 words (96%). Left out: 656 (skit) Cathy & Mario, 414 En Vogue, 149 Styowlz, 119 Rufus Blaq, 32 Punch it
+Scarface: kept 55261 of 66319 words (83%). Left out: 1265 Z-Ro, 1074 Devin the Dude, 966 DMG, 956 2Pac, 776 K.B., 762 Bun B, 627 Seagram, 541 Ice Cube, 522 Master P, 496 Yukmouth
+  left out: My Homies (1998, lyrics for 23 of 30 songs), My Homies, Part 2 (2006, lyrics for 10 of 14 songs)
+ScHoolboy Q: kept 44205 of 52862 words (84%). Left out: 778 Kendrick Lamar, 569 Ab-Soul, 525 Anderson .Paak, 517 Jay Rock, 318 BJ the Chicago Kid, 270 AZ Chike, 257 Lance Skiiiwalker, 210 TF, 208 Traffic, 204 Freddie Gibbs
+Snoop Dogg: kept 157790 of 218430 words (72%). Left out: 3212 E-40, 2240 Too $hort, 2193 Ice Cube, 1892 Daz Dillinger, 1812 Kurupt, 1470 Nate Dogg, 1463 Kokane, 1147 Goldie Loc, 1118 C-Murder, 1065 Wiz Khalifa
+$uicideboy$: kept 35581 of 35941 words (99%). Left out: 211 BONES, 149 Night Lovell
+T.I.: kept 119857 of 147802 words (81%). Left out: 939 Young Thug, 771 Pharrell Williams, 714 London Jae, 698 Big Kuntry King, 670 John Legend, 631 Eminem, 625 Mac Boney, 576 Young Dro, 574 Jeezy, 566 Pimp C
+Talib Kweli: kept 78250 of 96415 words (81%). Left out: 1080 NIKO IS, 1012 Rapsody, 488 Datcha, 431 Jean Grae, 424 Cassper Nyovest, 410 Jay Electronica, 404 Sizzla - best guess only, 359 Niré Alldai, 333 Kanye West, 308 Coi Mattison
+  left out: Gravitas (2014, lyrics for 1 of 11 songs), Liberation 2 (2023, lyrics for 10 of 13 songs)
+Tech N9ne: kept 176563 of 237414 words (74%). Left out: 9609 Krizz Kaliko, 1971 King Iso, 1898 Kutt Calhoun, 1468 Big Scoob, 1357 Navé Monjo, 1157 Don Juan, 844 -Raided, 757 Lil Wayne, 739 E-40, 722 Jehry Robinson
+Three 6 Mafia: kept 79983 of 93166 words (86%). Left out: 2031 Project Pat, 804 Pimp C, 570 Mr. Bigg, 557 Lil Wyte, 430 La Chat, 424 Gangsta Blac, 386 Playa Fly, 367 Fiend, 327 MC Mack, 288 Point Blank
+Travis Scott: kept 25702 of 33590 words (77%). Left out: 596 Kid Cudi, 543 Young Thug, 489 The Weeknd, 394 Quavo, 389 T.I., 370 Future, 358 NAV, 328 Lil Uzi Vert, 306 21 Savage, 256 James Blake
+A Tribe Called Quest: kept 43515 of 48022 words (91%). Left out: 1186 Consequence, 1160 Busta Rhymes, 390 Anderson .Paak, 365 André 3000, 293 Faith Evans, 166 Large Professor, 160 Punchline, 157 Talib Kweli, 152 Redman, 151 Noreaga
+  left out: We got it from Here… Thank You 4 Your service (2016, posthumous)
+Trick Daddy: kept 40327 of 50695 words (80%). Left out: 986 Buddy Roe, 904 Trina, 819 Money Mark, 658 Duece Poppi, 563 Society, 392 Twista, 392 Trey Songz, 385 Deuce Poppito, 352 Kevin Cossom Trick Daddy, 334 Cee-Lo Green
+  left out: Based on a True Story (1997, lyrics for 8 of 16 songs), Finally Famous Born a Thug Still a Thug (2009, lyrics for 5 of 15 songs)
+Trina: kept 34298 of 46402 words (74%). Left out: 801 Trick Daddy, 670 Rick Ross, 514 Lil Wayne, 513 Twista, 482 Roquois, 430 Nicki Minaj, 364 Pamela Long, 361 Money Mark, 357 Kelly Rowland, 339 Jay Roc
+Twista: kept 77092 of 95043 words (81%). Left out: 1578 R. Kelly, 1228 Liffy Stokes, 778 Mayz, 721 Johnny P, 679 Yung Buk, 664 Pharrell Williams, 615 Jazze Pha, 547 Jamie Foxx, 454 Highbeam, 408 Vicky
+  left out: Crook County (2017, lyrics for 9 of 13 songs)
+Tyga: kept 61091 of 74634 words (82%). Left out: 3067 Chris Brown, 813 Lil Wayne, 485 Wiz Khalifa, 346 Quavo, 339 Ty Dolla $ign, 328 Busta Rhymes, 325 Chris Brown & Ty Dolla $ign & Chris Brown, 305 Boosie Badazz, 242 Pusha T, 217 Shenseea
+Tyler, The Creator: kept 62932 of 71862 words (88%). Left out: 1035 Hodgy, 512 Domo Genesis, 473 Jasper Dolphin, 420 Mike G, 402 Pharrell Williams, 394 Frank Ocean, 393 Lil Wayne, 243 ScHoolboy Q, 234 DJ Drama, 206 42 Dugg & DJ Drama
+UGK: kept 51130 of 58918 words (87%). Left out: 663 Pimpin Ken, 631 Mr. 3-2, 512 Jazze Pha, 500 Too $hort, 478 Andre 3000, 432 Sleepy Brown, 328 Big Boi, 305 Akon, 302 Infinity, 290 Big Gipp
+  left out: UGK 4 Life (2009, posthumous)
+Vince Staples: kept 31267 of 36834 words (85%). Left out: 382 Kilo Kish, 366 Santigold, 330 Ty Dolla $ign, 277 Future, 233 Tyson Smith, 215 Juicy J, 204 DJ Dahi, 199 Nikki Giovanni & James Baldwin, 197 James Fauntleroy, 195 Amy Winehouse
+Wale: kept 56045 of 67778 words (83%). Left out: 634 Jeremih, 522 Rick Ross, 478 J. Cole, 433 Meek Mill, 364 Rihanna, 346 Ne-Yo, 295 K'naan, 271 Lil Durk, 268 ODUMODUBLVCK, 252 6LACK
+Watsky: kept 43901 of 48966 words (90%). Left out: 611 Chinaka Hodge, 551 Rafael Casal, 300 Mariami, 272 Daveed Diggs, 247 Adam Vida, 221 Dahlak Brathwaite, 190 Kate Nash, 184 Mieka Pauley, 170 Raquel Rodriguez, 168 Mal Devisa
+Wiz Khalifa: kept 77640 of 102533 words (76%). Left out: 6928 Curren$y, 4133 Juicy J, 1205 Big K.R.I.T., 965 Chevy Woods, 630 Jimmy Wopo, 587 Smoke DZA, 578 Ty Dolla $ign, 436 Skilla Baby, 435 THEMXXNLIGHT, 366 Swae Lee
+Wu-Tang Clan: kept 53658 of 61855 words (87%). Left out: 542 (skit) , 447 Sunny Valentine, 431 Streetlife, 418 Junior Reid, 317 StreetLife, 315 Gerald Alston, 284 Tekitha, 245 (skit) Flavor Flav & Method Man, 234 Nathaniel, 212 Busta Rhymes
+Xzibit: kept 59444 of 79448 words (75%). Left out: 929 B-Real, 799 (skit) , 727 Eminem, 633 Dr. Dre, 622 Demrick, 591 Montage One, 570 Busta Rhymes, 568 Snoop Dogg, 468 Krondon, 440 King Tee
+  left out: Summer of Sam (2020, lyrics for 6 of 12 songs)
+YG: kept 48626 of 65478 words (74%). Left out: 1579 Mozzy, 664 Tyga, 649 D3SZN, 491 Tay2xs, 472 Ty Dolla $ign, 412 Kamaiyah, 334 Drake, 321 Blxst, 312 Jay 305, 312 Sadboy Loko
+YoungBoy Never Broke Again: kept 113991 of 116413 words (98%). Left out: 399 Playboi Carti, 235 (skit) , 219 Future, 178 Jelly Roll, 156 Lil Wayne, 141 The Kid LAROI, 140 Kehlani, 140 Mariah the Scientist, 139 Quavo, 136 Nicki Minaj
+Jeezy: kept 94108 of 105723 words (89%). Left out: 636 Lil Jon, 524 JAY-Z, 517 Fidank, 491 Rick Ross, 473 Future, 419 Trick Daddy, 367 Shawty Redd, 360 Jessica Care Moore, 341 Yo Gotti, 278 Boosie Badazz
+  left out: Come Shop Wit' Me (2003, lyrics for 6 of 26 songs)
+Young Thug: kept 28639 of 37515 words (76%). Left out: 946 Gunna, 819 Future, 728 Travis Scott, 540 21 Savage, 488 Drake, 433 NAV, 410 J. Cole, 368 Ken Carson, 319 Quavo, 305 Lil Uzi Vert
