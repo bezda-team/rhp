@@ -20,16 +20,18 @@ const MODES = [
 const WIDE = { thickness: 30, start: 222, end: 70 };
 const NARROW = { thickness: 28, start: 150, end: 52 };
 
-// One album on the shelf: a Bar from the words before it to the words after it
+// One album on the shelf: a Bar from the words before it to the words after it. Its gold (--lit) is set once, and the
+// rapper's slat being lit turns it on, so pointing at a rapper changes one class rather than every bar's color.
 const Spine = slat({
   css: `
     .spine { --rhp-gap: 2px; --rhp-radius: 1px; }
     .spine[data-thin] { --rhp-gap: 0px; }
     .spine[data-flying] { view-transition-name: var(--vt); }
     .spine[data-out] { box-shadow: inset 0 0 0 1px var(--rhp-series-9); }
+    .lit .spine:not([data-out]) { background: var(--lit); }
   `,
 }, (s) => (
-  <Bar class="spine" from={s.from} to={s.to} color={s.out ? "surface" : s.tone} style={{ "--vt": s.vt }}
+  <Bar class="spine" from={s.from} to={s.to} color={s.out ? "surface" : s.tone} style={{ "--vt": s.vt, "--lit": `var(--rhp-${s.gold})` }}
     data-flying={s.flying ? "" : undefined} data-out={s.out ? "" : undefined} data-thin={s.thin ? "" : undefined} />
 ));
 
@@ -85,7 +87,7 @@ function artistSlat(size) {
       <Label edge="start" class="rank" aria-hidden="true">{d.place}</Label>
       <Label edge="start" class="who">{d.name}</Label>
       <Label edge="start" class="avatar" aria-hidden="true"><Face name={d.name} /></Label>
-      <Plot overlap from={d.from} to={d.to} tone={d.tones} vt={d.vts} flying={d.flying} out={d.open && !d.fairView} thin={d.thin}>{Spine}</Plot>
+      <Plot overlap from={d.from} to={d.to} tone={d.tones} gold={d.golds} vt={d.vts} flying={d.flying} out={d.open && !d.fairView} thin={d.thin}>{Spine}</Plot>
       <Show when={d.fairView && d.low != null}>
         <Bar class="range" from={d.low} to={d.high} thick="2px" color="ink" />
         <Tick class="cap" at={d.low} thick="10px" color="ink" />
@@ -370,7 +372,8 @@ export function Ranking() {
         from={(d) => d.albums.map((a) => a.from * shrink(d))}
         to={(d) => d.albums.map((a, k) => (k < built() ? a.to : a.from) * shrink(d))}
         labelAt={(d) => (fairView() ? top().max : d.unique)}
-        tones={(d) => d.albums.map((_, k, all) => (d.lit ? gold(k, all.length) : spine(k, all.length)))}
+        tones={(d) => d.albums.map((_, k, all) => spine(k, all.length))}
+        golds={(d) => d.albums.map((_, k, all) => gold(k, all.length))}
         vts={(d) => d.albums.map((_, k) => vt(d.name, k))}
         thin={(d) => d.albums.map((a) => ((a.to - a.from) * shrink(d)) / top().max < 0.005)}
         flying={(d) => flying() === d.name}

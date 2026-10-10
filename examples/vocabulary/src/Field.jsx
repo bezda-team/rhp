@@ -175,7 +175,8 @@ const Rapper = slat({
     .who.fell { --ring: var(--rhp-series-5); }
     .who .face { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 25%; transition: opacity .25s; }
     .who .initials { display: grid; place-items: center; background: var(--rhp-grid); color: var(--rhp-ink); font: 700 9px/1 var(--rhp-font); letter-spacing: -.02em; }
-    .who.dim .face { opacity: .45; }
+    /* While a rapper is picked ("picking" on each era), every face but theirs and the one pointed at is dimmed */
+    .picking .who:not(.lift):not(.point) .face { opacity: .45; }
     .who.point { z-index: 5; --s: 1.35; scale: var(--s); }
     .who.lift { z-index: 4; --s: 1.7; scale: var(--s); box-shadow: 0 0 0 1.5px var(--ring), 0 3px 10px rgb(0 0 0 / .4); }
     .who.lift.point { z-index: 5; }
@@ -188,7 +189,7 @@ const Rapper = slat({
     @media (prefers-reduced-motion: reduce) { .who .face { transition: none; } }
   `,
 }, (r) => (
-  <Dot class={`who ${r.rose ? "rose" : "fell"}${r.dim ? " dim" : ""}${r.lift ? " lift" : ""}${r.point ? " point" : ""}`}
+  <Dot class={`who ${r.rose ? "rose" : "fell"}${r.lift ? " lift" : ""}${r.point ? " point" : ""}`}
     at={r.x} across={r.across} size={r.size} color="grid" data-name={r.name} aria-label={r.say}>
     <Face name={r.name} />
     <Show when={r.named || r.lift || r.point}><span class={r.left ? "tag left" : "tag"}>{r.name}</span></Show>
@@ -211,7 +212,7 @@ function eraSlat(thickness, start) {
       @media (prefers-reduced-motion: reduce) { .era { transition: none; } }
     `,
   }, (d) => (
-    <div class={`era${d.faded ? " faded" : ""}${d.chosen ? " chosen" : ""}`} data-era={d.era}>
+    <div class={`era${d.faded ? " faded" : ""}${d.chosen ? " chosen" : ""}${d.picking ? " picking" : ""}`} data-era={d.era}>
       <Label edge="start" class="label">{d.short}<small>{d.count === 1 ? "1 rapper" : `${d.count} rappers`}</small></Label>
       <Tick class="then" at={d.then} thick={0.86} />
       <Tick class="now" at={d.now} thick={0.86} color="ink" />
@@ -278,6 +279,7 @@ export function Eras() {
       spread: seen(),
       faded: eraShown() !== "all" && eraShown() !== era,
       chosen: eraShown() === era,
+      picking: picked() != null,
       rappers: placed.map(({ x, y, a }) => ({
         name: a.name,
         x: seen() ? a.fair : then,
@@ -287,7 +289,6 @@ export function Eras() {
         named: a.name === leader && !picked() && !on(),
         lift: picked() === a.name,
         point: on() === a.name && picked() !== a.name,
-        dim: picked() != null && picked() !== a.name && on() !== a.name,
         left: x > plot - 70,
         say: `${a.name}: ${number.format(a.fair)} different words per ${number.format(SAMPLE)}, ${number.format(a.pudding)} in 2019`,
       })),
