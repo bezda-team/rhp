@@ -154,7 +154,7 @@ export function Albums() {
         </Plot>
       </Chart>
       <p class="readout chart-readout" aria-live="polite">
-        <Show when={at() != null} fallback={who() ? `Each portrait is one of ${who().name}’s albums, at its new words. Pick another rapper above or below to compare.` : "Pick a rapper in the ranking or below, and their albums appear here. Point at a column for its numbers."}>
+        <Show when={at() != null} fallback={who() ? `Each portrait is one of ${who().name}’s albums, at its new words. Pick another rapper above or below to compare.` : "Pick a rapper to see their albums here. Point at a column for its numbers."}>
           <b>{ordinal(rows()[at()].album)} album</b> · median {number.format(rows()[at()].new)} new words, {percent.format(rows()[at()].share)} of the album · middle half {number.format(rows()[at()].low)} to {number.format(rows()[at()].high)}{who()?.albums[at()] ? ` · ${who().name}: ${number.format(who().albums[at()].new)}` : ""}
         </Show>
       </p>
@@ -170,7 +170,7 @@ const arrow = shape(["M", 0, 0.38], ["L", "-9px", 0.38], ["L", "-9px", 0], ["L",
 const Rapper = slat({
   room: {},
   css: `
-    .who { --s: 1; cursor: pointer; overflow: visible; box-shadow: 0 0 0 2px var(--ring); }
+    .who { --s: 1; cursor: pointer; pointer-events: auto; overflow: visible; box-shadow: 0 0 0 2px var(--ring); }
     .who.rose { --ring: var(--rhp-series-8); }
     .who.fell { --ring: var(--rhp-series-5); }
     .who .face { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 25%; transition: opacity .25s; }
@@ -208,16 +208,35 @@ function eraSlat(thickness, start) {
       .chosen .label { color: var(--rhp-series-8); }
       .then { --rhp-tick-width: 2px; background: repeating-linear-gradient(180deg, var(--rhp-muted) 0 4px, transparent 4px 7px); }
       .now { --rhp-tick-width: 2px; }
+      .median:has(.median-target:is(:hover, :focus)) { z-index: 3; }
+      .median-target { position: absolute; top: 0; bottom: 0; padding: 0; border: 0; background: none; color: var(--rhp-ink); font: 400 14px/1.3 var(--rhp-font); cursor: help; }
+      /* Extend each target away from the other median, so even nearly coincident lines can both be pointed at. */
+      .median-target.left { left: -10px; right: 1px; }
+      .median-target.right { left: 1px; right: -10px; }
+      .median-target:focus-visible { outline: 2px solid var(--rhp-series-8); outline-offset: 2px; border-radius: 3px; }
+      .median-tip { position: absolute; bottom: calc(100% + 6px); padding: 6px 9px; border: 1px solid var(--rhp-grid); border-radius: 4px; background: var(--rhp-surface); box-shadow: 0 3px 10px rgb(0 0 0 / .15); white-space: nowrap; pointer-events: none; visibility: hidden; }
+      .left .median-tip { right: 0; translate: 50% 0; }
+      .right .median-tip { left: 0; translate: -50% 0; }
+      .median-tip small { display: block; font-size: 12px; color: var(--rhp-muted); }
+      .median-target:is(:hover, :focus) .median-tip { visibility: visible; }
       .shift { translate: 0 calc(-${thickness / 2 - 7}px); opacity: .9; }
       @media (prefers-reduced-motion: reduce) { .era { transition: none; } }
     `,
   }, (d) => (
     <div class={`era${d.faded ? " faded" : ""}${d.chosen ? " chosen" : ""}${d.picking ? " picking" : ""}`} data-era={d.era}>
       <Label edge="start" class="label">{d.short}<small>{d.count === 1 ? "1 rapper" : `${d.count} rappers`}</small></Label>
-      <Tick class="then" at={d.then} thick={0.86} />
-      <Tick class="now" at={d.now} thick={0.86} color="ink" />
+      <Tick class="median then" at={d.then} thick={0.86}>
+        <button type="button" class={`median-target ${d.then <= d.now ? "left" : "right"}`} aria-label={`${d.era}, 2019 median: ${number.format(d.then)} different words per ${number.format(SAMPLE)}`}>
+          <span class="median-tip" aria-hidden="true"><small>2019 median</small><b>{number.format(d.then)}</b> words</span>
+        </button>
+      </Tick>
+      <Tick class="median now" at={d.now} thick={0.86} color="ink">
+        <button type="button" class={`median-target ${d.then <= d.now ? "right" : "left"}`} aria-label={`${d.era}, current median across all albums: ${number.format(d.now)} different words per ${number.format(SAMPLE)}`}>
+          <span class="median-tip" aria-hidden="true"><small>Current median (all albums)</small><b>{number.format(d.now)}</b> words</span>
+        </button>
+      </Tick>
       <Bar class="shift" from={d.then} to={d.spread ? d.now : d.then} thick="9px" shape={arrow} color="ink" />
-      <Plot overlap rows={d.rappers}>{Rapper}</Plot>
+      <Plot overlap rows={d.rappers} style={{ "pointer-events": "none" }}>{Rapper}</Plot>
     </div>
   ));
 }
@@ -344,7 +363,7 @@ export function Eras() {
       </ul>
       <Show when={narrow()} fallback={chart(EraWide)}>{chart(EraNarrow)}</Show>
       <p class="readout chart-readout" aria-live="polite">
-        <Show when={hovered()} fallback="Point at a face for the rapper; tap or click it to pick them in every chart. Tap an era to show only its rappers in the ranking.">
+        <Show when={hovered()} fallback="Point at or tap a face to pick a rapper. Tap an era to filter the ranking.">
           {(a) => <><b class="lit">{a().name}</b> · {number.format(a().fair)} different words per {number.format(SAMPLE)} over the whole career; {number.format(a().pudding)} in 2019’s count of the first</>}
         </Show>
       </p>
