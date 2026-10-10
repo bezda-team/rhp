@@ -339,7 +339,8 @@ export function Eras() {
       <ul class="key" aria-hidden="true">
         <li><i class="dot rose" />whole career richer than 2019’s first {number.format(SAMPLE)}</li>
         <li><i class="dot fell" />whole career poorer</li>
-        <li><i class="arrow" />era median, 2019 to now</li>
+        <li><i class="median-then" />2019 median</li>
+        <li><i class="median-now" />current median (all albums)</li>
       </ul>
       <Show when={narrow()} fallback={chart(EraWide)}>{chart(EraNarrow)}</Show>
       <p class="readout chart-readout" aria-live="polite">

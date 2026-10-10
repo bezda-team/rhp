@@ -357,12 +357,17 @@ body {
   color: var(--accent);
 }
 
-.key .arrow {
-  width: 22px;
-  height: 9px;
-  vertical-align: 0;
+.key .median-then,
+.key .median-now {
+  width: 2px;
+}
+
+.key .median-then {
+  background: repeating-linear-gradient(180deg, var(--soft) 0 4px, transparent 4px 7px);
+}
+
+.key .median-now {
   background: var(--ink);
-  clip-path: polygon(0 38%, 60% 38%, 60% 0, 100% 50%, 60% 100%, 60% 62%, 0 62%);
 }
 
 /* The album-number chart: its finding written over the empty top right of the chart */
@@ -372,7 +377,7 @@ body {
 
 .callout {
   position: absolute;
-  top: 16px;
+  top: 66px;
   right: 0;
   z-index: 2;
   max-width: 17em;
