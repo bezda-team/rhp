@@ -84,21 +84,25 @@ function artistSlat(size) {
   }, (d) => (
     <div class={`artist${d.lit ? " lit" : ""}${d.open ? " open" : ""}${d.move}`} data-name={d.name}
       aria-label={`${d.name}: ${d.say}`} aria-expanded={d.open ? "true" : "false"}>
-      <Label edge="start" class="rank" aria-hidden="true">{d.place}</Label>
-      <Label edge="start" class="who">{d.name}</Label>
-      <Label edge="start" class="avatar" aria-hidden="true"><Face name={d.name} /></Label>
-      <Plot overlap from={d.from} to={d.to} tone={d.tones} gold={d.golds} vt={d.vts} flying={d.flying} out={d.open && !d.fairView} thin={d.thin}>{Spine}</Plot>
-      <Show when={d.fairView && d.low != null}>
-        <Bar class="range" from={d.low} to={d.high} thick="2px" color="ink" />
-        <Tick class="cap" at={d.low} thick="10px" color="ink" />
-        <Tick class="cap" at={d.high} thick="10px" color="ink" />
-        <Dot class="then" at={d.pudding} size="13px" color="surface" />
-      </Show>
-      <Label at={d.labelAt} class="value">{d.value == null ? "" : number.format(d.value)}</Label>
-      <Show when={d.open}>
-        <div class="sheet" ref={d.sheet} onKeyDown={(e) => e.stopPropagation()}>
-          <Dossier artist={byName.get(d.name)} narrow={d.narrow} onClose={d.close} />
-        </div>
+      {/* A slat without a place (a rapper the view does not show) keeps only its root: its contents are made when it gets
+          one, so the hidden ones cost nothing and nothing updates them */}
+      <Show when={d.position != null}>
+        <Label edge="start" class="rank" aria-hidden="true">{d.place}</Label>
+        <Label edge="start" class="who">{d.name}</Label>
+        <Label edge="start" class="avatar" aria-hidden="true"><Face name={d.name} /></Label>
+        <Plot overlap from={d.from} to={d.to} tone={d.tones} gold={d.golds} vt={d.vts} flying={d.flying} out={d.open && !d.fairView} thin={d.thin}>{Spine}</Plot>
+        <Show when={d.fairView && d.low != null}>
+          <Bar class="range" from={d.low} to={d.high} thick="2px" color="ink" />
+          <Tick class="cap" at={d.low} thick="10px" color="ink" />
+          <Tick class="cap" at={d.high} thick="10px" color="ink" />
+          <Dot class="then" at={d.pudding} size="13px" color="surface" />
+        </Show>
+        <Label at={d.labelAt} class="value">{d.value == null ? "" : number.format(d.value)}</Label>
+        <Show when={d.open}>
+          <div class="sheet" ref={d.sheet} onKeyDown={(e) => e.stopPropagation()}>
+            <Dossier artist={byName.get(d.name)} narrow={d.narrow} onClose={d.close} />
+          </div>
+        </Show>
       </Show>
     </div>
   ));
