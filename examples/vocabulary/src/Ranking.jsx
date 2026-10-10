@@ -17,8 +17,9 @@ const MODES = [
   { key: "fair", label: `Per ${SAMPLE / 1000},000 words`, value: (a) => a.fair },
 ];
 
+// A phone's slats have no portrait, so their bars have its room
 const WIDE = { thickness: 30, start: 222, end: 70 };
-const NARROW = { thickness: 28, start: 150, end: 52 };
+const NARROW = { thickness: 28, start: 124, end: 52 };
 
 // One album on the shelf: a Bar from the words before it to the words after it. Its gold (--lit) is set once, and the
 // rapper's slat being lit turns it on, so pointing at a rapper changes one class rather than every bar's color.
@@ -48,7 +49,7 @@ function artistSlat(size) {
       .artist:focus-visible { outline: none; }
       .artist:focus-visible::before { box-shadow: inset 0 0 0 2px var(--rhp-series-8); }
       .artist.open { z-index: 3; }
-      .who { --rhp-label-gap: ${size === NARROW ? 34 : 40}px; padding-inline-start: 30px; font-size: ${size === NARROW ? 12 : 14}px; font-weight: 500; ${size === NARROW ? "white-space: normal; line-height: 12px; text-overflow: clip;" : ""} }
+      .who { --rhp-label-gap: ${size === NARROW ? 8 : 40}px; padding-inline-start: 30px; font-size: ${size === NARROW ? 12 : 14}px; font-weight: 500; ${size === NARROW ? "white-space: normal; line-height: 12px; text-overflow: clip;" : ""} }
       .avatar { overflow: visible; line-height: 0; }
       .avatar .face { display: inline-block; width: ${size === NARROW ? 20 : 24}px; height: ${size === NARROW ? 20 : 24}px; vertical-align: middle; border-radius: 50%; object-fit: cover; object-position: 50% 25%; box-shadow: 0 0 0 1.5px var(--rhp-grid); transition: box-shadow .2s, scale .2s; }
       .avatar .initials { display: inline-grid; place-items: center; background: var(--rhp-grid); color: var(--rhp-muted); font-size: 9px; font-weight: 700; line-height: 1; }
@@ -89,7 +90,7 @@ function artistSlat(size) {
       <Show when={d.position != null}>
         <Label edge="start" class="rank" aria-hidden="true">{d.place}</Label>
         <Label edge="start" class="who">{d.name}</Label>
-        <Label edge="start" class="avatar" aria-hidden="true"><Face name={d.name} /></Label>
+        {size === NARROW ? null : <Label edge="start" class="avatar" aria-hidden="true"><Face name={d.name} /></Label>}
         <Plot overlap from={d.from} to={d.to} tone={d.tones} gold={d.golds} vt={d.vts} flying={d.flying} out={d.open && !d.fairView} thin={d.thin}>{Spine}</Plot>
         <Show when={d.fairView && d.low != null}>
           <Bar class="range" from={d.low} to={d.high} thick="2px" color="ink" />
