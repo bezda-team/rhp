@@ -96,7 +96,10 @@ For each rapper:
 
 Each rapper's portrait is the picture Wikidata gives them (property P18), a file on Wikimedia Commons under a free license, fetched at 120px.
 The article credits each one where it is shown large, with its author and license linked to the file's page.
-A picture credited to a sheriff's office or a police department is a booking photo, not a portrait: those rappers get their initials, as do the five with no free picture.
+A picture credited to a sheriff's office or a police department is a booking photo, not a portrait.
+Where Wikidata gives only a booking photo (Trick Daddy), or a portrait too tight for a circle (Jay-Z's showed his head and nothing around it), another free file on Commons is picked by hand, with the square kept from it (`CHOSEN` in `pipeline/5-portraits.mjs`).
+Five rappers keep their initials, with no usable free picture on Commons: Big L, Geto Boys (its members only, one at a time) and K.A.A.N. have none, the pictures of Goodie Mob show the group too small for a circle, and the one of Rittz shows his face behind his fist and microphone.
+`node pipeline/5-portraits.mjs <name>…` redoes only the rappers named.
 
 ## The article
 
