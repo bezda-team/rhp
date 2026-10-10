@@ -237,13 +237,17 @@ export function Eras() {
   const hovered = createMemo(() => byName.get(on()) ?? null);
 
   // Each era's faces, laid out so none covers another: in value order, each takes the free place nearest the middle of
-  // the band
+  // its slat, above or below it alike, between the median arrow and the slat's bottom; in a crowd with no free place,
+  // the one where it overlaps least
   const layout = createMemo(() => {
-    const type = narrow() ? { t: 168, s: 58, size: 17 } : { t: 176, s: 86, size: 24 };
+    const type = narrow() ? { t: 168, s: 58, size: 19 } : { t: 176, s: 86, size: 26 };
     const plot = Math.max(200, width() - type.s - 24);
     const px = (v) => ((v - scale.min) / (scale.max - scale.min)) * plot;
-    const band = type.t - 26;
     const gap = type.size + 2;
+    // Where a face's center may go, in px from the slat's middle: from below the median arrow (18px from the slat's
+    // top) to 2px above its bottom
+    const up = 18 + type.size / 2 - type.t / 2;
+    const down = type.t / 2 - 2 - type.size / 2;
 
     return ERAS.map((era) => {
       const all = ARTISTS.filter((a) => a.era === era);
@@ -252,15 +256,21 @@ export function Eras() {
 
       for (const a of list) {
         const x = px(a.fair);
+        let y = 0;
+        let room = -1;
 
-        for (let k = 0; ; k++) {
-          const y = (k % 2 ? 1 : -1) * Math.ceil(k / 2) * gap * 0.82;
-          const free = placed.every((p) => Math.hypot(p.x - x, p.y - y) >= gap);
-          if (free || Math.abs(y) > band / 2 - gap / 2) {
-            placed.push({ x, y, a });
-            break;
+        for (let k = 0; Math.ceil(k / 2) <= Math.max(-up, down); k++) {
+          const at = (k % 2 ? 1 : -1) * Math.ceil(k / 2);
+          if (at < up || at > down) continue;
+          const near = Math.min(Infinity, ...placed.map((p) => Math.hypot(p.x - x, p.y - at)));
+          if (near > room) {
+            room = near;
+            y = at;
           }
+          if (near >= gap) break;
         }
+
+        placed.push({ x, y, a });
       }
 
       return { era, all, list, placed, plot, type };
