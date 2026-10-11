@@ -1043,6 +1043,9 @@ export function Chart(props) {
     return { "--rhp-min": min(), "--rhp-max": max(), "--rhp-cross-min": a, "--rhp-cross-max": b };
   };
   writeVars(el, scaleVars);
+  // From here on, an axis line made while a new scale waits for the next frame can find the scale the chart shows (Axis)
+  frame.root = () => el;
+  frame.scaleNow = () => untrack(scaleVars);
 
   if (!isServer && moreAria().length) {
     createRenderEffect(() => {
@@ -1079,16 +1082,52 @@ for (const name of ["color", "thick", "size", "across", "radius", "start-radius"
   KNOBS["--rhp-" + name] = "initial";
 }
 
+// A line made while its chart's new scale waits for the next frame starts on the scale the chart shows (@starting-style
+// in rhp.css), so it slides in with the lines already there. Without that, a browser that first styles the line after
+// the new scale is written (Chrome, Firefox) draws it in place at once, and one that styles it before (Safari) slides
+// it. The start is cleared once the line is drawn, so a line shown again later (after display: none) starts where it is.
+function startOnShownScale(el, chart, cross) {
+
+  if (!chart?.scaleNow) return; // the chart is being made: it shows no scale yet
+
+  const [lo, hi] = cross ? ["--rhp-cross-min", "--rhp-cross-max"] : ["--rhp-min", "--rhp-max"];
+  const shown = chart.root().style;
+  const a = shown.getPropertyValue(lo);
+  const b = shown.getPropertyValue(hi);
+  const now = chart.scaleNow();
+  if (a === "" || (a === String(now[lo]) && b === String(now[hi]))) return; // the chart shows its scale already
+
+  el.style.setProperty("--rhp-start-min", a);
+  el.style.setProperty("--rhp-start-max", b);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.style.removeProperty("--rhp-start-min");
+    el.style.removeProperty("--rhp-start-max");
+  }));
+}
+
 // The value axis: one grid line per tick (keyed by value), and the numbers in the axis gutter. The cross axis (cross)
 // draws its lines as the other orientation's value axis would, on the cross scale.
 export function Axis(props) {
 
   const along = useOrientation();
+  const chart = useContext(Around).frame;
   const orientation = () => (!props.cross ? along() : along() === "vertical" ? "horizontal" : "vertical");
+
+  // The lines in the order they were first drawn: a number that stays keeps its element where it is, and new numbers
+  // come after. In tick order, a new tick before a kept one can make Solid take the kept element out and put it back,
+  // and Chrome and Firefox then draw it afresh, in its new place at once, where it should slide. Their order in the page
+  // doesn't matter: each line is placed by its value.
+  const lines = createMemo((before = []) => {
+    const ticks = props.ticks ?? [];
+    const now = new Set(ticks);
+    const kept = before.filter((t) => now.has(t));
+    const have = new Set(kept);
+    return [...kept, ...ticks.filter((t) => !have.has(t))];
+  }, undefined, { equals: same });
 
   return (
     <div class="rhp-axis" data-rhp-o={short(orientation())} data-rhp-cross={props.cross ? "" : undefined} data-rhp-grid={props.grid === false ? "off" : undefined} aria-hidden="true">
-      <For each={props.ticks}>
+      <For each={lines()}>
         {(t) => {
           // On a server the number is made inside the line, as in a browser, so the browser finds each element where
           // it expects it when it takes the page over
@@ -1103,6 +1142,7 @@ export function Axis(props) {
           const el = <div class="rhp-gridline"><span /></div>;
           const num = el.firstChild;
           el.style.setProperty("--rhp-at", t);
+          startOnShownScale(el, chart, props.cross);
 
           createRenderEffect(() => {
             el.setAttribute("data-rhp-o", short(orientation()));

@@ -172,6 +172,13 @@
     --rhp-p: calc((var(--rhp-at) - var(--rhp-min)) / (var(--rhp-max) - var(--rhp-min)));
   }
 
+  /* A line made while the scale changes starts on the scale shown before (Axis in plot.jsx), and slides from there */
+  @starting-style {
+    .rhp-gridline {
+      --rhp-p: calc((var(--rhp-at) - var(--rhp-start-min, var(--rhp-min))) / (var(--rhp-start-max, var(--rhp-max)) - var(--rhp-start-min, var(--rhp-min))));
+    }
+  }
+
   .rhp-gridline[data-rhp-o="h"] {
     top: 0;
     bottom: 0;

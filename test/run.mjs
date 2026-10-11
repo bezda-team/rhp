@@ -399,25 +399,30 @@ const open = async (url, opts = {}) => {
       }
     }), [Array(4).fill("rgb(1, 2, 3)"), Array(4).fill("rgba(0, 0, 0, 0)")]);
   }
-  // A scale that changes moves its axis smoothly: new ticks slide in from where the old scale put them, and the axis is
-  // cut at the ends of the scale's span (with room for the end numbers), so nothing shows past them on the way
-  check("an axis that switches unit slides its new numbers in, cut at the ends of the scale, and shows every number whole at rest", await p.evaluate(() => new Promise((done) => {
-    const axis = document.querySelector(".unit .rhp-axis"), seen = new Set();
+  // A scale that changes moves its axis smoothly: new ticks slide in from where the old scale put them, a tick that stays
+  // slides to its new place, and the axis is cut at the ends of the scale's span (with room for the end numbers), so
+  // nothing shows past them on the way. In every engine: Chrome and Firefox style a new line after the new scale is
+  // written, and draw a line Solid takes out and puts back afresh (the 0, when -75 comes before it).
+  check("an axis that switches unit slides its new numbers in and the ones that stay along, cut at the ends of the scale, and shows every number whole at rest", await p.evaluate(() => new Promise((done) => {
+    const axis = document.querySelector(".unit .rhp-axis"), seen = new Set(), kept = new Set();
     T.setUnitB(true);
     const t0 = performance.now();
     const frame = () => {
-      const n = [...document.querySelectorAll(".unit .rhp-gridline > span")].find((e) => e.textContent === "-75%");
+      const spans = [...document.querySelectorAll(".unit .rhp-gridline > span")];
+      const n = spans.find((e) => e.textContent === "-75%");
+      const z = spans.find((e) => e.textContent === "0%");
       if (n) seen.add(Math.round(n.getBoundingClientRect().left));
+      if (z) kept.add(Math.round(z.getBoundingClientRect().left));
       if (performance.now() - t0 < 700) return requestAnimationFrame(frame);
       const a = axis.getBoundingClientRect(), room = 28;
       const whole = [...document.querySelectorAll(".unit .rhp-gridline > span")].every((e) => {
         const r = e.getBoundingClientRect();
         return r.left >= a.left - room && r.right <= a.right + room;
       });
-      done([seen.size > 3, getComputedStyle(axis).clipPath.startsWith("inset("), whole]);
+      done([seen.size > 3, kept.size > 3, getComputedStyle(axis).clipPath.startsWith("inset("), whole]);
     };
     requestAnimationFrame(frame);
-  })), [true, true, true]);
+  })), [true, true, true, true]);
   // A slat that comes in with a new scale is drawn on that scale from its first frame: its value never flies in from
   // where the old scale would put it
   check("a slat that comes in while the scale grows draws its value inside its chart from the first frame", await p.evaluate(() => new Promise((done) => {
