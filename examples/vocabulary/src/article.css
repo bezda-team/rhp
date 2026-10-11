@@ -92,7 +92,7 @@ body {
 .masthead {
   max-width: 1080px;
   margin: 0 auto;
-  padding: clamp(40px, 9vw, 96px) 0 clamp(28px, 5vw, 48px);
+  padding: clamp(40px, 9vw, 96px) 0 0;
   border-bottom: 1px solid var(--rule);
 }
 
