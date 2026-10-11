@@ -4,6 +4,7 @@ import { number } from "./data.js";
 import { Ranking } from "./Ranking.jsx";
 import { Albums, Eras, ordinal } from "./Field.jsx";
 import { Picked } from "./Picked.jsx";
+import { Engagement } from "./Engagement.jsx";
 import {
   TOTALS, MOST, SECOND, RICHEST, RICHEST_2019, FEWEST, UNCOUNTED, RISERS, FALLERS, KEPT_TOP, THINNER, MOST_THINNED, MOST_GROWN,
   DEBUT, LATER, LAST_ROW, STILL_FINDING, VETERANS, ERA_MEDIANS, CHECK, GUESTS, SAMPLE, DOUBLED, COUNTED, LOWEST_THEN, LOWEST_NOW,
@@ -27,11 +28,14 @@ export function Article() {
           ? <p class="kicker"><a class="back" href={back.content}>← {back.dataset.label}</a></p>
           : <p class="kicker">Hip hop’s vocabulary, every album counted</p>}
         <h1>Every word they <em>ever</em> rapped</h1>
-        <p class="dek">
-          In 2014 a ranking of rap’s largest vocabularies counted each rapper’s first {n(SAMPLE)} words.
-          We counted all of them: {n(TOTALS.words)} words on {n(TOTALS.albums)} official albums by the same {TOTALS.rappers} rappers.
-          {" "}{RICHEST.name} still uses the most different words for the words rapped. {MOST.name} has used the most of all.
-        </p>
+        <div class="intro">
+          <p class="dek">
+            In 2014 a ranking of rap’s largest vocabularies counted each rapper’s first {n(SAMPLE)} words.
+            We counted all of them: {n(TOTALS.words)} words on {n(TOTALS.albums)} official albums by the same {TOTALS.rappers} rappers.
+            {" "}{RICHEST.name} still uses the most different words for the words rapped. {MOST.name} has used the most of all.
+          </p>
+          <Engagement />
+        </div>
         <p class="byline">A follow-up to Matt Daniels’ <a href="https://pudding.cool/projects/vocabulary/index.html">The Largest Vocabulary in Hip Hop</a> (The Pudding, 2014, updated 2019). Lyrics from Genius, albums from MusicBrainz and Wikipedia, October 2026.</p>
       </header>
 

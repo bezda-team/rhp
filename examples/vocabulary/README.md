@@ -20,6 +20,33 @@ node examples/vocabulary/site.mjs build    # examples/vocabulary/dist/, a static
 
 The article reads only `data/vocabulary.json`, which is committed, so it runs without the pipeline.
 
+## Visitor and like totals
+
+The hosted article adds `<meta name="article-stats" content="/api/article-stats">` to enable the visitor count and like button beside its introduction.
+Without that metadata, the standalone article omits the controls.
+`src/Engagement.jsx` draws them, and `server/article-stats.js` is the portable API that the website's article sync copies into its `api/` directory.
+
+Connect an Upstash Redis database to the Vercel project and enable its production environment variables, `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (the integration's `KV_REST_API_URL` and `KV_REST_API_TOKEN` names work too).
+These credentials are used only on the server.
+Redeploy after connecting the database.
+Visitor and like totals start when this is enabled, without a count of earlier traffic.
+
+Visits are counted once per browser identifier saved in local storage, and each browser can add or remove one like.
+Redis applies updates atomically, so reloading and retrying a request cannot add another visit or like for the same identifier.
+Browsers with storage disabled can read the totals but cannot contribute a visit or like.
+Clearing browser storage creates a new identifier, and separate browsers count separately.
+
+When moving the article, keep the same Redis database and keys to retain the totals.
+The metadata can name an absolute API URL if the API stays on its existing host; add the new article origin to the server's comma-separated `ARTICLE_STATS_ORIGINS` environment variable in that case.
+An article moved to a different origin gets new browser identifiers, since browser storage belongs to its original origin.
+
+The API integration tests use a local Redis instance and cover concurrent updates, returning visitors, like removal, invalid requests, allowed origins, rate limits, and storage failures.
+
+```sh
+node --test examples/vocabulary/server/article-stats.test.mjs
+# REDIS_SERVER and REDIS_CLI can name the executables when they are not on PATH.
+```
+
 ## Run the pipeline
 
 ```sh
