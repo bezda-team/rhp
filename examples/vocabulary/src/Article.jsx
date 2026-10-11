@@ -27,7 +27,7 @@ export function Article() {
         {back
           ? <p class="kicker"><a class="back" href={back.content}>← {back.dataset.label}</a></p>
           : <p class="kicker">Hip hop's vocabulary, every album counted</p>}
-        <h1>Every <span class="marked">original<a class="mark" href="#original" aria-label="What original means here"><svg viewBox="-12 -12 24 24" aria-hidden="true"><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M0-9V9" /><path d="M0-9V9" transform="rotate(60)" /><path d="M0-9V9" transform="rotate(120)" /></g></svg></a></span> word they <em>ever</em> rapped</h1>
+        <h1>Every new <span class="marked">word<a class="mark" href="#new-word" aria-label="What a new word means here"><svg viewBox="-12 -12 24 24" aria-hidden="true"><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M0-9V9" /><path d="M0-9V9" transform="rotate(60)" /><path d="M0-9V9" transform="rotate(120)" /></g></svg></a></span> they <em>ever</em> rapped</h1>
         <div class="intro">
           <p class="dek">
             In 2014 a ranking of rap's largest vocabularies counted each rapper's first {n(SAMPLE)} words.
@@ -53,14 +53,15 @@ export function Article() {
         </p>
         {/* "One new word in five": of the new words on albums after a debut, 20.9% are another form or spelling of a word
             the rapper had used on an earlier album (a suffix added or dropped, a dropped g, a hyphen, a doubled letter),
-            counted on this data's words, October 2026 */}
-        <p id="original">
-          <span class="mark"><svg viewBox="-12 -12 24 24" aria-hidden="true"><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M0-9V9" /><path d="M0-9V9" transform="rotate(60)" /><path d="M0-9V9" transform="rotate(120)" /></g></svg></span>Three terms here have a narrower meaning than usual.
+            counted on this data's words, October 2026. "Over a whole career": each rapper's new words, album by album, add
+            up to their different words, checked for all 149 rappers */}
+        <p id="new-word">
+          <span class="mark"><svg viewBox="-12 -12 24 24" aria-hidden="true"><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M0-9V9" /><path d="M0-9V9" transform="rotate(60)" /><path d="M0-9V9" transform="rotate(120)" /></g></svg></span>Two terms here have a narrower meaning than usual.
           A <b>word</b> is any spelling in a rapper's lyrics, by the 2019 article's rules: lowercase, with apostrophes dropped, so <i>pimpin'</i> and <i>pimpin</i> are one word but <i>pimp</i>, <i>pimps</i>, <i>pimping</i> and <i>pimpin</i> are four.
           Ad-libs, sounds, slang, names and numbers are words too (<i>ayy</i>, <i>uh-huh</i>, <i>tryna</i>, <i>Glock</i>, <i>40</i>), and so is anything joined by hyphens.
-          A rapper's <b>different words</b>, the original words of the title, are all the spellings they have used.
-          A <b>new word</b> is not one they made up, or one new to rap.
+          A <b>new word</b>, as in the title, is not one the rapper made up, or one new to rap.
           It is a spelling none of their earlier albums had, so every word on a debut is new, even <i>the</i>.
+          Over a whole career, a rapper's new words are their different words, each counted once, on the album where it first appears.
           On later albums, about one new word in five is another form or spelling of a word the rapper had used before, such as <i>weeks</i> after <i>week</i> or <i>everythin</i> after <i>everything</i>.
         </p>
         <p>

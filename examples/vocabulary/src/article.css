@@ -137,12 +137,13 @@ body {
   color: var(--accent);
 }
 
-/* The title's asterisk, drawn: it sits against the L, partly above the capitals, in the accent, and leads to the
-   paragraph that says what original means, which begins with the same mark. Raised by position, so the title's lines
+/* The title's asterisk, drawn: it sits against the D of "word", partly above the capitals, in the accent, and leads to
+   the paragraph that says what a new word is, which begins with the same mark. Raised by position, so the title's lines
    keep their spacing. */
-/* "Original" and its asterisk stay on one line */
+/* "Word" and its asterisk stay on one line. An inline-block, not white-space: nowrap, which makes Chrome skip the title's
+   balancing */
 .masthead h1 .marked {
-  white-space: nowrap;
+  display: inline-block;
 }
 
 .masthead h1 .mark {
@@ -175,7 +176,7 @@ body {
   color: var(--accent);
 }
 
-#original {
+#new-word {
   scroll-margin-top: 24px;
 }
 
