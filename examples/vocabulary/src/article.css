@@ -157,7 +157,7 @@ body {
   justify-content: center;
   gap: 16px;
   margin-top: 8px;
-  padding-bottom: 4px;
+  padding-bottom: 10px;
   color: var(--soft);
   font: 500 15px/1.2 var(--ui);
   font-variant-numeric: tabular-nums;
