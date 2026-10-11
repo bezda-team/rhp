@@ -138,15 +138,10 @@ body {
 }
 
 .masthead .intro {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
   margin-top: 24px;
 }
 
 .masthead .dek {
-  flex: 1;
   max-width: 34em;
   margin: 0;
   font-size: clamp(19px, 2.4vw, 23px);
@@ -159,7 +154,9 @@ body {
   display: flex;
   flex: none;
   align-items: center;
+  justify-content: center;
   gap: 16px;
+  margin-top: 8px;
   padding-bottom: 4px;
   color: var(--soft);
   font: 500 15px/1.2 var(--ui);
@@ -215,21 +212,6 @@ body {
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
-}
-
-@media (max-width: 720px) {
-  .masthead .intro {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .masthead .dek {
-    flex-basis: 100%;
-  }
-
-  .engagement {
-    margin-left: auto;
-  }
 }
 
 .masthead .byline {

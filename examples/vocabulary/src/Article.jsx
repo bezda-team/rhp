@@ -34,9 +34,9 @@ export function Article() {
             We counted all of them: {n(TOTALS.words)} words on {n(TOTALS.albums)} official albums by the same {TOTALS.rappers} rappers.
             {" "}{RICHEST.name} still uses the most different words for the words rapped. {MOST.name} has used the most of all.
           </p>
-          <Engagement />
         </div>
         <p class="byline">A follow-up to Matt Daniels’ <a href="https://pudding.cool/projects/vocabulary/index.html">The Largest Vocabulary in Hip Hop</a> (The Pudding, 2014, updated 2019). Lyrics from Genius, albums from MusicBrainz and Wikipedia, October 2026.</p>
+        <Engagement />
       </header>
 
       <section class="prose">
