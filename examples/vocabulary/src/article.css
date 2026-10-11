@@ -137,6 +137,48 @@ body {
   color: var(--accent);
 }
 
+/* The title's asterisk, drawn: it sits against the L, partly above the capitals, in the accent, and leads to the
+   paragraph that says what original means, which begins with the same mark. Raised by position, so the title's lines
+   keep their spacing. */
+/* "Original" and its asterisk stay on one line */
+.masthead h1 .marked {
+  white-space: nowrap;
+}
+
+.masthead h1 .mark {
+  position: relative;
+  top: -.5em;
+  display: inline-block;
+  width: .4em;
+  height: .4em;
+  margin-left: -.02em;
+  color: var(--accent);
+}
+
+.masthead h1 .mark svg,
+.prose .mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.masthead h1 .mark:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.prose .mark {
+  display: inline-block;
+  width: .72em;
+  height: .72em;
+  margin-right: .35em;
+  color: var(--accent);
+}
+
+#original {
+  scroll-margin-top: 24px;
+}
+
 .masthead .intro {
   margin-top: 24px;
 }

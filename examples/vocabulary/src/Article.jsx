@@ -26,35 +26,48 @@ export function Article() {
       <header class="masthead">
         {back
           ? <p class="kicker"><a class="back" href={back.content}>← {back.dataset.label}</a></p>
-          : <p class="kicker">Hip hop’s vocabulary, every album counted</p>}
-        <h1>Every word they <em>ever</em> rapped</h1>
+          : <p class="kicker">Hip hop's vocabulary, every album counted</p>}
+        <h1>Every <span class="marked">original<a class="mark" href="#original" aria-label="What original means here"><svg viewBox="-12 -12 24 24" aria-hidden="true"><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M0-9V9" /><path d="M0-9V9" transform="rotate(60)" /><path d="M0-9V9" transform="rotate(120)" /></g></svg></a></span> word they <em>ever</em> rapped</h1>
         <div class="intro">
           <p class="dek">
-            In 2014 a ranking of rap’s largest vocabularies counted each rapper’s first {n(SAMPLE)} words.
-            We counted all of them: {n(TOTALS.words)} words on {n(TOTALS.albums)} official albums by the same {TOTALS.rappers} rappers.
-            {" "}{RICHEST.name} still uses the most different words for the words rapped. {MOST.name} has used the most of all.
+            In 2014 a ranking of rap's largest vocabularies counted each rapper's first {n(SAMPLE)} words.
+            We counted all {n(TOTALS.words)} words on {n(TOTALS.albums)} official albums by the same {TOTALS.rappers} rappers.
+            {" "}{RICHEST.name} still uses the most different words per {n(SAMPLE)} words rapped. {MOST.name} has used the most different words in all.
           </p>
         </div>
-        <p class="byline">A follow-up to Matt Daniels’ <a href="https://pudding.cool/projects/vocabulary/index.html">The Largest Vocabulary in Hip Hop</a> (The Pudding, 2014, updated 2019). Lyrics from Genius, albums from MusicBrainz and Wikipedia, October 2026.</p>
+        <p class="byline">A follow-up to Matt Daniels' <a href="https://pudding.cool/projects/vocabulary/index.html">The Largest Vocabulary in Hip Hop</a> (The Pudding, 2014, updated 2019). Lyrics from Genius, albums from MusicBrainz and Wikipedia, October 2026.</p>
         <Engagement />
       </header>
 
       <section class="prose">
         <p>
-          The original ranking gave every rapper the same yardstick: the number of different words in their first {n(SAMPLE)} lyrics, about three to five albums.
-          It put {RICHEST_2019.name} first, with {n(RICHEST_2019.pudding)} different words, and it measured the start of each career only.
-          Today {DOUBLED} of the {TOTALS.rappers} rappers have at least twice that many words of their own on official albums.
+          The original ranking measured every rapper the same way, by the number of different words in their first {n(SAMPLE)} words of lyrics, about three to five albums.
+          It ranked {RICHEST_2019.name} first, with {n(RICHEST_2019.pudding)} different words, and it measured only the start of each career.
+          Today {DOUBLED} of the {TOTALS.rappers} rappers have at least {n(2 * SAMPLE)} words of their own on official albums, twice that sample.
         </p>
         <p>
-          Here every official studio album counts, through October 2026, for the {TOTALS.rappers} rappers the 2019 update ranked.
-          Mixtapes, compilations, live albums, remix albums and albums released after a rapper’s death are left out.
-          So are guests: when a verse belongs to someone else, its words do not count for the album’s rapper.
-          That takes about {pct(GUESTS)} of the words off the median rapper’s albums.
+          This count includes every official studio album through October 2026 by the {TOTALS.rappers} rappers the 2019 update ranked.
+          It leaves out mixtapes, compilations, live albums, remix albums and albums released after a rapper's death.
+          It leaves out guests too, so the words of a verse by someone else do not count for the album's rapper.
+          Leaving out guests removes about {pct(GUESTS)} of the words on the median rapper's albums.
+        </p>
+        {/* "One new word in five": of the new words on albums after a debut, 20.9% are another form or spelling of a word
+            the rapper had used on an earlier album (a suffix added or dropped, a dropped g, a hyphen, a doubled letter),
+            counted on this data's words, October 2026 */}
+        <p id="original">
+          <span class="mark"><svg viewBox="-12 -12 24 24" aria-hidden="true"><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M0-9V9" /><path d="M0-9V9" transform="rotate(60)" /><path d="M0-9V9" transform="rotate(120)" /></g></svg></span>Three terms here have a narrower meaning than usual.
+          A <b>word</b> is any spelling in a rapper's lyrics, by the 2019 article's rules: lowercase, with apostrophes dropped, so <i>pimpin'</i> and <i>pimpin</i> are one word but <i>pimp</i>, <i>pimps</i>, <i>pimping</i> and <i>pimpin</i> are four.
+          Ad-libs, sounds, slang, names and numbers are words too (<i>ayy</i>, <i>uh-huh</i>, <i>tryna</i>, <i>Glock</i>, <i>40</i>), and so is anything joined by hyphens.
+          A rapper's <b>different words</b>, the original words of the title, are all the spellings they have used.
+          A <b>new word</b> is not one they made up, or one new to rap.
+          It is a spelling none of their earlier albums had, so every word on a debut is new, even <i>the</i>.
+          On later albums, about one new word in five is another form or spelling of a word the rapper had used before, such as <i>weeks</i> after <i>week</i> or <i>everythin</i> after <i>everything</i>.
         </p>
         <p>
-          In the chart below, each bar is a row of the rapper’s albums in release order.
-          An album is as wide as the words it brought that none of the rapper’s earlier albums had, so the bar is every different word the rapper has used.
-          <strong> Click or tap any rapper</strong> to take their albums off the shelf.
+          In the chart below, each bar is a row of the rapper's albums in release order.
+          Each album's width is the number of words it brought that none of the rapper's earlier albums had.
+          The whole bar is every different word the rapper has used.
+          <strong> Click or tap any rapper</strong> to open their breakdown, album by album.
         </p>
       </section>
 
@@ -65,19 +78,20 @@ export function Article() {
       <section class="prose">
         <h2>Two ways to be first</h2>
         <p>
-          Counted over every album, {MOST.name} has used the most different words: {n(MOST.unique)}, across {MOST.albums.length} albums and {n(MOST.words)} words.
-          {" "}{SECOND.name} follows with {n(SECOND.unique)}, on {SECOND.albums.length} albums.
-          A total like this rewards a long career as much as a varied one, because every album adds words.
+          Counted over every album, {MOST.name} has used the most different words, {n(MOST.unique)} across {MOST.albums.length} albums and {n(MOST.words)} words.
+          {" "}{SECOND.name} is second, with {n(SECOND.unique)} on {SECOND.albums.length} albums.
+          A total like this grows with the length of a career as much as with its variety, because every album adds words.
         </p>
         <p>
-          The fair comparison keeps the 2019 yardstick of {n(SAMPLE)} words, but measures the whole career: the number of different words in every run of {n(SAMPLE)} words in a row, averaged.
+          A fairer comparison keeps the 2019 sample of {n(SAMPLE)} words but measures the whole career.
+          It counts the different words in every run of {n(SAMPLE)} words in a row, then averages them.
           Switch the chart to <strong>Per {n(SAMPLE)} words</strong> to see it.
-          {" "}{RICHEST.name} leads there too, with {n(RICHEST.fair)} different words in an average run, against {n(RICHEST.pudding)} in 2019’s count of the first.
+          {" "}{RICHEST.name} leads there too, with {n(RICHEST.fair)} different words in an average run, against {n(RICHEST.pudding)} in the 2019 count of their first {n(SAMPLE)}.
           {" "}{FEWEST.name} uses the fewest, {n(FEWEST.fair)}.
-          {UNCOUNTED.length ? ` ${UNCOUNTED.length} rappers have fewer than ${n(SAMPLE)} words of their own on official albums and are left out of this view.` : ""}
+          {UNCOUNTED.length ? ` This view leaves out ${UNCOUNTED.length} rappers who have fewer than ${n(SAMPLE)} words of their own on official albums.` : ""}
         </p>
         <p>
-          Among the {COUNTED} rappers both counts rank, {KEPT_TOP} of 2019’s top ten are still in the top ten.
+          Among the {COUNTED} rappers both counts rank, {KEPT_TOP} of 2019's top ten are still in the top ten.
           The biggest climbs are {list(RISERS.map((m) => `${m.a.name} (${ordinal(m.from)} in 2019, ${ordinal(m.to)} now)`))}.
           The biggest falls are {list(FALLERS.map((m) => `${m.a.name} (${ordinal(m.from)} in 2019, ${ordinal(m.to)} now)`))}.
         </p>
@@ -86,7 +100,7 @@ export function Article() {
       <section class="figure">
         <div class="figure-head">
           <h3>What each album adds</h3>
-          <p>The new words an album brings, by its place in a career: the median rapper’s album as the spine, the middle half of rappers as the whisker.</p>
+          <p>The new words an album brings, by its place in a career. The spine is the median rapper's album, and the whisker spans the middle half of rappers.</p>
         </div>
         <Albums />
       </section>
@@ -95,27 +109,29 @@ export function Article() {
         <h2>Every album after the first adds fewer new words</h2>
         <p>
           A debut brings the median rapper {n(DEBUT.new)} different words, all of them new.
-          The {ordinal(LATER.album)} album brings {n(LATER.new)} words the rapper had never used on an album before, and by the {ordinal(LAST_ROW.album)}, only {pct(LAST_ROW.share)} of an album’s different words are new to the rapper.
+          The {ordinal(LATER.album)} album brings {n(LATER.new)} words the rapper had never used on an album before.
+          By the {ordinal(LAST_ROW.album)}, only {pct(LAST_ROW.share)} of an album's different words are new to the rapper.
           The rest are words they had already used on an earlier album.
         </p>
         <p>
           Fewer new words does not mean plainer writing.
-          An album’s density, its different words in every 1,000, does not depend on the albums before it, and it can rise late in a career.
+          An album's density is its number of different words in every 1,000.
+          It does not depend on the albums before it, and it can rise late in a career.
           Of the {LONG} rappers with five albums or more, {DENSER} made their latest album denser than their debut.
-          {LUPE ? ` Lupe Fiasco’s first two albums had ${n(LUPE.first[0].density)} and ${n(LUPE.first[1].density)} different words per 1,000; ${LUPE.later} of his ${LUPE.count - 2} albums since are denser than both, and his densest is ${LUPE.densest.title} (${LUPE.densest.year}), with ${n(LUPE.densest.density)}.` : ""}
-          {" "}Each rapper’s breakdown charts it, album by album.
+          {LUPE ? ` Lupe Fiasco's first two albums had ${n(LUPE.first[0].density)} and ${n(LUPE.first[1].density)} different words per 1,000; ${LUPE.later} of his ${LUPE.count - 2} albums since are denser than both, and his densest is ${LUPE.densest.title} (${LUPE.densest.year}), with ${n(LUPE.densest.density)}.` : ""}
+          {" "}Each rapper's breakdown shows it album by album.
         </p>
         <p>
-          Some keep finding new ones.
+          Some rappers keep finding new words.
           Of the {VETERANS} rappers with eight albums or more, the latest album of {list(STILL_FINDING.map((s) => `${s.a.name} (${s.last.title}, ${pct(s.share)} new)`))} brought the largest share of new words.
-          {OTHER_LANGUAGE.length ? ` ${list(OTHER_LANGUAGE.map((o) => `${o.name}’s ${o.album.title} (${o.album.year})`))} ${OTHER_LANGUAGE.length === 1 ? "is" : "are"} left out of that comparison: mostly in Spanish, ${OTHER_LANGUAGE.length === 1 ? "it brings" : "they bring"} new words for that reason, and ${OTHER_LANGUAGE.length === 1 ? "its" : "their"} words count like any others in the totals.` : ""}
+          {OTHER_LANGUAGE.length ? ` That comparison leaves out ${list(OTHER_LANGUAGE.map((o) => `${o.name}'s ${o.album.title} (${o.album.year})`))}. ${OTHER_LANGUAGE.length === 1 ? "It is mostly in Spanish, so it brings" : "They are mostly in Spanish, so they bring"} new words for that reason alone, and ${OTHER_LANGUAGE.length === 1 ? "its" : "their"} words still count like any others in the totals.` : ""}
         </p>
       </section>
 
       <section class="figure">
         <div class="figure-head">
           <h3>Every era, whole careers</h3>
-          <p>Each face is one rapper’s different words per {n(SAMPLE)}, over every album they made, by the era the 2019 article gave them.</p>
+          <p>Each face is one rapper, placed at their different words per {n(SAMPLE)} over every album they made, in the era the 2019 article gave them.</p>
         </div>
         <Eras />
       </section>
@@ -123,14 +139,14 @@ export function Article() {
       <section class="prose">
         <h2>The generations, counted again</h2>
         <p>
-          In 2019 the rappers of the {LOWEST_THEN.era} had the lowest median, {n(LOWEST_THEN.then)} different words in their first {n(SAMPLE)}, and the article credited a change in song structure: more repeated choruses, more singing.
-          Over whole careers, {LOWEST_NOW.era === LOWEST_THEN.era ? `the ${LOWEST_NOW.era} still have the lowest median` : `the ${LOWEST_NOW.era} now have the lowest median`}: {n(LOWEST_NOW.now)} different words per {n(SAMPLE)}.
-          The other eras’ medians are {list(ERA_MEDIANS.filter((m) => m !== LOWEST_NOW && m.now != null).map((m) => `${n(m.now)} for the ${m.era}`))}.
+          In 2019 the rappers of the {LOWEST_THEN.era} had the lowest median, {n(LOWEST_THEN.then)} different words in their first {n(SAMPLE)}.
+          The article put this down to a change in song structure, with more repeated choruses and more singing.
+          Over whole careers, {LOWEST_NOW.era === LOWEST_THEN.era ? `the ${LOWEST_NOW.era} still have the lowest median` : `the ${LOWEST_NOW.era} now have the lowest median`}, {n(LOWEST_NOW.now)} different words per {n(SAMPLE)}.
+          The other eras' medians are {list(ERA_MEDIANS.filter((m) => m !== LOWEST_NOW && m.now != null).map((m) => `${n(m.now)} for the ${m.era}`))}.
         </p>
         <p>
-          Careers move both ways.
-          Of the {COUNTED} rappers with at least {n(SAMPLE)} words of their own, {THINNER.length} use fewer different words over the whole career than in their own first {n(SAMPLE)}; {MOST_THINNED.name} fell the most ({n(MOST_THINNED.sample.first)} at first, {n(MOST_THINNED.fair)} over the career).
-          {" "}{MOST_GROWN.name} grew the most, from {n(MOST_GROWN.sample.first)} to {n(MOST_GROWN.fair)}.
+          Of the {COUNTED} rappers with at least {n(SAMPLE)} words of their own, {THINNER.length} use fewer different words over the whole career than in their own first {n(SAMPLE)}.
+          {" "}{MOST_THINNED.name} fell the most, from {n(MOST_THINNED.sample.first)} at first to {n(MOST_THINNED.fair)} over the career, and {MOST_GROWN.name} grew the most, from {n(MOST_GROWN.sample.first)} to {n(MOST_GROWN.fair)}.
         </p>
       </section>
 
