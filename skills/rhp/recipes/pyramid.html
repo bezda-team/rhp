@@ -132,6 +132,8 @@ function AgeingJapan() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   const older = () => MEN.slice(from()).concat(WOMEN.slice(from())).reduce((sum, v) => sum + v, 0);
   return html`
     <${Poster}
@@ -139,7 +141,7 @@ function AgeingJapan() {
       title="Nearly three in ten people in Japan are 65 or older"
       dek="Men to the left, women to the right, in millions, the oldest at the top. Two bulges show the baby booms of the late 1940s and early 1970s; the base keeps shrinking."
       note="Source: Statistics Bureau of Japan, population estimates for October 1, 2023 (124.35 million people), rounded to the nearest 10,000. Point at an age band, tap it, or Tab into the chart and use the arrow keys."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout" aria-live="polite">
         <b>${() => percent.format(older() / TOTAL)}</b>

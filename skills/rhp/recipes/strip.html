@@ -192,13 +192,15 @@ function RestaurantRatings() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster}
       kicker="City food guide · ratings out of 5"
       title="Burger places are hit or miss"
       dek="Every dot is a restaurant, placed by its average rating. Ethiopian kitchens all score between 4.3 and 4.8; burgers run from under 3 to almost 5."
       note="Illustrative data for invented restaurants. Point at a dot or tap it for the restaurant, or Tab into a cuisine and use the arrow keys."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <div class="readout">
         <span class="stars">${() => one.format(place().rating)} ★</span>

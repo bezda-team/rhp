@@ -118,13 +118,15 @@ function SpokenLanguages() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster}
       kicker="The world's languages"
       title=${html`<em>English</em> is the world's most spoken language`}
       dek="Total speakers in millions, counting everyone who speaks it as a first or a second language. Mandarin has more native speakers; English has more learners. Tap or point at a language."
       note="Source: Ethnologue, 2023 (speakers); United Nations, 2023 (world population, 8.05 billion)."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout" aria-live="polite">
         <b>${() => percent.format(LANGUAGES[lit()].millions / WORLD)}</b>

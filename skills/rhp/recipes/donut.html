@@ -199,6 +199,8 @@ function PhoneMakers() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   const company = () => (on() == null ? null : COMPANIES[on()]);
   return html`
     <${Poster}
@@ -206,7 +208,7 @@ function PhoneMakers() {
       title=${html`<em>Apple</em> and <em>Samsung</em> ship more than a third of all smartphones`}
       dek="Of 1.24 billion smartphones shipped in 2024, the two biggest companies shipped 455.5 million. The next three together shipped 380.2 million. Tap or point at a slice."
       note="Source: IDC Worldwide Quarterly Mobile Phone Tracker, preliminary results for 2024 (January 2025), in millions of phones."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <${Chart} class="chart" aspect=${1} ticks=${false} label="Smartphones shipped in 2024 by company, as shares of the total"
         theme=${{ font: "Geist, 'Helvetica Neue', Arial, sans-serif", ink: "#16181b", muted: "#5d636c", surface: "#f1f1ef" }}>

@@ -169,6 +169,8 @@ function FinishTimes() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => (e.pointerType !== "touch" || sideways(e)) && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster}
       kicker=${`City marathon · ${count.format(FINISH_TIMES.length)} finishers`}
@@ -177,7 +179,7 @@ function FinishTimes() {
         finished between ${clock(FOCUS)} and ${clock(FOCUS + BIN - 1)}, and only ${count.format(tally[opening + 1])} in the 5 minutes after.</span>`}
       note="Illustrative data. Point at a column, tap it or drag across the chart, or Tab into it and use the arrow keys."
       onPointerDown=${(e) => (start = [e.clientX, e.clientY])}
-      onPointerMove=${(e) => (e.pointerType !== "touch" || sideways(e)) && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <div class="board">
         <div><b>${() => `${clock(x0[shown()])} to ${clock(x1[shown()] - 1)}`}</b><span>Finish time</span></div>

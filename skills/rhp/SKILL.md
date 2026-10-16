@@ -350,13 +350,15 @@ function FruitChart() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster}
       kicker="Market stall, Saturday"
       title="Bananas outsell everything else"
       dek=${() => (on() == null ? "Crates sold by midday. Tap or point at a fruit." : `${fruit[on()]}: ${sold[on()]} crates by midday.`)}
       note="Illustrative data."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <${Chart} scale=${[scale.min, scale.max]} ticks=${scale.ticks} label="Crates of fruit sold by midday"
         theme=${{ font: "Inter, system-ui, sans-serif", ink: "#1f1a14", muted: "#6f665a", grid: "#e6dfd2" }}>
@@ -442,6 +444,7 @@ Read the ones the chart needs; each is self-contained.
 - [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, color, type, layout, annotation, charts inside an app, a style the user asks for.
 - [looks.md](references/looks.md): eight looks written out in full (tokens, fonts, texture, type), as examples of how a look is written, not a menu.
 - [interaction.md](references/interaction.md): which interaction for which story, with complete code for each.
+- [performance.md](references/performance.md): measured optimizations for an expensive chart, preserving its slats, styling, state, and interactions.
 - [environments.md](references/environments.md): plain HTML, Solid, Astro, React, Next.js, Vue, Svelte and Angular, each verified, and the html template to JSX rules.
 - [api.md](references/api.md): every component, prop, helper and CSS variable, exactly.
 - [pitfalls.md](references/pitfalls.md): mistakes and their fixes.

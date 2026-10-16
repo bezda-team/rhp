@@ -149,13 +149,15 @@ function SharePrice() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster}
       kicker="Share price · March 2026"
       title="A 15% drop on earnings day erased the month's gains"
       dek="Each candle is a trading day. Its body runs from the opening price to the closing price, hollow when the price rose and filled when it fell; its wick spans the day's low to its high."
       note="Illustrative data. Point at a day, tap it, or Tab into the chart and use the arrow keys."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="ticker">
         <b>${() => day.format(new Date(shown().date))}</b>

@@ -148,6 +148,8 @@ function Commits() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setAt(e.currentTarget.contains(document.activeElement) ? held : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   const readout = () => {
     const [day, hour] = at() ?? [1, 15];
     const lead = at() ? "" : "Busiest hour: ";
@@ -163,7 +165,7 @@ function Commits() {
       title="More than half of all commits land on weekday afternoons"
       dek="One team's commits over a year, by weekday and hour. The keys darken from 2 to 5 pm on every working day, the lunch hour dips, and weekends barely move."
       note="Illustrative data, in local time. Point at a key or tap it to read its hour; Tab into the chart and use the arrow keys to read a day."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${click} onFocusIn=${focusDay}
+      onPointerMove=${move} onClick=${click} onFocusIn=${focusDay}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setAt(null)}>
       <div class="readout">
         <output aria-live="polite">${readout}</output>

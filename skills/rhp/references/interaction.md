@@ -142,9 +142,11 @@ function RainChart() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster} title="City A gets more than three times City D's October rain" note="Illustrative data."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <p class="readout" aria-hidden="true">${() => (on() == null ? "Tap or point at a city." : say(on()))}</p>
       <${Chart} scale=${[0, 200]} ticks=${[0, 50, 100, 150, 200]} label="Rain in October, in mm">
@@ -183,6 +185,7 @@ render(() => html`<${RainChart} />`, document.getElementById("chart"));
 Checked: the checker reported a change for each slat it pointed at (City A, City C, City F) and tapped (City A, City F); its Tab reached City A and ArrowDown moved focus to City B.
 Playwright with a mouse: at rest City A was lit and the readout gave the hint; on City C's bar the readout named City C, City C was lit, and the five others were at opacity .3 with rhp's transition still on their bars; from City F down onto the axis the readout stayed on City F; leaving the poster cleared it all.
 With focus on City A, the mouse over City D took the readout, and leaving the poster gave it back to City A.
+Off the chart, in Chromium and WebKit: from City C onto the headline the readout went back to the hint, and with City A clicked, from City D onto the readout it went back to City A; the checker reported nothing.
 At 390px with touch: a tap on City B kept the readout after the finger lifted, a scroll that started on City E moved the page and left the readout on City B, a tap on City E's number picked City E, and a tap on the headline or below the poster cleared it.
 With slats 110px thick (a chart taller than a 390 × 664 screen), a readout pinned with `position: sticky` and `z-index: 2`, after the chart or above it, showed City B on screen, and City E after a scroll, with its hairline edge; without `z-index: 2` the slats covered it.
 Scrolled to the chart before any pick, the readout above it that pins only while a pick exists was out of the way, and one pinned at rest covered the plot's top.

@@ -169,13 +169,15 @@ function LaunchPlan() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster}
       kicker=${`Launch plan · week ${Math.floor(now) + 1} of ${WEEKS}`}
       title="The build is a week behind, and testing waits on it"
       dek=${html`<span>Twelve weeks from scope to launch day, as of ${long.format(dateOf(now))}. Each bar is a task: <i class="done"></i>done, <i class="late"></i>should be done by now, <i class="todo"></i>still to do.</span>`}
       note="Illustrative data. Point at a task or tap it to see what it waits on, or Tab into the chart and use the arrow keys."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <p class="readout">
         ${ROWS.map((t) => html`

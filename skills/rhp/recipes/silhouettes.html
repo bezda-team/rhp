@@ -72,7 +72,7 @@
     .poster .headline, .poster .kicker, .poster .dek { position: relative; z-index: 2; }
     .poster .headline { padding-right: 28px; }
     .poster .dek { align-self: start; margin-top: 2px; padding-right: 20px; font-size: 16px; }
-    .poster .stage { grid-area: 1 / 1 / 4 / 4; align-self: end; margin-top: 64px; }
+    .poster .stage { grid-area: 1 / 1 / 4 / 4; align-self: end; margin-top: 32px; }
     .poster .key { display: none; }
   }
   @media (max-width: 640px) {
@@ -273,7 +273,7 @@ const tower = (d) => html`
     <//>
   </div>`;
 // The same tower with the room each width needs: names on the street on wide screens, ranks on narrow ones
-const TowerNamed = slat({ room: { start: 88, end: 0, after: 0 }, css: TOWER_CSS }, tower);
+const TowerNamed = slat({ room: { start: 88, end: 32, after: 32 }, css: TOWER_CSS }, tower);
 const TowerRanked = slat({ room: { start: 32, end: 32, after: 46 }, css: TOWER_CSS }, tower);
 
 // The chart's font and colors, read from the page's tokens
@@ -310,6 +310,8 @@ function Skyline() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   const towers = (type) => html`
     <${Plot} rows=${BUILDINGS} order=${POS} keyboard=${true} rank=${RANK} outline=${OUTLINE} shift=${SHIFT}
       lit=${(d) => d.index === lit()} lead=${(d) => d.index === LEAD} span=${(d) => span(d.index)}
@@ -320,7 +322,7 @@ function Skyline() {
       title=${`${cap(word(AS_OF - lead.year))} years on, the ${lead.name} still tops the rest by ${metres(margin)}`}
       dek=${`The ${word(BUILDINGS.length)} tallest finished buildings on Earth, from ${word(cities)} cities, share one street here, each in its own outline and all at one scale. Heights in metres.`}
       note=${SOURCE}
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <div class="stage" style=${() => `--street: ${wide() ? 88 : 32}px`}>
         <${Chart} orientation="vertical" height=${() => (wide() ? 680 : 420)} scale=${[scale.min, scale.max]} ticks=${false}

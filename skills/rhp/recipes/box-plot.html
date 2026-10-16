@@ -132,13 +132,15 @@ function CommuteTimes() {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
+  // Off the chart (on the headline, the readout or the note), pointing is as if the pointer had left the poster
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
   return html`
     <${Poster}
       kicker="Commute times, door to door"
       title="Bikes beat cars, and keep to time"
       dek=${`One-way commutes timed over a month, ${MODES.reduce((n, m) => n + m.trips, 0)} trips in all. A cyclist's trips stay within a few minutes of each other; a driver's can take twice as long on a bad day. Tap or point at a mode for its numbers.`}
       note="Illustrative data."
-      onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <ul class="key">
         <li><i class="box"></i>Middle half of trips</li>
