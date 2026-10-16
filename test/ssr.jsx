@@ -119,13 +119,13 @@ export default function App() {
         </Chart>
       </Theme>
       <Chart id="auto" scale={[0, 100]}>
-        <Plot name={NAMES} v={[20, 80, 50]}>{Named}</Plot>
+        <Plot name={[...NAMES, "Hidden name"]} v={[20, 80, 50, 90]} order={[0, 1, 2, null]}>{Named}</Plot>
       </Chart>
       <Chart id="capped" scale={[0, 100]}>
         <Plot name={NAMES} v={[20, 80, 50]}>{Capped}</Plot>
       </Chart>
       <Chart id="auto-v" orientation="vertical" height={100} scale={[0, 100]}>
-        <Plot name={["Ann", "A name long enough to wrap under its column, twice over", "Mid"]} v={[20, 80, 50]}>{Wrapped}</Plot>
+        <Plot name={["Ann", "A name long enough to wrap under its column, twice over", "Mid", "Hidden name"]} v={[20, 80, 50, 90]} order={[0, 1, 2, null]}>{Wrapped}</Plot>
       </Chart>
       <Chart id="toend" scale={[0, 23]}>
         <Scale ticks={[0, 10, 22]}>{Crowd}</Scale>

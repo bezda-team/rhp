@@ -1239,7 +1239,7 @@ const dom = (p, charts) => p.evaluate((charts) => {
   const p = await open("file://" + at("out/ssr.html") + "?wait");
   const g = (id) => p.evaluate((id) => {
     const c = document.getElementById(id), body = c.querySelector(".rhp-body"), track = c.querySelector(".rhp-bar").getBoundingClientRect();
-    const r = (e) => e.getBoundingClientRect(), names = [...c.querySelectorAll(".nm")], ends = [...c.querySelectorAll(".pct")];
+    const r = (e) => e.getBoundingClientRect(), names = [...c.querySelectorAll(".rhp-plot > :not([hidden]) .nm")], ends = [...c.querySelectorAll(".rhp-plot > :not([hidden]) .pct")];
     return { gutters: c.hasAttribute("data-rhp-gutters"), start: Math.round(track.left - r(body).left), end: Math.round(r(body).right - (c.querySelector(".rhp-axis") ? r(c.querySelector(".rhp-axis")).right : track.right)),
       widest: Math.max(...names.map((e) => e.scrollWidth)), clipped: names.map((e) => e.scrollWidth > e.clientWidth), endWidest: Math.max(0, ...ends.map((e) => e.scrollWidth)),
       aligned: names.every((e) => Math.round(r(e).right) === Math.round(track.left)) };
@@ -1252,10 +1252,15 @@ const dom = (p, charts) => p.evaluate((charts) => {
   check("gutters auto: a slat's CSS caps its names (max-width: 60px), and the gutter follows; a fixed end stays 30px",
     [capped.start, capped.clipped[1], capped.end], [60, true, 30]);
   check("gutters auto, vertical: names under the columns wrap in the slat's CSS, and the gutter below is as tall as the tallest", await p.evaluate(() => {
-    const c = document.getElementById("auto-v"), names = [...c.querySelectorAll(".nm")], body = c.querySelector(".rhp-body").getBoundingClientRect();
+    const c = document.getElementById("auto-v"), names = [...c.querySelectorAll(".rhp-plot > :not([hidden]) .nm")], body = c.querySelector(".rhp-body").getBoundingClientRect();
     const bar = c.querySelector(".rhp-bar").getBoundingClientRect(), tallest = Math.max(...names.map((e) => e.getBoundingClientRect().height));
     return [names[1].getBoundingClientRect().height > names[0].getBoundingClientRect().height, Math.round(body.bottom - bar.bottom) === Math.round(tallest)];
   }), [true, ENGINE !== "firefox"]); // Firefox makes that gutter one line tall (the README says so): if it changes, this tells
+  const hiddenGutters = () => p.evaluate(() => ["auto", "auto-v"].map((id) => {
+    const row = document.querySelector(`#${id} .rhp-plot > [hidden]`);
+    return !!row && getComputedStyle(row).display === "none" && row.getBoundingClientRect().width === 0 && row.getBoundingClientRect().height === 0;
+  }));
+  check("gutters auto: filtered rows in both orientations occupy no space in server HTML", await hiddenGutters(), [true, true]);
   check("room to the end: a number too close to the scale's end is left out, in CSS, on the server's HTML", await p.evaluate(() =>
     [...document.querySelectorAll("#toend .n")].map((e) => e.getBoundingClientRect().width - parseFloat(getComputedStyle(e).paddingLeft) > 0)), [true, true, false]);
   check("server roots: a component's, a spread's, an svg and an img all get their row's place", await p.evaluate(() =>
@@ -1267,6 +1272,8 @@ const dom = (p, charts) => p.evaluate((charts) => {
   }), [`a > b "c" & 'd'`, "5", "rgb(1, 2, 3)", "0"]);
   check("server roots: a row with no position is hidden, and one a slat hid itself shows at its position, as in a browser", await p.evaluate(() =>
     [...document.querySelectorAll("#roots [data-h]")].map((e) => e.hidden)), [true, false]);
+  await p.evaluate(() => window.go());
+  check("gutters auto: filtered rows stay absent after hydration", await hiddenGutters(), [true, true]);
   await p.close();
 }
 

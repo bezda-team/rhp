@@ -84,7 +84,7 @@
     /* and as wide, so a column's left is too */
   }
 
-  [data-rhp-gutters]>.rhp-body>.rhp-plot> :not(svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
+  [data-rhp-gutters]>.rhp-body>.rhp-plot> :not([hidden], svg, img, canvas, video, iframe, embed, object, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-area, .rhp-line) {
     position: relative;
     display: grid;
   }
