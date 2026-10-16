@@ -1078,10 +1078,10 @@ export function install() {
   // point reaches it and something in the slat takes the pointer, something covers it: { covered } says what (another
   // slat of its Plot, or an element). When nothing in it takes the pointer (the page reads the pointer around the
   // chart), the first point on its first mark, or its center.
-  function pointAt(n, across = 0.5) {
+  function pointAt(n, across = 0.5, scroll = true) {
 
     const slat = window.__rhpTargets[n];
-    slat.scrollIntoView({ block: "center", inline: "center", behavior: "instant" });
+    if (scroll) slat.scrollIntoView({ block: "center", inline: "center", behavior: "instant" });
     const marks = [...slat.querySelectorAll(MARKS + ", .rhp-cell")].filter(visible)
       .map((m) => ({ m, r: m.getBoundingClientRect(), pointer: getComputedStyle(m).cursor === "pointer" }))
       .filter(({ r }) => r.width * r.height > 0);

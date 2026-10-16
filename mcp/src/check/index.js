@@ -35,7 +35,7 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import crypto from "crypto";
-import { pathToFileURL } from "url";
+import { pathToFileURL, fileURLToPath } from "url";
 import { detectFormat, bundle, guardedStandalone, htmlProblems, packages, contentType } from "./build.js";
 import { launch, NO_BROWSER_FIX } from "./browser.js";
 import { install } from "./inpage.js";
@@ -43,9 +43,11 @@ import { fromProbe, fixForError, placeOf } from "./findings.js";
 import { textContrast, faintMarks, colorBlind } from "./colors.js";
 import { decode } from "./png.js";
 import { interact as interactionPass } from "./interact.js";
+import { selectionBehavior } from "./selection.js";
 import { readMap, lookup } from "./sourcemap.js";
 import { sourceProblems } from "./source.js";
 import { report } from "./report.js";
+import { fetchPublic, READ_METHODS, denyBrowserNetwork } from "./network.js";
 
 const ORIGIN = "http://rhp-check.localhost";
 const CDN = /^https?:\/\/(?:cdn\.jsdelivr\.net\/npm|unpkg\.com|esm\.sh)\/@bezda\/rhp(?:@([^/]+))?\/(?:dist\/)?([^?#]*)/;
@@ -184,18 +186,45 @@ export async function check(options = {}) {
   fs.mkdirSync(outDir, { recursive: true });
   const name = path.basename(file).replace(/\.[^.]+$/, "");
 
+  // Both the spelled path and the resolved path must remain below this root.
+  // This also rejects hidden paths and symlinks that lead outside the chart folder.
+  const scopedFile = (root, candidate) => {
+    try {
+      const inside = (base, name) => {
+        const rel = path.relative(base, name);
+        return rel && !rel.startsWith(".." + path.sep) && rel !== ".." && !path.isAbsolute(rel) && !rel.split(path.sep).some((part) => part.startsWith("."));
+      };
+      if (!inside(path.resolve(root), path.resolve(candidate))) return null;
+      const real = fs.realpathSync(candidate);
+      return inside(fs.realpathSync(root), real) && fs.statSync(real).isFile() ? real : null;
+    } catch {
+      return null;
+    }
+  };
+
   // Answers every request the page makes: the bundle and the user's files for a bundled chart, rhp from the CDN, and
   // the rest of the web (fonts) through a short timeout, kept for the next width
   const route = async (r) => {
     const url = r.request().url();
 
+    if (url.startsWith("file:")) {
+      let local = null;
+      try {
+        const requested = fileURLToPath(url);
+        local = path.resolve(requested) === path.resolve(file) ? file : scopedFile(path.dirname(file), requested);
+      } catch {
+        // A malformed file URL is not a local asset.
+      }
+      return local ? r.fulfill({ body: fs.readFileSync(local), contentType: contentType(local) }) : r.abort("blockedbyclient");
+    }
+
     if (url.startsWith(ORIGIN + "/")) {
       const p = decodeURIComponent(new URL(url).pathname);
-      if (p === "/") return r.fulfill({ body: built.html, contentType: "text/html" });
-      if (built.files.has(p)) return r.fulfill({ body: built.files.get(p).body, contentType: built.files.get(p).type });
+      if (p === "/" && built) return r.fulfill({ body: built.html, contentType: "text/html" });
+      if (built?.files.has(p)) return r.fulfill({ body: built.files.get(p).body, contentType: built.files.get(p).type });
       if (p === "/favicon.ico") return r.fulfill({ status: 204, body: "" });
-      const local = path.join(path.dirname(file), p);
-      if (local.startsWith(path.dirname(file)) && fs.existsSync(local) && fs.statSync(local).isFile()) return r.fulfill({ body: fs.readFileSync(local), contentType: contentType(local) });
+      const local = scopedFile(path.dirname(file), path.join(path.dirname(file), p));
+      if (local) return r.fulfill({ body: fs.readFileSync(local), contentType: contentType(local) });
       return r.fulfill({ status: 404, body: "not found: " + p });
     }
 
@@ -207,32 +236,37 @@ export async function check(options = {}) {
       const sub = rest === "standalone" || rest === "standalone.js" || rest === "" ? "standalone.js" : rest;
       const headers = { "access-control-allow-origin": "*" };
       if (sub === "standalone.js") return r.fulfill({ body: standalone ?? fs.readFileSync(path.join(pkgs.rhp.root, "dist/standalone.js")), contentType: "text/javascript", headers });
-      const f = path.join(pkgs.rhp.root, "dist", sub.replace(/^dist\//, ""));
-      if (fs.existsSync(f)) return r.fulfill({ body: fs.readFileSync(f), contentType: contentType(f), headers });
+      const f = scopedFile(path.join(pkgs.rhp.root, "dist"), path.join(pkgs.rhp.root, "dist", sub.replace(/^dist\//, "")));
+      if (f) return r.fulfill({ body: fs.readFileSync(f), contentType: contentType(f), headers });
       return r.fulfill({ status: 404, body: "not in @bezda/rhp: " + sub, headers });
     }
 
     if (!/^https?:/.test(url)) return r.continue();
     if (options.offline) return r.abort("internetdisconnected").catch(() => {});
 
-    if (!remote.has(url)) {
-      remote.set(url, fetched.has(url) ? Promise.resolve(fetched.get(url)) : r.fetch({ timeout: 5000, maxRedirects: 5 }).then(async (res) => {
-        const got = { status: res.status(), headers: res.headers(), body: await res.body() };
-        if (got.status >= 200 && got.status < 300 && fetchedBytes + got.body.length <= KEEP_BYTES) {
+    // The rest of the web, read only and from public addresses only (network.js); a GET answer is kept
+    const method = r.request().method().toUpperCase();
+    if (!READ_METHODS.has(method)) return r.abort("blockedbyclient").catch(() => {});
+    const key = method + " " + url;
+    if (!remote.has(key)) {
+      remote.set(key, method === "GET" && fetched.has(url) ? Promise.resolve(fetched.get(url)) : fetchPublic(url, { method, headers: r.request().headers() }).then((got) => {
+        if (method === "GET" && !got.error && got.status >= 200 && got.status < 300 && fetchedBytes + got.body.length <= KEEP_BYTES) {
           fetched.set(url, got);
           fetchedBytes += got.body.length;
         }
         return got;
-      }, (e) => ({ error: String(e.message ?? e).split("\n")[0] })));
+      }));
     }
-    const got = await remote.get(url);
-    if (got.error) return r.abort("internetdisconnected").catch(() => {});
+    const got = await remote.get(key);
+    if (got.error) return r.abort(got.blocked ? "blockedbyclient" : "internetdisconnected").catch(() => {});
     return r.fulfill({ status: got.status, headers: got.headers, body: got.body }).catch(() => {});
   };
 
   const browser = launched.browser;
   const results = [];
   const screenshots = [];
+  const fenced = new Set();
+  const fence = await denyBrowserNetwork((url) => fenced.add(url));
   const isLocal = (u) => u.startsWith("file:") || u.startsWith(ORIGIN);
 
   // A page with the chart, the probe installed and at rest (in a window of another size when asked); what the page
@@ -258,6 +292,11 @@ export async function check(options = {}) {
     });
     await page.emulateMedia({ reducedMotion });
     await page.route("**/*", route);
+    await context.routeWebSocket(/.*/, (ws) => {
+      // A WebSocket can send arbitrary messages after its handshake, so it is not a read-only fetch.
+      events.push({ kind: "remote-failed", text: ws.url(), error: "net::ERR_BLOCKED_BY_CLIENT" });
+      ws.close({ code: 1008, reason: "WebSockets are blocked by the check" });
+    });
     await page.goto(format === "html" ? pathToFileURL(file).href : ORIGIN + "/", { waitUntil: "load", timeout: 20000 }).catch((e) => events.push({ kind: "pageerror", text: "The page did not finish loading: " + String(e.message).split("\n")[0] }));
     await page.evaluate(install);
     const measured = reducedMotion === "reduce";
@@ -298,7 +337,8 @@ export async function check(options = {}) {
   try {
     await Promise.all(widths.map(async (width, i) => {
       const phone = width <= PHONE;
-      const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: phone ? 2 : 1, hasTouch: phone, colorScheme: dark ? "dark" : "light" });
+      // No service workers (they would answer requests outside the check's router) and no downloads
+      const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: phone ? 2 : 1, hasTouch: phone, colorScheme: dark ? "dark" : "light", serviceWorkers: "block", acceptDownloads: false, proxy: fence.proxy });
       const events = [];
       const w0 = performance.now();
       try {
@@ -361,8 +401,18 @@ export async function check(options = {}) {
       // and taps at a phone's, in the window a phone shows (not when the page never finished loading)
       const interactions = [];
       const unfocused = [];
+      let selection = { findings: [], tested: null };
       const loaded = !events.some((e) => e.kind === "pageerror" && /^The page did not finish loading/.test(e.text));
       if (wantInteract && loaded && (i === 0 || phone)) {
+        if (i === 0) {
+          const audit = await open(context, events, "no-preference");
+          try {
+            selection = await selectionBehavior(audit, { events });
+            guarded.push(...(await audit.evaluate(() => globalThis.__rhpCheck?.findings ?? []).catch(() => [])));
+          } finally {
+            await audit.close();
+          }
+        }
         const fresh = await open(context, events, "no-preference", phone ? { width, height: PHONE_WINDOW } : null);
         const pass = { events, capture: (opts) => capture(fresh, opts, true), shoot: (suffix) => save(fresh, width, suffix, true) };
         const passes = [];
@@ -377,7 +427,7 @@ export async function check(options = {}) {
         guarded.push(...(await fresh.evaluate(() => globalThis.__rhpCheck?.findings ?? []).catch(() => [])));
       }
 
-      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, swept, ms: Math.round(performance.now() - w0) });
+      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, selection, swept, ms: Math.round(performance.now() - w0) });
       } catch (error) {
         if (error.code !== "page-unsettled") throw error;
         findings.push({ level: "error", code: error.code, message: error.message, fix: "Let finite entry animations finish, honor prefers-reduced-motion for live updates, or increase the check's settleTimeout for a slow machine.", width });
@@ -386,8 +436,13 @@ export async function check(options = {}) {
       }
     }));
   } finally {
-    if (!options.browser) await browser.close();
+    try {
+      if (!options.browser) await browser.close();
+    } finally {
+      await fence.close();
+    }
   }
+  for (const url of fenced) findings.push({ level: "info", code: "remote-failed", message: `The check blocked an unrouted browser connection to ${url}; no connection was forwarded.`, fix: "Use public HTTP assets or data requests; worker sockets and other direct browser connections are blocked." });
   lap("pages", t);
 
   results.sort((a, b) => a.index - b.index);
@@ -417,7 +472,8 @@ export async function check(options = {}) {
       } else if (e.kind === "request-failed") {
         findings.push({ level: "error", code: "request-failed", message: `${e.text.replace(ORIGIN, "").replace(/^file:\/\//, "")} failed to load (${e.error}).`, fix: "Fix the path, or add the file next to the chart.", width: r.width });
       } else if (e.kind === "remote-failed") {
-        findings.push({ level: "info", code: "remote-failed", message: `${e.text} could not be fetched (${e.error}); the check went on without it.`, fix: "If the page needs it, check the URL; offline, fonts fall back to the next in the stack.", width: r.width });
+        if (/BLOCKED_BY_CLIENT/.test(e.error)) findings.push({ level: "info", code: "remote-failed", message: `${e.text} was not fetched: the check only reads from public addresses (GET, HEAD or OPTIONS), blocks WebSockets, and the page asked for something else; it went on without it.`, fix: "Load data and assets with plain GET requests from public URLs, or from files next to the chart; the checker does not forward request bodies or WebSocket messages.", width: r.width });
+        else findings.push({ level: "info", code: "remote-failed", message: `${e.text} could not be fetched (${e.error}); the check went on without it.`, fix: "If the page needs it, check the URL; offline, fonts fall back to the next in the stack.", width: r.width });
       }
     }
 
@@ -461,14 +517,19 @@ export async function check(options = {}) {
 
     // focus that shows nothing: one finding for the page
     if (r.unfocused.length) findings.push({ ...fromProbe({ code: "focus-invisible", what: r.unfocused[0], more: r.unfocused.length - 1 }, {}), width: r.width });
+
+    // Existing click selection with a temporary hover override, verified on an isolated page.
+    for (const f of r.selection.findings) findings.push({ ...fromProbe(f, {}), width: r.width });
+
   }
 
   const charts = results.flatMap((r) => r.seen.charts.map((c) => ({ width: r.width, ...c })));
+  const selectionAudits = results.flatMap((r) => r.selection.tested ? [{ width: r.width, ...r.selection.tested }] : []);
   const interactions = results.flatMap((r) => r.interactions);
   const swept = results.flatMap((r) => r.swept.map(({ width, breakpoint, slats, jumps }) => ({ width, breakpoint: !!breakpoint, slats, jumps: jumps.length }))).sort((a, b) => b.width - a.width);
   timings.widths = Object.fromEntries(results.map((r) => [r.width, r.ms]));
 
-  return finish({ ...base, browser: launched.name, findings, charts, interactions, interactedAt: wantInteract ? widths[0] : null, swept, screenshots, timings, started });
+  return finish({ ...base, browser: launched.name, findings, charts, interactions, interactedAt: wantInteract ? widths[0] : null, selectionAudits, swept, screenshots, timings, started });
 }
 
 // Merges the same finding at several widths, sorts errors first, and writes the report
@@ -498,6 +559,7 @@ function finish({ findings, started, timings, ...rest }) {
     charts: rest.charts ?? [],
     interactions: rest.interactions ?? [],
     interactedAt: rest.interactedAt ?? null,
+    selectionAudits: rest.selectionAudits ?? [],
     swept: rest.swept ?? [],
     screenshots: rest.screenshots ?? [],
     timings,

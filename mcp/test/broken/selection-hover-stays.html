@@ -1,0 +1,57 @@
+<!doctype html>
+<!-- A temporary hover hides a click selection until the pointer leaves the poster; a click on the poster resets correctly. expect: selection-hover-stays:warning -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selection reset</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 16px; background: #fff; color: #222; font: 16px/1.5 monospace; }
+  .poster { max-width: 640px; margin: auto; padding: 16px; }
+  .readout { min-height: 2lh; margin: 0 0 16px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const names = ["Apples", "Bananas", "Cherries", "Dates", "Elderberries"];
+const values = [12, 18, 7, 9, 4];
+const DEFAULT = null;
+const [hover, setHover] = createSignal(null);
+const [selected, setSelected] = createSignal(DEFAULT);
+const shown = () => hover() ?? selected();
+const Row = slat({ thickness: 36, room: { start: 120, end: 32 } }, (d) => html`
+  <div data-row=${() => d.index}>
+    <${Label} edge="start">${() => d.name}<//>
+    <${Bar} to=${() => d.value} color=${() => d.lit ? "#1d4ed8" : "#526577"} />
+    <${Label} at=${() => d.value}>${() => d.value}<//>
+  </div>`);
+const rowOf = (el) => {
+  const row = el.closest("[data-row]");
+  return row ? +row.dataset.row : null;
+};
+const move = (e) => {
+  if (e.pointerType === "touch") return;
+  const row = rowOf(e.target);
+  if (row != null) setHover(row);
+};
+const leave = (e) => { if (e.pointerType !== "touch") setHover(null); };
+const click = (e) => {
+  const row = rowOf(e.target);
+  if (row != null) { setSelected(row); setHover(null); }
+  else if (!e.target.closest(".rhp-chart")) { setSelected(DEFAULT); setHover(null); }
+};
+render(() => html`
+  <figure class="poster" onPointerMove=${move} onPointerLeave=${leave} onClick=${click}>
+    <p class="readout">${() => shown() == null ? "Point at or choose a fruit." : `${names[shown()]}: ${values[shown()]} sold.`}</p>
+    <${Chart} scale=${[0, 20]} label="Fruit sold">
+      <${Plot} name=${names} value=${values} lit=${(d) => shown() === d.index}>${Row}<//>
+    <//>
+    <figcaption>Fruit sold at the market today.</figcaption>
+  </figure>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

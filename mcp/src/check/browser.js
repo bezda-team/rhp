@@ -77,12 +77,18 @@ export async function launch() {
 
   const failures = [];
 
+  // Chromium's own sandbox on (Playwright leaves it off): the page runs code the checker did not write. Where it
+  // cannot start (some Linux containers, or running as root), the same browser runs without it. WebRTC sends nothing
+  // outside a proxy, so it cannot reach the network around the check's router.
+  const args = ["--hide-scrollbars", "--disable-lcd-text", "--force-webrtc-ip-handling-policy=disable_non_proxied_udp"];
   for (const t of tries) {
-    try {
-      const browser = await chromium.launch({ headless: true, ...t.options, args: ["--hide-scrollbars", "--disable-lcd-text"] });
-      return { browser, name: `${t.name} ${browser.version()}` };
-    } catch (e) {
-      failures.push(`${t.name}: ${String(e.message ?? e).split("\n")[0]}`);
+    for (const chromiumSandbox of [true, false]) {
+      try {
+        const browser = await chromium.launch({ headless: true, chromiumSandbox, ...t.options, args });
+        return { browser, name: `${t.name} ${browser.version()}`, sandboxed: chromiumSandbox };
+      } catch (e) {
+        if (!chromiumSandbox) failures.push(`${t.name}: ${String(e.message ?? e).split("\n")[0]}`);
+      }
     }
   }
 

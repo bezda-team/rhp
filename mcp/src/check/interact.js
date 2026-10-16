@@ -5,7 +5,7 @@
 // look), what threw, and what moved: a control other than the one used, a chart's top, or the plot while a slat is
 // lit (the layout jumps); for a tap, also whether the reader sees none of the text it changed (unseen): all of it lies
 // outside the window.
-import { decode } from "./png.js";
+import { seenPixels } from "./png.js";
 
 const changes = (seen) => {
 
@@ -19,24 +19,6 @@ const changes = (seen) => {
 
   return parts.join(", ");
 };
-
-// How many pixels of two screenshots of one box differ enough to see (their channels by more than 24 in all: a
-// tint of 6% of the ink over the paper shows, drawing one page twice changes nothing)
-function seenPixels(a, b) {
-
-  if (a.equals(b)) return 0;
-
-  const x = decode(a);
-  const y = decode(b);
-  if (x.width !== y.width || x.height !== y.height) return Infinity;
-
-  let n = 0;
-  for (let i = 0; i < x.data.length; i += 4) {
-    if (Math.abs(x.data[i] - y.data[i]) + Math.abs(x.data[i + 1] - y.data[i + 1]) + Math.abs(x.data[i + 2] - y.data[i + 2]) > 24) n++;
-  }
-
-  return n;
-}
 
 // Tab through the page (up to 8 stops, until it comes back to one): each stop's box, with room around it for an
 // outline, is pictured focused and then blurred (Tab goes on from an element blurred). A stop where under 20 pixels

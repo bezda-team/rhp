@@ -173,12 +173,26 @@ npx -y @bezda/rhp-mcp install-browser
 It downloads Chromium's headless shell into Playwright's usual folder and leaves the other browsers there alone.
 Other options go to Playwright's installer: on Linux, `install-browser --with-deps` also installs the system libraries the browser needs.
 
-## Nothing leaves your machine
+## Local checking
 
-The checker renders your chart in a browser on your machine, and your chart's code and screenshots stay there.
+The checker renders your chart in a browser on your machine and does not upload its source or screenshots.
 It answers the page's requests for `@bezda/rhp` from the copy of rhp it ships with.
 The only other requests are the ones your chart's page makes itself, such as its Google Fonts, and each gets 5 seconds before the check goes on without it.
 There is no telemetry.
+
+The checker treats the chart's page as code it did not write, and gives it only what a chart needs to render:
+
+- It permits public HTTP GET, HEAD and OPTIONS requests for assets and data, without forwarding request bodies; POST and other methods are blocked.
+  WebSockets are blocked because they can send arbitrary messages.
+  This is not a guarantee against data sent in a public URL or its headers.
+- It reaches public addresses only: never this machine (`localhost`), your network or a cloud's metadata service, including through a redirect or a DNS answer.
+  Remote responses have a 5-second overall deadline across redirects and a 64 MB size limit, including decompressed content.
+  A rejecting local proxy blocks browser connections that bypass the asset router, including worker sockets.
+- It reads the files next to the chart and in folders under it, but not hidden ones (`.env`, `.git`) and nothing outside the chart's folder, including through symlinks.
+  These restrictions apply to standalone HTML pages and bundled charts.
+- The browser runs with Chromium's sandbox on (without it only where it cannot start, as in some Linux containers), with no service workers and no downloads.
+
+A request the checker refuses is reported in the check, and the check goes on without it.
 
 ## For maintainers
 

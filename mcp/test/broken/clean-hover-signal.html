@@ -33,7 +33,7 @@ const pick = (e) => {
 };
 
 render(() => html`
-  <div onPointerMove=${pick}>
+  <div onPointerMove=${pick} onPointerLeave=${() => setOn(null)}>
     <${Chart} scale=${[0, 20]} label="Fruit sold today">
       <${Plot} fruit=${fruit} sold=${sold} on=${(d) => on() === d.index}>${Fruit}<//>
     <//>

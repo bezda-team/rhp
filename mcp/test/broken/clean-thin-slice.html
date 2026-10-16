@@ -56,7 +56,7 @@ const pick = (e) => {
 };
 
 render(() => html`
-  <div onPointerMove=${pick} onClick=${pick} onPointerLeave=${() => setOn(null)}>
+  <div onPointerMove=${(e) => (e.target.closest(".rhp-chart") ? pick(e) : setOn(null))} onClick=${pick} onPointerLeave=${() => setOn(null)}>
     <${Chart} aspect=${1} ticks=${false} label="Visits by source">
       <div class="hub">${() => (on() == null ? "All sources" : source[on()])}</div>
       <${Plot} overlap=${true} source=${source} from=${from} to=${to} on=${(d) => on() === d.index}>${Source}<//>

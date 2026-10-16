@@ -88,7 +88,7 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 | `interaction-error` | error | A step of the interaction pass threw or logged an error. | As for `runtime-error`. |
 | `rhp-warning` | error | rhp printed one of its `rhp:` warnings. | Do what the warning says. |
 | `request-failed` | error | A file next to the chart (or in the bundle) failed to load. | Fix the path, or add the file. |
-| `remote-failed` | info | A remote file (fonts, a CDN) could not be fetched; the check goes on without it. | Check the URL; offline, fonts fall back. |
+| `remote-failed` | info | A remote file (fonts, a CDN) could not be fetched, or the page asked for something the checker does not fetch (a request that sends data, an address that is not public); the check goes on without it. | Check the URL; offline, fonts fall back. Load data and assets with plain GET requests from public URLs, or from files next to the chart. |
 
 ### How rhp is used (the guard)
 
@@ -144,6 +144,23 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 | `layout-jump` | warning | An interaction of the pass, or a pick of the sweep, moves a control other than the one it used, or a chart's top, by more than 2px (a readout that takes a second line, a button whose label changes its width); or, while it lights a slat (pointing, a tap, the keyboard), it moves an edge of the plot (a lit name that gets bolder makes room "auto" wider, and every bar slides) or the end of the chart's section (its outermost box in the page: a readout after the chart that takes a second line), by more than 2px. A control in a slat that moves with its slat (rows sorted or removed) is left out, and so are fixed and sticky elements. | A box that keeps its size: a readout on one line with an ellipsis, or a min-height for its longest text; buttons that keep their width; names that keep their weight and size when lit, or room in px. |
 | `out-of-view` | warning | At a phone's width, in a window 664px tall, a tap on a slat that is in the window changes text the reader can see, and all of it lies outside the window (above, below or beside it), even when the tap lights the slat in view: a readout above a tall chart, when the last slat is tapped. | A readout next to the slat (in the slat, or in a Label of it), or one kept in view (`position: sticky`, with a z-index over the plot's 1). |
 | `focus-invisible` | warning | Tab reaches a slat or a control, and a screenshot of its box (with 12px around it) focused and blurred differ in under 20 pixels: `outline: none` with nothing in its place. | Keep the focus ring, or a `:focus-visible` style that shows in its place (on a slat, in the slat type's css). |
+
+### Conditional selection repair
+
+The shared checker runs this audit after creation, through both `rhp_check` and the CLI (`npx -y @bezda/rhp-mcp check <file>`).
+It does not require either click selection or hover, and these checks do not choose an interaction for the chart.
+On an isolated page, it first verifies that a click persists after the pointer leaves the poster, another slat's hover overrides it, and leaving the poster restores the clicked selection.
+Only that observed combination qualifies.
+It then checks a pointer move and a click on noninteractive text or margin inside the same poster, outside every chart and control.
+The initial appearance is the reset reference, preserving an existing default without guessing which subject should be selected.
+Moving pages, unreachable marks and sequences that scroll are inconclusive rather than findings.
+The audit samples up to three reachable slats of the main Plot at the first checked width.
+It never changes the source; its conditional fix is returned to the authoring agent through the skill's existing check-and-fix step, with explicit user interaction instructions taking precedence.
+
+| Code | Level | What triggers it | Fix it gives |
+|---|---|---|---|
+| `selection-hover-stays` | warning | Verified click selection with a temporary hover override: moving off the chart but staying in the poster does not restore the clicked selection, although leaving the poster does. | Clear only the hover preview on leaving the chart area; preserve the clicked selection, unless the user explicitly asked for different behavior. |
+| `selection-reset` | warning | The same verified pattern: clicking noninteractive poster space outside the chart fails to restore the initial appearance. | Clear the selection if no default existed, or restore the chart's meaningful default; preserve explicitly requested behavior and other controls. |
 
 ### Colors (read from screenshots)
 

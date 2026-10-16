@@ -42,7 +42,7 @@ const pick = (e) => {
 const readout = () => html`<p class="readout">${() => (on() == null ? "Tap or point at a fruit." : says[on()])}</p>`;
 
 render(() => html`
-  <div onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${pick} onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}>
+  <div onPointerMove=${(e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : setOn(null))} onClick=${pick} onPointerLeave=${(e) => e.pointerType !== "touch" && setOn(null)}>
     ${readout()}
     <${Chart} scale=${[0, 20]} label="Fruit sold today">
       <${Plot} fruit=${fruit} sold=${sold} on=${(d) => on() === d.index}>${Fruit}<//>

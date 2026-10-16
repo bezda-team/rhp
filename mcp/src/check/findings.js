@@ -198,6 +198,20 @@ export function fromProbe(f, context) {
         message: `Tab reaches ${f.what}${f.more ? ` and ${f.more} more` : ""}, but nothing on screen shows the focus there: a keyboard reader cannot see where it is.`,
         fix: "Show focus: take off outline: none, or put a :focus-visible style that shows in its place (outline: 2px solid in the ink color, outline-offset: 2px; on a slat, in the slat type's css).",
       };
+    case "selection-hover-stays":
+      return {
+        level: "warning",
+        code: f.code,
+        message: `After clicking ${f.selected}, hovering ${f.target} overrides that selection, but moving beside the chart (${f.what}) does not give the selected item back. Leaving the poster does.`,
+        fix: "This chart already has click selection with a temporary hover override. Unless the user explicitly requested a different behavior, end only the hover preview when the pointer leaves the chart area, including when it moves onto the poster's readout, text or margin, and show the existing click selection again. Keep hover and selection separate; do not clear the selection on pointerleave, add a new interaction, or change a different interaction style.",
+      };
+    case "selection-reset":
+      return {
+        level: "warning",
+        code: f.code,
+        message: `This chart has click selection with a temporary hover override. After selecting ${f.target}, clicking beside the chart (${f.what}), inside the poster, does not restore its initial state.`,
+        fix: "Unless the user explicitly requested persistent selection or another reset behavior, make a click or tap inside this poster but outside its chart area reset this existing selection and its hover preview. Restore the meaningful default selection the chart already had (such as the analysis subject); if it had none, clear all selections. Preserve that default rather than inventing one, and leave controls, links, other charts, and keyboard interactions alone. Do not add click selection or hover to a chart that lacks them. Apply the fix in the chart source and rerun the checker; the checker does not rewrite the file.",
+      };
     default:
       return { level: "error", code: f.code, message: JSON.stringify(f), fix: "" };
   }
