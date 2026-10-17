@@ -952,7 +952,8 @@ if (typeof document !== 'undefined') {
   };
   if (!mount()) {
     const observer = new MutationObserver(() => { if (mount()) observer.disconnect(); });
-    observer.observe(document.getElementById('chart') || document.body, {childList: true, subtree: true});
+    // Gallery navigation adds the download toolbar outside the chart mount.
+    observer.observe(document.body, {childList: true, subtree: true});
   }
 }
 

@@ -15,7 +15,12 @@ try{
     await page.locator('.pick').nth(20).focus();
     await page.waitForFunction(()=>[...document.querySelectorAll('.value')].every(el=>el.style.getPropertyValue('--label-y')));
     await page.evaluate(async()=>{for(let i=0;i<2;i++)await new Promise(resolve=>requestAnimationFrame(resolve));});
-    if(await page.locator('.poster-rain').count())await page.getByRole('button',{name:'Pause background rain'}).click();
+    await page.getByRole('button',{name:'Pause background rain'}).waitFor();
+    if(width===1280||width===390){
+      const firstFrame=await page.locator('.poster-rain').evaluate(el=>el.toDataURL());
+      await page.waitForFunction(before=>document.querySelector('.poster-rain').toDataURL()!==before,firstFrame,{polling:100,timeout:5000});
+    }
+    await page.getByRole('button',{name:'Pause background rain'}).click();
     for(const [from,to] of [[20,21],[21,20]]){
       await page.locator('.pick').nth(from).focus();
       await page.waitForFunction(()=>[...document.querySelectorAll('.value-text')].every(el=>el.getAnimations().length===0));

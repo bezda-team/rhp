@@ -25,6 +25,7 @@ When an obstacle blocks part of the horizontal slide, only that part is shortene
 The year and sulfur readout reserve fixed widths so the values stay in place as the selected year changes.
 The download icon saves the current poster at twice its CSS resolution.
 The animated version includes a pause button, starts still when reduced motion is preferred, and pauses when offscreen or hidden.
+The rain waits for both the poster and its download toolbar, including gallery navigation inserted outside the chart mount.
 PNG downloads briefly freeze the rain and include its current frame.
 The effect uses a small WebGL overlay, with the original photograph as the fallback when WebGL is unavailable.
 Droplets have uneven outlines, stretch while sliding, leave cleared wet trails and settle gradually.
@@ -44,6 +45,7 @@ node mcp/bin/rhp-mcp.js check examples/real/acid-rain/acid-rain-glass-animated.h
 ```
 
 Omit `--offline` to fetch a new source snapshot.
+Pass a served gallery URL to `label-motion.test.mjs` to check the gallery integration, including required rain controls and changing rendered frames.
 The fetcher validates the historical window and headline arithmetic instead of accepting changed source shapes silently.
 These are program-covered units with changing membership, not all U.S. electricity or a fixed plant panel.
 SO2 emissions, wet sulfate deposition and ecosystem recovery are separate measures.
