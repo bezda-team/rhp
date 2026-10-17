@@ -127,7 +127,7 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
   <article><h3>What is included?</h3><p>Annual sums of EPA's coal, gas, oil and other fuel series for covered plants. CSAPR-only SO₂ units enter in 2015. This is a historical comparison, not all U.S. power plants or conditions in 2026.</p><a href="source-snapshot.json">Exact source series and coverage note</a></article>
   <article><h3>Did less pollution reach the ground?</h3><p>Wet sulfate deposition fell 73% in the eastern U.S., comparing 2000 to 2002 and 2020 to 2022 averages. This separate measure is not rainfall pH. Ecosystem recovery remains uneven.</p><a href="https://www.epa.gov/power-sector/progress-report-atmospheric-deposition">Deposition data</a> · <a href="https://www.epa.gov/power-sector/progress-report-ecosystem-response">Ecosystem recovery</a></article>
  </div>
- <div class="files"><a href="data.json">Chart data</a><a href="source-snapshot.json">EPA source snapshot</a><a href="post.txt">Post draft</a><a href="research.txt">Research notes</a></div>
+ <div class="files"><a href="data.json">Chart data</a><a href="source-snapshot.json">EPA source snapshot</a><a href="research.txt">Research notes</a></div>
 </section>
 <script type="module">
 import {Chart,Plot,Scale,Line,Dot,Tick,Label,Poster,slat,html,render,createSignal,onMount,onCleanup} from "@bezda/rhp/standalone";
@@ -155,16 +155,23 @@ export function installDotLabels(poster, rows, format) {
   let frame = 0, slideFrame = 0, placements = new Map(), layoutKey = '', previousYear = null;
   const slides = new Map();
   const chart = poster.querySelector('.rhp-chart');
-  const rect = el => el.getBoundingClientRect();
+  const localBox = box => {
+    const origin = poster.getBoundingClientRect(), scale = origin.width / parseFloat(getComputedStyle(poster).width);
+    return {left:(box.left-origin.left)/scale,right:(box.right-origin.left)/scale,
+      top:(box.top-origin.top)/scale,bottom:(box.bottom-origin.top)/scale,width:box.width/scale,height:box.height/scale};
+  };
+  const rect = el => localBox(el.getBoundingClientRect());
   const fixedBoxes = () => [...poster.querySelectorAll('.name .long,.name .short,.name strong,.axis-value,.rhp-label.year,.chart-heading p,.readout')].flatMap(el => {
     const range = document.createRange(); range.selectNodeContents(el);
-    return [...range.getClientRects()].filter(box => box.width && box.height);
+    return [...range.getClientRects()].filter(box => box.width && box.height).map(localBox);
   });
   function stroke(path) {
-    const matrix = path.getScreenCTM();
+    const matrix = path.getScreenCTM(), origin = poster.getBoundingClientRect();
+    const scale = origin.width / parseFloat(getComputedStyle(poster).width);
     return {radius: parseFloat(getComputedStyle(path).strokeWidth) / 2,
       points: [...path.getAttribute('d').matchAll(/[ML]\s*(-?[\d.]+)[ ,]+(-?[\d.]+)/g)]
-        .map(([, x, y]) => new DOMPoint(+x, +y).matrixTransform(matrix)),
+        .map(([, x, y]) => new DOMPoint(+x, +y).matrixTransform(matrix))
+        .map(point => ({x:(point.x-origin.left)/scale,y:(point.y-origin.top)/scale})),
     };
   }
   function lineBand({points, radius}, left, right) {
@@ -207,7 +214,7 @@ export function installDotLabels(poster, rows, format) {
       const key = label.parentElement.classList.contains('power') ? 'power' : 'sulfur';
       const text = label.querySelector('.value-text'), css = getComputedStyle(text);
       const range = document.createRange(); range.selectNodeContents(text);
-      const textBox = range.getBoundingClientRect();
+      const textBox = localBox(range.getBoundingClientRect());
       const context = document.createElement('canvas').getContext('2d');
       context.font = `${css.fontWeight} ${css.fontSize} ${css.fontFamily}`;
       return {key, label, context, height: textBox.height, baseline: textBox.bottom - rect(label).bottom,
@@ -261,7 +268,7 @@ export function installDotLabels(poster, rows, format) {
     // right side first. The vertical position always uses this year's actual side.
     slideFrame = requestAnimationFrame(() => {
       labels.forEach((label, i) => {
-        const text = label.querySelector('.value-text'), x = text.getBoundingClientRect().left;
+        const text = label.querySelector('.value-text'), x = rect(text).left;
         const animation = switching && from[i] !== null && !matchMedia('(prefers-reduced-motion:reduce)').matches
           ? text.animate([{translate:`${clearSlide(text, from[i]-x)}px 0px`},{translate:'0px 0px'}],{duration:180,easing:'ease-out'}) : null;
         slides.set(text,{x,animation});
@@ -275,9 +282,10 @@ export function installDotLabels(poster, rows, format) {
   const changes = new MutationObserver(() => apply());
   changes.observe(poster, {attributes: true, attributeFilter: ['data-selected-year']});
   const resize = new ResizeObserver(schedule); resize.observe(chart);
+  poster.addEventListener('poster-view-change', schedule);
   document.fonts.ready.then(schedule);
   schedule();
-  return () => {cancelAnimationFrame(frame);cancelAnimationFrame(slideFrame);slides.forEach(state=>state.animation?.cancel());changes.disconnect();resize.disconnect();};
+  return () => {cancelAnimationFrame(frame);cancelAnimationFrame(slideFrame);slides.forEach(state=>state.animation?.cancel());changes.disconnect();resize.disconnect();poster.removeEventListener('poster-view-change',schedule);};
 }
 
 
@@ -379,24 +387,76 @@ render(()=>html`<${AcidRain}/>`,document.getElementById("chart"));
 </script>
 <style id="poster-download-styles">
   .poster-download-tools { display: flex; justify-content: flex-end; align-items: center; margin: 0 auto 12px; max-width: 100%; }
-  .poster-download { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
-  .poster-download svg { display: block; width: 20px; height: 20px; }
-  .poster-download:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
-  .poster-download:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-  .poster-download[aria-disabled="true"] { cursor: progress; opacity: .5; }
+  .poster-actions { display: flex; align-items: center; margin-left: auto; }
+  .poster-download, .poster-fit-toggle { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
+  .poster-actions svg { display: block; width: 20px; height: 20px; }
+  .poster-actions button:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+  .poster-actions button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .poster-actions button[aria-disabled="true"] { cursor: progress; opacity: .5; }
+  .poster-fit-frame, .poster-fit-content { display: contents; }
+  .poster-fit-frame.is-fitted { display: block; margin: 0 auto; overflow: clip; }
+  .poster-fit-frame.is-fitted > .poster-fit-content { display: block; transform-origin: top left; }
   .poster-download-error { margin: 8px auto; font: 14px/1.4 system-ui, sans-serif; color: inherit; }
-  @media print { .poster-download-tools, .poster-download, .poster-download-error { display: none !important; } }
+  @media print { .poster-download-tools, .poster-actions, .poster-download-error { display: none !important; } }
 </style>
 <script type="module" id="poster-download-script">
+function addPosterFit(poster, button, changed) {
+  const frame = document.createElement('div'), content = document.createElement('div');
+  frame.className = 'poster-fit-frame'; content.className = 'poster-fit-content';
+  poster.before(frame); frame.append(content); content.append(poster);
+  const properties = ['width', 'max-width', 'margin', 'box-sizing'];
+  const original = properties.map(name => [name, poster.style.getPropertyValue(name), poster.style.getPropertyPriority(name)]);
+  let fitted = false, scale = 1, request = 0;
+  const restore = () => original.forEach(([name, value, priority]) => {
+    if (value) poster.style.setProperty(name, value, priority);
+    else poster.style.removeProperty(name);
+  });
+  function update() {
+    request = 0;
+    frame.classList.remove('is-fitted'); frame.style.width = ''; frame.style.height = '';
+    content.style.width = ''; content.style.transform = ''; restore(); scale = 1;
+    if (fitted) {
+      const box = poster.getBoundingClientRect();
+      scale = Math.min(1, innerHeight * .95 / box.height);
+      poster.style.setProperty('box-sizing', 'border-box');
+      poster.style.setProperty('width', `${box.width}px`);
+      poster.style.setProperty('max-width', 'none');
+      poster.style.setProperty('margin', '0');
+      content.style.width = `${box.width}px`;
+      content.style.transform = `scale(${scale})`;
+      frame.style.width = `${box.width * scale}px`; frame.style.height = `${box.height * scale}px`;
+      frame.classList.add('is-fitted');
+    }
+    const label = fitted ? 'Restore poster size' : 'Fit poster to screen';
+    button.setAttribute('aria-label', label); button.title = label;
+    button.setAttribute('aria-pressed', String(fitted));
+    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${fitted ? 'M15 3h6v6m0-6-7 7M9 21H3v-6m0 6 7-7' : 'M4 4l6 6m0-6v6H4m16 10-6-6m0 6v-6h6'}"/></svg>`;
+    changed();
+    poster.dispatchEvent(new Event('poster-view-change'));
+  }
+  const schedule = () => { if (fitted && !request) request = requestAnimationFrame(update); };
+  new ResizeObserver(schedule).observe(poster);
+  addEventListener('resize', schedule);
+  document.fonts.ready.then(schedule);
+  update();
+  return {
+    toggle() { fitted = !fitted; cancelAnimationFrame(request); update(); },
+    dimensions() {
+      if (!fitted) { const box = poster.getBoundingClientRect(); return {width:box.width,height:box.height}; }
+      const css = getComputedStyle(poster);
+      return {width:parseFloat(css.width),height:parseFloat(css.height)};
+    },
+  };
+}
 function addPosterDownloads() {
   document.querySelectorAll('.poster').forEach((poster, index) => {
     const navigation = index === 0 && document.querySelector('.recipe-navigation');
     const tools = navigation || document.createElement('div');
     if (tools.querySelector('.poster-download')) return;
+    const align = () => { if (!navigation) tools.style.width = `${poster.getBoundingClientRect().width}px`; };
     if (!navigation) {
       tools.className = 'poster-download-tools';
       poster.before(tools);
-      const align = () => { tools.style.width = `${poster.getBoundingClientRect().width}px`; };
       new ResizeObserver(align).observe(poster);
       align();
       const rgb = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
@@ -414,31 +474,43 @@ function addPosterDownloads() {
     button.setAttribute('aria-label', 'Download poster as PNG');
     button.title = 'Download poster as PNG';
     button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4"/></svg>';
+    const actions = document.createElement('div'), fitButton = document.createElement('button');
+    actions.className = 'poster-actions'; fitButton.className = 'poster-fit-toggle'; fitButton.type = 'button';
+    if (!poster.id) {
+      let id = `rhp-poster-${index + 1}`;
+      while (document.getElementById(id)) id += '-view';
+      poster.id = id;
+    }
+    fitButton.setAttribute('aria-controls', poster.id);
+    fitButton.setAttribute('data-poster-view-toggle', '');
+    const fit = addPosterFit(poster, fitButton, align);
+    fitButton.addEventListener('click', event => { event.stopPropagation(); if (!busy) fit.toggle(); });
+    actions.append(fitButton, button);
     const error = document.createElement('p');
     error.className = 'poster-download-error';
     error.setAttribute('role', 'alert');
     error.hidden = true;
     tools.after(error);
     // Download is part of the poster interaction, even though its control sits outside the image.
-    button.addEventListener('pointerdown', event => {
+    actions.addEventListener('pointerdown', event => {
       event.stopPropagation();
     });
-    button.addEventListener('mousedown', event => {
+    actions.addEventListener('mousedown', event => {
       // Pointer activation downloads without taking focus from the selected chart item.
       event.preventDefault();
       event.stopPropagation();
     });
     poster.addEventListener('focusout', event => {
-      if (button.contains(event.relatedTarget) || button.matches(':active')) event.stopImmediatePropagation();
+      if (actions.contains(event.relatedTarget) || actions.querySelector(':active')) event.stopImmediatePropagation();
     }, true);
     poster.addEventListener('pointerleave', event => {
-      if (button.contains(event.relatedTarget) || document.activeElement === button) event.stopImmediatePropagation();
+      if (actions.contains(event.relatedTarget) || actions.contains(document.activeElement)) event.stopImmediatePropagation();
     }, true);
     poster.addEventListener('pointermove', event => {
       // Safari can move the pointer over the title while a keyboard-triggered download is being prepared.
-      if (document.activeElement === button && !event.target.closest('.rhp-chart')) event.stopImmediatePropagation();
+      if (actions.contains(document.activeElement) && !event.target.closest('.rhp-chart')) event.stopImmediatePropagation();
     }, true);
-    for (const type of ['keydown', 'keyup']) button.addEventListener(type, event => {
+    for (const type of ['keydown', 'keyup']) actions.addEventListener(type, event => {
       if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
     });
     let exporter, retries = 0, busy = false;
@@ -448,6 +520,7 @@ function addPosterDownloads() {
       busy = true;
       button.setAttribute('aria-disabled', 'true');
       button.setAttribute('aria-busy', 'true');
+      fitButton.setAttribute('aria-disabled', 'true');
       button.setAttribute('aria-label', 'Preparing poster PNG');
       error.hidden = true;
       let url;
@@ -552,7 +625,7 @@ function addPosterDownloads() {
           node.style.backgroundImage = background;
         };
         const blob = await domToBlob(poster, {
-          scale: 2, style: { margin: '0' }, filter: includeNode,
+          ...fit.dimensions(), scale: 2, style: { margin: '0' }, filter: includeNode,
           font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
           onCloneNode: clone => {
             restoreLayout(poster, clone);
@@ -585,10 +658,11 @@ function addPosterDownloads() {
         busy = false;
         button.removeAttribute('aria-disabled');
         button.removeAttribute('aria-busy');
+        fitButton.removeAttribute('aria-disabled');
         button.setAttribute('aria-label', 'Download poster as PNG');
       }
     });
-    tools.append(button);
+    tools.append(actions);
   });
 }
 // A chart module may await fonts or data after DOMContentLoaded has already fired.

@@ -7,9 +7,14 @@
   z-index: -1;
   pointer-events: none;
 }
-.poster-download-tools { gap: 12px; }
+.rain-controls {
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 12px auto 0;
+}
 .rain-toggle {
-  margin-right: auto;
   min-height: 36px;
   padding: 6px 10px;
   border: 1px solid var(--rule);

@@ -47,7 +47,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "prepack": "npm run build",
-    "test": "node test/colors.js && node test/html-imports.js && node test/hit-targets.js && node test/network.js && node test/settle-regression.js && node test/isolation.js && node test/selection-regression.js && node test/mcp.js && node test/run.js"
+    "test": "node test/colors.js && node test/html-imports.js && node test/hit-targets.js && node test/view-layout.js && node test/network.js && node test/settle-regression.js && node test/isolation.js && node test/selection-regression.js && node test/mcp.js && node test/run.js"
   },
   "dependencies": {
     "@babel/core": "^7.29.7",

@@ -134,24 +134,76 @@ render(() => html`<${MovieBudgets} />`, document.getElementById("chart"));
 </script>
 <style id="poster-download-styles">
   .poster-download-tools { display: flex; justify-content: flex-end; align-items: center; margin: 0 auto 12px; max-width: 100%; }
-  .poster-download { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
-  .poster-download svg { display: block; width: 20px; height: 20px; }
-  .poster-download:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
-  .poster-download:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-  .poster-download[aria-disabled="true"] { cursor: progress; opacity: .5; }
+  .poster-actions { display: flex; align-items: center; margin-left: auto; }
+  .poster-download, .poster-fit-toggle { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
+  .poster-actions svg { display: block; width: 20px; height: 20px; }
+  .poster-actions button:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+  .poster-actions button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .poster-actions button[aria-disabled="true"] { cursor: progress; opacity: .5; }
+  .poster-fit-frame, .poster-fit-content { display: contents; }
+  .poster-fit-frame.is-fitted { display: block; margin: 0 auto; overflow: clip; }
+  .poster-fit-frame.is-fitted > .poster-fit-content { display: block; transform-origin: top left; }
   .poster-download-error { margin: 8px auto; font: 14px/1.4 system-ui, sans-serif; color: inherit; }
-  @media print { .poster-download-tools, .poster-download, .poster-download-error { display: none !important; } }
+  @media print { .poster-download-tools, .poster-actions, .poster-download-error { display: none !important; } }
 </style>
 <script type="module" id="poster-download-script">
+function addPosterFit(poster, button, changed) {
+  const frame = document.createElement('div'), content = document.createElement('div');
+  frame.className = 'poster-fit-frame'; content.className = 'poster-fit-content';
+  poster.before(frame); frame.append(content); content.append(poster);
+  const properties = ['width', 'max-width', 'margin', 'box-sizing'];
+  const original = properties.map(name => [name, poster.style.getPropertyValue(name), poster.style.getPropertyPriority(name)]);
+  let fitted = false, scale = 1, request = 0;
+  const restore = () => original.forEach(([name, value, priority]) => {
+    if (value) poster.style.setProperty(name, value, priority);
+    else poster.style.removeProperty(name);
+  });
+  function update() {
+    request = 0;
+    frame.classList.remove('is-fitted'); frame.style.width = ''; frame.style.height = '';
+    content.style.width = ''; content.style.transform = ''; restore(); scale = 1;
+    if (fitted) {
+      const box = poster.getBoundingClientRect();
+      scale = Math.min(1, innerHeight * .95 / box.height);
+      poster.style.setProperty('box-sizing', 'border-box');
+      poster.style.setProperty('width', `${box.width}px`);
+      poster.style.setProperty('max-width', 'none');
+      poster.style.setProperty('margin', '0');
+      content.style.width = `${box.width}px`;
+      content.style.transform = `scale(${scale})`;
+      frame.style.width = `${box.width * scale}px`; frame.style.height = `${box.height * scale}px`;
+      frame.classList.add('is-fitted');
+    }
+    const label = fitted ? 'Restore poster size' : 'Fit poster to screen';
+    button.setAttribute('aria-label', label); button.title = label;
+    button.setAttribute('aria-pressed', String(fitted));
+    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${fitted ? 'M15 3h6v6m0-6-7 7M9 21H3v-6m0 6 7-7' : 'M4 4l6 6m0-6v6H4m16 10-6-6m0 6v-6h6'}"/></svg>`;
+    changed();
+    poster.dispatchEvent(new Event('poster-view-change'));
+  }
+  const schedule = () => { if (fitted && !request) request = requestAnimationFrame(update); };
+  new ResizeObserver(schedule).observe(poster);
+  addEventListener('resize', schedule);
+  document.fonts.ready.then(schedule);
+  update();
+  return {
+    toggle() { fitted = !fitted; cancelAnimationFrame(request); update(); },
+    dimensions() {
+      if (!fitted) { const box = poster.getBoundingClientRect(); return {width:box.width,height:box.height}; }
+      const css = getComputedStyle(poster);
+      return {width:parseFloat(css.width),height:parseFloat(css.height)};
+    },
+  };
+}
 function addPosterDownloads() {
   document.querySelectorAll('.poster').forEach((poster, index) => {
     const navigation = index === 0 && document.querySelector('.recipe-navigation');
     const tools = navigation || document.createElement('div');
     if (tools.querySelector('.poster-download')) return;
+    const align = () => { if (!navigation) tools.style.width = `${poster.getBoundingClientRect().width}px`; };
     if (!navigation) {
       tools.className = 'poster-download-tools';
       poster.before(tools);
-      const align = () => { tools.style.width = `${poster.getBoundingClientRect().width}px`; };
       new ResizeObserver(align).observe(poster);
       align();
       const rgb = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
@@ -169,27 +221,43 @@ function addPosterDownloads() {
     button.setAttribute('aria-label', 'Download poster as PNG');
     button.title = 'Download poster as PNG';
     button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4"/></svg>';
+    const actions = document.createElement('div'), fitButton = document.createElement('button');
+    actions.className = 'poster-actions'; fitButton.className = 'poster-fit-toggle'; fitButton.type = 'button';
+    if (!poster.id) {
+      let id = `rhp-poster-${index + 1}`;
+      while (document.getElementById(id)) id += '-view';
+      poster.id = id;
+    }
+    fitButton.setAttribute('aria-controls', poster.id);
+    fitButton.setAttribute('data-poster-view-toggle', '');
+    const fit = addPosterFit(poster, fitButton, align);
+    fitButton.addEventListener('click', event => { event.stopPropagation(); if (!busy) fit.toggle(); });
+    actions.append(fitButton, button);
     const error = document.createElement('p');
     error.className = 'poster-download-error';
     error.setAttribute('role', 'alert');
     error.hidden = true;
     tools.after(error);
     // Download is part of the poster interaction, even though its control sits outside the image.
-    button.addEventListener('pointerdown', event => {
+    actions.addEventListener('pointerdown', event => {
       event.stopPropagation();
     });
-    button.addEventListener('mousedown', event => {
+    actions.addEventListener('mousedown', event => {
       // Pointer activation downloads without taking focus from the selected chart item.
       event.preventDefault();
       event.stopPropagation();
     });
     poster.addEventListener('focusout', event => {
-      if (button.contains(event.relatedTarget) || button.matches(':active')) event.stopImmediatePropagation();
+      if (actions.contains(event.relatedTarget) || actions.querySelector(':active')) event.stopImmediatePropagation();
     }, true);
     poster.addEventListener('pointerleave', event => {
-      if (button.contains(event.relatedTarget) || document.activeElement === button) event.stopImmediatePropagation();
+      if (actions.contains(event.relatedTarget) || actions.contains(document.activeElement)) event.stopImmediatePropagation();
     }, true);
-    for (const type of ['keydown', 'keyup']) button.addEventListener(type, event => {
+    poster.addEventListener('pointermove', event => {
+      // Safari can move the pointer over the title while a keyboard-triggered download is being prepared.
+      if (actions.contains(document.activeElement) && !event.target.closest('.rhp-chart')) event.stopImmediatePropagation();
+    }, true);
+    for (const type of ['keydown', 'keyup']) actions.addEventListener(type, event => {
       if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
     });
     let exporter, retries = 0, busy = false;
@@ -199,6 +267,7 @@ function addPosterDownloads() {
       busy = true;
       button.setAttribute('aria-disabled', 'true');
       button.setAttribute('aria-busy', 'true');
+      fitButton.setAttribute('aria-disabled', 'true');
       button.setAttribute('aria-label', 'Preparing poster PNG');
       error.hidden = true;
       let url;
@@ -206,35 +275,53 @@ function addPosterDownloads() {
         exporter ||= import('https://cdn.jsdelivr.net/npm/modern-screenshot@4.7.0/+esm' + (retries ? `?retry=${retries}` : ''));
         const { domToBlob } = await exporter;
         await document.fonts.ready;
-        // Grid auto margins resolve to zero in getComputedStyle, so keep their author rules.
-        const autoMargins = new Set();
-        const marginRules = rules => [...rules].map(rule => {
+        // Preserve author layout rules where computed styles lose the grid's used geometry.
+        // Safari misreports percentage insets in subgrids, and grid auto margins resolve to zero.
+        const autoMargins = new Set(), positioned = new Set();
+        const isMargin = name => name === 'margin' || name.startsWith('margin-');
+        const isInset = name => name === 'inset' || name.startsWith('inset-') || ['top', 'right', 'bottom', 'left'].includes(name);
+        const layoutRules = rules => [...rules].map(rule => {
           if (rule.selectorText && rule.style) {
-            const margins = [...rule.style].filter(name => name === 'margin' || name.startsWith('margin-'));
+            const margins = [...rule.style].filter(isMargin);
             if (margins.some(name => /\bauto\b/.test(rule.style.getPropertyValue(name)))) autoMargins.add(rule.selectorText);
-            return margins.length ? `${rule.selectorText} { ${margins.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
+            const insets = [...rule.style].filter(isInset);
+            if (insets.length) positioned.add(rule.selectorText);
+            const layout = [...margins, ...insets];
+            return layout.length ? `${rule.selectorText} { ${layout.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
           }
-          if (!rule.cssRules) return '';
-          if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? marginRules(rule.cssRules) : '';
-          if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? marginRules(rule.cssRules) : '';
-          return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + marginRules(rule.cssRules) + '}';
+          if (!rule.cssRules) return /^@layer\b/.test(rule.cssText) ? rule.cssText : '';
+          if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? layoutRules(rule.cssRules) : '';
+          if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? layoutRules(rule.cssRules) : '';
+          return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + layoutRules(rule.cssRules) + '}';
         }).join('\n');
-        const margins = [...document.styleSheets].map(sheet => {
-          try { return marginRules(sheet.cssRules); } catch (cause) { return ''; }
+        const sheets = [...document.styleSheets, ...document.adoptedStyleSheets];
+        const layout = sheets.map(sheet => {
+          try { return layoutRules(sheet.cssRules); } catch (cause) { return ''; }
         }).join('\n');
         // Omit display-none HTML subtrees, such as collapsed chart rows, from the image and its SVG payload.
         const includeNode = node => !(node instanceof HTMLElement) || getComputedStyle(node).display !== 'none';
-        const restoreMargins = (source, clone) => {
-          if (clone.style && source !== poster && [...autoMargins].some(selector => source.matches(selector))) {
-            [...clone.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.removeProperty(name));
-            [...source.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
+        const restoreLayout = (source, clone) => {
+          if (clone.style && source !== poster) {
+            const margins = [...autoMargins].some(selector => source.matches(selector));
+            const computed = getComputedStyle(source);
+            const insets = computed.position === 'absolute' && [...positioned].some(selector => source.matches(selector));
+            const restore = name => (margins && isMargin(name)) || (insets && isInset(name));
+            [...clone.style].filter(restore).forEach(name => clone.style.removeProperty(name));
+            [...source.style].filter(restore).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
+            if (insets) {
+              // Only the scaled axis needs its percentage rule. Freeze the other axis in pixels:
+              // Firefox does not reevaluate container queries reliably inside an SVG foreignObject.
+              const axis = source.getAttribute('data-rhp-o');
+              const fixed = axis === 'h' ? ['top', 'bottom'] : axis === 'v' ? ['left', 'right'] : ['top', 'right', 'bottom', 'left'];
+              fixed.forEach(name => clone.style.setProperty(name, computed.getPropertyValue(name), 'important'));
+            }
           }
           const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName) && includeNode(node));
-          [...clone.children].forEach((child, i) => { if (children[i]) restoreMargins(children[i], child); });
+          [...clone.children].forEach((child, i) => { if (children[i]) restoreLayout(children[i], child); });
         };
         // Cross-origin font stylesheets are readable through fetch, but not through cssRules.
         const fontFiles = new Map();
-        const fontRules = await Promise.all([...document.styleSheets].map(async sheet => {
+        const fontRules = await Promise.all(sheets.map(async sheet => {
           let css;
           try { css = [...sheet.cssRules].map(rule => rule.cssText).join('\n'); }
           catch (cause) {
@@ -285,12 +372,12 @@ function addPosterDownloads() {
           node.style.backgroundImage = background;
         };
         const blob = await domToBlob(poster, {
-          scale: 2, style: { margin: '0' }, filter: includeNode,
+          ...fit.dimensions(), scale: 2, style: { margin: '0' }, filter: includeNode,
           font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
           onCloneNode: clone => {
-            restoreMargins(poster, clone);
+            restoreLayout(poster, clone);
             const style = document.createElement('style');
-            style.textContent = margins;
+            style.textContent = layout;
             clone.prepend(style);
           },
           // CSS content's alternative text follows a slash and must not be painted.
@@ -318,10 +405,11 @@ function addPosterDownloads() {
         busy = false;
         button.removeAttribute('aria-disabled');
         button.removeAttribute('aria-busy');
+        fitButton.removeAttribute('aria-disabled');
         button.setAttribute('aria-label', 'Download poster as PNG');
       }
     });
-    tools.append(button);
+    tools.append(actions);
   });
 }
 // A chart module may await fonts or data after DOMContentLoaded has already fired.

@@ -1045,7 +1045,8 @@ export function install() {
     const buttons = [...document.querySelectorAll("button, [role=button], [role=switch], [role=tab], [role=radio], [role=checkbox], input[type=checkbox], input[type=radio], summary")]
       .filter((b) => usable(b) && !(b.type === "submit" && b.form) && !b.closest("a[href]"));
     for (const b of buttons.slice(0, 12)) {
-      out.buttons.push({ label: label(b), role: b.getAttribute("role") ?? b.type ?? b.localName, target: keep(b) });
+      out.buttons.push({ label: label(b), role: b.getAttribute("role") ?? b.type ?? b.localName, target: keep(b),
+        view: b.hasAttribute("data-poster-view-toggle") ? b.getAttribute("aria-controls") : null });
     }
 
     for (const r of [...document.querySelectorAll("input[type=range]")].filter(usable).slice(0, 6)) {
@@ -1142,8 +1143,13 @@ export function install() {
   // moves with scrolling, so it is left out.
   let placed = [];
   let sections = [];
+  let viewRoot = null;
   const at = (el) => {
     const r = el.getBoundingClientRect();
+    if (viewRoot?.contains(el)) {
+      const root = viewRoot.getBoundingClientRect(), scale = root.width / viewRoot.offsetWidth;
+      return {el,x:(r.left-root.left)/scale,y:(r.top-root.top)/scale};
+    }
     return { el, x: r.left + scrollX, y: r.top + scrollY };
   };
   // The room "auto" gives names, in px: the chart body's first and last grid tracks (columns, or rows when vertical)
@@ -1156,7 +1162,12 @@ export function install() {
     if (tracks.length < 3) return null;
     return o === "h" ? { o, start: tracks[0], end: tracks.at(-1) } : { o, start: tracks.at(-1), end: tracks[0] };
   };
-  function place() {
+  function place(view = null) {
+
+    // A view toggle deliberately scales the poster and moves the flow below it.
+    // Its contents must still keep the same layout in the poster's own coordinates.
+    const controlled = view ? document.getElementById(view) : null;
+    viewRoot = controlled?.matches(".poster") ? controlled : null;
 
     const pinned = (el) => {
       for (let a = el; a && a.nodeType === 1; a = a.parentElement) {
@@ -1165,7 +1176,7 @@ export function install() {
       return false;
     };
     const charts = all().filter((c) => !c.parentElement?.closest(".rhp-chart"));
-    placed = [...document.querySelectorAll(CONTROLS), ...charts].filter((el) => visible(el) && !pinned(el)).map((el) => {
+    placed = [...document.querySelectorAll(CONTROLS), ...charts].filter((el) => visible(el) && !pinned(el) && (!viewRoot || viewRoot.contains(el))).map((el) => {
       const chart = charts.includes(el);
       const slat = chart ? null : el.closest(".rhp-plot > *");
       return { ...at(el), chart, slat: slat && at(slat), gutters: chart ? gutters(el) : null };

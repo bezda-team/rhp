@@ -21,16 +21,23 @@ export function installDotLabels(poster, rows, format) {
   let frame = 0, slideFrame = 0, placements = new Map(), layoutKey = '', previousYear = null;
   const slides = new Map();
   const chart = poster.querySelector('.rhp-chart');
-  const rect = el => el.getBoundingClientRect();
+  const localBox = box => {
+    const origin = poster.getBoundingClientRect(), scale = origin.width / parseFloat(getComputedStyle(poster).width);
+    return {left:(box.left-origin.left)/scale,right:(box.right-origin.left)/scale,
+      top:(box.top-origin.top)/scale,bottom:(box.bottom-origin.top)/scale,width:box.width/scale,height:box.height/scale};
+  };
+  const rect = el => localBox(el.getBoundingClientRect());
   const fixedBoxes = () => [...poster.querySelectorAll('.name .long,.name .short,.name strong,.axis-value,.rhp-label.year,.chart-heading p,.readout')].flatMap(el => {
     const range = document.createRange(); range.selectNodeContents(el);
-    return [...range.getClientRects()].filter(box => box.width && box.height);
+    return [...range.getClientRects()].filter(box => box.width && box.height).map(localBox);
   });
   function stroke(path) {
-    const matrix = path.getScreenCTM();
+    const matrix = path.getScreenCTM(), origin = poster.getBoundingClientRect();
+    const scale = origin.width / parseFloat(getComputedStyle(poster).width);
     return {radius: parseFloat(getComputedStyle(path).strokeWidth) / 2,
       points: [...path.getAttribute('d').matchAll(/[ML]\s*(-?[\d.]+)[ ,]+(-?[\d.]+)/g)]
-        .map(([, x, y]) => new DOMPoint(+x, +y).matrixTransform(matrix)),
+        .map(([, x, y]) => new DOMPoint(+x, +y).matrixTransform(matrix))
+        .map(point => ({x:(point.x-origin.left)/scale,y:(point.y-origin.top)/scale})),
     };
   }
   function lineBand({points, radius}, left, right) {
@@ -73,7 +80,7 @@ export function installDotLabels(poster, rows, format) {
       const key = label.parentElement.classList.contains('power') ? 'power' : 'sulfur';
       const text = label.querySelector('.value-text'), css = getComputedStyle(text);
       const range = document.createRange(); range.selectNodeContents(text);
-      const textBox = range.getBoundingClientRect();
+      const textBox = localBox(range.getBoundingClientRect());
       const context = document.createElement('canvas').getContext('2d');
       context.font = `${css.fontWeight} ${css.fontSize} ${css.fontFamily}`;
       return {key, label, context, height: textBox.height, baseline: textBox.bottom - rect(label).bottom,
@@ -127,7 +134,7 @@ export function installDotLabels(poster, rows, format) {
     // right side first. The vertical position always uses this year's actual side.
     slideFrame = requestAnimationFrame(() => {
       labels.forEach((label, i) => {
-        const text = label.querySelector('.value-text'), x = text.getBoundingClientRect().left;
+        const text = label.querySelector('.value-text'), x = rect(text).left;
         const animation = switching && from[i] !== null && !matchMedia('(prefers-reduced-motion:reduce)').matches
           ? text.animate([{translate:`${clearSlide(text, from[i]-x)}px 0px`},{translate:'0px 0px'}],{duration:180,easing:'ease-out'}) : null;
         slides.set(text,{x,animation});
@@ -141,7 +148,8 @@ export function installDotLabels(poster, rows, format) {
   const changes = new MutationObserver(() => apply());
   changes.observe(poster, {attributes: true, attributeFilter: ['data-selected-year']});
   const resize = new ResizeObserver(schedule); resize.observe(chart);
+  poster.addEventListener('poster-view-change', schedule);
   document.fonts.ready.then(schedule);
   schedule();
-  return () => {cancelAnimationFrame(frame);cancelAnimationFrame(slideFrame);slides.forEach(state=>state.animation?.cancel());changes.disconnect();resize.disconnect();};
+  return () => {cancelAnimationFrame(frame);cancelAnimationFrame(slideFrame);slides.forEach(state=>state.animation?.cancel());changes.disconnect();resize.disconnect();poster.removeEventListener('poster-view-change',schedule);};
 }

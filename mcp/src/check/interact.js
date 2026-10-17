@@ -77,7 +77,7 @@ export async function interact(page, { events, capture, shoot, taps = false }) {
 
   // ready runs before the layout is noted (it scrolls the target into view), act is the interaction itself. lit: the
   // interaction lights a slat (no data changes), so the plot must stay where it is; texts: note the texts it changes
-  const step = async (kind, target, { ready, act, compareLook = false, used = null, lit = false, texts = false }) => {
+  const step = async (kind, target, { ready, act, compareLook = false, used = null, lit = false, texts = false, view = null }) => {
     const before = events.length;
     const rest = compareLook ? await look() : null;
     let error = null;
@@ -89,10 +89,10 @@ export async function interact(page, { events, capture, shoot, taps = false }) {
       }
     };
     await attempt(ready);
-    await page.evaluate((keep) => {
-      window.__rhpProbe.place();
+    await page.evaluate(({keep,view}) => {
+      window.__rhpProbe.place(view);
       window.__rhpProbe.record(keep);
-    }, texts);
+    }, {keep:texts,view});
     if (!error) await attempt(act);
     await page.evaluate(() => window.__rhpProbe.settle(1500)).catch(() => {});
     const seen = await page.evaluate(() => window.__rhpProbe.stop()).catch(() => null);
@@ -168,13 +168,19 @@ export async function interact(page, { events, capture, shoot, taps = false }) {
 
   for (const b of t.buttons) {
     const el = await handle(b.target);
+    const pressed = await el.asElement().getAttribute("aria-pressed");
     const role = b.role === "checkbox" || b.role === "radio" || b.role === "switch" ? b.role : "button";
     const entry = await step("click", `${role} ${b.label}`, {
       ready: () => el.asElement().scrollIntoViewIfNeeded({ timeout: 1500 }),
       act: () => el.asElement().click({ timeout: 1500 }),
       used: b.target,
+      view: b.view,
     });
     if (entry.could) entry.how = `could not be clicked (${/intercepts pointer|covered|not visible|outside of the viewport/.test(entry.could) ? "covered or out of view" : entry.could})`;
+    if (b.view && !entry.could && pressed !== await el.asElement().getAttribute("aria-pressed")) {
+      const label = await el.asElement().getAttribute("aria-label");
+      await step("click", `button "${label}"`, {act:()=>el.asElement().click({timeout:1500}),used:b.target,view:b.view});
+    }
   }
 
   for (const r of t.ranges) {

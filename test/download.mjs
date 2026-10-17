@@ -98,7 +98,22 @@ try {
       assert(Math.abs(control.x + control.width - bounds.x - bounds.width) < 1, `${file}: control aligns with poster's right edge`);
       assert.equal(await page.locator(".poster .poster-download").count(), 0);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${file}: no horizontal overflow at ${width}px`);
+      const fit = page.getByRole("button", { name: "Fit poster to screen", exact: true });
+      const fitControl = await fit.boundingBox();
+      assert(Math.abs(fitControl.y-control.y)<1 && Math.abs(fitControl.x+fitControl.width-control.x)<1, `${file}: fit icon is immediately left of download`);
+      const fullIcon = await fit.locator("path").getAttribute("d");
+      await fit.click(); await settle(page);
+      const fitted = await page.locator(".poster").boundingBox();
+      assert(Math.abs(fitted.height-Math.min(bounds.height,720*.95))<1, `${file}: fitted poster uses up to 95% of viewport height`);
+      assert(Math.abs(fitted.width/bounds.width-fitted.height/bounds.height)<.002, `${file}: fitting preserves aspect ratio`);
+      const restore = page.getByRole("button", { name: "Restore poster size", exact: true });
+      assert.equal(await restore.getAttribute("aria-pressed"), "true");
+      assert.notEqual(await restore.locator("path").getAttribute("d"), fullIcon, `${file}: fitted icon shows the restore action`);
+      await restore.click(); await settle(page);
+      const restored = await page.locator(".poster").boundingBox();
+      assert(Math.abs(restored.width-bounds.width)<1 && Math.abs(restored.height-bounds.height)<1, `${file}: full poster dimensions are restored`);
       if (!["bar.html", "candlestick.html", "donut.html", "dial.html", "silhouettes.html"].includes(file)) continue;
+      await fit.click(); await settle(page);
       await page.evaluate(() => window.scrollTo(0, 0));
       const downloadEvent = page.waitForEvent("download");
       // The first poster is exported through the keyboard, the rest by pointer.
@@ -113,6 +128,8 @@ try {
       assert(Math.abs(png.width - bounds.width * 2) <= 2, `${file}: export uses full poster width`);
       assert(Math.abs(png.height - bounds.height * 2) <= 2, `${file}: export uses full poster height, including below the viewport`);
       assert(png.data.some((value, i) => i % 4 === 3 && value > 0), `${file}: PNG is not transparent`);
+      await page.waitForFunction(() => !document.querySelector('.poster-download').hasAttribute('aria-busy'));
+      await page.getByRole("button", {name:"Restore poster size",exact:true}).click(); await settle(page);
       await page.locator(".poster").screenshot({ path: path.join(out, `${width}-${file.replace(".html", "-poster.png")}`) });
       const screenshot = decode(fs.readFileSync(path.join(out, `${width}-${file.replace(".html", "-poster.png")}`)));
       let difference = 0, samples = 0;
@@ -141,6 +158,7 @@ try {
         const next = engine === "webkit" ? "Alt+Tab" : "Tab";
         await page.keyboard.press(next);
         await page.keyboard.press(next);
+        await page.keyboard.press(next);
         await page.keyboard.press("ArrowDown");
       }
       await settle(page);
@@ -155,6 +173,11 @@ try {
           if (!event.target.closest(".poster")) window.outsideDownloadClicks++;
         });
       });
+      if (activation === "pointer" || activation === "touch") {
+        const fit = page.getByRole("button", {name:"Fit poster to screen",exact:true});
+        if (activation === "touch") await fit.tap(); else await fit.click();
+        assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "fitting preserves selection");
+      }
       const button = page.getByRole("button", { name: "Download poster as PNG", exact: true });
       const event = page.waitForEvent("download");
       if (activation === "pointer") await button.click();
@@ -182,6 +205,21 @@ try {
       assert(color.every((value, i) => Math.abs(value - sample.color[i]) <= 3), `${activation}: PNG contains the selected bar's accent color`);
       console.log(`PASS ${width}px ${activation}: selection, keyboard focus and exported highlight preserved; no outside click`);
     }
+    await page.goto("file://" + path.join(recipes, "bar.html"));
+    await page.locator('.language[data-row="1"]').click();
+    const fit = page.locator(".poster-fit-toggle");
+    await fit.focus();
+    assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "focus on fit preserves selection");
+    await page.keyboard.press("Enter"); await settle(page);
+    assert.equal(await fit.getAttribute("aria-pressed"), "true");
+    await page.setViewportSize({width,height:900}); await settle(page);
+    const resized = await page.locator(".poster").boundingBox();
+    assert(resized.height<=900*.95+1, "fit responds to viewport resizing");
+    assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "resizing a fitted poster preserves selection");
+    await page.keyboard.press("Space"); await settle(page);
+    assert.equal(await fit.getAttribute("aria-pressed"), "false");
+    assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "keyboard restore preserves selection");
+    await page.setViewportSize({width,height:720});
     // The readout must stay selected when the pointer returns after the PNG has finished saving.
     // Checking only at the download event misses the focus loss on a subsequent title/readout move.
     for (const recipe of ["histogram", "dial"]) for (const activation of ["pointer", ...(engine !== "firefox" ? ["touch"] : [])]) {

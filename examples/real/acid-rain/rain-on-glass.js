@@ -260,12 +260,22 @@ async function startRain(poster, photo, download) {
   // Unsupported graphics contexts retain the complete still poster.
   if (!renderer) return;
   photo.after(canvas);
-  const bounds = poster.getBoundingClientRect();
+  const dimensions = () => {
+    const css = getComputedStyle(poster);
+    return {width:parseFloat(css.width),height:parseFloat(css.height)};
+  };
+  const bounds = dimensions();
   const simulation = new RainSimulation(bounds.width, bounds.height, crypto.getRandomValues(new Uint32Array(1))[0]);
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const button = document.createElement('button');
   button.type = 'button'; button.className = 'rain-toggle';
-  download.before(button);
+  const controls = document.createElement('div');
+  controls.className = 'rain-controls';
+  controls.append(button);
+  (poster.closest('.poster-fit-frame') || poster).after(controls);
+  const alignControls = () => { controls.style.width = `${poster.getBoundingClientRect().width}px`; };
+  poster.addEventListener('poster-view-change', alignControls);
+  alignControls();
   let userPaused = null, visible = true, pageActive = true, lost = false;
   let frame = 0, lastPaint = 0;
   const wanted = () => userPaused === null ? !motion.matches : !userPaused;
@@ -288,7 +298,8 @@ async function startRain(poster, photo, download) {
   }
   const resize = () => {
     if (lost) return;
-    const {width, height} = poster.getBoundingClientRect();
+    const {width, height} = dimensions();
+    alignControls();
     simulation.resize(width, height);
     renderer.resize(width, height);
     renderer.draw(simulation);
