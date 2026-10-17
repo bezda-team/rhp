@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Range export with automatic gutters</title>
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
+<style>
+* {box-sizing:border-box;}
+body {margin:0; padding:20px; background:white; font:16px/1.4 Arial,sans-serif;}
+.poster {max-width:900px; margin:0 auto; padding:24px; background:#f8f8f4;}
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<script type="module">
+import {Chart, Plot, Bar, Label, slat, html, render} from "@bezda/rhp/standalone";
+const Row = slat({thickness:56, room:{start:"auto",end:5}, css:`
+ .range-row {border-top:1px solid #ddd;}
+ .name {width:110px; padding-right:12px;}
+ .base {background:#b72037;}
+ .range {background:#165a9e;}
+ @container (max-width:600px) {
+  .track, .base, .range {top:35px; translate:0;}
+ }
+`}, d => html`<div class="range-row">
+ <${Label} edge="start" class="name">${() => d.name}<//>
+ <${Bar} to=${250} thick="16px" color="grid" class="track" />
+ <${Bar} to=${() => d.low} thick="16px" class="base" />
+ <${Bar} from=${() => d.low} to=${() => d.high} thick="16px" class="range" />
+</div>`);
+render(() => html`<figure class="poster"><h1>Ranged estimates</h1>
+ <${Chart} scale=${[0,250]} ticks=${false} static=${true}>
+  <${Plot} rows=${[{name:"First",low:200,high:250},{name:"Second",low:100,high:125}]} key="name">${Row}<//>
+ <//></figure>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

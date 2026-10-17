@@ -51,6 +51,40 @@ try {
     await page.evaluate(() => window.finishChart());
     await page.getByRole("button", { name: "Download poster as PNG", exact: true }).waitFor();
     console.log(`PASS ${width}px: delayed chart rendering still gets a download control`);
+    // A whole-poster average can hide a range bar shifted past its track, so compare the mark strips directly.
+    const ranges = path.join(out, "ranges.html");
+    fs.writeFileSync(ranges, withPosterDownload(fs.readFileSync(path.join(root, "test/fixtures/download-ranges.html"), "utf8")));
+    await page.goto("file://" + ranges);
+    await settle(page);
+    const strips = await page.locator(".range-row .track").evaluateAll(tracks => {
+      const poster = document.querySelector(".poster").getBoundingClientRect();
+      return tracks.map(track => {
+        const r = track.getBoundingClientRect();
+        return {x:r.x - poster.x, y:r.y - poster.y, width:r.width, height:r.height};
+      });
+    });
+    assert.equal(strips.length, 2, "both nonzero-start ranges are rendered");
+    const rangeDownload = page.waitForEvent("download");
+    await page.getByRole("button", {name:"Download poster as PNG", exact:true}).click();
+    const rangePNG = path.join(out, `${width}-ranges.png`);
+    await (await rangeDownload).saveAs(rangePNG);
+    const actualRange = decode(fs.readFileSync(rangePNG));
+    const expectedRange = decode(await page.locator(".poster").screenshot());
+    for (const strip of strips) {
+      let error = 0, samples = 0;
+      for (let y = Math.ceil(strip.y + 2); y < strip.y + strip.height - 2; y++) {
+        for (let x = Math.ceil(strip.x); x < strip.x + strip.width; x++) {
+          const actual = (y * 2 * actualRange.width + x * 2) * 4;
+          const expected = (y * expectedRange.width + x) * 4;
+          for (let channel = 0; channel < 3; channel++) {
+            error += Math.abs(actualRange.data[actual + channel] - expectedRange.data[expected + channel]);
+            samples++;
+          }
+        }
+      }
+      assert(error / samples < 3, `range PNG preserves its start, end and containment in the track (mean channel difference ${error / samples})`);
+    }
+    console.log(`PASS ${width}px: exported range bars match their rendered track positions`);
     for (const file of fs.readdirSync(recipes).filter(file => file.endsWith(".html"))) {
       const source = fs.readFileSync(path.join(recipes, file), "utf8");
       assert.equal(withPosterDownload(source), source, `${file}: generated controls are current and idempotent`);
@@ -126,6 +160,7 @@ try {
       if (activation === "pointer") await button.click();
       else if (activation === "touch") await button.tap();
       else {
+        await page.locator(".headline").hover();
         await page.keyboard.press(engine === "webkit" ? "Alt+Shift+Tab" : "Shift+Tab");
         assert.equal(await button.evaluate(button => document.activeElement === button), true, "Tab reaches the download button from the selected chart item");
         assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "moving keyboard focus to download preserves selection");
@@ -134,9 +169,14 @@ try {
       const download = await event;
       const target = path.join(out, `${width}-selected-${activation}.png`);
       await download.saveAs(target);
+      await page.waitForFunction(() => !document.querySelector('.poster-download').hasAttribute('aria-busy'));
       assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", `${activation}: downloading preserves selection`);
       assert.equal(await page.evaluate(() => window.outsideDownloadClicks), 0, `${activation}: download does not bubble to outside-click handlers`);
-      if (["Enter", "Space"].includes(activation)) assert.equal(await button.evaluate(button => document.activeElement === button), true, "keyboard focus remains on the download button");
+      if (["Enter", "Space"].includes(activation)) {
+        assert.equal(await button.evaluate(button => document.activeElement === button), true, "keyboard focus remains on the download button");
+        await page.locator(".headline").hover();
+        assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "pointer return after a completed keyboard download preserves selection");
+      }
       const png = decode(fs.readFileSync(target));
       const color = [...png.data.subarray((sample.y * png.width + sample.x) * 4, (sample.y * png.width + sample.x) * 4 + 3)];
       assert(color.every((value, i) => Math.abs(value - sample.color[i]) <= 3), `${activation}: PNG contains the selected bar's accent color`);

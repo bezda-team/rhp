@@ -190,6 +190,10 @@ function addPosterDownloads() {
     poster.addEventListener('pointerleave', event => {
       if (button.contains(event.relatedTarget) || document.activeElement === button) event.stopImmediatePropagation();
     }, true);
+    poster.addEventListener('pointermove', event => {
+      // Safari can move the pointer over the title while a keyboard-triggered download is being prepared.
+      if (document.activeElement === button && !event.target.closest('.rhp-chart')) event.stopImmediatePropagation();
+    }, true);
     for (const type of ['keydown', 'keyup']) button.addEventListener(type, event => {
       if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
     });
@@ -207,35 +211,53 @@ function addPosterDownloads() {
         exporter ||= import('https://cdn.jsdelivr.net/npm/modern-screenshot@4.7.0/+esm' + (retries ? `?retry=${retries}` : ''));
         const { domToBlob } = await exporter;
         await document.fonts.ready;
-        // Grid auto margins resolve to zero in getComputedStyle, so keep their author rules.
-        const autoMargins = new Set();
-        const marginRules = rules => [...rules].map(rule => {
+        // Preserve author layout rules where computed styles lose the grid's used geometry.
+        // Safari misreports percentage insets in subgrids, and grid auto margins resolve to zero.
+        const autoMargins = new Set(), positioned = new Set();
+        const isMargin = name => name === 'margin' || name.startsWith('margin-');
+        const isInset = name => name === 'inset' || name.startsWith('inset-') || ['top', 'right', 'bottom', 'left'].includes(name);
+        const layoutRules = rules => [...rules].map(rule => {
           if (rule.selectorText && rule.style) {
-            const margins = [...rule.style].filter(name => name === 'margin' || name.startsWith('margin-'));
+            const margins = [...rule.style].filter(isMargin);
             if (margins.some(name => /\bauto\b/.test(rule.style.getPropertyValue(name)))) autoMargins.add(rule.selectorText);
-            return margins.length ? `${rule.selectorText} { ${margins.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
+            const insets = [...rule.style].filter(isInset);
+            if (insets.length) positioned.add(rule.selectorText);
+            const layout = [...margins, ...insets];
+            return layout.length ? `${rule.selectorText} { ${layout.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
           }
-          if (!rule.cssRules) return '';
-          if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? marginRules(rule.cssRules) : '';
-          if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? marginRules(rule.cssRules) : '';
-          return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + marginRules(rule.cssRules) + '}';
+          if (!rule.cssRules) return /^@layer\b/.test(rule.cssText) ? rule.cssText : '';
+          if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? layoutRules(rule.cssRules) : '';
+          if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? layoutRules(rule.cssRules) : '';
+          return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + layoutRules(rule.cssRules) + '}';
         }).join('\n');
-        const margins = [...document.styleSheets].map(sheet => {
-          try { return marginRules(sheet.cssRules); } catch (cause) { return ''; }
+        const sheets = [...document.styleSheets, ...document.adoptedStyleSheets];
+        const layout = sheets.map(sheet => {
+          try { return layoutRules(sheet.cssRules); } catch (cause) { return ''; }
         }).join('\n');
         // Omit display-none HTML subtrees, such as collapsed chart rows, from the image and its SVG payload.
         const includeNode = node => !(node instanceof HTMLElement) || getComputedStyle(node).display !== 'none';
-        const restoreMargins = (source, clone) => {
-          if (clone.style && source !== poster && [...autoMargins].some(selector => source.matches(selector))) {
-            [...clone.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.removeProperty(name));
-            [...source.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
+        const restoreLayout = (source, clone) => {
+          if (clone.style && source !== poster) {
+            const margins = [...autoMargins].some(selector => source.matches(selector));
+            const computed = getComputedStyle(source);
+            const insets = computed.position === 'absolute' && [...positioned].some(selector => source.matches(selector));
+            const restore = name => (margins && isMargin(name)) || (insets && isInset(name));
+            [...clone.style].filter(restore).forEach(name => clone.style.removeProperty(name));
+            [...source.style].filter(restore).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
+            if (insets) {
+              // Only the scaled axis needs its percentage rule. Freeze the other axis in pixels:
+              // Firefox does not reevaluate container queries reliably inside an SVG foreignObject.
+              const axis = source.getAttribute('data-rhp-o');
+              const fixed = axis === 'h' ? ['top', 'bottom'] : axis === 'v' ? ['left', 'right'] : ['top', 'right', 'bottom', 'left'];
+              fixed.forEach(name => clone.style.setProperty(name, computed.getPropertyValue(name), 'important'));
+            }
           }
           const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName) && includeNode(node));
-          [...clone.children].forEach((child, i) => { if (children[i]) restoreMargins(children[i], child); });
+          [...clone.children].forEach((child, i) => { if (children[i]) restoreLayout(children[i], child); });
         };
         // Cross-origin font stylesheets are readable through fetch, but not through cssRules.
         const fontFiles = new Map();
-        const fontRules = await Promise.all([...document.styleSheets].map(async sheet => {
+        const fontRules = await Promise.all(sheets.map(async sheet => {
           let css;
           try { css = [...sheet.cssRules].map(rule => rule.cssText).join('\n'); }
           catch (cause) {
@@ -289,9 +311,9 @@ function addPosterDownloads() {
           scale: 2, style: { margin: '0' }, filter: includeNode,
           font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
           onCloneNode: clone => {
-            restoreMargins(poster, clone);
+            restoreLayout(poster, clone);
             const style = document.createElement('style');
-            style.textContent = margins;
+            style.textContent = layout;
             clone.prepend(style);
           },
           // CSS content's alternative text follows a slash and must not be painted.
