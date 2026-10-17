@@ -10,6 +10,12 @@ try{
     await page.goto(process.argv[2] || pathToFileURL(fileURLToPath(new URL('./acid-rain-glass-animated.html',import.meta.url))).href);
     await page.locator('.pick').last().waitFor();
     await page.evaluate(()=>document.fonts.ready);
+    // Wait for font-driven layout and pause the independent background renderer.
+    // Software WebGL must not determine how many label-animation frames we sample.
+    await page.locator('.pick').nth(20).focus();
+    await page.waitForFunction(()=>[...document.querySelectorAll('.value')].every(el=>el.style.getPropertyValue('--label-y')));
+    await page.evaluate(async()=>{for(let i=0;i<2;i++)await new Promise(resolve=>requestAnimationFrame(resolve));});
+    if(await page.locator('.poster-rain').count())await page.getByRole('button',{name:'Pause background rain'}).click();
     for(const [from,to] of [[20,21],[21,20]]){
       await page.locator('.pick').nth(from).focus();
       await page.waitForFunction(()=>[...document.querySelectorAll('.value-text')].every(el=>el.getAnimations().length===0));
