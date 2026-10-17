@@ -1,0 +1,84 @@
+{
+  "asOf": "2026-10-17",
+  "retrievedAt": "2026-10-17T06:10:11.484Z",
+  "records": [
+    {
+      "id": "digger",
+      "source": "https://www.the-numbers.com/movie/Digger-(2026)",
+      "budget": 125000000,
+      "domestic": 16321958,
+      "international": 24500000,
+      "worldwide": 40821958,
+      "release": "October 2nd, 2026",
+      "directors": [
+        "Alejandro Gonzalez Inarritu"
+      ],
+      "leading": [
+        "Tom Cruise",
+        "Riz Ahmed",
+        "John Goodman",
+        "Sandra Huller",
+        "Michael Stuhlbarg",
+        "Jesse Plemons"
+      ],
+      "companies": "Legendary Pictures, M. Productions, TC Productions, Warner Bros.",
+      "image": "https://media.the-numbers.com/images/movie-posters/Digger-(2026).jpg"
+    },
+    {
+      "id": "moana",
+      "source": "https://www.the-numbers.com/movie/Moana-(2026)",
+      "budget": 250000000,
+      "domestic": 126229663,
+      "international": 197471805,
+      "worldwide": 323701468,
+      "release": "July 10th, 2026",
+      "directors": [
+        "Thomas Kail"
+      ],
+      "leading": [
+        "Dwayne Johnson",
+        "Catherine Laga’aia"
+      ],
+      "companies": "Walt Disney Pictures, Seven Bucks Productions, Flynn Picture Company",
+      "image": "https://media.the-numbers.com/images/movie-posters/Moana-(2026).jpg"
+    },
+    {
+      "id": "supergirl",
+      "source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
+      "budget": 170000000,
+      "domestic": 72366532,
+      "international": 54100000,
+      "worldwide": 126466532,
+      "release": "June 26th, 2026",
+      "directors": [
+        "Craig Gillespie"
+      ],
+      "leading": [
+        "Milly Alcock",
+        "Jason Momoa",
+        "Matthias Schoenaerts",
+        "Eve Ridley"
+      ],
+      "companies": "DC Studios, Domain Entertainment, Troll Court Entertainment, The Safran Company",
+      "image": "https://media.the-numbers.com/images/movie-posters/Supergirl-(2026).jpg"
+    },
+    {
+      "id": "bride",
+      "source": "https://www.the-numbers.com/movie/Bride-The-(2026)",
+      "budget": 80000000,
+      "domestic": 12744025,
+      "international": 11200000,
+      "worldwide": 23944025,
+      "release": "March 6th, 2026",
+      "directors": [
+        "Maggie Gyllenhaal"
+      ],
+      "leading": [
+        "Jessie Buckley",
+        "Christian Bale"
+      ],
+      "companies": "Warner Bros., First Love Films, In the Current Company",
+      "image": "https://media.the-numbers.com/images/movie-posters/Bride-The-(2026).jpg"
+    }
+  ]
+}

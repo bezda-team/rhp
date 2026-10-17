@@ -1,0 +1,96 @@
+{
+  "asOf": "2026-10-17",
+  "selection": "Four 2026 theatrical releases with quantified loss forecasts in original reporting by TheWrap, Deadline or Variety. This is a selected comparison, not a complete ranking of 2026 losses.",
+  "unit": "million US dollars",
+  "rangeMeaning": "The envelope of the estimates explicitly quoted by each report, not a confidence interval or a calculation of gross minus budget.",
+  "rows": [
+    {
+      "id": "digger",
+      "title": "Digger",
+      "source": "https://www.the-numbers.com/movie/Digger-(2026)",
+      "featuredStars": ["Tom Cruise"],
+      "studioLabel": "Warner Bros.",
+      "report": {
+        "publisher": "TheWrap",
+        "date": "2026-10-07",
+        "url": "https://www.thewrap.com/creative-content/movies/digger-tom-cruise-lose-250-million/",
+        "low": 200,
+        "high": 250,
+        "kind": "competing estimates",
+        "estimates": [[200, 215], [250, 250]],
+        "basis": "Includes post-theatrical revenue; different insiders give different estimates.",
+        "assumedWorldwide": [0, 40000000],
+        "assumption": "The report expected worldwide box office not to exceed $40 million. Its other source made the loss dependent on premium video-on-demand performance.",
+        "budgetInReport": [163, 173],
+        "marketingInReport": 100,
+        "caveat": "The production budget is disputed. The Numbers lists $125 million; this loss report cites insiders at $163 million to $173 million. Current ticket sales have passed the report's $40 million assumption."
+      }
+    },
+    {
+      "id": "moana",
+      "title": "Moana",
+      "source": "https://www.the-numbers.com/movie/Moana-(2026)",
+      "featuredStars": ["Dwayne Johnson", "Catherine Laga’aia"],
+      "studioLabel": "Disney",
+      "report": {
+        "publisher": "Deadline",
+        "date": "2026-07-12",
+        "url": "https://deadline.com/2026/07/moana-bombs-box-office-1236980125/",
+        "low": 100,
+        "high": 125,
+        "kind": "reported range",
+        "estimates": [[100, 125]],
+        "basis": "First-cycle loss forecast, including revenue after cinemas.",
+        "assumedWorldwide": [250000000, 250000000],
+        "assumption": "The forecast assumed a final worldwide box office of $250 million.",
+        "budgetInReport": [250, 250],
+        "marketingInReport": 145,
+        "caveat": "Current worldwide ticket sales exceed the report's $250 million assumption. This is the original July forecast, not an updated loss estimate."
+      }
+    },
+    {
+      "id": "supergirl",
+      "title": "Supergirl",
+      "source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
+      "featuredStars": ["Milly Alcock"],
+      "studioLabel": "Warner Bros. / DC",
+      "report": {
+        "publisher": "Variety",
+        "date": "2026-06-30",
+        "url": "https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/",
+        "low": 80,
+        "high": 120,
+        "kind": "competing estimates",
+        "estimates": [[80, 85], [100, 120]],
+        "basis": "Projected theatrical loss; sources differ about the film's economics.",
+        "assumedWorldwide": [200000000, 210000000],
+        "assumption": "The $100 million to $120 million estimate assumed $200 million to $210 million worldwide. A source familiar with the financials estimated $80 million to $85 million if worldwide gross reached at least $200 million.",
+        "budgetInReport": [170, 170],
+        "marketingInReport": 120,
+        "caveat": "Current worldwide gross is below the report's $200 million assumption. Variety said a lower gross could mean a larger loss. This is the original June forecast, not an updated estimate."
+      }
+    },
+    {
+      "id": "bride",
+      "title": "The Bride!",
+      "source": "https://www.the-numbers.com/movie/Bride-The-(2026)",
+      "featuredStars": ["Jessie Buckley", "Christian Bale"],
+      "studioLabel": "Warner Bros.",
+      "report": {
+        "publisher": "Deadline",
+        "date": "2026-03-08",
+        "url": "https://deadline.com/2026/03/the-bride-box-office-bombs-1236747021/",
+        "low": 90,
+        "high": 90,
+        "kind": "approximate estimate",
+        "estimates": [[90, 90]],
+        "basis": "Loss could approach $90 million in the first cycle, after home entertainment revenue.",
+        "assumedWorldwide": null,
+        "assumption": "Published after a $13.6 million worldwide opening. No final worldwide gross assumption is specified in the report.",
+        "budgetInReport": [80, 80],
+        "marketingInReport": 65,
+        "caveat": "The $90 million is approximate, not an audited final loss."
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+Suggested Reddit title:
+[OC] Reported loss forecasts for four big-budget films released in 2026
+
+First top-level comment:
+
+Sources: original reporting by TheWrap (Digger, 7 October), Deadline (Moana, 12 July; The Bride!, 8 March), and Variety (Supergirl, 30 June).
+These are forecasts published on those dates, not audited final losses or a definitive ranking of the year's biggest bombs.
+
+Digger: https://www.thewrap.com/creative-content/movies/digger-tom-cruise-lose-250-million/
+Moana: https://deadline.com/2026/07/moana-bombs-box-office-1236980125/
+Supergirl: https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/
+The Bride!: https://deadline.com/2026/03/the-bride-box-office-bombs-1236747021/
+
+Solid bars reach the lowest quoted estimate; the hatched sections span the estimates quoted in each report.
+These spans are not statistical confidence intervals.
+TheWrap quotes one Digger source at $250M and another at $200M to $215M.
+Variety quotes Supergirl sources at $80M to $85M and $100M to $120M.
+Deadline gives Moana a $100M to $125M range and says The Bride! could approach $90M.
+
+The reports use different assumptions and revenue windows.
+Supergirl's figure describes theatrical losses, while the other reports include post-theatrical income.
+Moana's July model assumed $250M worldwide; its current $323.7M gross is already higher.
+Supergirl's report assumed about $200M worldwide, above its current $126.5M.
+Digger's report expected no more than $40M worldwide; it has reached $40.8M and is still playing.
+I have not recalculated any forecast from these later grosses, or added these unlike estimates into a total.
+Directors and actors are identification credits, not an attribution of blame for the financial result.
+
+Current worldwide grosses, production budgets, cast and crew, and the identifying promotional artwork come from The Numbers, captured 17 October 2026:
+https://www.the-numbers.com/movie/Digger-(2026)
+https://www.the-numbers.com/movie/Moana-(2026)
+https://www.the-numbers.com/movie/Supergirl-(2026)
+https://www.the-numbers.com/movie/Bride-The-(2026)
+
+Tools: rhp for the HTML/CSS chart, Node.js for data collection and the portable-page build, modern-screenshot for the PNG, and Playwright for browser and export checks.
+The film artwork belongs to the respective studios and rightsholders; the visualization is original.
+
+Posting notes, not part of the comment:
+Use movie-bombs.png, a 2160 by 2700 pixel image with a 4:5 aspect ratio.
+Use the plain descriptive title above and include [OC].
+Post the source-and-tools comment immediately after submission.
+Recheck the community's current rules, recent similar submissions, and any new loss reporting before submitting.
+This draft has not been submitted.

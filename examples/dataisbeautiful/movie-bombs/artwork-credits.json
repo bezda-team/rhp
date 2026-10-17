@@ -1,0 +1,70 @@
+[
+  {
+    "title": "Digger",
+    "file": "assets/digger.jpg",
+    "sourcePage": "https://www.the-numbers.com/movie/Digger-(2026)",
+    "imageUrl": "https://media.the-numbers.com/images/movie-posters/Digger-(2026).jpg",
+    "credit": "Promotional film poster artwork, respective film studios and rightsholders, reproduced as small identifying images in this editorial comparison.",
+    "processing": "Resized proportionally to a maximum height of 480 pixels, without cropping or changing the artwork.",
+    "originalDimensions": [
+      509,
+      755
+    ],
+    "embeddedDimensions": [
+      324,
+      480
+    ],
+    "bytes": 61615
+  },
+  {
+    "title": "Moana",
+    "file": "assets/moana.jpg",
+    "sourcePage": "https://www.the-numbers.com/movie/Moana-(2026)",
+    "imageUrl": "https://media.the-numbers.com/images/movie-posters/Moana-(2026).jpg",
+    "credit": "Promotional film poster artwork, respective film studios and rightsholders, reproduced as small identifying images in this editorial comparison.",
+    "processing": "Resized proportionally to a maximum height of 480 pixels, without cropping or changing the artwork.",
+    "originalDimensions": [
+      510,
+      755
+    ],
+    "embeddedDimensions": [
+      324,
+      480
+    ],
+    "bytes": 67848
+  },
+  {
+    "title": "Supergirl",
+    "file": "assets/supergirl.jpg",
+    "sourcePage": "https://www.the-numbers.com/movie/Supergirl-(2026)",
+    "imageUrl": "https://media.the-numbers.com/images/movie-posters/Supergirl-(2026).jpg",
+    "credit": "Promotional film poster artwork, respective film studios and rightsholders, reproduced as small identifying images in this editorial comparison.",
+    "processing": "Resized proportionally to a maximum height of 480 pixels, without cropping or changing the artwork.",
+    "originalDimensions": [
+      1920,
+      2845
+    ],
+    "embeddedDimensions": [
+      324,
+      480
+    ],
+    "bytes": 59749
+  },
+  {
+    "title": "The Bride!",
+    "file": "assets/bride.jpg",
+    "sourcePage": "https://www.the-numbers.com/movie/Bride-The-(2026)",
+    "imageUrl": "https://media.the-numbers.com/images/movie-posters/Bride-The-(2026).jpg",
+    "credit": "Promotional film poster artwork, respective film studios and rightsholders, reproduced as small identifying images in this editorial comparison.",
+    "processing": "Resized proportionally to a maximum height of 480 pixels, without cropping or changing the artwork.",
+    "originalDimensions": [
+      509,
+      755
+    ],
+    "embeddedDimensions": [
+      324,
+      480
+    ],
+    "bytes": 60893
+  }
+]

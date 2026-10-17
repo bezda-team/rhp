@@ -1,0 +1,61 @@
+Research captured 17 October 2026.
+
+Story and scope
+The user selected 2026 with forecasts clearly labeled.
+The chart therefore uses four quantified forecasts from original trade reporting, rather than treating worldwide gross minus production budget as studio loss.
+Digger supplies the timely hook, with competing sources in TheWrap's 7 October report giving $200M to $215M and $250M.
+The other cases are Moana, Supergirl, and The Bride!.
+This is a selected comparison, not a complete year-end ranking.
+Other major underperformers were screened, including Desert Warrior and Masters of the Universe.
+Neither is assigned a net-loss figure here because the sources located did not provide a sufficiently comparable, original trade-reported estimate.
+Desert Warrior is not omitted because it performed well; The Numbers lists $721,443 worldwide against a $150M production budget.
+
+Sources
+https://www.thewrap.com/creative-content/movies/digger-tom-cruise-lose-250-million/
+https://deadline.com/2026/07/moana-bombs-box-office-1236980125/
+https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/
+https://deadline.com/2026/03/the-bride-box-office-bombs-1236747021/
+https://www.the-numbers.com/movie/Desert-Warrior-(2026-Saudi-Arabia)
+
+Dates and uncertainty
+The graphic reproduces each report's original estimates, not a new forecast as of October.
+The lower and upper values are an envelope of explicitly quoted estimates, not statistical confidence bounds.
+The Digger and Supergirl sources disagree; the chart does not average their opinions into an invented point estimate.
+The Bride! is approximate and is labeled About $90M.
+Moana's worldwide gross has exceeded the July report's $250M assumption.
+Supergirl's worldwide gross remains below the June report's $200M assumption.
+Digger has exceeded the report's $40M worldwide assumption and remains in release.
+The source notes retain these assumptions explicitly and do not revise losses through a generic rental percentage.
+Theatrical and first-cycle forecasts use different revenue windows and are labeled separately.
+No sum, precise ranking of final outcomes, causal attribution to directors, or claim about artistic quality is made.
+
+Audience evidence and its limits
+A recent r/dataisbeautiful post about Ridley Scott's film finances generated a substantial discussion of familiar directors, particular movies, streaming revenue, and accounting assumptions.
+The search result displayed 1,910 votes and a 14 September 2026 publication date, but the opened page used inconsistent relative dates and did not expose a stable current score.
+No exact score or posting date is used as a verified engagement claim.
+https://www.reddit.com/r/dataisbeautiful/comments/1wg1eiz/oc_ridley_scotts_filmography_as_boxoffice/
+Readers challenged incomplete global grosses, treating streaming receipts as zero, and implying career profitability from cinema-only results.
+Those objections inform this chart's explicit forecast dates, source disagreements, and revenue-window labels.
+A separate recent Nolan budget-versus-gross post is another relevant precedent.
+https://www.reddit.com/r/dataisbeautiful/comments/1v845un/christopher_nolan_budget_vs_box_office_oc/
+The current Digger news supplies a more immediate hook than an old film's financial history.
+Interest looks plausible from the recognizable cast, current release, and existing discussion, but these observations do not predict how many votes this draft will receive.
+The biggest editorial weakness is that original trade forecasts are uncertain and come from different dates and accounting windows.
+The chart and source comment disclose that weakness rather than treating the figures as a definitive ranking.
+
+Community rules checked
+The wiki URL named rules reports that the page does not exist, but its current sidebar displays the community rules.
+https://www.reddit.com/r/dataisbeautiful/wiki/rules/
+They require a qualifying data visualization, an [OC] tag for original work, and the data sources and tools in the first top-level comment.
+Titles must describe the data plainly, and popular posts must not be reposted within one month.
+The draft title is descriptive rather than the poster's editorial headline.
+No submission, comment, or message has been sent to Reddit.
+
+Reddit image design
+The publication image is 2160 by 2700 pixels, exactly 4:5.
+This is a design choice for a portrait phone feed, not a claim that organic Reddit posts require this ratio.
+Reddit's advertising guidance independently uses 4:5 portrait examples, but it is advertising guidance rather than an organic-post rule.
+https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications
+Four films allow larger artwork, values, and credits than the rejected ten-film draft.
+The HTML reflows on narrow phones rather than compressing the desktop's text into unreadable type.
+The exported publication image is also inspected as a scaled image at 390 and 360 pixels, since browser reflow alone does not establish feed legibility.
