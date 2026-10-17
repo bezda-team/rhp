@@ -1,0 +1,14 @@
+{
+  "rain-on-glass.png": {
+    "file": "assets/rain-on-glass.png",
+    "description": "Generated photorealistic rain on glass, used as a decorative background in the alternate poster.",
+    "created": "2026-10-17",
+    "tool": "OpenAI built-in image generation",
+    "prompt": "image-prompt.txt",
+    "note": "This is an illustrative background, not an actual photograph documenting acid rain, rainfall acidity, or any measurement. All data marks and text remain live HTML/rhp chart elements."
+  },
+  "fonts": [
+    {"family": "Barlow Condensed", "weight": 700, "license": "assets/BARLOW-CONDENSED-OFL.txt", "source": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed"},
+    {"family": "IBM Plex Sans", "weights": [400, 600], "license": "assets/IBM-PLEX-SANS-OFL.txt", "source": "https://github.com/IBM/plex"}
+  ]
+}

@@ -1,0 +1,6 @@
+Use case: photorealistic-natural.
+Asset type: photographic background for a portrait environmental data poster, approximately 4:5 aspect ratio.
+Primary request: realistic rain on glass. Macro editorial photograph of a rain-covered window, with sharp small beads, irregular water droplets and a few natural vertical runoff trails on the pane. Behind the glass is a completely defocused dark blue-gray rainy sky, with very subtle soft distant light. No discernible scene or objects.
+Composition: fill the frame edge to edge with the glass surface, natural non-repeating droplet distribution. Keep the center reasonably quiet so overlaid chart lines remain readable. Gentle side illumination makes the droplets recognizably photographic, with subdued highlights and darker blue-green shadows.
+Materials: real transparent water on glass, accurate refraction, authentic surface tension, shallow depth of field, understated contrast.
+Constraints: background image only, no chart, no text, no letters, no numbers, no people, no silhouettes, no watermark, no logos. Do not draw or paint the image. No glowing particles or synthetic bokeh pattern. The water is illustrative rain, not scientific evidence of acid rain.

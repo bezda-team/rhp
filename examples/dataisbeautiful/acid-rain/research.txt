@@ -1,0 +1,73 @@
+Research date: 17 October 2026
+
+Topic choice
+Question: what happened to the acid-rain problem many readers remember?
+Finding: a large drop in sulfur dioxide accompanied almost unchanged electricity generation in EPA's covered-plant comparison.
+The result is easy to see with two directly labeled lines sharing a single index axis.
+It offers a concrete environmental improvement with a meaningful remaining limitation: ecosystem recovery is uneven.
+
+Interest evidence, not a prediction
+A July 15, 2026 r/askscience question about what happened to acid rain showed roughly 1,593 votes, with its leading explanation around 8,319 votes when reviewed.
+https://www.reddit.com/r/askscience/comments/1uwtt8g/what_happened_with_the_acid_rain_scare_of_the/
+This suggests recognizable curiosity about the question, but a different subreddit's votes cannot predict a DataIsBeautiful result.
+An older May 1, 2019 DataIsBeautiful acid-rain visualization showed only about 18 votes.
+https://www.reddit.com/r/dataisbeautiful/comments/bjiupq/
+That is weak evidence for chart-specific appeal, and the topic itself is not new.
+The new work is an original visualization and analysis of this explicit source window.
+Search was limited and does not establish that no similar chart exists.
+
+Recent environmental examples
+A September 18, 2026 greenhouse-gas-by-country post showed about 9,785 votes.
+https://www.reddit.com/r/dataisbeautiful/comments/1wjnkm3/oc_greenhouse_gas_emissions_by_country_2025/
+A September 25, 2026 plastic-waste post showed about 556 votes, with comments challenging global generalizations and disposal definitions.
+https://www.reddit.com/r/dataisbeautiful/comments/1wprr8v/oc_what_actually_happens_to_our_plastic_waste/
+An October 12, 2026 solar-growth post already covered the current global electricity result, so that was less attractive as this attempt.
+https://www.reddit.com/r/dataisbeautiful/comments/1x4ejjl/oc_solar_supplied_76_of_the_increase_in_global/
+Practical lessons: make the main comparison immediately readable, name the geographic and program scope, and keep different environmental measures distinct.
+Assessment: moderately promising as an accessible historical explanation, with no reliable basis for promising high engagement.
+Main weakness: a historical window through 2023 supplies less immediate news relevance than a current-event topic.
+
+Primary sources
+1. EPA Emissions Reductions, through 2023.
+https://www.epa.gov/power-sector/progress-report-emissions-reductions
+Use Figure 4's fuel-specific SO2 emissions and generation series embedded in the published HTML.
+The headline uses sums of those exact arrays, rather than the rounded percentages elsewhere on the page.
+Figure 4 sums differ slightly from EPA's separately published overall emissions totals, so do not silently substitute the latter.
+The snapshot retains the eight numeric arrays, years, URL, retrieval time, and source HTML SHA-256.
+
+2. EPA Program Basics and Acid Rain Program.
+https://www.epa.gov/power-sector/progress-report-program-basics
+https://www.epa.gov/acidrain/acid-rain-program
+Programs cover large fossil-fuel electricity generating units; the source's historical membership varies.
+Phase II of the Acid Rain Program began in 2000, which also starts the matching annual fuel-series comparison.
+CSAPR-only SO2 units enter in 2015.
+The chart does not estimate the causal contribution of a particular rule.
+
+3. EPA Atmospheric Deposition, through 2022.
+https://www.epa.gov/power-sector/progress-report-atmospheric-deposition
+Reported eastern-U.S. wet sulfate deposition reduction: 73%, comparing the 2000 to 2002 and 2020 to 2022 averages.
+This separate outcome has its own region, period and units; it is not rainfall acidity or the 94% emissions statistic.
+
+4. EPA Ecosystem Response, through 2022.
+https://www.epa.gov/power-sector/progress-report-ecosystem-response
+The source documents slower and mixed recovery in central Appalachian streams.
+Avoid saying acid rain has been eliminated or all damage has healed.
+
+Arithmetic
+2000 SO2: 11,201,497 short tons.
+2023 SO2: 650,359 short tons.
+Reduction: 94.1939992484933%, displayed as 94%.
+2000 generation: 2,476,377,084 MWh.
+2023 generation: 2,430,428,806 MWh.
+Change: -1.8554637053005418%, displayed as -2%.
+TWh conversion: MWh / 1,000,000.
+Each index: annual value / its own 2000 value * 100.
+All 24 years are included; no smoothing or interpolation is applied.
+
+Submission preparation
+The visible subreddit rules were reviewed on 17 October 2026.
+https://www.reddit.com/r/dataisbeautiful/wiki/rules/
+The sidebar requires a qualifying visualization, a descriptive title, an OC tag for original work, and data sources and tools in the first top-level comment.
+The rain photograph's generated origin is disclosed in the alternate's source/tools comment and artwork credits.
+The U.S.-politics Thursday restriction is relevant if the post is framed as a U.S. political argument; the draft stays with the historical measurements.
+No submission, comment, or other Reddit interaction was performed.

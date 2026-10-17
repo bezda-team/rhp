@@ -1,0 +1,32 @@
+Suggested title
+[OC] Sulfur dioxide fell 94% at EPA-tracked U.S. power plants, while electricity output fell 2% (2000 to 2023)
+
+Suggested first top-level comment
+Data: U.S. EPA, Progress Report, Emissions Reductions, Figure 4.
+https://www.epa.gov/power-sector/progress-report-emissions-reductions#so2
+
+Tools: rhp (@bezda/rhp), HTML/CSS, JavaScript, and Playwright for visual checks.
+The rain-on-glass alternate uses an AI-generated decorative background made with OpenAI image generation.
+The background does not represent measured acid rain.
+
+I summed the coal, gas, oil and other fuel series separately for sulfur dioxide and electricity generation, then indexed each total to 100 in 2000.
+Sulfur dioxide went from 11.20 million to 0.65 million U.S. short tons, a 94.2% decline.
+Generation went from 2,476 to 2,430 TWh, a 1.9% decline.
+The two lines share one index axis, rather than using two different vertical axes.
+
+Scope: plants covered in each year's Acid Rain Program and CSAPR SO2 programs, not every U.S. power plant.
+CSAPR-only SO2 units enter in 2015, so this is not a fixed panel of identical plants.
+EPA attributes the decline to pollution controls and lower-emitting fuels; it does not assign the whole reduction to one policy or technology.
+
+The smaller 73% figure is a separate EPA finding: wet sulfate deposition in the eastern U.S. fell between the 2000 to 2002 and 2020 to 2022 averages.
+It is not a percentage change in rainfall pH.
+https://www.epa.gov/power-sector/progress-report-atmospheric-deposition
+
+Recovery remains uneven, particularly in central Appalachian streams.
+https://www.epa.gov/power-sector/progress-report-ecosystem-response
+
+I used the internally consistent historical series through 2023 published in this EPA progress report.
+This does not describe conditions in 2026, and it is not a claim that acid rain has disappeared.
+
+Upload acid-rain.png for the original or acid-rain-glass.png for the photographic alternate, then add the source/tools comment above.
+This is a draft; no Reddit submission has been made.

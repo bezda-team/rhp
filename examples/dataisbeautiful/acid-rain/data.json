@@ -1,0 +1,239 @@
+{
+  "source": "https://www.epa.gov/power-sector/progress-report-emissions-reductions",
+  "retrievedAt": "2026-10-17T08:08:20.043Z",
+  "first": 2000,
+  "last": 2023,
+  "scope": "U.S. power plants in EPA's Acid Rain Program and CSAPR SO2 comparison, with coverage in each respective year.",
+  "method": "Sum coal, gas, oil and other series from EPA Figure 4 separately for emissions and generation. Divide each annual total by its own 2000 total and multiply by 100. Both series share one index axis; it does not compare tons to MWh.",
+  "caveat": "Program coverage changes over time; CSAPR-only SO2 units enter in 2015. These are covered power plants, not all U.S. emissions or all electricity generation. Emissions are not a measure of rainfall pH or complete ecosystem recovery.",
+  "rows": [
+    {
+      "year": 2000,
+      "so2Tons": 11201497,
+      "generationMWh": 2476377084,
+      "so2Index": 100,
+      "generationIndex": 100,
+      "coalGenerationMWh": 2014141164,
+      "gasGenerationMWh": 366636640
+    },
+    {
+      "year": 2001,
+      "so2Tons": 10636870,
+      "generationMWh": 2446524167,
+      "so2Index": 94.95936123537774,
+      "generationIndex": 98.79449227692821,
+      "coalGenerationMWh": 1946276123,
+      "gasGenerationMWh": 404375732
+    },
+    {
+      "year": 2002,
+      "so2Tons": 10194847,
+      "generationMWh": 2472750391,
+      "so2Index": 91.0132547462183,
+      "generationIndex": 99.8535484347908,
+      "coalGenerationMWh": 1966888180,
+      "gasGenerationMWh": 428904777
+    },
+    {
+      "year": 2003,
+      "so2Tons": 10594738,
+      "generationMWh": 2518653172,
+      "so2Index": 94.58323293752612,
+      "generationIndex": 101.70717489970119,
+      "coalGenerationMWh": 2018352250,
+      "gasGenerationMWh": 424387336
+    },
+    {
+      "year": 2004,
+      "so2Tons": 10259207,
+      "generationMWh": 2570275132,
+      "so2Index": 91.58782080645113,
+      "generationIndex": 103.79175080429715,
+      "coalGenerationMWh": 2021197052,
+      "gasGenerationMWh": 474654252
+    },
+    {
+      "year": 2005,
+      "so2Tons": 10222634,
+      "generationMWh": 2731871900,
+      "so2Index": 91.2613198039512,
+      "generationIndex": 110.31728235779458,
+      "coalGenerationMWh": 2058988791,
+      "gasGenerationMWh": 595509907
+    },
+    {
+      "year": 2006,
+      "so2Tons": 9392502,
+      "generationMWh": 2708986328,
+      "so2Index": 83.85041749330469,
+      "generationIndex": 109.39312697984893,
+      "coalGenerationMWh": 2039272267,
+      "gasGenerationMWh": 628324800
+    },
+    {
+      "year": 2007,
+      "so2Tons": 8933516,
+      "generationMWh": 2823318572,
+      "so2Index": 79.7528758879282,
+      "generationIndex": 114.01004274517024,
+      "coalGenerationMWh": 2061841197,
+      "gasGenerationMWh": 714632070
+    },
+    {
+      "year": 2008,
+      "so2Tons": 7616449,
+      "generationMWh": 2770762403,
+      "so2Index": 67.99492067890569,
+      "generationIndex": 111.88774201239539,
+      "coalGenerationMWh": 2027959218,
+      "gasGenerationMWh": 706606532
+    },
+    {
+      "year": 2009,
+      "so2Tons": 5722201,
+      "generationMWh": 2605600536,
+      "so2Index": 51.084252399478395,
+      "generationIndex": 105.21824615624654,
+      "coalGenerationMWh": 1819291910,
+      "gasGenerationMWh": 758352516
+    },
+    {
+      "year": 2010,
+      "so2Tons": 5120755,
+      "generationMWh": 2759900778,
+      "so2Index": 45.71491649732174,
+      "generationIndex": 111.44913251830108,
+      "coalGenerationMWh": 1918277344,
+      "gasGenerationMWh": 810625123
+    },
+    {
+      "year": 2011,
+      "so2Tons": 4503303,
+      "generationMWh": 2680572718,
+      "so2Index": 40.20268897987474,
+      "generationIndex": 108.24574073630863,
+      "coalGenerationMWh": 1808118031,
+      "gasGenerationMWh": 846988073
+    },
+    {
+      "year": 2012,
+      "so2Tons": 3284020,
+      "generationMWh": 2660000303,
+      "so2Index": 29.3176885196684,
+      "generationIndex": 107.41499427475722,
+      "coalGenerationMWh": 1584916611,
+      "gasGenerationMWh": 1050913794
+    },
+    {
+      "year": 2013,
+      "so2Tons": 3212412,
+      "generationMWh": 2654950946,
+      "so2Index": 28.678416822322944,
+      "generationIndex": 107.21109330052256,
+      "coalGenerationMWh": 1660636289,
+      "gasGenerationMWh": 974466475
+    },
+    {
+      "year": 2014,
+      "so2Tons": 3127620,
+      "generationMWh": 2659235842,
+      "so2Index": 27.92144657093601,
+      "generationIndex": 107.38412413769534,
+      "coalGenerationMWh": 1656998215,
+      "gasGenerationMWh": 980088223
+    },
+    {
+      "year": 2015,
+      "so2Tons": 2216254,
+      "generationMWh": 2649490638,
+      "so2Index": 19.785337620498403,
+      "generationIndex": 106.99059747881272,
+      "coalGenerationMWh": 1433366404,
+      "gasGenerationMWh": 1191630846
+    },
+    {
+      "year": 2016,
+      "so2Tons": 1490117,
+      "generationMWh": 2579976074,
+      "so2Index": 13.302838004598849,
+      "generationIndex": 104.18349009403126,
+      "coalGenerationMWh": 1320277012,
+      "gasGenerationMWh": 1238564059
+    },
+    {
+      "year": 2017,
+      "so2Tons": 1337891,
+      "generationMWh": 2473906786,
+      "so2Index": 11.943858932426622,
+      "generationIndex": 99.90024548296942,
+      "coalGenerationMWh": 1285802128,
+      "gasGenerationMWh": 1174496424
+    },
+    {
+      "year": 2018,
+      "so2Tons": 1263908,
+      "generationMWh": 2592706585,
+      "so2Index": 11.283384711882706,
+      "generationIndex": 104.6975681430591,
+      "coalGenerationMWh": 1227456385,
+      "gasGenerationMWh": 1349290456
+    },
+    {
+      "year": 2019,
+      "so2Tons": 969151,
+      "generationMWh": 2504450576,
+      "so2Index": 8.651977499078917,
+      "generationIndex": 101.1336517439684,
+      "coalGenerationMWh": 1032277454,
+      "gasGenerationMWh": 1462538809
+    },
+    {
+      "year": 2020,
+      "so2Tons": 787192,
+      "generationMWh": 2348912337,
+      "so2Index": 7.027560691218325,
+      "generationIndex": 94.85277311668096,
+      "coalGenerationMWh": 832509441,
+      "gasGenerationMWh": 1508415933
+    },
+    {
+      "year": 2021,
+      "so2Tons": 942478,
+      "generationMWh": 2431824404,
+      "so2Index": 8.413857540648362,
+      "generationIndex": 98.20089273609189,
+      "coalGenerationMWh": 963991138,
+      "gasGenerationMWh": 1459017785
+    },
+    {
+      "year": 2022,
+      "so2Tons": 851666,
+      "generationMWh": 2478718157,
+      "so2Index": 7.6031444725646935,
+      "generationIndex": 100.09453620836366,
+      "coalGenerationMWh": 906902785,
+      "gasGenerationMWh": 1562252167
+    },
+    {
+      "year": 2023,
+      "so2Tons": 650359,
+      "generationMWh": 2430428806,
+      "so2Index": 5.806000751506696,
+      "generationIndex": 98.14453629469946,
+      "coalGenerationMWh": 743193014,
+      "gasGenerationMWh": 1680762424
+    }
+  ],
+  "claims": {
+    "so2ReductionPercent": 94.1939992484933,
+    "generationChangePercent": -1.8554637053005365,
+    "coalGenerationChangePercent": -63.1012449731155,
+    "wetSulfateReduction": {
+      "percent": 73,
+      "region": "Eastern United States",
+      "from": "2000 to 2002 average",
+      "to": "2020 to 2022 average",
+      "source": "https://www.epa.gov/power-sector/progress-report-atmospheric-deposition"
+    }
+  }
+}
