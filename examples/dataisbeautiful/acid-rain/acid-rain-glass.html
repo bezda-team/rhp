@@ -14,7 +14,7 @@
 :root {color-scheme:dark;--page:#061923;--paper:#0c2a37;--ink:#eff6ed;--soft:#c5d5d7;--rule:#304b56;--sulfur:#d7ef74;--rain:#72a6b7;--display:"Barlow Condensed","Arial Narrow",sans-serif;--text:"IBM Plex Sans",Arial,sans-serif;}
 * {box-sizing:border-box;}
 body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);font:16px/1.4 var(--text);}
-.poster {width:100%;max-width:1080px;min-height:1350px;margin:0 auto;padding:38px 24px 26px 48px;background:var(--paper);display:flex;flex-direction:column;}
+.poster {width:100%;max-width:1080px;min-height:1350px;margin:0 auto;padding:38px 48px 26px;background:var(--paper);display:flex;flex-direction:column;}
 .poster figcaption {display:grid;width:100%;gap:20px;margin:0 0 26px;}
 .poster .kicker {display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:15px;border-bottom:1px solid var(--soft);color:var(--soft);font-size:16px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;}
 .poster .kicker b {color:var(--sulfur);font-weight:600;}
@@ -57,7 +57,7 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
 .below a {color:inherit;text-underline-offset:3px;}
 .files {display:flex;flex-wrap:wrap;gap:10px 22px;margin:24px 0 0;padding-top:18px;border-top:1px solid var(--rule);}
 @media (max-width:1100px) {
- .poster {min-height:0;padding:32px 17px 24px 34px;}
+ .poster {min-height:0;padding:32px 34px 24px;}
  .hero-number {font-size:clamp(120px,20vw,220px);}
  .hero-copy {font-size:clamp(36px,5.6vw,62px);}
  .poster .dek {font-size:20px;}
@@ -67,7 +67,7 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
 }
 @media (max-width:640px) {
  body {padding:12px 8px 30px;}
- .poster {padding:22px 9px 20px 18px;}
+ .poster {padding:22px 18px 20px;}
  .poster figcaption {gap:18px;margin-bottom:22px;}
  .poster .kicker {font-size:12px;letter-spacing:.06em;padding-bottom:12px;gap:10px;}
  .poster .headline {gap:16px;align-items:flex-start;}
@@ -95,7 +95,7 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
  .source-grid {grid-template-columns:1fr;gap:22px;}
 }
 @media (max-width:360px) {
- .poster {padding-left:14px;padding-right:7px;}
+ .poster {padding-inline:14px;}
  .poster .headline {gap:12px;}
  .hero-copy {font-size:26px;}
  .hero-number {font-size:104px;}
@@ -144,25 +144,24 @@ const theme = {font:"var(--text)",ink:"var(--ink)",muted:"var(--soft)",grid:"var
 
 // The original line-end labels and rain-like vertical marks.
 const Rain = slat({room:{},css:`.rain {top:auto;bottom:0;height:calc(var(--rain-index) / 120 * 100%);translate:-50% 0;--rhp-tick-width:2px;opacity:.28;background:var(--rhp-series-3);}`}, d => html`<${Tick} at=${() => d.year} class="rain" style=${() => ({"--rain-index":d.so2Index})}/>`);
-const makeSeries = end => slat({room:{end},css:`
- .curve {stroke-width:6.5px;}
- .power .curve {stroke-width:4.5px;stroke-dasharray:12 7;}
- @container (max-width:650px) {.curve {stroke-width:4px;} .power .curve {stroke-width:3px;stroke-dasharray:8 5;}}
- .name {--rhp-label-gap:13px;font-size:21px;line-height:1.1;translate:0 50%;}
+const Series = slat({room:{end:50,before:24},css:`
+ .curve {stroke-width:8.5px;}
+ .power .curve {stroke-width:6px;stroke-dasharray:12 7;}
+ @container (max-width:650px) {.curve {stroke-width:5.5px;} .power .curve {stroke-width:4.5px;stroke-dasharray:8 5;}}
+ .name {--rhp-label-gap:0px;font-size:21px;line-height:1.1;text-align:right;translate:calc(50px - 100%) -20px;}
  .name strong {display:block;font:700 42px/1.1 "Barlow Condensed",sans-serif;margin-top:5px;}
- .sulfur .name {translate:0 0;color:var(--rhp-series-1);} .power .name {color:var(--rhp-series-2);}
+ .sulfur .name {color:var(--rhp-series-1);} .power .name {color:var(--rhp-series-2);}
  .short {display:none;}
- @container (max-width:650px) {.name {font-size:14px;--rhp-label-gap:9px;} .name strong {font-size:26px;margin-top:4px;} .long {display:none;} .short {display:inline;}}
+ @container (max-width:650px) {.name {font-size:14px;} .name strong {font-size:26px;margin-top:4px;} .long {display:none;} .short {display:inline;}}
 `}, d => html`<div class=${() => d.key === "so2Index" ? "sulfur" : "power"}><${Line} points=${() => d.points} color=${() => d.color} class="curve"/><${Label} at=${LAST} cross=${() => d.points.at(-1)[1]} class="name"><span class="long">${() => d.name}</span><span class="short">${() => d.short}</span><strong>${() => d.change}</strong><//></div>`);
-const Series = makeSeries(158), CompactSeries = makeSeries(82);
 const Years = slat({room:{after:36},css:`
  .tick {top:100%;height:6px;translate:-50% 0;background:var(--rhp-muted);}
  .year {top:calc(100% + 12px);translate:-50% 0;--rhp-label-gap:0px;font-size:17px;color:var(--rhp-muted);}
  .first .year {translate:0 0;} .last .year {translate:-100% 0;}
  @container (max-width:650px) {.year {font-size:14px;} .minor, .near-end {display:none;}}
 `}, d => html`<div class=${() => d.first ? "first" : d.last ? "last" : d.at===2020 ? "near-end" : d.at===2005||d.at===2015 ? "minor" : ""}><${Tick} at=${() => d.at} class="tick"/><${Label} at=${() => d.at} class="year">${() => d.at}<//></div>`);
-const Hair = slat({room:{},css:`.hair {background:var(--rhp-muted);opacity:.5;--rhp-tick-width:1px;transition:none;}`}, d => html`<${Tick} at=${() => d.year} thick=${1} class="hair"/>`);
-const Mark = slat({room:{},css:`.dot {border:3px solid var(--rhp-surface);transition:none;}`}, d => html`<${Dot} at=${() => d.year} cross=${() => ROWS[d.i][d.key]} size="13px" color=${() => d.color} class="dot"/>`);
+const Hair = slat({room:{},css:`.hair {background:var(--rhp-muted);opacity:.5;--rhp-tick-width:2px;transition:none;}`}, d => html`<${Tick} at=${() => d.year} thick=${1} class="hair"/>`);
+const Mark = slat({room:{},css:`.dot {border:3px solid var(--rhp-surface);transition:none;}`}, d => html`<${Dot} at=${() => d.year} cross=${() => ROWS[d.i][d.key]} size="26px" color=${() => d.color} class="dot"/>`);
 const Year = slat({room:{},css:`
  .pick {cursor:crosshair;outline:none;}
  .pick:focus-visible {outline:2px solid var(--rhp-series-1);outline-offset:-2px;}
@@ -190,16 +189,16 @@ function AcidRain() {
  return html`<${Poster}
   kicker=${html`<b>Acid rain · United States</b><span>${FIRST} to ${LAST}</span>`}
   title=${html`<span class="hero-number">${reduction}%</span><span class="hero-copy"><strong>less sulfur dioxide.</strong><span>Almost the<br>same power.</span></span>`}
-  dek="How the United States tackled acid rain. At power plants covered by EPA's acid-rain and interstate-air programs, sulfur pollution plunged while electricity output barely changed."
+  dek="How the United States tackled acid rain. Power plants covered by EPA's acid-rain and interstate-air programs reduced sulfur pollution while maintaining nearly the same electricity output."
   onPointerMove=${move} onClick=${click} onFocusIn=${pick} onPointerLeave=${leave}
   onFocusOut=${e=>!e.currentTarget.contains(e.relatedTarget)&&setSelected(null)}>
   ${PHOTO ? html`<img class="poster-photo" src=${PHOTO} alt="" aria-hidden="true"/>` : null}
   <div class="chart-heading"><p><b>Change since ${FIRST}</b> · each series starts at 100</p><p>Index, ${FIRST} = 100</p></div>
   <div class="plot">
-   <${Chart} scale=${[FIRST,LAST]} cross=${[0,120]} crossTicks=${[0,25,50,75,100]} crossFormat=${value=>html`<span class="axis-value">${value}</span>`} height=${()=>phone()?300:410} label="Sulfur dioxide emissions and electricity generation at covered U.S. power plants, indexed to 100 in 2000" theme=${theme}>
+   <${Chart} scale=${[FIRST,LAST]} cross=${[0,120]} crossTicks=${[0,25,50,75,100]} crossFormat=${value=>html`<span class="axis-value">${value}</span>`} height=${()=>phone()?300:410} style=${{"--rhp-pad-right":"50px"}} label="Sulfur dioxide emissions and electricity generation at covered U.S. power plants, indexed to 100 in 2000" theme=${theme}>
     <${Scale} ticks=${[2000,2005,2010,2015,2020,2023]}>${Years}<//>
     <${Plot} overlap=${true} rows=${ROWS} style=${{"pointer-events":"none"}}>${Rain}<//>
-    ${()=>html`<${Plot} overlap=${true} rows=${SERIES} style=${{"pointer-events":"none"}}>${phone()?CompactSeries:Series}<//>`}
+    <${Plot} overlap=${true} rows=${SERIES} style=${{"pointer-events":"none"}}>${Series}<//>
     <${Plot} overlap=${true} slats=${1} year=${()=>YEARS[i()]} style=${{"pointer-events":"none"}}>${Hair}<//>
     <${Plot} overlap=${true} rows=${SERIES} i=${i} year=${()=>YEARS[i()]} style=${{"pointer-events":"none"}}>${Mark}<//>
     <${Plot} orientation="vertical" keyboard=${true} rows=${ROWS}>${Year}<//>

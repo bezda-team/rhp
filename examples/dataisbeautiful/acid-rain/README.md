@@ -5,7 +5,7 @@ The headline states the measured result: 94% less sulfur dioxide with approximat
 
 - `acid-rain.html` is the original dark poster.
 - `acid-rain-glass.html` is the alternate with an embedded realistic rain-on-glass background.
-- The matching PNG files are 2160 by 2700 exports from the pages' actual download buttons.
+- The matching PNG files are full-poster exports at twice the displayed resolution, saved with the pages' actual download buttons.
 - `data.json` contains the calculated totals, indices, scope and claims.
 - `source-snapshot.json` preserves the original EPA numeric arrays and provenance.
 - `post.txt` contains a Reddit title and source/tools comment draft.
