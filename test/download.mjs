@@ -40,6 +40,17 @@ try {
     await page.route("https://fonts.gstatic.com/**", route => route.fulfill({
       body: fs.readFileSync(path.join(root, "test/fixtures/fonts/fraunces.woff2")), contentType: "font/woff2", headers: cors,
     }));
+    // Top-level await can postpone chart rendering until after the document has loaded.
+    const deferredFile = path.join(out, "deferred.html");
+    fs.writeFileSync(deferredFile, fs.readFileSync(path.join(recipes, "bar.html"), "utf8").replace(
+      /(import \{[^\n]+from "@bezda\/rhp\/standalone";)/,
+      "$1\nawait new Promise(resolve => { window.finishChart = resolve; });",
+    ));
+    await page.goto("file://" + deferredFile);
+    assert.equal(await page.locator(".poster").count(), 0, "chart rendering is still waiting after load");
+    await page.evaluate(() => window.finishChart());
+    await page.getByRole("button", { name: "Download poster as PNG", exact: true }).waitFor();
+    console.log(`PASS ${width}px: delayed chart rendering still gets a download control`);
     for (const file of fs.readdirSync(recipes).filter(file => file.endsWith(".html"))) {
       const source = fs.readFileSync(path.join(recipes, file), "utf8");
       assert.equal(withPosterDownload(source), source, `${file}: generated controls are current and idempotent`);
@@ -53,7 +64,7 @@ try {
       assert(Math.abs(control.x + control.width - bounds.x - bounds.width) < 1, `${file}: control aligns with poster's right edge`);
       assert.equal(await page.locator(".poster .poster-download").count(), 0);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${file}: no horizontal overflow at ${width}px`);
-      if (!["bar.html", "donut.html", "dial.html", "silhouettes.html"].includes(file)) continue;
+      if (!["bar.html", "candlestick.html", "donut.html", "dial.html", "silhouettes.html"].includes(file)) continue;
       await page.evaluate(() => window.scrollTo(0, 0));
       const downloadEvent = page.waitForEvent("download");
       // The first poster is exported through the keyboard, the rest by pointer.

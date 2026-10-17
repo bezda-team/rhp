@@ -215,6 +215,30 @@ function addPosterDownloads() {
         exporter ||= import('https://cdn.jsdelivr.net/npm/modern-screenshot@4.7.0/+esm' + (retries ? `?retry=${retries}` : ''));
         const { domToBlob } = await exporter;
         await document.fonts.ready;
+        // Grid auto margins resolve to zero in getComputedStyle, so keep their author rules.
+        const autoMargins = new Set();
+        const marginRules = rules => [...rules].map(rule => {
+          if (rule.selectorText && rule.style) {
+            const margins = [...rule.style].filter(name => name === 'margin' || name.startsWith('margin-'));
+            if (margins.some(name => /\bauto\b/.test(rule.style.getPropertyValue(name)))) autoMargins.add(rule.selectorText);
+            return margins.length ? `${rule.selectorText} { ${margins.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
+          }
+          if (!rule.cssRules) return '';
+          if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? marginRules(rule.cssRules) : '';
+          if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? marginRules(rule.cssRules) : '';
+          return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + marginRules(rule.cssRules) + '}';
+        }).join('\n');
+        const margins = [...document.styleSheets].map(sheet => {
+          try { return marginRules(sheet.cssRules); } catch (cause) { return ''; }
+        }).join('\n');
+        const restoreMargins = (source, clone) => {
+          if (clone.style && source !== poster && [...autoMargins].some(selector => source.matches(selector))) {
+            [...clone.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.removeProperty(name));
+            [...source.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
+          }
+          const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName));
+          [...clone.children].forEach((child, i) => { if (children[i]) restoreMargins(children[i], child); });
+        };
         // Cross-origin font stylesheets are readable through fetch, but not through cssRules.
         const fontFiles = new Map();
         const fontRules = await Promise.all([...document.styleSheets].map(async sheet => {
@@ -268,8 +292,14 @@ function addPosterDownloads() {
           node.style.backgroundImage = background;
         };
         const blob = await domToBlob(poster, {
-          scale: 2, style: { margin: '0', boxShadow: 'none' },
+          scale: 2, style: { margin: '0' },
           font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
+          onCloneNode: clone => {
+            restoreMargins(poster, clone);
+            const style = document.createElement('style');
+            style.textContent = margins;
+            clone.prepend(style);
+          },
           // CSS content's alternative text follows a slash and must not be painted.
           onCreateForeignObjectSvg: svg => svg.querySelectorAll('style').forEach(style => {
             style.textContent = style.textContent.replace(/(content:\s*')([^']*)(')/g, (_, start, text, end) => start + text.split(' / ')[0] + end);
@@ -299,8 +329,16 @@ function addPosterDownloads() {
     tools.append(button);
   });
 }
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addPosterDownloads, { once: true });
-else addPosterDownloads();
+// A chart module may await fonts or data after DOMContentLoaded has already fired.
+if (document.querySelector('.poster')) addPosterDownloads();
+else {
+  const observer = new MutationObserver(() => {
+    if (!document.querySelector('.poster')) return;
+    observer.disconnect();
+    addPosterDownloads();
+  });
+  observer.observe(document.getElementById('chart') || document.body, { childList: true, subtree: true });
+}
 </script>
 </body>
 </html>
