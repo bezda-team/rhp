@@ -1,6 +1,8 @@
 {
   "asOf": "2026-10-17",
-  "selection": "Four 2026 theatrical releases with quantified loss forecasts in original reporting by TheWrap, Deadline or Variety. This is a selected comparison, not a complete ranking of 2026 losses.",
+  "selection": "The four largest comparable loss forecasts verified in original film-trade reporting for 2026 releases, ranked by the highest quoted estimate. Eligible forecasts include post-theatrical income. This is a ranking of dated published forecasts found in the documented source review, not a complete ranking of actual losses.",
+  "selectionAudit": "selection-audit.json",
+  "ranking": "Descending upper estimate; equal upper estimates share a rank. Ties are displayed by descending lower estimate, then title.",
   "unit": "million US dollars",
   "rangeMeaning": "The envelope of the estimates explicitly quoted by each report, not a confidence interval or a calculation of gross minus budget.",
   "rows": [
@@ -40,7 +42,8 @@
           173
         ],
         "marketingInReport": 100,
-        "caveat": "The production budget is disputed. The Numbers lists $125 million; this loss report cites insiders at $163 million to $173 million. Current ticket sales have passed the report's $40 million assumption."
+        "caveat": "The production budget is disputed. The Numbers lists $125 million; this loss report cites insiders at $163 million to $173 million. Current ticket sales have passed the report's $40 million assumption.",
+        "summary": "Competing estimates depend partly on video-on-demand income."
       },
       "budget": 125000000,
       "domestic": 16321958,
@@ -59,7 +62,58 @@
         "Jesse Plemons"
       ],
       "companies": "Legendary Pictures, M. Productions, TC Productions, Warner Bros.",
-      "image": "https://media.the-numbers.com/images/movie-posters/Digger-(2026).jpg"
+      "image": "https://media.the-numbers.com/images/movie-posters/Digger-(2026).jpg",
+      "forecastRank": 1
+    },
+    {
+      "id": "supergirl",
+      "title": "Supergirl",
+      "source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
+      "featuredStars": [
+        "Milly Alcock"
+      ],
+      "studioLabel": "Warner Bros. / DC",
+      "report": {
+        "publisher": "Deadline",
+        "date": "2026-06-29",
+        "url": "https://deadline.com/2026/06/supergirl-bomb-boxoffice-1236970324/",
+        "low": 125,
+        "high": 125,
+        "kind": "point forecast",
+        "estimates": [
+          [
+            125,
+            125
+          ]
+        ],
+        "basis": "First-cycle loss forecast, including downstream income after cinemas.",
+        "assumedWorldwide": null,
+        "assumption": "Published after a $68 million worldwide opening. The report gives a $315 million worldwide break-even estimate, but does not specify the final worldwide gross assumed in its $125 million loss forecast.",
+        "budgetInReport": [
+          170,
+          186
+        ],
+        "marketingInReport": 120,
+        "caveat": "This is Deadline's original June forecast, not an updated or audited loss. Variety's separate theatrical-only estimates are excluded from this comparison because they use a different revenue window.",
+        "summary": "First-cycle estimate; no final-gross assumption was disclosed."
+      },
+      "budget": 170000000,
+      "domestic": 72366532,
+      "international": 54100000,
+      "worldwide": 126466532,
+      "release": "June 26th, 2026",
+      "directors": [
+        "Craig Gillespie"
+      ],
+      "leading": [
+        "Milly Alcock",
+        "Jason Momoa",
+        "Matthias Schoenaerts",
+        "Eve Ridley"
+      ],
+      "companies": "DC Studios, Domain Entertainment, Troll Court Entertainment, The Safran Company",
+      "image": "https://media.the-numbers.com/images/movie-posters/Supergirl-(2026).jpg",
+      "forecastRank": 2
     },
     {
       "id": "moana",
@@ -94,7 +148,8 @@
           250
         ],
         "marketingInReport": 145,
-        "caveat": "Current worldwide ticket sales exceed the report's $250 million assumption. This is the original July forecast, not an updated loss estimate."
+        "caveat": "Current worldwide ticket sales exceed the report's $250 million assumption. This is the original July forecast, not an updated loss estimate.",
+        "summary": "The $250M worldwide-gross assumption has since been exceeded."
       },
       "budget": 250000000,
       "domestic": 126229663,
@@ -109,62 +164,8 @@
         "Catherine Laga’aia"
       ],
       "companies": "Walt Disney Pictures, Seven Bucks Productions, Flynn Picture Company",
-      "image": "https://media.the-numbers.com/images/movie-posters/Moana-(2026).jpg"
-    },
-    {
-      "id": "supergirl",
-      "title": "Supergirl",
-      "source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
-      "featuredStars": [
-        "Milly Alcock"
-      ],
-      "studioLabel": "Warner Bros. / DC",
-      "report": {
-        "publisher": "Variety",
-        "date": "2026-06-30",
-        "url": "https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/",
-        "low": 80,
-        "high": 120,
-        "kind": "competing estimates",
-        "estimates": [
-          [
-            80,
-            85
-          ],
-          [
-            100,
-            120
-          ]
-        ],
-        "basis": "Projected theatrical loss; sources differ about the film's economics.",
-        "assumedWorldwide": [
-          200000000,
-          210000000
-        ],
-        "assumption": "The $100 million to $120 million estimate assumed $200 million to $210 million worldwide. A source familiar with the financials estimated $80 million to $85 million if worldwide gross reached at least $200 million.",
-        "budgetInReport": [
-          170,
-          170
-        ],
-        "marketingInReport": 120,
-        "caveat": "Current worldwide gross is below the report's $200 million assumption. Variety said a lower gross could mean a larger loss. This is the original June forecast, not an updated estimate."
-      },
-      "budget": 170000000,
-      "domestic": 72366532,
-      "international": 54100000,
-      "worldwide": 126466532,
-      "release": "June 26th, 2026",
-      "directors": [
-        "Craig Gillespie"
-      ],
-      "leading": [
-        "Milly Alcock",
-        "Jason Momoa",
-        "Matthias Schoenaerts",
-        "Eve Ridley"
-      ],
-      "companies": "DC Studios, Domain Entertainment, Troll Court Entertainment, The Safran Company",
-      "image": "https://media.the-numbers.com/images/movie-posters/Supergirl-(2026).jpg"
+      "image": "https://media.the-numbers.com/images/movie-posters/Moana-(2026).jpg",
+      "forecastRank": 2
     },
     {
       "id": "bride",
@@ -196,7 +197,8 @@
           80
         ],
         "marketingInReport": 65,
-        "caveat": "The $90 million is approximate, not an audited final loss."
+        "caveat": "The $90 million is approximate, not an audited final loss.",
+        "summary": "Approximate first-cycle loss after home-entertainment income."
       },
       "budget": 80000000,
       "domestic": 12744025,
@@ -211,8 +213,9 @@
         "Christian Bale"
       ],
       "companies": "Warner Bros., First Love Films, In the Current Company",
-      "image": "https://media.the-numbers.com/images/movie-posters/Bride-The-(2026).jpg"
+      "image": "https://media.the-numbers.com/images/movie-posters/Bride-The-(2026).jpg",
+      "forecastRank": 4
     }
   ],
-  "retrievedAt": "2026-10-17T06:10:11.484Z"
+  "retrievedAt": "2026-10-17T06:39:46.580Z"
 }

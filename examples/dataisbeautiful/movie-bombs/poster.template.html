@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>2026's costly movie gambles: reported loss forecasts</title>
-<meta name="description" content="Four 2026 film flops, the people behind them, and dated loss forecasts from original trade reporting. A 4:5 poster with actual film artwork.">
+<meta name="description" content="The four largest comparable loss forecasts verified in a review of original 2026 film-trade reporting, with source dates, assumptions, and actual movie artwork.">
 <script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
 <style>
 __FONTS__
@@ -17,8 +17,12 @@ body {margin:0; padding:22px 16px 32px; color:var(--ink); background:var(--page)
 .poster .headline {font:400 64px/1.05 var(--display); letter-spacing:-.012em; text-wrap:balance; max-width:23ch;}
 .poster .headline em {font-style:normal; color:var(--red);}
 .poster .dek {font-size:22px; line-height:1.35; color:var(--soft); max-width:65ch;}
-.key {display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:5px; font-size:20px; line-height:1.3; color:var(--soft);}
-.key .hatch {display:inline-block; width:35px; height:15px; margin-right:8px; vertical-align:-1px; border:1px solid var(--red); background:repeating-linear-gradient(135deg,var(--red) 0 2px,transparent 2px 6px);}
+.key {display:grid; grid-template-columns:repeat(3,max-content); align-items:center; justify-content:space-between; gap:6px 12px; margin-bottom:5px; font-size:19px; line-height:1.3; color:var(--soft);}
+.key span {display:inline-flex; flex:none; align-items:center; gap:7px; white-space:nowrap;}
+.key i {display:inline-block; flex:0 0 29px; height:15px;}
+.key .solid {background:var(--red);}
+.key .hatch {border:1px solid var(--red); background:repeating-linear-gradient(135deg,var(--red) 0 2px,transparent 2px 6px);}
+.key .outline {border:1px solid #969a9e;}
 .unit {font-weight:600; color:var(--red);}
 .axis {display:flex; justify-content:space-between; margin:4px 5px 12px 144px; color:var(--soft); font-size:20px;}
 .poster .note {display:block; margin-top:auto; padding-top:14px; border-top:2px solid var(--ink); font-size:21px; line-height:1.4; color:var(--soft);}
@@ -33,6 +37,9 @@ a {color:inherit; text-underline-offset:3px;}
 .source-detail + .source-detail {margin-top:8px;}
 .source-detail dd {margin:0;}
 .source-detail a:focus-visible {outline:2px solid var(--red); outline-offset:3px;}
+.source-readout {margin:12px 0 18px; padding:20px; border-left:4px solid var(--red); background:var(--paper);}
+.source-readout h2 {font-size:20px;}
+.interaction-hint {font-weight:600;}
 .files {margin-top:14px !important;}
 @media (max-width:900px) {
  .poster {min-height:0; padding:28px 26px 24px;}
@@ -40,7 +47,7 @@ a {color:inherit; text-underline-offset:3px;}
  .poster .kicker {font-size:15px; border-bottom-width:2px;}
  .poster .headline {font-size:57px;}
  .poster .dek {font-size:20px;}
- .key {font-size:16px;}
+ .key {grid-template-columns:repeat(2,max-content); font-size:16px;}
  .axis {margin-left:108px; font-size:14px;}
  .poster .note {font-size:15px; margin-top:18px; padding-top:12px;}
 }
@@ -50,14 +57,16 @@ a {color:inherit; text-underline-offset:3px;}
  .poster .kicker {font-size:11px; letter-spacing:.075em; gap:8px; padding-bottom:9px;}
  .poster .headline {font-size:39px; max-width:24ch;}
  .poster .dek {font-size:15px; line-height:1.4;}
- .key {font-size:12px; align-items:flex-end; gap:8px; margin-bottom:8px;}
- .key span:last-child {max-width:130px; text-align:right;}
- .key .hatch {width:22px; height:11px; margin-right:5px;}
+ .key {grid-template-columns:1fr; font-size:12px; gap:7px 12px; margin-bottom:8px;}
+ .key i {flex-basis:22px; height:11px;}
  .axis {margin-left:71px; font-size:11px;}
  .poster .note {font-size:11.5px;}
  .source-detail { padding:16px; font-size:13px;}
  .source-detail dl {grid-template-columns:1fr; gap:4px;}
  .source-detail dd {margin-bottom:7px;}
+ .source-readout {padding:16px;}
+ .source-readout h2 {min-height:2.8em;}
+ .source-readout p {min-height:2.8em;}
 }
 @media (max-width:360px) {.poster .headline {font-size:35px;} .poster {padding-inline:13px;}}
 </style>
@@ -65,7 +74,7 @@ a {color:inherit; text-underline-offset:3px;}
 <body>
 <main id="chart"></main>
 <script type="module">
-import {Chart, Plot, Bar, Label, Poster, slat, nice, html, render} from "@bezda/rhp/standalone";
+import {Chart, Plot, Bar, Label, Poster, slat, nice, html, render, createSignal} from "@bezda/rhp/standalone";
 
 // Original reports supply the forecasts. The Numbers supplies current ticket sales and credits.
 const DATA = __DATA__;
@@ -75,7 +84,8 @@ const scale = nice(0, Math.max(...ROWS.map(row => row.report.high)), 5);
 const date = value => new Intl.DateTimeFormat("en-GB", {day:"numeric", month:"short", timeZone:"UTC"}).format(new Date(value + "T12:00:00Z"));
 const money = new Intl.NumberFormat("en-US", {style:"currency", currency:"USD", notation:"compact", maximumFractionDigits:1});
 const exactMoney = new Intl.NumberFormat("en-US", {style:"currency", currency:"USD", maximumFractionDigits:0});
-const forecast = row => row.report.low === row.report.high ? `About $${row.report.high}M` : `$${row.report.low} to $${row.report.high}M`;
+const forecast = row => row.report.low === row.report.high ? `${row.report.kind === "approximate estimate" ? "About " : ""}$${row.report.high}M` : `$${row.report.low} to $${row.report.high}M`;
+const inspection = row => row.report.assumedWorldwide && row.report.assumedWorldwide[0] === row.report.assumedWorldwide[1] ? `Model assumed ${money.format(row.report.assumedWorldwide[0])} gross` : row.report.kind === "competing estimates" ? "Source estimates disagree" : row.report.kind === "approximate estimate" ? "Approximate loss forecast" : "Single reported forecast";
 const director = row => row.id === "digger" ? "Alejandro González Iñárritu" : row.directors.join(" & ");
 const starring = row => row.featuredStars.join(" & ");
 const THEME = {font:"var(--text)", ink:"var(--ink)", muted:"var(--soft)", grid:"var(--rule)", surface:"var(--paper)", series:["var(--red)"]};
@@ -83,9 +93,9 @@ const THEME = {font:"var(--text)", ink:"var(--ink)", muted:"var(--soft)", grid:"
 // Each film keeps its full artwork beside a common zero-based dollar scale.
 const Film = slat({thickness:"var(--film-pitch)", room:{start:"auto", end:5}, css:`
  .film {border-top:1px solid var(--rhp-grid);}
- .film.lead {background:#efefeb;}
+ .film.on {background:#efefeb;}
  .film:focus-visible {outline:3px solid var(--rhp-ink); outline-offset:-3px;}
- .artwork {width:var(--art-room); height:100%; padding:15px 20px 15px 0; display:flex; justify-content:flex-start; align-items:flex-start; --rhp-label-gap:0px;}
+ .artwork {width:var(--art-room); height:100%; padding:23px 20px 15px 0; display:flex; justify-content:flex-start; align-items:flex-start; --rhp-label-gap:0px;}
  .artwork img {display:block; width:118px; height:177px; object-fit:contain; object-position:left top;}
  .heading, .credits, .gross, .report {grid-column:track;}
  .heading {position:absolute; left:0; right:0; top:10px; display:flex; align-items:baseline; justify-content:space-between; gap:14px;}
@@ -101,7 +111,7 @@ const Film = slat({thickness:"var(--film-pitch)", room:{start:"auto", end:5}, cs
  .range.empty {display:none;}
  .report {position:absolute; left:0; right:0; top:198px; display:flex; justify-content:space-between; gap:12px; font-size:18px; color:var(--rhp-muted); line-height:1.3;}
  @container (max-width:900px) {
-  .artwork {padding:13px 15px 10px 0;}
+  .artwork {padding:21px 15px 10px 0;}
   .artwork img {width:88px; height:132px;}
   .title {font-size:28px;}
   .loss {font-size:31px;}
@@ -112,7 +122,7 @@ const Film = slat({thickness:"var(--film-pitch)", room:{start:"auto", end:5}, cs
   .report {top:165px; font-size:14px;}
  }
  @container (max-width:550px) {
-  .artwork {padding:15px 9px 10px 0;}
+  .artwork {padding:21px 9px 10px 0;}
   .artwork img {width:61px; height:92px;}
   .heading {top:11px; display:block;}
   .title {display:block; font-size:19px;}
@@ -125,7 +135,7 @@ const Film = slat({thickness:"var(--film-pitch)", room:{start:"auto", end:5}, cs
   .report span {display:block;}
  }
 `}, d => html`
- <div class=${() => d.id === ROWS[lead].id ? "film lead" : "film"} data-film=${() => d.id} data-row=${() => d.index} aria-label=${() => `${d.title}. ${forecast(d)} projected loss, ${d.report.publisher}, ${date(d.report.date)} 2026. Director ${director(d)}. Starring ${starring(d)}. ${d.report.basis}`}>
+ <div class=${() => d.lit ? "film on" : "film"} data-film=${() => d.id} data-row=${() => d.index} data-active=${() => d.lit ? "true" : "false"} aria-label=${() => `${d.title}. ${forecast(d)} projected loss, ${d.report.publisher}, ${date(d.report.date)} 2026. Director ${director(d)}. Starring ${starring(d)}. ${d.report.basis}`}>
   <${Label} edge="start" class="artwork"><img src=${() => d.art} alt=${() => `${d.title} promotional film poster`} width="118" height="177" /><//>
   <div class="heading"><span class="title">${() => d.title}</span><strong class="loss">${() => forecast(d)}</strong></div>
   <div class="credits"><span><small>Director</small>${() => director(d)}</span><span><small>Starring</small>${() => starring(d)}</span></div>
@@ -133,31 +143,56 @@ const Film = slat({thickness:"var(--film-pitch)", room:{start:"auto", end:5}, cs
   <${Bar} to=${scale.max} thick="17px" color="grid" class="track" />
   <${Bar} to=${() => d.report.low} thick="17px" class="base" />
   <${Bar} from=${() => d.report.low} to=${() => d.report.high} thick="17px" class=${() => d.report.high > d.report.low ? "range" : "range empty"} />
-  <div class="report"><span>${() => `${d.report.publisher} · ${date(d.report.date)} 2026`}</span><span>${() => d.id === "supergirl" ? "Theatrical loss forecast" : "Includes post-theatrical revenue"}</span></div>
+  <div class="report"><span>${() => `${d.report.publisher} · ${date(d.report.date)} 2026`}</span><span>${() => d.lit ? inspection(d) : "Includes post-theatrical revenue"}</span></div>
  </div>`);
 
 function MovieBombs() {
+ const [picked, setPicked] = createSignal(null);
+ const lit = () => picked() ?? lead;
+ const current = () => ROWS[lit()];
+ const rowOf = element => {
+  const row = element?.closest?.(".film[data-row]");
+  return row ? +row.dataset.row : null;
+ };
+ const pick = event => {
+  const row = rowOf(event.target);
+  if (row != null) setPicked(row);
+ };
+ const leave = event => {
+  if (event.pointerType === "touch") return;
+  setPicked(event.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+ };
+ const move = event => event.pointerType !== "touch" && (event.target.closest(".rhp-chart") ? pick(event) : leave(event));
  return html`
  <${Poster} style=${{"--film-pitch":"224px", "--art-room":"144px"}}
   kicker=${html`<span>2026 · The costly gambles</span><span>Forecasts, not final losses</span>`}
-  title=${html`<span>Tom Cruise’s <em>${ROWS[lead].title}</em> could<br/>lose <em>$${ROWS[lead].report.high} million.</em></span>`}
-  dek="Four 2026 flops, with loss forecasts reported at the dates shown."
-  note=${html`<span><b>Forecasts use different assumptions and revenue windows.</b> Moana has passed its model’s $250M gross. Sources: TheWrap, Deadline, Variety. Grosses/art: The Numbers, 17 Oct 2026. Selected cases.</span>`}
+  title=${html`<span>Tom Cruise’s <em>${ROWS[lead].title}</em> could <br/>lose <em>$${ROWS[lead].report.high} million.</em></span>`}
+  dek="The four largest comparable loss forecasts verified in a review of 2026 trade reporting."
+  note=${html`<span><b>Forecasts include later income; ranked by upper estimate.</b> Supergirl and Moana tie. Moana passed its $250M model gross. Sources: TheWrap, Deadline. Grosses/art: The Numbers, 17 Oct 2026.</span>`}
+  onPointerMove=${move} onClick=${pick} onFocusIn=${pick} onPointerLeave=${leave}
+  onFocusOut=${event => !event.currentTarget.contains(event.relatedTarget) && setPicked(null)}
   >
-  <div class="key"><span class="unit">Projected loss · US$ millions</span><span><i class="hatch"></i>Span of reported estimates</span></div>
-  <${Chart} scale=${[scale.min, scale.max]} ticks=${false} static=${true} label="Reported loss forecasts for four 2026 film flops, in millions of US dollars. Ranges span different source estimates, not statistical confidence intervals." theme=${THEME}>
-   <${Plot} rows=${ROWS} key="id">${Film}<//>
+  <div class="key" aria-label="How to read the loss estimates"><span><i class="solid" aria-hidden="true"></i>Solid: lower estimate</span><span><i class="hatch" aria-hidden="true"></i>Stripes: up to upper estimate</span><span><i class="outline" aria-hidden="true"></i>Outline: full $250M scale</span></div>
+  <${Chart} scale=${[scale.min, scale.max]} ticks=${false} label="Reported loss forecasts for four 2026 film flops, in millions of US dollars. Ranges span different source estimates, not statistical confidence intervals." theme=${THEME}>
+   <${Plot} rows=${ROWS} key="id" keyboard=${true} lit=${d => d.index === lit()}>${Film}<//>
   <//>
-  <div class="axis" aria-label="Every track uses the same scale"><span>$0</span><span>${`$${scale.max}M projected loss`}</span></div>
+  <div class="axis" aria-label="Every track uses the same scale in millions of US dollars"><span>US$0</span><span>${`$${scale.max}M projected loss`}</span></div>
  <//>
  <section class="below" aria-label="Sources and forecast assumptions">
+  <p class="interaction-hint">Point at a film, tap it, or use Tab and the arrow keys to inspect its forecast.</p>
+  <div class="source-readout" aria-live="polite" aria-atomic="true">
+   <h2>${() => `${current().title}: ${forecast(current())} forecast`}</h2>
+   <p>${() => current().report.summary}</p>
+   <p><a href=${() => current().report.url}>${() => `${current().report.publisher}, ${date(current().report.date)} 2026: original report`}</a></p>
+  </div>
+  <p>These are the four largest comparable forecasts located in the <a href="selection-audit.json">documented source review</a>, ordered by their upper estimates. Equal upper estimates share a rank. All four include income after cinemas, but their dates and accounting assumptions differ. Missing forecasts remain unknown, so this is not a complete ranking of actual 2026 losses.</p>
   <p>Forecast assumptions and original reports:</p>
   ${ROWS.map(row => html`<article class="source-detail">
    <h2>${row.title}: ${forecast(row)} forecast</h2>
    <p><a href=${row.report.url}>Original loss report</a> · <a href=${row.source}>Current box office and credits</a></p>
    <dl><dt>What was estimated</dt><dd>${row.report.basis}</dd><dt>Assumptions</dt><dd>${row.report.assumption}</dd><dt>What to keep in mind</dt><dd>${row.report.caveat}</dd><dt>Current box office</dt><dd>${exactMoney.format(row.worldwide)} worldwide as of 17 October 2026. Ticket sales are not studio revenue.</dd><dt>Production budget</dt><dd>${exactMoney.format(row.budget)} reported by The Numbers. Budget and gross are contextual figures, not the loss calculation.</dd></dl>
   </article>`)}
-  <p class="files"><a href="data.json">Exact figures and report assumptions</a> · <a href="artwork-credits.json">Artwork credits</a> · <a href="post.txt">Reddit draft</a></p>
+  <p class="files"><a href="data.json">Exact figures and report assumptions</a> · <a href="selection-audit.json">Selection and excluded reports</a> · <a href="artwork-credits.json">Artwork credits</a> · <a href="post.txt">Reddit draft</a></p>
  </section>`;
 }
 render(() => html`<${MovieBombs} />`, document.getElementById("chart"));

@@ -1,0 +1,385 @@
+{
+  "asOf": "2026-10-17",
+  "unit": "million US dollars",
+  "eligibility": [
+    "A 2026 theatrical release by the cutoff.",
+    "An explicitly quantified loss forecast in dated original film-industry trade reporting, attributed to industry or financial sources.",
+    "The forecast includes post-theatrical income.",
+    "A budget/gross gap, generic calculator, reader prediction or unattributed model is not eligible."
+  ],
+  "ranking": "Descending upper estimate; equal upper estimates share a rank. Ties are displayed by descending lower estimate, then title.",
+  "limits": [
+    "This is a ranking of the largest comparable published forecasts located in a documented review, not a census of all films or verified actual losses.",
+    "Dates and accounting assumptions differ, and full financial models are not public.",
+    "Original forecasts are preserved, not recalculated using later ticket sales.",
+    "Missing forecasts remain unknown, not zero or necessarily smaller than the fourth film.",
+    "The full 2026 release schedule was consulted, but its thousand-plus titles were not individually financially audited."
+  ],
+  "discovery": {
+    "index": "https://www.the-numbers.com/box-office-records/worldwide/all-movies/cumulative/released-in-2026",
+    "snapshot": "../movie-budgets/source-snapshot.json",
+    "asOf": "2026-10-17",
+    "filter": "Reported budget at least $25M, worldwide gross below 2.5 times that budget, and a 2026 US release. This prioritizes research only, not a break-even rule or proof of loss.",
+    "candidates": [
+      {
+        "title": "Star Wars: The Mandalorian and Grogu",
+        "source": "https://www.the-numbers.com/movie/Star-Wars-The-Mandalorian-and-Grogu-(2026)",
+        "budget": 165000000,
+        "worldwide": 345838416,
+        "release": "May 22nd, 2026"
+      },
+      {
+        "title": "Moana",
+        "source": "https://www.the-numbers.com/movie/Moana-(2026)",
+        "budget": 250000000,
+        "worldwide": 323701468,
+        "release": "July 10th, 2026"
+      },
+      {
+        "title": "Disclosure Day",
+        "source": "https://www.the-numbers.com/movie/Disclosure-Day-(2026)",
+        "budget": 115000000,
+        "worldwide": 246215700,
+        "release": "June 12th, 2026"
+      },
+      {
+        "title": "GOAT",
+        "source": "https://www.the-numbers.com/movie/GOAT-(2026)",
+        "budget": 80000000,
+        "worldwide": 195359397,
+        "release": "February 13th, 2026"
+      },
+      {
+        "title": "Heart of the Beast",
+        "source": "https://www.the-numbers.com/movie/Heart-of-the-Beast-(2026)",
+        "budget": 82000000,
+        "worldwide": 135188451,
+        "release": "September 25th, 2026"
+      },
+      {
+        "title": "The Sheep Detectives",
+        "source": "https://www.the-numbers.com/movie/Sheep-Detectives-The-(2026)",
+        "budget": 75000000,
+        "worldwide": 133138836,
+        "release": "May 8th, 2026"
+      },
+      {
+        "title": "Mortal Kombat II",
+        "source": "https://www.the-numbers.com/movie/Mortal-Kombat-II-(2026)",
+        "budget": 80000000,
+        "worldwide": 129570110,
+        "release": "May 8th, 2026"
+      },
+      {
+        "title": "Supergirl",
+        "source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
+        "budget": 170000000,
+        "worldwide": 126466532,
+        "release": "June 26th, 2026"
+      },
+      {
+        "title": "The End of Oak Street",
+        "source": "https://www.the-numbers.com/movie/End-of-Oak-Street-The-(2026)",
+        "budget": 85000000,
+        "worldwide": 121626243,
+        "release": "August 14th, 2026"
+      },
+      {
+        "title": "Masters of the Universe",
+        "source": "https://www.the-numbers.com/movie/Masters-of-the-Universe-(2026)",
+        "budget": 200000000,
+        "worldwide": 113792300,
+        "release": "June 5th, 2026"
+      },
+      {
+        "title": "Practical Magic 2",
+        "source": "https://www.the-numbers.com/movie/Practical-Magic-2-(2026)",
+        "budget": 75000000,
+        "worldwide": 104681304,
+        "release": "September 11th, 2026"
+      },
+      {
+        "title": "Coyote vs. Acme",
+        "source": "https://www.the-numbers.com/movie/Coyote-v-Acme-(2026)",
+        "budget": 70000000,
+        "worldwide": 101528842,
+        "release": "August 28th, 2026"
+      },
+      {
+        "title": "Send Help",
+        "source": "https://www.the-numbers.com/movie/Send-Help-(2026)",
+        "budget": 40000000,
+        "worldwide": 94041481,
+        "release": "January 30th, 2026"
+      },
+      {
+        "title": "Crime 101",
+        "source": "https://www.the-numbers.com/movie/Crime-101-(2026)",
+        "budget": 90000000,
+        "worldwide": 72900246,
+        "release": "February 13th, 2026"
+      },
+      {
+        "title": "28 Years Later: The Bone Temple",
+        "source": "https://www.the-numbers.com/movie/28-Years-Later-The-Bone-Temple-(2026)",
+        "budget": 63000000,
+        "worldwide": 58527279,
+        "release": "January 16th, 2026"
+      },
+      {
+        "title": "Forgotten Island",
+        "source": "https://www.the-numbers.com/movie/Forgotten-Island-(2026)",
+        "budget": 80000000,
+        "worldwide": 54168867,
+        "release": "September 25th, 2026"
+      },
+      {
+        "title": "Mercy",
+        "source": "https://www.the-numbers.com/movie/Mercy-(2026)",
+        "budget": 60000000,
+        "worldwide": 53690303,
+        "release": "January 23rd, 2026"
+      },
+      {
+        "title": "Shelter",
+        "source": "https://www.the-numbers.com/movie/Shelter-(2026)",
+        "budget": 50000000,
+        "worldwide": 49305541,
+        "release": "January 30th, 2026"
+      },
+      {
+        "title": "Digger",
+        "source": "https://www.the-numbers.com/movie/Digger-(2026)",
+        "budget": 125000000,
+        "worldwide": 40821958,
+        "release": "October 2nd, 2026"
+      },
+      {
+        "title": "The Dog Stars",
+        "source": "https://www.the-numbers.com/movie/Dog-Stars-The-(2026)",
+        "budget": 110000000,
+        "worldwide": 39321916,
+        "release": "August 28th, 2026"
+      },
+      {
+        "title": "Mutiny",
+        "source": "https://www.the-numbers.com/movie/Mutiny-(2026-United-Kingdom)",
+        "budget": 40000000,
+        "worldwide": 29780327,
+        "release": "August 21st, 2026"
+      },
+      {
+        "title": "Greenland 2: Migration",
+        "source": "https://www.the-numbers.com/movie/Greenland-2-Migration-(2026)",
+        "budget": 90000000,
+        "worldwide": 29109973,
+        "release": "January 9th, 2026"
+      },
+      {
+        "title": "One Night Only",
+        "source": "https://www.the-numbers.com/movie/One-Night-Only-(2026)",
+        "budget": 25000000,
+        "worldwide": 25159185,
+        "release": "August 7th, 2026"
+      },
+      {
+        "title": "The Bride!",
+        "source": "https://www.the-numbers.com/movie/Bride-The-(2026)",
+        "budget": 80000000,
+        "worldwide": 23944025,
+        "release": "March 6th, 2026"
+      }
+    ],
+    "supplementalTitles": [
+      "Desert Warrior",
+      "In the Grey",
+      "Animal Farm",
+      "Mother Mary",
+      "The Fix",
+      "The Social Reckoning"
+    ],
+    "searchCoverage": "Broad 2026 film bomb/loss searches and title searches using loss, lose, forecast, Deadline, Variety, TheWrap and Hollywood Reporter. The largest omitted-film claims were traced to original reporting or their actual stated calculation."
+  },
+  "qualifyingReports": [
+    {
+      "id": "digger",
+      "title": "Digger",
+      "publisher": "TheWrap",
+      "date": "2026-10-07",
+      "url": "https://www.thewrap.com/creative-content/movies/digger-tom-cruise-lose-250-million/",
+      "low": 200,
+      "high": 250,
+      "basis": "Includes post-theatrical revenue; different insiders give different estimates.",
+      "assumption": "The report expected worldwide box office not to exceed $40 million. Its other source made the loss dependent on premium video-on-demand performance."
+    },
+    {
+      "id": "moana",
+      "title": "Moana",
+      "publisher": "Deadline",
+      "date": "2026-07-12",
+      "url": "https://deadline.com/2026/07/moana-bombs-box-office-1236980125/",
+      "low": 100,
+      "high": 125,
+      "basis": "First-cycle loss forecast, including revenue after cinemas.",
+      "assumption": "The forecast assumed a final worldwide box office of $250 million."
+    },
+    {
+      "id": "supergirl",
+      "title": "Supergirl",
+      "publisher": "Deadline",
+      "date": "2026-06-29",
+      "url": "https://deadline.com/2026/06/supergirl-bomb-boxoffice-1236970324/",
+      "low": 125,
+      "high": 125,
+      "basis": "First-cycle loss forecast, including downstream income after cinemas.",
+      "assumption": "Published after a $68 million worldwide opening. The report gives a $315 million worldwide break-even estimate, but does not specify the final worldwide gross assumed in its $125 million loss forecast."
+    },
+    {
+      "id": "bride",
+      "title": "The Bride!",
+      "publisher": "Deadline",
+      "date": "2026-03-08",
+      "url": "https://deadline.com/2026/03/the-bride-box-office-bombs-1236747021/",
+      "low": 90,
+      "high": 90,
+      "basis": "Loss could approach $90 million in the first cycle, after home entertainment revenue.",
+      "assumption": "Published after a $13.6 million worldwide opening. No final worldwide gross assumption is specified in the report."
+    }
+  ],
+  "reviewedAlternatives": [
+    {
+      "titles": [
+        "Desert Warrior"
+      ],
+      "status": "No comparable trade forecast verified",
+      "sources": [
+        "https://www.semafor.com/article/04/29/2026/saudi-backed-epic-flops-at-box-office-in-the-us",
+        "https://www.the-numbers.com/movie/Desert-Warrior-(2026-Saudi-Arabia)",
+        "https://reeltally.com/trackers/this-years-biggest-box-office-bombs-tracker"
+      ],
+      "finding": "The reported $150M budget and tiny ticket sales establish underperformance, not net loss. ReelTally subtracts global gross from budget, omitting exhibitor shares, marketing and later income. Its roughly $149M gap is not eligible."
+    },
+    {
+      "titles": [
+        "Masters of the Universe"
+      ],
+      "status": "Located $140M to $150M claim uses a different method",
+      "sources": [
+        "https://filmdb.co.uk/box-office/blog/masters-of-the-universe-box-office-loss-amazon-mgm",
+        "https://variety.com/2026/film/box-office/spielberg-disclosure-day-box-office-opening-masters-of-the-universe-huge-drop-obsession-shatters-expectations-1236780872/",
+        "https://www.thewrap.com/creative-content/movies/disclosure-day-92-million-box-office-opening/"
+      ],
+      "finding": "FilmDB derives its estimate from a $170M to $200M production budget and about half of $115M box office. It does not supply a sourced first-cycle model including later income. The trade reports reviewed confirm underperformance, but do not quantify a comparable net-loss forecast."
+    },
+    {
+      "titles": [
+        "Supergirl"
+      ],
+      "status": "Alternate theatrical-only estimates excluded",
+      "sources": [
+        "https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/"
+      ],
+      "finding": "Variety quotes $80M to $85M and $100M to $120M theatrical losses under roughly $200M global-gross assumptions. Use Deadline's explicitly first-cycle $125M forecast without importing Variety's assumptions.",
+      "date": "2026-06-30"
+    },
+    {
+      "titles": [
+        "The Bride!",
+        "Supergirl",
+        "The End of Oak Street",
+        "Practical Magic 2"
+      ],
+      "status": "Later theatrical-only comparison excluded",
+      "sources": [
+        "https://variety.com/2026/film/box-office/digger-tom-cruise-warner-bros-box-office-1236878000/"
+      ],
+      "finding": "Variety reports $100M for The Bride! theatrically, $80M for Supergirl, $25M to $40M for The End of Oak Street, and $30M to $40M for Practical Magic 2 theatrically. A source disputes the last estimate and expects a $5M profit. These are not mixed into first-cycle forecasts.",
+      "date": "2026-09-30"
+    },
+    {
+      "titles": [
+        "The Dog Stars"
+      ],
+      "status": "Unbounded theatrical-only estimate",
+      "sources": [
+        "https://au.variety.com/2026/film/global/box-office-the-dog-stars-bombs-spider-man-brand-new-day-39832/"
+      ],
+      "finding": "Variety describes theatrical losses as tens of millions. That is neither a precise numeric interval nor a first-cycle forecast.",
+      "date": "2026-08-31"
+    },
+    {
+      "titles": [
+        "The Mandalorian and Grogu"
+      ],
+      "status": "No comparable trade forecast verified",
+      "sources": [
+        "https://deadline.com/2026/05/box-office-star-wars-the-mandalorian-and-grogu-analysis-1236920328/",
+        "https://www.hollywoodreporter.com/movies/movie-news/star-wars-mandalorian-grogu-box-office-franchise-low-1236604973/",
+        "https://au.variety.com/2026/film/news/disney-ceo-moana-mandalorian-grogu-box-office-flops-39182/"
+      ],
+      "finding": "The original reports reviewed discuss underperformance without a comparable quantified first-cycle loss. The $100M theatrical-loss sentence in the Disney CEO article refers to Moana, not this film. Fan-model $150M claims are excluded."
+    },
+    {
+      "titles": [
+        "The Sheep Detectives"
+      ],
+      "status": "Calculator model excluded",
+      "sources": [
+        "https://saturation.io/budgets/the-sheep-detectives-2026"
+      ],
+      "finding": "The $103M theatrical shortfall uses assumed marketing and a generic 50% ticket-rental rule. It is not original reporting of a first-cycle loss forecast."
+    },
+    {
+      "titles": [
+        "The Social Reckoning"
+      ],
+      "status": "No comparable trade forecast verified",
+      "sources": [
+        "https://www.thewrap.com/creative-content/movies/the-social-reckoning-box-office-bomb-explained/"
+      ],
+      "finding": "The original report gives a $30M production budget and weak opening, not a quantified first-cycle loss. Secondary guesses with assumed marketing are excluded."
+    },
+    {
+      "titles": [
+        "Coyote vs. Acme"
+      ],
+      "status": "Rights sale and write-down are different measures",
+      "sources": [
+        "https://www.thewrap.com/creative-content/movies/coyote-vs-acme-crosses-100-million-marketing-campaign-explained/"
+      ],
+      "finding": "A contemplated tax write-down and rights sale are not a first-cycle loss forecast for the 2026 release. No qualifying forecast was verified."
+    },
+    {
+      "titles": [
+        "Star Wars: The Mandalorian and Grogu",
+        "Disclosure Day",
+        "GOAT",
+        "Heart of the Beast",
+        "Mortal Kombat II",
+        "Send Help",
+        "Crime 101",
+        "28 Years Later: The Bone Temple",
+        "Forgotten Island",
+        "Mercy",
+        "Shelter",
+        "Mutiny",
+        "Greenland 2: Migration",
+        "One Night Only",
+        "In the Grey",
+        "Animal Farm",
+        "Mother Mary",
+        "The Fix"
+      ],
+      "status": "No qualifying quantified first-cycle trade forecast verified in searches",
+      "sources": [
+        "https://www.the-numbers.com/box-office-records/worldwide/all-movies/cumulative/released-in-2026"
+      ],
+      "finding": "These were discovery candidates, not declared financial failures. Opening/gross forecasts, budget gaps, generic calculators, reader predictions and qualitative underperformance do not qualify."
+    }
+  ],
+  "corrections": [
+    "Supergirl changes from Variety's $80M to $120M theatrical-only estimates to Deadline's $125M first-cycle forecast.",
+    "Supergirl and Moana share second place by upper estimate.",
+    "The same four films remain, with the selection limited explicitly to verified comparable forecasts and unknown cases disclosed."
+  ]
+}

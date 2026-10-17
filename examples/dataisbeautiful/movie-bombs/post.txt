@@ -1,42 +1,54 @@
 Suggested Reddit title:
-[OC] Reported loss forecasts for four big-budget films released in 2026
+[OC] The largest comparable loss forecasts I could verify for 2026 movie releases
 
 First top-level comment:
 
-Sources: original reporting by TheWrap (Digger, 7 October), Deadline (Moana, 12 July; The Bride!, 8 March), and Variety (Supergirl, 30 June).
-These are forecasts published on those dates, not audited final losses or a definitive ranking of the year's biggest bombs.
+I reviewed loss claims for 30 research candidates and selected the four largest comparable forecasts I could verify in original film-industry trade reporting by 17 October 2026.
+All four forecasts include income after cinemas, and they are ordered by the highest quoted estimate.
+This is a ranking of dated published forecasts found in that review, not a complete ranking of actual 2026 losses.
+Films without comparable verified forecasts remain unknown, rather than being assigned a zero or assumed smaller.
 
-Digger: https://www.thewrap.com/creative-content/movies/digger-tom-cruise-lose-250-million/
-Moana: https://deadline.com/2026/07/moana-bombs-box-office-1236980125/
-Supergirl: https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/
-The Bride!: https://deadline.com/2026/03/the-bride-box-office-bombs-1236747021/
+Original reports:
+Digger: TheWrap, 7 October, $200M to $215M from one source and $250M from another, including post-theatrical revenue.
+https://www.thewrap.com/creative-content/movies/digger-tom-cruise-lose-250-million/
+Supergirl: Deadline, 29 June, a $125M first-cycle loss forecast including downstream income.
+https://deadline.com/2026/06/supergirl-bomb-boxoffice-1236970324/
+Moana: Deadline, 12 July, a $100M to $125M first-cycle loss forecast.
+https://deadline.com/2026/07/moana-bombs-box-office-1236980125/
+The Bride!: Deadline, 8 March, losses could approach $90M after first-cycle home-entertainment income.
+https://deadline.com/2026/03/the-bride-box-office-bombs-1236747021/
 
-Solid bars reach the lowest quoted estimate; the hatched sections span the estimates quoted in each report.
-These spans are not statistical confidence intervals.
-TheWrap quotes one Digger source at $250M and another at $200M to $215M.
-Variety quotes Supergirl sources at $80M to $85M and $100M to $120M.
-Deadline gives Moana a $100M to $125M range and says The Bride! could approach $90M.
+Solid bars reach the lowest quoted estimate, and stripes extend to the highest.
+The empty outline is the common zero to $250M scale, not the film's budget.
+The stripes are not statistical confidence intervals.
+Supergirl and Moana share second place by upper estimate.
+The Bride! is approximate, and Supergirl's point forecast has no artificial range extension.
 
-The reports use different assumptions and revenue windows.
-Supergirl's figure describes theatrical losses, while the other reports include post-theatrical income.
-Moana's July model assumed $250M worldwide; its current $323.7M gross is already higher.
-Supergirl's report assumed about $200M worldwide, above its current $126.5M.
+The reports have different dates and unpublished accounting assumptions.
+Moana's July forecast assumed $250M worldwide; its subsequent $323.7M gross is higher.
 Digger's report expected no more than $40M worldwide; it has reached $40.8M and is still playing.
-I have not recalculated any forecast from these later grosses, or added these unlike estimates into a total.
-Directors and actors are identification credits, not an attribution of blame for the financial result.
+Supergirl's Deadline report does not disclose the final gross assumed in its loss model.
+I have not recalculated any forecast using those later grosses, or added the forecasts into a total.
+Directors and actors are identification credits, not an attribution of blame.
 
-Current worldwide grosses, production budgets, cast and crew, and the identifying promotional artwork come from The Numbers, captured 17 October 2026:
+The source audit also covers Desert Warrior, Masters of the Universe, The Mandalorian and Grogu, The Dog Stars and other candidates.
+The larger-looking Desert Warrior and Masters claims located used budget/gross gaps or simple theatrical-rental calculations, without a verified comparable first-cycle model.
+Their exclusion does not establish that their actual losses are smaller.
+Variety's later $100M figure for The Bride! is explicitly theatrical-only, so it is not mixed into Deadline's first-cycle forecast.
+https://variety.com/2026/film/box-office/digger-tom-cruise-warner-bros-box-office-1236878000/
+
+Current worldwide grosses, contextual production budgets, credits, and promotional artwork come from The Numbers, rechecked 17 October 2026:
 https://www.the-numbers.com/movie/Digger-(2026)
-https://www.the-numbers.com/movie/Moana-(2026)
 https://www.the-numbers.com/movie/Supergirl-(2026)
+https://www.the-numbers.com/movie/Moana-(2026)
 https://www.the-numbers.com/movie/Bride-The-(2026)
 
-Tools: rhp for the HTML/CSS chart, Node.js for data collection and the portable-page build, modern-screenshot for the PNG, and Playwright for browser and export checks.
+Tools: rhp for the HTML/CSS visualization, Node.js for data collection and the portable page, modern-screenshot for PNG export, and Playwright for browser and export checks.
 The film artwork belongs to the respective studios and rightsholders; the visualization is original.
+The companion page supports mouse, touch and keyboard selection and links the exact figures, original reports and selection audit.
 
 Posting notes, not part of the comment:
 Use movie-bombs.png, a 2160 by 2700 pixel image with a 4:5 aspect ratio.
-Use the plain descriptive title above and include [OC].
-Post the source-and-tools comment immediately after submission.
-Recheck the community's current rules, recent similar submissions, and any new loss reporting before submitting.
+Use the descriptive title above with [OC], then post the sources-and-tools comment.
+Recheck current community rules, similar recent submissions and new loss reporting before submitting.
 This draft has not been submitted.

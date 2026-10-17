@@ -1,33 +1,56 @@
-Research captured 17 October 2026.
+Research rechecked 17 October 2026.
 
-Story and scope
-The user selected 2026 with forecasts clearly labeled.
-The chart therefore uses four quantified forecasts from original trade reporting, rather than treating worldwide gross minus production budget as studio loss.
-Digger supplies the timely hook, with competing sources in TheWrap's 7 October report giving $200M to $215M and $250M.
-The other cases are Moana, Supergirl, and The Bride!.
-This is a selected comparison, not a complete year-end ranking.
-Other major underperformers were screened, including Desert Warrior and Masters of the Universe.
-Neither is assigned a net-loss figure here because the sources located did not provide a sufficiently comparable, original trade-reported estimate.
-Desert Warrior is not omitted because it performed well; The Numbers lists $721,443 worldwide against a $150M production budget.
+Story and selection
+The user selected 2026, clearly labeled forecasts, and the four biggest flops with a forecast.
+The documented review in selection-audit.json starts with 24 research candidates from The Numbers and adds six lower-grossing or news-identified films.
+The budget/gross screen only prioritizes searches; it is not a break-even rule or a finding that all candidates lost money.
+Broad searches and title-specific searches traced the largest claims to original reporting or the actual calculations behind them.
+Eligible reports are quantified original film-trade forecasts including income after cinemas, dated before the cutoff and attributed to financial or industry sources.
+The chart contains the four largest eligible forecasts verified in that review, ordered by upper estimate, with equal upper estimates sharing a rank.
+It is not a census of all 2026 films or a ranking of actual studio losses.
+Missing forecasts remain unknown and cannot be assumed smaller than the four shown.
 
-Sources
+Verified forecast records
+Digger: TheWrap, 7 October, $200M to $215M from one source and $250M from another, including post-theatrical revenue.
 https://www.thewrap.com/creative-content/movies/digger-tom-cruise-lose-250-million/
+Supergirl: Deadline, 29 June, a $125M first-cycle loss after downstream income.
+https://deadline.com/2026/06/supergirl-bomb-boxoffice-1236970324/
+Moana: Deadline, 12 July, $100M to $125M in the first cycle, conditional on $250M final worldwide box office.
 https://deadline.com/2026/07/moana-bombs-box-office-1236980125/
-https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/
+The Bride!: Deadline, 8 March, losses could approach $90M after first-cycle home-entertainment income.
 https://deadline.com/2026/03/the-bride-box-office-bombs-1236747021/
-https://www.the-numbers.com/movie/Desert-Warrior-(2026-Saudi-Arabia)
+The original Deadline articles were retrieved again and their publication metadata and financial paragraphs reviewed directly.
+All four films' current grosses, leading credits, directors, releases and artwork were fetched again from The Numbers and validated.
+Domestic plus international grosses reconcile to the worldwide totals for every film.
+The chart's lower and upper estimates are checked against the reviewed source records before building.
+Supergirl replaces the prior draft's theatrical-only Variety estimates, correcting an inconsistent revenue window.
+Supergirl and Moana tie at an upper estimate of $125M.
+The same four titles remain after the review, with a narrower and explicit selection claim.
+
+Omissions and alternative claims
+Desert Warrior's approximately $149M budget/gross gap is not a net-loss forecast.
+Masters of the Universe's FilmDB $140M to $150M claim is derived from production cost and generic cinema rentals, without a sourced first-cycle model including later income.
+No comparable numerical first-cycle forecast for those films was verified in the original trade reports reviewed.
+The Mandalorian and Grogu was also checked in original Deadline, Hollywood Reporter and Variety coverage, without verifying a comparable numerical forecast.
+The $100M theatrical-loss sentence in Variety's Disney CEO article refers to Moana, not The Mandalorian and Grogu.
+Variety's 30 September comparison gives theatrical-only estimates of $100M for The Bride!, $80M for Supergirl, $25M to $40M for The End of Oak Street, and $30M to $40M for Practical Magic 2.
+The article also records a source disputing the last estimate and forecasting a $5M profit.
+https://variety.com/2026/film/box-office/digger-tom-cruise-warner-bros-box-office-1236878000/
+Those estimates are recorded in the audit and are not blended into the first-cycle comparison.
+The Dog Stars has an unbounded theatrical-loss description, rather than a precise comparable forecast.
+The Sheep Detectives has a generic theatrical calculator model, which is excluded.
+The audit lists source URLs, reasons and the other searched candidates.
 
 Dates and uncertainty
-The graphic reproduces each report's original estimates, not a new forecast as of October.
-The lower and upper values are an envelope of explicitly quoted estimates, not statistical confidence bounds.
-The Digger and Supergirl sources disagree; the chart does not average their opinions into an invented point estimate.
-The Bride! is approximate and is labeled About $90M.
-Moana's worldwide gross has exceeded the July report's $250M assumption.
-Supergirl's worldwide gross remains below the June report's $200M assumption.
-Digger has exceeded the report's $40M worldwide assumption and remains in release.
-The source notes retain these assumptions explicitly and do not revise losses through a generic rental percentage.
-Theatrical and first-cycle forecasts use different revenue windows and are labeled separately.
-No sum, precise ranking of final outcomes, causal attribution to directors, or claim about artistic quality is made.
+These are original dated forecasts, not new forecasts as of October.
+Hatching spans the quoted estimates, not statistical confidence bounds.
+The Bride! retains approximate language, and Supergirl's point forecast is not given a fabricated range.
+Moana's later $323.7M worldwide gross exceeds its forecast's $250M assumption.
+Digger's $40.8M gross exceeds its report's maximum $40M assumption and the film remains in release.
+Supergirl's Deadline report gives no final-gross assumption, so Variety's separate $200M assumption is not imported.
+Forecasts include post-theatrical income, but their unpublished models and report dates still differ.
+No loss is recomputed with a generic rental percentage, and no total or precise ranking of final outcomes is claimed.
+The credits identify directors and stars, without attributing financial causation or artistic quality to them.
 
 Audience evidence and its limits
 A recent r/dataisbeautiful post about Ridley Scott's film finances generated a substantial discussion of familiar directors, particular movies, streaming revenue, and accounting assumptions.
@@ -40,8 +63,8 @@ A separate recent Nolan budget-versus-gross post is another relevant precedent.
 https://www.reddit.com/r/dataisbeautiful/comments/1v845un/christopher_nolan_budget_vs_box_office_oc/
 The current Digger news supplies a more immediate hook than an old film's financial history.
 Interest looks plausible from the recognizable cast, current release, and existing discussion, but these observations do not predict how many votes this draft will receive.
-The biggest editorial weakness is that original trade forecasts are uncertain and come from different dates and accounting windows.
-The chart and source comment disclose that weakness rather than treating the figures as a definitive ranking.
+The biggest editorial weakness is that original forecasts are uncertain and come from different dates and undisclosed accounting assumptions.
+The chart and source comment disclose that weakness and limit the ranking to the comparable forecasts verified in the source review.
 
 Community rules checked
 The wiki URL named rules reports that the page does not exist, but its current sidebar displays the community rules.

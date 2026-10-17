@@ -1,6 +1,8 @@
 {
   "asOf": "2026-10-17",
-  "selection": "Four 2026 theatrical releases with quantified loss forecasts in original reporting by TheWrap, Deadline or Variety. This is a selected comparison, not a complete ranking of 2026 losses.",
+  "selection": "The four largest comparable loss forecasts verified in original film-trade reporting for 2026 releases, ranked by the highest quoted estimate. Eligible forecasts include post-theatrical income. This is a ranking of dated published forecasts found in the documented source review, not a complete ranking of actual losses.",
+  "selectionAudit": "selection-audit.json",
+  "ranking": "Descending upper estimate; equal upper estimates share a rank. Ties are displayed by descending lower estimate, then title.",
   "unit": "million US dollars",
   "rangeMeaning": "The envelope of the estimates explicitly quoted by each report, not a confidence interval or a calculation of gross minus budget.",
   "rows": [
@@ -8,7 +10,9 @@
       "id": "digger",
       "title": "Digger",
       "source": "https://www.the-numbers.com/movie/Digger-(2026)",
-      "featuredStars": ["Tom Cruise"],
+      "featuredStars": [
+        "Tom Cruise"
+      ],
       "studioLabel": "Warner Bros.",
       "report": {
         "publisher": "TheWrap",
@@ -17,20 +21,39 @@
         "low": 200,
         "high": 250,
         "kind": "competing estimates",
-        "estimates": [[200, 215], [250, 250]],
+        "estimates": [
+          [
+            200,
+            215
+          ],
+          [
+            250,
+            250
+          ]
+        ],
         "basis": "Includes post-theatrical revenue; different insiders give different estimates.",
-        "assumedWorldwide": [0, 40000000],
+        "assumedWorldwide": [
+          0,
+          40000000
+        ],
         "assumption": "The report expected worldwide box office not to exceed $40 million. Its other source made the loss dependent on premium video-on-demand performance.",
-        "budgetInReport": [163, 173],
+        "budgetInReport": [
+          163,
+          173
+        ],
         "marketingInReport": 100,
-        "caveat": "The production budget is disputed. The Numbers lists $125 million; this loss report cites insiders at $163 million to $173 million. Current ticket sales have passed the report's $40 million assumption."
+        "caveat": "The production budget is disputed. The Numbers lists $125 million; this loss report cites insiders at $163 million to $173 million. Current ticket sales have passed the report's $40 million assumption.",
+        "summary": "Competing estimates depend partly on video-on-demand income."
       }
     },
     {
       "id": "moana",
       "title": "Moana",
       "source": "https://www.the-numbers.com/movie/Moana-(2026)",
-      "featuredStars": ["Dwayne Johnson", "Catherine Laga’aia"],
+      "featuredStars": [
+        "Dwayne Johnson",
+        "Catherine Laga’aia"
+      ],
       "studioLabel": "Disney",
       "report": {
         "publisher": "Deadline",
@@ -39,42 +62,68 @@
         "low": 100,
         "high": 125,
         "kind": "reported range",
-        "estimates": [[100, 125]],
+        "estimates": [
+          [
+            100,
+            125
+          ]
+        ],
         "basis": "First-cycle loss forecast, including revenue after cinemas.",
-        "assumedWorldwide": [250000000, 250000000],
+        "assumedWorldwide": [
+          250000000,
+          250000000
+        ],
         "assumption": "The forecast assumed a final worldwide box office of $250 million.",
-        "budgetInReport": [250, 250],
+        "budgetInReport": [
+          250,
+          250
+        ],
         "marketingInReport": 145,
-        "caveat": "Current worldwide ticket sales exceed the report's $250 million assumption. This is the original July forecast, not an updated loss estimate."
+        "caveat": "Current worldwide ticket sales exceed the report's $250 million assumption. This is the original July forecast, not an updated loss estimate.",
+        "summary": "The $250M worldwide-gross assumption has since been exceeded."
       }
     },
     {
       "id": "supergirl",
       "title": "Supergirl",
       "source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
-      "featuredStars": ["Milly Alcock"],
+      "featuredStars": [
+        "Milly Alcock"
+      ],
       "studioLabel": "Warner Bros. / DC",
       "report": {
-        "publisher": "Variety",
-        "date": "2026-06-30",
-        "url": "https://au.variety.com/2026/film/news/supergirl-box-office-bomb-dc-studios-38132/",
-        "low": 80,
-        "high": 120,
-        "kind": "competing estimates",
-        "estimates": [[80, 85], [100, 120]],
-        "basis": "Projected theatrical loss; sources differ about the film's economics.",
-        "assumedWorldwide": [200000000, 210000000],
-        "assumption": "The $100 million to $120 million estimate assumed $200 million to $210 million worldwide. A source familiar with the financials estimated $80 million to $85 million if worldwide gross reached at least $200 million.",
-        "budgetInReport": [170, 170],
+        "publisher": "Deadline",
+        "date": "2026-06-29",
+        "url": "https://deadline.com/2026/06/supergirl-bomb-boxoffice-1236970324/",
+        "low": 125,
+        "high": 125,
+        "kind": "point forecast",
+        "estimates": [
+          [
+            125,
+            125
+          ]
+        ],
+        "basis": "First-cycle loss forecast, including downstream income after cinemas.",
+        "assumedWorldwide": null,
+        "assumption": "Published after a $68 million worldwide opening. The report gives a $315 million worldwide break-even estimate, but does not specify the final worldwide gross assumed in its $125 million loss forecast.",
+        "budgetInReport": [
+          170,
+          186
+        ],
         "marketingInReport": 120,
-        "caveat": "Current worldwide gross is below the report's $200 million assumption. Variety said a lower gross could mean a larger loss. This is the original June forecast, not an updated estimate."
+        "caveat": "This is Deadline's original June forecast, not an updated or audited loss. Variety's separate theatrical-only estimates are excluded from this comparison because they use a different revenue window.",
+        "summary": "First-cycle estimate; no final-gross assumption was disclosed."
       }
     },
     {
       "id": "bride",
       "title": "The Bride!",
       "source": "https://www.the-numbers.com/movie/Bride-The-(2026)",
-      "featuredStars": ["Jessie Buckley", "Christian Bale"],
+      "featuredStars": [
+        "Jessie Buckley",
+        "Christian Bale"
+      ],
       "studioLabel": "Warner Bros.",
       "report": {
         "publisher": "Deadline",
@@ -83,13 +132,22 @@
         "low": 90,
         "high": 90,
         "kind": "approximate estimate",
-        "estimates": [[90, 90]],
+        "estimates": [
+          [
+            90,
+            90
+          ]
+        ],
         "basis": "Loss could approach $90 million in the first cycle, after home entertainment revenue.",
         "assumedWorldwide": null,
         "assumption": "Published after a $13.6 million worldwide opening. No final worldwide gross assumption is specified in the report.",
-        "budgetInReport": [80, 80],
+        "budgetInReport": [
+          80,
+          80
+        ],
         "marketingInReport": 65,
-        "caveat": "The $90 million is approximate, not an audited final loss."
+        "caveat": "The $90 million is approximate, not an audited final loss.",
+        "summary": "Approximate first-cycle loss after home-entertainment income."
       }
     }
   ]
