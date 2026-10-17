@@ -2,5 +2,5 @@ node_modules/
 dist/
 out/
 *.png
-!examples/dataisbeautiful/acid-rain/assets/rain-on-glass.png
+!examples/real/acid-rain/assets/rain-on-glass.png
 out-scale/

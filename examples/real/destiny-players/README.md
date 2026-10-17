@@ -30,8 +30,8 @@ The download icon saves the full poster at twice its displayed dimensions with i
 To reproduce the supplied analysis from the saved source captures and rebuild:
 
 ```sh
-node examples/dataisbeautiful/destiny-players/analyze.mjs --offline
-node examples/dataisbeautiful/destiny-players/build.mjs
+node examples/real/destiny-players/analyze.mjs --offline
+node examples/real/destiny-players/build.mjs
 ```
 
 Omit `--offline` to retrieve the fixed archived feeds and the current public feed again.

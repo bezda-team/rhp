@@ -35,16 +35,16 @@ The full year is not complete, and some theatrical runs are ongoing.
 To rebuild from the saved factual snapshot:
 
 ```sh
-node examples/dataisbeautiful/movie-budgets/fetch-data.mjs --offline
-node examples/dataisbeautiful/movie-budgets/build.mjs
+node examples/real/movie-budgets/fetch-data.mjs --offline
+node examples/real/movie-budgets/build.mjs
 ```
 
 To retrieve the public figures and identifying images again, use the repository's installed dependencies and Playwright browser:
 
 ```sh
-node examples/dataisbeautiful/movie-budgets/fetch-data.mjs
-node examples/dataisbeautiful/movie-budgets/fetch-assets.mjs
-node examples/dataisbeautiful/movie-budgets/build.mjs
+node examples/real/movie-budgets/fetch-data.mjs
+node examples/real/movie-budgets/fetch-assets.mjs
+node examples/real/movie-budgets/build.mjs
 ```
 
 The cutoff remains October 17, 2026.

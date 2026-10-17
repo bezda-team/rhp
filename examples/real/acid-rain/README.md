@@ -18,10 +18,10 @@ Point, tap, or use the chart's arrow-key navigation to inspect a year.
 The download icon saves the current poster at twice its CSS resolution.
 
 ```sh
-node examples/dataisbeautiful/acid-rain/fetch-data.mjs --offline
-node examples/dataisbeautiful/acid-rain/build.mjs
-node mcp/bin/rhp-mcp.js check examples/dataisbeautiful/acid-rain/acid-rain.html --widths 1280,1024,768,390,360,320
-node mcp/bin/rhp-mcp.js check examples/dataisbeautiful/acid-rain/acid-rain-glass.html --widths 1280,1024,768,390,360,320
+node examples/real/acid-rain/fetch-data.mjs --offline
+node examples/real/acid-rain/build.mjs
+node mcp/bin/rhp-mcp.js check examples/real/acid-rain/acid-rain.html --widths 1280,1024,768,390,360,320
+node mcp/bin/rhp-mcp.js check examples/real/acid-rain/acid-rain-glass.html --widths 1280,1024,768,390,360,320
 ```
 
 Omit `--offline` to fetch a new source snapshot.

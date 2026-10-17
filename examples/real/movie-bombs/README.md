@@ -50,16 +50,16 @@ No forecast is recomputed using a generic ticket-rental percentage, and the unli
 Rebuild from the saved factual snapshot:
 
 ```sh
-node examples/dataisbeautiful/movie-bombs/fetch-data.mjs --offline
-node examples/dataisbeautiful/movie-bombs/build.mjs
+node examples/real/movie-bombs/fetch-data.mjs --offline
+node examples/real/movie-bombs/build.mjs
 ```
 
 To retrieve fresh primary-source film facts and identifying images:
 
 ```sh
-node examples/dataisbeautiful/movie-bombs/fetch-data.mjs
-node examples/dataisbeautiful/movie-bombs/fetch-assets.mjs
-node examples/dataisbeautiful/movie-bombs/build.mjs
+node examples/real/movie-bombs/fetch-data.mjs
+node examples/real/movie-bombs/fetch-assets.mjs
+node examples/real/movie-bombs/build.mjs
 ```
 
 The loss reports are manually reviewed, dated records in `forecasts.json`; refreshing ticket sales does not update those forecasts.

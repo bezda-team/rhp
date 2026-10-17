@@ -21,8 +21,8 @@ The download control saves the full poster at twice its CSS dimensions and prese
 To query current recommendations again and rebuild:
 
 ```sh
-node examples/dataisbeautiful/no-mans-sky/fetch-data.mjs
-node examples/dataisbeautiful/no-mans-sky/build.mjs
+node examples/real/no-mans-sky/fetch-data.mjs
+node examples/real/no-mans-sky/build.mjs
 ```
 
 The creation-date cutoff stays fixed at 16 October 2026 UTC.
