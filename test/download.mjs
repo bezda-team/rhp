@@ -26,7 +26,7 @@ const settle = page => page.evaluate(async () => {
 });
 try {
   for (const width of [1280, 390]) {
-    const page = await browser.newPage({ viewport: { width, height: 720 } });
+    const page = await browser.newPage({ viewport: { width, height: 720 }, hasTouch: engine !== "firefox" });
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
     await page.route(/https:\/\/cdn.jsdelivr.net\/npm\/@bezda\/rhp@[^/]+\/dist\/standalone.js/, route => route.fulfill({ body: fs.readFileSync(path.join(out, "standalone.js")), contentType: "text/javascript" }));
@@ -97,6 +97,51 @@ try {
       console.log(`PASS ${width}px ${file}: actual PNG ${png.width} x ${png.height}`);
     }
     assert.deepEqual(errors, [], "recipe pages have no runtime errors");
+    for (const activation of ["pointer", "Enter", "Space", ...(engine !== "firefox" ? ["touch"] : [])]) {
+      await page.goto("file://" + path.join(recipes, "bar.html"));
+      await page.getByRole("button", { name: "Download poster as PNG", exact: true }).waitFor();
+      if (activation === "pointer") await page.locator('.language[data-row="1"]').click();
+      else if (activation === "touch") await page.locator('.language[data-row="1"]').tap();
+      else {
+        // Safari uses Option+Tab to include buttons when full keyboard access is off.
+        const next = engine === "webkit" ? "Alt+Tab" : "Tab";
+        await page.keyboard.press(next);
+        await page.keyboard.press(next);
+        await page.keyboard.press("ArrowDown");
+      }
+      await settle(page);
+      assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese");
+      const sample = await page.locator('.language[data-row="1"] .bar').evaluate(bar => {
+        const bounds = bar.getBoundingClientRect(), poster = bar.closest(".poster").getBoundingClientRect();
+        return { x: Math.floor((bounds.x + bounds.width / 2 - poster.x) * 2), y: Math.floor((bounds.y + bounds.height / 2 - poster.y) * 2), color: getComputedStyle(bar).backgroundColor.match(/\d+/g).slice(0, 3).map(Number) };
+      });
+      await page.evaluate(() => {
+        window.outsideDownloadClicks = 0;
+        document.addEventListener("click", event => {
+          if (!event.target.closest(".poster")) window.outsideDownloadClicks++;
+        });
+      });
+      const button = page.getByRole("button", { name: "Download poster as PNG", exact: true });
+      const event = page.waitForEvent("download");
+      if (activation === "pointer") await button.click();
+      else if (activation === "touch") await button.tap();
+      else {
+        await page.keyboard.press(engine === "webkit" ? "Alt+Shift+Tab" : "Shift+Tab");
+        assert.equal(await button.evaluate(button => document.activeElement === button), true, "Tab reaches the download button from the selected chart item");
+        assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "moving keyboard focus to download preserves selection");
+        await page.keyboard.press(activation);
+      }
+      const download = await event;
+      const target = path.join(out, `${width}-selected-${activation}.png`);
+      await download.saveAs(target);
+      assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", `${activation}: downloading preserves selection`);
+      assert.equal(await page.evaluate(() => window.outsideDownloadClicks), 0, `${activation}: download does not bubble to outside-click handlers`);
+      if (["Enter", "Space"].includes(activation)) assert.equal(await button.evaluate(button => document.activeElement === button), true, "keyboard focus remains on the download button");
+      const png = decode(fs.readFileSync(target));
+      const color = [...png.data.subarray((sample.y * png.width + sample.x) * 4, (sample.y * png.width + sample.x) * 4 + 3)];
+      assert(color.every((value, i) => Math.abs(value - sample.color[i]) <= 3), `${activation}: PNG contains the selected bar's accent color`);
+      console.log(`PASS ${width}px ${activation}: selection, keyboard focus and exported highlight preserved; no outside click`);
+    }
     // A failed import leaves a visible error and lets the user retry.
     await page.goto("file://" + path.join(recipes, "bar.html"));
     await page.route(exportURL, route => route.abort());

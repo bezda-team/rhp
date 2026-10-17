@@ -6,6 +6,7 @@ Keep it outside the poster so the saved PNG includes the whole poster, its headl
 The button joins `.recipe-navigation` when the gallery supplies one, inheriting the gallery link's color.
 Otherwise it creates its own row above each poster, sized to the poster on desktop and phones.
 The exporter loads only when clicked, waits for fonts, and saves the current poster at twice its displayed resolution.
+Activating the download control preserves the poster's selection, including keyboard focus transitions, and does not bubble into outside-click handlers.
 Like the chart's CDN import, the first download needs a connection.
 For an embedded chart inside an existing app, follow the app's export controls instead of adding page navigation.
 
@@ -16,7 +17,7 @@ For an embedded chart inside an existing app, follow the app's export controls i
   .poster-download svg { display: block; width: 20px; height: 20px; }
   .poster-download:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
   .poster-download:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-  .poster-download:disabled { cursor: progress; opacity: .5; }
+  .poster-download[aria-disabled="true"] { cursor: progress; opacity: .5; }
   .poster-download-error { margin: 8px auto; font: 14px/1.4 system-ui, sans-serif; color: inherit; }
   @media print { .poster-download-tools, .poster-download, .poster-download-error { display: none !important; } }
 </style>
@@ -52,9 +53,28 @@ function addPosterDownloads() {
     error.setAttribute('role', 'alert');
     error.hidden = true;
     tools.after(error);
-    let exporter, retries = 0;
-    button.addEventListener('click', async () => {
-      button.disabled = true;
+    // Download is part of the poster interaction, even though its control sits outside the image.
+    button.addEventListener('pointerdown', event => {
+      event.stopPropagation();
+    });
+    button.addEventListener('mousedown', event => {
+      event.stopPropagation();
+    });
+    poster.addEventListener('focusout', event => {
+      if (button.contains(event.relatedTarget) || button.matches(':active')) event.stopImmediatePropagation();
+    }, true);
+    poster.addEventListener('pointerleave', event => {
+      if (button.contains(event.relatedTarget) || document.activeElement === button) event.stopImmediatePropagation();
+    }, true);
+    for (const type of ['keydown', 'keyup']) button.addEventListener(type, event => {
+      if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
+    });
+    let exporter, retries = 0, busy = false;
+    button.addEventListener('click', async event => {
+      event.stopPropagation();
+      if (busy) return;
+      busy = true;
+      button.setAttribute('aria-disabled', 'true');
       button.setAttribute('aria-busy', 'true');
       button.setAttribute('aria-label', 'Preparing poster PNG');
       error.hidden = true;
@@ -159,6 +179,7 @@ function addPosterDownloads() {
         const title = poster.querySelector('.headline')?.textContent || document.title || 'poster';
         link.download = (title.trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '').slice(0, 100) || 'poster') + '.png';
         link.href = url;
+        link.addEventListener('click', event => event.stopPropagation(), { once: true });
         document.body.append(link);
         link.click();
         link.remove();
@@ -169,7 +190,8 @@ function addPosterDownloads() {
         error.hidden = false;
       } finally {
         if (url) setTimeout(() => URL.revokeObjectURL(url), 60000);
-        button.disabled = false;
+        busy = false;
+        button.removeAttribute('aria-disabled');
         button.removeAttribute('aria-busy');
         button.setAttribute('aria-label', 'Download poster as PNG');
       }
