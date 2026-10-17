@@ -1,0 +1,42 @@
+REDDIT IMAGE TITLE
+
+[OC] Reported production budgets and worldwide box office for ten big-budget films released in 2026, as of October 17
+
+FIRST TOP-LEVEL COMMENT
+
+Data: The Numbers, captured October 17, 2026.
+Annual chart: https://www.the-numbers.com/box-office-records/worldwide/all-movies/cumulative/released-in-2026
+Individual movie pages supply the reported production budgets; their worldwide totals reconcile exactly with the annual chart for all ten films in this snapshot.
+
+Selection: I checked the 100 films in that worldwide chart, kept films with a reported budget and a US theatrical release in 2026 by the cutoff, and selected the ten largest budgets.
+Sixty screened films had a reported budget, and 59 also met the gross and US release-date criteria.
+The result covers budgets from $150 million to $250 million.
+Ties are shown in descending worldwide gross.
+This is a reproducible sample of reported budgets, not a claim that every film's actual production cost is public.
+
+The Odyssey and the live-action Moana both have a $250 million production budget in this source, while their worldwide grosses were $1,783,979,015 and $323,701,468.
+That is a 5.51-fold difference, shown as 5.5 times.
+Toy Story 5 is the third film with the same reported $250 million budget, at $1,148,425,809 worldwide.
+
+These are production-budget estimates and cumulative worldwide ticket sales, in nominal US dollars.
+Budgets can differ between sources and should not be read as final audited costs.
+I use The Numbers consistently rather than mixing different publications' budget estimates.
+The source reports Michael at $155 million, for example, while some press reports discuss higher production costs.
+Gross includes the cinemas' share, while production budgets do not include marketing.
+The ratio is gross divided by production budget, not return on investment or profit.
+I have not imposed a generic break-even multiplier or estimated losses.
+Some theatrical runs are ongoing, and unreleased late-2026 films are excluded.
+
+Tools: rhp (@bezda/rhp), HTML/CSS and JavaScript; a Node.js collection script; browser canvas to make proportional artwork thumbnails; modern-screenshot for the PNG export.
+The film images are promotional poster artwork belonging to the respective studios, obtained from the individual The Numbers pages and reproduced at small size to identify each row.
+They have been resized proportionally, with no cropping, stretching, or generated replacement artwork.
+
+Reproducible data, collection code, the individual source URLs, and artwork credits accompany the interactive HTML poster.
+
+POSTING NOTES
+
+Attach movie-budgets.png and add the source-and-tools comment immediately after submitting.
+The image's headline states the comparison; the Reddit title describes the dataset plainly.
+Do not label the difference between gross and production budget as profit or loss.
+Check the subreddit rules again at posting time.
+This draft has not been submitted.

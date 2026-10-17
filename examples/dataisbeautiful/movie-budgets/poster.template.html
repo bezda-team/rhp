@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 movie budgets and worldwide box office</title>
+<meta name="description" content="Ten of 2026's biggest reported production budgets against worldwide box office, with embedded film poster artwork and a shared dollar scale.">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
+<style>
+__FONTS__
+:root { color-scheme: dark; --page: #191419; --paper: #2b1c27; --ink: #fff1df; --soft: #d4c0cd; --rule: #57434f; --gold: #f1bd62; --budget: #b7a6b6; --text: "IBM Plex Sans", Arial, sans-serif; --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px 16px 32px; background: var(--page); color: var(--ink); font: 16px/1.45 var(--text); }
+.poster { max-width: 920px; margin: 0 auto; padding: 26px 30px 22px; background: var(--paper); border-top: 4px solid var(--gold); }
+.poster figcaption { display: grid; gap: 12px; margin: 0 0 17px; }
+.poster .kicker { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); color: var(--soft); font-size: 12px; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }
+.poster .headline { max-width: 28ch; font: 700 51px/.99 var(--display); letter-spacing: -.015em; text-wrap: balance; }
+.poster .headline em { color: var(--gold); font-style: normal; }
+.poster .dek { max-width: 77ch; color: var(--soft); font-size: 16px; line-height: 1.4; }
+.tools { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; margin-bottom: 8px; padding-block: 12px; border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--soft); font-size: 13px; }
+.key span { display: inline-flex; align-items: center; gap: 7px; }
+.key i { width: 24px; height: 10px; display: inline-block; }
+.key .budget-key { border: 1.5px solid var(--budget); }
+.key .gross-key { background: var(--gold); }
+.sort { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; color: var(--soft); }
+.sort button { min-height: 32px; padding: 5px 9px; border: 1px solid var(--budget); background: transparent; color: var(--ink); font: 600 12px/1.2 var(--text); cursor: pointer; }
+.sort button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.sort button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.reading-guide { display: flex; justify-content: space-between; gap: 14px; margin: 0 0 6px; color: var(--soft); font-size: 11.5px; }
+.reading-guide span:last-child { text-align: right; }
+.context { margin: 17px 0 0; padding-top: 12px; border-top: 1px solid var(--rule); color: var(--soft); font-size: 13px; }
+.context strong { color: var(--ink); }
+.poster .note { display: block; margin-top: 11px; font-size: 11.5px; line-height: 1.45; color: var(--soft); }
+a { color: inherit; text-underline-offset: 2px; }
+.below { max-width: 920px; margin: 14px auto 0; font-size: 13px; color: var(--soft); }
+.below details { margin-top: 10px; }
+.below summary { cursor: pointer; }
+.below ul { padding-left: 18px; }
+@media (max-width: 640px) {
+ body { padding: 14px 10px 24px; }
+ .poster { padding: 22px 14px 18px; }
+ .poster .kicker { font-size: 10.5px; letter-spacing: .07em; gap: 4px 10px; }
+ .poster .headline { font-size: 37px; max-width: 23ch; }
+ .poster .dek { font-size: 14px; }
+ .tools { gap: 10px; margin-bottom: 8px; padding-block: 10px; }
+ .key { gap: 6px 13px; font-size: 12px; }
+ .sort { width: 100%; justify-content: flex-end; }
+ .reading-guide { font-size: 11px; gap: 8px; }
+ .context { font-size: 12px; }
+ .poster .note { font-size: 11px; }
+}
+@media (max-width: 360px) { .poster .headline { font-size: 34px; } }
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<div class="below">Sources and exact figures: <a href="data.json">data.json</a> · <a href="movie-budgets.csv">CSV</a> · <a href="fetch-data.mjs">collection script</a> · <a href="artwork-credits.json">artwork credits</a>
+<details><summary>Individual film sources</summary><ul>__SOURCES__</ul></details></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, sortBy, nice, html, render, createSignal, onCleanup } from "@bezda/rhp/standalone";
+
+// Fixed, reconciled source snapshot and identifying artwork.
+const DATA = __DATA__;
+const ROWS = DATA.rows;
+const dollars = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const compact = value => value >= 1e9 ? `$${(value / 1e9).toFixed(2)}B` : `$${Math.round(value / 1e6)}M`;
+const ratio = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+const tickMoney = value => value >= 1e9 ? `$${(value / 1e9).toFixed(1).replace(/\.0$/, "")}B` : value ? `$${value / 1e6}M` : "$0";
+const scale = nice(0, Math.max(...ROWS.map(row => Math.max(row.worldwide, row.budget))), 6);
+const topBudget = Math.max(...ROWS.map(row => row.budget));
+const trio = ROWS.filter(row => row.budget === topBudget).sort((a, b) => b.worldwide - a.worldwide);
+const gap = trio[0].worldwide / trio.at(-1).worldwide;
+const THEME = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--gold)", "var(--budget)"] };
+
+// One film is its poster, followed by two bars that start at the same zero.
+const Film = slat({ thickness: 94, room: { start: 72, end: 70 }, css: `
+ .film { border-bottom: 1px solid var(--rhp-grid); }
+ .film:hover { background: color-mix(in srgb, var(--rhp-surface) 94%, var(--rhp-ink)); }
+ .film:focus-visible { outline: 2px solid var(--rhp-series-1); outline-offset: -2px; }
+ .artwork { width: 62px; height: 84px; display: flex; align-items: center; justify-content: flex-start; padding: 0; --rhp-label-gap: 10px; }
+ .artwork img { display: block; width: 52px; height: 78px; object-fit: contain; }
+ .film-title { position: absolute; left: 0; right: 0; top: 5px; margin: 0; color: var(--rhp-ink); font-size: 14px; font-weight: 600; line-height: 1.15; }
+ .film-title small { margin-left: 7px; color: var(--rhp-muted); font-size: 11.5px; font-weight: 400; white-space: nowrap; }
+ .budget { top: 45%; translate: 0 -50%; background: transparent; border: 1.5px solid var(--rhp-series-2); --rhp-radius: 0px; }
+ .gross { top: 72%; translate: 0 -50%; --rhp-radius: 0px; }
+ .budget-value { top: 45%; translate: 6px -50%; font-size: 13px; color: var(--rhp-muted); font-variant-numeric: tabular-nums; }
+ .gross-value { top: 72%; translate: 6px -50%; font-size: 15px; color: var(--rhp-series-1); font-weight: 600; font-variant-numeric: tabular-nums; }
+ @container (max-width: 500px) {
+  .film-title { right: -54px; top: 4px; font-size: 12.5px; max-height: 2.3em; }
+  .film-title small { display: none; }
+  .budget-value { font-size: 11.5px; translate: 5px -50%; }
+  .gross-value { font-size: 13px; translate: 5px -50%; }
+  .artwork { width: 56px; --rhp-label-gap: 8px; }
+  .artwork img { width: 46px; height: 70px; }
+ }
+` }, d => html`
+ <div class="film" data-film=${() => d.id} aria-label=${() => `${d.title}. Reported production budget: ${dollars.format(d.budget)}. Worldwide box office: ${dollars.format(d.worldwide)}. Gross is ${ratio.format(d.grossToBudget)} times production budget, not a profit measure.`}>
+  <${Label} edge="start" class="artwork"><img src=${() => d.art} alt=${() => `${d.title} film poster`} width="52" height="78" /><//>
+  <div class="film-title">${() => d.displayTitle}<small>${() => `${ratio.format(d.grossToBudget)}× budget`}</small></div>
+  <${Bar} to=${() => d.budget} thick="10px" color="series-2" class="budget" />
+  <${Label} at=${() => d.budget} class="budget-value">${() => compact(d.budget)}<//>
+  <${Bar} to=${() => d.worldwide} thick="12px" color="series-1" class="gross" />
+  <${Label} at=${() => d.worldwide} class="gross-value">${() => compact(d.worldwide)}<//>
+ </div>`);
+
+function MovieBudgets() {
+ const [by, setBy] = createSignal("budget");
+ const media = matchMedia("(min-width: 641px)");
+ const [wide, setWide] = createSignal(media.matches);
+ const resize = event => setWide(event.matches);
+ media.addEventListener("change", resize);
+ onCleanup(() => media.removeEventListener("change", resize));
+ const ticks = () => wide() ? scale.ticks : scale.ticks.filter((_, i) => i % 2 === 0);
+ return html`
+ <${Poster} kicker=${html`<span>2026 · The big-budget slate</span><span>As of 17 October</span>`}
+  title=${html`<span>Same ${compact(topBudget)} budget.<br/><em>${ratio.format(gap)}× apart</em> at the box office.</span>`}
+  dek=${`${trio[0].title} grossed ${compact(trio[0].worldwide)}; the live-action ${trio.at(-1).title}, ${compact(trio.at(-1).worldwide)}. Both had a reported ${compact(topBudget)} production budget. Here are ten of the year’s biggest budgets and their worldwide ticket sales.`}
+  note=${html`<span><b>Source:</b>${" "}<a href=${DATA.index}>The Numbers</a>, captured 17 October 2026. The ten largest reported budgets among its 100 highest-grossing 2026 releases, with a US theatrical release by this date; ${DATA.eligibleCount} met the budget and release-date criteria. Budget estimates vary by source. <b>Artwork:</b> respective film studios, via The Numbers.</span>`}>
+  <div class="tools">
+   <div class="key" aria-label="Chart key"><span><i class="budget-key"></i>Production budget</span><span><i class="gross-key"></i>Worldwide gross</span></div>
+   <div class="sort" role="group" aria-label="Order films by">Order ${[ ["budget", "Budget"], ["worldwide", "Box office"] ].map(([value, label]) => html`<button type="button" aria-pressed=${() => by() === value} onClick=${() => setBy(value)}>${label}</button>`)}</div>
+  </div>
+  <p class="reading-guide"><span>Both bars start at zero, on the same dollar scale.</span><span>US dollars</span></p>
+  <${Chart} scale=${[scale.min, scale.max]} ticks=${ticks} format=${tickMoney} label="Reported production budget and worldwide box office for ten high-budget films released in 2026, in US dollars" theme=${THEME}>
+   <${Plot} rows=${ROWS} key="id" keyboard=${true} rank=${d => d[by()]} order=${sortBy("rank", "desc")}>${Film}<//>
+  <//>
+  <p class="context"><strong>Box office is ticket sales, not studio profit.</strong> Cinemas keep a share of gross, and production budgets exclude marketing. No break-even threshold or profit estimate is implied. These are running totals, not a completed-year ranking.</p>
+ <//>`;
+}
+render(() => html`<${MovieBudgets} />`, document.getElementById("chart"));
+</script>
+__DOWNLOAD__
+</body>
+</html>

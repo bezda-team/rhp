@@ -1,0 +1,86 @@
+2026 MOVIE BUDGETS: RESEARCH AND METHOD
+
+Snapshot date: October 17, 2026.
+The client date determines the year and human-readable cutoff; the snapshot also retains an ISO retrieval timestamp.
+
+DATA SOURCE AND SELECTION
+
+Primary financial data provider: The Numbers (Nash Information Services).
+Annual list: https://www.the-numbers.com/box-office-records/worldwide/all-movies/cumulative/released-in-2026
+The annual list supplies the 100 screened titles and their cumulative worldwide grosses.
+All 100 individual movie pages were inspected for production budget, domestic gross, international gross, worldwide gross, US theatrical release date, and poster-image URL.
+The snapshot retains only those factual fields and source links, not article or synopsis text.
+Sixty screened films had a reported budget.
+Fifty-nine also had a gross and qualifying US theatrical release by the cutoff.
+Films with missing budgets are excluded rather than assigned zero.
+The selected ten are sorted by budget descending, then worldwide gross descending for equal budgets.
+The data collection fails if any selected film's worldwide total differs between its individual page and the annual list, or if domestic plus international does not equal worldwide.
+All ten reconciliations passed.
+The screening universe is the provider's top 100 worldwide releases, so this is not an exhaustive census of every film produced around the world.
+Unreleased movies, films first released in another year, and streaming-only projects are outside the selection.
+
+RESULT
+
+Three selected films share the largest reported budget of $250 million: The Odyssey, Toy Story 5, and the live-action Moana.
+Their respective worldwide grosses are $1,783,979,015, $1,148,425,809, and $323,701,468.
+The Odyssey divided by Moana is 5.511186050598942, shown as 5.5 times.
+Spider-Man: Brand New Day has the largest worldwide gross in the sample, $2,513,590,528, against a reported $225 million production budget.
+The other selected films are Project Hail Mary, Masters of the Universe, Supergirl, The Mandalorian and Grogu, Michael, and Hoppers.
+All arithmetic is reproduced from data.json and source-snapshot.json by fetch-data.mjs --offline.
+
+LIMITATIONS AND CHOICES
+
+Budgets are provider-reported estimates, not final audited production accounts.
+Sources differ materially, so mixing the largest press estimate for one film with a net estimate for another would undermine comparison.
+For consistency, this chart uses The Numbers for every budget and gross.
+Its Michael budget is $155 million; AP reporting around the opening discussed total production costs closer to $200 million.
+The consistent source choice is stated in the Reddit comment and the poster says budgets vary by source.
+No movie is described as profitable or unprofitable.
+Gross is total ticket sales before exhibitors take their share, while production budgets exclude marketing and do not cover every cost.
+Downstream revenue, distribution terms, financing, incentives, and participations are not modeled.
+The chart deliberately does not draw a universal 2.5-times or 3-times break-even line.
+There is no inflation adjustment because all films are 2026 releases and values are nominal US dollars.
+The totals are a capture during the year, not final full-year results.
+
+ARTWORK
+
+Each row contains its actual promotional film poster, retrieved from the film's financial-source page.
+artwork-credits.json records the original image URL, source page, rightsholder credit, original and embedded dimensions, and the proportional resizing operation.
+No AI artwork, cropping, or value-dependent image scaling is used.
+All film thumbnails have the same display box and use object-fit: contain.
+Dollar amounts are encoded by two bars beginning at the same zero, not by image size or poster area.
+Original JPEGs can be multiple megabytes; the asset script makes complete 240-pixel-tall identifying thumbnails before embedding them in the portable HTML.
+
+AUDIENCE SIGNALS AND PRECEDENTS
+
+https://www.reddit.com/r/dataisbeautiful/comments/1v845un/christopher_nolan_budget_vs_box_office_oc/
+This related post is about two months old, not a new unexplored topic.
+It has extensive discussion of recognizable films and includes direct criticism of stacking a budget on top of gross, which visually sums quantities that should be compared.
+It also generated confusion around profitability.
+The new poster uses paired bars with the same origin and states the financial distinction prominently.
+
+https://www.reddit.com/r/dataisbeautiful/comments/1wg1eiz/oc_ridley_scotts_filmography_as_boxoffice/
+A related director-filmography post dated September 14, 2026 also attracted discussion of returns and financial interpretation.
+The new chart compares the current year's expensive releases instead of copying a director-filmography dataset or framing.
+
+https://www.reddit.com/r/dataisbeautiful/comments/1veluky/oc_10_biggest_worldwide_opening_weekend_box/
+An August 3, 2026 opening-weekend chart is another recent precedent for recognizable movie box-office comparisons.
+Its displayed search score was 588 votes at lookup, an unstable public score rather than an engagement forecast.
+
+Interest assessment: promising but familiar territory.
+The year's recognizable titles and a comparison that can be understood immediately are stronger hooks than an unfamiliar niche dataset.
+The poster art should help recognition while leaving the numbers readable.
+The matched-budget result gives a specific fact to discuss without claiming to discover a new economic law.
+I have not established that no similar current-year budget chart exists, nor predicted a vote count.
+The most likely substantive objections are budget-source disagreement and treating gross as profit; the source choice and interpretation are explained directly.
+
+SUBREDDIT RULES
+
+Rules reviewed through the subreddit sidebar and its linked posting rules on October 17, 2026.
+https://www.reddit.com/r/dataisbeautiful/
+The standalone /wiki/rules/ path says that wiki page does not exist, while still displaying the current sidebar rules.
+The submission should contain the actual data visualization, use [OC] for the original chart, and state data sources and tools in the first top-level comment.
+The title must describe the data plainly without sensationalism.
+The rules prohibit reposting popular posts within one month.
+The precedents above use different data or an earlier window; this does not establish novelty.
+No post has been submitted or scheduled.
