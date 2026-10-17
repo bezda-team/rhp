@@ -35,6 +35,7 @@ export class RainSimulation {
       r: this.random(initial ? 3.5 : 4, initial ? 9.5 : 10.5),
       age: initial ? 3 : 0, life: this.random(35, 65), speed: 0,
       run: 0, stretch: 0, drift: this.random(-.9, .9), phase: this.random(0, Math.PI * 2), light: this.random(-.7, .7),
+      trailWidth: this.random(1, 2),
       pinnedUntil: this.time + 5,
     });
   }
@@ -83,7 +84,7 @@ export class RainSimulation {
       d.y += dy;
       d.run -= dy;
       d.r = Math.max(2.7, d.r - dy * .0028);
-      this.trails.push({ x: (previousX + d.x) / 2, y: (previousY + d.y) / 2, rx: d.r * .34, ry: dy / 2 + .7, age: 0, light: d.light });
+      this.trails.push({ x: (previousX + d.x) / 2, y: (previousY + d.y) / 2, rx: d.r * .34 * d.trailWidth, ry: dy / 2 + .7, age: 0, light: d.light });
       if (d.run <= 0) {
         d.speed = 0;
         d.age = 3;

@@ -6,7 +6,7 @@ The headline states the measured result: 94% less sulfur dioxide with approximat
 - `acid-rain.html` is the original dark poster.
 - `acid-rain-glass.html` is the alternate with an embedded realistic rain-on-glass background.
 - `acid-rain-glass-normal.html` keeps the original dark poster's layout and spacing with the same rain-on-glass background.
-- `acid-rain-glass-animated.html` adds sparse refracting droplets, occasional slow runs and fading trails to that same layout.
+- `acid-rain-glass-animated.html` is the live gallery version, adding sparse refracting droplets, occasional slow runs and fading trails to that same layout.
 - The matching PNG files are full-poster exports at twice the displayed resolution, saved with the pages' actual download buttons.
 - `data.json` contains the calculated totals, indices, scope and claims.
 - `source-snapshot.json` preserves the original EPA numeric arrays and provenance.
@@ -21,11 +21,14 @@ The selected dots show percentage change since 2000, with permanent final-year l
 Label positions are calculated once for the current layout, preferring 5px above each stroke and falling below when that would cover another line, dot or label.
 They switch smoothly to the left at 2021, the third-to-last point, and their placements are recalculated when the layout changes.
 The side switch slides from the label's previous screen position to its new position, with clearance checked only on the side where it is displayed.
+When an obstacle blocks part of the horizontal slide, only that part is shortened, so both directions animate without changing the label's height.
+The year and sulfur readout reserve fixed widths so the values stay in place as the selected year changes.
 The download icon saves the current poster at twice its CSS resolution.
 The animated version includes a pause button, starts still when reduced motion is preferred, and pauses when offscreen or hidden.
 PNG downloads briefly freeze the rain and include its current frame.
 The effect uses a small WebGL overlay, with the original photograph as the fallback when WebGL is unavailable.
 Droplets have uneven outlines, stretch while sliding, leave cleared wet trails and settle gradually.
+Each drop leaves a trail with a stable randomized width between the original width and twice as wide.
 Each drop keeps its own randomized lighting direction from below, with a deep shadow across its upper half.
 
 ```sh

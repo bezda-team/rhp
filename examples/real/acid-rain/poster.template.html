@@ -30,8 +30,9 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
 .plot .rhp-chart {background:var(--paper);margin-right:-10px;}
 .axis-value {font-size:15px;}
 .readout {display:flex;justify-content:space-between;gap:24px;align-items:center;margin:28px 0 0;padding:18px 0 20px;border-block:1px solid var(--rule);font-variant-numeric:tabular-nums;}
-.readout .year {font:700 46px/1 var(--display);color:var(--ink);}
+.readout .year {font:700 46px/1 var(--display);font-variant-numeric:tabular-nums;flex:0 0 4ch;color:var(--ink);}
 .readout .metric {min-width:0;display:grid;grid-template-rows:auto auto;gap:3px;}
+.readout .metric.sulfur {font-size:24px;flex:0 0 14ch;}
 .readout .metric:last-child {text-align:right;}
 .compact-unit {display:none;}
 .readout .metric small {color:var(--soft);font-size:17px;}
@@ -79,6 +80,7 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
  .readout {gap:12px;margin-top:22px;padding:14px 0;}
  .readout .year {font-size:29px;}
  .readout .metric {gap:5px;}
+ .readout .metric.sulfur {font-size:15px;flex-basis:10ch;}
  .readout .metric small {font-size:12px;line-height:1.25;white-space:nowrap;}
  .readout .metric strong {font-size:15px;}
  .wide-unit {display:none;} .compact-unit {display:inline;}
@@ -99,6 +101,7 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
  .hero-number {font-size:104px;}
  .readout {gap:9px;}
  .readout .metric strong {font-size:14px;}
+ .readout .metric.sulfur {font-size:14px;}
 }
 __VARIANT_STYLES__
 </style>

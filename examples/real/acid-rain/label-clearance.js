@@ -18,7 +18,7 @@ export function chooseLabelPositions(groups) {
   return best;
 }
 export function installDotLabels(poster, rows, format) {
-  let frame = 0, slideFrame = 0, placements = new Map(), slideSafety = new Map(), layoutKey = '', previousYear = null;
+  let frame = 0, slideFrame = 0, placements = new Map(), layoutKey = '', previousYear = null;
   const slides = new Map();
   const chart = poster.querySelector('.rhp-chart');
   const rect = el => el.getBoundingClientRect();
@@ -46,6 +46,27 @@ export function installDotLabels(poster, rows, format) {
     return Number.isFinite(top) ? {top, bottom} : null;
   }
   const labels = [...poster.querySelectorAll('.value')];
+  function clearSlide(text, distance) {
+    const box = rect(text), paths = [...poster.querySelectorAll('.curve .rhp-stroke')].map(stroke);
+    const obstacles = [...fixedBoxes(), ...[...poster.querySelectorAll('.dot')].map(rect)];
+    const clear = amount => {
+      const left = box.left + Math.min(0, amount), right = box.right + Math.max(0, amount);
+      return paths.every(path => {
+        const band = lineBand(path, left, right);
+        return !band || box.bottom <= band.top - 4.9 || box.top >= band.bottom + 4.9;
+      }) && obstacles.every(other => right <= other.left || left >= other.right || box.bottom <= other.top || box.top >= other.bottom);
+    };
+    if (clear(distance)) return distance;
+    // Shorten only the slide when its old position is obstructed at the new height.
+    // The selected label keeps its normal placement on its displayed side.
+    let low = 0, high = 1;
+    for (let i = 0; i < 12; i++) {
+      const middle = (low + high) / 2;
+      if (clear(distance * middle)) low = middle;
+      else high = middle;
+    }
+    return distance * low;
+  }
   function rebuild() {
     const bounds = rect(chart), fixed = fixedBoxes();
     const series = labels.map(label => {
@@ -82,33 +103,17 @@ export function installDotLabels(poster, rows, format) {
         return {left, right, height:item.height, anchor:point.y, own, bands, top:bounds.top, bottom:bounds.bottom, series:item.key};
       });
     }
-    const allCases = [];
     for (let index = 0; index < rows.length - 1; index++) {
       const cases = casesFor(index), positions = chooseLabelPositions(cases.map(labelCandidates));
-      allCases.push(cases);
       if (!positions) throw new Error(`No clear percentage-label placement for ${rows[index].year}`);
       placements.set(rows[index].year, positions.map((box, n) => box.bottom - cases[n].anchor - series[n].baseline));
-    }
-    slideSafety = new Map();
-    const overlaps = (a,b) => a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
-    for(let from=0;from<allCases.length;from++)for(let to=0;to<allCases.length;to++){
-      if(Math.abs(from-to)>2 || (from>=rows.length-3)===(to>=rows.length-3))continue;
-      const safe = series.every((item,n) => {
-        const before=allCases[from][n],after=allCases[to][n],offset=placements.get(rows[to].year)[n];
-        const box={left:Math.min(before.left,after.left),right:Math.max(before.left,after.left)+after.right-after.left,
-          bottom:after.anchor+offset+item.baseline,top:after.anchor+offset+item.baseline-item.height};
-        const lines=series.map(other=>lineBand(other.path,box.left,box.right)).filter(Boolean);
-        const dots=series.map(other=>other.path.points[to]).map(point=>({left:point.x-13,right:point.x+13,top:point.y-13,bottom:point.y+13}));
-        return lines.every(band=>box.bottom<=band.top-4.9 || box.top>=band.bottom+4.9) && [...fixed,...dots].every(other=>!overlaps(box,other));
-      });
-      slideSafety.set(`${rows[from].year}:${rows[to].year}`,safe);
     }
     apply();
   }
   function apply() {
     const year = Number(poster.dataset.selectedYear), offsets = placements.get(year);
     const boundary = rows[rows.length-3].year;
-    const switching = previousYear !== null && (year>=boundary)!==(previousYear>=boundary) && slideSafety.get(`${previousYear}:${year}`)===true;
+    const switching = previousYear !== null && Math.abs(year-previousYear)<=2 && (year>=boundary)!==(previousYear>=boundary);
     const from = labels.map(label => {
       const text = label.querySelector('.value-text'), previous = slides.get(text);
       const x = previous ? previous.x + (parseFloat(getComputedStyle(text).translate)||0) : null;
@@ -124,7 +129,7 @@ export function installDotLabels(poster, rows, format) {
       labels.forEach((label, i) => {
         const text = label.querySelector('.value-text'), x = text.getBoundingClientRect().left;
         const animation = switching && from[i] !== null && !matchMedia('(prefers-reduced-motion:reduce)').matches
-          ? text.animate([{translate:`${from[i]-x}px 0px`},{translate:'0px 0px'}],{duration:180,easing:'ease-out'}) : null;
+          ? text.animate([{translate:`${clearSlide(text, from[i]-x)}px 0px`},{translate:'0px 0px'}],{duration:180,easing:'ease-out'}) : null;
         slides.set(text,{x,animation});
       });
     });

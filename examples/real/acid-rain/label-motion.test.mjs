@@ -7,9 +7,22 @@ assert(browser,error?.join('; '));
 try{
   for(const width of [1280,1024,768,390,360,320]){
     const page=await browser.newPage({viewport:{width,height:1100},reducedMotion:'no-preference'});
-    await page.goto(pathToFileURL(fileURLToPath(new URL('./acid-rain-glass.html',import.meta.url))).href);
+    await page.goto(process.argv[2] || pathToFileURL(fileURLToPath(new URL('./acid-rain-glass-animated.html',import.meta.url))).href);
     await page.locator('.pick').last().waitFor();
     await page.evaluate(()=>document.fonts.ready);
+    for(const [from,to] of [[20,21],[21,20]]){
+      await page.locator('.pick').nth(from).focus();
+      await page.waitForFunction(()=>[...document.querySelectorAll('.value-text')].every(el=>el.getAnimations().length===0));
+      const translations=await page.evaluate(async to=>{
+        const samples=[];document.querySelectorAll('.pick')[to].focus();
+        for(let frame=0;frame<16;frame++){
+          await new Promise(resolve=>requestAnimationFrame(resolve));
+          samples.push([...document.querySelectorAll('.value-text')].map(el=>getComputedStyle(el).translate));
+        }
+        return samples;
+      },to);
+      for(let series=0;series<2;series++)assert(new Set(translations.map(sample=>sample[series])).size>2,`${width}px ${from} to ${to}: both labels slide`);
+    }
     await page.locator('.pick').nth(20).focus();
     await page.waitForFunction(()=>[...document.querySelectorAll('.value-text')].every(el=>Number(getComputedStyle(el).opacity)===1));
     const frames=await page.evaluate(async()=>{
@@ -30,7 +43,21 @@ try{
     assert(frames.every(frame=>frame.opacity.every(value=>value===1)),`${width}px: side changes never hide or delay the labels`);
     await page.waitForFunction(()=>[...document.querySelectorAll('.value-text')].every(el=>Number(getComputedStyle(el).opacity)===1));
     assert.equal(await page.locator('.readout .year').textContent(),'2020');
-    console.log(`PASS ${width}px: rapid side changes stay visible without temporary vertical detours`);
+    const readouts=[];
+    for(let index=0;index<24;index++){
+      await page.locator('.pick').nth(index).focus();
+      readouts.push(await page.evaluate(()=>['.year','.sulfur','.sulfur strong','.metric:last-child'].map(selector=>{
+        const el=document.querySelector(`.readout ${selector}`),box=el.getBoundingClientRect();
+        if(el.scrollWidth>el.clientWidth+1)throw new Error(`Readout content overflows ${selector}`);
+        return {left:box.left,width:box.width};
+      })));
+    }
+    for(let item=0;item<4;item++){
+      const boxes=readouts.map(readout=>readout[item]);
+      assert(Math.max(...boxes.map(box=>box.left))-Math.min(...boxes.map(box=>box.left))<.1,`${width}px: readout position stays fixed`);
+      assert(Math.max(...boxes.map(box=>box.width))-Math.min(...boxes.map(box=>box.width))<.1,`${width}px: readout width stays fixed`);
+    }
+    console.log(`PASS ${width}px: bidirectional slides, immediate labels, no vertical detours, and stable readouts for all 24 years`);
     await page.close();
   }
 }finally{await browser.close();}

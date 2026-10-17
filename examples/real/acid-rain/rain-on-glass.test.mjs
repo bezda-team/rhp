@@ -5,8 +5,9 @@ for(const width of [1080,374]){
   const simulation=new RainSimulation(width,1350);
   let largestMoving=0,firstRun=null,furthestRun=0;
   const positions=new Set();
-  const lighting=new WeakMap();
+  const lighting=new WeakMap(),trailWidths=new WeakMap();
   let minLight=Infinity,maxLight=-Infinity;
+  let minTrail=Infinity,maxTrail=-Infinity;
   for(let frame=0;frame<3600*30;frame++){
     simulation.step(1/30);
     const moving=simulation.drops.filter(drop=>drop.speed);
@@ -22,6 +23,10 @@ for(const width of [1080,374]){
       assert(drop.light>=-.7&&drop.light<=.7);
       if(lighting.has(drop))assert.equal(drop.light,lighting.get(drop),'a drop keeps its reflection direction');
       lighting.set(drop,drop.light);
+      assert(drop.trailWidth>=1&&drop.trailWidth<=2);
+      if(trailWidths.has(drop))assert.equal(drop.trailWidth,trailWidths.get(drop),'a drop keeps its trail width');
+      trailWidths.set(drop,drop.trailWidth);
+      minTrail=Math.min(minTrail,drop.trailWidth);maxTrail=Math.max(maxTrail,drop.trailWidth);
       minLight=Math.min(minLight,drop.light);maxLight=Math.max(maxLight,drop.light);
     }
   }
@@ -29,6 +34,7 @@ for(const width of [1080,374]){
   assert(positions.size>=3,'runs occur across the glass');
   assert(furthestRun>30,'sliding drops visibly travel');
   assert(minLight<-.5&&maxLight>.5,'reflections vary from bottom-left to bottom-right');
+  assert(minTrail<1.1&&maxTrail>1.9,'trail widths vary from the original width to twice as wide');
   assert.equal(largestMoving,simulation.movingLimit);
   simulation.resize(320,1100);
   assert(simulation.drops.filter(drop=>drop.speed).length<=1);
