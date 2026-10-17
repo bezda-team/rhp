@@ -23,7 +23,29 @@ const continuous = (s) => s
   .replace('const row = el.closest("[data-row]");', 'const hit = el.closest("[data-hit]"); if (hit) return +hit.dataset.row;\n  const row = el.closest("[data-row]");')
   .replace('const move = (e) => {', 'const move = (e) => {\n  const hit = e.target.closest("[data-hit]");\n  if (hit) { const r = hit.getBoundingClientRect(); hit.dataset.row = Math.max(0, Math.min(4, Math.floor((e.clientX - r.left) / r.width * 5))); }')
   .replace('      <${Plot} name=${names} value=${values} lit=${(d) => shown() === d.index}>${Row}<//>', '      <${Plot} slats=${1}>${slat({ thickness: 180 }, () => html`<div data-hit="" data-row="2" role="slider" tabindex="0" aria-label="Fruit timeline" aria-valuemin="0" aria-valuemax="4" aria-valuenow=${selected} style="cursor:crosshair"></div>`)}<//>');
+const withMovingBackground = (s) => s.replace('</body>', `<style>.poster {position:relative;isolation:isolate;}</style>
+<script>
+const wait = setInterval(() => {
+  const poster = document.querySelector('.poster');
+  if (!poster) return;
+  clearInterval(wait);
+  const canvas = document.createElement('canvas');
+  canvas.setAttribute('aria-hidden', 'true');
+  canvas.style.cssText = 'position:absolute;inset:0;z-index:-1;pointer-events:none;width:100%;height:100%;';
+  poster.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+  function frame(time) {
+    ctx.fillStyle = 'hsl(' + (time / 7 % 360) + ' 60% 85%)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}, 10);
+</script></body>`);
 const cases = [
+  ["moving-background-clean", withMovingBackground(clean), [], true],
+  ["moving-background-missing-reset", withMovingBackground(base), ["selection-reset"], true],
+  ["moving-background-missing-hover-end", withMovingBackground(sticky), ["selection-hover-stays"], true],
   ["control-hover-overwrites", controlBroken, ["selection-control-reset"], true],
   ["control-selection-persists", controlled, [], true],
   ["control-synchronized-preview", controlled.replace('value=${selected}', 'value=${shown}'), [], true],

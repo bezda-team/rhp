@@ -41,7 +41,22 @@ export async function selectionBehavior(page, { events }) {
   };
   const look = async () => {
     await settle();
-    return page.screenshot({ animations: "disabled", scale: "css" });
+    // Decorative canvas pixels have their own clock, unrelated to chart selection.
+    // Hide only inert backgrounds behind the content, never a chart or its marks.
+    const backgrounds = page.locator('canvas[aria-hidden="true"]');
+    await backgrounds.evaluateAll((canvases) => {
+      for (const canvas of canvases) {
+        const css = getComputedStyle(canvas);
+        if (!canvas.closest(".rhp-chart") && Number(css.zIndex) < 0 && css.pointerEvents === "none") {
+          canvas.setAttribute("data-rhp-selection-background", "");
+        }
+      }
+    });
+    try {
+      return await page.screenshot({ animations: "disabled", scale: "css", style: "canvas[data-rhp-selection-background] { visibility: hidden !important; }" });
+    } finally {
+      await backgrounds.evaluateAll((canvases) => canvases.forEach((canvas) => canvas.removeAttribute("data-rhp-selection-background")));
+    }
   };
   const away = async () => {
     await page.mouse.move(-1, -1);
