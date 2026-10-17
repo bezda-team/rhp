@@ -25,6 +25,7 @@ When an obstacle blocks part of the horizontal slide, only that part is shortene
 The year and sulfur readout reserve fixed widths so the values stay in place as the selected year changes.
 The download icon saves the current poster at twice its CSS resolution.
 The adjacent fit icon toggles a proportional view at up to 95% of the viewport height, while downloads keep their full resolution.
+Fitting reuses the label positions in CSS pixels, and only an actual chart resize or font change recalculates them.
 The animated version includes a pause button, starts still when reduced motion is preferred, and pauses when offscreen or hidden.
 The pause button sits below the poster, aligned to its right edge in both full-size and fitted views.
 The rain waits for both the poster and its download toolbar, including gallery navigation inserted outside the chart mount.

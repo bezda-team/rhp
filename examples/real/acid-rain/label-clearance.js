@@ -32,12 +32,11 @@ export function installDotLabels(poster, rows, format) {
     return [...range.getClientRects()].filter(box => box.width && box.height).map(localBox);
   });
   function stroke(path) {
-    const matrix = path.getScreenCTM(), origin = poster.getBoundingClientRect();
-    const scale = origin.width / parseFloat(getComputedStyle(poster).width);
+    const svg = path.ownerSVGElement, bounds = rect(svg), view = svg.viewBox.baseVal;
     return {radius: parseFloat(getComputedStyle(path).strokeWidth) / 2,
       points: [...path.getAttribute('d').matchAll(/[ML]\s*(-?[\d.]+)[ ,]+(-?[\d.]+)/g)]
-        .map(([, x, y]) => new DOMPoint(+x, +y).matrixTransform(matrix))
-        .map(point => ({x:(point.x-origin.left)/scale,y:(point.y-origin.top)/scale})),
+        .map(([, x, y]) => ({x:bounds.left+(+x-view.x)*bounds.width/view.width,
+          y:bounds.top+(+y-view.y)*bounds.height/view.height})),
     };
   }
   function lineBand({points, radius}, left, right) {
@@ -79,11 +78,17 @@ export function installDotLabels(poster, rows, format) {
     const series = labels.map(label => {
       const key = label.parentElement.classList.contains('power') ? 'power' : 'sulfur';
       const text = label.querySelector('.value-text'), css = getComputedStyle(text);
-      const range = document.createRange(); range.selectNodeContents(text);
-      const textBox = localBox(range.getBoundingClientRect());
       const context = document.createElement('canvas').getContext('2d');
       context.font = `${css.fontWeight} ${css.fontSize} ${css.fontFamily}`;
-      return {key, label, context, height: textBox.height, baseline: textBox.bottom - rect(label).bottom,
+      const metrics = context.measureText('−100%0123456789');
+      const ascent = metrics.fontBoundingBoxAscent ?? metrics.actualBoundingBoxAscent;
+      const descent = metrics.fontBoundingBoxDescent ?? metrics.actualBoundingBoxDescent;
+      const probe = document.createElement('span');
+      probe.style.cssText = 'display:inline-block;width:0;height:0;padding:0;margin:0;vertical-align:baseline';
+      text.append(probe);
+      const baseline = rect(probe).top + descent - rect(label).bottom;
+      probe.remove();
+      return {key, label, context, height:ascent+descent, baseline,
         path: stroke(poster.querySelector(`.${key} .curve .rhp-stroke`)),
       };
     });
@@ -148,8 +153,9 @@ export function installDotLabels(poster, rows, format) {
   const changes = new MutationObserver(() => apply());
   changes.observe(poster, {attributes: true, attributeFilter: ['data-selected-year']});
   const resize = new ResizeObserver(schedule); resize.observe(chart);
-  poster.addEventListener('poster-view-change', schedule);
+  // Fitting only transforms the view. Keep the same CSS-pixel placements until
+  // the chart's actual layout or loaded fonts change.
   document.fonts.ready.then(schedule);
   schedule();
-  return () => {cancelAnimationFrame(frame);cancelAnimationFrame(slideFrame);slides.forEach(state=>state.animation?.cancel());changes.disconnect();resize.disconnect();poster.removeEventListener('poster-view-change',schedule);};
+  return () => {cancelAnimationFrame(frame);cancelAnimationFrame(slideFrame);slides.forEach(state=>state.animation?.cancel());changes.disconnect();resize.disconnect();};
 }

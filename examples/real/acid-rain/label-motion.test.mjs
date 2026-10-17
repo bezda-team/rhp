@@ -68,7 +68,34 @@ try{
       assert(Math.max(...boxes.map(box=>box.left))-Math.min(...boxes.map(box=>box.left))<.1,`${width}px: readout position stays fixed`);
       assert(Math.max(...boxes.map(box=>box.width))-Math.min(...boxes.map(box=>box.width))<.1,`${width}px: readout width stays fixed`);
     }
-    console.log(`PASS ${width}px: bidirectional slides, immediate labels, no vertical detours, and stable readouts for all 24 years`);
+    await page.locator('.pick').nth(21).focus();
+    await page.waitForFunction(()=>[...document.querySelectorAll('.value-text')].every(el=>el.getAnimations().length===0));
+    for(const action of ['Fit poster to screen','Restore poster size']){
+      await page.evaluate(()=>{
+        window.__fitLabelFrames=[];
+        window.__recordFitLabels=true;
+        const record=()=>{
+          const poster=document.querySelector('.poster'),scale=poster.getBoundingClientRect().width/parseFloat(getComputedStyle(poster).width);
+          window.__fitLabelFrames.push({year:poster.dataset.selectedYear,labels:[...poster.querySelectorAll('.value-text')].map(el=>{
+            const label=el.getBoundingClientRect(),dot=el.parentElement.parentElement.querySelector('.dot').getBoundingClientRect();
+            return {x:(label.left-dot.left-dot.width/2)/scale,y:(label.bottom-dot.top-dot.height/2)/scale};
+          })});
+          if(window.__recordFitLabels)requestAnimationFrame(record);
+        };
+        record();
+      });
+      await page.getByRole('button',{name:action,exact:true}).click();
+      const frames=await page.evaluate(async()=>{
+        for(let frame=0;frame<18;frame++)await new Promise(requestAnimationFrame);
+        window.__recordFitLabels=false;return window.__fitLabelFrames;
+      });
+      assert(frames.every(frame=>frame.year==='2021'),`${width}px ${action}: selection stays fixed`);
+      for(let series=0;series<2;series++)for(const axis of ['x','y']){
+        const values=frames.map(frame=>frame.labels[series][axis]);
+        assert(Math.max(...values)-Math.min(...values)<.25,`${width}px ${action}: label ${series} stays beside its dot on ${axis}`);
+      }
+    }
+    console.log(`PASS ${width}px: bidirectional slides, stable readouts for all 24 years, and labels stay anchored throughout fit/restore`);
     await page.close();
   }
 }finally{await browser.close();}
