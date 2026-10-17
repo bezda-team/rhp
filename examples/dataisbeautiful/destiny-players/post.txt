@@ -1,0 +1,62 @@
+REDDIT IMAGE POST
+
+Title:
+[OC] Destiny 2's Steam weekend peak rose 35% after its final-update announcement and 99% after its unvaulting announcement
+
+Image:
+destiny-players.png
+
+FIRST TOP-LEVEL COMMENT
+
+Data: Steam Charts' recorded concurrent Steam players for Destiny 2, app 1085660.
+Game page: https://steamcharts.com/app/1085660
+Current chart feed: https://steamcharts.com/app/1085660/chart-data.json
+Collection method: https://steamcharts.com/about
+Archived feeds preserving older daily data:
+https://web.archive.org/web/20260607233823id_/https://steamcharts.com/app/1085660/chart-data.json
+https://web.archive.org/web/20260806171356id_/https://steamcharts.com/app/1085660/chart-data.json
+
+Events:
+May 21 statement: https://www.bungie.net/7/en/News/Article/d2_may_21_2026
+June 9 release: https://help.bungie.net/hc/en-us/articles/49848696022548-Destiny-2-Monument-of-Triumph-and-Update-9-7-0-Support-Guide
+September public statement: https://store.steampowered.com/news/group/42567202/view/717916455762395775
+October 16 hiring report: https://www.reddit.com/r/DestinyTheGame/comments/1x7dnea/bungiesony_has_started_hiring_for_destiny_2_roles/
+Linked official job listing: https://careers.playstation.com/senior-ux-designer-contract/job/6212202004
+
+Tools: JavaScript for aggregation and checks, rhp (@bezda/rhp) for the HTML chart, modern-screenshot for the PNG, and Playwright for browser and export verification.
+
+The chart includes every complete UTC day from May 1 through October 16, 2026.
+Steam Charts samples Valve's concurrent-player API hourly and reduces older chart history to daily and then monthly points.
+I used two Internet Archive captures of the same feed to recover the older daily observations.
+Explicit source windows exclude the coarse monthly history and incomplete capture days.
+Recent hourly observations are grouped by UTC date and reduced to their maximum.
+All 46 overlapping dates between source snapshots agree exactly, and the reconstructed monthly maxima reconcile with Steam Charts' published monthly peaks.
+
+These are recorded concurrent-player peaks, not unique players, daily active users, purchases, or all-platform totals.
+Each announcement comparison uses the maximum from the adjacent full Saturday-and-Sunday weekends:
+May 16 to 17: 13,574; May 23 to 24: 18,389, up 35.47%, shown as 35%.
+September 19 to 20: 18,775; September 26 to 27: 37,341, up 98.9%, rounded to 99%.
+The displayed percentages are rounded directly from the unrounded calculations.
+The June final update was followed by the period's largest recorded peak, 167,867 on June 10.
+The full daily series and zero baseline keep the sizes of these rebounds in context.
+
+The October hiring report is marked, but there is no complete follow-up weekend in the data, and the linked official listing currently names Marathon.
+It should not be treated as a confirmed new Destiny hiring program or a measured player-count effect.
+
+The September marker uses the official publisher Steam timestamp, September 21 at 16:00:37 UTC.
+The Bungie website header says September 17, which is disclosed on the image.
+Unvaulting was an announcement of restoration work, not a claim that the vaulted content had already returned.
+
+This shows activity changes around news, not isolated causal effects.
+The May statement also previewed the final update, and June brought new content, a complete-content collection, and price reductions.
+Discounts, anticipation, promotions, and other changes are not controlled for here.
+The adjacent-weekend comparisons also have different numbers of days since each announcement, so the percentages are not a ranking of causal impact.
+
+POSTING NOTES
+
+Upload the PNG as an original image post with the descriptive title and [OC].
+Add the source-and-tools comment immediately after submitting.
+This is public game activity, not a personal activity log or U.S. political data.
+The recovery has already attracted discussion in gaming communities; do not claim a first discovery.
+Check for a newly popular equivalent post before submitting because search indexing is incomplete.
+No Reddit submission has been made.

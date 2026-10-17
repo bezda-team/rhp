@@ -1,0 +1,138 @@
+FINDINGS ACROSS ALL THREE NEWS WINDOWS
+
+The poster follows every complete UTC day from May 1 through October 16, 2026, with event markers and text beside the relevant points.
+It covers the May final-update announcement, the September unvaulting announcement, and the October hiring reports.
+The actual June update is marked separately because it produced the largest spike in this period and is essential context for interpreting the May news.
+
+May 21: Bungie announced the end of planned live-service content updates after one final June release, while keeping the game playable.
+The adjacent full weekend peak rose from 13,574 on May 17 to 18,389 on May 24, an increase of 35.4722%, shown as 35%.
+The following weekend reached 28,510, and the June 6 to 7 weekend reached 37,851.
+This is a rebound around the news and growing anticipation of a substantial update, not an isolated estimate of the announcement's effect.
+Primary statement:
+https://www.bungie.net/7/en/News/Article/d2_may_21_2026
+
+June 9 context: Monument of Triumph and the complete-content collection launched, with June price reductions also announced.
+The June 9 daily peak was 166,600; the period's maximum was 167,867 on June 10.
+The poster distinguishes the release from the May announcement and labels the peak as occurring the following day.
+Primary support guide:
+https://help.bungie.net/hc/en-us/articles/49848696022548-Destiny-2-Monument-of-Triumph-and-Update-9-7-0-Support-Guide
+The May statement also documents the collection and planned June markdowns.
+No precise discount percentage is inferred or required for the chart.
+
+September 21: Bungie's public statement promised work to restore vaulted campaigns, destinations, and raids.
+The adjacent full weekend peak rose from 18,775 on September 20 to 37,341 on September 27, an increase of 98.8868%, shown as 99%.
+The following two weekend peaks were 40,811 and 41,119.
+This is an announcement of restoration work, not evidence that content had already returned or that a regular live-service schedule had resumed.
+https://www.bungie.net/7/en/News/Article/nextchapterofbungie
+https://store.steampowered.com/news/group/42567202/view/717916455762395775
+
+October 16: a hiring report drew substantial attention, but the cited official job listing now names Marathon.
+There is no complete post-report weekend in the fixed data, so no hiring-related player effect can be estimated responsibly.
+The chart labels the report, the current listing discrepancy, and the insufficient follow-up.
+It does not claim that no other Destiny hiring exists or that this report caused a rise or decline.
+Report:
+https://www.reddit.com/r/DestinyTheGame/comments/1x7dnea/bungiesony_has_started_hiring_for_destiny_2_roles/
+Current official listing:
+https://careers.playstation.com/senior-ux-designer-contract/job/6212202004
+A contemporaneous correction discussion:
+https://www.reddit.com/r/destiny2/comments/1x7vla1/bungie_job_listing_that_originally_said_it_was/
+
+PRIMARY DATA AND HISTORICAL RECONSTRUCTION
+
+https://steamcharts.com/app/1085660
+https://steamcharts.com/app/1085660/chart-data.json
+https://steamcharts.com/about
+
+Steam Charts describes querying Valve's concurrent-player API hourly.
+Its chart feed keeps older monthly maxima, intermediate daily peaks, and recent hourly observations.
+Using its entire raw feed as if every point were a daily observation would introduce false first-of-month daily peaks.
+The reconstruction explicitly excludes those coarse monthly points.
+
+Public Internet Archive captures of the same original feed preserve the older daily data:
+https://web.archive.org/web/20260607233823id_/https://steamcharts.com/app/1085660/chart-data.json
+https://web.archive.org/web/20260806171356id_/https://steamcharts.com/app/1085660/chart-data.json
+Capture index:
+https://web.archive.org/cdx/search/cdx?url=steamcharts.com%2Fapp%2F1085660%2Fchart-data.json&output=json&filter=statuscode%3A200&from=202605&to=202609&collapse=timestamp%3A6
+
+Source windows used:
+June 7 capture: May 1 through May 8.
+August 6 capture: May 9 through July 19.
+Current capture: July 20 through October 16.
+The archived captures' incomplete final days are excluded from their used windows.
+Recent hourly observations are reduced with max by UTC date; preserved daily maxima remain daily observations.
+
+Validation:
+All 169 consecutive dates are present with nonnegative integer counts.
+All 29 overlapping dates from May 9 through June 6 agree exactly between the June and August captures.
+All 17 overlapping dates from July 20 through August 5 agree exactly between the August and current captures.
+The reconstructed May, June, July, August, and September maxima match the independently published monthly table: 28,510; 167,867; 93,088; 46,519; 37,341.
+All comparison weekends contain exactly one Saturday and one Sunday.
+Raw snapshots, per-row provenance, and the offline reconstruction command are included with the poster.
+No gaps are estimated, smoothed, or interpolated into new observations.
+Straight line segments connect the daily values visually.
+
+DEFINITIONS AND LIMITATIONS
+
+The measure is a sampled daily recorded peak of simultaneous Steam players.
+It is not daily active users, unique players, sales, purchases, or an all-platform population total.
+Sampled counts can miss brief within-hour highs.
+The game is free to play and spending can involve expansions and in-game purchases, so concurrency cannot be translated into purchases.
+https://store.steampowered.com/app/1085660/Destiny_2/
+
+The September public date is established by Bungie's publisher Steam announcement, also distributed in Marathon's official Steam news feed:
+https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=3065800&count=100&feeds=steam_community_announcements&maxlength=2000
+The saved news item gives September 21, 2026 at 16:00:37 UTC.
+The Bungie website header instead says September 17.
+The marker uses the public Steam timestamp and discloses the discrepancy.
+
+Adjacent complete weekends keep the compared days of the week consistent.
+The announcements happened on different weekdays, so their first-weekend comparisons have different elapsed times since the news.
+The percentages should not be ranked as causal effect sizes.
+Discounts, promotions, anticipation, and other events are not controlled for.
+The chart shows the full period and a zero baseline to keep the relatively small announcement rebounds and the large June release spike in context.
+
+AUDIENCE INTEREST AND ORIGINALITY
+
+Assessment: a stronger current hook than the No Man's Sky review-history idea, with a direct and easily understood result.
+This is a qualitative editorial judgment, not a prediction of Reddit votes.
+The underlying recovery is already being discussed, so the chart should offer clear evidence and context without claiming a novel discovery.
+
+Recent interest signals, observed search-score snapshots:
+September 21, 2026, r/gaming announcement discussion: about 7,258 votes.
+https://www.reddit.com/r/gaming/comments/1wmh8f8/destiny_lives_all_content_to_be_unvaulted_and/
+September 21, 2026, the announcement in r/destiny2: 7,452 votes.
+https://www.reddit.com/r/destiny2/comments/1wmh6x0/destiny_lives_all_content_to_be_unvaulted_and/
+September 21, 2026, "Can I start hoping now?" in r/destiny2: 9,003 votes.
+https://www.reddit.com/r/destiny2/comments/1wmgzm0/can_i_start_hoping_now/
+October 3, 2026, a discussion of Destiny 2's Steam best-seller ranking in r/DestinyTheGame: 2,803 votes.
+https://www.reddit.com/r/DestinyTheGame/comments/1wwurv4/destiny_2_surges_back_into_steams_top_10/
+These show active gaming-community interest over the past month, not proven demand in r/dataisbeautiful.
+Reddit scores are mutable snapshots.
+
+A closely related October 9 player-count discussion already exists in r/MarathonPlayerCount, observed at 16 votes.
+https://www.reddit.com/r/MarathonPlayerCount/comments/1x1fru4/destiny_2_did_the_unvaulting_news_really_cause_a/
+Targeted searches did not find a close recent r/dataisbeautiful duplicate, but incomplete indexing prevents a guarantee.
+The editorial value is an independently aggregated daily series, exact adjacent-weekend comparison, source provenance, and explicit limits.
+
+Relevant r/dataisbeautiful precedents researched in the prior attempt:
+January 24, 2026, "[OC] Sales volatility in the video game industry", observed at 4,612 votes.
+https://www.reddit.com/r/dataisbeautiful/comments/1qlonzk/oc_sales_volatility_in_the_video_game_industry/
+February 21, 2023, "[OC] Steam Games That Kept Us Hooked: 2012 to 2023 Most Played Games", observed at 2,695 votes.
+https://www.reddit.com/r/dataisbeautiful/comments/1184f74/oc_steam_games_that_kept_us_hooked_2012_to_2023/
+The older example is explicitly not a current interest signal.
+Both support recognizable gaming subjects and concrete activity or commercial measures as discussion material.
+The new poster keeps the full result readable in a static image, with inspection available in the HTML version.
+
+RULES AND POST DRAFT
+
+https://www.reddit.com/r/dataisbeautiful/wiki/index/
+https://www.reddit.com/r/dataisbeautiful/wiki/rules/rule1/
+https://www.reddit.com/r/dataisbeautiful/wiki/rules/rule3/
+
+Rules reviewed October 16, 2026 local time.
+The image is an original computer-generated data visualization, not a screenshot of Steam Charts' graph.
+The author independently aggregates the source observations and chooses the visual encoding and comparison.
+The title plainly describes the data and includes [OC].
+The first top-level comment names the specific data sources and tools, explains the calculation, and gives the measurement and causal limits.
+This is not personal activity data or U.S. politics, so those day restrictions do not apply.
+No submission has been made.

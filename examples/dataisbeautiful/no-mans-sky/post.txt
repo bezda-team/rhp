@@ -1,0 +1,39 @@
+REDDIT IMAGE POST
+
+Title:
+[OC] 48% of No Man's Sky's current negative Steam reviews were first posted in 2016
+
+Image:
+no-mans-sky.png
+
+FIRST TOP-LEVEL COMMENT
+
+Data: Valve's public Steam review API for No Man's Sky (app 275850), collected on 17 October 2026 UTC, with reviews through 16 October 2026 UTC.
+Steam page: https://store.steampowered.com/app/275850/No_Mans_Sky/
+API and field definitions: https://partner.steamgames.com/doc/webapi/IUserReviewsService
+
+Tools: JavaScript for collection and aggregation; rhp (@bezda/rhp) for the HTML chart; modern-screenshot for the PNG export; Playwright for browser and image checks.
+
+I grouped all 423,186 public reviews by their original posting year, across all languages and purchase types, including off-topic activity.
+The 2016 group contains 29,894 of the 62,201 current negative recommendations, or 48.1%.
+Reviews first posted since 2020 are 92.3% positive.
+Both sides of the chart use the same linear scale, and the labels give exact counts.
+The 2026 row is a partial year.
+
+One important distinction: reviewers can edit their recommendations.
+These are current thumbs-up/down votes grouped by when the review was first posted, not archived ratings from those years.
+For example, a review first posted in 2016 and changed to positive in 2026 counts as a positive review in the 2016 row.
+This does not tell us how many individual players changed their minds or prove that an update caused a change.
+
+The annual counts were checked against a separate full-period API query and reconcile exactly.
+This includes reviews from key activations and other non-Steam purchases, so its totals need not match the Steam-purchaser score displayed at the top of the store page.
+
+I was interested in how much the launch still contributes to the review record after ten years of updates.
+Do you usually look at a game's recent reviews or its all-time score when deciding to play it?
+
+POSTING NOTES
+
+Upload the image as an original image post and keep [OC] in the descriptive title.
+Add the source-and-tools comment immediately after submitting.
+This uses public reviews, not a personal activity log.
+No post has been submitted.

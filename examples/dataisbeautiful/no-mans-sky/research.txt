@@ -1,0 +1,78 @@
+CONCLUSION AND DATA
+
+The chart follows a direct result in real gaming data, rather than an unusual framing chosen for novelty.
+Of 62,201 current negative No Man's Sky recommendations in the captured public review data, 29,894 were first posted in 2016: 48.0603%.
+Reviews originally posted from 2020 through 16 October 2026 are 92.2751% positive.
+The complete capture includes 423,186 reviews across all languages and purchase types, with off-topic reviews included.
+The original posting date and current recommendation are distinct fields.
+Reviews can be edited, so this is a current distribution by posting cohort, not a historical rating trajectory or a panel of changing player opinions.
+
+Primary data:
+https://partner.steamgames.com/doc/webapi/IUserReviewsService
+https://store.steampowered.com/app/275850/No_Mans_Sky/
+
+The documented, anonymous GetAppReviews endpoint supports original creation-date filters and returns total_positive, total_negative, total_reviews, and total_matching.
+The script requests each UTC calendar year and one independent full-period aggregate.
+All three annual sums reconcile exactly to the independent aggregate.
+Only aggregate counts and source-query parameters are retained; individual review text and account identifiers are not saved.
+The data.json file is the fixed snapshot used in the image.
+Rerunning the data script later can produce different results because current reviews can change or disappear even within the same creation-date range.
+
+WHY THIS MAY INTEREST READERS
+
+Assessment: a promising gaming subject with a clear visual contrast and a credible current hook.
+This is a qualitative judgment, not a prediction of votes or a measured probability of success.
+No Man's Sky's turnaround is already a familiar story; the chart's value is a precise, current accounting of the remaining launch-year negatives.
+
+Recent primary hook: Hello Games published its tenth-anniversary Cosmos announcement on 9 September 2026, describing forty major updates since launch.
+https://www.nomanssky.com/2026/09/no-mans-sky-cosmos/
+Its 16 September anniversary expedition post describes forty-one named updates.
+https://www.nomanssky.com/2026/09/expedition-twenty-three-our-journey-continues/
+These establish timeliness, not audience demand by themselves.
+
+Recent interest signals, observed Reddit score snapshots:
+9 August 2026, "Happy 10th Anniversary everyone", r/NoMansSkyTheGame: +2,543.
+https://www.reddit.com/r/NoMansSkyTheGame/comments/1vjy2b7/happy_10th_anniversary_everyone/
+9 August 2026, "Happy 10th anniversary, No Man's Sky. Let's celebrate.", same community: +1,867.
+https://www.reddit.com/r/NoMansSkyTheGame/comments/1vjcew4/happy_10th_anniversary_no_mans_sky_lets_celebrate/
+These show an active, emotionally invested audience two months before the research date, but they are from the game's own community and cannot establish r/dataisbeautiful interest.
+
+Relevant r/dataisbeautiful precedent:
+24 January 2026, "[OC] Sales volatility in the video game industry": +4,612 in the search snapshot.
+https://www.reddit.com/r/dataisbeautiful/comments/1qlonzk/oc_sales_volatility_in_the_video_game_industry/
+The post used company reports and clearly identified major game launches; the comments engaged with both the story and methodology.
+21 February 2023, "[OC] Steam Games That Kept Us Hooked: 2012 to 2023 Most Played Games": +2,695.
+https://www.reddit.com/r/dataisbeautiful/comments/1184f74/oc_steam_games_that_kept_us_hooked_2012_to_2023/
+This older example supports familiar-game recognition as a discussion prompt; it does not demonstrate current demand.
+Some readers complained that the animated chart moved too quickly to read names.
+The new poster uses a static overview with every count labeled.
+
+Older, directly related interest, explicitly not recent:
+21 July 2024, "No Man's Sky is now Very Positive on Steam!", game's community: +4,128.
+https://www.reddit.com/r/NoMansSkyTheGame/comments/1e8km1k/no_mans_sky_is_now_very_positive_on_steam/
+27 November 2024, "No man's sky 80% All time on steam", same community: +2,349.
+https://www.reddit.com/r/NoMansSkyTheGame/comments/1h1dd5m/
+These show that review recovery itself has attracted attention, while also demonstrating that the general subject is not new.
+
+NOVELTY AND LIMITS
+
+Targeted searches for r/dataisbeautiful posts about No Man's Sky review history did not find a close recent duplicate.
+Search indexing is incomplete, so this is not a claim that no similar visualization exists.
+The recovery narrative is familiar, and a fan-only interest signal may not carry over to a general visualization audience.
+The main methodological risk is reading the years as historical scores; the title, subtitle, image note, and first comment explicitly define the data.
+No sales, revenue, causal update effects, all-player satisfaction, or individual mind-changing are inferred.
+
+RULES AND POST DRAFT
+
+Rules and wiki reviewed during this research:
+https://www.reddit.com/r/dataisbeautiful/wiki/index/
+https://www.reddit.com/r/dataisbeautiful/wiki/rules/rule1/
+https://www.reddit.com/r/dataisbeautiful/wiki/rules/rule3/
+
+Use an original computer-generated visualization with a descriptive title and [OC].
+Supply specific data sources and named tools in the first top-level comment.
+Do not submit a popular recent repost.
+The chart is a visualization of measured review counts, with its finding, units, labels, data date, and sources visible in the image.
+Public aggregated review data is not the author's personal activity log.
+The post has no U.S. political subject.
+This package prepares an image and a first-comment draft; nothing has been posted publicly.

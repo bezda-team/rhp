@@ -1,0 +1,265 @@
+{
+  "appid": 275850,
+  "game": "No Man's Sky",
+  "capturedAt": "2026-10-17T03:51:53.073Z",
+  "completedAt": "2026-10-17T03:52:01.459Z",
+  "coverageStart": "2016-01-01T00:00:00Z",
+  "coverageEnd": "2026-10-16T23:59:59Z",
+  "sourcePage": "https://store.steampowered.com/app/275850/No_Mans_Sky/",
+  "apiDocumentation": "https://partner.steamgames.com/doc/webapi/IUserReviewsService",
+  "definition": "Current public thumbs-up/down recommendations, grouped by the UTC year the review was originally created. All languages and purchase types, including off-topic activity. Updated reviews use their current recommendation. Not historical rating snapshots or a count of unique players.",
+  "rows": [
+    {
+      "year": 2016,
+      "positive": 36374,
+      "negative": 29894,
+      "total": 66268,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1451606400,
+        "date_range_end": 1483228799
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1451606400%2C%22date_range_end%22%3A1483228799%7D",
+      "positiveShare": 0.5488923764109374
+    },
+    {
+      "year": 2017,
+      "positive": 9527,
+      "negative": 2411,
+      "total": 11938,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1483228800,
+        "date_range_end": 1514764799
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1483228800%2C%22date_range_end%22%3A1514764799%7D",
+      "positiveShare": 0.79803987267549
+    },
+    {
+      "year": 2018,
+      "positive": 22304,
+      "negative": 3762,
+      "total": 26066,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1514764800,
+        "date_range_end": 1546300799
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1514764800%2C%22date_range_end%22%3A1546300799%7D",
+      "positiveShare": 0.8556740581600553
+    },
+    {
+      "year": 2019,
+      "positive": 19533,
+      "negative": 3259,
+      "total": 22792,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1546300800,
+        "date_range_end": 1577836799
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1546300800%2C%22date_range_end%22%3A1577836799%7D",
+      "positiveShare": 0.857011232011232
+    },
+    {
+      "year": 2020,
+      "positive": 38428,
+      "negative": 3269,
+      "total": 41697,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1577836800,
+        "date_range_end": 1609459199
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1577836800%2C%22date_range_end%22%3A1609459199%7D",
+      "positiveShare": 0.9216010744178238
+    },
+    {
+      "year": 2021,
+      "positive": 37872,
+      "negative": 3209,
+      "total": 41081,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1609459200,
+        "date_range_end": 1640995199
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1609459200%2C%22date_range_end%22%3A1640995199%7D",
+      "positiveShare": 0.9218860300382172
+    },
+    {
+      "year": 2022,
+      "positive": 33916,
+      "negative": 3182,
+      "total": 37098,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1640995200,
+        "date_range_end": 1672531199
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1640995200%2C%22date_range_end%22%3A1672531199%7D",
+      "positiveShare": 0.914227182058332
+    },
+    {
+      "year": 2023,
+      "positive": 30644,
+      "negative": 2808,
+      "total": 33452,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1672531200,
+        "date_range_end": 1704067199
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1672531200%2C%22date_range_end%22%3A1704067199%7D",
+      "positiveShare": 0.916058830563195
+    },
+    {
+      "year": 2024,
+      "positive": 49341,
+      "negative": 3144,
+      "total": 52485,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1704067200,
+        "date_range_end": 1735689599
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1704067200%2C%22date_range_end%22%3A1735689599%7D",
+      "positiveShare": 0.9400971706201772
+    },
+    {
+      "year": 2025,
+      "positive": 54416,
+      "negative": 4408,
+      "total": 58824,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1735689600,
+        "date_range_end": 1767225599
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1735689600%2C%22date_range_end%22%3A1767225599%7D",
+      "positiveShare": 0.9250645994832042
+    },
+    {
+      "year": 2026,
+      "positive": 28630,
+      "negative": 2855,
+      "total": 31485,
+      "query": {
+        "appid": 275850,
+        "filter": 1,
+        "languages": [
+          "all"
+        ],
+        "purchase_type": 1,
+        "review_type": 0,
+        "num_per_page": 1,
+        "filter_offtopic_activity": false,
+        "date_range_start": 1767225600,
+        "date_range_end": 1792195199
+      },
+      "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1767225600%2C%22date_range_end%22%3A1792195199%7D",
+      "positiveShare": 0.9093218993171351
+    }
+  ],
+  "aggregate": {
+    "positive": 360985,
+    "negative": 62201,
+    "total": 423186,
+    "query": {
+      "appid": 275850,
+      "filter": 1,
+      "languages": [
+        "all"
+      ],
+      "purchase_type": 1,
+      "review_type": 0,
+      "num_per_page": 1,
+      "filter_offtopic_activity": false,
+      "date_range_start": 1451606400,
+      "date_range_end": 1792195199
+    },
+    "url": "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/?input_json=%7B%22appid%22%3A275850%2C%22filter%22%3A1%2C%22languages%22%3A%5B%22all%22%5D%2C%22purchase_type%22%3A1%2C%22review_type%22%3A0%2C%22num_per_page%22%3A1%2C%22filter_offtopic_activity%22%3Afalse%2C%22date_range_start%22%3A1451606400%2C%22date_range_end%22%3A1792195199%7D"
+  },
+  "launchYearNegativeShare": 0.48060320573624216,
+  "since2020PositiveShare": 0.9227514335307745
+}

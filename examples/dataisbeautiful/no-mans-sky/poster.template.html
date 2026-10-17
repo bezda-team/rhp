@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>48% of No Man's Sky's negative Steam reviews are from 2016</title>
+<meta name="description" content="Current Steam recommendations for No Man's Sky by original review year, using Valve's public API. The launch year accounts for 48.1% of negative recommendations; reviews first posted since 2020 are 92.3% positive.">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
+<style>
+__FONTS__
+:root { color-scheme: dark; --page: #152c35; --paper: #081e28; --ink: #ecf3e9; --soft: #b1c4c6; --rule: #29454e; --positive: #9fdec6; --negative: #f19178; --display: "Space Grotesk", Arial, sans-serif; --text: "IBM Plex Sans", Arial, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 30px 16px; background: var(--page); color: var(--ink); font: 16px/1.4 var(--text); }
+.poster { --pitch: 52px; position: relative; max-width: 1000px; margin: 0 auto; padding: 36px 46px 28px; background: var(--paper); border-top: 5px solid var(--negative); }
+.poster figcaption { display: grid; gap: 17px; margin: 0 0 22px; }
+.poster .kicker { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font: 600 12px/1.2 var(--text); letter-spacing: .12em; text-transform: uppercase; color: var(--soft); }
+.game { color: var(--ink); font: 700 20px/1.1 var(--display); letter-spacing: .025em; }
+.poster .headline { font-family: var(--display); font-weight: 700; }
+.statement { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 25px; }
+.big { color: var(--negative); font-size: 126px; line-height: .95; letter-spacing: -.07em; white-space: nowrap; }
+.big small { font-size: .6em; letter-spacing: -.04em; }
+.phrase { max-width: 18ch; font-size: 37px; line-height: 1.08; letter-spacing: -.025em; text-wrap: balance; }
+.poster .dek { max-width: 76ch; font-size: 16px; color: var(--soft); }
+.count-proof { margin: 0 0 22px; padding: 12px 0 13px; border-block: 1px solid var(--rule); font-size: 15px; color: var(--soft); }
+.count-proof b { color: var(--negative); font-weight: 600; }
+.count-proof strong { color: var(--ink); font-weight: 600; }
+.chart-heading { display: grid; grid-template-columns: 69px minmax(0, 1fr); gap: 0; margin: 0 0 7px; color: var(--soft); font-size: 12px; }
+.chart-key { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-right: 12px; }
+.chart-key span { display: inline-flex; align-items: center; gap: 6px; }
+.chart-key i { display: inline-block; height: 8px; width: 17px; background: var(--negative); }
+.chart-key .positive i { background: var(--positive); }
+.chart-key .negative { color: var(--negative); }
+.chart-key .positive { color: var(--positive); }
+.chart-caption { margin: 12px 0 18px 69px; color: var(--soft); font-size: 12px; }
+.recovery { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: center; margin-top: 21px; padding: 19px 0; border-block: 1px solid var(--rule); }
+.recovery .rate { color: var(--positive); font: 700 54px/1 var(--display); letter-spacing: -.055em; }
+.recovery p { max-width: 54ch; margin: 0; color: var(--soft); font-size: 15px; }
+.recovery strong { color: var(--ink); font-weight: 600; }
+.inspect { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px; margin: 18px 0 0; }
+.readout { display: grid; color: var(--soft); font-size: 14px; }
+.readout p { grid-area: 1 / 1; visibility: hidden; margin: 0; }
+.readout p.active { visibility: visible; }
+.readout strong { color: var(--ink); font-weight: 600; }
+.readout .up { color: var(--positive); font-weight: 600; }
+.inspect .hint { max-width: 17ch; margin: 0; color: var(--soft); font-size: 11px; line-height: 1.4; text-align: right; }
+.poster .note { display: block; margin-top: 20px; color: var(--soft); font-size: 11.5px; line-height: 1.5; }
+.poster .note a { color: inherit; text-underline-offset: 2px; }
+.poster .note b { color: var(--ink); font-weight: 600; }
+.colophon { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 15px; margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--rule); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--soft); }
+.below { max-width: 1000px; margin: 17px auto 0; color: var(--soft); font-size: 13px; }
+.below a { color: inherit; }
+@media (max-width: 640px) {
+ body { padding: 14px 10px 24px; }
+ .poster { --pitch: 56px; padding: 22px 16px 20px; border-top-width: 4px; }
+ .poster figcaption { gap: 14px; margin-bottom: 15px; }
+ .poster .kicker { font-size: 10px; gap: 7px; letter-spacing: .07em; }
+ .game { font-size: 18px; }
+ .statement { grid-template-columns: auto minmax(0, 1fr); gap: 13px; align-items: start; }
+ .big { font-size: clamp(72px, 22vw, 110px); }
+ .phrase { font-size: clamp(20px, 5.5vw, 32px); line-height: 1.13; letter-spacing: -.015em; }
+ .poster .dek { font-size: 14px; }
+ .count-proof { font-size: 13px; margin-bottom: 17px; }
+ .chart-heading { grid-template-columns: 69px minmax(0, 1fr); font-size: 11px; }
+ .chart-key { gap: 5px; padding-right: 0; }
+ .chart-key span { gap: 4px; }
+ .chart-key i { width: 9px; height: 7px; }
+ .chart-caption { margin-left: 69px; font-size: 11px; }
+ .recovery { gap: 15px; padding: 15px 0; margin-top: 17px; }
+ .recovery .rate { font-size: 45px; }
+ .recovery p { font-size: 13px; }
+ .inspect { grid-template-columns: 1fr; gap: 9px; margin-top: 15px; }
+ .readout { font-size: 13px; }
+ .inspect .hint { max-width: none; text-align: left; }
+ .poster .note { font-size: 11px; margin-top: 17px; }
+ .colophon { font-size: 10px; }
+}
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<p class="below">Reproduce this chart: <a href="data.json">source queries and counts</a> · <a href="reviews-by-year.csv">CSV</a> · <a href="fetch-data.mjs">data script</a>.</p>
+<script type="module">
+import { Chart, Plot, Bar, Label, Tick, Poster, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: current public recommendations, grouped by original creation year, not historical score snapshots.
+const DATA = __DATA__;
+const ROWS = DATA.rows;
+const count = new Intl.NumberFormat("en-US");
+const pct = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 0 });
+const exactPct = new Intl.NumberFormat("en-US", { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const retrieved = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(DATA.capturedAt));
+const THEME = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--negative)", "var(--positive)"] };
+
+// A review year's two verdicts extend in opposite directions from the same origin, at the same scale.
+const Year = slat({
+ thickness: "var(--pitch)", room: { start: 69, end: 15 },
+ css: `
+  .year-row { cursor: pointer; border-top: 1px solid var(--rhp-grid); }
+  .year-row.active { background: #15303a; }
+  .year { width: 59px; font-size: 14px; font-weight: 600; color: var(--rhp-ink); line-height: 1.1; text-align: left; }
+  .year small { display: block; padding-top: 4px; color: var(--rhp-muted); font-size: 10px; font-weight: 400; }
+  .verdict { --rhp-radius: 0px; }
+  .number { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .number.down { color: var(--rhp-series-1); }
+  .number.up { color: var(--rhp-series-2); }
+  .zero { background: #668692; }
+  .year-row:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: 1px; }
+  @container (max-width: 588px) {
+   .year { width: 40px; font-size: 12px; }
+   .year small { font-size: 9px; }
+   .number { font-size: 11px; }
+  }
+ `,
+}, d => html`
+ <div class=${() => d.selected === d.index ? "year-row active" : "year-row"} data-row=${() => d.index}
+  aria-label=${() => `${d.year}${d.year === 2026 ? ', through October 16' : ''}: ${count.format(d.negative)} not recommended, ${count.format(d.positive)} recommended, ${exactPct.format(d.positiveShare)} positive. Current recommendations grouped by original review year.`}>
+  <${Label} edge="start" class="year">${() => d.year}<small>${() => d.year === 2016 ? "Launch" : d.year === 2026 ? "To Oct 16" : ""}</small><//>
+  <${Bar} to=${() => -d.negative} thick="16px" class="verdict" color="series-1" />
+  <${Bar} to=${() => d.positive} thick="16px" class="verdict" color="series-2" />
+  <${Tick} at=${0} thick="34px" class="zero" />
+  <${Label} at=${() => -d.negative} side="before" class="number down">${() => count.format(d.negative)}<//>
+  <${Label} at=${() => d.positive} class="number up">${() => count.format(d.positive)}<//>
+ </div>`);
+
+function Reviews() {
+ const [selected, setSelected] = createSignal(null);
+ const rowOf = element => element?.closest?.("[data-row]")?.dataset.row;
+ const pick = event => { const row = rowOf(event.target); if (row != null) setSelected(+row); };
+ const leave = event => { if (event.pointerType === "touch") return; const row = rowOf(document.activeElement); setSelected(row == null ? null : +row); };
+ const move = event => { if (event.pointerType !== "touch") event.target.closest?.(".rhp-chart") ? pick(event) : leave(event); };
+ return html`
+  <${Poster}
+   kicker=${html`<span class="game">No Man’s Sky</span><span>Ten years of Steam reviews</span>`}
+   title=${html`<span class="statement"><span class="big">${Math.round(DATA.launchYearNegativeShare * 100)}<small>%</small></span><span class="phrase">of its negative Steam reviews are from 2016.</span></span>`}
+   dek="Current recommendations, grouped by the year each review was first posted. The launch year still accounts for almost half of all thumbs-down votes."
+   note=${html`<span><b>Source: </b><a href=${DATA.sourcePage}>Steam</a>, <a href=${DATA.apiDocumentation}>Valve’s public review API</a>. All languages and purchase types; off-topic activity included. Steam launch: 12 August 2016. Reviews through 16 October 2026 (UTC); retrieved ${retrieved}.<br/><b>How to read the dates: </b>Reviewers can update their vote. Counts use the current recommendation and original posting year, so these are not snapshots of ratings at the time. Reviews are not unique players, and this chart does not measure how many people changed their minds.<span class="colophon"><span>${count.format(DATA.aggregate.total)} public reviews · App 275850</span><span>rhp / October 2026</span></span></span>`}
+   onPointerMove=${move} onClick=${pick} onFocusIn=${pick} onPointerLeave=${leave}
+   onFocusOut=${event => { if (!event.currentTarget.contains(event.relatedTarget)) setSelected(null); }}>
+   <p class="count-proof"><b>${count.format(ROWS[0].negative)}</b> of <strong>${count.format(DATA.aggregate.negative)}</strong> negative reviews were first posted in 2016.</p>
+   <div class="chart-heading" aria-hidden="true"><span>Posted</span><div class="chart-key"><span class="negative"><i></i>Not recommended</span><span class="positive"><i></i>Recommended</span></div></div>
+   <${Chart} scale=${[-55000, 75000]} ticks=${false} label="Number of current negative and positive Steam recommendations by original posting year, 2016 through October 16, 2026, both directions at the same linear scale" theme=${THEME}>
+    <${Plot} rows=${ROWS} selected=${() => selected() ?? 0} keyboard=${true}>${Year}<//>
+   <//>
+   <p class="chart-caption">Bar length = number of reviews. Both sides use the same scale.</p>
+   <div class="inspect">
+    <div class="readout" aria-live="polite">${ROWS.map((row, index) => html`<p class=${() => (selected() ?? 0) === index ? "active" : ""}><strong>${row.year}${row.year === 2026 ? " through 16 October" : ""}</strong>: <span class="up">${exactPct.format(row.positiveShare)} positive</span> among ${count.format(row.total)} reviews first posted that year.</p>`)}</div>
+    <p class="hint">Tap, point or use arrow keys to inspect a year.</p>
+   </div>
+   <div class="recovery"><span class="rate">${pct.format(DATA.since2020PositiveShare)}</span><p>of reviews first posted <strong>since 2020</strong> are positive.<br/>The later reviews tell a different story.</p></div>
+  <//>`;
+}
+render(() => html`<${Reviews} />`, document.getElementById("chart"));
+</script>
+__DOWNLOAD__
+</body>
+</html>

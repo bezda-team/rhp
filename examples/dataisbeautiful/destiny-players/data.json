@@ -1,0 +1,1172 @@
+{
+  "game": "Destiny 2",
+  "appid": 1085660,
+  "capturedAt": "2026-10-17T04:20:01.246Z",
+  "from": "2026-05-01",
+  "through": "2026-10-16",
+  "sourceUrl": "https://steamcharts.com/app/1085660/chart-data.json",
+  "sourcePage": "https://steamcharts.com/app/1085660",
+  "sourceMethod": "https://steamcharts.com/about",
+  "definition": "Daily recorded peak concurrent Steam players in UTC, reconstructed from the current Steam Charts feed and two Internet Archive captures of the same feed. Explicit source windows exclude coarse monthly history and incomplete capture days. Recent hourly observations are reduced by UTC day with max. These are sampled concurrency peaks, not unique players, daily active users, purchases, or all-platform totals.",
+  "snapshots": [
+    {
+      "id": "june-archive",
+      "file": "archive-2026-06-07.json",
+      "url": "https://web.archive.org/web/20260607233823id_/https://steamcharts.com/app/1085660/chart-data.json",
+      "from": "2026-05-01",
+      "through": "2026-05-08"
+    },
+    {
+      "id": "august-archive",
+      "file": "archive-2026-08-06.json",
+      "url": "https://web.archive.org/web/20260806171356id_/https://steamcharts.com/app/1085660/chart-data.json",
+      "from": "2026-05-09",
+      "through": "2026-07-19"
+    },
+    {
+      "id": "current",
+      "file": "raw-steamcharts.json",
+      "url": "https://steamcharts.com/app/1085660/chart-data.json",
+      "from": "2026-07-20",
+      "through": "2026-10-16"
+    }
+  ],
+  "overlaps": [
+    {
+      "from": "2026-05-09",
+      "through": "2026-06-06",
+      "days": 29,
+      "exactAgreement": true
+    },
+    {
+      "from": "2026-07-20",
+      "through": "2026-08-05",
+      "days": 17,
+      "exactAgreement": true
+    }
+  ],
+  "announcement": {
+    "timestamp": "2026-09-21T16:00:37.000Z",
+    "title": "The Next Chapter for Bungie",
+    "sourceUrl": "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=3065800&count=100&feeds=steam_community_announcements&maxlength=2000",
+    "publisherUrl": "https://store.steampowered.com/news/group/42567202/view/717916455762395775",
+    "blogUrl": "https://www.bungie.net/7/en/News/Article/nextchapterofbungie",
+    "note": "The Bungie website header is dated September 17; the official publisher Steam announcement was posted September 21 at 16:00:37 UTC, matching the public news coverage. The event marker uses the public Steam timestamp."
+  },
+  "events": [
+    {
+      "id": "may",
+      "date": "2026-05-21",
+      "label": "Final-update announcement",
+      "detail": "Bungie says planned live-service updates will end after June 9; the game will remain playable.",
+      "url": "https://www.bungie.net/7/en/News/Article/d2_may_21_2026"
+    },
+    {
+      "id": "release",
+      "date": "2026-06-09",
+      "label": "Final update released",
+      "detail": "Monument of Triumph launches, alongside the complete-content collection and June price reductions.",
+      "url": "https://help.bungie.net/hc/en-us/articles/49848696022548-Destiny-2-Monument-of-Triumph-and-Update-9-7-0-Support-Guide"
+    },
+    {
+      "id": "september",
+      "date": "2026-09-21",
+      "label": "Unvaulting announcement",
+      "detail": "Bungie announces work to restore vaulted campaigns, destinations, and raids.",
+      "url": "https://store.steampowered.com/news/group/42567202/view/717916455762395775"
+    },
+    {
+      "id": "october",
+      "date": "2026-10-16",
+      "label": "Hiring reports",
+      "detail": "A reported Destiny role draws attention, but the linked official listing now names Marathon. Too little follow-up exists to assess an activity effect.",
+      "url": "https://careers.playstation.com/senior-ux-designer-contract/job/6212202004",
+      "reportUrl": "https://www.reddit.com/r/DestinyTheGame/comments/1x7dnea/bungiesony_has_started_hiring_for_destiny_2_roles/"
+    }
+  ],
+  "comparisons": {
+    "may": {
+      "before": {
+        "from": "2026-05-16",
+        "through": "2026-05-17",
+        "peak": 13574,
+        "peakDate": "2026-05-17"
+      },
+      "after": {
+        "from": "2026-05-23",
+        "through": "2026-05-24",
+        "peak": 18389,
+        "peakDate": "2026-05-24"
+      },
+      "change": 0.3547222631501399
+    },
+    "september": {
+      "before": {
+        "from": "2026-09-19",
+        "through": "2026-09-20",
+        "peak": 18775,
+        "peakDate": "2026-09-20"
+      },
+      "after": {
+        "from": "2026-09-26",
+        "through": "2026-09-27",
+        "peak": 37341,
+        "peakDate": "2026-09-27"
+      },
+      "change": 0.9888681757656459
+    },
+    "october": {
+      "status": "Too early to assess",
+      "reason": "No complete post-report weekend is in the data, and the linked listing now names Marathon."
+    }
+  },
+  "maximum": {
+    "date": "2026-06-10",
+    "peak": 167867,
+    "samples": 1,
+    "source": "august-archive"
+  },
+  "weekends": [
+    {
+      "from": "2026-09-19",
+      "through": "2026-09-20",
+      "peak": 18775,
+      "peakDate": "2026-09-20"
+    },
+    {
+      "from": "2026-09-26",
+      "through": "2026-09-27",
+      "peak": 37341,
+      "peakDate": "2026-09-27"
+    },
+    {
+      "from": "2026-10-03",
+      "through": "2026-10-04",
+      "peak": 40811,
+      "peakDate": "2026-10-04"
+    },
+    {
+      "from": "2026-10-10",
+      "through": "2026-10-11",
+      "peak": 41119,
+      "peakDate": "2026-10-11"
+    }
+  ],
+  "change": 0.9888681757656459,
+  "rows": [
+    {
+      "date": "2026-05-01",
+      "peak": 11262,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-02",
+      "peak": 12748,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-03",
+      "peak": 13254,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-04",
+      "peak": 11387,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-05",
+      "peak": 11346,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-06",
+      "peak": 10904,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-07",
+      "peak": 10293,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-08",
+      "peak": 11108,
+      "samples": 1,
+      "source": "june-archive"
+    },
+    {
+      "date": "2026-05-09",
+      "peak": 12813,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-10",
+      "peak": 12331,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-11",
+      "peak": 10584,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-12",
+      "peak": 11721,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-13",
+      "peak": 11039,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-14",
+      "peak": 10365,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-15",
+      "peak": 11401,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-16",
+      "peak": 13114,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-17",
+      "peak": 13574,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-18",
+      "peak": 10535,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-19",
+      "peak": 10448,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-20",
+      "peak": 9743,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-21",
+      "peak": 11068,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-22",
+      "peak": 13177,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-23",
+      "peak": 16016,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-24",
+      "peak": 18389,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-25",
+      "peak": 18934,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-26",
+      "peak": 18152,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-27",
+      "peak": 18595,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-28",
+      "peak": 18306,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-29",
+      "peak": 21577,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-30",
+      "peak": 25796,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-05-31",
+      "peak": 28510,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-01",
+      "peak": 26278,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-02",
+      "peak": 25060,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-03",
+      "peak": 27563,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-04",
+      "peak": 26543,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-05",
+      "peak": 28979,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-06",
+      "peak": 33648,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-07",
+      "peak": 37851,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-08",
+      "peak": 34991,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-09",
+      "peak": 166600,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-10",
+      "peak": 167867,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-11",
+      "peak": 132471,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-12",
+      "peak": 126547,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-13",
+      "peak": 134922,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-14",
+      "peak": 140158,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-15",
+      "peak": 128045,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-16",
+      "peak": 130126,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-17",
+      "peak": 128411,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-18",
+      "peak": 116061,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-19",
+      "peak": 113615,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-20",
+      "peak": 119354,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-21",
+      "peak": 117488,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-22",
+      "peak": 106036,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-23",
+      "peak": 106007,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-24",
+      "peak": 99066,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-25",
+      "peak": 91832,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-26",
+      "peak": 86330,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-27",
+      "peak": 97816,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-28",
+      "peak": 98656,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-29",
+      "peak": 91339,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-06-30",
+      "peak": 87350,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-01",
+      "peak": 93088,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-02",
+      "peak": 86579,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-03",
+      "peak": 89649,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-04",
+      "peak": 91935,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-05",
+      "peak": 90277,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-06",
+      "peak": 86699,
+      "samples": 1,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-07",
+      "peak": 83818,
+      "samples": 8,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-08",
+      "peak": 82641,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-09",
+      "peak": 76875,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-10",
+      "peak": 72881,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-11",
+      "peak": 76346,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-12",
+      "peak": 71240,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-13",
+      "peak": 68052,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-14",
+      "peak": 65797,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-15",
+      "peak": 65523,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-16",
+      "peak": 62471,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-17",
+      "peak": 59668,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-18",
+      "peak": 66427,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-19",
+      "peak": 64910,
+      "samples": 24,
+      "source": "august-archive"
+    },
+    {
+      "date": "2026-07-20",
+      "peak": 58096,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-21",
+      "peak": 55239,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-22",
+      "peak": 53911,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-23",
+      "peak": 50781,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-24",
+      "peak": 49346,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-25",
+      "peak": 53852,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-26",
+      "peak": 54448,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-27",
+      "peak": 48803,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-28",
+      "peak": 46614,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-29",
+      "peak": 48470,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-30",
+      "peak": 43724,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-07-31",
+      "peak": 41433,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-01",
+      "peak": 46519,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-02",
+      "peak": 46366,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-03",
+      "peak": 41434,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-04",
+      "peak": 39738,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-05",
+      "peak": 39504,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-06",
+      "peak": 37782,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-07",
+      "peak": 36260,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-08",
+      "peak": 40741,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-09",
+      "peak": 41031,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-10",
+      "peak": 37086,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-11",
+      "peak": 34334,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-12",
+      "peak": 33366,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-13",
+      "peak": 30409,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-14",
+      "peak": 29315,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-15",
+      "peak": 35275,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-16",
+      "peak": 34553,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-17",
+      "peak": 31321,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-18",
+      "peak": 29090,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-19",
+      "peak": 27789,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-20",
+      "peak": 25878,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-21",
+      "peak": 25073,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-22",
+      "peak": 27801,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-23",
+      "peak": 28157,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-24",
+      "peak": 24971,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-25",
+      "peak": 23369,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-26",
+      "peak": 25067,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-27",
+      "peak": 23524,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-28",
+      "peak": 22576,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-29",
+      "peak": 25826,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-30",
+      "peak": 26048,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-08-31",
+      "peak": 23104,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-01",
+      "peak": 21372,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-02",
+      "peak": 22058,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-03",
+      "peak": 20744,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-04",
+      "peak": 20140,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-05",
+      "peak": 22766,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-06",
+      "peak": 22684,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-07",
+      "peak": 22838,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-08",
+      "peak": 20730,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-09",
+      "peak": 19020,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-10",
+      "peak": 17338,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-11",
+      "peak": 17874,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-12",
+      "peak": 21193,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-13",
+      "peak": 21170,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-14",
+      "peak": 18573,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-15",
+      "peak": 17317,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-16",
+      "peak": 17119,
+      "samples": 1,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-17",
+      "peak": 15858,
+      "samples": 21,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-18",
+      "peak": 15562,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-19",
+      "peak": 18376,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-20",
+      "peak": 18775,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-21",
+      "peak": 21257,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-22",
+      "peak": 24268,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-23",
+      "peak": 26537,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-24",
+      "peak": 27121,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-25",
+      "peak": 27908,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-26",
+      "peak": 34926,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-27",
+      "peak": 37341,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-28",
+      "peak": 33249,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-29",
+      "peak": 31870,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-09-30",
+      "peak": 31120,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-01",
+      "peak": 30160,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-02",
+      "peak": 30940,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-03",
+      "peak": 37979,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-04",
+      "peak": 40811,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-05",
+      "peak": 37482,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-06",
+      "peak": 34336,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-07",
+      "peak": 34112,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-08",
+      "peak": 33899,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-09",
+      "peak": 33334,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-10",
+      "peak": 38991,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-11",
+      "peak": 41119,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-12",
+      "peak": 37822,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-13",
+      "peak": 35343,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-14",
+      "peak": 33992,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-15",
+      "peak": 31782,
+      "samples": 24,
+      "source": "current"
+    },
+    {
+      "date": "2026-10-16",
+      "peak": 30321,
+      "samples": 24,
+      "source": "current"
+    }
+  ]
+}
