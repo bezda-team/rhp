@@ -116,7 +116,9 @@ __VARIANT_STYLES__
  <div class="files"><a href="data.json">Chart data</a><a href="source-snapshot.json">EPA source snapshot</a><a href="post.txt">Post draft</a><a href="research.txt">Research notes</a></div>
 </section>
 <script type="module">
-import {Chart,Plot,Scale,Line,Dot,Tick,Label,Poster,slat,html,render,createSignal,onCleanup} from "@bezda/rhp/standalone";
+import {Chart,Plot,Scale,Line,Dot,Tick,Label,Poster,slat,html,render,createSignal,onMount,onCleanup} from "@bezda/rhp/standalone";
+
+__LABEL_CLEARANCE__
 
 // Data and the two changes, both relative to the same starting year.
 const DATA = __DATA__;
@@ -124,6 +126,7 @@ const PHOTO = __PHOTO__;
 const ROWS = DATA.rows, YEARS = ROWS.map(d => d.year), FIRST = YEARS[0], LAST = YEARS.at(-1);
 const reduction = Math.round(DATA.claims.so2ReductionPercent), powerChange = Math.round(Math.abs(DATA.claims.generationChangePercent));
 const millions = value => (value / 1e6).toFixed(2);
+const percentChange = value => {const rounded=Math.round(value-100);return rounded===0?"0%":`${rounded>0?"+":"−"}${Math.abs(rounded)}%`;};
 const twh = value => new Intl.NumberFormat("en-US", {maximumFractionDigits:0}).format(value / 1e6);
 const SERIES = [
  {name:"Electricity",short:"Power",key:"generationIndex",color:"#eff6ed",change:`−${powerChange}%`,points:ROWS.map(d => [d.year,d.generationIndex])},
@@ -150,7 +153,16 @@ const Years = slat({room:{after:36},css:`
  @container (max-width:650px) {.year {font-size:14px;} .minor, .near-end {display:none;}}
 `}, d => html`<div class=${() => d.first ? "first" : d.last ? "last" : d.at===2020 ? "near-end" : d.at===2005||d.at===2015 ? "minor" : ""}><${Tick} at=${() => d.at} class="tick"/><${Label} at=${() => d.at} class="year">${() => d.at}<//></div>`);
 const Hair = slat({room:{},css:`.hair {background:var(--rhp-muted);opacity:.5;--rhp-tick-width:2px;transition:none;}`}, d => html`<${Tick} at=${() => d.year} thick=${1} class="hair"/>`);
-const Mark = slat({room:{},css:`.dot {border:3px solid var(--rhp-surface);transition:none;}`}, d => html`<${Dot} at=${() => d.year} cross=${() => ROWS[d.i][d.key]} size="26px" color=${() => d.color} class="dot"/>`);
+const Mark = slat({room:{},css:`
+ .dot {border:3px solid var(--rhp-surface);transition:none;}
+ .value {--rhp-label-gap:0px;translate:0 var(--label-y,-5px);font-size:20px;font-weight:600;line-height:1.1;white-space:nowrap;transition:none;}
+ .value-text {display:inline-block;transform:translateX(20px);transition:transform 180ms ease;}
+ .final .value {visibility:hidden;}
+ .power .value {color:var(--rhp-series-2);} .sulfur .value {color:var(--rhp-series-1);}
+ .near-end .value-text {transform:translateX(calc(-100% - 20px));}
+ @container (max-width:650px) {.value {font-size:14px;}}
+ @media (prefers-reduced-motion:reduce) {.value-text {transition:none;}}
+`}, d => html`<div class=${() => `${d.key==="so2Index"?"sulfur":"power"}${d.i>=ROWS.length-3?" near-end":""}${d.i===ROWS.length-1?" final":""}`}><${Dot} at=${() => d.year} cross=${() => ROWS[d.i][d.key]} size="26px" color=${() => d.color} class="dot"/><${Label} at=${()=>d.year} cross=${()=>ROWS[d.i][d.key]} class="value"><span class="value-text">${()=>percentChange(ROWS[d.i][d.key])}</span><//></div>`);
 const Year = slat({room:{},css:`
  .pick {cursor:crosshair;outline:none;}
  .pick:focus-visible {outline:2px solid var(--rhp-series-1);outline-offset:-2px;}
@@ -159,6 +171,8 @@ const Year = slat({room:{},css:`
 
 // Pointing previews a year. Click, tap and the keyboard focus keep that year.
 function AcidRain() {
+ let poster;
+ onMount(()=>onCleanup(installDotLabels(poster,ROWS,percentChange)));
  const media=matchMedia("(max-width:640px)");
  const [phone,setPhone]=createSignal(media.matches), [selected,setSelected]=createSignal(null);
  const resize=e=>setPhone(e.matches);media.addEventListener("change",resize);onCleanup(()=>media.removeEventListener("change",resize));
@@ -176,6 +190,7 @@ function AcidRain() {
  const leave=e=>{if(e.pointerType==="touch")return;setSelected(e.currentTarget.contains(document.activeElement)?rowOf(document.activeElement):null);};
  const move=e=>e.pointerType!=="touch"&&(e.target.closest(".rhp-chart")?pick(e):leave(e));
  return html`<${Poster}
+  ref=${el=>poster=el} data-selected-year=${()=>YEARS[i()]}
   kicker=${html`<b>Acid rain · United States</b><span>${FIRST} to ${LAST}</span>`}
   title=${html`<span class="hero-number">${reduction}%</span><span class="hero-copy"><strong>less sulfur dioxide.</strong><span>Almost the<br>same power.</span></span>`}
   dek="How the United States tackled acid rain. Power plants covered by EPA's acid-rain and interstate-air programs reduced sulfur pollution while maintaining nearly the same electricity output."

@@ -1,0 +1,23 @@
+.poster-photo { z-index: -2; }
+.poster-rain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+.poster-download-tools { gap: 12px; }
+.rain-toggle {
+  margin-right: auto;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: 13px/1.3 var(--text);
+  cursor: pointer;
+}
+.rain-toggle:hover { background: rgb(255 255 255 / .06); }
+.rain-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }

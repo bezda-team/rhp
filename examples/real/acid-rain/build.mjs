@@ -12,6 +12,7 @@ const fonts = [
 const download = fs.readFileSync(path.join(root, "skills/rhp/references/download.md"), "utf8").match(/```html\n([\s\S]*?)\n```/)[1];
 const template = fs.readFileSync(path.join(here, "poster.template.html"), "utf8")
   .replace("__FONTS__", fonts)
+  .replace("__LABEL_CLEARANCE__", fs.readFileSync(path.join(here, "label-clearance.js"), "utf8"))
   .replace("__DATA__", JSON.stringify(JSON.parse(fs.readFileSync(path.join(here,"data.json"), "utf8"))))
   .replace("__DOWNLOAD__", download);
 fs.writeFileSync(path.join(here, "acid-rain.html"), template.replace("__VARIANT_STYLES__", "").replace("__PHOTO__", "null"));
@@ -29,4 +30,10 @@ const photoStyles = photoBackgroundStyles + `.poster .readout {background:rgb(7 
 `;
 fs.writeFileSync(path.join(here, "acid-rain-glass.html"), template.replace("__VARIANT_STYLES__", photoStyles).replace("__PHOTO__", JSON.stringify(`data:image/png;base64,${background}`)));
 fs.writeFileSync(path.join(here, "acid-rain-glass-normal.html"), template.replace("__VARIANT_STYLES__", photoBackgroundStyles).replace("__PHOTO__", JSON.stringify(`data:image/png;base64,${background}`)));
-console.log("Built three acid-rain poster variants");
+const rainStyles = fs.readFileSync(path.join(here, "rain-on-glass.css"), "utf8");
+const rainScript = fs.readFileSync(path.join(here, "rain-on-glass.js"), "utf8");
+const animated = template.replace("__VARIANT_STYLES__", photoBackgroundStyles + rainStyles)
+  .replace("__PHOTO__", JSON.stringify(`data:image/png;base64,${background}`))
+  .replace("</body>", `<script type="module">\n${rainScript}\n</script>\n</body>`);
+fs.writeFileSync(path.join(here, "acid-rain-glass-animated.html"), animated);
+console.log("Built four acid-rain poster variants");
