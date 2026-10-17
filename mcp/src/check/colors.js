@@ -164,11 +164,13 @@ export function colorBlind(items, hidden, k) {
   }
 
   for (const marks of charts.values()) {
-    // one entry per color, colors that look the same merged
+    // One authored paint is still one series over a photograph, even when transparent marks
+    // blend with different parts of it. Also merge colors that already look the same.
     const colors = [];
     for (const m of marks) {
       const rgb = m.rgb;
-      let c = colors.find((x) => difference(x.rgb, rgb) < 2);
+      const samePaint = (other) => other.opacity === m.opacity && other.color.every((v, i) => v === m.color[i]);
+      let c = colors.find((x) => x.marks.some(samePaint) || difference(x.rgb, rgb) < 2);
       if (!c) colors.push((c = { rgb, names: new Set(), marks: [] }));
       c.marks.push(m);
       for (const n of m.names) {
