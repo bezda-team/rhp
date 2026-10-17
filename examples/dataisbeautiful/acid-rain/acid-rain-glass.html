@@ -29,7 +29,7 @@ body {margin:0;padding:24px 16px 40px;background:var(--page);color:var(--ink);fo
 .chart-heading b {color:var(--ink);font-weight:600;}
 .plot {touch-action:pan-y;}
 .plot:has(:focus-visible) {outline:2px solid var(--sulfur);outline-offset:8px;}
-.plot .rhp-chart {background:var(--paper);}
+.plot .rhp-chart {background:var(--paper);margin-right:-10px;}
 .axis-value {font-size:15px;}
 .readout {display:flex;justify-content:space-between;gap:24px;align-items:center;margin:28px 0 0;padding:18px 0 20px;border-block:1px solid var(--rule);font-variant-numeric:tabular-nums;}
 .readout .year {font:700 46px/1 var(--display);color:var(--ink);}
@@ -144,11 +144,11 @@ const theme = {font:"var(--text)",ink:"var(--ink)",muted:"var(--soft)",grid:"var
 
 // The original line-end labels and rain-like vertical marks.
 const Rain = slat({room:{},css:`.rain {top:auto;bottom:0;height:calc(var(--rain-index) / 120 * 100%);translate:-50% 0;--rhp-tick-width:2px;opacity:.28;background:var(--rhp-series-3);}`}, d => html`<${Tick} at=${() => d.year} class="rain" style=${() => ({"--rain-index":d.so2Index})}/>`);
-const Series = slat({room:{end:50,before:24},css:`
+const Series = slat({room:{end:60,before:24},css:`
  .curve {stroke-width:8.5px;}
  .power .curve {stroke-width:6px;stroke-dasharray:12 7;}
  @container (max-width:650px) {.curve {stroke-width:5.5px;} .power .curve {stroke-width:4.5px;stroke-dasharray:8 5;}}
- .name {--rhp-label-gap:0px;font-size:21px;line-height:1.1;text-align:right;translate:calc(50px - 100%) -20px;}
+ .name {--rhp-label-gap:0px;font-size:21px;line-height:1.1;text-align:right;translate:calc(var(--rhp-pad-right) - 100%) -20px;}
  .name strong {display:block;font:700 42px/1.1 "Barlow Condensed",sans-serif;margin-top:5px;}
  .sulfur .name {color:var(--rhp-series-1);} .power .name {color:var(--rhp-series-2);}
  .short {display:none;}
@@ -195,7 +195,7 @@ function AcidRain() {
   ${PHOTO ? html`<img class="poster-photo" src=${PHOTO} alt="" aria-hidden="true"/>` : null}
   <div class="chart-heading"><p><b>Change since ${FIRST}</b> · each series starts at 100</p><p>Index, ${FIRST} = 100</p></div>
   <div class="plot">
-   <${Chart} scale=${[FIRST,LAST]} cross=${[0,120]} crossTicks=${[0,25,50,75,100]} crossFormat=${value=>html`<span class="axis-value">${value}</span>`} height=${()=>phone()?300:410} style=${{"--rhp-pad-right":"50px"}} label="Sulfur dioxide emissions and electricity generation at covered U.S. power plants, indexed to 100 in 2000" theme=${theme}>
+   <${Chart} scale=${[FIRST,LAST]} cross=${[0,120]} crossTicks=${[0,25,50,75,100]} crossFormat=${value=>html`<span class="axis-value">${value}</span>`} height=${()=>phone()?300:410} style=${{"--rhp-pad-right":"60px"}} label="Sulfur dioxide emissions and electricity generation at covered U.S. power plants, indexed to 100 in 2000" theme=${theme}>
     <${Scale} ticks=${[2000,2005,2010,2015,2020,2023]}>${Years}<//>
     <${Plot} overlap=${true} rows=${ROWS} style=${{"pointer-events":"none"}}>${Rain}<//>
     <${Plot} overlap=${true} rows=${SERIES} style=${{"pointer-events":"none"}}>${Series}<//>
