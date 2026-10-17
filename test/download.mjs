@@ -142,6 +142,40 @@ try {
       assert(color.every((value, i) => Math.abs(value - sample.color[i]) <= 3), `${activation}: PNG contains the selected bar's accent color`);
       console.log(`PASS ${width}px ${activation}: selection, keyboard focus and exported highlight preserved; no outside click`);
     }
+    // The readout must stay selected when the pointer returns after the PNG has finished saving.
+    // Checking only at the download event misses the focus loss on a subsequent title/readout move.
+    for (const recipe of ["histogram", "dial"]) for (const activation of ["pointer", ...(engine !== "firefox" ? ["touch"] : [])]) {
+      await page.goto("file://" + path.join(recipes, `${recipe}.html`));
+      const button = page.getByRole("button", { name: "Download poster as PNG", exact: true });
+      await button.waitFor();
+      const item = page.locator(recipe === "histogram" ? '.column[data-row="30"]' : '.key [data-row="1"]');
+      const focusedItem = page.locator(recipe === "histogram" ? '.column[data-row="30"]' : '.act[data-row="1"]');
+      const readout = page.locator(recipe === "histogram" ? ".board" : ".hub");
+      if (activation === "touch") await item.tap();
+      else await item.click();
+      await settle(page);
+      const selected = await readout.innerText();
+      const downloaded = page.waitForEvent("download");
+      if (activation === "touch") await button.tap();
+      else await button.click();
+      assert.equal(await focusedItem.evaluate(item => document.activeElement === item), true, "download activation keeps focus on the selected chart item");
+      await (await downloaded).saveAs(path.join(out, `${width}-${recipe}-${activation}.png`));
+      await page.waitForFunction(() => !document.querySelector('.poster-download').hasAttribute('aria-busy'));
+      if (recipe === "histogram") await readout.hover();
+      else {
+        await page.locator(".key").hover({ position: { x: 2, y: 2 } });
+        await page.locator(".headline").hover();
+      }
+      await settle(page);
+      assert.equal(await readout.innerText(), selected, "returning over the poster after download preserves selection");
+      await page.mouse.move(1, 1);
+      assert.equal(await readout.innerText(), selected, "leaving the poster after download preserves its focused selection");
+      assert.equal(await focusedItem.evaluate(item => document.activeElement === item), true, "pointer download keeps the original chart focus");
+      // A deliberate new chart pick still works after export.
+      await page.locator(recipe === "histogram" ? '.column[data-row="35"]' : '.key [data-row="3"]').click();
+      assert.notEqual(await readout.innerText(), selected);
+      console.log(`PASS ${width}px ${recipe} ${activation}: selection survives pointer return after the completed download`);
+    }
     // A failed import leaves a visible error and lets the user retry.
     await page.goto("file://" + path.join(recipes, "bar.html"));
     await page.route(exportURL, route => route.abort());

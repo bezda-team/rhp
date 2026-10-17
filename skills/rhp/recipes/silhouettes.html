@@ -397,6 +397,8 @@ function addPosterDownloads() {
       event.stopPropagation();
     });
     button.addEventListener('mousedown', event => {
+      // Pointer activation downloads without taking focus from the selected chart item.
+      event.preventDefault();
       event.stopPropagation();
     });
     poster.addEventListener('focusout', event => {
@@ -438,12 +440,14 @@ function addPosterDownloads() {
         const margins = [...document.styleSheets].map(sheet => {
           try { return marginRules(sheet.cssRules); } catch (cause) { return ''; }
         }).join('\n');
+        // Omit display-none HTML subtrees, such as collapsed chart rows, from the image and its SVG payload.
+        const includeNode = node => !(node instanceof HTMLElement) || getComputedStyle(node).display !== 'none';
         const restoreMargins = (source, clone) => {
           if (clone.style && source !== poster && [...autoMargins].some(selector => source.matches(selector))) {
             [...clone.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.removeProperty(name));
             [...source.style].filter(name => name === 'margin' || name.startsWith('margin-')).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
           }
-          const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName));
+          const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName) && includeNode(node));
           [...clone.children].forEach((child, i) => { if (children[i]) restoreMargins(children[i], child); });
         };
         // Cross-origin font stylesheets are readable through fetch, but not through cssRules.
@@ -499,7 +503,7 @@ function addPosterDownloads() {
           node.style.backgroundImage = background;
         };
         const blob = await domToBlob(poster, {
-          scale: 2, style: { margin: '0' },
+          scale: 2, style: { margin: '0' }, filter: includeNode,
           font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
           onCloneNode: clone => {
             restoreMargins(poster, clone);
