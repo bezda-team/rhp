@@ -195,6 +195,10 @@ A chart with fixed data and no interaction gets `static=${true}` on its Chart: r
 
 ### 6. Build it, with the recipe's technique
 
+For every standalone HTML poster page, keep the recipe's PNG download control, or copy the complete block from [download.md](references/download.md) before `</body>`.
+It is an icon above the poster on the right, outside the saved image; on gallery recipe pages it shares the row and color of the gallery link.
+It saves the full poster, including the headline and note, even when the page scrolls.
+
 - Keep the recipe's code format and section order: data, then slat types, then the chart component, then mounting.
   With `ManyDots`, omit slat types and put the collection directly inside the Chart.
 - Use the user's data exactly, every value, in their units.
@@ -444,6 +448,7 @@ Read the ones the chart needs; each is self-contained.
 - [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, color, type, layout, annotation, charts inside an app, a style the user asks for.
 - [looks.md](references/looks.md): eight looks written out in full (tokens, fonts, texture, type), as examples of how a look is written, not a menu.
 - [interaction.md](references/interaction.md): which interaction for which story, with complete code for each.
+- [download.md](references/download.md): the download icon for standalone HTML posters, with a complete PNG export block.
 - [performance.md](references/performance.md): measured optimizations for an expensive chart, preserving its slats, styling, state, and interactions.
 - [environments.md](references/environments.md): plain HTML, Solid, Astro, React, Next.js, Vue, Svelte and Angular, each verified, and the html template to JSX rules.
 - [api.md](references/api.md): every component, prop, helper and CSS variable, exactly.

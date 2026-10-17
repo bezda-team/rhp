@@ -121,6 +121,7 @@ Each section says where these tags go:
 Use it when there is no project, in a chatbot's answer, or when the user asks for an HTML file.
 rhp comes from jsDelivr through an import map, so the page needs no install and no build step.
 Its module script has the sections every recipe has: data, slat types, the chart, then `render`.
+For a poster page, copy the complete [PNG download block](download.md) before `</body>`, after the chart's module script.
 
 ```html
 <!doctype html>
