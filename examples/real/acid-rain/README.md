@@ -20,15 +20,19 @@ Point, tap, or use the chart's arrow-key navigation to inspect a year.
 The selected dots show percentage change since 2000, with permanent final-year labels kept at the ends of both lines.
 Label positions are calculated once for the current layout, preferring 5px above each stroke and falling below when that would cover another line, dot or label.
 They switch smoothly to the left at 2021, the third-to-last point, and their placements are recalculated when the layout changes.
+The side switch slides from the label's previous screen position to its new position, with clearance checked only on the side where it is displayed.
 The download icon saves the current poster at twice its CSS resolution.
 The animated version includes a pause button, starts still when reduced motion is preferred, and pauses when offscreen or hidden.
 PNG downloads briefly freeze the rain and include its current frame.
 The effect uses a small WebGL overlay, with the original photograph as the fallback when WebGL is unavailable.
+Droplets have uneven outlines, stretch while sliding, leave cleared wet trails and settle gradually.
+Each drop keeps its own randomized lighting direction from below, with a deep shadow across its upper half.
 
 ```sh
 node examples/real/acid-rain/fetch-data.mjs --offline
 node examples/real/acid-rain/build.mjs
 node examples/real/acid-rain/label-clearance.test.mjs
+node examples/real/acid-rain/label-motion.test.mjs
 node examples/real/acid-rain/rain-on-glass.test.mjs
 node mcp/bin/rhp-mcp.js check examples/real/acid-rain/acid-rain.html --widths 1280,1024,768,390,360,320
 node mcp/bin/rhp-mcp.js check examples/real/acid-rain/acid-rain-glass.html --widths 1280,1024,768,390,360,320

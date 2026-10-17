@@ -156,12 +156,11 @@ const Hair = slat({room:{},css:`.hair {background:var(--rhp-muted);opacity:.5;--
 const Mark = slat({room:{},css:`
  .dot {border:3px solid var(--rhp-surface);transition:none;}
  .value {--rhp-label-gap:0px;translate:0 var(--label-y,-5px);font-size:20px;font-weight:600;line-height:1.1;white-space:nowrap;transition:none;}
- .value-text {display:inline-block;transform:translateX(20px);transition:transform 180ms ease;}
+ .value-text {display:inline-block;transform:translateX(20px);}
  .final .value {visibility:hidden;}
  .power .value {color:var(--rhp-series-2);} .sulfur .value {color:var(--rhp-series-1);}
  .near-end .value-text {transform:translateX(calc(-100% - 20px));}
  @container (max-width:650px) {.value {font-size:14px;}}
- @media (prefers-reduced-motion:reduce) {.value-text {transition:none;}}
 `}, d => html`<div class=${() => `${d.key==="so2Index"?"sulfur":"power"}${d.i>=ROWS.length-3?" near-end":""}${d.i===ROWS.length-1?" final":""}`}><${Dot} at=${() => d.year} cross=${() => ROWS[d.i][d.key]} size="26px" color=${() => d.color} class="dot"/><${Label} at=${()=>d.year} cross=${()=>ROWS[d.i][d.key]} class="value"><span class="value-text">${()=>percentChange(ROWS[d.i][d.key])}</span><//></div>`);
 const Year = slat({room:{},css:`
  .pick {cursor:crosshair;outline:none;}

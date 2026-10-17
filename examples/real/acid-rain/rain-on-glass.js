@@ -34,7 +34,7 @@ export class RainSimulation {
       y: target ? target.y - this.random(2, 6) : this.random(.07, .83) * this.height,
       r: this.random(initial ? 3.5 : 4, initial ? 9.5 : 10.5),
       age: initial ? 3 : 0, life: this.random(35, 65), speed: 0,
-      run: 0, stretch: 0, drift: this.random(-.9, .9), phase: this.random(0, Math.PI * 2),
+      run: 0, stretch: 0, drift: this.random(-.9, .9), phase: this.random(0, Math.PI * 2), light: this.random(-.7, .7),
       pinnedUntil: this.time + 5,
     });
   }
@@ -83,7 +83,7 @@ export class RainSimulation {
       d.y += dy;
       d.run -= dy;
       d.r = Math.max(2.7, d.r - dy * .0028);
-      this.trails.push({ x: (previousX + d.x) / 2, y: (previousY + d.y) / 2, rx: d.r * .34, ry: dy / 2 + .7, age: 0 });
+      this.trails.push({ x: (previousX + d.x) / 2, y: (previousY + d.y) / 2, rx: d.r * .34, ry: dy / 2 + .7, age: 0, light: d.light });
       if (d.run <= 0) {
         d.speed = 0;
         d.age = 3;
@@ -133,7 +133,7 @@ function makeRenderer(canvas, photo) {
     precision highp float;
     uniform sampler2D u_scene;
     uniform vec2 u_view, u_center, u_size;
-    uniform float u_alpha, u_trail, u_motion, u_shape, u_skew;
+    uniform float u_alpha, u_trail, u_motion, u_shape, u_skew, u_light;
     varying vec2 v_local, v_pixel;
     void main() {
       float bead = 1.0 - u_trail;
@@ -149,15 +149,24 @@ function makeRenderer(canvas, photo) {
       float distance2 = dot(q, q);
       if (distance2 >= 1.0) discard;
       float dome = sqrt(max(0.0, 1.0 - mix(distance2, q.x * q.x, u_trail)));
-      vec2 offset = q * u_size * (1.55 + .45 * dome);
+      vec2 offset = q * u_size * (6.0 + 3.0 * dome);
       offset.y *= 1.0 - u_trail;
       vec2 uv = clamp((v_pixel - offset) / u_view, vec2(0.0), vec2(1.0));
       vec3 color = texture2D(u_scene, uv).rgb;
       vec3 normal = normalize(vec3(q.x, q.y * (1.0 - u_trail), dome));
-      float glint = pow(max(dot(normal, normalize(vec3(-.45, -.60, .8))), 0.0), 42.0);
+      vec2 lightDirection = vec2(sin(u_light), cos(u_light));
+      float glint = pow(max(dot(normal, normalize(vec3(lightDirection * .75, .8))), 0.0), 12.0);
+      float lateral = dot(q, vec2(lightDirection.y, -lightDirection.x));
+      float reflected = dot(q, lightDirection);
+      float arc = .58 - lateral * lateral * .30;
+      float softReflection = exp(-pow((reflected - arc) / .22, 2.0) - pow(lateral / .78, 4.0)) * bead;
+      float brightCore = exp(-pow((reflected - arc) / .065, 2.0) - pow(lateral / .65, 4.0)) * bead;
       float rim = smoothstep(.50, .99, sqrt(mix(distance2, q.x * q.x, u_trail)));
-      float shadow = rim * (.38 + .36 * max(q.x * .6 + q.y * .8 * (1.0 - u_trail), 0.0));
-      color = color * (1.0 - shadow) + vec3(.60, .75, .79) * (glint * .5 + rim * .025);
+      float upperShadow = (1.0 - smoothstep(-.55, .18, dot(q, lightDirection))) * bead * .65;
+      float shadow = min(.88, upperShadow + rim * (.35 + .25 * max(-dot(vec2(q.x, q.y * bead), lightDirection), 0.0)));
+      color *= 1.0 - shadow;
+      float reflection = clamp(glint * .06 + softReflection * .12 + brightCore * .48, 0.0, .68);
+      color = mix(color, vec3(.76, .84, .87), reflection) + vec3(.60, .75, .79) * rim * .025;
       float edge = 1.0 - smoothstep(1.0 - 1.4 / max(u_size.x, 2.0), 1.0, distance2);
       float alpha = u_alpha * edge;
       gl_FragColor = vec4(color * alpha, alpha);
@@ -183,7 +192,7 @@ function makeRenderer(canvas, photo) {
   const attribute = gl.getAttribLocation(program, 'a_quad');
   gl.enableVertexAttribArray(attribute);
   gl.vertexAttribPointer(attribute, 2, gl.FLOAT, false, 0, 0);
-  const uniforms = Object.fromEntries(['view', 'center', 'size', 'alpha', 'trail', 'motion', 'shape', 'skew', 'scene'].map(key => [key, gl.getUniformLocation(program, `u_${key}`)]));
+  const uniforms = Object.fromEntries(['view', 'center', 'size', 'alpha', 'trail', 'motion', 'shape', 'skew', 'light', 'scene'].map(key => [key, gl.getUniformLocation(program, `u_${key}`)]));
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
   for (const filter of [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D, filter, gl.LINEAR);
@@ -216,7 +225,7 @@ function makeRenderer(canvas, photo) {
     },
     draw(simulation) {
       gl.clear(gl.COLOR_BUFFER_BIT);
-      const bead = (x, y, rx, ry, opacity, trail, motion = 0, shape = 0, skew = 0) => {
+      const bead = (x, y, rx, ry, opacity, trail, motion = 0, shape = 0, skew = 0, light = 0) => {
         gl.uniform2f(uniforms.center, x, y);
         gl.uniform2f(uniforms.size, rx, ry);
         gl.uniform1f(uniforms.alpha, opacity);
@@ -224,14 +233,15 @@ function makeRenderer(canvas, photo) {
         gl.uniform1f(uniforms.motion, motion);
         gl.uniform1f(uniforms.shape, shape);
         gl.uniform1f(uniforms.skew, skew);
+        gl.uniform1f(uniforms.light, light);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
       };
-      for (const t of simulation.trails) bead(t.x, t.y, t.rx, t.ry, Math.min(1, (5.5 - t.age) / 3.5), 1);
+      for (const t of simulation.trails) bead(t.x, t.y, t.rx, t.ry, Math.min(1, (5.5 - t.age) / 3.5), 1, 0, 0, 0, t.light);
       for (const d of simulation.drops) {
         const landing = 1 - Math.exp(-d.age * 9);
         const wobble = Math.sin(d.age * 24) * Math.exp(-d.age * 7) * .12;
         const fading = Math.min(1, (d.life - d.age) / 4);
-        bead(d.x, d.y, d.r * landing * (1 + wobble), d.r * landing * (1.22 + d.stretch * .8 - wobble), landing * fading, 0, d.stretch, d.phase, d.drift);
+        bead(d.x, d.y, d.r * landing * (1 + wobble), d.r * landing * (1.22 + d.stretch * .8 - wobble), landing * fading, 0, d.stretch, d.phase, d.drift, d.light);
       }
     },
     dispose() {

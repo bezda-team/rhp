@@ -151,11 +151,11 @@ import {Chart,Plot,Scale,Line,Dot,Tick,Label,Poster,slat,html,render,createSigna
 
 // Prefer 5px above the label's own stroke; move below only to avoid covering content.
 export function labelCandidates({left, right, height, anchor, own, bands, top, bottom, series}) {
-  const positions = [...new Set(bands.flatMap(band => [band.top - 5, band.bottom + 5 + height]))];
+  const positions = [...new Set(bands.flatMap(band => [band.top - (band.gap ?? 5), band.bottom + (band.gap ?? 5) + height]))];
   const priority = end => Math.abs(end - (own.top - 5)) < .01 ? 0 : Math.abs(end - (own.bottom + 5 + height)) < .01 ? 1 : 2;
   return positions.map(end => ({left, right, top: end - height, bottom: end,
     cost: (priority(end) ? 1e12 : 0) + priority(end) * 1e9 + Math.abs(end - height / 2 - anchor) ** 2 + ((series === 'power') === (end < anchor) ? 0 : .01),
-  })).filter(box => box.top >= top && box.bottom <= bottom && bands.every(band => box.bottom <= band.top - 4.99 || box.top >= band.bottom + 4.99));
+  })).filter(box => box.top >= top && box.bottom <= bottom && bands.every(band => box.bottom <= band.top - (band.gap ?? 5) + .01 || box.top >= band.bottom + (band.gap ?? 5) - .01));
 }
 export function chooseLabelPositions(groups) {
   const overlap = (a, b) => a.left < b.right + 5 && a.right + 5 > b.left && a.top < b.bottom + 5 && a.bottom + 5 > b.top;
@@ -169,7 +169,8 @@ export function chooseLabelPositions(groups) {
   return best;
 }
 export function installDotLabels(poster, rows, format) {
-  let frame = 0, timer = 0, placements = new Map(), lastSide = null, layoutKey = '';
+  let frame = 0, slideFrame = 0, placements = new Map(), slideSafety = new Map(), layoutKey = '', previousYear = null;
+  const slides = new Map();
   const chart = poster.querySelector('.rhp-chart');
   const rect = el => el.getBoundingClientRect();
   const fixedBoxes = () => [...poster.querySelectorAll('.name .long,.name .short,.name strong,.axis-value,.rhp-label.year,.chart-heading p,.readout')].flatMap(el => {
@@ -201,9 +202,11 @@ export function installDotLabels(poster, rows, format) {
     const series = labels.map(label => {
       const key = label.parentElement.classList.contains('power') ? 'power' : 'sulfur';
       const text = label.querySelector('.value-text'), css = getComputedStyle(text);
+      const range = document.createRange(); range.selectNodeContents(text);
+      const textBox = range.getBoundingClientRect();
       const context = document.createElement('canvas').getContext('2d');
       context.font = `${css.fontWeight} ${css.fontSize} ${css.fontFamily}`;
-      return {key, label, context, height: rect(text).height, baseline: rect(text).bottom - rect(label).bottom,
+      return {key, label, context, height: textBox.height, baseline: textBox.bottom - rect(label).bottom,
         path: stroke(poster.querySelector(`.${key} .curve .rhp-stroke`)),
       };
     });
@@ -215,35 +218,67 @@ export function installDotLabels(poster, rows, format) {
     if (key === layoutKey) return;
     layoutKey = key;
     placements = new Map();
-    for (let index = 0; index < rows.length - 1; index++) {
+    function casesFor(index) {
       const leftSide = index >= rows.length - 3;
       const points = series.map(item => item.path.points[index]);
       const dots = points.map(point => ({left: point.x - 13, right: point.x + 13, top: point.y - 13, bottom: point.y + 13}));
-      const options = crossing => series.map((item, n) => {
+      return series.map((item, n) => {
         const point = points[n], width = item.context.measureText(format(rows[index][item.key === 'power' ? 'generationIndex' : 'so2Index'])).width;
-        const left = crossing || leftSide ? point.x - width - 20 : point.x + 20;
-        const right = crossing || !leftSide ? point.x + width + 20 : point.x - 20;
+        const left = leftSide ? point.x - width - 20 : point.x + 20;
+        const right = !leftSide ? point.x + width + 20 : point.x - 20;
         const own = lineBand(item.path, left, right);
         const bands = [...series.map(other => lineBand(other.path, left, right)).filter(Boolean),
-          ...[...fixed, ...dots].filter(other => other.left < right + 5 && other.right + 5 > left)];
-        return labelCandidates({left, right, height: item.height, anchor: point.y, own, bands, top: bounds.top, bottom: bounds.bottom, series: item.key});
+          ...[...fixed, ...dots].filter(other => other.left < right && other.right > left).map(other => ({top:other.top,bottom:other.bottom,gap:1})),
+          ...(index>=rows.length-4 ? [{top:point.y-13,bottom:point.y+13,gap:1}] : [])];
+        return {left, right, height:item.height, anchor:point.y, own, bands, top:bounds.top, bottom:bounds.bottom, series:item.key};
       });
-      const normal = chooseLabelPositions(options(false)), crossing = chooseLabelPositions(options(true));
-      if (!normal || !crossing) throw new Error(`No clear percentage-label placement for ${rows[index].year}`);
-      placements.set(rows[index].year, {side: leftSide, normal: normal.map((box, n) => box.bottom - points[n].y - series[n].baseline),
-        crossing: crossing.map((box, n) => box.bottom - points[n].y - series[n].baseline)});
     }
-    apply(false);
+    const allCases = [];
+    for (let index = 0; index < rows.length - 1; index++) {
+      const cases = casesFor(index), positions = chooseLabelPositions(cases.map(labelCandidates));
+      allCases.push(cases);
+      if (!positions) throw new Error(`No clear percentage-label placement for ${rows[index].year}`);
+      placements.set(rows[index].year, positions.map((box, n) => box.bottom - cases[n].anchor - series[n].baseline));
+    }
+    slideSafety = new Map();
+    const overlaps = (a,b) => a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
+    for(let from=0;from<allCases.length;from++)for(let to=0;to<allCases.length;to++){
+      if(Math.abs(from-to)>2 || (from>=rows.length-3)===(to>=rows.length-3))continue;
+      const safe = series.every((item,n) => {
+        const before=allCases[from][n],after=allCases[to][n],offset=placements.get(rows[to].year)[n];
+        const box={left:Math.min(before.left,after.left),right:Math.max(before.left,after.left)+after.right-after.left,
+          bottom:after.anchor+offset+item.baseline,top:after.anchor+offset+item.baseline-item.height};
+        const lines=series.map(other=>lineBand(other.path,box.left,box.right)).filter(Boolean);
+        const dots=series.map(other=>other.path.points[to]).map(point=>({left:point.x-13,right:point.x+13,top:point.y-13,bottom:point.y+13}));
+        return lines.every(band=>box.bottom<=band.top-4.9 || box.top>=band.bottom+4.9) && [...fixed,...dots].every(other=>!overlaps(box,other));
+      });
+      slideSafety.set(`${rows[from].year}:${rows[to].year}`,safe);
+    }
+    apply();
   }
-  function apply(animate = true) {
-    clearTimeout(timer);
-    const placement = placements.get(Number(poster.dataset.selectedYear));
-    if (!placement) {lastSide = true;return;}
-    const moving = animate && lastSide !== null && lastSide !== placement.side && !matchMedia('(prefers-reduced-motion:reduce)').matches;
-    const write = offsets => labels.forEach((label, i) => label.style.setProperty('--label-y', `${offsets[i]}px`));
-    write(moving ? placement.crossing : placement.normal);
-    if (moving) timer = setTimeout(() => write(placement.normal), 200);
-    lastSide = placement.side;
+  function apply() {
+    const year = Number(poster.dataset.selectedYear), offsets = placements.get(year);
+    const boundary = rows[rows.length-3].year;
+    const switching = previousYear !== null && (year>=boundary)!==(previousYear>=boundary) && slideSafety.get(`${previousYear}:${year}`)===true;
+    const from = labels.map(label => {
+      const text = label.querySelector('.value-text'), previous = slides.get(text);
+      const x = previous ? previous.x + (parseFloat(getComputedStyle(text).translate)||0) : null;
+      previous?.animation?.cancel();
+      return x;
+    });
+    if (offsets) labels.forEach((label, i) => label.style.setProperty('--label-y', `${offsets[i]}px`));
+    previousYear = year;
+    cancelAnimationFrame(slideFrame);
+    // Start from the previous screen position, rather than moving to the new dot's
+    // right side first. The vertical position always uses this year's actual side.
+    slideFrame = requestAnimationFrame(() => {
+      labels.forEach((label, i) => {
+        const text = label.querySelector('.value-text'), x = text.getBoundingClientRect().left;
+        const animation = switching && from[i] !== null && !matchMedia('(prefers-reduced-motion:reduce)').matches
+          ? text.animate([{translate:`${from[i]-x}px 0px`},{translate:'0px 0px'}],{duration:180,easing:'ease-out'}) : null;
+        slides.set(text,{x,animation});
+      });
+    });
   }
   function schedule() {
     if (frame) cancelAnimationFrame(frame);
@@ -254,7 +289,7 @@ export function installDotLabels(poster, rows, format) {
   const resize = new ResizeObserver(schedule); resize.observe(chart);
   document.fonts.ready.then(schedule);
   schedule();
-  return () => {cancelAnimationFrame(frame);clearTimeout(timer);changes.disconnect();resize.disconnect();};
+  return () => {cancelAnimationFrame(frame);cancelAnimationFrame(slideFrame);slides.forEach(state=>state.animation?.cancel());changes.disconnect();resize.disconnect();};
 }
 
 
@@ -294,12 +329,11 @@ const Hair = slat({room:{},css:`.hair {background:var(--rhp-muted);opacity:.5;--
 const Mark = slat({room:{},css:`
  .dot {border:3px solid var(--rhp-surface);transition:none;}
  .value {--rhp-label-gap:0px;translate:0 var(--label-y,-5px);font-size:20px;font-weight:600;line-height:1.1;white-space:nowrap;transition:none;}
- .value-text {display:inline-block;transform:translateX(20px);transition:transform 180ms ease;}
+ .value-text {display:inline-block;transform:translateX(20px);}
  .final .value {visibility:hidden;}
  .power .value {color:var(--rhp-series-2);} .sulfur .value {color:var(--rhp-series-1);}
  .near-end .value-text {transform:translateX(calc(-100% - 20px));}
  @container (max-width:650px) {.value {font-size:14px;}}
- @media (prefers-reduced-motion:reduce) {.value-text {transition:none;}}
 `}, d => html`<div class=${() => `${d.key==="so2Index"?"sulfur":"power"}${d.i>=ROWS.length-3?" near-end":""}${d.i===ROWS.length-1?" final":""}`}><${Dot} at=${() => d.year} cross=${() => ROWS[d.i][d.key]} size="26px" color=${() => d.color} class="dot"/><${Label} at=${()=>d.year} cross=${()=>ROWS[d.i][d.key]} class="value"><span class="value-text">${()=>percentChange(ROWS[d.i][d.key])}</span><//></div>`);
 const Year = slat({room:{},css:`
  .pick {cursor:crosshair;outline:none;}
@@ -617,7 +651,7 @@ export class RainSimulation {
       y: target ? target.y - this.random(2, 6) : this.random(.07, .83) * this.height,
       r: this.random(initial ? 3.5 : 4, initial ? 9.5 : 10.5),
       age: initial ? 3 : 0, life: this.random(35, 65), speed: 0,
-      run: 0, stretch: 0, drift: this.random(-.9, .9), phase: this.random(0, Math.PI * 2),
+      run: 0, stretch: 0, drift: this.random(-.9, .9), phase: this.random(0, Math.PI * 2), light: this.random(-.7, .7),
       pinnedUntil: this.time + 5,
     });
   }
@@ -666,7 +700,7 @@ export class RainSimulation {
       d.y += dy;
       d.run -= dy;
       d.r = Math.max(2.7, d.r - dy * .0028);
-      this.trails.push({ x: (previousX + d.x) / 2, y: (previousY + d.y) / 2, rx: d.r * .34, ry: dy / 2 + .7, age: 0 });
+      this.trails.push({ x: (previousX + d.x) / 2, y: (previousY + d.y) / 2, rx: d.r * .34, ry: dy / 2 + .7, age: 0, light: d.light });
       if (d.run <= 0) {
         d.speed = 0;
         d.age = 3;
@@ -716,7 +750,7 @@ function makeRenderer(canvas, photo) {
     precision highp float;
     uniform sampler2D u_scene;
     uniform vec2 u_view, u_center, u_size;
-    uniform float u_alpha, u_trail, u_motion, u_shape, u_skew;
+    uniform float u_alpha, u_trail, u_motion, u_shape, u_skew, u_light;
     varying vec2 v_local, v_pixel;
     void main() {
       float bead = 1.0 - u_trail;
@@ -732,15 +766,24 @@ function makeRenderer(canvas, photo) {
       float distance2 = dot(q, q);
       if (distance2 >= 1.0) discard;
       float dome = sqrt(max(0.0, 1.0 - mix(distance2, q.x * q.x, u_trail)));
-      vec2 offset = q * u_size * (1.55 + .45 * dome);
+      vec2 offset = q * u_size * (6.0 + 3.0 * dome);
       offset.y *= 1.0 - u_trail;
       vec2 uv = clamp((v_pixel - offset) / u_view, vec2(0.0), vec2(1.0));
       vec3 color = texture2D(u_scene, uv).rgb;
       vec3 normal = normalize(vec3(q.x, q.y * (1.0 - u_trail), dome));
-      float glint = pow(max(dot(normal, normalize(vec3(-.45, -.60, .8))), 0.0), 42.0);
+      vec2 lightDirection = vec2(sin(u_light), cos(u_light));
+      float glint = pow(max(dot(normal, normalize(vec3(lightDirection * .75, .8))), 0.0), 12.0);
+      float lateral = dot(q, vec2(lightDirection.y, -lightDirection.x));
+      float reflected = dot(q, lightDirection);
+      float arc = .58 - lateral * lateral * .30;
+      float softReflection = exp(-pow((reflected - arc) / .22, 2.0) - pow(lateral / .78, 4.0)) * bead;
+      float brightCore = exp(-pow((reflected - arc) / .065, 2.0) - pow(lateral / .65, 4.0)) * bead;
       float rim = smoothstep(.50, .99, sqrt(mix(distance2, q.x * q.x, u_trail)));
-      float shadow = rim * (.38 + .36 * max(q.x * .6 + q.y * .8 * (1.0 - u_trail), 0.0));
-      color = color * (1.0 - shadow) + vec3(.60, .75, .79) * (glint * .5 + rim * .025);
+      float upperShadow = (1.0 - smoothstep(-.55, .18, dot(q, lightDirection))) * bead * .65;
+      float shadow = min(.88, upperShadow + rim * (.35 + .25 * max(-dot(vec2(q.x, q.y * bead), lightDirection), 0.0)));
+      color *= 1.0 - shadow;
+      float reflection = clamp(glint * .06 + softReflection * .12 + brightCore * .48, 0.0, .68);
+      color = mix(color, vec3(.76, .84, .87), reflection) + vec3(.60, .75, .79) * rim * .025;
       float edge = 1.0 - smoothstep(1.0 - 1.4 / max(u_size.x, 2.0), 1.0, distance2);
       float alpha = u_alpha * edge;
       gl_FragColor = vec4(color * alpha, alpha);
@@ -766,7 +809,7 @@ function makeRenderer(canvas, photo) {
   const attribute = gl.getAttribLocation(program, 'a_quad');
   gl.enableVertexAttribArray(attribute);
   gl.vertexAttribPointer(attribute, 2, gl.FLOAT, false, 0, 0);
-  const uniforms = Object.fromEntries(['view', 'center', 'size', 'alpha', 'trail', 'motion', 'shape', 'skew', 'scene'].map(key => [key, gl.getUniformLocation(program, `u_${key}`)]));
+  const uniforms = Object.fromEntries(['view', 'center', 'size', 'alpha', 'trail', 'motion', 'shape', 'skew', 'light', 'scene'].map(key => [key, gl.getUniformLocation(program, `u_${key}`)]));
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
   for (const filter of [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D, filter, gl.LINEAR);
@@ -799,7 +842,7 @@ function makeRenderer(canvas, photo) {
     },
     draw(simulation) {
       gl.clear(gl.COLOR_BUFFER_BIT);
-      const bead = (x, y, rx, ry, opacity, trail, motion = 0, shape = 0, skew = 0) => {
+      const bead = (x, y, rx, ry, opacity, trail, motion = 0, shape = 0, skew = 0, light = 0) => {
         gl.uniform2f(uniforms.center, x, y);
         gl.uniform2f(uniforms.size, rx, ry);
         gl.uniform1f(uniforms.alpha, opacity);
@@ -807,14 +850,15 @@ function makeRenderer(canvas, photo) {
         gl.uniform1f(uniforms.motion, motion);
         gl.uniform1f(uniforms.shape, shape);
         gl.uniform1f(uniforms.skew, skew);
+        gl.uniform1f(uniforms.light, light);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
       };
-      for (const t of simulation.trails) bead(t.x, t.y, t.rx, t.ry, Math.min(1, (5.5 - t.age) / 3.5), 1);
+      for (const t of simulation.trails) bead(t.x, t.y, t.rx, t.ry, Math.min(1, (5.5 - t.age) / 3.5), 1, 0, 0, 0, t.light);
       for (const d of simulation.drops) {
         const landing = 1 - Math.exp(-d.age * 9);
         const wobble = Math.sin(d.age * 24) * Math.exp(-d.age * 7) * .12;
         const fading = Math.min(1, (d.life - d.age) / 4);
-        bead(d.x, d.y, d.r * landing * (1 + wobble), d.r * landing * (1.22 + d.stretch * .8 - wobble), landing * fading, 0, d.stretch, d.phase, d.drift);
+        bead(d.x, d.y, d.r * landing * (1 + wobble), d.r * landing * (1.22 + d.stretch * .8 - wobble), landing * fading, 0, d.stretch, d.phase, d.drift, d.light);
       }
     },
     dispose() {
