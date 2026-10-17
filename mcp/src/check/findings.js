@@ -198,6 +198,13 @@ export function fromProbe(f, context) {
         message: `Tab reaches ${f.what}${f.more ? ` and ${f.more} more` : ""}, but nothing on screen shows the focus there: a keyboard reader cannot see where it is.`,
         fix: "Show focus: take off outline: none, or put a :focus-visible style that shows in its place (outline: 2px solid in the ink color, outline-offset: 2px; on a slat, in the slat type's css).",
       };
+    case "selection-control-reset":
+      return {
+        level: "warning",
+        code: f.code,
+        message: `The control "${f.control}" selects the same data as chart hover, but ${f.when} changes its committed value or loses its selected view.`,
+        fix: "Keep the choice made with this selection control separate from the temporary hover preview. The control may follow the hovered point visually, but when hover ends or focus moves, its value and selected view must return to the committed choice. Chart clicks, taps, keyboard selection and the input should update the same committed selection. Do not save and restore a shared value around individual events, reset the input on blur, or apply the initial-state reset rule to this control's chosen value. Preserve explicit user instructions for a different interaction policy.",
+      };
     case "selection-hover-stays":
       return {
         level: "warning",

@@ -1,7 +1,8 @@
-// A conditional audit of an existing click selection with a temporary hover override.
-// No click selection or no temporary hover means there is no interaction policy to repair here.
+// Conditional audits of existing selection: a control selecting chart data, or click selection with temporary hover.
+// The observed behavior establishes which interaction policy applies; unrelated controls do not change it.
 // Run on a disposable page: clicks must not change the starting state of the normal interaction pass.
 import { seenPixels } from "./png.js";
+import { controlSelection } from "./selection-controls.js";
 
 const SAME = 20;
 const same = (a, b) => seenPixels(a, b) < SAME;
@@ -51,10 +52,17 @@ export async function selectionBehavior(page, { events }) {
     // Use reachable marks, including marks inside a slat, from the main Plot.
     // Keep the window still throughout the sequence so scrolling and sticky readouts cannot mimic a state change.
     const slats = await page.evaluate(() => window.__rhpProbe.sweepTargets(12));
-    if (slats.length < 2) return audit;
+    if (!slats.length) return audit;
     await page.evaluate((n) => window.__rhpProbe.pointAt(n), slats[0].target);
     await away();
     const position = await page.evaluate(() => [scrollX, scrollY]);
+    const off = await page.evaluate(beside, slats[0].target);
+    if (!off) return audit;
+    doing = "checking selection changed by a control";
+    const controlled = await controlSelection(page, { slats, off, look, away, settle });
+    findings.push(...controlled.findings);
+    if (controlled.tested.length) audit.tested = { controls: controlled.tested };
+    if (slats.length < 2) return audit;
     const candidates = [];
     for (const s of slats) {
       const point = await pointAt(s);
@@ -64,8 +72,6 @@ export async function selectionBehavior(page, { events }) {
       if (candidates.length === 3) break;
     }
     if (candidates.length < 2) return audit;
-    const off = await page.evaluate(beside, candidates[0].target);
-    if (!off) return audit;
     const rest = await look();
     if (!same(rest, await look())) return audit;
     // At most three candidates, so an initial meaningful default on the first mark does not hide click selection.
@@ -98,14 +104,20 @@ export async function selectionBehavior(page, { events }) {
         const selected = await look();
         const hoverBroken = !same(selected, offChart);
         // This click is inside the poster, outside every chart and control.
-        doing = `click beside the chart after selecting ${name(chosen)}`;
-        await page.mouse.click(off.x, off.y);
-        await away();
-        const reset = await look();
-        const resetBroken = !same(rest, reset);
+        let reset = selected;
+        let resetBroken = false;
+        // A proven selection control establishes a persistent choice, rather than the page's initial default.
+        // The control audit already checks that a background click leaves that choice intact.
+        if (!controlled.tested.length) {
+          doing = `click beside the chart after selecting ${name(chosen)}`;
+          await page.mouse.click(off.x, off.y);
+          await away();
+          reset = await look();
+          resetBroken = !same(rest, reset);
+        }
         const end = await page.evaluate(() => [scrollX, scrollY]);
         if (position.some((v, i) => v !== end[i]) || !same(reset, await look())) return audit;
-        audit.tested = { selected: name(chosen), preview: name(preview), hoverRestoresSelection: !hoverBroken, clickRestoresInitial: !resetBroken };
+        audit.tested = { ...audit.tested, selected: name(chosen), preview: name(preview), hoverRestoresSelection: !hoverBroken, ...(!controlled.tested.length ? { clickRestoresInitial: !resetBroken } : {}) };
         if (hoverBroken) findings.push({ code: "selection-hover-stays", target: name(preview), selected: name(chosen), what: off.what });
         if (resetBroken) findings.push({ code: "selection-reset", target: name(chosen), what: off.what });
         return audit;

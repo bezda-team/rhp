@@ -150,17 +150,25 @@ The tests read this table: every code in it must have a chart in `test/broken/` 
 The shared checker runs this audit after creation, through both `rhp_check` and the CLI (`npx -y @bezda/rhp-mcp check <file>`).
 It does not require either click selection or hover, and these checks do not choose an interaction for the chart.
 On an isolated page, it first verifies that a click persists after the pointer leaves the poster, another slat's hover overrides it, and leaving the poster restores the clicked selection.
-Only that observed combination qualifies.
+That observed combination qualifies for the click-selection checks.
 It then checks a pointer move and a click on noninteractive text or margin inside the same poster, outside every chart and control.
 The initial appearance is the reset reference, preserving an existing default without guessing which subject should be selected.
+If the poster also has a visible range, number input, select, or external slider, the audit first checks whether two of its values reproduce two different chart hover states.
+Only a control proven to select the same data changes the reset policy; an unrelated filter does not qualify.
+For a proven selection control, the audit checks that leaving the chart restores its committed value and chosen view, and moving focus or clicking noninteractive poster space preserves that choice.
+The visible control may follow the hovered point during preview, provided it returns to the committed choice when preview ends.
+Native thumbs and focus rings are excluded from the image comparison, while the chart and its readout remain in the comparison.
+The initial-state reset recommendation is omitted for these persistent control selections.
 Moving pages, unreachable marks and sequences that scroll are inconclusive rather than findings.
-The audit samples up to three reachable slats of the main Plot at the first checked width.
+The audit samples up to three reachable slats of the main Plot at the first checked width, or both ends and the middle of a single continuous hit surface.
+Controls outside the viewport or without two observable matching selection states are inconclusive.
 It never changes the source; its conditional fix is returned to the authoring agent through the skill's existing check-and-fix step, with explicit user interaction instructions taking precedence.
 
 | Code | Level | What triggers it | Fix it gives |
 |---|---|---|---|
+| `selection-control-reset` | warning | A control demonstrably selects the same data as chart hover, but leaving the chart, moving focus, or clicking noninteractive poster space loses its committed value or chosen view. | Keep the committed input selection separate from hover; allow a synchronized preview while preserving the choice through pointer and focus changes, and share it with chart click, tap, and keyboard selection. |
 | `selection-hover-stays` | warning | Verified click selection with a temporary hover override: moving off the chart but staying in the poster does not restore the clicked selection, although leaving the poster does. | Clear only the hover preview on leaving the chart area; preserve the clicked selection, unless the user explicitly asked for different behavior. |
-| `selection-reset` | warning | The same verified pattern: clicking noninteractive poster space outside the chart fails to restore the initial appearance. | Clear the selection if no default existed, or restore the chart's meaningful default; preserve explicitly requested behavior and other controls. |
+| `selection-reset` | warning | The same verified pattern, without a proven external selection control: clicking noninteractive poster space outside the chart fails to restore the initial appearance. | Clear the selection if no default existed, or restore the chart's meaningful default; preserve explicitly requested behavior and other controls. |
 
 ### Colors (read from screenshots)
 

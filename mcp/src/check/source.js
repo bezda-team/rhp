@@ -74,6 +74,27 @@ function walk(node, visit) {
   }
 }
 
+// Literal module dependencies, excluding strings, comments and object properties that look like imports.
+export function moduleSpecifiers(code, file) {
+
+  let ast;
+  try {
+    ast = parseSync(code, { sourceType: "module", configFile: false, babelrc: false, filename: file });
+  } catch {
+    return []; // The caller reports syntax errors separately.
+  }
+  const imports = [];
+  walk(ast.program, (node) => {
+    const source = /^(ImportDeclaration|ExportNamedDeclaration|ExportAllDeclaration|ImportExpression)$/.test(node.type)
+      ? node.source
+      : node.type === "CallExpression" && node.callee.type === "Import" ? node.arguments[0] : null;
+    const value = source?.type === "StringLiteral" ? source.value
+      : source?.type === "TemplateLiteral" && source.expressions.length === 0 ? source.quasis[0].value.cooked : null;
+    if (value != null) imports.push({ source: value, line: node.loc.start.line });
+  });
+  return imports;
+}
+
 const isSpace = (c) => c === " " || c === "\n" || c === "\t" || c === "\r" || c === "\f";
 
 // The attributes in an html template, in order: { tag, name, value, at } with tag { component, expr, name }, value

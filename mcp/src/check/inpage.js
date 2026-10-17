@@ -1123,7 +1123,8 @@ export function install() {
     if (hit) return hit;
 
     const r = slat.getBoundingClientRect();
-    const { x, y } = marks.length ? pointsOn(marks[0])[0] : { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    const { x, y } = marks.length ? pointsOn(marks[0])[0] : { x: r.left + r.width * across, y: r.top + r.height / 2 };
+    if (reaches({ x, y })) return { x, y };
     const takes = (e) => getComputedStyle(e).pointerEvents !== "none" && e.checkVisibility({ visibilityProperty: true }) && e.getBoundingClientRect().width * e.getBoundingClientRect().height > 0;
     if ([slat, ...slat.querySelectorAll("*")].some(takes)) {
       const on = document.elementFromPoint(x, y);

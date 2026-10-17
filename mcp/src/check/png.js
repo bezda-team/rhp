@@ -99,7 +99,7 @@ export function pixelsIn(image, { left, top, right, bottom }) {
 
 // How many pixels of two screenshots of one box differ enough to see (their channels by more than 24 in all: a
 // tint of 6% of the ink over the paper shows, drawing one page twice changes nothing)
-export function seenPixels(a, b) {
+export function seenPixels(a, b, ignore = []) {
 
   if (a.equals(b)) return 0;
 
@@ -109,6 +109,11 @@ export function seenPixels(a, b) {
 
   let n = 0;
   for (let i = 0; i < x.data.length; i += 4) {
+    if (ignore.length) {
+      const px = (i / 4) % x.width;
+      const py = Math.floor(i / 4 / x.width);
+      if (ignore.some((r) => px >= r.left && px < r.right && py >= r.top && py < r.bottom)) continue;
+    }
     if (Math.abs(x.data[i] - y.data[i]) + Math.abs(x.data[i + 1] - y.data[i + 1]) + Math.abs(x.data[i + 2] - y.data[i + 2]) > 24) n++;
   }
 

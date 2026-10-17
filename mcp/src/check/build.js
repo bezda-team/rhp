@@ -10,6 +10,7 @@ import path from "path";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
 import * as esbuild from "esbuild";
+import { moduleSpecifiers } from "./source.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const GUARD = path.join(here, "../guard");
@@ -423,12 +424,12 @@ export async function htmlProblems(file, text) {
     }
 
     if (module) {
-      for (const [, spec] of body.matchAll(/(?:from|import)\s*\(?\s*["']([^"'./][^"']*)["']/g)) {
-        if (/^(https?:|data:|blob:)/.test(spec) || spec in mapped || Object.keys(mapped).some((k) => k.endsWith("/") && spec.startsWith(k))) continue;
+      for (const { source: spec, line } of moduleSpecifiers(body, file)) {
+        if (/^(https?:|data:|blob:|\.|\/)/.test(spec) || spec in mapped || Object.keys(mapped).some((k) => k.endsWith("/") && spec.startsWith(k))) continue;
         problems.push({
           level: "error",
           code: "missing-import-map",
-          message: `${path.basename(file)}:${start}: the module script imports "${spec}", but no import map says where it comes from.`,
+          message: `${path.basename(file)}:${start + line - 1}: the module script imports "${spec}", but no import map says where it comes from.`,
           fix: spec.startsWith("@bezda/rhp") ? 'Add <script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script> before the module script.' : `Add "${spec}" to the page's import map, or import it by URL.`,
         });
       }
