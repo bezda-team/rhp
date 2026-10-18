@@ -22,7 +22,7 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
 .poster .headline { display: block; font: 700 72px/.98 var(--display); letter-spacing: -.01em; }
 .lead-in { display: block; margin-bottom: 3px; color: var(--pouches); font-size: 55px; }
 .finding { display: block; }
-.headline .number-block { display: flex; align-items: center; gap: 32px; margin-top: 9px; }
+.headline .number-block { display: flex; align-items: center; justify-content: flex-end; gap: 32px; margin-top: 9px; text-align: right; }
 .headline .number { font: 700 160px/.85 var(--display); letter-spacing: -.04em; white-space: nowrap; }
 .headline .number-note { font: 600 26px/1.28 var(--text); letter-spacing: 0; }
 .headline .number-note strong { display: block; margin-bottom: 6px; font: 700 38px/1 var(--display); }
@@ -321,7 +321,7 @@ function TobaccoPoster() {
  };
  return html`<${Poster}
   kicker=${html`<span>After the vape boom</span><span>U.S. high school · 2022 to 2025</span>`}
-  title=${html`<span class="lead-in">Nicotine pouches rose.</span><span class="finding">Teen tobacco use fell.</span><span class="number-block"><b class="number">${DATA.declineRounded}%</b><span class="number-note"><strong>${percent(SERIES[0].values[0])} → ${percent(SERIES[0].values.at(-1))}</strong>reported any tobacco use<small>U.S. high school students<br/>2022 to 2025</small></span></span>`}
+  title=${html`<span class="lead-in">Nicotine pouches rose.</span><span class="finding">Teen tobacco use fell</span><span class="number-block"><b class="number">${DATA.declineRounded}%</b><span class="number-note">relative decline<strong>${percent(SERIES[0].values[0])} → ${percent(SERIES[0].values.at(-1))}</strong><small>U.S. high school students<br/>2022 to 2025</small></span></span>`}
   dek="The overall measure already includes e-cigarettes and nicotine pouches, alongside other tobacco products."
   note=${html`<span><b>Categories overlap; do not add them.</b> Different students each year, not a measure of switching or nicotine dose.<span class="source">Source: FDA, National Youth Tobacco Survey, 2022 to 2025. Table 3, published June 2026.</span></span>`}
   onPointerMove=${move} onPointerLeave=${leave} onClick=${pick} onKeyDown=${key}

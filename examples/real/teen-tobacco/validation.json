@@ -23,7 +23,7 @@
         2000,
         2500
       ],
-      "meanChannelDifference": 0.10036266666666667,
+      "meanChannelDifference": 0.0922176,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -43,7 +43,7 @@
         2000,
         2500
       ],
-      "meanChannelDifference": 0.000003466666666666667,
+      "meanChannelDifference": 0,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -63,7 +63,7 @@
         2000,
         2500
       ],
-      "meanChannelDifference": 1.6357178666666667,
+      "meanChannelDifference": 1.6332970666666666,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -77,14 +77,14 @@
       "viewportWidth": 390,
       "cssDimensions": [
         370,
-        1061.375
+        1040.90625
       ],
       "pngDimensions": [
         740,
-        2122
+        2081
       ],
-      "meanChannelDifference": 2.747778315544574,
-      "fitExportDifference": 0,
+      "meanChannelDifference": 5.127326461908594,
+      "fitExportDifference": 8.654187328538914e-7,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
       "selectionAfterDownload": "preserved",
