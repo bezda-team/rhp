@@ -3,8 +3,9 @@
   "checker": {
     "widths": [
       1280,
-      1024,
       768,
+      700,
+      430,
       390,
       360,
       320
@@ -261,7 +262,7 @@
     "crosshair": "passes through every selected point",
     "endLabels": "inside plot with no overlap",
     "rightGapRange": [
-      9.234375,
+      1.65625,
       15.515625
     ]
   },
@@ -349,10 +350,97 @@
       "left": 28
     }
   },
-  "chartPaddingLeft": 52,
+  "chartPaddingLeft": {
+    "desktop": 52,
+    "mobile": 34
+  },
   "posterBrightness": 0.94,
   "brightnessVerification": {
     "currentBrightness": 0.94,
     "lastCheckedBrightness": 0.9
+  },
+  "mobileLayout": {
+    "measurements": [
+      {
+        "engine": "chromium",
+        "viewport": 320,
+        "plotWidthBefore": 98,
+        "plotWidthAfter": 131,
+        "axisOffsetFromTextEdge": 0.328125,
+        "endLabelBoxRightGap": 1.65625
+      },
+      {
+        "engine": "chromium",
+        "viewport": 360,
+        "plotWidthBefore": 138,
+        "plotWidthAfter": 171,
+        "axisOffsetFromTextEdge": 0.328125,
+        "endLabelBoxRightGap": 2.15625
+      },
+      {
+        "engine": "chromium",
+        "viewport": 390,
+        "plotWidthBefore": 168,
+        "plotWidthAfter": 201,
+        "axisOffsetFromTextEdge": 0.328125,
+        "endLabelBoxRightGap": 2.53125
+      },
+      {
+        "engine": "chromium",
+        "viewport": 430,
+        "plotWidthBefore": 208,
+        "plotWidthAfter": 241,
+        "axisOffsetFromTextEdge": 0.328125,
+        "endLabelBoxRightGap": 3.03125
+      },
+      {
+        "engine": "chromium",
+        "viewport": 700,
+        "plotWidthBefore": 373.40625,
+        "plotWidthAfter": 399.40625,
+        "axisOffsetFromTextEdge": 0.328125,
+        "endLabelBoxRightGap": 4.78125
+      },
+      {
+        "engine": "webkit",
+        "viewport": 390,
+        "plotWidthBefore": 168,
+        "plotWidthAfter": 201,
+        "axisOffsetFromTextEdge": 0.34375,
+        "endLabelBoxRightGap": 2.53125
+      }
+    ],
+    "exportChecks": [
+      {
+        "engine": "chromium",
+        "plotWidth": 201,
+        "leftPadding": "34px",
+        "axisGap": 0.328125,
+        "visibleRightGap": 3.390625,
+        "filter": "brightness(0.94)",
+        "pngDimensions": [
+          740,
+          2319
+        ],
+        "meanChannelDifference": 0.1899161230195713,
+        "selection": "four years and fitted touch aligned",
+        "download": "preserves mobile gutters and selection"
+      },
+      {
+        "engine": "webkit",
+        "plotWidth": 201,
+        "leftPadding": "34px",
+        "axisGap": 0.34375,
+        "visibleRightGap": 3.39923095703125,
+        "filter": "brightness(0.94)",
+        "pngDimensions": [
+          740,
+          2319
+        ],
+        "meanChannelDifference": 3.791891115253184,
+        "selection": "four years and fitted touch aligned",
+        "download": "preserves mobile gutters and selection"
+      }
+    ]
   }
 }

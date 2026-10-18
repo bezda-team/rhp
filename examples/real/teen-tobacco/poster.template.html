@@ -27,7 +27,7 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
 .plot-unit { margin: 0 0 16px; color: var(--soft); font-size: 22px; }
 .plot-unit b { color: var(--ink); font-weight: 600; }
 .axis-number { font-size: 22px; }
-.plot-wrap { flex: 1; min-width: 0; margin-bottom: 32px; touch-action: pan-y; }
+.plot-wrap { --end-room-buffer: 8px; flex: 1; min-width: 0; margin-bottom: 32px; touch-action: pan-y; }
 .plot-wrap:has(:focus-visible) { outline: 2px solid var(--ink); outline-offset: 4px; }
 .year-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; gap: 9px; padding-top: 18px; }
 .year-controls button { height: 43px; border: 1px solid var(--rule); border-radius: 0; color: var(--soft); background: rgb(9 29 40 / .5); font: 600 22px/1 var(--text); font-variant-numeric: tabular-nums; cursor: pointer; }
@@ -70,7 +70,7 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
  .poster .dek { font-size: 16px; line-height: 1.4; }
  .plot-unit { font-size: 14px; }
  .axis-number { font-size: 13px; }
- .plot-wrap { margin-bottom: 28px; }
+ .plot-wrap { --chart-pad-left: 34px; --end-room-buffer: 0px; --begin-vapes-offset: 4px; margin-bottom: 28px; }
  .year-controls { gap: 6px; padding-top: 16px; }
  .year-controls button { font-size: 14px; height: 37px; }
  .readout { gap: 9px; margin-top: 22px; }
@@ -129,7 +129,7 @@ const seriesSlat = room => slat({room:{get end(){return room();},before:15},css:
  .end .label-name {display:inline-block;vertical-align:middle;}
  .pouches .end .label-name {width:var(--end-name-width);white-space:normal;}
  .begin {--rhp-label-gap:0px; translate:0 0; padding-bottom:15px; font:700 var(--begin-size)/1 var(--display); color:var(--rhp-color);}
- .vapes .begin {translate:-100% 50%;padding:0 13px 0 0;}
+ .vapes .begin {translate:calc(-100% + var(--begin-vapes-offset, 0px)) 50%;padding:0 13px 0 0;}
  .stacked .end b {display:block;margin:0 0 3px;}
  .stacked .end .label-name {width:var(--end-name-width);white-space:normal;}
  .stacked.vapes .curve {stroke-dasharray:8 5;}
@@ -163,7 +163,7 @@ function TobaccoPoster() {
  const labelStyle = ()=>({
   '--end-name-size':`${fit(plotWidth()*26/888,12,26)}px`,
   '--end-value-size':`${fit(plotWidth()*32/888,22,32)}px`,
-  '--end-name-width':`${compact()?fit(plotWidth()*.17,74,96):fit(plotWidth()*.145,85,128)}px`,
+  '--end-name-width':`${compact()?fit(plotWidth()*.17,67,96):fit(plotWidth()*.145,85,128)}px`,
   '--end-gap':`${fit(plotWidth()*.017,12,15)}px`,
   '--begin-size':`${fit(plotWidth()*27/888,20,27)}px`,
   '--year-size':`${fit(plotWidth()*22/888,13,22)}px`,
@@ -176,7 +176,8 @@ function TobaccoPoster() {
    if(!plotElement.isConnected)return;
    if(observedWidth!=null)setPlotWidth(observedWidth);
    const widest = Math.max(...[...plotElement.querySelectorAll('.end')].map(label=>label.offsetWidth));
-   if(widest>0)setEndRoom(widest+8);
+   const buffer = parseFloat(getComputedStyle(plotElement).getPropertyValue('--end-room-buffer'));
+   if(widest>0)setEndRoom(widest+(Number.isFinite(buffer)?buffer:8));
   };
   const scheduleMeasure = ()=>{
    if(frame)return;
@@ -230,7 +231,7 @@ function TobaccoPoster() {
   <div class="backdrop" aria-hidden="true"><img src="__BACKGROUND__" width="1120" height="1400" alt="" /></div>
   <p class="plot-unit"><b>Share of students</b> reporting use in the past 30 days</p>
   <div class="plot-wrap" ref=${element=>{plotElement=element;}} style=${labelStyle}>
-   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>fit(plotWidth()*.66,330,365)} theme=${THEME} style=${{'--rhp-pad-left':'52px'}}
+   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>fit(plotWidth()*.66,330,365)} theme=${THEME} style=${{'--rhp-pad-left':'var(--chart-pad-left, 52px)'}}
     label="U.S. high school students reporting past-30-day use, 2022 to 2025. Any tobacco product, e-cigarettes and nicotine pouches.">
     <${Scale} ticks=${YEARS}>${YearTicks}<//>
     <${Plot} overlap=${true} rows=${SERIES} stacked=${compact} style=${{'pointer-events':'none'}}>${Series}<//>
