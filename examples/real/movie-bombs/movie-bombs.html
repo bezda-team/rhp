@@ -194,7 +194,7 @@ function MovieBombs() {
    <p><a href=${row.report.url}>Original loss report</a> · <a href=${row.source}>Current box office and credits</a></p>
    <dl><dt>What was estimated</dt><dd>${row.report.basis}</dd><dt>Assumptions</dt><dd>${row.report.assumption}</dd><dt>What to keep in mind</dt><dd>${row.report.caveat}</dd><dt>Current box office</dt><dd>${exactMoney.format(row.worldwide)} worldwide as of 17 October 2026. Ticket sales are not studio revenue.</dd><dt>Production budget</dt><dd>${exactMoney.format(row.budget)} reported by The Numbers. Budget and gross are contextual figures, not the loss calculation.</dd></dl>
   </article>`)}
-  <p class="files"><a href="data.json">Exact figures and report assumptions</a> · <a href="selection-audit.json">Selection and excluded reports</a> · <a href="artwork-credits.json">Artwork credits</a> · <a href="post.txt">Reddit draft</a></p>
+  <p class="files"><a href="data.json">Exact figures and report assumptions</a> · <a href="selection-audit.json">Selection and excluded reports</a> · <a href="artwork-credits.json">Artwork credits</a></p>
  </section>`;
 }
 render(() => html`<${MovieBombs} />`, document.getElementById("chart"));
