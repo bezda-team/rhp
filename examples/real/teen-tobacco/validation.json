@@ -23,7 +23,7 @@
         2000,
         2580
       ],
-      "meanChannelDifference": 0.30896976744186044,
+      "meanChannelDifference": 0.3244917312661499,
       "fitExportDifference": 0.0022193798449612404,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -43,7 +43,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -60,7 +61,7 @@
         2000,
         2580
       ],
-      "meanChannelDifference": 1.1948754521963825,
+      "meanChannelDifference": 1.255704134366925,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -80,7 +81,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -97,7 +99,7 @@
         2000,
         2580
       ],
-      "meanChannelDifference": 1.6597434108527132,
+      "meanChannelDifference": 1.4587922480620155,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -117,7 +119,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -134,7 +137,7 @@
         740,
         2295
       ],
-      "meanChannelDifference": 4.238118780801708,
+      "meanChannelDifference": 4.217372947860753,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
@@ -154,7 +157,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -264,39 +268,44 @@
       {
         "browser": "chromium",
         "bottomRight": [
-          16,
-          43,
-          57,
+          9,
+          29,
+          40,
           255
-        ]
+        ],
+        "meanChannelDifference": 0.3244917312661499
       },
       {
         "browser": "firefox",
         "bottomRight": [
-          16,
-          43,
-          57,
+          9,
+          29,
+          40,
           255
-        ]
+        ],
+        "meanChannelDifference": 1.255704134366925
       },
       {
         "browser": "webkit",
         "bottomRight": [
-          16,
-          43,
-          57,
+          9,
+          29,
+          40,
           255
-        ]
+        ],
+        "meanChannelDifference": 1.4587922480620155
       },
       {
         "browser": "webkit-phone",
         "bottomRight": [
-          15,
-          43,
-          57,
+          8,
+          29,
+          40,
           255
-        ]
+        ],
+        "meanChannelDifference": 4.217372947860753
       }
-    ]
+    ],
+    "color": "#091d28"
   }
 }
