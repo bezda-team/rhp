@@ -56,7 +56,7 @@ The design uses actual scaled lines and points and the draft links to primary ev
 
 Direct desktop and phone feed inspection in Playwright was prevented by Reddit's JavaScript challenge.
 Therefore no claim is made about a verified live Reddit crop or exact current card dimensions.
-The exported 4:5 image is reviewed at representative 360px and 640px display widths instead.
+The exported portrait image is reviewed at representative 360px and 640px display widths instead.
 
 PRIMARY EVIDENCE
 Latest available release confirmed via the FDA survey portal:

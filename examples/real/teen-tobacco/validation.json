@@ -17,23 +17,23 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1330.109375
+        1313.875
       ],
       "pngDimensions": [
         2000,
-        2660
+        2627
       ],
-      "meanChannelDifference": 0.26645388471177944,
-      "fitExportDifference": 0.0017373433583959899,
+      "meanChannelDifference": 0.8890022831050228,
+      "fitExportDifference": 0.01964840182648402,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
       "crosshair": "passes through all three selected points",
       "readout": "three values aligned",
       "presentation": {
-        "paddingLeft": "56px",
-        "paddingRight": "56px",
-        "paddingBottom": "40px",
+        "paddingLeft": "64px",
+        "paddingRight": "64px",
+        "paddingBottom": "48px",
         "captionMargin": "40px",
         "plotMargin": "32px",
         "numberNoteCount": 0,
@@ -43,7 +43,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -54,13 +55,13 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1330.1500244140625
+        1313.9000244140625
       ],
       "pngDimensions": [
         2000,
-        2660
+        2627
       ],
-      "meanChannelDifference": 0.8522651629072682,
+      "meanChannelDifference": 1.4087612886859462,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -68,9 +69,9 @@
       "crosshair": "passes through all three selected points",
       "readout": "three values aligned",
       "presentation": {
-        "paddingLeft": "56px",
-        "paddingRight": "56px",
-        "paddingBottom": "40px",
+        "paddingLeft": "64px",
+        "paddingRight": "64px",
+        "paddingBottom": "48px",
         "captionMargin": "40px",
         "plotMargin": "32px",
         "numberNoteCount": 0,
@@ -80,7 +81,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -91,13 +93,13 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1330.109375
+        1313.875
       ],
       "pngDimensions": [
         2000,
-        2660
+        2627
       ],
-      "meanChannelDifference": 1.35957343358396,
+      "meanChannelDifference": 2.9036468797564687,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -105,9 +107,9 @@
       "crosshair": "passes through all three selected points",
       "readout": "three values aligned",
       "presentation": {
-        "paddingLeft": "56px",
-        "paddingRight": "56px",
-        "paddingBottom": "40px",
+        "paddingLeft": "64px",
+        "paddingRight": "64px",
+        "paddingBottom": "48px",
         "captionMargin": "40px",
         "plotMargin": "32px",
         "numberNoteCount": 0,
@@ -117,7 +119,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -128,13 +131,13 @@
       "viewportWidth": 390,
       "cssDimensions": [
         370,
-        1179.828125
+        1159.640625
       ],
       "pngDimensions": [
         740,
-        2359
+        2319
       ],
-      "meanChannelDifference": 4.108566956787295,
+      "meanChannelDifference": 3.7703145386766077,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
@@ -142,9 +145,9 @@
       "crosshair": "passes through all three selected points",
       "readout": "three values aligned",
       "presentation": {
-        "paddingLeft": "24px",
-        "paddingRight": "24px",
-        "paddingBottom": "32px",
+        "paddingLeft": "28px",
+        "paddingRight": "28px",
+        "paddingBottom": "36px",
         "captionMargin": "32px",
         "plotMargin": "28px",
         "numberNoteCount": 0,
@@ -154,7 +157,8 @@
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
-        "yearButtons": "2022202320242025"
+        "yearButtons": "2022202320242025",
+        "backgroundColor": "#091d28"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -169,7 +173,7 @@
     ],
     "imageDimensions": [
       2000,
-      2660
+      2627
     ]
   },
   "responsiveChecks": {
@@ -253,8 +257,8 @@
     "crosshair": "passes through every selected point",
     "endLabels": "inside plot with no overlap",
     "rightGapRange": [
-      9.46875,
-      15.75
+      9.234375,
+      15.515625
     ]
   },
   "backgroundFade": {
@@ -269,7 +273,7 @@
           40,
           255
         ],
-        "meanChannelDifference": 0.3244917312661499
+        "meanChannelDifference": 0.8890022831050228
       },
       {
         "browser": "firefox",
@@ -279,27 +283,27 @@
           40,
           255
         ],
-        "meanChannelDifference": 1.255704134366925
+        "meanChannelDifference": 1.4087612886859462
       },
       {
         "browser": "webkit",
         "bottomRight": [
-          9,
-          29,
-          40,
+          7,
+          28,
+          38,
           255
         ],
-        "meanChannelDifference": 1.4587922480620155
+        "meanChannelDifference": 2.9036468797564687
       },
       {
         "browser": "webkit-phone",
         "bottomRight": [
           8,
-          29,
+          28,
           40,
           255
         ],
-        "meanChannelDifference": 4.217372947860753
+        "meanChannelDifference": 3.7703145386766077
       }
     ],
     "color": "#091d28"
@@ -318,8 +322,28 @@
       "desktop": 16,
       "phone": 12
     },
+    "sourceFontSize": {
+      "desktop": 16,
+      "phone": 10.5
+    },
     "credit": "Built with rhp",
-    "position": "bottom right within poster padding",
+    "position": "right aligned in the same row as the source",
+    "opacity": 0.78,
     "browserAndPngChecks": "passed"
-  }
+  },
+  "posterPadding": {
+    "desktop": {
+      "top": 42,
+      "right": 64,
+      "bottom": 48,
+      "left": 64
+    },
+    "phone390": {
+      "top": 32,
+      "right": 28,
+      "bottom": 36,
+      "left": 28
+    }
+  },
+  "chartPaddingLeft": 52
 }
