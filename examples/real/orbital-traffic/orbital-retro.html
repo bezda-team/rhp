@@ -263,7 +263,7 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 .retro .footer-drawer{background:#102f38f5;transform:translateY(calc(100% - var(--footer-summary-height,60px)));transition:transform .25s ease}
 .retro .footer-drawer.is-expanded{transform:translateY(0)}
 .retro .footer-summary{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:13px var(--footer-inline);border:0;border-top:1px solid var(--rule);background:transparent;color:var(--ink);font:400 14px/1.6 var(--text);text-align:left;cursor:pointer}
-.retro .footer-summary strong{flex:1;font-weight:600}
+.retro .footer-summary strong{flex:1;font-size:16px;font-weight:600}
 .retro .footer-summary:focus-visible{outline:2px solid var(--ink);outline-offset:-5px}
 .retro .footer-prompt{white-space:nowrap;font-weight:400;color:var(--soft)}
 .retro .footer-summary svg{width:18px;height:18px;flex:none;transition:transform .25s ease}
@@ -272,8 +272,8 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 .retro .footer-body{padding:0 var(--footer-inline) var(--footer-bottom)}
 .retro .footer-body .note{margin-top:0}
 .retro .footer-drawer:not(.is-expanded) .footer-body{visibility:hidden}
-@media(max-width:900px) and (min-width:601px){.retro .footer-stage{margin-right:-34px;margin-left:-34px;--footer-inline:34px}.retro .footer-summary{font-size:12px}}
-@media(max-width:600px){.retro .footer-stage{margin:0 -21px -22px;--footer-inline:21px;--footer-bottom:22px}.retro .footer-summary{font-size:10px;gap:8px;padding-top:10px;padding-bottom:10px}.retro .footer-summary strong{flex:1}.retro .footer-summary svg{width:14px;height:14px}}
+@media(max-width:900px) and (min-width:601px){.retro .footer-stage{margin-right:-34px;margin-left:-34px;--footer-inline:34px}.retro .footer-summary{font-size:12px}.retro .footer-summary strong{font-size:14px}}
+@media(max-width:600px){.retro .footer-stage{margin:0 -21px -22px;--footer-inline:21px;--footer-bottom:22px}.retro .footer-summary{font-size:10px;gap:8px;padding-top:10px;padding-bottom:10px}.retro .footer-summary strong{font-size:12px;line-height:1.7}.retro .footer-summary svg{width:14px;height:14px}}
 @media(prefers-reduced-motion:reduce){.retro .footer-drawer,.retro .footer-summary svg{transition:none}}
 /* The export utility omits hidden UI while preserving the selected chart image. */
 body:has(.poster-download[aria-busy="true"]) .orbit-tooltip{display:none!important}

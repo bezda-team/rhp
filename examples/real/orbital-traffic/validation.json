@@ -4,7 +4,7 @@
   "mainPng": "orbital-retro.png",
   "pngDimensions": {
     "width": 1920,
-    "height": 3197
+    "height": 3204
   },
   "widths": [
     1280,
@@ -266,6 +266,17 @@
     "stablePosterDimensions": true,
     "mouseTouchAndKeyboard": true,
     "exportsCheckedOpenAndClosed": true,
-    "earthGlow": "Bounded radial gradient avoids the Safari PNG box-shadow artifact."
+    "earthGlow": "Bounded radial gradient avoids the Safari PNG box-shadow artifact.",
+    "summaryFontSizes": {
+      "desktop": 16,
+      "tablet": 14,
+      "phone": 12
+    },
+    "summaryTypographyCheckedAtWidths": [
+      1280,
+      768,
+      390,
+      320
+    ]
   }
 }
