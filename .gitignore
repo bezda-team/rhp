@@ -3,4 +3,6 @@ dist/
 out/
 *.png
 !examples/real/acid-rain/assets/rain-on-glass.png
+!examples/real/teen-tobacco/assets/school-lockers.png
+!examples/real/teen-tobacco/teen-tobacco.png
 out-scale/

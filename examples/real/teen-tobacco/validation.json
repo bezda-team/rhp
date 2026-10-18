@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-17",
+  "checker": {
+    "widths": [
+      1280,
+      1024,
+      768,
+      390,
+      360,
+      320
+    ],
+    "result": "passed"
+  },
+  "browserChecks": [
+    {
+      "browser": "chromium",
+      "viewportWidth": 1280,
+      "cssDimensions": [
+        1000,
+        1250
+      ],
+      "pngDimensions": [
+        2000,
+        2500
+      ],
+      "meanChannelDifference": 0.10036266666666667,
+      "fitExportDifference": 0,
+      "allFourYears": "forward and backward",
+      "input": "mouse, keyboard, year buttons",
+      "selectionAfterDownload": "preserved",
+      "fittedScroll": "stable",
+      "fittedMarkers": "aligned",
+      "methods": "four rows, no sideways overflow"
+    },
+    {
+      "browser": "firefox",
+      "viewportWidth": 1280,
+      "cssDimensions": [
+        1000,
+        1250
+      ],
+      "pngDimensions": [
+        2000,
+        2500
+      ],
+      "meanChannelDifference": 0.000003466666666666667,
+      "fitExportDifference": 0,
+      "allFourYears": "forward and backward",
+      "input": "mouse, keyboard, year buttons",
+      "selectionAfterDownload": "preserved",
+      "fittedScroll": "stable",
+      "fittedMarkers": "aligned",
+      "methods": "four rows, no sideways overflow"
+    },
+    {
+      "browser": "webkit",
+      "viewportWidth": 1280,
+      "cssDimensions": [
+        1000,
+        1250
+      ],
+      "pngDimensions": [
+        2000,
+        2500
+      ],
+      "meanChannelDifference": 1.6357178666666667,
+      "fitExportDifference": 0,
+      "allFourYears": "forward and backward",
+      "input": "mouse, keyboard, year buttons",
+      "selectionAfterDownload": "preserved",
+      "fittedScroll": "stable",
+      "fittedMarkers": "aligned",
+      "methods": "four rows, no sideways overflow"
+    },
+    {
+      "browser": "webkit-phone",
+      "viewportWidth": 390,
+      "cssDimensions": [
+        370,
+        1061.375
+      ],
+      "pngDimensions": [
+        740,
+        2122
+      ],
+      "meanChannelDifference": 2.747778315544574,
+      "fitExportDifference": 0,
+      "allFourYears": "forward and backward",
+      "input": "mouse, keyboard, year buttons, touch",
+      "selectionAfterDownload": "preserved",
+      "fittedScroll": "stable",
+      "fittedMarkers": "aligned",
+      "methods": "four rows, no sideways overflow"
+    }
+  ],
+  "redditDisplay": {
+    "directInspection": "prevented by Reddit JavaScript challenge",
+    "representativeWidths": [
+      360,
+      640
+    ],
+    "imageDimensions": [
+      2000,
+      2500
+    ],
+    "aspectRatio": "4:5"
+  }
+}

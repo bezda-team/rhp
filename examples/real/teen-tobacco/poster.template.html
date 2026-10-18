@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="U.S. high-school tobacco-product use fell from 16.5% to 9.5% between 2022 and 2025, including e-cigarettes and nicotine pouches. FDA survey estimates and confidence intervals.">
+<title>Pouches rose. Teen tobacco use fell 42%.</title>
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
+<style>
+__FONTS__
+:root { color-scheme: dark; --page: #0c1b23; --paper: #102b39; --ink: #fff4da; --soft: #cad9df; --rule: #41606c; --vapes: #87d4ff; --pouches: #ffb18d; --display: 'Barlow Condensed', Impact, sans-serif; --text: 'IBM Plex Sans', Arial, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(--ink); font: 17px/1.5 var(--text); }
+.poster { position: relative; isolation: isolate; overflow: clip; width: 100%; max-width: 1000px; min-height: 1250px; margin: 0 auto; padding: 34px 48px 26px; background: var(--paper); display: flex; flex-direction: column; }
+.backdrop { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.backdrop img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .58; }
+.backdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(9 29 40 / .3), rgb(9 29 40 / .5) 75%, rgb(9 29 40 / .2)); }
+.poster figcaption { display: grid; gap: 15px; margin: 0 0 18px; }
+.poster .kicker { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--rule); color: var(--soft); font-size: 18px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.poster .headline { display: block; font: 700 72px/.98 var(--display); letter-spacing: -.01em; }
+.lead-in { display: block; margin-bottom: 3px; color: var(--pouches); font-size: 55px; }
+.finding { display: block; }
+.headline .number-block { display: flex; align-items: center; gap: 32px; margin-top: 9px; }
+.headline .number { font: 700 160px/.85 var(--display); letter-spacing: -.04em; white-space: nowrap; }
+.headline .number-note { font: 600 26px/1.28 var(--text); letter-spacing: 0; }
+.headline .number-note strong { display: block; margin-bottom: 6px; font: 700 38px/1 var(--display); }
+.headline .number-note small { display: block; font: 400 22px/1.35 var(--text); color: var(--soft); }
+.poster .dek { max-width: none; color: var(--soft); font-size: 23px; line-height: 1.38; }
+.plot-unit { margin: 0 0 8px; color: var(--soft); font-size: 22px; }
+.plot-unit b { color: var(--ink); font-weight: 600; }
+.axis-number { font-size: 22px; }
+.plot-wrap { flex: 1; min-width: 0; touch-action: pan-y; }
+.plot-wrap:has(:focus-visible) { outline: 2px solid var(--ink); outline-offset: 4px; }
+.year-controls { display: grid; grid-template-columns: auto repeat(4, minmax(0, 1fr)); align-items: center; gap: 9px; padding-top: 14px; margin-top: 10px; border-top: 1px solid var(--rule); }
+.year-controls > span { color: var(--soft); margin-right: 12px; font-size: 19px; }
+.year-controls button { height: 43px; border: 1px solid var(--rule); border-radius: 0; color: var(--soft); background: rgb(9 29 40 / .5); font: 600 22px/1 var(--text); font-variant-numeric: tabular-nums; cursor: pointer; }
+.year-controls button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.year-controls button:hover { border-color: var(--ink); }
+.year-controls button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 12px; }
+.readout section { min-width: 0; color: var(--soft); font-size: 17px; }
+.readout .name { display: block; white-space: nowrap; font-size: 17px; }
+.readout .value { display: inline-block; min-width: 3.5ch; font: 700 31px/1.25 var(--display); font-variant-numeric: tabular-nums; }
+.readout .any .value { color: var(--ink); }
+.readout .vapes .value { color: var(--vapes); }
+.readout .pouches .value { color: var(--pouches); }
+.readout small { display: block; color: var(--soft); font-size: 15px; font-variant-numeric: tabular-nums; }
+.ci-range { white-space: nowrap; }
+.poster .note { display: block; margin-top: 17px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 19px; line-height: 1.35; color: var(--soft); }
+.poster .note b { color: var(--ink); font-weight: 600; }
+.poster .note .source { display: block; margin-top: 7px; font-size: 17px; }
+.poster .note a { color: inherit; text-underline-offset: 3px; }
+.below { max-width: 1000px; margin: 20px auto 0; padding: 0 2px; color: var(--soft); }
+.below h2 { margin: 0 0 8px; color: var(--ink); font-size: 22px; }
+.below p { margin: 0 0 12px; }
+.below a { color: var(--vapes); text-underline-offset: 3px; }
+.below details { margin-top: 18px; }
+.below summary { cursor: pointer; color: var(--ink); }
+.below table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 15px; font-variant-numeric: tabular-nums; }
+.below th, .below td { text-align: right; border-bottom: 1px solid var(--rule); padding: 9px 7px; }
+.below th:first-child, .below td:first-child { text-align: left; }
+.below .files { margin-top: 16px; }
+@media (max-width: 700px) {
+ body { padding: 12px 10px 30px; }
+ .poster { padding: 25px 20px 22px; min-height: 0; }
+ .poster .kicker { font-size: 11px; gap: 8px; letter-spacing: .06em; padding-bottom: 11px; }
+ .poster figcaption { gap: 11px; margin-bottom: 15px; }
+ .poster .headline { font-size: clamp(36px, 7.8vw, 54px); }
+ .lead-in { font-size: clamp(30px, 6vw, 43px); }
+ .headline .number-block { gap: 18px; margin-top: 12px; }
+ .headline .number { font-size: clamp(89px, 20vw, 140px); }
+ .headline .number-note { font-size: 16px; }
+ .headline .number-note strong { font-size: 24px; }
+ .headline .number-note small { font-size: 14px; }
+ .poster .dek { font-size: 16px; line-height: 1.4; }
+ .plot-unit { font-size: 14px; }
+ .axis-number { font-size: 13px; }
+ .year-controls { gap: 6px; padding-top: 12px; margin-top: 9px; }
+ .year-controls > span { font-size: 13px; margin-right: 0; }
+ .year-controls button { font-size: 14px; height: 37px; }
+ .readout { gap: 9px; margin-top: 10px; }
+ .readout .name { font-size: 11px; }
+ .readout .value { font-size: 25px; }
+ .readout small { font-size: 10px; }
+ .poster .note { font-size: 13px; margin-top: 12px; padding-top: 11px; }
+ .poster .note .source { font-size: 11px; }
+ .below { font-size: 15px; }
+ .below table { font-size: 11px; }
+ .below th, .below td { padding: 8px 3px; }
+}
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<section class="below" aria-labelledby="methods-title">
+ <h2 id="methods-title">What the survey can tell us</h2>
+ <p>“Current use” means use on at least one of the past 30 days. These are estimates for U.S. high school students in grades 9 to 12, not all teenagers. “Any tobacco product” already includes e-cigarettes and nicotine pouches, including products without tobacco leaf. Categories overlap, so their percentages cannot be added.</p>
+ <p>The chart compares different samples of students each year. It does not track individual switching, nicotine dose or health effects. Cannabis vaping is outside this measure. The 2022 to 2025 trends are statistically significant for all three series; their smaller 2024 to 2025 changes are not.</p>
+ <details><summary>Confidence intervals and survey limitations</summary>
+  <div id="table"></div>
+  <p>Intervals are 95% confidence intervals from the published complex-survey analysis. The 2025 overall response rate was 29.7%, and collection ended six weeks early. Results may be affected by nonresponse and self-reporting. Other oral nicotine products were added to the overall category in 2023, expanding its scope after 2022.</p>
+ </details>
+ <p class="files"><a href="https://academic.oup.com/ntr/advance-article/doi/10.1093/ntr/ntag116/8712569">Primary paper, Table 3</a> · <a href="https://www.fda.gov/tobacco-products/youth-and-tobacco/results-annual-national-youth-tobacco-survey-nyts">FDA summary</a> · <a href="data.json">Data</a> · <a href="estimates.csv">CSV</a> · <a href="analyze.mjs">Calculations</a></p>
+ <p>The locker background is generated artwork, not documentary evidence. All data marks, labels and calculations are drawn in HTML with rhp.</p>
+</section>
+<script type="module">
+import {Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, nice, html, render, createSignal, onCleanup} from '@bezda/rhp/standalone';
+const DATA = __DATA__;
+const YEARS = DATA.years;
+const SERIES = DATA.series.map((s,i) => ({...s, color: `series-${i+1}`}));
+const ALL = SERIES.flatMap(s=>s.values);
+const Y = nice(0, Math.max(...ALL), 5);
+const MIN = YEARS[0]-.15, MAX = YEARS.at(-1)+.15;
+const percent = value => `${value.toFixed(1)}%`;
+const THEME = {font:'var(--text)',ink:'var(--ink)',muted:'var(--soft)',grid:'var(--rule)',surface:'var(--paper)',series:['var(--ink)','var(--vapes)','var(--pouches)']};
+
+const YearTicks = slat({room:{after:42},css:`
+ .tick { top:100%; height:6px; translate:-50% 0; background:var(--rhp-muted); }
+ .year { top:calc(100% + 12px); translate:-50% 0; --rhp-label-gap:0px; font-size:22px; font-weight:600; color:var(--rhp-muted); }
+ @container (max-width:600px) { .year {font-size:13px;} }
+`},d=>html`<div><${Tick} at=${()=>d.at} class="tick" /><${Label} at=${()=>d.at} class="year">${()=>d.at}<//></div>`);
+
+const seriesSlat = room => slat({room:{end:room,before:15},css:`
+ .curve {stroke-width:7px;}
+ .vapes .curve {stroke-dasharray:12 7;}
+ .end {--rhp-label-gap:15px; font-size:26px; line-height:1.15; color:var(--rhp-color);}
+ .end b {display:inline; font:700 32px/1 var(--display); margin-right:9px;}
+ .end .label-name {display:inline-block;vertical-align:middle;}
+ .pouches .end .label-name {width:128px;white-space:normal;}
+ .begin {--rhp-label-gap:0px; translate:0 0; padding-bottom:15px; font:700 27px/1 var(--display); color:var(--rhp-color);}
+ .vapes .begin {translate:-100% 50%;padding:0 13px 0 0;}
+ @container (max-width:600px) {
+  .curve {stroke-width:4px;}
+  .vapes .curve {stroke-dasharray:8 5;}
+  .end {--rhp-label-gap:8px; font-size:12px;}
+  .end b {display:block; font-size:22px; margin:0 0 2px;}
+  .pouches .end .label-name {width:auto;white-space:nowrap;}
+  .begin {font-size:20px; padding-bottom:12px;}
+  .vapes .begin {padding-right:4px; padding-bottom:0;}
+ }
+`},d=>html`<div class=${()=>d.id} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}>
+ <${Line} points=${()=>d.values.map((v,i)=>[YEARS[i],v])} color=${()=>d.color} class="curve" />
+ <${Label} at=${YEARS[0]} cross=${()=>d.id==='vapes'?d.values[0]-1.1:d.values[0]} side=${()=>d.id==='vapes'?'before':'after'} class="begin">${()=>percent(d.values[0])}<//>
+ <${Label} at=${YEARS.at(-1)} cross=${()=>d.values.at(-1)} class="end"><b>${()=>percent(d.values.at(-1))}</b><span class="label-name">${()=>d.id==='any'?'Any tobacco':d.name}</span><//>
+ </div>`);
+const FullSeries = seriesSlat(225), CompactSeries = seriesSlat(112);
+const Point = slat({room:{},css:`
+ .point {background:var(--rhp-surface);border:3px solid var(--rhp-color);}
+ .pouches .point {border-radius:2px;}
+ @container (max-width:600px) {.point {border-width:2px;}}
+`},d=>html`<div class=${()=>d.id} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}><${Dot} at=${()=>d.year} cross=${()=>d.value} size="13px" class="point" /></div>`);
+const Selected = slat({room:{},css:`
+ .selected {background:var(--rhp-surface);border:4px solid var(--rhp-color);transition:none;}
+ .pouches .selected {border-radius:3px;}
+ @container (max-width:600px) {.selected {border-width:3px;}}
+`},d=>html`<div class=${()=>d.id} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}><${Dot} at=${()=>d.year} cross=${()=>d.values[d.i]} size=${()=>d.size} class="selected" /></div>`);
+const Hair = slat({room:{},css:'.hair{--rhp-tick-width:2px;background:var(--rhp-muted);opacity:.35;}'},d=>html`<${Tick} at=${()=>d.year} class="hair" />`);
+const Hit = slat({room:{},css:'.hit{cursor:crosshair;touch-action:pan-y;}.hit:focus-visible{outline:2px solid var(--rhp-ink);outline-offset:-2px;}'},d=>html`<div class="hit" data-hit="" data-i=${()=>d.i} tabindex="0" role="slider" aria-label="Inspect a survey year" aria-valuemin="0" aria-valuemax="3" aria-valuenow=${()=>d.i} aria-valuetext=${()=>`${YEARS[d.i]}: ${SERIES.map(s=>`${s.name} ${percent(s.values[d.i])}`).join(', ')}`}></div>`);
+const points = SERIES.flatMap(s=>YEARS.map((year,i)=>({id:s.id,color:s.color,year,value:s.values[i]})));
+
+function TobaccoPoster() {
+ const media = matchMedia('(max-width:700px)');
+ const [compact,setCompact] = createSignal(media.matches);
+ const resize = event=>setCompact(event.matches);
+ media.addEventListener('change',resize);
+ onCleanup(()=>media.removeEventListener('change',resize));
+ const [picked,setPicked] = createSignal(3), [hover,setHover] = createSignal(null);
+ const index = ()=>hover() ?? picked();
+ const rowOf = target => {
+  const button = target?.closest?.('[data-year-index]');
+  if(button) return +button.dataset.yearIndex;
+  const hit = target?.closest?.('[data-hit]');
+  return hit ? +hit.dataset.i : null;
+ };
+ const eventIndex = event => {
+  const hit = event.target?.closest?.('[data-hit]');
+  if(hit && Number.isFinite(event.clientX)) {
+   const box = hit.getBoundingClientRect();
+   return Math.max(0,Math.min(3,Math.round((event.clientX-box.left)/box.width*(MAX-MIN)+MIN-YEARS[0])));
+  }
+  return rowOf(event.target);
+ };
+ const commit = i=>{setPicked(i);setHover(null);};
+ const pick = event=>{const i=eventIndex(event);if(i!=null)commit(i);};
+ const move = event=>{if(event.pointerType!=='touch')setHover(event.target.closest?.('[data-hit]')?eventIndex(event):null);};
+ const leave = event=>{if(event.pointerType!=='touch')setHover(null);};
+ const key = event=>{
+  if(!event.target.matches?.('[data-hit]'))return;
+  const offsets={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1};
+  if(!(event.key in offsets)&&!['Home','End'].includes(event.key))return;
+  event.preventDefault();
+  commit(event.key==='Home'?0:event.key==='End'?3:Math.max(0,Math.min(3,picked()+offsets[event.key])));
+ };
+ return html`<${Poster}
+  kicker=${html`<span>After the vape boom</span><span>U.S. high school · 2022 to 2025</span>`}
+  title=${html`<span class="lead-in">Nicotine pouches rose.</span><span class="finding">Teen tobacco use fell.</span><span class="number-block"><b class="number">${DATA.declineRounded}%</b><span class="number-note"><strong>${percent(SERIES[0].values[0])} → ${percent(SERIES[0].values.at(-1))}</strong>reported any tobacco use<small>U.S. high school students<br/>2022 to 2025</small></span></span>`}
+  dek="The overall measure already includes e-cigarettes and nicotine pouches, alongside other tobacco products."
+  note=${html`<span><b>Categories overlap; do not add them.</b> Different students each year, not a measure of switching or nicotine dose.<span class="source">Source: FDA, National Youth Tobacco Survey, 2022 to 2025. Table 3, published June 2026.</span></span>`}
+  onPointerMove=${move} onPointerLeave=${leave} onClick=${pick} onKeyDown=${key}
+  onFocusIn=${event=>{if(rowOf(event.target)!=null)setHover(null);}}
+  onFocusOut=${event=>{if(!event.currentTarget.contains(event.relatedTarget))setHover(null);}}>
+  <div class="backdrop" aria-hidden="true"><img src="__BACKGROUND__" width="1120" height="1400" alt="" /></div>
+  <p class="plot-unit"><b>Share of students</b> reporting use in the past 30 days</p>
+  <div class="plot-wrap">
+   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>compact()?330:365} theme=${THEME}
+    label="U.S. high school students reporting past-30-day use, 2022 to 2025. Any tobacco product, e-cigarettes and nicotine pouches.">
+    <${Scale} ticks=${YEARS}>${YearTicks}<//>
+    ${()=>html`<${Plot} overlap=${true} rows=${SERIES} style=${{'pointer-events':'none'}}>${compact()?CompactSeries:FullSeries}<//>`}
+    <${Plot} overlap=${true} rows=${points} style=${{'pointer-events':'none'}}>${Point}<//>
+    <${Plot} overlap=${true} slats=${1} year=${()=>YEARS[index()]} style=${{'pointer-events':'none'}}>${Hair}<//>
+    <${Plot} overlap=${true} rows=${SERIES} year=${()=>YEARS[index()]} i=${index} size=${()=>compact()?'19px':'23px'} style=${{'pointer-events':'none'}}>${Selected}<//>
+    <${Plot} overlap=${true} slats=${1} i=${picked}>${Hit}<//>
+   <//>
+  </div>
+  <div class="year-controls" role="group" aria-label="Choose a survey year"><span>Inspect</span>${YEARS.map((year,i)=>html`<button type="button" data-year-index=${i} aria-pressed=${()=>index()===i}>${year}</button>`)}</div>
+  <div class="readout" aria-live="polite">${SERIES.map(s=>html`<section class=${s.id}><span class="name">${s.id==='any'?'Any tobacco':s.name}</span><b class="value">${()=>percent(s.values[index()])}</b><small><span class="ci-range">${()=>s.ci95[index()].join(' to ')}</span><br/>95% CI</small></section>`)}</div>
+ <//>`;
+}
+render(()=>html`<${TobaccoPoster} />`,document.getElementById('chart'));
+render(()=>html`<table><caption>Percent of U.S. high school students (95% confidence interval)</caption><thead><tr><th scope="col">Year</th>${SERIES.map(s=>html`<th scope="col">${s.id==='any'?'Any tobacco':s.name}</th>`)}</tr></thead><tbody>${YEARS.map((year,i)=>html`<tr><th scope="row">${year}</th>${SERIES.map(s=>html`<td>${percent(s.values[i])}<br/>(${s.ci95[i].join(' to ')})</td>`)}</tr>`)}</tbody></table>`,document.getElementById('table'));
+</script>
+__DOWNLOAD__
+</body>
+</html>

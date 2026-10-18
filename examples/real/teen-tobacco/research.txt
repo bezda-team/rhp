@@ -1,0 +1,83 @@
+Observation date: 2026-10-17, America/Chicago.
+
+AUDIENCE EVIDENCE
+
+Direct question, 2026-04-25:
+https://www.reddit.com/r/science/comments/1svbdcu/antivaping_advertisements_and_lung_injury_news/
+Actual discussion and comments inspected through the web tool.
+Comments explicitly requested nicotine-pouch statistics and suggested substitution could explain falling vaping prevalence.
+The search index showed 6,945 votes, not independently verified live votes.
+This is an older discussion with a particularly good question-to-data match, not breaking October news.
+
+Continued broad topic interest, 2026-09-06:
+https://www.reddit.com/r/unitedkingdom/comments/1w8vls1/free_nicotine_pouches_handed_out_to_children/
+Actual discussion and comments inspected.
+The search index showed 86 votes and a leading comment with 139 votes; these are index observations.
+This UK thread supports continued interest in youth pouch use, but the U.S. survey does not answer UK prevalence or health-risk questions.
+
+SHORTLIST AND CHOICE
+
+Chosen: Is lower teen vaping simply a move to nicotine pouches?
+The FDA's published high-school total already counts pouches and shows a decline, providing evidence directly relevant to that statistical explanation.
+It cannot rule out individual switching or quantify nicotine dose.
+
+Ozone recovery:
+https://www.reddit.com/r/OptimistsUnite/comments/1ueao8e/earths_ozone_layer_is_steadily_recovering/
+2026-06-24, search-index 2,666 votes.
+Comments debate observed recovery versus model projections.
+Rejected for this attempt because a noisy observed annual series would need a more technical explanation, and the policy-cleanup story is close to the completed acid-rain poster.
+
+Lightning:
+https://www.reddit.com/r/worldcup/comments/1ucze9e/reminder_this_is_the_map_of_6_months_of_global/
+2026-06-22, search-index 5,185 votes.
+The audience asked why lightning delays and storms differ geographically.
+A century-long U.S. fatality trend would not directly answer that question, so it was not selected.
+
+QUALITATIVE INTEREST ASSESSMENT
+Strong match to a concrete question people asked, a familiar subject, and a comparison that resolves a common statistical misconception.
+Moderate freshness: the newest available annual survey covers 2025 and was released June 2026; the strongest matching discussion is from April.
+Potential weaknesses: not an individual-switching study, U.S.-only school coverage, survey nonresponse, and a topic that may prompt off-topic health or policy arguments.
+No engagement probability or vote forecast is warranted.
+
+COMMUNITY AND PRESENTATION
+Target: r/Infographics, following the user's successful acid-rain post.
+Top-month listing inspected:
+https://www.reddit.com/r/Infographics/top/?t=month
+Examples inspected included:
+https://www.reddit.com/r/Infographics/comments/1w693ph/big_declines_in_the_number_of_people_studying/
+https://www.reddit.com/r/Infographics/comments/1wj23jo/daycare_for_two_costs_more_than_a_mortgage_in_33/
+These use clear changes or comparisons in their titles, and discussions challenge explanations, units and comparability.
+Their exact dates and live vote counts were not independently verified; cached relative dates are not used as precise publication dates.
+
+Rules inspected from the community sidebar and pinned infographic guidance:
+https://www.reddit.com/r/Infographics/comments/gus7z0/three_infographics_that_help_show_what_is_and/
+The sidebar prohibits non-infographics, text-only pictures, self-promotion, company promotion, hate speech and propaganda.
+The design uses actual scaled lines and points and the draft links to primary evidence.
+
+Direct desktop and phone feed inspection in Playwright was prevented by Reddit's JavaScript challenge.
+Therefore no claim is made about a verified live Reddit crop or exact current card dimensions.
+The exported 4:5 image is reviewed at representative 360px and 640px display widths instead.
+
+PRIMARY EVIDENCE
+Latest available release confirmed via the FDA survey portal:
+https://www.fda.gov/tobacco-products/youth-and-tobacco/national-youth-tobacco-survey-nyts
+https://www.fda.gov/tobacco-products/youth-and-tobacco/results-annual-national-youth-tobacco-survey-nyts
+Primary paper, published 2026-06-23:
+https://academic.oup.com/ntr/advance-article/doi/10.1093/ntr/ntag116/8712569
+DOI: 10.1093/ntr/ntag116.
+Table 3, high school rows, supplies all 2022 to 2025 values and 95% confidence intervals.
+Using one latest four-year table avoids mixing separately issued early estimates.
+The FDA summary independently confirms the 2025 high-school any-product estimate of 9.5% and e-cigarette estimate of 7.1%.
+No later annual release was listed in the inspected FDA portal.
+
+CALCULATIONS AND LIMITS
+Source-snapshot.json contains transcribed table facts and definitions, not the full copyrighted article.
+Run node analyze.mjs to validate ranges, confidence intervals, series lengths and headline calculations and to write data.json and estimates.csv.
+Any product: 16.5% to 9.5%, -7 percentage points, -42.424% relative.
+E-cigarettes: 14.1% to 7.1%, -7 percentage points, -49.645% relative.
+Pouches: 1.4% to 2.3%, +0.9 percentage points.
+The larger relative pouch increase is not used as a big headline because the low baseline can distract from the absolute prevalence.
+The total and product categories overlap; no stacking or subtraction is used to infer exclusive users.
+The measure expanded to include other oral nicotine products in 2023, so it is not a perfectly constant category list across all four years.
+The paper reports significant four-year high-school trends for all three shown series; no 2024 to 2025 high-school change in them is significant.
+Survey estimates are self-reported, school-based and cross-sectional; they are not nicotine dose, dependence, individual switching or causal policy effects.

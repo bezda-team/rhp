@@ -1,0 +1,126 @@
+{
+  "observed": "2026-10-17",
+  "published": "2026-06-23",
+  "source": "https://academic.oup.com/ntr/advance-article/doi/10.1093/ntr/ntag116/8712569",
+  "doi": "10.1093/ntr/ntag116",
+  "table": "Table 3, high school students",
+  "producer": "U.S. Food and Drug Administration and study coauthors",
+  "survey": "National Youth Tobacco Survey",
+  "population": "U.S. public and private high school students, grades 9 to 12",
+  "measure": "Self-reported use on at least one of the past 30 days",
+  "unit": "Percent of students",
+  "years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "series": [
+    {
+      "id": "any",
+      "name": "Any tobacco product",
+      "values": [
+        16.5,
+        12.6,
+        10.1,
+        9.5
+      ],
+      "ci95": [
+        [
+          14.6,
+          18.5
+        ],
+        [
+          11.1,
+          14.3
+        ],
+        [
+          9,
+          11.3
+        ],
+        [
+          8.4,
+          10.6
+        ]
+      ],
+      "trendP": "<.001",
+      "lastYearP": 0.42,
+      "changePoints": -7,
+      "changePercent": -42.42424242424242
+    },
+    {
+      "id": "vapes",
+      "name": "E-cigarettes",
+      "values": [
+        14.1,
+        10,
+        7.8,
+        7.1
+      ],
+      "ci95": [
+        [
+          12.4,
+          16
+        ],
+        [
+          8.8,
+          11.4
+        ],
+        [
+          6.9,
+          8.8
+        ],
+        [
+          6.3,
+          8.1
+        ]
+      ],
+      "trendP": "<.001",
+      "lastYearP": 0.34,
+      "changePoints": -7,
+      "changePercent": -49.645390070921984
+    },
+    {
+      "id": "pouches",
+      "name": "Nicotine pouches",
+      "values": [
+        1.4,
+        1.7,
+        2.4,
+        2.3
+      ],
+      "ci95": [
+        [
+          1.1,
+          2
+        ],
+        [
+          1.2,
+          2.5
+        ],
+        [
+          2,
+          2.9
+        ],
+        [
+          1.8,
+          2.9
+        ]
+      ],
+      "trendP": ".012",
+      "lastYearP": 0.77,
+      "changePoints": 0.9,
+      "changePercent": 64.28571428571428
+    }
+  ],
+  "notes": [
+    "Values and confidence intervals are transcribed from the latest paper's four-year table, rather than combining separate first releases.",
+    "Any tobacco product includes e-cigarettes, nicotine pouches, cigarettes, cigars, smokeless tobacco, other oral nicotine products, heated tobacco, hookahs, pipe tobacco and bidis. Categories overlap.",
+    "Other oral nicotine products entered the composite in 2023; its scope therefore expanded after 2022.",
+    "Samples differ each year. The survey does not track individual switching or quantify nicotine dose, dependence, or harm.",
+    "Cannabis vaping is outside this measure. School-based coverage excludes homeschooled and out-of-school young people.",
+    "The 2025 sample included 23,630 middle and high school students, with an overall response rate of 29.7%. Collection ended six weeks early. Authors analyzed a 2024 truncation simulation to assess the potential effect.",
+    "The high school four-year trends are significant for the three series shown; no 2024 to 2025 change in these high school series is statistically significant at 0.05."
+  ],
+  "declineRounded": 42
+}
