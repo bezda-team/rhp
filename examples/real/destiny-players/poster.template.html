@@ -11,7 +11,10 @@ __FONTS__
 :root { color-scheme: light; --page: #d7dbd7; --paper: #f7f7ef; --ink: #24323c; --soft: #4e606d; --rule: #c7cec8; --gold: #8b650d; --before: #5b7181; --display: "Space Grotesk", Arial, sans-serif; --text: "IBM Plex Sans", Arial, sans-serif; }
 * { box-sizing: border-box; }
 body { margin: 0; padding: 24px 16px; background: var(--page); color: var(--ink); font: 16px/1.45 var(--text); }
-.poster { max-width: 880px; margin: 0 auto; padding: 26px 28px 22px; background: var(--paper); border-top: 4px solid var(--gold); }
+.poster { position: relative; isolation: isolate; overflow: clip; max-width: 880px; margin: 0 auto; padding: 26px 28px 22px; background: var(--paper); border-top: 4px solid var(--gold); }
+.poster-art { position: absolute; left: 50%; top: calc(40% - 80px); width: 180%; translate: -50% -40%; z-index: -1; pointer-events: none; opacity: .12; }
+.poster-art img { display: block; width: 100%; height: auto; }
+.poster-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(var(--paper), transparent 10%, transparent 88%, var(--paper)); }
 .poster figcaption { display: grid; gap: 12px; margin: 0 0 18px; }
 .poster .kicker { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 7px 16px; border-bottom: 1px solid var(--rule); padding-bottom: 11px; font-size: 13px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; color: var(--soft); }
 .game { color: var(--ink); font: 700 22px/1.1 var(--display); letter-spacing: .1em; }
@@ -71,7 +74,7 @@ body { margin: 0; padding: 24px 16px; background: var(--page); color: var(--ink)
 </head>
 <body>
 <main id="chart"></main>
-<p class="below">Sources and calculations: <a href="data.json">data.json</a> · <a href="daily-peaks.csv">daily peaks</a> · <a href="analyze.mjs">analysis script</a>.</p>
+<p class="below">Sources and calculations: <a href="data.json">data.json</a> · <a href="daily-peaks.csv">daily peaks</a> · <a href="analyze.mjs">analysis script</a>. Artwork: Bungie, via <a href="https://wallpaperswide.com/destiny___traveler_white-wallpapers.html">WallpapersWide</a>.</p>
 <script type="module">
 import { Chart, Plot, Scale, Line, Dot, Tick, Label, Place, Poster, slat, html, render, createSignal } from "@bezda/rhp/standalone";
 
@@ -170,6 +173,7 @@ function PlayerTimeline() {
   note=${html`<span><b>Data: </b><a href=${DATA.sourcePage}>Steam Charts</a>, sampled daily Steam peaks, 1 May to 16 October 2026 UTC. Current feed plus <a href=${DATA.snapshots[0].url}>June</a> and <a href=${DATA.snapshots[1].url}>August</a> archives; all 169 days; 46 overlapping dates agree. Captured 17 October UTC.<br/><b>Events: </b><a href=${DATA.events[0].url}>21 May</a>; <a href=${DATA.events[1].url}>9 June release</a>; <a href=${DATA.events[2].url}>21 September public statement</a> (website header: 17 September); <a href=${DATA.events[3].reportUrl}>16 October report</a> / <a href=${DATA.events[3].url}>current job</a>. Unvaulting was promised restoration work, not already-returned content.</span>`}
   onPointerMove=${move} onPointerLeave=${leave} onClick=${pick} onFocusIn=${event => { if (rowOf(event.target) != null) setHover(null); }} onKeyDown=${key}
   onFocusOut=${event => { if (!event.currentTarget.contains(event.relatedTarget)) setHover(null); }}>
+  <div class="poster-art" aria-hidden="true"><img src="__ARTWORK__" width="1920" height="1080" alt="" /></div>
   <p class="chart-unit">Daily recorded peak · simultaneous Steam players</p>
   <div class="timeline" style=${{ "margin-top": `${410 - plotHeight}px` }}>
    <${Chart} scale=${[-0.5, ROWS.length - 0.5]} cross=${[0, scaleTop]} crossTicks=${[0, 50000, 100000, 150000]} crossFormat=${value => html`<span class="axis-value">${value === 0 ? "0" : `${value / 1000}k`}</span>`} height=${plotHeight} theme=${THEME} label="Destiny 2 daily recorded peak concurrent Steam players, May 1 through October 16, 2026, with event annotations for final-update news, its release, unvaulting news and hiring reports">

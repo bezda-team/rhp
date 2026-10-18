@@ -17,6 +17,7 @@ These are observed activity changes, not isolated causal effects or purchase cou
 - `daily-peaks.csv`: all daily peaks, feed-observation counts, and source-snapshot identifiers.
 - `analyze.mjs`: collection, validation, historical reconstruction, and calculations.
 - `build.mjs`: embeds data, fonts, and the canonical PNG exporter.
+- `assets/traveler-white.jpg` and `artwork-credits.json`: the supplied Traveler wallpaper and its source credit.
 - `post.txt`: Reddit image title, source-and-tools comment, and posting notes.
 - `research.txt`: source verification, interest signals, related posts, rules, and limitations.
 
@@ -41,6 +42,9 @@ The code excludes coarse monthly points rather than treating them as daily obser
 The two archived capture days are excluded from their source windows to avoid partial-day peaks.
 All 46 overlapping dates agree exactly, and the May through September monthly maxima reconcile with the published Steam Charts table.
 The three font files use the included SIL Open Font License files.
+The background uses the [Traveler White artwork](https://wallpaperswide.com/destiny___traveler_white-wallpapers.html), credited by the source to Bungie.
+The original JPEG is embedded without changing its pixels, with CSS opacity of 12% and proportional scaling that keeps the circular artwork visible on desktop and phone layouts.
+It sits 80 pixels above its original centered placement, with a soft fade at its top and bottom edges.
 
 The checker passes at 1280, 1024, 768, 390, 360, and 320 pixels, including the responsive breakpoint boundaries.
 All 169 dates were individually inspected by pointer at 1280, 390, and 320 pixels, with matching source values and working Home, End, and arrow keys.
