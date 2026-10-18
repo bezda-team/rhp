@@ -251,6 +251,8 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 @media(max-width:600px){.retro .stat.upper .band-full{display:none}.retro .stat.upper .band-compact{display:inline}}
 .retro .readout-share{display:grid;justify-items:center;gap:2px}
 .retro .readout-base{font-size:.85em;line-height:1.5}
+/* The export utility omits hidden UI while preserving the selected chart image. */
+body:has(.poster-download[aria-busy="true"]) .orbit-tooltip{display:none!important}
 </style>
 </head>
 <body class="field">

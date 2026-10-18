@@ -148,7 +148,8 @@
     "Debris images reduced to 4.6cqw; the 71% annotation moved down; Debris above is the first title child.",
     "The background shading behind 95% spacecraft is completely removed.",
     "Other sits beside 71%, with two approximately 5px left nudges. The debris image above moved right; all source altitudes are retained.",
-    "Delayed tooltips use the poster title palette, preserve fixed glyph sizes when fitted and omit the repeated symbol-unit explanation."
+    "Delayed tooltips use the poster title palette, preserve fixed glyph sizes when fitted and omit the repeated symbol-unit explanation.",
+    "PNG exports hide the temporary altitude popup during capture, preserve category selection and restore the popup afterward."
   ],
   "finalPlacement": {
     "otherLeftNudgeDesktopPx": 10.013903395043005,
@@ -209,5 +210,46 @@
     "position": 6,
     "slug": "orbital-traffic",
     "url": "https://rhp.vercel.app/gallery/real-posters/orbital-traffic/"
-  }
+  },
+  "tooltipExports": [
+    {
+      "name": "chromium",
+      "png": {
+        "width": 1920,
+        "height": 3184
+      },
+      "meanRgbDifference": 0.47722112079494694,
+      "maxTileDifference": 6.093641493055555,
+      "maxAddedPaperFraction": 0,
+      "tooltipOmitted": true,
+      "selectionPreserved": true,
+      "errors": []
+    },
+    {
+      "name": "firefox",
+      "png": {
+        "width": 1920,
+        "height": 3184
+      },
+      "meanRgbDifference": 1.2419928418132329,
+      "maxTileDifference": 21.90596064814815,
+      "maxAddedPaperFraction": 0.001193576388888889,
+      "tooltipOmitted": true,
+      "selectionPreserved": true,
+      "errors": []
+    },
+    {
+      "name": "webkit",
+      "png": {
+        "width": 1920,
+        "height": 3184
+      },
+      "meanRgbDifference": 3.394536375453657,
+      "maxTileDifference": 64.50886140046296,
+      "maxAddedPaperFraction": 0.018988715277777776,
+      "tooltipOmitted": true,
+      "selectionPreserved": true,
+      "errors": []
+    }
+  ]
 }

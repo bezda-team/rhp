@@ -251,6 +251,8 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 @media(max-width:600px){.retro .stat.upper .band-full{display:none}.retro .stat.upper .band-compact{display:inline}}
 .retro .readout-share{display:grid;justify-items:center;gap:2px}
 .retro .readout-base{font-size:.85em;line-height:1.5}
+/* The export utility omits hidden UI while preserving the selected chart image. */
+body:has(.poster-download[aria-busy="true"]) .orbit-tooltip{display:none!important}
 /* Each version uses one text family and preserves Atomic Age for the large numbers. */
 body.retro{--study-font:'Michroma';--payload:#e0ead6;--debris:#f7c69f;--debris-size:4.6cqw;--text:var(--study-font),sans-serif;font-family:var(--study-font),sans-serif}
 .retro .poster{font-family:var(--study-font),sans-serif}

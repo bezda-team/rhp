@@ -48,6 +48,7 @@ node mcp/bin/rhp-mcp.js check examples/real/orbital-traffic/orbital-retro.html -
 
 node examples/real/orbital-traffic/verify.mjs /tmp/orbital-validation orbital-retro "Michroma"
 node examples/real/orbital-traffic/verify-tooltip.mjs /tmp/orbital-tooltips
+node examples/real/orbital-traffic/verify-tooltip-export.mjs /tmp/orbital-tooltip-exports
 
 The verification checks all 34 representative radial altitudes, consistent text families, mouse selection, keyboard navigation, touch, fitted-scroll stability and selection preservation during actual PNG downloads.
 It compares downloads against browser screenshots in Chromium, Firefox and WebKit.
