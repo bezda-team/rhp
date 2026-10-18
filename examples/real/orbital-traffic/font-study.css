@@ -1,0 +1,30 @@
+/* Each version uses one text family and preserves Atomic Age for the large numbers. */
+body.retro{--study-font:'__FAMILY__';--payload:#e0ead6;--debris:#f7c69f;--debris-size:4.6cqw;--text:var(--study-font),sans-serif;font-family:var(--study-font),sans-serif}
+.retro .poster{font-family:var(--study-font),sans-serif}
+.retro :is(.headline,.kicker,.dek,.stat .category,.stat .altitude,.legend button,.readout-name,.readout-band,.readout-number,.readout-share,.scene-caption,.note,.footer-row,.footer-row .credit,.orbit-label,.below){font-family:var(--study-font),sans-serif;font-weight:400}
+.retro .headline{font-size:__TITLE_SIZE__px;line-height:1.12;font-weight:__TITLE_WEIGHT__;letter-spacing:-.025em;text-shadow:none}
+.retro .kicker{font-size:12px;letter-spacing:.025em}
+.retro .dek{font-size:20px;line-height:1.5}
+.retro .scene-caption{font-size:16px;line-height:1.5}
+.retro .legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.retro .legend button{font-size:16px;min-height:48px}
+.retro .readout-name{font-size:18px}
+.retro .readout .readout-band{font-size:13px}
+.retro .readout .readout-number{font-family:var(--study-font),sans-serif;font-size:25px}
+.retro .readout-share{font-size:13px}
+.retro .stat .category{font-size:21px;letter-spacing:0}
+.retro .stat .altitude{font-size:14px;letter-spacing:0}
+.retro .stat.upper{margin-top:clamp(4px,1.4cqw,12px)}
+.retro .orbit-label{font-size:14px}
+.retro .orbit-label.outer-label,.retro .guide-label{font-size:12px}
+.retro .note{font-size:16px;line-height:1.6}
+.retro .footer-row,.retro .footer-row .credit{font-size:11px;line-height:1.6}
+.font-study-navigation{display:flex;justify-content:space-between;align-items:center;gap:18px;max-width:960px;margin:0 auto 12px;color:#f5e6c9;font:15px/1.5 system-ui,sans-serif}
+.font-study-navigation a{color:inherit;text-underline-offset:3px}
+.font-study-navigation .study-name{font-weight:600}
+@media(max-width:900px) and (min-width:601px){
+ .retro .headline{font-size:__TITLE_CQW__cqw}.retro .dek{font-size:18px}.retro .scene-caption{font-size:14px}.retro .note{font-size:14px}.retro .legend button{font-size:14px}.retro .stat .category{font-size:2.5cqw}.retro .stat .altitude{font-size:12px}
+}
+@media(max-width:600px){
+ .retro .headline{font-size:clamp(25px,__TITLE_MOBILE_CQW__cqw,46px);line-height:1.13;letter-spacing:-.025em}.retro .kicker{font-size:9px;line-height:1.6}.retro .dek{font-size:14px;line-height:1.6}.retro .scene-caption{font-size:12px;line-height:1.6}.retro .legend{gap:7px}.retro .legend button{font-size:clamp(9px,3.1cqw,12px);letter-spacing:-.025em;min-height:66px}.retro .readout-name{font-size:15px}.retro .readout .readout-band{font-size:11px}.retro .readout .readout-number{font-size:21px}.retro .readout-share{font-size:11px}.retro .stat .category{font-size:clamp(11px,3.7cqw,18px)}.retro .stat .altitude{font-size:9px}.retro .orbit-label,.retro .orbit-label.outer-label,.retro .guide-label{font-size:10px}.retro .note{font-size:12px;line-height:1.7}.retro .footer-row,.retro .footer-row .credit{font-size:9px;line-height:1.7}.font-study-navigation{font-size:13px;gap:12px}
+}

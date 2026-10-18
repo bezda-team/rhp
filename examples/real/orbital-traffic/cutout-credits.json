@@ -1,0 +1,90 @@
+{
+  "generated": "2026-10-18",
+  "assets": [
+    {
+      "id": "earth",
+      "path": "assets/earth.png",
+      "tool": "Built-in image_gen",
+      "use": "Generated illustrative cutout, not an observation of catalogued objects.",
+      "prompt": "Use case: scientific-educational. Asset type: realistic Earth cutout for a data infographic. Generate a single complete spherical planet Earth centered exactly in a square transparent canvas, photorealistic satellite-imagery style, blue oceans, recognizable Africa and Europe, swirling white cloud systems and a thin blue atmospheric limb. The circular globe should occupy 94 percent of the canvas width, fully visible with equal clear transparent margin on all sides. Sunlight from upper left, most of visible Earth illuminated, lower right gently shaded. Detailed natural ocean and cloud texture. No space backdrop, no stars, no labels, no orbit lines, no other objects. Genuine transparent alpha outside the circular globe. This asset will be positioned mathematically with only the upper Earth cap clipped into the bottom of a poster."
+    },
+    {
+      "id": "satellite",
+      "path": "assets/satellite.png",
+      "tool": "Built-in image_gen",
+      "use": "Generated illustrative cutout, not an observation of catalogued objects.",
+      "prompt": "Use case: scientific-educational. Asset type: photorealistic miniature cutout for an orbital-data infographic. One realistic compact Earth-observation satellite, a metallic gold thermal-blanket covered rectangular bus with two attached symmetric dark blue solar-panel wings, visible small realistic seams and antenna, three-quarter camera view, horizontal silhouette. Clearly connected hardware, credible engineering, bright silver edges and legible gold central body. Clean space photography style, neutral directional light from upper left. Centered, isolated on genuinely transparent background, tightly framed with 8 percent clear margin. This must remain recognizable at 32 pixels wide. No planet, no stars, no text, no logos, no extra satellites, no shadow cast on a background."
+    },
+    {
+      "id": "debris",
+      "path": "assets/debris.png",
+      "tool": "Built-in image_gen",
+      "use": "Generated illustrative cutout, not an observation of catalogued objects.",
+      "prompt": "Use case: scientific-educational. Asset type: photorealistic orbital-debris cutout for an infographic. One irregular torn spacecraft panel fragment floating in isolation, asymmetric bent silver aluminum with a small crumpled gold foil edge, visibly jagged torn silhouette and torn fastener holes. It is broken space hardware, not a rock, meteor, complete satellite or glowing explosion. Three-quarter view, bright metallic highlights with shaded folds, realistic space-photography appearance, tight square framing with 10 percent clear margin. Genuinely transparent background. Readable chunky shape at 24 pixels wide. No planet, stars, text, logo or surrounding fragments."
+    },
+    {
+      "id": "rocket",
+      "path": "assets/rocket.png",
+      "tool": "Built-in image_gen",
+      "use": "Generated illustrative cutout, not an observation of catalogued objects.",
+      "prompt": "Use case: scientific-educational. Asset type: realistic discarded rocket upper-stage cutout for an orbital infographic. A single small spent rocket upper stage, recognizable short off-white and silver cylinder with one dark engine bell, no flames, gently diagonal three-quarter orientation, believable engineering, shaded metallic surfaces, isolated on genuinely transparent background. Square tight framing with 10 percent margin. Legible at 28 pixels. No logos, no text, no planet, no stars or extra objects."
+    },
+    {
+      "id": "earth-night",
+      "path": "assets/earth-night.png",
+      "tool": "Built-in image_gen",
+      "use": "Cinematic Earth cutout, illustrative.",
+      "prompt": "Use case: scientific-educational. Asset type: cinematic Earth cutout for a factual infographic. Generate one COMPLETE spherical Earth centered in a square genuinely transparent canvas, circular globe fills exactly 94 percent of width with equal clear margin. A dramatic photorealistic orbital view, Earth mostly in deep blue twilight, visible cloud systems and dark oceans, subtle night lights at right, luminous thin electric-blue atmospheric rim strongest at upper left, cold soft blue sunlight grazing the upper hemisphere. Evoke the sense of wonder and scale in classic space cinema and NASA photographs of the Earth's limb taken from the ISS, without any movie characters or recognizable movie composition. The Earth must remain a full circular sphere, not a flat horizon. High realistic detail but restrained highlights, clean transparent alpha beyond limb. No stars, no space backdrop, no satellites, no lines, no text. Only Earth's upper cap will appear clipped into the bottom of the final poster."
+    },
+    {
+      "id": "earth-retro",
+      "path": "assets/earth-retro.png",
+      "tool": "Built-in image_gen",
+      "prompt": "Use case: style-transfer. Asset type: transparent full circular Earth illustration for an original 1950s vintage science-fiction infographic poster. Input image: the provided full Earth is a geometry and geography reference. Repaint the Earth as hand-painted 1950s space poster art, gouache and fine airbrush on aged paper, limited dark petroleum blue, faded turquoise, sage, warm cream and muted golden highlights. Recognizable blue Earth, continents and sweeping cloud systems, slightly idealized mid-century astronomical painting, dramatic warm cream atmospheric rim, soft brush textures and subtle printed ink grain, not a modern NASA photograph or glossy CGI. Preserve a COMPLETE circular globe centered exactly, 94 percent of square canvas width and equal transparent margin. Globe is dramatically lit from upper left, lower and right parts deep teal shadow. Do not add rings, decorative stars, spacecraft, words, symbols, charts or background paper. Real transparent alpha everywhere outside the circular Earth. It will be cropped to its top cap at the bottom of a plotted altitude diagram.",
+      "use": "Generated illustrative artwork. Generic pictograms, not photographs of catalogue objects."
+    },
+    {
+      "id": "satellite-retro",
+      "path": "assets/satellite-retro.png",
+      "tool": "Built-in image_gen",
+      "prompt": "Use case: style-transfer. Asset type: miniature satellite cutout for a 1950s vintage science-fiction infographic. Repaint the reference spacecraft, retaining its believable compact gold-covered body and two connected solar-panel wings. Hand-painted gouache and precision airbrush like mid-century space poster art, limited warm ivory, muted ochre, copper and dark blue-green inks, crisp painted contours and slightly granular printed surfaces. Strong cream rim highlights so it reads against deep teal. Three-quarter view, centered full object, no cropping, 8 percent transparent margin, same wide horizontal silhouette. Real transparent alpha background. No backdrop, no stars, no words or logo. This is a generic illustrative symbol, readable at 45 pixels wide.",
+      "use": "Generated illustrative artwork. Generic pictograms, not photographs of catalogue objects."
+    },
+    {
+      "id": "debris-retro",
+      "path": "assets/debris-retro.png",
+      "tool": "Built-in image_gen",
+      "prompt": "Use case: style-transfer. Asset type: miniature broken satellite-panel cutout for a 1950s vintage science-fiction infographic. Repaint the jagged bent fragment from the reference as mid-century hand-painted gouache and precise airbrush poster art. Retain credible torn metal, irregular folded silver panel and small gold foil edge, but use warm cream highlights, ochre edges, dark teal shadows and subtle printed grain. Chunky clear asymmetric silhouette, centered full fragment with 10 percent transparent margin, legible at 35 pixels wide. Genuinely transparent alpha background, not paper. No other objects, no stars, no text, no logos.",
+      "use": "Generated illustrative artwork. Generic pictograms, not photographs of catalogue objects."
+    },
+    {
+      "id": "earth-print",
+      "path": "assets/earth-print.png",
+      "tool": "Built-in image_gen",
+      "prompt": "Use case: style-transfer. Asset type: Earth cutout for a vintage 1950s science-fiction poster. Reference is geometry only, not a style to preserve. REPAINT it visibly as vintage hand-illustrated space poster art, no photorealism: broad gouache cloud ribbons, engraved stippling, faded lithographic ink, slight imperfect ink registration, bold simplified continental coastlines. Limited five-ink palette: deep petroleum teal, faded turquoise, sage green, warm parchment cream and muted ochre. Luminous cream upper-left atmospheric edge, lower-right hemisphere in dramatic deep teal shadow. Think a beautifully printed 1950s astronomy or space-travel poster, with hand-painted surface and halftone shadows. Keep the SAME complete circular globe exactly centered in a square transparent canvas, 94 percent width, equal margin, recognizable Earth with Europe and Africa. Only the upper cap will show. No stars, no text, no rings, no spacecraft, no paper rectangle. Genuine transparent alpha outside the circular globe. This must look unmistakably illustrated and printed rather than a recolored satellite photo.",
+      "use": "Generated illustrative artwork. Generic pictograms, not photographs of catalogue objects."
+    },
+    {
+      "id": "space-print",
+      "path": "assets/space-print.png",
+      "tool": "Built-in image_gen",
+      "prompt": "Use case: illustration-story. Asset type: empty space backdrop for a vintage 1950s science-fiction infographic poster. Landscape 4:3 composition. Deep petroleum blue-green and midnight teal space, subtly hand-airbrushed warm teal haze toward bottom center, restrained cream rim-like glow near lower center but NO planet. Fine old lithographic ink grain on gently aged paper, very subtle mottling and halftone texture. About twelve very small distant warm cream stars, a few like slender mid-century four-point twinkles, sparsely spread mostly toward outer edges. Keep broad central and upper areas quiet for a data diagram and text. A tangible old printed poster, not neon, modern CGI, lens flares or a galaxy photograph. No words, letters, numbers, orbit arcs, spacecraft, debris, planets, moons, horizon or other foreground objects. Full opaque background.",
+      "use": "Generated illustrative artwork. Generic pictograms, not photographs of catalogue objects."
+    },
+    {
+      "id": "satellite-future",
+      "path": "assets/satellite-future.png",
+      "tool": "Built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: cutout pictogram for an original 1950s retro-futuristic space infographic. One small imagined mid-century artificial satellite, charming but believable polished silver ovoid central body, a large gold parabolic radio dish mounted on top, two short blue-green rectangular solar-panel wings and slender antenna whiskers, riveted metal details, cream and copper highlights. It must immediately read as a satellite, not a rocket, UFO or cartoon character. Three-quarter angle, balanced compact horizontal silhouette so it reads at 55 pixels, fully visible with 8 percent clear margin. Vintage hand-painted gouache and airbrush poster art, visible ink-grain and simplified painted tones, warm cream, dark petroleum teal, muted orange and copper, no modern CGI gloss. Isolated on REAL transparent background. No Earth, stars, text, logo or other objects.",
+      "use": "Generated illustrative artwork. Generic pictograms, not photographs of catalogue objects."
+    },
+    {
+      "id": "debris-future",
+      "path": "assets/debris-future.png",
+      "tool": "Built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: broken-space-hardware cutout for a 1950s retro-futuristic infographic. One large irregular broken fragment from an imagined mid-century satellite: torn curved silver hull panel, exposed copper ribs, jagged edges, a few rivets and a small bent antenna stub. Asymmetric chunky easily recognized wreckage, no flames, no glowing energy, no rock, no complete craft. Three-quarter floating view, hand-painted gouache and precision airbrush as on a vintage 1950s science-fiction poster, warm cream metallic highlights, muted orange edges, petroleum teal deep shadows and printed ink grain. Full object centered in a square tight crop with 10 percent margin, readable at 45 pixels. Genuine transparent alpha background. No space backdrop, Earth, stars, labels or extra fragments.",
+      "use": "Generated illustrative artwork. Generic pictograms, not photographs of catalogue objects."
+    }
+  ],
+  "production": "Miniature derivatives are resized with sips for web/export efficiency; the opaque space texture also has a JPEG derivative. Original generated rasters are retained."
+}

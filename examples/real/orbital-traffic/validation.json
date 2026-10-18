@@ -1,0 +1,213 @@
+{
+  "selectedFont": "Michroma",
+  "mainHtml": "orbital-retro.html",
+  "mainPng": "orbital-retro.png",
+  "pngDimensions": {
+    "width": 1920,
+    "height": 3184
+  },
+  "widths": [
+    1280,
+    1024,
+    768,
+    390,
+    360,
+    320
+  ],
+  "mainChecker": "No errors. One existing mobile contrast warning for spacecraft after removing its background shading as requested.",
+  "fontStudies": [
+    {
+      "id": "michroma",
+      "font": "Michroma",
+      "png": {
+        "width": 1920,
+        "height": 3184
+      },
+      "meanRgbDifference": 0.5115020087416248,
+      "fontsConsistent": true,
+      "widths": [
+        1280,
+        1024,
+        768,
+        390,
+        360,
+        320
+      ],
+      "errors": []
+    },
+    {
+      "id": "oxanium",
+      "font": "Oxanium",
+      "png": {
+        "width": 1920,
+        "height": 3031
+      },
+      "meanRgbDifference": 0.6252380494153011,
+      "fontsConsistent": true,
+      "widths": [
+        1280,
+        1024,
+        768,
+        390,
+        360,
+        320
+      ],
+      "errors": []
+    },
+    {
+      "id": "orbitron",
+      "font": "Orbitron",
+      "png": {
+        "width": 1920,
+        "height": 3058
+      },
+      "meanRgbDifference": 1.6247294210086476,
+      "fontsConsistent": true,
+      "widths": [
+        1280,
+        1024,
+        768,
+        390,
+        360,
+        320
+      ],
+      "errors": []
+    }
+  ],
+  "selectedCrossBrowser": {
+    "checked": "2026-10-18T17:46:01.300Z",
+    "url": "http://127.0.0.1:4398/examples/real/orbital-traffic/orbital-retro.html",
+    "browsers": [
+      {
+        "name": "chromium",
+        "dimensions": {
+          "width": 960,
+          "height": 1592.046875
+        },
+        "png": {
+          "width": 1920,
+          "height": 3184
+        },
+        "meanRgbDifference": 0.4936538704808766,
+        "altitudeChecks": 34,
+        "selectionPreserved": true,
+        "fitStable": true,
+        "fontsConsistent": true,
+        "keyboard": true,
+        "errors": []
+      },
+      {
+        "name": "firefox",
+        "dimensions": {
+          "width": 960,
+          "height": 1592.0833740234375
+        },
+        "png": {
+          "width": 1920,
+          "height": 3184
+        },
+        "meanRgbDifference": 0.8020196468453378,
+        "altitudeChecks": 34,
+        "selectionPreserved": true,
+        "fitStable": true,
+        "fontsConsistent": true,
+        "keyboard": true,
+        "errors": []
+      },
+      {
+        "name": "webkit",
+        "dimensions": {
+          "width": 960,
+          "height": 1592.046875
+        },
+        "png": {
+          "width": 1920,
+          "height": 3184
+        },
+        "meanRgbDifference": 3.5468812705018147,
+        "altitudeChecks": 34,
+        "selectionPreserved": true,
+        "fitStable": true,
+        "fontsConsistent": true,
+        "keyboard": true,
+        "errors": []
+      }
+    ],
+    "touchWidths": [
+      390,
+      360,
+      320
+    ]
+  },
+  "sourceReproduced": true,
+  "notes": [
+    "All 34 symbol radii reproduce the actual representative catalogue altitudes.",
+    "Angular placement is illustrative and avoids reserved text regions.",
+    "Text uses Michroma; large percentages use Atomic Age.",
+    "Downloads preserve selection and full-size resolution while fitted.",
+    "Debris images reduced to 4.6cqw; the 71% annotation moved down; Debris above is the first title child.",
+    "The background shading behind 95% spacecraft is completely removed.",
+    "Other sits beside 71%, with two approximately 5px left nudges. The debris image above moved right; all source altitudes are retained.",
+    "Delayed tooltips use the poster title palette, preserve fixed glyph sizes when fitted and omit the repeated symbol-unit explanation."
+  ],
+  "finalPlacement": {
+    "otherLeftNudgeDesktopPx": 10.013903395043005,
+    "otherRepresentativeAltitude": 841,
+    "debrisAboveRepresentativeAltitude": 957,
+    "altitudesVerified": 34,
+    "widths": [
+      1280,
+      390,
+      320
+    ]
+  },
+  "tooltips": [
+    {
+      "name": "chromium",
+      "hoverDelayMs": 703.5999999046326,
+      "creamCard": true,
+      "width": 251,
+      "equalPadding": true,
+      "keyboard": true,
+      "touchWidths": [
+        390,
+        320
+      ],
+      "fitReadable": true,
+      "errors": []
+    },
+    {
+      "name": "firefox",
+      "hoverDelayMs": 726,
+      "creamCard": true,
+      "width": 250.99996948242188,
+      "equalPadding": true,
+      "keyboard": true,
+      "touchWidths": [
+        390,
+        320
+      ],
+      "fitReadable": true,
+      "errors": []
+    },
+    {
+      "name": "webkit",
+      "hoverDelayMs": 703,
+      "creamCard": true,
+      "width": 251,
+      "equalPadding": true,
+      "keyboard": true,
+      "touchWidths": [
+        390,
+        320
+      ],
+      "fitReadable": true,
+      "errors": []
+    }
+  ],
+  "gallery": {
+    "position": 6,
+    "slug": "orbital-traffic",
+    "url": "https://rhp.vercel.app/gallery/real-posters/orbital-traffic/"
+  }
+}

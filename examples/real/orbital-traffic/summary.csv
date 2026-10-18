@@ -1,0 +1,7 @@
+band,category,count,total,percent
+Below 600 km,Spacecraft,13912,14571,95.47731796
+Below 600 km,Debris,454,14571,3.11577792
+Below 600 km,Other,205,14571,1.40690412
+"600 to 1,100 km",Spacecraft,2387,10686,22.33763803
+"600 to 1,100 km",Debris,7632,10686,71.42055025
+"600 to 1,100 km",Other,667,10686,6.24181172

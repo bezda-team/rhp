@@ -1,0 +1,33 @@
+rhp check of orbital-retro-michroma.html (html, rhp 2.0.5, Playwright's Chromium headless shell (chromium_headless_shell-1243) 153.0.8010.12): no problems found.
+
+Passed: no errors thrown, no rhp warnings, rhp used as documented, 1 chart drawn (34 slats), no NaN values, values inside the scale, nothing sticks out, slats have room, no overlapping text, names by their own marks, no text cut off, no sideways scroll, text 9px or larger, text contrast meets WCAG AA, marks stand out, series colors tell apart, every file loaded, fonts loaded.
+
+Interactions (at 1280px)
+- hover slat 1 of 34: changed 34 attributes
+- hover slat 17 of 34: changed 34 attributes
+- hover slat 34 of 34: changed 5 texts, 34 attributes, 1 style
+- click button "Fit poster to screen": changed 2 elements, 5 attributes, 9 styles
+- click button "Restore poster size": changed 2 elements, 4 attributes, 9 styles
+- click button "Download poster as PNG": changed 5 attributes
+- click button "Spacecraft": changed 2 elements, 41 attributes
+- click button "Debris": changed 5 texts, 37 attributes, 1 style
+- click button "Other": changed 5 texts, 37 attributes, 1 style
+- click button "Counts, source and interpretation": changed 1 attribute
+- key Tab: reached slat 1 after 16 presses
+- key ArrowDown: focus moved to slat 2, changed 2 attributes
+- tap slat 1 of 34 at 390px: changed 37 attributes
+- tap slat 34 of 34 at 390px: changed 5 texts, 39 attributes, 1 style
+- tap slat 1 of 34 at 360px: changed 37 attributes
+- tap slat 34 of 34 at 360px: changed 5 texts, 39 attributes, 1 style
+- tap slat 1 of 34 at 320px: changed 37 attributes
+- tap slat 34 of 34 at 320px: changed 5 texts, 39 attributes, 1 style
+- every slat picked in turn (32) at 1280px, 1024px, 901px, 900px, 768px, 601px, 600px, 390px, 360px, 320px: nothing else moved
+
+Screenshots (look at them)
+- 1280px: /tmp/orbital-check-michroma/orbital-retro-michroma-1280.png
+- 1280px, pointing at a slat: /tmp/orbital-check-michroma/orbital-retro-michroma-1280-hover.png
+- 1024px: /tmp/orbital-check-michroma/orbital-retro-michroma-1024.png
+- 768px: /tmp/orbital-check-michroma/orbital-retro-michroma-768.png
+- 390px: /tmp/orbital-check-michroma/orbital-retro-michroma-390.png
+- 360px: /tmp/orbital-check-michroma/orbital-retro-michroma-360.png
+- 320px: /tmp/orbital-check-michroma/orbital-retro-michroma-320.png

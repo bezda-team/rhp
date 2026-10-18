@@ -5,4 +5,10 @@ out/
 !examples/real/acid-rain/assets/rain-on-glass.png
 !examples/real/teen-tobacco/assets/school-lockers.png
 !examples/real/teen-tobacco/teen-tobacco.png
+!examples/real/orbital-traffic/assets/*.png
+!examples/real/orbital-traffic/orbital-retro.png
+!examples/real/orbital-traffic/orbital-retro-michroma.png
+!examples/real/orbital-traffic/orbital-retro-oxanium.png
+!examples/real/orbital-traffic/orbital-retro-orbitron.png
+!examples/real/orbital-traffic/font-comparison.png
 out-scale/

@@ -1,0 +1,10 @@
+{
+  "retrieved": "2026-10-18",
+  "url": "https://celestrak.org/pub/satcat.csv",
+  "documentation": "https://celestrak.org/satcat/satcat-format.php",
+  "sha256": "4d3428566429a3edb2dfc06261ba7d79bc6c952cc3b9617e54caa7dcb21f4437",
+  "csvBytes": 6775419,
+  "latestLaunchDate": "2026-10-14",
+  "snapshot": "assets/satcat-2026-10-18.csv.gz",
+  "scope": "Public catalogue only, not an estimate of all debris or a collision-risk calculation."
+}

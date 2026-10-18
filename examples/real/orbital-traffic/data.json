@@ -1,0 +1,425 @@
+{
+  "source": {
+    "retrieved": "2026-10-18",
+    "url": "https://celestrak.org/pub/satcat.csv",
+    "documentation": "https://celestrak.org/satcat/satcat-format.php",
+    "sha256": "4d3428566429a3edb2dfc06261ba7d79bc6c952cc3b9617e54caa7dcb21f4437",
+    "csvBytes": 6775419,
+    "latestLaunchDate": "2026-10-14",
+    "snapshot": "assets/satcat-2026-10-18.csv.gz",
+    "scope": "Public catalogue only, not an estimate of all debris or a collision-risk calculation."
+  },
+  "method": "Earth-centred ORB entries with no decay date; 0 <= perigee <= apogee < 2,000 km. Band by (apogee + perigee) / 2, with exclusive upper limits.",
+  "rawRows": 71073,
+  "orbitingRows": 35036,
+  "lowOrbitRows": 28846,
+  "missingAltitudeRows": 332,
+  "groups": [
+    {
+      "id": "payload",
+      "name": "Spacecraft",
+      "catalogTypes": [
+        "PAY"
+      ],
+      "color": "#91d9e8"
+    },
+    {
+      "id": "debris",
+      "name": "Debris",
+      "catalogTypes": [
+        "DEB"
+      ],
+      "color": "#f3af78"
+    },
+    {
+      "id": "other",
+      "name": "Other",
+      "catalogTypes": [
+        "R/B",
+        "UNK"
+      ],
+      "color": "#b5b9b9"
+    }
+  ],
+  "bands": [
+    {
+      "id": "lower",
+      "name": "Below 600 km",
+      "minKm": 0,
+      "maxKm": 600,
+      "total": 14571,
+      "dominant": "payload",
+      "catalogCounts": {
+        "PAY": 13912,
+        "DEB": 454,
+        "R/B": 170,
+        "UNK": 35
+      },
+      "categories": [
+        {
+          "id": "payload",
+          "name": "Spacecraft",
+          "catalogTypes": [
+            "PAY"
+          ],
+          "color": "#91d9e8",
+          "count": 13912,
+          "percent": 95.47731796033216
+        },
+        {
+          "id": "debris",
+          "name": "Debris",
+          "catalogTypes": [
+            "DEB"
+          ],
+          "color": "#f3af78",
+          "count": 454,
+          "percent": 3.1157779150367166
+        },
+        {
+          "id": "other",
+          "name": "Other",
+          "catalogTypes": [
+            "R/B",
+            "UNK"
+          ],
+          "color": "#b5b9b9",
+          "count": 205,
+          "percent": 1.4069041246311167
+        }
+      ],
+      "symbols": [
+        {
+          "category": "payload",
+          "altitude": 350.5,
+          "index": 0,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-0"
+        },
+        {
+          "category": "payload",
+          "altitude": 363.5,
+          "index": 1,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-1"
+        },
+        {
+          "category": "payload",
+          "altitude": 459.5,
+          "index": 2,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-2"
+        },
+        {
+          "category": "payload",
+          "altitude": 462.5,
+          "index": 3,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-3"
+        },
+        {
+          "category": "payload",
+          "altitude": 462.5,
+          "index": 4,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-4"
+        },
+        {
+          "category": "payload",
+          "altitude": 463.0,
+          "index": 5,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-5"
+        },
+        {
+          "category": "payload",
+          "altitude": 463.0,
+          "index": 6,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-6"
+        },
+        {
+          "category": "payload",
+          "altitude": 465.5,
+          "index": 7,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-7"
+        },
+        {
+          "category": "payload",
+          "altitude": 465.5,
+          "index": 8,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-8"
+        },
+        {
+          "category": "payload",
+          "altitude": 470.5,
+          "index": 9,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-9"
+        },
+        {
+          "category": "payload",
+          "altitude": 471.0,
+          "index": 10,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-10"
+        },
+        {
+          "category": "payload",
+          "altitude": 483.0,
+          "index": 11,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-11"
+        },
+        {
+          "category": "payload",
+          "altitude": 483.0,
+          "index": 12,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-12"
+        },
+        {
+          "category": "payload",
+          "altitude": 483.0,
+          "index": 13,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-13"
+        },
+        {
+          "category": "payload",
+          "altitude": 483.0,
+          "index": 14,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-14"
+        },
+        {
+          "category": "payload",
+          "altitude": 483.0,
+          "index": 15,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-15"
+        },
+        {
+          "category": "payload",
+          "altitude": 505.5,
+          "index": 16,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-16"
+        },
+        {
+          "category": "payload",
+          "altitude": 544.0,
+          "index": 17,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-17"
+        },
+        {
+          "category": "payload",
+          "altitude": 577.0,
+          "index": 18,
+          "categorySymbols": 19,
+          "band": "lower",
+          "key": "lower-payload-18"
+        },
+        {
+          "category": "debris",
+          "altitude": 546.0,
+          "index": 0,
+          "categorySymbols": 1,
+          "band": "lower",
+          "key": "lower-debris-0"
+        }
+      ]
+    },
+    {
+      "id": "upper",
+      "name": "600 to 1,100 km",
+      "minKm": 600,
+      "maxKm": 1100,
+      "total": 10686,
+      "dominant": "debris",
+      "catalogCounts": {
+        "PAY": 2387,
+        "R/B": 653,
+        "DEB": 7632,
+        "UNK": 14
+      },
+      "categories": [
+        {
+          "id": "payload",
+          "name": "Spacecraft",
+          "catalogTypes": [
+            "PAY"
+          ],
+          "color": "#91d9e8",
+          "count": 2387,
+          "percent": 22.33763803106869
+        },
+        {
+          "id": "debris",
+          "name": "Debris",
+          "catalogTypes": [
+            "DEB"
+          ],
+          "color": "#f3af78",
+          "count": 7632,
+          "percent": 71.42055025266704
+        },
+        {
+          "id": "other",
+          "name": "Other",
+          "catalogTypes": [
+            "R/B",
+            "UNK"
+          ],
+          "color": "#b5b9b9",
+          "count": 667,
+          "percent": 6.24181171626427
+        }
+      ],
+      "symbols": [
+        {
+          "category": "payload",
+          "altitude": 629.5,
+          "index": 0,
+          "categorySymbols": 3,
+          "band": "upper",
+          "key": "upper-payload-0"
+        },
+        {
+          "category": "payload",
+          "altitude": 777.5,
+          "index": 1,
+          "categorySymbols": 3,
+          "band": "upper",
+          "key": "upper-payload-1"
+        },
+        {
+          "category": "payload",
+          "altitude": 983.5,
+          "index": 2,
+          "categorySymbols": 3,
+          "band": "upper",
+          "key": "upper-payload-2"
+        },
+        {
+          "category": "debris",
+          "altitude": 649.0,
+          "index": 0,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-0"
+        },
+        {
+          "category": "debris",
+          "altitude": 707.0,
+          "index": 1,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-1"
+        },
+        {
+          "category": "debris",
+          "altitude": 748.5,
+          "index": 2,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-2"
+        },
+        {
+          "category": "debris",
+          "altitude": 778.5,
+          "index": 3,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-3"
+        },
+        {
+          "category": "debris",
+          "altitude": 808.5,
+          "index": 4,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-4"
+        },
+        {
+          "category": "debris",
+          "altitude": 835.5,
+          "index": 5,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-5"
+        },
+        {
+          "category": "debris",
+          "altitude": 864.5,
+          "index": 6,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-6"
+        },
+        {
+          "category": "debris",
+          "altitude": 900.0,
+          "index": 7,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-7"
+        },
+        {
+          "category": "debris",
+          "altitude": 957.0,
+          "index": 8,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-8"
+        },
+        {
+          "category": "debris",
+          "altitude": 1036.0,
+          "index": 9,
+          "categorySymbols": 10,
+          "band": "upper",
+          "key": "upper-debris-9"
+        },
+        {
+          "category": "other",
+          "altitude": 841.0,
+          "index": 0,
+          "categorySymbols": 1,
+          "band": "upper",
+          "key": "upper-other-0"
+        }
+      ]
+    }
+  ],
+  "symbolUnit": 750,
+  "symbolMethod": "Nearest whole symbol per category and band; altitude quantiles from the actual category records; angular placement illustrative.",
+  "limits": [
+    "The public catalogue excludes uncatalogued and unpublished objects and almost all small debris.",
+    "Payloads include working and inactive spacecraft; the comparison does not measure operational status.",
+    "DEB is the catalogue's other-debris category; rocket bodies are shown separately within Other.",
+    "Midpoint altitude is not an instantaneous position. Elliptical orbits can cross band boundaries.",
+    "Object shares are not collision probabilities, debris mass, orbital density or a safety ranking."
+  ]
+}

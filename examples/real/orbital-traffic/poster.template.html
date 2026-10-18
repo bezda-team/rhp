@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Two circular 100-dot charts compare the composition of publicly catalogued objects in lower and higher low-Earth orbit. CelesTrak SATCAT, October 18, 2026.">
+<title>Low down: spacecraft. Higher up: debris.</title>
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
+<style>
+__FONTS__
+:root { color-scheme:dark; --page:#354858; --paper:#0a1c2a; --ink:#f4eddf; --soft:#c0cdd3; --rule:#55707e; --payload:#91d9e8; --debris:#f3af78; --other:#b5b9b9; --display:'Space Grotesk',Arial,sans-serif; --text:'IBM Plex Sans',Arial,sans-serif; }
+* { box-sizing:border-box; }
+body { margin:0; padding:24px 16px 40px; background:var(--page); color:var(--ink); font:18px/1.45 var(--text); }
+.poster { position:relative; isolation:isolate; overflow:clip; width:100%; max-width:960px; min-height:1200px; margin:0 auto; padding:44px 48px 36px; background:var(--paper); display:flex; flex-direction:column; }
+.backdrop { position:absolute; inset:0; z-index:-1; pointer-events:none; background:linear-gradient(150deg,#102d41,#0a1c2a 55%); }
+.backdrop img { display:block; width:100%; height:100%; object-fit:cover; opacity:.55; }
+.backdrop img[src=""] { display:none; }
+.backdrop::after { content:''; position:absolute; inset:0; background:linear-gradient(#0a1c2a22,#0a1c2a11 65%,#0a1c2a99); }
+.poster figcaption { display:grid; gap:18px; margin:0 0 28px; }
+.poster .kicker { display:flex; justify-content:space-between; gap:16px; padding-bottom:14px; border-bottom:1px solid var(--rule); color:var(--soft); font-size:16px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+.poster .headline { font:700 62px/1.04 var(--display); letter-spacing:-.04em; }
+.headline span { display:block; }
+.headline .higher { color:var(--debris); }
+.poster .dek { max-width:none; font-size:22px; line-height:1.42; color:var(--soft); }
+.panels { position:relative; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:42px; }
+.panels::before { content:''; position:absolute; top:0; bottom:0; left:50%; width:1px; background:var(--rule); }
+.band { min-width:0; }
+.band .altitude { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0; font:600 22px/1.3 var(--text); }
+.band .altitude small { font-size:13px; font-weight:400; letter-spacing:.12em; color:var(--soft); }
+.dominant { display:flex; align-items:baseline; gap:13px; min-height:118px; margin-top:8px; }
+.dominant strong { font:700 96px/1.2 var(--display); letter-spacing:-.06em; color:var(--category-color); }
+.dominant span { font-size:24px; color:var(--category-color); }
+.unit-chart { width:100%; max-width:335px; margin:0 auto; }
+.panel-readout { min-height:64px; margin:12px 0 0; color:var(--soft); font-size:18px; font-variant-numeric:tabular-nums; }
+.panel-readout b { color:var(--category-color); font:700 25px/1.3 var(--display); }
+.panel-readout .label { margin-left:8px; }
+.panel-readout small { display:block; margin-top:3px; font-size:16px; }
+.how-to-read { margin:25px 0 0; font-size:19px; line-height:1.4; color:var(--soft); }
+.how-to-read b { color:var(--ink); font-weight:600; }
+.keys { display:flex; flex-wrap:wrap; gap:8px; margin:22px 0 0; }
+.keys button { display:flex; align-items:center; gap:10px; min-height:44px; padding:8px 12px; border:1px solid var(--rule); background:#0a1c2a77; color:var(--soft); font:600 18px/1.2 var(--text); cursor:pointer; }
+.keys button[aria-pressed="true"] { border-color:var(--ink); color:var(--ink); background:#294152; }
+.keys button:hover { border-color:var(--ink); }
+.keys i { flex:none; width:14px; height:14px; border-radius:50%; background:var(--category-color); }
+.keys small { font-size:14px; font-weight:400; }
+.keys button:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+.context-space { flex:1; min-height:38px; }
+.poster .note { display:block; margin-top:22px; font-size:17px; line-height:1.4; color:var(--soft); }
+.poster .note b { color:var(--ink); font-weight:600; }
+.footer-row { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-top:15px; font-size:13px; opacity:.8; }
+.footer-row .credit { flex:none; white-space:nowrap; font-size:12px; }
+.below { max-width:960px; margin:24px auto 0; color:var(--soft); }
+.below h2 { margin:0 0 8px; font-size:24px; color:var(--ink); }
+.below p { margin:0 0 14px; }
+.below a { color:var(--payload); text-underline-offset:3px; }
+.below details { margin:20px 0; }
+.below summary { color:var(--ink); cursor:pointer; }
+.below table { width:100%; border-collapse:collapse; margin-top:12px; font-size:16px; }
+.below td,.below th { padding:9px 8px; border-bottom:1px solid var(--rule); text-align:right; }
+.below td:first-child,.below th:first-child { text-align:left; }
+@media(max-width:1000px) and (min-width:701px) {
+ .poster { padding-right:36px; padding-left:36px; }
+ .poster .headline { font-size:clamp(43px,6.2vw,62px); }
+ .panels { gap:24px; }
+ .dominant { min-height:115px; gap:10px; }
+ .dominant strong { font-size:clamp(72px,10.4vw,104px); }
+ .dominant span { font-size:20px; }
+ .band .altitude { font-size:18px; }
+}
+@media(max-width:700px) {
+ body { padding:12px 10px 30px; }
+ .poster { padding:28px 24px 25px; min-height:0; }
+ .poster .kicker { font-size:10px; letter-spacing:.06em; gap:10px; padding-bottom:12px; }
+ .poster figcaption { gap:16px; margin-bottom:26px; }
+ .poster .headline { font-size:clamp(28px,7.7vw,46px); line-height:1.1; }
+ .poster .dek { font-size:16px; }
+ .panels { gap:30px; grid-template-columns:1fr; }
+ .panels::before { display:none; }
+ .band { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); column-gap:8px; align-items:center; }
+ .band + .band { padding:26px 0 0; border-left:0; border-top:1px solid var(--rule); }
+ .band .altitude { grid-column:1/-1; font-size:18px; }
+ .band .altitude small { font-size:11px; }
+ .dominant { display:block; min-height:0; margin:0; }
+ .dominant strong { display:block; font-size:clamp(55px,18vw,100px); line-height:1.1; }
+ .dominant span { display:block; font-size:16px; }
+ .unit-chart { grid-column:2; grid-row:2/4; }
+ .panel-readout { min-height:76px; font-size:12px; line-height:1.4; margin-top:12px; }
+ .panel-readout b { display:block; font-size:21px; }
+ .panel-readout .label { margin-left:0; }
+ .panel-readout small { font-size:11px; }
+ .how-to-read { margin-top:23px; font-size:14px; }
+ .keys { gap:6px; margin-top:18px; }
+ .keys button { min-height:38px; padding:7px 9px; gap:7px; font-size:13px; }
+ .keys i { width:11px; height:11px; }
+ .keys small { font-size:10px; }
+ .context-space { min-height:40px; }
+ .poster .note { margin-top:18px; font-size:12px; }
+ .footer-row { gap:12px; margin-top:14px; font-size:10px; }
+ .footer-row .credit { font-size:9px; }
+ .below { font-size:15px; }
+ .below h2 { font-size:22px; }
+ .below table { font-size:12px; }
+ .below td,.below th { padding:8px 4px; }
+}
+@media(max-width:350px) {
+ .poster { padding-right:18px; padding-left:18px; }
+ .poster .headline { font-size:25px; }
+ .dominant strong { font-size:54px; }
+ .keys button { font-size:12px; }
+}
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<section class="below" aria-labelledby="methods-title">
+ <h2 id="methods-title">What is being counted?</h2>
+ <p>This compares the public satellite catalogue in two altitude bands, not the total population of objects in space. It leaves out uncatalogued and unpublished objects, including almost all small debris. It measures the mix of listed objects, not collision risk, orbital density or debris mass.</p>
+ <p>“Spacecraft” is the catalogue's PAY (payload) category, including working and inactive spacecraft. “Debris” is DEB, its other-debris category. “Other” combines rocket bodies and unknown classifications. No operational-status inference is made from the payload label.</p>
+ <details><summary>Exact counts and the method</summary>
+  <div id="data-table"></div>
+  <p>Included: Earth-centred, ORB entries with no decay date and published altitudes satisfying 0 ≤ perigee ≤ apogee &lt; 2,000 km. An object's band uses the midpoint of its apogee and perigee. This is a consistent height summary, not its instantaneous altitude; elliptical orbits can cross band boundaries. Upper band limits are exclusive.</p>
+  <p>The dot positions are a layout, not physical satellite positions. Each chart has 100 equal dots; each dot represents one percentage point of that chart's total. Split dots show exact fractional shares.</p>
+ </details>
+ <p><a href="https://celestrak.org/satcat/satcat-format.php">CelesTrak definitions</a> · <a href="data.json">Data and limitations</a> · <a href="summary.csv">Counts CSV</a> · <a href="assets/satcat-2026-10-18.csv.gz">Frozen public catalogue</a> · <a href="analyze.py">Calculations</a></p>
+ <p class="artwork-note">The orbital background is generated artwork, composed using the finished plot layout as a reference. It is not a photograph of the catalogue or evidence of object positions. All data, marks, labels and calculations are rendered separately with rhp.</p>
+</section>
+<script type="module">
+import {Chart,Plot,Dot,Poster,slat,html,render,createSignal,For} from '@bezda/rhp/standalone';
+const DATA=__DATA__;
+const GROUPS=DATA.groups, BANDS=DATA.bands;
+const number=value=>new Intl.NumberFormat('en-US').format(value);
+const percent=value=>`${value.toFixed(1)}%`;
+const THEME={font:'var(--text)',ink:'var(--ink)',muted:'var(--soft)',grid:'var(--rule)',surface:'var(--paper)',series:GROUPS.map(group=>group.color)};
+
+// Equal-area dots, with exact fractional shares preserved as flat sectors in boundary dots.
+const units=band=>Array.from({length:100},(_,i)=>{
+ let cumulative=0;
+ const parts=band.categories.flatMap(group=>{
+  const start=cumulative; cumulative+=group.percent;
+  const amount=Math.max(0,Math.min(i+1,cumulative)-Math.max(i,start));
+  return amount>1e-8?[{id:group.id,color:group.color,amount}]:[];
+ });
+ const radius=.445*Math.sqrt((i+.5)/100), angle=i*Math.PI*(3-Math.sqrt(5));
+ let turn=0;
+ const stops=parts.map(part=>{const start=turn;turn+=part.amount*360;return `${part.color} ${start.toFixed(6)}deg ${turn.toFixed(6)}deg`;});
+ const majority=[...parts].sort((a,b)=>b.amount-a.amount)[0];
+ return {i,x:.5+radius*Math.cos(angle),y:.5+radius*Math.sin(angle),parts,majority:majority.id,fill:parts.length===1?parts[0].color:`conic-gradient(${stops.join(',')})`};
+});
+const UNITS=BANDS.map(units);
+
+const Unit=slat({room:{},css:`
+ .point {pointer-events:none;}
+ .unit {background:var(--unit-fill);cursor:pointer;border:0;pointer-events:auto;}
+ .quiet .unit {opacity:.65;}
+ .lit .unit {outline:2px solid var(--rhp-ink);outline-offset:2px;}
+ .point:focus-visible .unit {outline:3px solid var(--rhp-ink);outline-offset:3px;}
+ @media(prefers-reduced-motion:reduce){.unit{transition:none;}}
+`},d=>html`<div class=${()=>`point ${d.active==null?'':d.parts.some(part=>part.id===d.active)?'lit':'quiet'}`} data-category=${()=>d.majority} aria-label=${()=>`${GROUPS.find(group=>group.id===d.majority).name}, percentage-point dot ${d.i+1}`}>
+ <${Dot} at=${()=>d.x} cross=${()=>d.y} size="6.2cqw" class="unit" style=${()=>({'--unit-fill':d.fill})} />
+</div>`);
+
+function OrbitalTraffic(){
+ const [picked,setPicked]=createSignal(null),[preview,setPreview]=createSignal(null);
+ const active=()=>preview()??picked();
+ const categoryAt=target=>target?.closest?.('[data-category]')?.dataset.category??null;
+ const pick=event=>{const category=categoryAt(event.target);if(category)setPicked(event.target.closest('button')&&picked()===category?null:category);};
+ const move=event=>{if(event.pointerType!=='touch')setPreview(categoryAt(event.target));};
+ const focus=event=>{const category=categoryAt(event.target);if(category&&event.target.closest('.rhp-chart'))setPicked(category);};
+ const row=(band)=>band.categories.find(group=>group.id===(active()??band.dominant));
+ return html`<${Poster}
+  kicker=${html`<span>What is in low Earth orbit?</span><span>Public catalogue · 18 Oct 2026</span>`}
+  title=${html`<span>Low down: spacecraft.</span><span class="higher">Higher up: debris.</span>`}
+  dek="The mix of catalogued objects changes sharply between two altitude bands. Spacecraft includes working and inactive payloads."
+  onPointerMove=${move} onPointerLeave=${event=>{if(event.pointerType!=='touch')setPreview(null);}} onClick=${pick} onFocusIn=${focus}>
+  <div class="backdrop" aria-hidden="true"><img src="__BACKGROUND__" alt="" /></div>
+  <div class="panels">
+   <${For} each=${BANDS}>${(band,index)=>{
+    const dominant=band.categories.find(group=>group.id===band.dominant);
+    return html`<section class="band" aria-labelledby=${`band-${band.id}`}>
+     <h2 class="altitude" id=${`band-${band.id}`}>${band.name}<small>${index()===0?'LOWER':'HIGHER'}</small></h2>
+     <div class="dominant" style=${{'--category-color':dominant.color}}><strong>${Math.round(dominant.percent)}%</strong><span>${dominant.name.toLowerCase()}</span></div>
+     <${Chart} class="unit-chart" aspect=${1} scale=${[0,1]} cross=${[0,1]} ticks=${false} crossTicks=${false} theme=${THEME} label=${`${band.name}: 100 equal dots show the shares of ${number(band.total)} catalogued objects, not their physical locations.`}>
+      <${Plot} overlap=${true} keyboard=${true} rows=${UNITS[index()]} active=${active}>${Unit}<//>
+     <//>
+     <div class="panel-readout" aria-live="polite" style=${()=>({'--category-color':row(band).color})}><b class="value">${()=>number(row(band).count)}</b><span class="label">${()=>row(band).name.toLowerCase()} (${percent(row(band).percent)})</span><small>of ${number(band.total)} catalogued objects</small></div>
+    </section>`;
+   }}<//>
+  </div>
+  <p class="how-to-read"><b>100 dots = 100% in each field.</b> Split dots show fractional shares.</p>
+  <div class="keys" role="group" aria-label="Highlight a category">
+   <${For} each=${GROUPS}>${group=>html`<button type="button" data-category=${group.id} aria-pressed=${()=>picked()===group.id} style=${{'--category-color':group.color}}><i aria-hidden="true"></i><span>${group.name}</span>${group.id==='other'?html`<small>rocket bodies + unknown</small>`:''}</button>`}<//>
+  </div>
+  <div class="context-space" aria-hidden="true"></div>
+  <span class="note"><b>A catalogue comparison, not a safety ranking.</b> Most small debris is missing. Altitude is the midpoint of apogee and perigee; dots show shares, not physical positions.
+   <span class="footer-row"><span>CelesTrak SATCAT · snapshot: 18 October 2026<br />Debris = catalogue DEB; other = rocket bodies and unknown.</span><span class="credit">BUILT WITH RHP</span></span>
+  </span>
+ <//>`;
+}
+render(()=>html`<${OrbitalTraffic} />`,document.getElementById('chart'));
+document.getElementById('data-table').innerHTML=`<table><thead><tr><th>Band</th><th>Spacecraft</th><th>Debris</th><th>Other</th><th>Total</th></tr></thead><tbody>${BANDS.map(band=>`<tr><td>${band.name}</td>${band.categories.map(group=>`<td>${number(group.count)}<br>${percent(group.percent)}</td>`).join('')}<td>${number(band.total)}</td></tr>`).join('')}</tbody></table>`;
+</script>
+__DOWNLOAD__
+</body>
+</html>

@@ -1,0 +1,28 @@
+TITLE
+[OC] Below 600 km, 95% of publicly catalogued objects are spacecraft. At 600 to 1,100 km, 71% are debris.
+
+BODY
+The mix of objects in low Earth orbit changes sharply with altitude.
+
+In this public-catalogue snapshot, spacecraft account for 13,912 of the 14,571 objects below 600 km. In the next band, from 600 to 1,100 km, debris accounts for 7,632 of 10,686 objects.
+
+Here, spacecraft means the catalogue's payload category, including both working and inactive spacecraft. Debris means its DEB category; rocket bodies and unknown classifications are counted as Other.
+
+The symbols sit at representative altitudes and each stands for about 750 objects. Their angular positions and sizes are illustrative. The percentages use the full counts.
+
+This is a comparison of the public catalogue, not everything in orbit. Most small debris is missing, and these percentages do not measure collision risk.
+
+FIRST COMMENT
+Source: CelesTrak's public SATCAT, retrieved October 18, 2026.
+https://celestrak.org/pub/satcat.csv
+
+Field definitions:
+https://celestrak.org/satcat/satcat-format.php
+
+I filtered for Earth-centred ORB entries with no decay date and published altitudes satisfying 0 <= perigee <= apogee < 2,000 km. Each object's altitude band uses the midpoint of its apogee and perigee. That is an altitude summary, not its instantaneous position; elliptical orbits can cross band boundaries. The upper limits of the bands are exclusive.
+
+The headline values round 95.477% and 71.421% to whole percentages. Exact public-catalogue counts are used for the readout; the pictograms are rounded separately within each category and band.
+
+Analysis: Python. Chart and interactive version: rhp with HTML/CSS. Earth and hardware are generated illustrative artwork, styled as a vintage science-fiction poster, not photographs of specific catalogue objects.
+
+The image is not a map of individual positions, an inventory of uncatalogued debris, or a safety ranking.

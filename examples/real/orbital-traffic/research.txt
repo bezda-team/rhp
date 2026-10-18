@@ -1,0 +1,61 @@
+OBSERVED INTEREST, 18 OCTOBER 2026
+
+The audience question is how the mix of orbiting objects changes between orbital layers, following discussion of SpaceX's call for better orbital coordination.
+The thread and comments discuss satellite traffic, debris lifetimes and whether different altitude bands face the same problem.
+
+Primary discussion, published October 11, 2026:
+https://www.reddit.com/r/space/comments/1x381ly/spacex_calls_for_better_coordination_in_orbit/
+The discussion and comments were inspected.
+Its search-index score was about 1,112 at observation, which is audience evidence rather than a forecast of this poster's reception.
+
+Related interest:
+https://www.reddit.com/r/gifs/comments/1wwi277/one_satellite_hit_then_the_debris_takes_out/
+https://www.reddit.com/r/technology/comments/1x1rnda/spacex_calls_for_better_coordination_in_orbit/
+https://www.reddit.com/r/space/comments/1x84803/i_made_a_free_site_that_shows_whats_above_us/
+
+Other shortlisted directions were food waste and vacant housing.
+Neither had as clear a match between a current observed audience question and an immediately reproducible primary dataset.
+The selected question supports a direct two-band comparison rather than a claim about Kessler syndrome or future collision probabilities.
+
+DATA
+
+Primary public catalogue:
+https://celestrak.org/pub/satcat.csv
+Definitions:
+https://celestrak.org/satcat/satcat-format.php
+Frozen source, retrieval date, byte count and SHA-256 are recorded in source-snapshot.json.
+The source has 71,073 rows; the matching complete low-orbit subset has 28,846 entries.
+Of orbiting entries, 332 lack either published altitude field and are excluded.
+
+Below 600 km: 13,912 PAY, 454 DEB, 170 R/B and 35 UNK, total 14,571.
+From 600 to 1,100 km: 2,387 PAY, 7,632 DEB, 653 R/B and 14 UNK, total 10,686.
+The dominant shares are 95.477318% payloads and 71.420550% debris respectively.
+The analysis filters Earth-centred ORB entries with no decay date and 0 <= perigee <= apogee < 2,000 km.
+Band and symbol radius use (apogee + perigee) / 2.
+Symbols use nearest-whole rounding at 750 records per symbol, separately within each band and category.
+Their representative altitudes are quantiles of the actual matching records.
+
+Independent qualitative context, not mixed into the catalogue counts:
+https://www.esa.int/Space_Safety/Space_Debris/ESA_Space_Environment_Report_2026
+https://www.esa.int/ESA_Multimedia/Images/2026/09/Changing_orbital_landscape_2026_Space_environment_report
+ESA describes the different populations below 600 km and at 600 to 1,100 km.
+Its coverage and observation window differ from this snapshot.
+
+INTERPRETATION
+
+PAY includes working and inactive spacecraft.
+DEB is the other-debris category, not a complete census of all objects that could physically be considered debris.
+Rocket bodies and unknown classifications remain separate in Other.
+The public catalogue excludes uncatalogued and unpublished objects, including almost all small debris.
+Shares do not measure collision risk, mass, orbital density, manoeuvrability or operator responsibility.
+The instantaneous altitude of an eccentric orbit can cross these band boundaries.
+The miniature positions are a radial altitude pictogram, with consistent altitude spacing and illustrative Earth size, angular placement and object sizes.
+
+COMMUNITY FIT
+
+The visual makes an informative comparison and retains the finding in a static PNG.
+The post title leads with the two measured outcomes; the body explains only the definitions and limitations needed to read them.
+Sources, tools and generated illustrative artwork are disclosed in the first-comment draft.
+Current r/Infographics and r/dataisbeautiful rules and monthly top posts were reviewed during research.
+Do not include product promotion or submit the draft without the user's instruction.
+Posting-day rules must be checked again before submission.
