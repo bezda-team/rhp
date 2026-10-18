@@ -309,8 +309,8 @@
     "color": "#091d28"
   },
   "pageBackground": {
-    "color": "#464646",
-    "description": "neutral charcoal contrasting with the dark navy poster",
+    "color": "#424750",
+    "description": "charcoal with a subtle blue tint contrasting with the dark navy poster",
     "checkerWidths": [
       1280,
       390
