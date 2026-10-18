@@ -23,8 +23,8 @@
         2000,
         2580
       ],
-      "meanChannelDifference": 0.36002015503875967,
-      "fitExportDifference": 0.002689922480620155,
+      "meanChannelDifference": 0.30896976744186044,
+      "fitExportDifference": 0.0022193798449612404,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
@@ -60,7 +60,7 @@
         2000,
         2580
       ],
-      "meanChannelDifference": 1.3489289405684755,
+      "meanChannelDifference": 1.1948754521963825,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -97,7 +97,7 @@
         2000,
         2580
       ],
-      "meanChannelDifference": 1.311846511627907,
+      "meanChannelDifference": 1.6597434108527132,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -134,7 +134,7 @@
         740,
         2295
       ],
-      "meanChannelDifference": 4.038500172646514,
+      "meanChannelDifference": 4.238118780801708,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
@@ -255,6 +255,48 @@
     "rightGapRange": [
       9.46875,
       15.75
+    ]
+  },
+  "backgroundFade": {
+    "direction": "radial from top left to bottom right",
+    "bottomRight": "fully faded to poster background",
+    "exportedCorners": [
+      {
+        "browser": "chromium",
+        "bottomRight": [
+          16,
+          43,
+          57,
+          255
+        ]
+      },
+      {
+        "browser": "firefox",
+        "bottomRight": [
+          16,
+          43,
+          57,
+          255
+        ]
+      },
+      {
+        "browser": "webkit",
+        "bottomRight": [
+          16,
+          43,
+          57,
+          255
+        ]
+      },
+      {
+        "browser": "webkit-phone",
+        "bottomRight": [
+          15,
+          43,
+          57,
+          255
+        ]
+      }
     ]
   }
 }

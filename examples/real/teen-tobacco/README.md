@@ -51,6 +51,7 @@ Line-end labels scale with the available plot width, and the chart reserves thei
 The crosshair spans the full plot and follows the selected points immediately, including the square pouch marker.
 Equal side padding and larger gaps below the caption and plot keep the existing composition open on desktop and phone screens.
 School-locker materials, institutional condensed typography and subdued light put the survey in its high-school context.
+The background fades radially from the top-left corner into the poster's solid color at the bottom-right corner.
 The generated background is decorative and explicitly disclosed, with all factual marks and words rendered in code.
 The first artwork drafts had implausible door hardware; the final background was regenerated as three equal doors with latches opposite their hinges.
 That feedback belongs in artwork review: check that depicted objects function plausibly before integrating them.
