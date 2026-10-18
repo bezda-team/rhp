@@ -17,18 +17,19 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
 .backdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(9 29 40 / .3), rgb(9 29 40 / .5) 75%, rgb(9 29 40 / .2)); }
 .poster figcaption { display: grid; gap: 20px; margin: 0 0 40px; }
 .poster .kicker { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--rule); color: var(--soft); font-size: 18px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
-.poster .headline { display: block; font: 700 72px/.98 var(--display); letter-spacing: -.01em; }
-.lead-in { display: block; margin-bottom: 3px; color: var(--pouches); font-size: 55px; }
-.finding { display: block; }
-.headline .number-block { display: flex; align-items: center; justify-content: flex-end; gap: 32px; margin-top: 9px; }
-.headline .number { font: 700 160px/.85 var(--display); letter-spacing: -.04em; white-space: nowrap; }
+.poster .headline { --headline-size: clamp(48px, 6vw, 72px); --number-size: 180px; display: grid; grid-template-columns: minmax(0, 1fr) max-content; column-gap: 24px; align-items: start; font: 700 var(--headline-size)/.98 var(--display); letter-spacing: -.01em; }
+.lead-in { display: block; grid-column: 1 / -1; margin-bottom: 3px; color: var(--pouches); font-size: 55px; }
+.finding { display: block; grid-column: 1; grid-row: 2; }
+/* Align Barlow Condensed's visible capitals at the headline and number line heights. */
+.headline .number-block { display: flex; align-items: center; justify-content: flex-end; grid-column: 2; grid-row: 2; margin-top: calc(var(--headline-size) * .18 - var(--number-size) * .114); }
+.headline .number { font: 700 var(--number-size)/.85 var(--display); letter-spacing: -.04em; white-space: nowrap; }
 .poster .dek { max-width: none; color: var(--soft); font-size: 23px; line-height: 1.38; }
 .plot-unit { margin: 0 0 16px; color: var(--soft); font-size: 22px; }
 .plot-unit b { color: var(--ink); font-weight: 600; }
 .axis-number { font-size: 22px; }
 .plot-wrap { flex: 1; min-width: 0; margin-bottom: 32px; touch-action: pan-y; }
 .plot-wrap:has(:focus-visible) { outline: 2px solid var(--ink); outline-offset: 4px; }
-.year-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; gap: 9px; padding-top: 18px; border-top: 1px solid var(--rule); }
+.year-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; gap: 9px; padding-top: 18px; }
 .year-controls button { height: 43px; border: 1px solid var(--rule); border-radius: 0; color: var(--soft); background: rgb(9 29 40 / .5); font: 600 22px/1 var(--text); font-variant-numeric: tabular-nums; cursor: pointer; }
 .year-controls button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 .year-controls button:hover { border-color: var(--ink); }
@@ -62,10 +63,8 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
  .poster { padding: 28px var(--poster-pad) 32px; min-height: 0; }
  .poster .kicker { font-size: 11px; gap: 8px; letter-spacing: .06em; padding-bottom: 11px; }
  .poster figcaption { gap: 16px; margin-bottom: 32px; }
- .poster .headline { font-size: clamp(36px, 7.8vw, 54px); }
+ .poster .headline { --headline-size: clamp(29px, 9.23vw, 54px); --number-size: clamp(90px, 26vw, 155px); column-gap: clamp(8px, 2.6vw, 16px); }
  .lead-in { font-size: clamp(30px, 6vw, 43px); }
- .headline .number-block { gap: 18px; margin-top: 12px; }
- .headline .number { font-size: clamp(89px, 20vw, 140px); }
  .poster .dek { font-size: 16px; line-height: 1.4; }
  .plot-unit { font-size: 14px; }
  .axis-number { font-size: 13px; }

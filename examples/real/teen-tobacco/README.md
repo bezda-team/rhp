@@ -28,7 +28,7 @@ node mcp/bin/rhp-mcp.js check examples/real/teen-tobacco/teen-tobacco.html --wid
 
 Open `teen-tobacco.html` in a browser to inspect a year by pointing, tapping, using the year buttons or pressing arrow keys on the plot.
 Download saves the current selection at twice the natural CSS dimensions, including when fitted to the screen.
-The default desktop poster is 1000 CSS pixels wide and about 1361 pixels tall, exporting at 2000 by 2722 pixels in Chromium.
+The default desktop poster is 1000 CSS pixels wide and about 1290 pixels tall, exporting at 2000 by 2580 pixels in Chromium.
 The phone companion reflows for legibility; the Reddit image keeps the desktop composition.
 
 ## Evidence
@@ -45,6 +45,7 @@ See the companion's expanded methods for confidence intervals and further detail
 ## Design and skill test
 
 The comparison uses a common percentage scale, solid and dashed strokes, and different point shapes.
+The enlarged headline statistic shares a row with the conclusion, with a responsive negative margin aligning their visible tops.
 Direct labels keep the static image complete, while fixed readout columns and confidence-interval lines let readers inspect each year without layout shifts.
 Line-end labels scale with the available plot width, and the chart reserves their measured width instead of a fixed empty gutter.
 The crosshair spans the full plot and follows the selected points immediately, including the square pouch marker.
