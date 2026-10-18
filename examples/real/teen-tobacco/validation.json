@@ -307,5 +307,14 @@
       }
     ],
     "color": "#091d28"
+  },
+  "pageBackground": {
+    "color": "#464646",
+    "description": "neutral charcoal contrasting with the dark navy poster",
+    "checkerWidths": [
+      1280,
+      390
+    ],
+    "result": "passed, including text contrast"
   }
 }
