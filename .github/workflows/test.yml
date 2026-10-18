@@ -56,3 +56,11 @@ jobs:
         working-directory: mcp
       - run: npm test
         working-directory: mcp
+        env:
+          RHP_TEST_ARTIFACTS: ${{ runner.temp }}/rhp-checker-artifacts
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: checker-diagnostics
+          path: ${{ runner.temp }}/rhp-checker-artifacts
+          if-no-files-found: ignore

@@ -72,6 +72,41 @@ const cases = [
 ];
 const { browser, error } = await launch();
 assert(browser, error?.join("; "));
+// Keep the exact compared pixels and rendered state when CI finds a disagreement.
+// The artifacts live outside the disposable chart folder, which is always removed.
+const artifacts = process.env.RHP_TEST_ARTIFACTS;
+const captures = [];
+if (artifacts) {
+  const newContext = browser.newContext.bind(browser);
+  browser.newContext = async (...args) => {
+    const context = await newContext(...args);
+    const newPage = context.newPage.bind(context);
+    context.newPage = async (...args) => {
+      const page = await newPage(...args);
+      const screenshot = page.screenshot.bind(page);
+      page.screenshot = async (options) => {
+        const image = await screenshot(options);
+        if (options.style?.includes("data-rhp-selection-background")) {
+          const state = await page.evaluate(() => ({
+            name: document.querySelector('meta[name="regression-case"]')?.content,
+            text: document.body.innerText,
+            textSelection: String(getSelection()),
+            active: document.activeElement?.outerHTML,
+            marks: [...document.querySelectorAll('.rhp-bar, .rhp-dot, .rhp-line, .rhp-label')].map((el) => {
+              const style = getComputedStyle(el), box = el.getBoundingClientRect();
+              return { text: el.textContent, color: style.color, background: style.backgroundColor,
+                clip: style.clipPath, x: box.x, y: box.y, width: box.width, height: box.height };
+            }),
+          }));
+          captures.push({ image, state });
+        }
+        return image;
+      };
+      return page;
+    };
+    return context;
+  };
+}
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "rhp-selection-regression-"));
 try {
   let next = 0;
@@ -79,12 +114,25 @@ try {
     while (next < cases.length) {
       const [name, html, expected, verified] = cases[next++];
       const file = path.join(dir, name + ".html");
-      fs.writeFileSync(file, html);
+      fs.writeFileSync(file, html.replace('<head>', `<head><meta name="regression-case" content="${name}">`));
       const result = await check({ file, browser, widths: [1280], outDir: path.join(dir, name) });
       const codes = result.findings.filter((f) => /^selection-/.test(f.code)).map((f) => f.code).sort();
-      assert.deepEqual(codes, expected.sort(), `${name}: ${result.text}`);
-      assert.equal(result.selectionAudits.length > 0, verified, `${name}: qualify only after observing the existing selection behavior`);
-      assert(!result.findings.some((f) => f.level === "error"), result.text);
+      try {
+        assert.deepEqual(codes, expected.sort(), `${name}: ${result.text}`);
+        assert.equal(result.selectionAudits.length > 0, verified, `${name}: qualify only after observing the existing selection behavior`);
+        assert(!result.findings.some((f) => f.level === "error"), result.text);
+      } catch (error) {
+        if (artifacts) {
+          const output = path.join(artifacts, name);
+          fs.mkdirSync(output, { recursive: true });
+          const frames = captures.filter((c) => c.state.name === name);
+          for (const [index, frame] of frames.entries()) fs.writeFileSync(path.join(output, `${index}.png`), frame.image);
+          fs.writeFileSync(path.join(output, 'states.json'), JSON.stringify(frames.map((c) => c.state), null, 2));
+          fs.writeFileSync(path.join(output, 'result.json'), JSON.stringify(result, null, 2));
+          console.error(`Selection diagnostics: ${output}`);
+        }
+        throw error;
+      }
       console.log(`PASS ${name}: ${codes.join(", ") || "no conditional findings"}`);
     }
   }));
