@@ -1,16 +1,22 @@
 {
-  "date": "2026-10-17",
+  "date": "2026-10-18",
   "checker": {
     "widths": [
       1280,
       768,
       700,
+      560,
       430,
       390,
       360,
       320
     ],
-    "result": "passed"
+    "result": "two chart-boundary findings under the explicitly requested fixed padding; all content remains inside the poster",
+    "findings": [
+      "At 1280px, end labels extend about 20px beyond the chart content into the poster padding.",
+      "At 560px, the starting e-cigarette percentage extends about 5px beyond the chart content into the poster padding."
+    ],
+    "otherChecks": "no overlapping text, cut-off text, sideways page overflow, browser errors, contrast failures or interaction shifts"
   },
   "browserChecks": [
     {
@@ -24,8 +30,8 @@
         2000,
         2621
       ],
-      "meanChannelDifference": 0.7401952707856598,
-      "fitExportDifference": 0.01964840182648402,
+      "meanChannelDifference": 0.8473773201118738,
+      "fitExportDifference": 0.01649631324688533,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
@@ -45,8 +51,7 @@
         "number": "42%.",
         "finding": "Teen tobacco use fell",
         "yearButtons": "2022202320242025",
-        "backgroundColor": "#091d28",
-        "filter": "brightness(0.9)"
+        "filter": "brightness(0.94)"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -63,8 +68,8 @@
         2000,
         2621
       ],
-      "meanChannelDifference": 1.641979913551996,
-      "fitExportDifference": 0,
+      "meanChannelDifference": 1.7115242817187897,
+      "fitExportDifference": 0.1830938215102975,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
@@ -84,8 +89,7 @@
         "number": "42%.",
         "finding": "Teen tobacco use fell",
         "yearButtons": "2022202320242025",
-        "backgroundColor": "#091d28",
-        "filter": "brightness(0.9)"
+        "filter": "brightness(0.94)"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -102,7 +106,7 @@
         2000,
         2621
       ],
-      "meanChannelDifference": 2.4846994660564454,
+      "meanChannelDifference": 2.7081164505466564,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -123,8 +127,7 @@
         "number": "42%.",
         "finding": "Teen tobacco use fell",
         "yearButtons": "2022202320242025",
-        "backgroundColor": "#091d28",
-        "filter": "brightness(0.9)"
+        "filter": "brightness(0.94)"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -141,7 +144,7 @@
         740,
         2319
       ],
-      "meanChannelDifference": 3.3426009630319977,
+      "meanChannelDifference": 3.805867505436471,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
@@ -162,8 +165,7 @@
         "number": "42%.",
         "finding": "Teen tobacco use fell",
         "yearButtons": "2022202320242025",
-        "backgroundColor": "#091d28",
-        "filter": "brightness(0.9)"
+        "filter": "brightness(0.94)"
       },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
@@ -260,11 +262,12 @@
     "headline": "visible tops aligned within 1.5px, no overlapping or overflowing text",
     "readout": "aligned values and fixed columns for every year",
     "crosshair": "passes through every selected point",
-    "endLabels": "inside plot with no overlap",
+    "endLabels": "inside the poster with no overlapping labels",
     "rightGapRange": [
-      1.65625,
-      15.515625
-    ]
+      -20.21875,
+      51.703125
+    ],
+    "boundary": "poster, including its padding"
   },
   "backgroundFade": {
     "direction": "radial from top left to bottom right",
@@ -357,7 +360,7 @@
   "posterBrightness": 0.94,
   "brightnessVerification": {
     "currentBrightness": 0.94,
-    "lastCheckedBrightness": 0.9
+    "lastCheckedBrightness": 0.94
   },
   "mobileLayout": {
     "measurements": [
@@ -442,5 +445,213 @@
         "download": "preserves mobile gutters and selection"
       }
     ]
+  },
+  "labelAlignmentAndPadding": {
+    "date": "2026-10-18",
+    "stackingBreakpoint": "unchanged, plot container width below 460px",
+    "rightPadding": {
+      "stacked": 80,
+      "sideBySide": 195
+    },
+    "baselines": "Any tobacco and E-cigarettes share the preceding percentage baseline when side by side",
+    "measurements": [
+      {
+        "browser": "chromium",
+        "viewportWidth": 1280,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 625,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 1024,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 617,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 768,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 390.71875,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 701,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 332.28125,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 700,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 361.40625,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 560,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 239.34375,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 430,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 240,
+        "baselineDifferences": null
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 390,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 200,
+        "baselineDifferences": null
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 360,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 170,
+        "baselineDifferences": null
+      },
+      {
+        "browser": "chromium",
+        "viewportWidth": 320,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 130,
+        "baselineDifferences": null
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 1280,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 625,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 1024,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 617,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 768,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 390.71875,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 701,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 332.28125,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 700,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 361.40625,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 560,
+        "stacked": false,
+        "rightPadding": "195px",
+        "plotWidth": 239.34375,
+        "baselineDifferences": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 430,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 240,
+        "baselineDifferences": null
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 390,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 200,
+        "baselineDifferences": null
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 360,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 170,
+        "baselineDifferences": null
+      },
+      {
+        "browser": "webkit",
+        "viewportWidth": 320,
+        "stacked": true,
+        "rightPadding": "80px",
+        "plotWidth": 130,
+        "baselineDifferences": null
+      }
+    ],
+    "exportAndInteractionChecks": "passed Chromium, Firefox, WebKit desktop and WebKit touch, including fitted exports and selection preservation"
   }
 }

@@ -47,8 +47,9 @@ See the companion's expanded methods for confidence intervals and further detail
 The comparison uses a common percentage scale, solid and dashed strokes, and different point shapes.
 The enlarged headline statistic shares a row with the conclusion, with a responsive negative margin aligning their visible tops.
 Direct labels keep the static image complete, while fixed readout columns and confidence-interval lines let readers inspect each year without layout shifts.
-Line-end labels scale with the available plot width, and the chart reserves their measured width instead of a fixed empty gutter.
-At widths up to 700 pixels, a 34px left chart gutter aligns the percentage labels with the poster text, and the end labels use tighter boxes without the desktop buffer.
+Line-end labels scale with the available plot width and share a baseline with their preceding percentage when displayed side by side.
+The existing stacking breakpoint is unchanged: the right chart gutter is 80px for stacked labels and 195px for side-by-side labels.
+At widths up to 700 pixels, a 34px left chart gutter aligns the percentage labels with the poster text.
 The crosshair spans the full plot and follows the selected points immediately, including the square pouch marker.
 Equal side padding and larger gaps below the caption and plot keep the existing composition open on desktop and phone screens.
 School-locker materials, institutional condensed typography and subdued light put the survey in its high-school context.
