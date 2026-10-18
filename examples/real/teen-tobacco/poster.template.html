@@ -46,7 +46,8 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
 .ci-range { white-space: nowrap; }
 .poster .note { display: block; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 19px; line-height: 1.35; color: var(--soft); }
 .poster .note b { color: var(--ink); font-weight: 600; }
-.poster .note .source { display: block; margin-top: 7px; font-size: 17px; }
+.poster .note .source { display: block; margin-top: 16px; font-size: 17px; }
+.poster .note .built-with { display: block; margin-top: 12px; text-align: right; font-size: 14px; }
 .poster .note a { color: inherit; text-underline-offset: 3px; }
 .below { max-width: 1000px; margin: 20px auto 0; padding: 0 2px; color: var(--soft); }
 .below h2 { margin: 0 0 8px; color: var(--ink); font-size: 22px; }
@@ -78,7 +79,8 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
  .readout .value { font-size: 25px; }
  .readout small { font-size: 10px; }
  .poster .note { font-size: 13px; margin-top: 24px; padding-top: 16px; }
- .poster .note .source { font-size: 11px; }
+ .poster .note .source { margin-top: 12px; font-size: 11px; }
+ .poster .note .built-with { font-size: 11px; }
  .below { font-size: 15px; }
  .below table { font-size: 11px; }
  .below th, .below td { padding: 8px 3px; }
@@ -216,7 +218,7 @@ function TobaccoPoster() {
   kicker=${html`<span>After the vape boom</span><span>U.S. high school · 2022 to 2025</span>`}
   title=${html`<span class="lead-in">Nicotine pouches rose.</span><span class="finding">Teen tobacco use fell</span><span class="number-block"><b class="number">${DATA.declineRounded}%.</b></span>`}
   dek="The overall measure already includes e-cigarettes and nicotine pouches, alongside other tobacco products."
-  note=${html`<span><b>Categories overlap; do not add them.</b> Different students each year, not a measure of switching or nicotine dose.<span class="source">Source: FDA, National Youth Tobacco Survey, 2022 to 2025. Table 3, published June 2026.</span></span>`}
+  note=${html`<span><b>Categories overlap; do not add them.</b> Different students each year, not a measure of switching or nicotine dose.<span class="source">Source: FDA, National Youth Tobacco Survey, 2022 to 2025. Table 3, published June 2026.</span><span class="built-with">Built with rhp</span></span>`}
   onPointerMove=${move} onPointerLeave=${leave} onClick=${pick} onKeyDown=${key}
   onFocusIn=${event=>{if(rowOf(event.target)!=null)setHover(null);}}
   onFocusOut=${event=>{if(!event.currentTarget.contains(event.relatedTarget))setHover(null);}}>
