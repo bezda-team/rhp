@@ -237,6 +237,30 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 @media(max-width:600px){.retro .stat.upper .band-full{display:none}.retro .stat.upper .band-compact{display:inline}}
 .retro .readout-share{display:grid;justify-items:center;gap:2px}
 .retro .readout-base{font-size:.85em;line-height:1.5}
+/* Keep the full footer's space while its panel slides down to reveal the Earth. */
+.retro .orbital-scene{overflow:visible}
+.earth-art{position:absolute;inset:2px 2px calc(2px - var(--footer-height,0px));overflow:hidden;pointer-events:none}
+.earth-art .earth{top:calc(77.083% - var(--footer-height,0px) * .77083)}
+.earth-art .earth-glow{top:calc(79.167% - var(--footer-height,0px) * .79167)}
+.retro .earth-glow{box-shadow:none}
+.retro .earth-glow::before{content:'';position:absolute;inset:-32px -25px -18px;background:radial-gradient(ellipse closest-side,transparent calc(100% - 33px),#c3d3b559 calc(100% - 25px),#b7c89c33 calc(100% - 19px),transparent 100%)}
+.retro .visual::before{bottom:calc(-1 * var(--footer-height,0px))}
+.retro .footer-stage{position:relative;z-index:4;margin:0 -43px -25px;overflow:hidden;--footer-inline:43px;--footer-bottom:25px}
+.retro .footer-drawer{background:#102f38f5;transform:translateY(calc(100% - var(--footer-summary-height,60px)));transition:transform .25s ease}
+.retro .footer-drawer.is-expanded{transform:translateY(0)}
+.retro .footer-summary{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:13px var(--footer-inline);border:0;border-top:1px solid var(--rule);background:transparent;color:var(--ink);font:400 14px/1.6 var(--text);text-align:left;cursor:pointer}
+.retro .footer-summary strong{flex:1;font-weight:600}
+.retro .footer-summary:focus-visible{outline:2px solid var(--ink);outline-offset:-5px}
+.retro .footer-prompt{white-space:nowrap;font-weight:400;color:var(--soft)}
+.retro .footer-summary svg{width:18px;height:18px;flex:none;transition:transform .25s ease}
+.retro .is-expanded .footer-summary svg{transform:rotate(180deg)}
+.retro .is-expanded .footer-prompt{visibility:hidden}
+.retro .footer-body{padding:0 var(--footer-inline) var(--footer-bottom)}
+.retro .footer-body .note{margin-top:0}
+.retro .footer-drawer:not(.is-expanded) .footer-body{visibility:hidden}
+@media(max-width:900px) and (min-width:601px){.retro .footer-stage{margin-right:-34px;margin-left:-34px;--footer-inline:34px}.retro .footer-summary{font-size:12px}}
+@media(max-width:600px){.retro .footer-stage{margin:0 -21px -22px;--footer-inline:21px;--footer-bottom:22px}.retro .footer-summary{font-size:10px;gap:8px;padding-top:10px;padding-bottom:10px}.retro .footer-summary strong{flex:1}.retro .footer-summary svg{width:14px;height:14px}}
+@media(prefers-reduced-motion:reduce){.retro .footer-drawer,.retro .footer-summary svg{transition:none}}
 /* The export utility omits hidden UI while preserving the selected chart image. */
 body:has(.poster-download[aria-busy="true"]) .orbit-tooltip{display:none!important}
 </style>
@@ -386,6 +410,32 @@ const createObjectMark=onDismiss=>slat({room:{},css:`
  <${Show} when=${()=>d.detailKey===d.key}><${OrbitTooltip} row=${d} onDismiss=${event=>onDismiss()} /><//>
 </div>`);
 
+function PosterFooter(){
+ const [expanded,setExpanded]=createSignal(false);
+ let stage,summary;
+ onMount(()=>{
+  const measure=()=>{
+   stage.style.setProperty('--footer-summary-height',getComputedStyle(summary).height);
+   stage.closest('.poster').style.setProperty('--footer-height',getComputedStyle(stage).height);
+  };
+  const observer=new ResizeObserver(measure);observer.observe(summary);observer.observe(stage);measure();
+  onCleanup(()=>observer.disconnect());
+ });
+ return html`<section class="footer-stage" aria-label="Chart notes" ref=${element=>stage=element}>
+  <div class=${()=>`footer-drawer${expanded()?' is-expanded':''}`}>
+   <button type="button" id="orbital-footer-toggle" class="footer-summary" ref=${element=>summary=element} aria-expanded=${expanded} aria-controls="orbital-footer-notes" onClick=${event=>{event.stopPropagation();setExpanded(value=>!value);}}>
+    <strong>Spacecraft includes working and inactive payloads.</strong>
+    <span class="footer-prompt" aria-hidden="true">Click to expand</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6" /></svg>
+   </button>
+   <div id="orbital-footer-notes" class="footer-body" role="region" aria-labelledby="orbital-footer-toggle" aria-hidden=${()=>!expanded()}>
+    <span class="note">Debris = catalogue DEB. Other = rocket bodies + unknown. Most small debris is absent. This compares catalogue composition, not collision risk.</span>
+    <span class="footer-row"><span>CelesTrak SATCAT · 18 October 2026<br />Altitude: midpoint of apogee and perigee. Generated illustrative artwork.</span><span class="credit">BUILT WITH RHP</span></span>
+   </div>
+  </div>
+ </section>`;
+}
+
 function OrbitalPoster(){
  const [picked,setPicked]=createSignal(null),[preview,setPreview]=createSignal(null);
  const [detailKey,setDetailKey]=createSignal(null);
@@ -426,6 +476,7 @@ function OrbitalPoster(){
  };
  const selected=()=>GROUPS.find(group=>group.id===(active()??'payload'));
  const result=band=>band.categories.find(group=>group.id===selected().id);
+ const earthArt=html`<div class="earth-glow"></div><img class="earth" src="__EARTH__" alt="" />`;
  const title=CONFIG.id==='retro'
   ?html`<span class="second">${CONFIG.line2}</span>${' '}<span>${CONFIG.line1}</span>`
   :html`<span>${CONFIG.line1}</span><span class="second">${CONFIG.line2}</span>`;
@@ -447,7 +498,8 @@ function OrbitalPoster(){
     </section>`;}}<//>
    </div>
    <div class="orbital-scene">
-    <div class="scene-art" aria-hidden="true"><div class="earth-glow"></div><img class="earth" src="__EARTH__" alt="" /><div class="orbit guide guide-400"></div><div class="orbit guide guide-800"></div><div class="orbit outer"></div><div class="orbit"></div><span class="orbit-label guide-label label-400">400 km</span><span class="orbit-label guide-label label-800">800 km</span><span class="orbit-label outer-label">1,100 km</span><span class="orbit-label">600 km</span><span class="earth-word">EARTH</span></div>
+    ${CONFIG.id==='retro'?html`<div class="earth-art" aria-hidden="true">${earthArt}</div>`:''}
+    <div class="scene-art" aria-hidden="true">${CONFIG.id!=='retro'?earthArt:''}<div class="orbit guide guide-400"></div><div class="orbit guide guide-800"></div><div class="orbit outer"></div><div class="orbit"></div><span class="orbit-label guide-label label-400">400 km</span><span class="orbit-label guide-label label-800">800 km</span><span class="orbit-label outer-label">1,100 km</span><span class="orbit-label">600 km</span><span class="earth-word">EARTH</span></div>
     <${Chart} class="orbit-chart" aspect=${1/.72} scale=${[0,1]} cross=${[0,.72]} ticks=${false} crossTicks=${false} theme=${THEME} label="Radial altitude pictogram: spacecraft dominate below 600 km, debris dominates from 600 to 1,100 km. Each miniature summarizes approximately 750 catalogued objects; horizontal positions are illustrative.">
      <${Plot} overlap=${true} keyboard=${true} rows=${rows} active=${active} detailKey=${detailKey}>${ObjectMark}<//>
     <//>
@@ -456,8 +508,10 @@ function OrbitalPoster(){
    ${CONFIG.id!=='retro'?html`   <p class="scene-caption">Curved guides show altitude. Each miniature ≈ 750 objects, rounded by category and band. Earth size, object sizes and angular positions are illustrative.</p>`:''}
   </div>
   ${CONFIG.id!=='retro'?controls(false):''}
-  <span class="note"><b>Spacecraft includes working and inactive payloads.</b> Debris = catalogue DEB. Other = rocket bodies + unknown. Most small debris is absent. This compares catalogue composition, not collision risk.</span>
-  <span class="footer-row"><span>CelesTrak SATCAT · 18 October 2026<br />Altitude: midpoint of apogee and perigee. Generated illustrative artwork.</span><span class="credit">BUILT WITH RHP</span></span>
+  ${CONFIG.id==='retro'?html`<${PosterFooter} />`:html`
+   <span class="note"><b>Spacecraft includes working and inactive payloads.</b> Debris = catalogue DEB. Other = rocket bodies + unknown. Most small debris is absent. This compares catalogue composition, not collision risk.</span>
+   <span class="footer-row"><span>CelesTrak SATCAT · 18 October 2026<br />Altitude: midpoint of apogee and perigee. Generated illustrative artwork.</span><span class="credit">BUILT WITH RHP</span></span>
+  `}
  <//>`;
 }
 render(()=>html`<${OrbitalPoster} />`,document.getElementById('chart'));

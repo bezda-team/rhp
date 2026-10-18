@@ -4,7 +4,7 @@
   "mainPng": "orbital-retro.png",
   "pngDimensions": {
     "width": 1920,
-    "height": 3184
+    "height": 3197
   },
   "widths": [
     1280,
@@ -14,7 +14,7 @@
     360,
     320
   ],
-  "mainChecker": "No errors. One existing mobile contrast warning for spacecraft after removing its background shading as requested.",
+  "mainChecker": "No problems found at 1280, 1024, 768, 390, 360 and 320 pixels.",
   "fontStudies": [
     {
       "id": "michroma",
@@ -75,20 +75,22 @@
     }
   ],
   "selectedCrossBrowser": {
-    "checked": "2026-10-18T17:46:01.300Z",
+    "checked": "2026-10-18T22:19:43.584Z",
     "url": "http://127.0.0.1:4398/examples/real/orbital-traffic/orbital-retro.html",
     "browsers": [
       {
         "name": "chromium",
         "dimensions": {
           "width": 960,
-          "height": 1592.046875
+          "height": 1598.84375
         },
         "png": {
           "width": 1920,
-          "height": 3184
+          "height": 3197
         },
-        "meanRgbDifference": 0.4936538704808766,
+        "meanRgbDifference": 1.678373388245925,
+        "earthEdgeDifference": 1.660566009557945,
+        "footer": true,
         "altitudeChecks": 34,
         "selectionPreserved": true,
         "fitStable": true,
@@ -100,13 +102,15 @@
         "name": "firefox",
         "dimensions": {
           "width": 960,
-          "height": 1592.0833740234375
+          "height": 1598.88330078125
         },
         "png": {
           "width": 1920,
-          "height": 3184
+          "height": 3197
         },
-        "meanRgbDifference": 0.8020196468453378,
+        "meanRgbDifference": 1.8252481710283948,
+        "earthEdgeDifference": 1.117010155316607,
+        "footer": true,
         "altitudeChecks": 34,
         "selectionPreserved": true,
         "fitStable": true,
@@ -118,13 +122,15 @@
         "name": "webkit",
         "dimensions": {
           "width": 960,
-          "height": 1592.046875
+          "height": 1598.84375
         },
         "png": {
           "width": 1920,
-          "height": 3184
+          "height": 3197
         },
-        "meanRgbDifference": 3.5468812705018147,
+        "meanRgbDifference": 4.0972635478573665,
+        "earthEdgeDifference": 3.991465053763441,
+        "footer": true,
         "altitudeChecks": 34,
         "selectionPreserved": true,
         "fitStable": true,
@@ -149,7 +155,8 @@
     "The background shading behind 95% spacecraft is completely removed.",
     "Other sits beside 71%, with two approximately 5px left nudges. The debris image above moved right; all source altitudes are retained.",
     "Delayed tooltips use the poster title palette, preserve fixed glyph sizes when fitted and omit the repeated symbol-unit explanation.",
-    "PNG exports hide the temporary altitude popup during capture, preserve category selection and restore the popup afterward."
+    "PNG exports hide the temporary altitude popup during capture, preserve category selection and restore the popup afterward.",
+    "The bottom notes slide upward from a collapsed summary row, revealing the existing Earth artwork without changing chart geometry or fitted scale."
   ],
   "finalPlacement": {
     "otherLeftNudgeDesktopPx": 10.013903395043005,
@@ -251,5 +258,14 @@
       "selectionPreserved": true,
       "errors": []
     }
-  ]
+  ],
+  "footer": {
+    "default": "collapsed",
+    "summary": "Spacecraft includes working and inactive payloads. Click to expand",
+    "promptHiddenWhenExpanded": true,
+    "stablePosterDimensions": true,
+    "mouseTouchAndKeyboard": true,
+    "exportsCheckedOpenAndClosed": true,
+    "earthGlow": "Bounded radial gradient avoids the Safari PNG box-shadow artifact."
+  }
 }

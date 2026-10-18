@@ -1,10 +1,6 @@
-rhp check of orbital-retro.html (html, rhp 2.0.5, Playwright's Chromium headless shell (chromium_headless_shell-1243) 153.0.8010.12): 1 warning.
+rhp check of orbital-retro.html (html, rhp 2.0.5, Playwright's Chromium headless shell (chromium_headless_shell-1243) 153.0.8010.12): no problems found.
 
-Warnings
-1. [low-contrast] "spacecraft" is #fff1d2 on #727e69: contrast 3.83:1, under the 4.5:1 WCAG AA asks for text this size. (390px, 360px, 320px)
-   Fix: Make the text #0f0e0c, or the color behind it #67725f (each the nearest color that reaches 4.5:1).
-
-Passed: no errors thrown, no rhp warnings, rhp used as documented, 1 chart drawn (34 slats), no NaN values, values inside the scale, nothing sticks out, slats have room, no overlapping text, names by their own marks, no text cut off, no sideways scroll, text 9px or larger, marks stand out, series colors tell apart, every file loaded, fonts loaded.
+Passed: no errors thrown, no rhp warnings, rhp used as documented, 1 chart drawn (34 slats), no NaN values, values inside the scale, nothing sticks out, slats have room, no overlapping text, names by their own marks, no text cut off, no sideways scroll, text 9px or larger, text contrast meets WCAG AA, marks stand out, series colors tell apart, every file loaded, fonts loaded.
 
 Interactions (at 1280px)
 - hover slat 1 of 34: changed 34 attributes
@@ -13,25 +9,26 @@ Interactions (at 1280px)
 - click button "Fit poster to screen": changed 2 elements, 5 attributes, 9 styles
 - click button "Restore poster size": changed 2 elements, 4 attributes, 9 styles
 - click button "Download poster as PNG": changed 5 attributes
-- click button "Spacecraft": changed 2 elements, 41 attributes
+- click button "Spacecraft": changed 4 elements, 42 attributes
 - click button "Debris": changed 5 texts, 37 attributes, 1 style
 - click button "Other": changed 5 texts, 37 attributes, 1 style
+- click button "Spacecraft includes working and inactiv…": changed 3 attributes
 - click button "Counts, source and interpretation": changed 1 attribute
 - key Tab: reached slat 1 after 15 presses
 - key ArrowDown: focus moved to slat 2, changed 4 elements, 38 attributes, 2 styles
 - tap slat 1 of 34 at 390px: changed 2 elements, 72 attributes, 2 styles
-- tap slat 34 of 34 at 390px: changed 5 texts, 2 elements, 74 attributes, 3 styles
+- tap slat 34 of 34 at 390px: changed 5 texts, 4 elements, 75 attributes, 3 styles
 - tap slat 1 of 34 at 360px: changed 2 elements, 72 attributes, 2 styles
-- tap slat 34 of 34 at 360px: changed 5 texts, 2 elements, 74 attributes, 3 styles
+- tap slat 34 of 34 at 360px: changed 5 texts, 4 elements, 75 attributes, 3 styles
 - tap slat 1 of 34 at 320px: changed 2 elements, 72 attributes, 2 styles
 - tap slat 34 of 34 at 320px: changed 5 texts, 4 elements, 75 attributes, 3 styles
 - every slat picked in turn (32) at 1280px, 1024px, 901px, 900px, 768px, 601px, 600px, 390px, 360px, 320px: nothing else moved
 
 Screenshots (look at them)
-- 1280px: /tmp/orbital-tooltip-check/orbital-retro-1280.png
-- 1280px, pointing at a slat: /tmp/orbital-tooltip-check/orbital-retro-1280-hover.png
-- 1024px: /tmp/orbital-tooltip-check/orbital-retro-1024.png
-- 768px: /tmp/orbital-tooltip-check/orbital-retro-768.png
-- 390px: /tmp/orbital-tooltip-check/orbital-retro-390.png
-- 360px: /tmp/orbital-tooltip-check/orbital-retro-360.png
-- 320px: /tmp/orbital-tooltip-check/orbital-retro-320.png
+- 1280px: /tmp/orbital-footer-release-check/orbital-retro-1280.png
+- 1280px, pointing at a slat: /tmp/orbital-footer-release-check/orbital-retro-1280-hover.png
+- 1024px: /tmp/orbital-footer-release-check/orbital-retro-1024.png
+- 768px: /tmp/orbital-footer-release-check/orbital-retro-768.png
+- 390px: /tmp/orbital-footer-release-check/orbital-retro-390.png
+- 360px: /tmp/orbital-footer-release-check/orbital-retro-360.png
+- 320px: /tmp/orbital-footer-release-check/orbital-retro-320.png
