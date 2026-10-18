@@ -134,10 +134,10 @@ const Event = slat({ room: { before: 16, end: 12 }, css: `
  }
 ` }, d => html`<div class=${() => d.id}>
  ${() => d.id === "may" ? html`<${Tick} at=${() => d.day} class="straight-leader" style=${{ "--stem-top": `${(1 - d.noteAt / scaleTop) * 100}%`, "--stem-height": `${(d.noteAt - d.peak) / scaleTop * 100}%` }} />` : d.id === "release" ? html`<${Line} points=${() => [[d.day, d.peak], [d.day + (d.noteDay - d.day) * .86, d.peak + (d.noteAt - d.peak) * .86]]} color="series-1" class="leader" />` : html`<${Line} points=${() => [[d.day, d.peak], [d.day, d.bendAt], [d.noteDay, d.noteAt]]} color="series-1" class="leader" />`}
- <${Dot} at=${() => d.day} cross=${() => d.peak} size="16px" class="event-point" />
+ <${Dot} at=${() => d.day} cross=${() => d.peak} size="18px" class="event-point" />
  <${Place} at=${() => d.noteDay} cross=${() => d.noteAt}><div class="callout"><small>${() => dateLabel(d.date)} 2026</small><b>${() => d.title}</b><span>${() => d.detail}</span></div><//>
  </div>`);
-const Reading = slat({ room: {}, css: `.picked { background: var(--rhp-surface); border: 4px solid var(--rhp-series-1); transition: none; }` }, d => html`<${Dot} at=${() => d.day} cross=${() => d.peak} size="18px" class="picked" />`);
+const Reading = slat({ room: {}, css: `.picked { background: var(--rhp-surface); border: 4px solid var(--rhp-series-1); transition: none; }` }, d => html`<${Dot} at=${() => d.day} cross=${() => d.peak} size="24px" class="picked" />`);
 const Hit = slat({ room: {}, css: `
  .hit { cursor: crosshair; touch-action: pan-y; }
  .hit:focus-visible { outline: 1px solid var(--rhp-muted); outline-offset: -1px; }
