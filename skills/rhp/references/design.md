@@ -537,6 +537,24 @@ At 390px:
   Use an ellipsis only when the full name is in the slat's `aria-label` and in the readout.
 - `room: { start: "auto" }` sizes the names' room to the longest name, up to `--rhp-gutter-max` (40% of the chart).
 
+### Fit the label gutters
+
+For a poster row containing one main plot, usually fit whichever side gutters contain labels to the text that actually occupies them, so the plot uses the remaining width.
+This helps smaller screens and keeps the outer labels aligned with the caption, controls, readout and footer throughout the poster.
+Treat this as a design preference and let the intended composition take priority, including deliberate spacing or different alignments.
+The poster's own padding supplies the outer margins; do not add a second empty buffer past the labels unless the design calls for one.
+
+- Prefer `room: { start: "auto", end: "auto" }` when the labels are direct edge Labels, or use "auto" only on the side that needs it.
+- Labels anchored with `at` are not measured by "auto".
+  Measure their rendered sizes and pass reactive pixel values to the appropriate `room` sides instead of choosing fixed desktop and phone guesses.
+- Measure after fonts load and when text, font size, wrapping or stacking changes, including gradual changes between breakpoints.
+  Keep each label's box tight to its content so an unnecessarily wide wrapper does not become empty gutter space.
+- Include the clearance between a point and its label, but account for a point sitting inside the scale's end so that inset is not reserved twice.
+  The outermost text should reach the poster's content edge without crossing it.
+- Use natural layout sizes, such as `ResizeObserver` border-box sizes, so fitting or zooming the poster does not alter its gutters.
+  Schedule size updates in an animation frame outside ResizeObserver delivery to avoid resize loops.
+- Check both label layouts and the widths between breakpoints, then fit the poster and verify that its labels, marks and PNG export keep the same alignment.
+
 How many slats:
 
 - Horizontal slats of 28 to 50px; up to about 15 read at a glance, about 30 at 22px each.

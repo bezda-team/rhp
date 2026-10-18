@@ -70,7 +70,7 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
  .poster .dek { font-size: 16px; line-height: 1.4; }
  .plot-unit { font-size: 14px; }
  .axis-number { font-size: 13px; }
- .plot-wrap { --chart-pad-left: 34px; --begin-vapes-offset: 4px; margin-bottom: 28px; }
+ .plot-wrap { --chart-pad-left: 34px; --begin-vapes-offset: 6px; margin-bottom: 28px; }
  .year-controls { gap: 6px; padding-top: 16px; }
  .year-controls button { font-size: 14px; height: 37px; }
  .readout { gap: 9px; margin-top: 22px; }
@@ -128,18 +128,17 @@ const seriesSlat = room => slat({room:{get end(){return room();},before:15},css:
  .end b {display:inline; font:700 var(--end-value-size)/1 var(--display); margin-right:9px;}
  .end .label-name {display:inline-block;vertical-align:middle;}
  .any .end .label-name, .vapes .end .label-name {vertical-align:baseline;}
- .pouches .end .label-name {width:var(--end-name-width);white-space:normal;}
+ .pouches .end .label-name {white-space:pre-line;}
  .begin {--rhp-label-gap:0px; translate:0 0; padding-bottom:15px; font:700 var(--begin-size)/1 var(--display); color:var(--rhp-color);}
  .vapes .begin {translate:calc(-100% + var(--begin-vapes-offset, 0px)) 50%;padding:0 13px 0 0;}
  .stacked .end b {display:block;margin:0 0 3px;}
- .stacked .end .label-name {width:var(--end-name-width);white-space:normal;}
  .stacked.vapes .curve {stroke-dasharray:8 5;}
  .stacked .begin {padding-bottom:12px;}
  .stacked.vapes .begin {padding-right:2px;padding-bottom:0;}
 `},d=>html`<div class=${()=>`${d.id}${d.stacked?' stacked':''}`} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}>
  <${Line} points=${()=>d.values.map((v,i)=>[YEARS[i],v])} color=${()=>d.color} class="curve" />
  <${Label} at=${YEARS[0]} cross=${()=>d.id==='vapes'?d.values[0]-1.1:d.values[0]} side=${()=>d.id==='vapes'?'before':'after'} class="begin">${()=>percent(d.values[0])}<//>
- <${Label} at=${YEARS.at(-1)} cross=${()=>d.values.at(-1)} class="end"><b>${()=>percent(d.values.at(-1))}</b><span class="label-name">${()=>d.id==='any'?'Any tobacco':d.name}</span><//>
+ <${Label} at=${YEARS.at(-1)} cross=${()=>d.values.at(-1)} class="end"><b>${()=>percent(d.values.at(-1))}</b><span class="label-name">${()=>d.id==='pouches'?'Nicotine\npouches':d.id==='any'?'Any tobacco':d.name}</span><//>
  </div>`);
 const Point = slat({room:{},css:`
  .point {background:var(--rhp-surface);border:3px solid var(--rhp-color);}
@@ -159,13 +158,11 @@ function TobaccoPoster() {
  let plotElement;
  const [plotWidth,setPlotWidth] = createSignal(888);
  const compact = ()=>plotWidth()<460;
- const endRoom = ()=>compact()?80:195;
+ const [endRoom,setEndRoom] = createSignal(225);
  const fit = (value,min,max)=>Math.max(min,Math.min(max,value));
  const labelStyle = ()=>({
-  '--chart-pad-right':`${endRoom()}px`,
   '--end-name-size':`${fit(plotWidth()*26/888,12,26)}px`,
   '--end-value-size':`${fit(plotWidth()*32/888,22,32)}px`,
-  '--end-name-width':`${compact()?fit(plotWidth()*.17,67,96):fit(plotWidth()*.145,85,128)}px`,
   '--end-gap':`${fit(plotWidth()*.017,12,15)}px`,
   '--begin-size':`${fit(plotWidth()*27/888,20,27)}px`,
   '--year-size':`${fit(plotWidth()*22/888,13,22)}px`,
@@ -174,9 +171,17 @@ function TobaccoPoster() {
  const Series = seriesSlat(endRoom);
  onMount(()=>{
   let frame = 0, observedWidth;
+  const labelWidths = new Map();
   const measurePlot = ()=>{
    if(!plotElement.isConnected)return;
    if(observedWidth!=null)setPlotWidth(observedWidth);
+   if(!labelWidths.size)return;
+   const widest = Math.max(...labelWidths.values());
+   const left = parseFloat(getComputedStyle(plotElement.querySelector('.rhp-chart')).paddingLeft);
+   const endPosition = (YEARS.at(-1)-MIN)/(MAX-MIN);
+   // Include the label's own clearance from its point, without leaving space after its text.
+   // The last point sits slightly inside the scale, so subtract that inset from the gutter.
+   setEndRoom(Math.max(0,(widest-(1-endPosition)*(plotWidth()-left))/endPosition));
   };
   const scheduleMeasure = ()=>{
    if(frame)return;
@@ -184,10 +189,14 @@ function TobaccoPoster() {
    frame = requestAnimationFrame(()=>{frame=0;measurePlot();});
   };
   const observer = new ResizeObserver(entries=>{
-   for(const entry of entries)if(entry.target===plotElement)observedWidth=entry.contentRect.width;
+   for(const entry of entries){
+    if(entry.target===plotElement)observedWidth=entry.contentRect.width;
+    else labelWidths.set(entry.target,entry.borderBoxSize[0].inlineSize);
+   }
    scheduleMeasure();
   });
   observer.observe(plotElement);
+  plotElement.querySelectorAll('.end').forEach(label=>observer.observe(label));
   document.fonts.ready.then(scheduleMeasure);
   onCleanup(()=>{observer.disconnect();cancelAnimationFrame(frame);});
  });
@@ -229,7 +238,7 @@ function TobaccoPoster() {
   <div class="backdrop" aria-hidden="true"><img src="__BACKGROUND__" width="1120" height="1400" alt="" /></div>
   <p class="plot-unit"><b>Share of students</b> reporting use in the past 30 days</p>
   <div class="plot-wrap" ref=${element=>{plotElement=element;}} style=${labelStyle}>
-   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>fit(plotWidth()*.66,330,365)} theme=${THEME} style=${{'--rhp-pad-left':'var(--chart-pad-left, 52px)','--rhp-pad-right':'var(--chart-pad-right)'}}
+   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>fit(plotWidth()*.66,330,365)} theme=${THEME} style=${{'--rhp-pad-left':'var(--chart-pad-left, 52px)'}}
     label="U.S. high school students reporting past-30-day use, 2022 to 2025. Any tobacco product, e-cigarettes and nicotine pouches.">
     <${Scale} ticks=${YEARS}>${YearTicks}<//>
     <${Plot} overlap=${true} rows=${SERIES} stacked=${compact} style=${{'pointer-events':'none'}}>${Series}<//>

@@ -414,7 +414,14 @@ Structure and layout:
     Keep a wrapper for a full-band hover or pointer target, even with one block.
     Give the Plot the slat type `slat()` returns, not the function you passed to it.
 13. **Import from one place.** In a Solid app, import rhp from `@bezda/rhp` and Solid from `solid-js`. Everywhere else, import everything from `@bezda/rhp/standalone` (rhp, `html`, `render`, `createSignal`, `createMemo`, `createEffect`, `Show`, `For`, `Index`, `onMount`, `onCleanup`, `batch`, `untrack`, `createStore`, `reconcile`), which carries its own Solid: never add a second `solid-js` beside it. From rhp 2.0.2 it also has `createSelector`, `createComputed`, `on`, `mergeProps`, `splitProps`, `Switch` and `Match` (2.0.1 lacks them); it has no `Dynamic`, `Portal`, `createResource` or `ErrorBoundary`. For the slat the reader is on, a per-row comparison (`on=${(d) => on() === d.index}`) works with every rhp 2.
-14. **Make room for text.** Names before the plot need `room.start` (px or "auto"), numbers past the bars need `room.end`. A `room` you give replaces the defaults on every side, so set each side you need. "auto" measures only edge Labels that are direct children of the slat's root. Long names need `max-width` with an ellipsis, or wrapping, in the slat CSS.
+14. **Fit both gutters to their labels.**
+    Names before the plot need `room.start`, and labels past the plot need `room.end`.
+    In a poster row with one main plot and labels on either or both sides, usually size those gutters from their rendered text, letting the plot use the remaining width as fonts scale and labels wrap or stack.
+    Especially on smaller screens, prefer shared left and right content edges with the caption, controls, readout and footer, using the poster's padding for outer whitespace.
+    This is a design preference: the intended composition takes priority, including deliberate spacing or different alignments.
+    A `room` you give replaces the defaults on every side, so set each side you need.
+    "auto" measures only edge Labels that are direct children of the slat's root; point-anchored Labels need measured room in px (design.md, "Fit the label gutters").
+    Long names need `max-width` with an ellipsis, or wrapping, in the slat CSS.
 15. **Size the chart.** A horizontal chart without `height` gives each slat 32px unless the slat type sets `thickness`; a vertical chart is 240px tall unless you set `height`. A chart inside a flex row, an inline-block or a `fit-content` box collapses: give it `flex: 1; min-width: 0` or a width.
 16. **Put handlers and `data-*` on the Poster or a wrapper element, not on the Chart**: the Chart keeps only `id`, `class`, `role`, `style`, `ref`, `label` and `aria-*`.
 

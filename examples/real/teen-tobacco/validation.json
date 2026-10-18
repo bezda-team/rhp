@@ -11,12 +11,7 @@
       360,
       320
     ],
-    "result": "two chart-boundary findings under the explicitly requested fixed padding; all content remains inside the poster",
-    "findings": [
-      "At 1280px, end labels extend about 20px beyond the chart content into the poster padding.",
-      "At 560px, the starting e-cigarette percentage extends about 5px beyond the chart content into the poster padding."
-    ],
-    "otherChecks": "no overlapping text, cut-off text, sideways page overflow, browser errors, contrast failures or interaction shifts"
+    "result": "passed, no errors or warnings"
   },
   "browserChecks": [
     {
@@ -30,8 +25,8 @@
         2000,
         2621
       ],
-      "meanChannelDifference": 0.8473773201118738,
-      "fitExportDifference": 0.01649631324688533,
+      "meanChannelDifference": 0.8475024154589372,
+      "fitExportDifference": 0.015036104754640223,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
@@ -68,8 +63,8 @@
         2000,
         2621
       ],
-      "meanChannelDifference": 1.7115242817187897,
-      "fitExportDifference": 0.1830938215102975,
+      "meanChannelDifference": 1.7039865242817187,
+      "fitExportDifference": 0.18283066361556063,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
@@ -106,7 +101,7 @@
         2000,
         2621
       ],
-      "meanChannelDifference": 2.7081164505466564,
+      "meanChannelDifference": 2.6951159420289854,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -144,7 +139,7 @@
         740,
         2319
       ],
-      "meanChannelDifference": 3.805867505436471,
+      "meanChannelDifference": 3.670789064926996,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
@@ -262,12 +257,18 @@
     "headline": "visible tops aligned within 1.5px, no overlapping or overflowing text",
     "readout": "aligned values and fixed columns for every year",
     "crosshair": "passes through every selected point",
-    "endLabels": "inside the poster with no overlapping labels",
+    "endLabels": "within chart, no overlapping labels, content edge aligned",
     "rightGapRange": [
-      -20.21875,
-      51.703125
+      -3.051757950960899e-05,
+      0.03070068359375
     ],
-    "boundary": "poster, including its padding"
+    "boundary": "poster content edge",
+    "resizeDirections": 2,
+    "browserEngines": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ]
   },
   "backgroundFade": {
     "direction": "radial from top left to bottom right",
@@ -363,295 +364,258 @@
     "lastCheckedBrightness": 0.94
   },
   "mobileLayout": {
-    "measurements": [
-      {
-        "engine": "chromium",
-        "viewport": 320,
-        "plotWidthBefore": 98,
-        "plotWidthAfter": 131,
-        "axisOffsetFromTextEdge": 0.328125,
-        "endLabelBoxRightGap": 1.65625
-      },
-      {
-        "engine": "chromium",
-        "viewport": 360,
-        "plotWidthBefore": 138,
-        "plotWidthAfter": 171,
-        "axisOffsetFromTextEdge": 0.328125,
-        "endLabelBoxRightGap": 2.15625
-      },
-      {
-        "engine": "chromium",
-        "viewport": 390,
-        "plotWidthBefore": 168,
-        "plotWidthAfter": 201,
-        "axisOffsetFromTextEdge": 0.328125,
-        "endLabelBoxRightGap": 2.53125
-      },
-      {
-        "engine": "chromium",
-        "viewport": 430,
-        "plotWidthBefore": 208,
-        "plotWidthAfter": 241,
-        "axisOffsetFromTextEdge": 0.328125,
-        "endLabelBoxRightGap": 3.03125
-      },
-      {
-        "engine": "chromium",
-        "viewport": 700,
-        "plotWidthBefore": 373.40625,
-        "plotWidthAfter": 399.40625,
-        "axisOffsetFromTextEdge": 0.328125,
-        "endLabelBoxRightGap": 4.78125
-      },
-      {
-        "engine": "webkit",
-        "viewport": 390,
-        "plotWidthBefore": 168,
-        "plotWidthAfter": 201,
-        "axisOffsetFromTextEdge": 0.34375,
-        "endLabelBoxRightGap": 2.53125
-      }
+    "viewportWidths": [
+      320,
+      360,
+      390,
+      430,
+      560,
+      700
     ],
-    "exportChecks": [
-      {
-        "engine": "chromium",
-        "plotWidth": 201,
-        "leftPadding": "34px",
-        "axisGap": 0.328125,
-        "visibleRightGap": 3.390625,
-        "filter": "brightness(0.94)",
-        "pngDimensions": [
-          740,
-          2319
-        ],
-        "meanChannelDifference": 0.1899161230195713,
-        "selection": "four years and fitted touch aligned",
-        "download": "preserves mobile gutters and selection"
-      },
-      {
-        "engine": "webkit",
-        "plotWidth": 201,
-        "leftPadding": "34px",
-        "axisGap": 0.34375,
-        "visibleRightGap": 3.39923095703125,
-        "filter": "brightness(0.94)",
-        "pngDimensions": [
-          740,
-          2319
-        ],
-        "meanChannelDifference": 3.791891115253184,
-        "selection": "four years and fitted touch aligned",
-        "download": "preserves mobile gutters and selection"
-      }
-    ]
+    "rightGutter": "follows rendered text in both label layouts without extra end space",
+    "leftAxis": "aligned with the poster content edge",
+    "selection": "all four years, touch and fitted markers remain aligned",
+    "download": "preserves natural dimensions, alignment and selection"
   },
   "labelAlignmentAndPadding": {
     "date": "2026-10-18",
     "stackingBreakpoint": "unchanged, plot container width below 460px",
-    "rightPadding": {
-      "stacked": 80,
-      "sideBySide": 195
-    },
+    "rightPadding": "measured continuously from the rendered labels, including their clearance from the final point and accounting for its scale inset",
+    "extraOuterGap": 0,
+    "outerMargin": "poster padding only",
     "baselines": "Any tobacco and E-cigarettes share the preceding percentage baseline when side by side",
     "measurements": [
       {
         "browser": "chromium",
         "viewportWidth": 1280,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 625,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "215.482px",
+        "plotWidth": 604.53125,
+        "rightGap": 0
       },
       {
         "browser": "chromium",
         "viewportWidth": 1024,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 617,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "213.559px",
+        "plotWidth": 598.453125,
+        "rightGap": 0
       },
       {
         "browser": "chromium",
         "viewportWidth": 768,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 390.71875,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "161.382px",
+        "plotWidth": 424.34375,
+        "rightGap": 0.0
       },
       {
         "browser": "chromium",
         "viewportWidth": 701,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 332.28125,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "150.747px",
+        "plotWidth": 376.546875,
+        "rightGap": 0.0
       },
       {
         "browser": "chromium",
         "viewportWidth": 700,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 361.40625,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "152.166px",
+        "plotWidth": 404.25,
+        "rightGap": 0.0
       },
       {
         "browser": "chromium",
         "viewportWidth": 560,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 239.34375,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "133.794px",
+        "plotWidth": 300.5625,
+        "rightGap": 0.0
       },
       {
         "browser": "chromium",
         "viewportWidth": 430,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 240,
-        "baselineDifferences": null
+        "rightPadding": "75.0694px",
+        "plotWidth": 244.9375,
+        "rightGap": 0
       },
       {
         "browser": "chromium",
         "viewportWidth": 390,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 200,
-        "baselineDifferences": null
+        "rightPadding": "75.5773px",
+        "plotWidth": 204.4375,
+        "rightGap": 0
       },
       {
         "browser": "chromium",
         "viewportWidth": 360,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 170,
-        "baselineDifferences": null
+        "rightPadding": "75.9583px",
+        "plotWidth": 174.046875,
+        "rightGap": 0
       },
       {
         "browser": "chromium",
         "viewportWidth": 320,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 130,
-        "baselineDifferences": null
+        "rightPadding": "76.4662px",
+        "plotWidth": 133.546875,
+        "rightGap": 0
       },
       {
         "browser": "webkit",
         "viewportWidth": 1280,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 625,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "215.498169px",
+        "plotWidth": 604.515625,
+        "rightGap": 0
       },
       {
         "browser": "webkit",
         "viewportWidth": 1024,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 617,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "213.621826px",
+        "plotWidth": 598.390625,
+        "rightGap": 0
       },
       {
         "browser": "webkit",
         "viewportWidth": 768,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 390.71875,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "161.41394px",
+        "plotWidth": 424.3125,
+        "rightGap": 0.0
       },
       {
         "browser": "webkit",
         "viewportWidth": 701,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 332.28125,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "150.763138px",
+        "plotWidth": 376.53125,
+        "rightGap": 0.0
       },
       {
         "browser": "webkit",
         "viewportWidth": 700,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 361.40625,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "152.212997px",
+        "plotWidth": 404.203125,
+        "rightGap": 0.0
       },
       {
         "browser": "webkit",
         "viewportWidth": 560,
         "stacked": false,
-        "rightPadding": "195px",
-        "plotWidth": 239.34375,
-        "baselineDifferences": [
-          0.0,
-          0.0
-        ]
+        "rightPadding": "133.809677px",
+        "plotWidth": 300.546875,
+        "rightGap": 0.0
       },
       {
         "browser": "webkit",
         "viewportWidth": 430,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 240,
-        "baselineDifferences": null
+        "rightPadding": "75.069397px",
+        "plotWidth": 244.9375,
+        "rightGap": 0
       },
       {
         "browser": "webkit",
         "viewportWidth": 390,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 200,
-        "baselineDifferences": null
+        "rightPadding": "75.577332px",
+        "plotWidth": 204.4375,
+        "rightGap": 0
       },
       {
         "browser": "webkit",
         "viewportWidth": 360,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 170,
-        "baselineDifferences": null
+        "rightPadding": "75.958282px",
+        "plotWidth": 174.046875,
+        "rightGap": 0
       },
       {
         "browser": "webkit",
         "viewportWidth": 320,
         "stacked": true,
-        "rightPadding": "80px",
-        "plotWidth": 130,
-        "baselineDifferences": null
+        "rightPadding": "76.466217px",
+        "plotWidth": 133.546875,
+        "rightGap": 0
       }
     ],
-    "exportAndInteractionChecks": "passed Chromium, Firefox, WebKit desktop and WebKit touch, including fitted exports and selection preservation"
+    "browserChecks": [
+      {
+        "browser": "chromium",
+        "widthCount": 72,
+        "resizeDirections": 2,
+        "textRightGapRange": [
+          0,
+          0
+        ],
+        "fitChecks": [
+          {
+            "width": 1280,
+            "paddingBefore": 215.482,
+            "paddingAfter": 215.482,
+            "fittedGap": 0
+          },
+          {
+            "width": 390,
+            "paddingBefore": 75.5773,
+            "paddingAfter": 75.5773,
+            "fittedGap": 1.8626763788432235e-05
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "widthCount": 72,
+        "resizeDirections": 2,
+        "textRightGapRange": [
+          -3.051757950960899e-05,
+          0.016708382457480936
+        ],
+        "fitChecks": [
+          {
+            "width": 1280,
+            "paddingBefore": 215.52,
+            "paddingAfter": 215.52,
+            "fittedGap": 0.022993803758312767
+          },
+          {
+            "width": 390,
+            "paddingBefore": 75.5699,
+            "paddingAfter": 75.5699,
+            "fittedGap": -1.862853630725457e-05
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "widthCount": 72,
+        "resizeDirections": 2,
+        "textRightGapRange": [
+          0.0076904296875,
+          0.03070068359375
+        ],
+        "fitChecks": [
+          {
+            "width": 1280,
+            "paddingBefore": 215.498169,
+            "paddingAfter": 215.498169,
+            "fittedGap": 0.03006778929250812
+          },
+          {
+            "width": 390,
+            "paddingBefore": 75.577332,
+            "paddingAfter": 75.577332,
+            "fittedGap": 0.008605217751135593
+          }
+        ]
+      }
+    ]
   }
 }

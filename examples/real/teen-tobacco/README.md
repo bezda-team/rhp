@@ -48,7 +48,10 @@ The comparison uses a common percentage scale, solid and dashed strokes, and dif
 The enlarged headline statistic shares a row with the conclusion, with a responsive negative margin aligning their visible tops.
 Direct labels keep the static image complete, while fixed readout columns and confidence-interval lines let readers inspect each year without layout shifts.
 Line-end labels scale with the available plot width and share a baseline with their preceding percentage when displayed side by side.
-The existing stacking breakpoint is unchanged: the right chart gutter is 80px for stacked labels and 195px for side-by-side labels.
+The existing stacking breakpoint is unchanged.
+A ResizeObserver measures the content-sized end labels in natural CSS pixels and adjusts the gutter continuously as fonts scale or labels stack.
+The gutter accounts for the last point's inset within the scale, so the outermost label meets the poster's content edge with no added buffer.
+The poster's own padding provides the right margin, including on phones and when fitted to the screen.
 At widths up to 700 pixels, a 34px left chart gutter aligns the percentage labels with the poster text.
 The crosshair spans the full plot and follows the selected points immediately, including the square pouch marker.
 Equal side padding and larger gaps below the caption and plot keep the existing composition open on desktop and phone screens.
