@@ -28,7 +28,7 @@ node mcp/bin/rhp-mcp.js check examples/real/teen-tobacco/teen-tobacco.html --wid
 
 Open `teen-tobacco.html` in a browser to inspect a year by pointing, tapping, using the year buttons or pressing arrow keys on the plot.
 Download saves the current selection at twice the natural CSS dimensions, including when fitted to the screen.
-The default desktop poster is 1000 CSS pixels wide and about 1314 pixels tall, exporting at 2000 by 2627 pixels in Chromium.
+The default desktop poster is 1000 CSS pixels wide and about 1311 pixels tall, exporting at 2000 by 2621 pixels in Chromium.
 The phone companion reflows for legibility; the Reddit image keeps the desktop composition.
 
 ## Evidence

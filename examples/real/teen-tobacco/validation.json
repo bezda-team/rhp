@@ -17,13 +17,13 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1313.875
+        1310.921875
       ],
       "pngDimensions": [
         2000,
-        2627
+        2621
       ],
-      "meanChannelDifference": 0.8890022831050228,
+      "meanChannelDifference": 0.8083536740401729,
       "fitExportDifference": 0.01964840182648402,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -38,8 +38,8 @@
         "plotMargin": "32px",
         "numberNoteCount": 0,
         "yearBorder": "0px",
-        "numberSize": 180,
-        "numberMargin": -7.56,
+        "numberSize": 176,
+        "numberMargin": -7.104,
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
@@ -55,13 +55,13 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1313.9000244140625
+        1310.9666748046875
       ],
       "pngDimensions": [
         2000,
-        2627
+        2621
       ],
-      "meanChannelDifference": 1.4087612886859462,
+      "meanChannelDifference": 1.4376158148995677,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -76,8 +76,8 @@
         "plotMargin": "32px",
         "numberNoteCount": 0,
         "yearBorder": "0px",
-        "numberSize": 180,
-        "numberMargin": -7.56,
+        "numberSize": 176,
+        "numberMargin": -7.104,
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
@@ -93,13 +93,13 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1313.875
+        1310.921875
       ],
       "pngDimensions": [
         2000,
-        2627
+        2621
       ],
-      "meanChannelDifference": 2.9036468797564687,
+      "meanChannelDifference": 2.7962496821764558,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
@@ -114,8 +114,8 @@
         "plotMargin": "32px",
         "numberNoteCount": 0,
         "yearBorder": "0px",
-        "numberSize": 180,
-        "numberMargin": -7.546875,
+        "numberSize": 176,
+        "numberMargin": -7.09375,
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
@@ -137,7 +137,7 @@
         740,
         2319
       ],
-      "meanChannelDifference": 3.7703145386766077,
+      "meanChannelDifference": 3.7446543957750853,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
@@ -152,8 +152,8 @@
         "plotMargin": "28px",
         "numberNoteCount": 0,
         "yearBorder": "0px",
-        "numberSize": 101.400002,
-        "numberMargin": -5.078125,
+        "numberSize": 99.059998,
+        "numberMargin": -4.8125,
         "backgroundOpacity": "0.5",
         "number": "42%.",
         "finding": "Teen tobacco use fell",
@@ -173,7 +173,7 @@
     ],
     "imageDimensions": [
       2000,
-      2627
+      2621
     ]
   },
   "responsiveChecks": {
@@ -273,7 +273,7 @@
           40,
           255
         ],
-        "meanChannelDifference": 0.8890022831050228
+        "meanChannelDifference": 0.8083536740401729
       },
       {
         "browser": "firefox",
@@ -283,17 +283,17 @@
           40,
           255
         ],
-        "meanChannelDifference": 1.4087612886859462
+        "meanChannelDifference": 1.4376158148995677
       },
       {
         "browser": "webkit",
         "bottomRight": [
-          7,
+          9,
           28,
-          38,
+          39,
           255
         ],
-        "meanChannelDifference": 2.9036468797564687
+        "meanChannelDifference": 2.7962496821764558
       },
       {
         "browser": "webkit-phone",
@@ -303,7 +303,7 @@
           40,
           255
         ],
-        "meanChannelDifference": 3.7703145386766077
+        "meanChannelDifference": 3.7446543957750853
       }
     ],
     "color": "#091d28"

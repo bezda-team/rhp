@@ -19,7 +19,7 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
 .backdrop::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse farthest-corner at top left, rgb(var(--paper-rgb) / .15) 0%, rgb(var(--paper-rgb) / .45) 35%, rgb(var(--paper-rgb) / .8) 70%, var(--paper) 100%); }
 .poster figcaption { display: grid; gap: 20px; margin: 0 0 40px; }
 .poster .kicker { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--rule); color: var(--soft); font-size: 18px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
-.poster .headline { --headline-size: clamp(48px, 6vw, 72px); --number-size: 180px; display: grid; grid-template-columns: minmax(0, 1fr) max-content; column-gap: 16px; align-items: start; font: 700 var(--headline-size)/.98 var(--display); letter-spacing: -.01em; }
+.poster .headline { --headline-size: clamp(48px, 6vw, 72px); --number-size: 176px; display: grid; grid-template-columns: minmax(0, 1fr) max-content; column-gap: 16px; align-items: start; font: 700 var(--headline-size)/.98 var(--display); letter-spacing: -.01em; }
 .lead-in { display: block; grid-column: 1 / -1; margin-bottom: 3px; color: var(--pouches); font-size: 55px; }
 .finding { display: block; grid-column: 1; grid-row: 2; }
 /* Align Barlow Condensed's visible capitals at the headline and number line heights. */
@@ -67,7 +67,7 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
  .poster { padding: 32px var(--poster-pad) 36px; min-height: 0; }
  .poster .kicker { font-size: 11px; gap: 8px; letter-spacing: .06em; padding-bottom: 11px; }
  .poster figcaption { gap: 16px; margin-bottom: 32px; }
- .poster .headline { --headline-size: clamp(29px, 9.23vw, 54px); --number-size: clamp(90px, 26vw, 155px); column-gap: clamp(8px, 2.6vw, 16px); }
+ .poster .headline { --headline-size: clamp(29px, 9.23vw, 54px); --number-size: clamp(88px, 25.4vw, 152px); column-gap: clamp(8px, 2.6vw, 16px); }
  .lead-in { font-size: clamp(30px, 6vw, 43px); }
  .poster .dek { font-size: 16px; line-height: 1.4; }
  .plot-unit { font-size: 14px; }
@@ -246,8 +246,7 @@ const THEME = {font:'var(--text)',ink:'var(--ink)',muted:'var(--soft)',grid:'var
 
 const YearTicks = slat({room:{after:42},css:`
  .tick { top:100%; height:6px; translate:-50% 0; background:var(--rhp-muted); }
- .year { top:calc(100% + 12px); translate:-50% 0; --rhp-label-gap:0px; font-size:22px; font-weight:600; color:var(--rhp-muted); }
- @container (max-width:600px) { .year {font-size:13px;} }
+ .year { top:calc(100% + 12px); translate:-50% 0; --rhp-label-gap:0px; font-size:var(--year-size); font-weight:600; color:var(--rhp-muted); }
 `},d=>html`<div><${Tick} at=${()=>d.at} class="tick" /><${Label} at=${()=>d.at} class="year">${()=>d.at}<//></div>`);
 
 const seriesSlat = room => slat({room:{get end(){return room();},before:15},css:`
@@ -295,6 +294,7 @@ function TobaccoPoster() {
   '--end-name-width':`${compact()?fit(plotWidth()*.17,74,96):fit(plotWidth()*.145,85,128)}px`,
   '--end-gap':`${fit(plotWidth()*.017,12,15)}px`,
   '--begin-size':`${fit(plotWidth()*27/888,20,27)}px`,
+  '--year-size':`${fit(plotWidth()*22/888,13,22)}px`,
   '--curve-width':`${fit(plotWidth()*7/888,4,7)}px`,
  });
  const Series = seriesSlat(endRoom);
