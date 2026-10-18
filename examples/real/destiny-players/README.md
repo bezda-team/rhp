@@ -45,7 +45,8 @@ The three font files use the included SIL Open Font License files.
 The checker passes at 1280, 1024, 768, 390, 360, and 320 pixels, including the responsive breakpoint boundaries.
 All 169 dates were individually inspected by pointer at 1280, 390, and 320 pixels, with matching source values and working Home, End, and arrow keys.
 The supplied PNG is 1760 by 2303 pixels and was saved through the actual download button.
-The poster is 880 CSS pixels wide on desktop, with a data scale equivalent to 410 pixels per 180,000 players, extra annotation headroom, 14.5-pixel annotations, a 4-pixel data line, and 12-pixel event dots.
+The poster is 880 CSS pixels wide on desktop, with a data scale equivalent to 410 pixels per 180,000 players, extra annotation headroom, 14.5-pixel annotations, a 5-pixel data line, and 16-pixel event dots with 3-pixel borders.
+The inspected-day dot is 18 pixels wide with a 4-pixel border.
 Its desktop area is smaller than the previous layout, while chart text and marks are larger.
 The May leader is vertical.
 The June leader runs diagonally from its event dot toward the label’s top-left corner, at the September leader’s angle, stopping a few pixels before the text.
