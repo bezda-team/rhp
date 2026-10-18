@@ -8,45 +8,42 @@
 <script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
 <style>
 __FONTS__
-:root { color-scheme: dark; --page: #0c1b23; --paper: #102b39; --ink: #fff4da; --soft: #cad9df; --rule: #41606c; --vapes: #87d4ff; --pouches: #ffb18d; --display: 'Barlow Condensed', Impact, sans-serif; --text: 'IBM Plex Sans', Arial, sans-serif; }
+:root { color-scheme: dark; --page: #0c1b23; --paper: #102b39; --ink: #fff4da; --soft: #cad9df; --rule: #41606c; --vapes: #87d4ff; --pouches: #ffb18d; --display: 'Barlow Condensed', Impact, sans-serif; --text: 'IBM Plex Sans', Arial, sans-serif; --poster-pad: clamp(24px, 5.6vw, 56px); }
 * { box-sizing: border-box; }
 body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(--ink); font: 17px/1.5 var(--text); }
-.poster { position: relative; isolation: isolate; overflow: clip; width: 100%; max-width: 1000px; min-height: 1250px; margin: 0 auto; padding: 34px 48px 26px; background: var(--paper); display: flex; flex-direction: column; }
+.poster { position: relative; isolation: isolate; overflow: clip; width: 100%; max-width: 1000px; min-height: 1250px; margin: 0 auto; padding: 34px var(--poster-pad) 40px; background: var(--paper); display: flex; flex-direction: column; }
 .backdrop { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.backdrop img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .58; }
+.backdrop img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .5; }
 .backdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(9 29 40 / .3), rgb(9 29 40 / .5) 75%, rgb(9 29 40 / .2)); }
-.poster figcaption { display: grid; gap: 15px; margin: 0 0 18px; }
+.poster figcaption { display: grid; gap: 20px; margin: 0 0 40px; }
 .poster .kicker { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--rule); color: var(--soft); font-size: 18px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
 .poster .headline { display: block; font: 700 72px/.98 var(--display); letter-spacing: -.01em; }
 .lead-in { display: block; margin-bottom: 3px; color: var(--pouches); font-size: 55px; }
 .finding { display: block; }
-.headline .number-block { display: flex; align-items: center; justify-content: flex-end; gap: 32px; margin-top: 9px; text-align: right; }
+.headline .number-block { display: flex; align-items: center; justify-content: flex-end; gap: 32px; margin-top: 9px; }
 .headline .number { font: 700 160px/.85 var(--display); letter-spacing: -.04em; white-space: nowrap; }
-.headline .number-note { font: 600 26px/1.28 var(--text); letter-spacing: 0; }
-.headline .number-note strong { display: block; margin-bottom: 6px; font: 700 38px/1 var(--display); }
-.headline .number-note small { display: block; font: 400 22px/1.35 var(--text); color: var(--soft); }
 .poster .dek { max-width: none; color: var(--soft); font-size: 23px; line-height: 1.38; }
-.plot-unit { margin: 0 0 8px; color: var(--soft); font-size: 22px; }
+.plot-unit { margin: 0 0 16px; color: var(--soft); font-size: 22px; }
 .plot-unit b { color: var(--ink); font-weight: 600; }
 .axis-number { font-size: 22px; }
-.plot-wrap { flex: 1; min-width: 0; touch-action: pan-y; }
+.plot-wrap { flex: 1; min-width: 0; margin-bottom: 32px; touch-action: pan-y; }
 .plot-wrap:has(:focus-visible) { outline: 2px solid var(--ink); outline-offset: 4px; }
-.year-controls { display: grid; grid-template-columns: auto repeat(4, minmax(0, 1fr)); align-items: center; gap: 9px; padding-top: 14px; margin-top: 10px; border-top: 1px solid var(--rule); }
-.year-controls > span { color: var(--soft); margin-right: 12px; font-size: 19px; }
+.year-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; gap: 9px; padding-top: 18px; border-top: 1px solid var(--rule); }
 .year-controls button { height: 43px; border: 1px solid var(--rule); border-radius: 0; color: var(--soft); background: rgb(9 29 40 / .5); font: 600 22px/1 var(--text); font-variant-numeric: tabular-nums; cursor: pointer; }
 .year-controls button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 .year-controls button:hover { border-color: var(--ink); }
 .year-controls button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 12px; }
-.readout section { min-width: 0; color: var(--soft); font-size: 17px; }
-.readout .name { display: block; white-space: nowrap; font-size: 17px; }
-.readout .value { display: inline-block; min-width: 3.5ch; font: 700 31px/1.25 var(--display); font-variant-numeric: tabular-nums; }
+.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; margin-top: 26px; }
+.readout section { display: grid; align-content: start; row-gap: 5px; min-width: 0; color: var(--soft); font-size: 17px; }
+.readout section + section { padding-left: 18px; border-left: 1px solid var(--rule); }
+.readout .name { display: block; grid-row: 2; min-height: 1.3em; font-size: 17px; line-height: 1.3; }
+.readout .value { display: block; grid-row: 1; font: 700 34px/1.15 var(--display); font-variant-numeric: tabular-nums; }
 .readout .any .value { color: var(--ink); }
 .readout .vapes .value { color: var(--vapes); }
 .readout .pouches .value { color: var(--pouches); }
-.readout small { display: block; color: var(--soft); font-size: 15px; font-variant-numeric: tabular-nums; }
+.readout small { display: block; grid-row: 3; color: var(--soft); font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
 .ci-range { white-space: nowrap; }
-.poster .note { display: block; margin-top: 17px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 19px; line-height: 1.35; color: var(--soft); }
+.poster .note { display: block; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 19px; line-height: 1.35; color: var(--soft); }
 .poster .note b { color: var(--ink); font-weight: 600; }
 .poster .note .source { display: block; margin-top: 7px; font-size: 17px; }
 .poster .note a { color: inherit; text-underline-offset: 3px; }
@@ -62,27 +59,26 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
 .below .files { margin-top: 16px; }
 @media (max-width: 700px) {
  body { padding: 12px 10px 30px; }
- .poster { padding: 25px 20px 22px; min-height: 0; }
+ .poster { padding: 28px var(--poster-pad) 32px; min-height: 0; }
  .poster .kicker { font-size: 11px; gap: 8px; letter-spacing: .06em; padding-bottom: 11px; }
- .poster figcaption { gap: 11px; margin-bottom: 15px; }
+ .poster figcaption { gap: 16px; margin-bottom: 32px; }
  .poster .headline { font-size: clamp(36px, 7.8vw, 54px); }
  .lead-in { font-size: clamp(30px, 6vw, 43px); }
  .headline .number-block { gap: 18px; margin-top: 12px; }
  .headline .number { font-size: clamp(89px, 20vw, 140px); }
- .headline .number-note { font-size: 16px; }
- .headline .number-note strong { font-size: 24px; }
- .headline .number-note small { font-size: 14px; }
  .poster .dek { font-size: 16px; line-height: 1.4; }
  .plot-unit { font-size: 14px; }
  .axis-number { font-size: 13px; }
- .year-controls { gap: 6px; padding-top: 12px; margin-top: 9px; }
- .year-controls > span { font-size: 13px; margin-right: 0; }
+ .plot-wrap { margin-bottom: 28px; }
+ .year-controls { gap: 6px; padding-top: 16px; }
  .year-controls button { font-size: 14px; height: 37px; }
- .readout { gap: 9px; margin-top: 10px; }
- .readout .name { font-size: 11px; }
+ .readout { gap: 9px; margin-top: 22px; }
+ .readout section { row-gap: 5px; }
+ .readout section + section { padding-left: 9px; }
+ .readout .name { min-height: 2.6em; font-size: 11px; }
  .readout .value { font-size: 25px; }
  .readout small { font-size: 10px; }
- .poster .note { font-size: 13px; margin-top: 12px; padding-top: 11px; }
+ .poster .note { font-size: 13px; margin-top: 24px; padding-top: 16px; }
  .poster .note .source { font-size: 11px; }
  .below { font-size: 15px; }
  .below table { font-size: 11px; }
@@ -104,13 +100,13 @@ body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(-
  <p>The locker background is generated artwork, not documentary evidence. All data marks, labels and calculations are drawn in HTML with rhp.</p>
 </section>
 <script type="module">
-import {Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, nice, html, render, createSignal, onCleanup} from '@bezda/rhp/standalone';
+import {Chart, Plot, Scale, Line, Dot, Tick, Label, Poster, slat, nice, html, render, createSignal, onMount, onCleanup} from '@bezda/rhp/standalone';
 const DATA = __DATA__;
 const YEARS = DATA.years;
 const SERIES = DATA.series.map((s,i) => ({...s, color: `series-${i+1}`}));
 const ALL = SERIES.flatMap(s=>s.values);
 const Y = nice(0, Math.max(...ALL), 5);
-const MIN = YEARS[0]-.15, MAX = YEARS.at(-1)+.15;
+const MIN = YEARS[0]-.15, MAX = YEARS.at(-1)+.04;
 const percent = value => `${value.toFixed(1)}%`;
 const THEME = {font:'var(--text)',ink:'var(--ink)',muted:'var(--soft)',grid:'var(--rule)',surface:'var(--paper)',series:['var(--ink)','var(--vapes)','var(--pouches)']};
 
@@ -120,30 +116,25 @@ const YearTicks = slat({room:{after:42},css:`
  @container (max-width:600px) { .year {font-size:13px;} }
 `},d=>html`<div><${Tick} at=${()=>d.at} class="tick" /><${Label} at=${()=>d.at} class="year">${()=>d.at}<//></div>`);
 
-const seriesSlat = room => slat({room:{end:room,before:15},css:`
- .curve {stroke-width:7px;}
+const seriesSlat = room => slat({room:{get end(){return room();},before:15},css:`
+ .curve {stroke-width:var(--curve-width);}
  .vapes .curve {stroke-dasharray:12 7;}
- .end {--rhp-label-gap:15px; font-size:26px; line-height:1.15; color:var(--rhp-color);}
- .end b {display:inline; font:700 32px/1 var(--display); margin-right:9px;}
+ .end {--rhp-label-gap:var(--end-gap); font-size:var(--end-name-size); line-height:1; color:var(--rhp-color);}
+ .end b {display:inline; font:700 var(--end-value-size)/1 var(--display); margin-right:9px;}
  .end .label-name {display:inline-block;vertical-align:middle;}
- .pouches .end .label-name {width:128px;white-space:normal;}
- .begin {--rhp-label-gap:0px; translate:0 0; padding-bottom:15px; font:700 27px/1 var(--display); color:var(--rhp-color);}
+ .pouches .end .label-name {width:var(--end-name-width);white-space:normal;}
+ .begin {--rhp-label-gap:0px; translate:0 0; padding-bottom:15px; font:700 var(--begin-size)/1 var(--display); color:var(--rhp-color);}
  .vapes .begin {translate:-100% 50%;padding:0 13px 0 0;}
- @container (max-width:600px) {
-  .curve {stroke-width:4px;}
-  .vapes .curve {stroke-dasharray:8 5;}
-  .end {--rhp-label-gap:8px; font-size:12px;}
-  .end b {display:block; font-size:22px; margin:0 0 2px;}
-  .pouches .end .label-name {width:auto;white-space:nowrap;}
-  .begin {font-size:20px; padding-bottom:12px;}
-  .vapes .begin {padding-right:4px; padding-bottom:0;}
- }
-`},d=>html`<div class=${()=>d.id} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}>
+ .stacked .end b {display:block;margin:0 0 3px;}
+ .stacked .end .label-name {width:var(--end-name-width);white-space:normal;}
+ .stacked.vapes .curve {stroke-dasharray:8 5;}
+ .stacked .begin {padding-bottom:12px;}
+ .stacked.vapes .begin {padding-right:2px;padding-bottom:0;}
+`},d=>html`<div class=${()=>`${d.id}${d.stacked?' stacked':''}`} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}>
  <${Line} points=${()=>d.values.map((v,i)=>[YEARS[i],v])} color=${()=>d.color} class="curve" />
  <${Label} at=${YEARS[0]} cross=${()=>d.id==='vapes'?d.values[0]-1.1:d.values[0]} side=${()=>d.id==='vapes'?'before':'after'} class="begin">${()=>percent(d.values[0])}<//>
  <${Label} at=${YEARS.at(-1)} cross=${()=>d.values.at(-1)} class="end"><b>${()=>percent(d.values.at(-1))}</b><span class="label-name">${()=>d.id==='any'?'Any tobacco':d.name}</span><//>
  </div>`);
-const FullSeries = seriesSlat(225), CompactSeries = seriesSlat(112);
 const Point = slat({room:{},css:`
  .point {background:var(--rhp-surface);border:3px solid var(--rhp-color);}
  .pouches .point {border-radius:2px;}
@@ -154,16 +145,47 @@ const Selected = slat({room:{},css:`
  .pouches .selected {border-radius:3px;}
  @container (max-width:600px) {.selected {border-width:3px;}}
 `},d=>html`<div class=${()=>d.id} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}><${Dot} at=${()=>d.year} cross=${()=>d.values[d.i]} size=${()=>d.size} class="selected" /></div>`);
-const Hair = slat({room:{},css:'.hair{--rhp-tick-width:2px;background:var(--rhp-muted);opacity:.35;}'},d=>html`<${Tick} at=${()=>d.year} class="hair" />`);
+const Hair = slat({room:{},css:'.hair{--rhp-tick-width:2px;background:var(--rhp-muted);opacity:.35;transition:none;}'},d=>html`<${Tick} at=${()=>d.year} thick=${1} class="hair" />`);
 const Hit = slat({room:{},css:'.hit{cursor:crosshair;touch-action:pan-y;}.hit:focus-visible{outline:2px solid var(--rhp-ink);outline-offset:-2px;}'},d=>html`<div class="hit" data-hit="" data-i=${()=>d.i} tabindex="0" role="slider" aria-label="Inspect a survey year" aria-valuemin="0" aria-valuemax="3" aria-valuenow=${()=>d.i} aria-valuetext=${()=>`${YEARS[d.i]}: ${SERIES.map(s=>`${s.name} ${percent(s.values[d.i])}`).join(', ')}`}></div>`);
 const points = SERIES.flatMap(s=>YEARS.map((year,i)=>({id:s.id,color:s.color,year,value:s.values[i]})));
 
 function TobaccoPoster() {
- const media = matchMedia('(max-width:700px)');
- const [compact,setCompact] = createSignal(media.matches);
- const resize = event=>setCompact(event.matches);
- media.addEventListener('change',resize);
- onCleanup(()=>media.removeEventListener('change',resize));
+ let plotElement;
+ const [plotWidth,setPlotWidth] = createSignal(888);
+ const [endRoom,setEndRoom] = createSignal(225);
+ const compact = ()=>plotWidth()<460;
+ const fit = (value,min,max)=>Math.max(min,Math.min(max,value));
+ const labelStyle = ()=>({
+  '--end-name-size':`${fit(plotWidth()*26/888,12,26)}px`,
+  '--end-value-size':`${fit(plotWidth()*32/888,22,32)}px`,
+  '--end-name-width':`${compact()?fit(plotWidth()*.17,74,96):fit(plotWidth()*.145,85,128)}px`,
+  '--end-gap':`${fit(plotWidth()*.017,12,15)}px`,
+  '--begin-size':`${fit(plotWidth()*27/888,20,27)}px`,
+  '--curve-width':`${fit(plotWidth()*7/888,4,7)}px`,
+ });
+ const Series = seriesSlat(endRoom);
+ onMount(()=>{
+  let frame = 0, observedWidth;
+  const measureLabels = ()=>{
+   if(!plotElement.isConnected)return;
+   if(observedWidth!=null)setPlotWidth(observedWidth);
+   const widest = Math.max(...[...plotElement.querySelectorAll('.end')].map(label=>label.offsetWidth));
+   if(widest>0)setEndRoom(widest+8);
+  };
+  const scheduleMeasure = ()=>{
+   if(frame)return;
+   // Apply layout changes in the next frame, outside ResizeObserver delivery.
+   frame = requestAnimationFrame(()=>{frame=0;measureLabels();});
+  };
+  const observer = new ResizeObserver(entries=>{
+   for(const entry of entries)if(entry.target===plotElement)observedWidth=entry.contentRect.width;
+   scheduleMeasure();
+  });
+  observer.observe(plotElement);
+  plotElement.querySelectorAll('.end').forEach(label=>observer.observe(label));
+  document.fonts.ready.then(scheduleMeasure);
+  onCleanup(()=>{observer.disconnect();cancelAnimationFrame(frame);});
+ });
  const [picked,setPicked] = createSignal(3), [hover,setHover] = createSignal(null);
  const index = ()=>hover() ?? picked();
  const rowOf = target => {
@@ -193,7 +215,7 @@ function TobaccoPoster() {
  };
  return html`<${Poster}
   kicker=${html`<span>After the vape boom</span><span>U.S. high school · 2022 to 2025</span>`}
-  title=${html`<span class="lead-in">Nicotine pouches rose.</span><span class="finding">Teen tobacco use fell</span><span class="number-block"><b class="number">${DATA.declineRounded}%</b><span class="number-note">relative decline<strong>${percent(SERIES[0].values[0])} → ${percent(SERIES[0].values.at(-1))}</strong><small>U.S. high school students<br/>2022 to 2025</small></span></span>`}
+  title=${html`<span class="lead-in">Nicotine pouches rose.</span><span class="finding">Teen tobacco use fell</span><span class="number-block"><b class="number">${DATA.declineRounded}%.</b></span>`}
   dek="The overall measure already includes e-cigarettes and nicotine pouches, alongside other tobacco products."
   note=${html`<span><b>Categories overlap; do not add them.</b> Different students each year, not a measure of switching or nicotine dose.<span class="source">Source: FDA, National Youth Tobacco Survey, 2022 to 2025. Table 3, published June 2026.</span></span>`}
   onPointerMove=${move} onPointerLeave=${leave} onClick=${pick} onKeyDown=${key}
@@ -201,18 +223,18 @@ function TobaccoPoster() {
   onFocusOut=${event=>{if(!event.currentTarget.contains(event.relatedTarget))setHover(null);}}>
   <div class="backdrop" aria-hidden="true"><img src="__BACKGROUND__" width="1120" height="1400" alt="" /></div>
   <p class="plot-unit"><b>Share of students</b> reporting use in the past 30 days</p>
-  <div class="plot-wrap">
-   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>compact()?330:365} theme=${THEME}
+  <div class="plot-wrap" ref=${element=>{plotElement=element;}} style=${labelStyle}>
+   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>fit(plotWidth()*.66,330,365)} theme=${THEME}
     label="U.S. high school students reporting past-30-day use, 2022 to 2025. Any tobacco product, e-cigarettes and nicotine pouches.">
     <${Scale} ticks=${YEARS}>${YearTicks}<//>
-    ${()=>html`<${Plot} overlap=${true} rows=${SERIES} style=${{'pointer-events':'none'}}>${compact()?CompactSeries:FullSeries}<//>`}
+    <${Plot} overlap=${true} rows=${SERIES} stacked=${compact} style=${{'pointer-events':'none'}}>${Series}<//>
     <${Plot} overlap=${true} rows=${points} style=${{'pointer-events':'none'}}>${Point}<//>
     <${Plot} overlap=${true} slats=${1} year=${()=>YEARS[index()]} style=${{'pointer-events':'none'}}>${Hair}<//>
     <${Plot} overlap=${true} rows=${SERIES} year=${()=>YEARS[index()]} i=${index} size=${()=>compact()?'19px':'23px'} style=${{'pointer-events':'none'}}>${Selected}<//>
     <${Plot} overlap=${true} slats=${1} i=${picked}>${Hit}<//>
    <//>
   </div>
-  <div class="year-controls" role="group" aria-label="Choose a survey year"><span>Inspect</span>${YEARS.map((year,i)=>html`<button type="button" data-year-index=${i} aria-pressed=${()=>index()===i}>${year}</button>`)}</div>
+  <div class="year-controls" role="group" aria-label="Choose a survey year">${YEARS.map((year,i)=>html`<button type="button" data-year-index=${i} aria-pressed=${()=>index()===i}>${year}</button>`)}</div>
   <div class="readout" aria-live="polite">${SERIES.map(s=>html`<section class=${s.id}><span class="name">${s.id==='any'?'Any tobacco':s.name}</span><b class="value">${()=>percent(s.values[index()])}</b><small><span class="ci-range">${()=>s.ci95[index()].join(' to ')}</span><br/>95% CI</small></section>`)}</div>
  <//>`;
 }

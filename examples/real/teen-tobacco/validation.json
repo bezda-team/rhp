@@ -17,17 +17,31 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1250
+        1361.3125
       ],
       "pngDimensions": [
         2000,
-        2500
+        2722
       ],
-      "meanChannelDifference": 0.0922176,
-      "fitExportDifference": 0,
+      "meanChannelDifference": 0.6748858682341415,
+      "fitExportDifference": 0.01588537839823659,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
+      "crosshair": "passes through all three selected points",
+      "readout": "three values aligned",
+      "presentation": {
+        "paddingLeft": "56px",
+        "paddingRight": "56px",
+        "paddingBottom": "40px",
+        "captionMargin": "40px",
+        "plotMargin": "32px",
+        "numberNoteCount": 0,
+        "backgroundOpacity": "0.5",
+        "number": "42%.",
+        "finding": "Teen tobacco use fell",
+        "yearButtons": "2022202320242025"
+      },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
       "methods": "four rows, no sideways overflow"
@@ -37,17 +51,31 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1250
+        1361.38330078125
       ],
       "pngDimensions": [
         2000,
-        2500
+        2722
       ],
-      "meanChannelDifference": 0,
-      "fitExportDifference": 0,
+      "meanChannelDifference": 1.0135848640705363,
+      "fitExportDifference": 0.0036534410972324273,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
+      "crosshair": "passes through all three selected points",
+      "readout": "three values aligned",
+      "presentation": {
+        "paddingLeft": "56px",
+        "paddingRight": "56px",
+        "paddingBottom": "40px",
+        "captionMargin": "40px",
+        "plotMargin": "32px",
+        "numberNoteCount": 0,
+        "backgroundOpacity": "0.5",
+        "number": "42%.",
+        "finding": "Teen tobacco use fell",
+        "yearButtons": "2022202320242025"
+      },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
       "methods": "four rows, no sideways overflow"
@@ -57,17 +85,31 @@
       "viewportWidth": 1280,
       "cssDimensions": [
         1000,
-        1250
+        1361.3125
       ],
       "pngDimensions": [
         2000,
-        2500
+        2722
       ],
-      "meanChannelDifference": 1.6332970666666666,
+      "meanChannelDifference": 1.225721773205976,
       "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons",
       "selectionAfterDownload": "preserved",
+      "crosshair": "passes through all three selected points",
+      "readout": "three values aligned",
+      "presentation": {
+        "paddingLeft": "56px",
+        "paddingRight": "56px",
+        "paddingBottom": "40px",
+        "captionMargin": "40px",
+        "plotMargin": "32px",
+        "numberNoteCount": 0,
+        "backgroundOpacity": "0.5",
+        "number": "42%.",
+        "finding": "Teen tobacco use fell",
+        "yearButtons": "2022202320242025"
+      },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
       "methods": "four rows, no sideways overflow"
@@ -77,17 +119,31 @@
       "viewportWidth": 390,
       "cssDimensions": [
         370,
-        1040.90625
+        1166.140625
       ],
       "pngDimensions": [
         740,
-        2081
+        2332
       ],
-      "meanChannelDifference": 5.127326461908594,
-      "fitExportDifference": 8.654187328538914e-7,
+      "meanChannelDifference": 2.661744935329841,
+      "fitExportDifference": 0,
       "allFourYears": "forward and backward",
       "input": "mouse, keyboard, year buttons, touch",
       "selectionAfterDownload": "preserved",
+      "crosshair": "passes through all three selected points",
+      "readout": "three values aligned",
+      "presentation": {
+        "paddingLeft": "24px",
+        "paddingRight": "24px",
+        "paddingBottom": "32px",
+        "captionMargin": "32px",
+        "plotMargin": "28px",
+        "numberNoteCount": 0,
+        "backgroundOpacity": "0.5",
+        "number": "42%.",
+        "finding": "Teen tobacco use fell",
+        "yearButtons": "2022202320242025"
+      },
       "fittedScroll": "stable",
       "fittedMarkers": "aligned",
       "methods": "four rows, no sideways overflow"
@@ -101,8 +157,91 @@
     ],
     "imageDimensions": [
       2000,
-      2500
+      2722
+    ]
+  },
+  "responsiveChecks": {
+    "widths": [
+      320,
+      336,
+      352,
+      368,
+      384,
+      400,
+      416,
+      432,
+      448,
+      464,
+      480,
+      496,
+      512,
+      519,
+      520,
+      521,
+      528,
+      539,
+      540,
+      541,
+      544,
+      559,
+      560,
+      561,
+      576,
+      592,
+      608,
+      624,
+      640,
+      656,
+      672,
+      688,
+      699,
+      700,
+      701,
+      704,
+      720,
+      736,
+      752,
+      768,
+      784,
+      800,
+      816,
+      832,
+      848,
+      864,
+      880,
+      896,
+      912,
+      928,
+      944,
+      960,
+      976,
+      992,
+      1008,
+      1024,
+      1040,
+      1056,
+      1072,
+      1088,
+      1104,
+      1120,
+      1136,
+      1152,
+      1168,
+      1184,
+      1200,
+      1216,
+      1232,
+      1248,
+      1264,
+      1280
     ],
-    "aspectRatio": "4:5"
+    "yearsPerWidth": 4,
+    "readout": "aligned values and fixed columns for every year",
+    "crosshair": "passes through every selected point",
+    "endLabels": "inside plot with no overlap",
+    "rightGapRange": [
+      9.46875,
+      15.75
+    ]
   }
 }
