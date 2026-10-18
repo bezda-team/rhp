@@ -350,5 +350,9 @@
     }
   },
   "chartPaddingLeft": 52,
-  "posterBrightness": 0.9
+  "posterBrightness": 0.94,
+  "brightnessVerification": {
+    "currentBrightness": 0.94,
+    "lastCheckedBrightness": 0.9
+  }
 }
