@@ -7,6 +7,7 @@ The button joins `.recipe-navigation` when the gallery supplies one, inheriting 
 Otherwise it creates its own row above each poster, sized to the poster on desktop and phones.
 The adjacent fit-to-screen icon toggles between full size and a proportional view at up to 95% of the viewport height.
 Its icon changes to show the available action, and fitting preserves the poster's layout and selection.
+The fitted view uses the stable small viewport height, so browser controls appearing or disappearing during scrolling do not change its scale.
 The exporter loads only when clicked, waits for fonts, and saves the current poster at twice its full-size resolution, including when the view is fitted.
 It preserves authored margins and absolute-position rules, including adopted chart stylesheets, because Safari's computed offsets can be wrong inside subgrids.
 Activating the download control preserves the poster's selection, including keyboard focus transitions, and does not bubble into outside-click handlers.
@@ -23,6 +24,7 @@ For an embedded chart inside an existing app, follow the app's export controls i
   .poster-actions button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
   .poster-actions button[aria-disabled="true"] { cursor: progress; opacity: .5; }
   .poster-fit-frame, .poster-fit-content { display: contents; }
+  .poster-fit-frame { max-height: 95svh; }
   .poster-fit-frame.is-fitted { display: block; margin: 0 auto; overflow: clip; }
   .poster-fit-frame.is-fitted > .poster-fit-content { display: block; transform-origin: top left; }
   .poster-download-error { margin: 8px auto; font: 14px/1.4 system-ui, sans-serif; color: inherit; }
@@ -35,18 +37,24 @@ function addPosterFit(poster, button, changed) {
   poster.before(frame); frame.append(content); content.append(poster);
   const properties = ['width', 'max-width', 'margin', 'box-sizing'];
   const original = properties.map(name => [name, poster.style.getPropertyValue(name), poster.style.getPropertyPriority(name)]);
-  let fitted = false, scale = 1, request = 0;
+  let fitted = false, scale = 1, request = 0, layout = null;
+  const availableHeight = () => parseFloat(getComputedStyle(frame).maxHeight) || innerHeight * .95;
+  const layoutKey = () => {
+    const css = getComputedStyle(poster);
+    return [innerWidth, availableHeight(), css.width, css.height].join('/');
+  };
   const restore = () => original.forEach(([name, value, priority]) => {
     if (value) poster.style.setProperty(name, value, priority);
     else poster.style.removeProperty(name);
   });
   function update() {
     request = 0;
+    if (fitted && layout === layoutKey()) return;
     frame.classList.remove('is-fitted'); frame.style.width = ''; frame.style.height = '';
     content.style.width = ''; content.style.transform = ''; restore(); scale = 1;
     if (fitted) {
       const box = poster.getBoundingClientRect();
-      scale = Math.min(1, innerHeight * .95 / box.height);
+      scale = Math.min(1, availableHeight() / box.height);
       poster.style.setProperty('box-sizing', 'border-box');
       poster.style.setProperty('width', `${box.width}px`);
       poster.style.setProperty('max-width', 'none');
@@ -56,6 +64,7 @@ function addPosterFit(poster, button, changed) {
       frame.style.width = `${box.width * scale}px`; frame.style.height = `${box.height * scale}px`;
       frame.classList.add('is-fitted');
     }
+    layout = layoutKey();
     const label = fitted ? 'Restore poster size' : 'Fit poster to screen';
     button.setAttribute('aria-label', label); button.title = label;
     button.setAttribute('aria-pressed', String(fitted));
@@ -63,13 +72,13 @@ function addPosterFit(poster, button, changed) {
     changed();
     poster.dispatchEvent(new Event('poster-view-change'));
   }
-  const schedule = () => { if (fitted && !request) request = requestAnimationFrame(update); };
+  const schedule = () => { if (fitted && !request && layout !== layoutKey()) request = requestAnimationFrame(update); };
   new ResizeObserver(schedule).observe(poster);
   addEventListener('resize', schedule);
   document.fonts.ready.then(schedule);
   update();
   return {
-    toggle() { fitted = !fitted; cancelAnimationFrame(request); update(); },
+    toggle() { fitted = !fitted; layout = null; cancelAnimationFrame(request); update(); },
     dimensions() {
       if (!fitted) { const box = poster.getBoundingClientRect(); return {width:box.width,height:box.height}; }
       const css = getComputedStyle(poster);

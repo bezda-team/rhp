@@ -212,6 +212,28 @@ try {
     assert.equal(await page.locator(".readout strong").innerText(), "Mandarin Chinese", "focus on fit preserves selection");
     await page.keyboard.press("Enter"); await settle(page);
     assert.equal(await fit.getAttribute("aria-pressed"), "true");
+    // Keep hover selection separate from the scroll and resize checks.
+    await page.mouse.move(0, 0);
+    const scrollFrames = await page.evaluate(async () => {
+      const poster = document.querySelector('.poster');
+      const samples = [], descriptor = Object.getOwnPropertyDescriptor(window, 'innerHeight'), height = innerHeight;
+      const sample = () => { const box = poster.getBoundingClientRect(); samples.push([box.width, box.height]); };
+      sample();
+      scrollTo(0, document.body.scrollHeight);
+      // Browser controls can change innerHeight during scrolling without resizing the CSS viewport.
+      Object.defineProperty(window, 'innerHeight', { configurable: true, value: height + 48 });
+      dispatchEvent(new Event('resize'));
+      for (let i = 0; i < 8; i++) { await new Promise(requestAnimationFrame); sample(); }
+      if (descriptor) Object.defineProperty(window, 'innerHeight', descriptor);
+      else delete window.innerHeight;
+      dispatchEvent(new Event('resize'));
+      scrollTo(0, 0);
+      return samples;
+    });
+    for (const axis of [0, 1]) {
+      const sizes = scrollFrames.map(frame => frame[axis]);
+      assert(Math.max(...sizes)-Math.min(...sizes)<.25, 'scrolling and browser controls preserve the fitted poster size');
+    }
     await page.setViewportSize({width,height:900}); await settle(page);
     const resized = await page.locator(".poster").boundingBox();
     assert(resized.height<=900*.95+1, "fit responds to viewport resizing");
