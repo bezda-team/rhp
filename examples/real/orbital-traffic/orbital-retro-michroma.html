@@ -822,7 +822,9 @@ function OrbitTooltip(props){
 }
 
 const createObjectMark=onDismiss=>slat({room:{},css:`
- .object-row{pointer-events:none;}
+ .object-row{pointer-events:none;--tip-accent:#535449;}
+ .object-row.payload{--tip-accent:#18333a;}
+ .object-row.debris{--tip-accent:#85351f;}
  .object-point{pointer-events:auto;background:none;border:0;}
  .miniature{position:absolute;translate:-50% -50%;left:50%;top:50%;display:block;width:6.8cqw;height:6.8cqw;object-fit:contain;pointer-events:auto;cursor:pointer;rotate:var(--rotation);filter:drop-shadow(.7px 0 0 #f8e9caaa) drop-shadow(-.7px 0 0 #f8e9caaa) drop-shadow(0 .7px 0 #f8e9caaa) drop-shadow(0 -.7px 0 #f8e9caaa) drop-shadow(0 2px 2px #071e26cc);transition:filter .14s,opacity .14s;}
  .object-row.debris .miniature{width:var(--debris-size,5.3cqw);height:var(--debris-size,5.3cqw);}
@@ -830,12 +832,12 @@ const createObjectMark=onDismiss=>slat({room:{},css:`
  .object-row.quiet .miniature{opacity:.55;}
  .object-row.lit .miniature{filter:drop-shadow(1px 0 0 var(--category-color)) drop-shadow(-1px 0 0 var(--category-color)) drop-shadow(0 1px 0 var(--category-color)) drop-shadow(0 -1px 0 var(--category-color)) drop-shadow(0 0 5px var(--category-color));}
  .object-row.inspected .miniature{filter:drop-shadow(1px 0 0 #fff1d2) drop-shadow(-1px 0 0 #fff1d2) drop-shadow(0 1px 0 #fff1d2) drop-shadow(0 -1px 0 #fff1d2) drop-shadow(0 0 7px var(--category-color));}
- .orbit-tooltip{position:fixed;inset:auto;left:var(--tip-left,0px);top:var(--tip-top,0px);margin:0;width:251px;max-width:calc(100vw - 24px);padding:17px 19px 16px;border:1px solid #85351f;border-radius:2px;background:#e5d4ac;color:#18333a;box-shadow:inset 0 0 0 4px #e5d4ac,inset 0 0 0 5px #71817a80,0 5px 0 #061c2540,0 12px 28px #0004;font:400 12px/1.55 var(--text);letter-spacing:0;text-align:left;pointer-events:auto;}
+ .orbit-tooltip{position:fixed;inset:auto;left:var(--tip-left,0px);top:var(--tip-top,0px);margin:0;width:251px;max-width:calc(100vw - 24px);padding:17px 19px 16px;border:1px solid var(--tip-accent);border-radius:2px;background:#e5d4ac;color:#18333a;box-shadow:inset 0 0 0 4px #e5d4ac,inset 0 0 0 5px #71817a80,0 5px 0 #061c2540,0 12px 28px #0004;font:400 12px/1.55 var(--text);letter-spacing:0;text-align:left;pointer-events:auto;}
  .orbit-tooltip:not(:popover-open){display:none!important;}
- .tip-heading{display:flex;align-items:center;gap:9px;padding-bottom:10px;border-bottom:1px solid #b15c3c;text-transform:uppercase;font-size:12px;letter-spacing:.025em;}
- .tip-indicator{width:8px;height:8px;flex:none;background:#b15c3c;border:1px solid #85351f;rotate:45deg;}
+ .tip-heading{display:flex;align-items:center;gap:9px;padding-bottom:10px;border-bottom:1px solid var(--tip-accent);color:var(--tip-accent);text-transform:uppercase;font-size:12px;letter-spacing:.025em;}
+ .tip-indicator{width:8px;height:8px;flex:none;background:var(--tip-accent);border:1px solid var(--tip-accent);rotate:45deg;}
  .tip-label{margin-top:12px;color:#40554e;font-size:10px;letter-spacing:.015em;text-transform:uppercase;}
- .tip-altitude{display:flex;align-items:baseline;gap:9px;font-size:26px;line-height:1.5;font-variant-numeric:tabular-nums;color:#85351f;}
+ .tip-altitude{display:flex;align-items:baseline;gap:9px;font-size:26px;line-height:1.5;font-variant-numeric:tabular-nums;color:var(--tip-accent);}
  .tip-altitude span{font-size:12px;color:#40554e;}
  .tip-band{font-size:10px;color:#40554e;}
  .tip-description{margin:12px 0 10px;font-size:11px;}

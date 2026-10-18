@@ -75,6 +75,22 @@ for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
   await page.keyboard.press('Escape');
   await page.mouse.move(0,0);await image.hover();await page.mouse.move(0,0);
   await page.waitForTimeout(750);assert.equal(await tip.count(),0,'Passing over an image cancels the pending tooltip');
+  const categoryAccents={payload:'rgb(24, 51, 58)',debris:'rgb(133, 53, 31)',other:'rgb(83, 84, 73)'};
+  for(const [category,expected] of Object.entries(categoryAccents)){
+   await page.locator(`.object-row.${category} .miniature`).first().click();
+   await page.locator('.orbit-tooltip:popover-open').waitFor();
+   const accents=await tip.evaluate(element=>({
+    border:getComputedStyle(element).borderTopColor,
+    heading:getComputedStyle(element.querySelector('.tip-heading')).color,
+    rule:getComputedStyle(element.querySelector('.tip-heading')).borderBottomColor,
+    indicator:getComputedStyle(element.querySelector('.tip-indicator')).backgroundColor,
+    altitude:getComputedStyle(element.querySelector('.tip-altitude')).color,
+   }));
+   for(const [part,color] of Object.entries(accents))assert.equal(color,expected,`${category} popup ${part} matches its category`);
+   if(category!=='other')assert.equal(await page.locator(category==='debris'?'.headline .second':'.headline span:not(.second)').evaluate(element=>getComputedStyle(element).color),expected,'Popup and title use the same category ink');
+   await tip.screenshot({path:path.join(output,`${name}-${category}-card.png`)});
+   await page.keyboard.press('Escape');
+  }
   const phone=await browser.newContext({viewport:{width:390,height:664},hasTouch:true});
   const mobile=await phone.newPage();mobile.on('pageerror',error=>errors.push(error.message));
   await mobile.goto(url);await ready(mobile);
@@ -89,7 +105,7 @@ for(const [name,engine] of Object.entries({chromium,firefox,webkit})){
    assert.equal(await mobile.locator('.readout').innerText(),selected,'Dismissing details preserves the selected category');
   }
   assert.deepEqual(errors,[]);
-  const result={name,hoverDelayMs:delay,creamCard:true,width:normal.width,equalPadding:true,keyboard:true,touchWidths:[390,320],fitReadable:true,errors};
+  const result={name,hoverDelayMs:delay,creamCard:true,width:normal.width,equalPadding:true,categoryAccents,keyboard:true,touchWidths:[390,320],fitReadable:true,errors};
   results.push(result);console.log(JSON.stringify(result));await phone.close();await page.close();
  }finally{await browser.close();}
 }
