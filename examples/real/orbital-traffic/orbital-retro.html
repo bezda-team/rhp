@@ -238,6 +238,8 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 .retro .label-800{top:36.27%}
 .retro .controls .readout{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;padding:14px 0 16px;min-height:0;text-align:center}
 .retro .readout-name{grid-column:1/-1;font-size:14px;line-height:1.5;margin:0;color:var(--selected-color)}
+.retro .controls .readout>.legend{grid-column:1/-1;margin:0 0 2px}
+.retro .readout .legend button[data-active="true"]{color:var(--legend-color);border-color:var(--legend-color);background:color-mix(in srgb,var(--legend-color) 12%,transparent)}
 .retro .readout-cell{display:grid;gap:6px;align-content:start}
 .retro .readout .readout-band{margin:0;font-size:11px;line-height:1.5;min-height:17px}
 .retro .readout .readout-number{font-family:'Zen Dots',sans-serif;font-size:21px;line-height:1.3;font-weight:400}
@@ -950,9 +952,10 @@ function OrbitalPoster(){
  const title=CONFIG.id==='retro'
   ?html`<span class="second">${CONFIG.line2}</span>${' '}<span>${CONFIG.line1}</span>`
   :html`<span>${CONFIG.line1}</span><span class="second">${CONFIG.line2}</span>`;
+ const legend=()=>html`<div class="legend" role="group" aria-label="Highlight a category" aria-live="off"><${For} each=${GROUPS}>${group=>html`<button type="button" data-category=${group.id} data-active=${()=>selected().id===group.id} style=${{'--legend-color':`var(--${group.id})`}} aria-pressed=${()=>picked()===group.id}><img src=${ART[group.id]} alt="" /><span>${group.name}</span></button>`}<//></div>`;
  const controls=explain=>html`<div class="controls">${explain?html`   <p class="scene-caption">Image heights show representative altitudes. Each miniature ≈ 750 objects, rounded by category and band. Earth, hardware sizes and angular positions are illustrative. Hold over an image or tap for details.</p>`:""}
-  <div class="legend" role="group" aria-label="Highlight a category"><${For} each=${GROUPS}>${group=>html`<button type="button" data-category=${group.id} aria-pressed=${()=>picked()===group.id}><img src=${ART[group.id]} alt="" /><span>${group.name}</span></button>`}<//></div>
-  <div class="readout" aria-live="polite" style=${()=>({'--selected-color':`var(--${selected().id})`})}><span class="readout-name">${()=>selected().name}</span><${For} each=${BANDS}>${band=>html`<div class="readout-cell"><span class="readout-band">${band.name}</span><span class="readout-number">${()=>number(result(band).count)}</span><span class="readout-share"><span>${()=>percent(result(band).percent)}</span><span class="readout-base">of this band</span></span></div>`}<//></div>
+  ${CONFIG.id!=='retro'?legend():''}
+  <div class="readout" aria-live="polite" style=${()=>({'--selected-color':`var(--${selected().id})`})}>${CONFIG.id==='retro'?legend():html`<span class="readout-name">${()=>selected().name}</span>`}<${For} each=${BANDS}>${band=>html`<div class="readout-cell"><span class="readout-band">${band.name}</span><span class="readout-number">${()=>number(result(band).count)}</span><span class="readout-share"><span>${()=>percent(result(band).percent)}</span><span class="readout-base">of this band</span></span></div>`}<//></div>
 </div>`;
  return html`<${Poster}
   kicker=${html`<span>What fills low Earth orbit?</span><span>Public catalogue · 18 Oct 2026</span>`}
