@@ -214,6 +214,19 @@ for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
         for (const width of [390, 320]) {
           await page.setViewportSize({ width, height: 844 });
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'No mobile horizontal overflow');
+          const summary = page.locator('.footer-summary');
+          await summary.click();
+          assert.equal(await summary.getAttribute('aria-expanded'), 'false');
+          assert.equal(await page.locator('.footer-prompt').isVisible(), false, 'Mobile expansion uses the caret without a text prompt');
+          const compact = await page.locator('.poster').boundingBox();
+          const boldSize = await page.locator('.footer-summary strong').evaluate(element => getComputedStyle(element).fontSize);
+          await summary.click();
+          const expanded = await page.locator('.poster').boundingBox();
+          assert.ok(expanded.height > compact.height, 'Mobile notes take space only when expanded');
+          assert.equal(await page.locator('.footer-summary strong').evaluate(element => getComputedStyle(element).fontSize), boldSize, 'The bold summary retains its size');
+          const sourceRow = await page.locator('.footer-row > span:first-child').boundingBox();
+          const creditRow = await page.locator('.footer-row .credit').boundingBox();
+          assert.ok(creditRow.y >= sourceRow.y + sourceRow.height, 'The mobile credit follows the full-width source on its own row');
           const slider = page.locator('.earth-rotation');
           await slider.focus();
           const before = Number(await slider.inputValue());
