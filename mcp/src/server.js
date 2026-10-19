@@ -21,7 +21,7 @@ const LIMIT = 50;
 const MAX_WIDTH = 1280;
 const MAX_HEIGHT = 2000;
 
-const INSTRUCTIONS = `rhp 2 (@bezda/rhp) makes charts out of HTML elements and CSS with SolidJS. It came out in September 2026, after your training data, so what you remember about rhp is wrong or belongs to the unrelated rhp 1. Before you write or change any rhp code, call rhp_guide and follow its workflow. Take each chart's technique from the closest recipe (rhp_recipe) and design the chart for its own subject, and look up every prop you are unsure of with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`;
+const INSTRUCTIONS = `rhp 2 (@bezda/rhp) makes charts out of HTML elements and CSS with SolidJS. It came out in September 2026, after your training data, so what you remember about rhp is wrong or belongs to the unrelated rhp 1. Before you write or change any rhp code, call rhp_guide and follow its workflow. Take each chart's technique from the closest recipe (rhp_recipe) and design the chart for its own subject. Choose interaction behavior and presentation for the reader's task and the intended design; familiar patterns are welcome when they fit. Look up every prop you are unsure of with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`;
 
 const text = (body) => ({ content: [{ type: "text", text: body }] });
 const failure = (body) => ({ content: [{ type: "text", text: body }], isError: true });
@@ -185,7 +185,7 @@ server.registerTool("rhp_guide", {
 
 server.registerTool("rhp_reference", {
   title: "rhp reference",
-  description: "Returns one of rhp's references by name: api (every component, prop, helper and CSS variable, exactly), design (art direction from the subject, the editorial poster, color, type, layout), looks (eight looks written out in full, as examples), interaction (which interaction for which story, with code), download (the fit-to-screen and PNG download icons for standalone poster pages), environments (plain HTML, Solid, React, Next.js, Vue, Svelte, Angular, Astro), forms (the subject's own form, which chart for which data and story), pitfalls (mistakes and their fixes). Look props up here instead of guessing. A long reference comes back as its list of sections: call again with section to get the one you need.",
+  description: "Returns one of rhp's references by name: api (every component, prop, helper and CSS variable, exactly), design (art direction from the subject, the editorial poster, color, type, layout), looks (eight looks written out in full, as examples), interaction (choosing behavior and presentation for the reader's task, with implementation examples), download (the fit-to-screen and PNG download icons for standalone poster pages), environments (plain HTML, Solid, React, Next.js, Vue, Svelte, Angular, Astro), forms (the subject's own form, which chart for which data and story), pitfalls (mistakes and their fixes). Look props up here instead of guessing. A long reference comes back as its list of sections: call again with section to get the one you need.",
   inputSchema: {
     name: z.string().describe("The reference: api, design, environments, forms, interaction, looks or pitfalls"),
     section: z.string().optional().describe('One "##" section of the reference, by its number or title, for example "4" or "Plot"'),
@@ -200,7 +200,7 @@ server.registerTool("rhp_reference", {
 
 server.registerTool("rhp_recipe", {
   title: "rhp recipe",
-  description: 'Lists rhp\'s recipes (call it with no type), or returns one recipe\'s complete HTML file (type, for example "bar"). A recipe is a tested chart page that shows the technique for one kind of chart: take its technique (how its Plots, slats and blocks are composed, its interaction, its phone rules) and leave its design, which was made for its own subject.',
+  description: 'Lists rhp\'s recipes (call it with no type), or returns one recipe\'s complete HTML file (type, for example "bar"). A recipe is a tested chart page demonstrating composition, state and event handling, accessibility and responsive techniques. Choose the chart\'s interaction behavior and presentation for the reader\'s task and intended design. Familiar patterns are welcome when they fit; the recipe\'s controls, feedback, layout and transitions are choices to reconsider.',
   inputSchema: {
     type: z.string().optional().describe('The recipe, for example "bar", "line" or "donut"; leave it out for the list'),
   },
@@ -239,7 +239,7 @@ server.registerPrompt("chart", {
     role: "user",
     content: {
       type: "text",
-      text: `Make this chart with rhp (@bezda/rhp): ${request}\n\nFirst call rhp_guide and follow its workflow: write the brief, take the technique from the closest recipe (rhp_recipe), design the chart for its own subject, and look up props with rhp_reference instead of guessing. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`,
+      text: `Make this chart with rhp (@bezda/rhp): ${request}\n\nFirst call rhp_guide and follow its workflow: write the brief, take the technique from the closest recipe (rhp_recipe), design the chart for its own subject, and look up props with rhp_reference instead of guessing. Choose interaction behavior and presentation for the reader's task and intended design, keeping familiar patterns when they fit. After every edit, call rhp_check with the chart file's absolute path, fix what it reports and look at its screenshots, until it reports no errors and no warnings.`,
     },
   }],
 }));

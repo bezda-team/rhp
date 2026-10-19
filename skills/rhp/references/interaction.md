@@ -1,6 +1,6 @@
 # Interaction
 
-How to pick the one interaction that serves a chart's story when the user names none, and how to build any interaction a user asks for.
+How to choose interaction behavior and presentation for the reader's task, and how to build an interaction a user asks for.
 rhp keeps no interaction state: the app holds it in a signal, passes it to the Plot as data, and the slat shows it.
 
 Contents:
@@ -71,10 +71,14 @@ The page's CSS styles what sits around the chart (the poster, the readout, butto
 
 ## 1. Pick the interaction from the story
 
-When the user names an interaction, build exactly that, from the section that matches it.
-When they name none, find the chart's story here and add that one interaction.
+When the user names an interaction, preserve the behavior they requested and use the sections below for the techniques it needs.
+When they name none, decide what the reader should be able to inspect, compare or change, and what visible response helps them do it.
+The table offers working examples, not fixed pairings between stories, chart types and controls.
+Reuse reliable state and event handling, while choosing the controls, feedback, placement and transitions for this chart.
+The same selection state can drive an inline annotation, a comparison or a detail reveal; a separate readout band is only one way to present it.
+Keep a familiar pattern when it fits the task and design; difference alone is not a reason to change it.
 
-| The story | The interaction | Section | Recipes that have it |
+| The reader's task | Example interaction | Section | Recipes demonstrating the technique |
 |---|---|---|---|
 | compare items: which is bigger, by how much | readout of the slat under the pointer, finger or focus, with the fields the bars do not show | 2 | bar, column, pyramid, donut |
 | a ranking whose order depends on the measure | sort toggle | 3 | grouped-bars, bullet, dumbbell |

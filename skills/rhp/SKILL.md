@@ -35,7 +35,7 @@ Asked (must all be in the result):
 - ...
 Chosen (the user left these open):
 - form, environment and file, data, interaction, motion (CSS by default; JS for data that changes rapidly), size
-Design (from the subject; none of it the starting recipe's):
+Design (from the subject and the intended reading):
 - Idea: the subject's own shape, object or way of drawing this data, and how it helps the reading
 - Marks: how each mark is drawn to carry the idea
 - Composition: where the headline, the chart and the other parts sit, on a desktop and on a phone
@@ -97,9 +97,9 @@ Then open the closest recipe in `recipes/` and read it whole.
 
 **A recipe gives technique, not a design.**
 Every recipe is a complete, tested chart page, and its comment at the top says which part is which.
-Take its technique: how the Plots and blocks are composed, the scale, the helpers, the interaction handlers, the accessibility, the phone rules.
-Leave its design: its look, the order and place of its parts, its readout band and controls row, the way its marks are drawn, and its wording were made for another subject.
-A chart that keeps them is that recipe with new data, and a reader can tell.
+Take its technique: how the Plots and blocks are composed, the scale, the helpers, reliable state and event handling, the accessibility, the phone rules.
+Reconsider its design: its look, the order and place of its parts, its readout band and controls row, the way its marks are drawn, and its wording were made for another subject.
+Keep the choices that fit this chart, and adapt the rest to its subject and reader's task.
 When the story needs a slat no recipe has (a name, a bar, a sparkline and a target in one slat), combine the techniques of several recipes.
 
 For a bulk scatter collection, consider `ManyDots` instead of creating one slat per point.
@@ -185,10 +185,13 @@ Unless the request is plain (design.md section 9 says what a plain or a minimal 
 
 ### 5. Give it an interaction
 
-Unless the user said otherwise, the chart gets one interaction that serves its story, from [interaction.md](references/interaction.md): a readout on hover, focus and tap for comparing items, a sort or a switch between years for rankings, a crosshair for time, a toggle for series.
+Unless the user said otherwise, the chart gets one interaction that serves its story, using [interaction.md](references/interaction.md) for techniques and examples.
+Choose interaction behavior and presentation for the reader's task and the intended design.
+Familiar patterns are welcome when they fit.
+Recipe examples demonstrate working techniques; their controls, feedback, layout, and transitions are choices to reconsider.
 It works with a mouse, a finger and the keyboard, and nothing is shown only on hover.
-A readout follows a mouse or a pen as it moves; a tap, a click or the keyboard picks a slat, and a scroll never does (pick on `click`, never on `pointerdown`); between slats the pick stays; leaving the poster gives the pick back to the slat that has focus, or clears it.
-The example below does all of it.
+For a hover, focus and tap readout, the readout follows a mouse or a pen as it moves; a tap, a click or the keyboard picks a slat, and a scroll never does (pick on `click`, never on `pointerdown`); between slats the pick stays; leaving the poster gives the pick back to the slat that has focus, or clears it.
+The example below demonstrates that readout pattern.
 The hint for an interaction sits beside its control, in words that fit every device ("Tap or point at a fruit"), never in the source note.
 When the user asks for a "static" chart, an image-like chart or no interaction, add none.
 A chart with fixed data and no interaction gets `static=${true}` on its Chart: rhp draws it once and keeps no signals.
@@ -455,7 +458,7 @@ Read the ones the chart needs; each is self-contained.
 - [forms.md](references/forms.md): the subject's own form, which chart for which data and story, and which recipe has the technique.
 - [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, color, type, layout, annotation, charts inside an app, a style the user asks for.
 - [looks.md](references/looks.md): eight looks written out in full (tokens, fonts, texture, type), as examples of how a look is written, not a menu.
-- [interaction.md](references/interaction.md): which interaction for which story, with complete code for each.
+- [interaction.md](references/interaction.md): choosing interaction behavior and presentation for the reader's task, with complete implementation examples.
 - [download.md](references/download.md): the fit-to-screen and download icons for standalone HTML posters, with a complete PNG export block.
 - [performance.md](references/performance.md): measured optimizations for an expensive chart, preserving its slats, styling, state, and interactions.
 - [environments.md](references/environments.md): plain HTML, Solid, Astro, React, Next.js, Vue, Svelte and Angular, each verified, and the html template to JSX rules.
