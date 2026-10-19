@@ -7,12 +7,12 @@
 .earth{transform-origin:50% 50%;will-change:transform}
 .earth-motion-controls{display:flex;align-items:center;justify-content:flex-end;gap:18px;flex-wrap:wrap;margin-top:12px}
 .earth-motion-controls label{display:flex;align-items:center;gap:12px}
-.earth-speed-value{min-width:4ch;text-align:right;font-variant-numeric:tabular-nums}
+.earth-speed-value{width:5ch;flex:none;text-align:right;font-variant-numeric:tabular-nums}
 .earth-motion-controls input{width:170px;min-height:44px;accent-color:#f7c69f;cursor:pointer}
 .earth-motion-controls button{min-height:44px;padding:8px 15px;border:1px solid #a7b4a0;background:transparent;color:inherit;font:inherit;cursor:pointer;min-width:112px}
 .earth-motion-controls :is(button,a,input):focus-visible,.earth-experiment-navigation a:focus-visible{outline:2px solid #f7c69f;outline-offset:4px}
 .earth-motion-status:empty{display:none}
 .earth-motion-status{width:100%;text-align:right;color:#f7c69f}
-@media(max-width:760px){.earth-motion-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px}.earth-motion-controls label{grid-column:1/-1;display:grid;grid-template-columns:116px minmax(60px,1fr) 4ch;gap:8px}.earth-motion-controls .earth-rotation{grid-column:2/4}.earth-motion-controls input{width:100%;min-width:0}.earth-motion-controls button{grid-column:2;min-width:112px}.earth-motion-status{grid-column:1/-1}}
-@media(max-width:600px){.earth-experiment-navigation,.earth-experiment-caption,.earth-motion-controls{font-size:12px}.earth-experiment-navigation a{flex:1;padding:8px 10px;justify-content:center;text-align:center}.earth-motion-controls label{grid-template-columns:100px minmax(50px,1fr) 4ch}.earth-motion-controls button{min-width:96px;padding:8px 10px}}
+@media(max-width:760px){.earth-motion-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px}.earth-motion-controls label{grid-column:1/-1;display:grid;grid-template-columns:116px minmax(60px,1fr) 5ch;gap:8px}.earth-motion-controls .earth-rotation{grid-column:2/4}.earth-motion-controls input{width:100%;min-width:0}.earth-motion-controls button{grid-column:2;min-width:112px}.earth-motion-status{grid-column:1/-1}}
+@media(max-width:600px){.earth-experiment-navigation,.earth-experiment-caption,.earth-motion-controls{font-size:12px}.earth-experiment-navigation a{flex:1;padding:8px 10px;justify-content:center;text-align:center}.earth-motion-controls label{grid-template-columns:100px minmax(50px,1fr) 5ch}.earth-motion-controls button{min-width:96px;padding:8px 10px}}
 @media print{.earth-experiment-navigation,.earth-experiment-caption,.earth-motion-controls{display:none}}

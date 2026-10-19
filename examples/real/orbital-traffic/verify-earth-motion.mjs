@@ -9,6 +9,7 @@ fs.mkdirSync(output, { recursive: true });
 const base = 'http://127.0.0.1:4398/examples/real/orbital-traffic/';
 const files = ['orbital-retro-rotating-earth', 'orbital-retro-animated'];
 const results = [];
+const bands = JSON.parse(fs.readFileSync(new URL('./data.json', import.meta.url))).bands;
 const printedEarth = decode(fs.readFileSync(new URL('./assets/earth-print-night-motion.png', import.meta.url)));
 const rim = image => {
   let top = image.height;
@@ -88,6 +89,29 @@ for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
       assert.equal(await toggle.innerText(), 'Play Earth', 'Reduced motion starts paused');
       assert.equal(await page.locator('.readout > .legend').count(), 1, 'Legend occupies the readout name row');
       assert.equal(await page.locator('.readout-name').count(), 0, 'The name row is replaced');
+      const assertUnselected = async () => {
+        assert.equal(await page.locator('.legend [data-active="true"]').count(), 0, 'No legend category is highlighted without an active chart group');
+        assert.equal(await page.locator('.legend [aria-pressed="true"]').count(), 0, 'No legend category is pressed without a selection');
+        assert.equal(await page.locator('.object-row.lit,.object-row.quiet').count(), 0, 'All chart categories return to their normal appearance');
+        assert.deepEqual(await page.locator('.readout-number').allTextContents(), bands.map(band => band.total.toLocaleString('en-US')), 'The unselected readout shows each band total');
+        assert.deepEqual(await page.locator('.readout-share > span:first-child').allTextContents(), ['100.0%', '100.0%']);
+      };
+      await assertUnselected();
+      await page.locator('.legend [data-category="debris"]').hover();
+      assert.equal(await page.locator('.legend [data-active="true"]').innerText(), 'Debris', 'Legend hover follows the chart preview');
+      assert.ok(await page.locator('.object-row.debris.lit').count() > 0);
+      await page.mouse.move(0, 0);
+      await assertUnselected();
+      await page.locator('.legend [data-category="debris"]').click();
+      await page.mouse.move(0, 0);
+      await page.locator('.legend [data-category="debris"]').click();
+      await page.mouse.move(0, 0);
+      await assertUnselected();
+      const padding = await page.locator('.readout').evaluate(element => {
+        const style = getComputedStyle(element);
+        return [style.paddingTop, style.paddingBottom];
+      });
+      assert.equal(padding[0], padding[1], 'Readout top and bottom padding match');
       await page.locator('.legend [data-category="debris"]').click();
       await page.mouse.move(0, 0);
       const selected = await readout(page);

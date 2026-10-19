@@ -222,16 +222,18 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 .retro .guide-label{display:block;left:89%;font-size:11px;font-weight:400;letter-spacing:0;padding:2px 5px;color:var(--soft)}
 .retro .label-400{top:68.47%}
 .retro .label-800{top:36.27%}
-.retro .controls .readout{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;padding:14px 0 16px;min-height:0;text-align:center}
+.retro .controls .readout{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;padding:16px 0;min-height:0;text-align:center}
 .retro .readout-name{grid-column:1/-1;font-size:14px;line-height:1.5;margin:0;color:var(--selected-color)}
 .retro .controls .readout>.legend{grid-column:1/-1;margin:0 0 2px}
 .retro .readout .legend button[data-active="true"]{color:var(--legend-color);border-color:var(--legend-color);background:color-mix(in srgb,var(--legend-color) 12%,transparent)}
 .retro .readout-cell{display:grid;gap:6px;align-content:start}
+.retro .readout-cell:nth-last-child(2){padding-left:32px}
+.retro .readout-cell:last-child{padding-right:32px}
 .retro .readout .readout-band{margin:0;font-size:11px;line-height:1.5;min-height:17px}
 .retro .readout .readout-number{font-family:'Zen Dots',sans-serif;font-size:21px;line-height:1.3;font-weight:400}
 .retro .readout-share{font-size:11px;line-height:1.5;color:var(--soft)}
 @media(max-width:600px){
- .retro .controls .readout{gap:10px 16px;padding:12px 0 14px}.retro .readout-name{font-size:12px}.retro .readout-cell{gap:7px}.retro .readout .readout-band{font-size:9px;min-height:27px;display:flex;align-items:center;justify-content:center}.retro .readout .readout-number{font-size:17px}.retro .readout-share{font-size:9px}.retro .guide-label{font-size:9px;padding:2px 3px}
+ .retro .controls .readout{gap:10px 16px;padding:14px 0}.retro .readout-name{font-size:12px}.retro .readout-cell{gap:7px}.retro .readout-cell:nth-last-child(2){padding-left:8px}.retro .readout-cell:last-child{padding-right:8px}.retro .readout .readout-band{font-size:9px;min-height:3em;display:flex;align-items:center;justify-content:center}.retro .readout .readout-number{font-size:17px}.retro .readout-share{font-size:9px}.retro .guide-label{font-size:9px;padding:2px 3px}
 }
 
 .retro .stat .category,.retro .stat .altitude{color:#fff1d2}
@@ -476,16 +478,16 @@ function OrbitalPoster(){
    showDetails(key);
   }else dismissDetails();
  };
- const selected=()=>GROUPS.find(group=>group.id===(active()??'payload'));
- const result=band=>band.categories.find(group=>group.id===selected().id);
+ const selected=()=>GROUPS.find(group=>group.id===active());
+ const result=band=>selected()?band.categories.find(group=>group.id===selected().id):{count:band.total,percent:100};
  const earthArt=html`<div class="earth-glow"></div><img class="earth" src="__EARTH__" alt="" />`;
  const title=CONFIG.id==='retro'
   ?html`<span class="second">${CONFIG.line2}</span>${' '}<span>${CONFIG.line1}</span>`
   :html`<span>${CONFIG.line1}</span><span class="second">${CONFIG.line2}</span>`;
- const legend=()=>html`<div class="legend" role="group" aria-label="Highlight a category" aria-live="off"><${For} each=${GROUPS}>${group=>html`<button type="button" data-category=${group.id} data-active=${()=>selected().id===group.id} style=${{'--legend-color':`var(--${group.id})`}} aria-pressed=${()=>picked()===group.id}><img src=${ART[group.id]} alt="" /><span>${group.name}</span></button>`}<//></div>`;
+ const legend=()=>html`<div class="legend" role="group" aria-label="Highlight a category" aria-live="off"><${For} each=${GROUPS}>${group=>html`<button type="button" data-category=${group.id} data-active=${()=>active()===group.id} style=${{'--legend-color':`var(--${group.id})`}} aria-pressed=${()=>picked()===group.id}><img src=${ART[group.id]} alt="" /><span>${group.name}</span></button>`}<//></div>`;
  const controls=explain=>html`<div class="controls">${explain?html`   <p class="scene-caption">Image heights show representative altitudes. Each miniature ≈ 750 objects, rounded by category and band. Earth, hardware sizes and angular positions are illustrative. Hold over an image or tap for details.</p>`:""}
   ${CONFIG.id!=='retro'?legend():''}
-  <div class="readout" aria-live="polite" style=${()=>({'--selected-color':`var(--${selected().id})`})}>${CONFIG.id==='retro'?legend():html`<span class="readout-name">${()=>selected().name}</span>`}<${For} each=${BANDS}>${band=>html`<div class="readout-cell"><span class="readout-band">${band.name}</span><span class="readout-number">${()=>number(result(band).count)}</span><span class="readout-share"><span>${()=>percent(result(band).percent)}</span><span class="readout-base">of this band</span></span></div>`}<//></div>
+  <div class="readout" aria-live="polite" style=${()=>({'--selected-color':selected()?`var(--${selected().id})`:'var(--ink)'})}>${CONFIG.id==='retro'?legend():html`<span class="readout-name">${()=>selected()?.name??'All objects'}</span>`}<${For} each=${BANDS}>${band=>html`<div class="readout-cell"><span class="readout-band">${band.name}</span><span class="readout-number">${()=>number(result(band).count)}</span><span class="readout-share"><span>${()=>percent(result(band).percent)}</span><span class="readout-base">of this band</span></span></div>`}<//></div>
 </div>`;
  return html`<${Poster}
   kicker=${html`<span>What fills low Earth orbit?</span><span>Public catalogue · 18 Oct 2026</span>`}
