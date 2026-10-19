@@ -7,7 +7,7 @@
 .earth{transform-origin:50% 50%;will-change:transform}
 .earth-motion-controls{display:flex;align-items:center;justify-content:flex-end;gap:18px;flex-wrap:wrap;margin-top:12px}
 .earth-motion-controls label{display:flex;align-items:center;gap:12px}
-.earth-speed-value{width:5ch;flex:none;text-align:right;font-variant-numeric:tabular-nums}
+.earth-speed-value{width:5ch;flex:none;text-align:left;font-variant-numeric:tabular-nums}
 .earth-motion-controls input{width:170px;min-height:44px;accent-color:#f7c69f;cursor:pointer}
 .earth-motion-controls button{min-height:44px;padding:8px 15px;border:1px solid #a7b4a0;background:transparent;color:inherit;font:inherit;cursor:pointer;min-width:112px}
 .earth-motion-controls :is(button,a,input):focus-visible,.earth-experiment-navigation a:focus-visible{outline:2px solid #f7c69f;outline-offset:4px}
