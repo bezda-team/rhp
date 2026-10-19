@@ -241,7 +241,7 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 @media(max-width:600px){.retro .stat.upper .band-full{display:none}.retro .stat.upper .band-compact{display:inline}}
 .retro .readout-share{display:grid;justify-items:center;gap:2px}
 .retro .readout-base{font-size:.85em;line-height:1.5}
-/* On larger screens, reserve the full footer while its panel slides down to reveal the Earth. */
+/* Keep the full footer's space while its panel slides down to reveal the Earth. */
 .retro .orbital-scene{overflow:visible}
 .earth-art{position:absolute;inset:2px 2px calc(2px - var(--footer-height,0px));overflow:hidden;pointer-events:none}
 .earth-art .earth{top:calc(77.083% - var(--footer-height,0px) * .77083)}
@@ -264,14 +264,11 @@ body.retro{font-family:'Zen Dots',sans-serif;--payload:#d3e1c7;--debris:#f4b88c}
 .retro .footer-drawer:not(.is-expanded) .footer-body{visibility:hidden}
 @media(max-width:900px) and (min-width:601px){.retro .footer-stage{margin-right:-34px;margin-left:-34px;--footer-inline:34px}.retro .footer-summary{font-size:12px}.retro .footer-summary strong{font-size:14px}}
 @media(max-width:600px){
- .retro .footer-stage{margin:0 -21px -22px;padding-top:12cqw;--footer-inline:21px;--footer-bottom:22px}
- .retro .footer-drawer{transform:none;transition:none}
- .retro .footer-drawer:not(.is-expanded) .footer-body{display:none}
+ .retro .footer-stage{margin:0 -21px -22px;--footer-inline:21px;--footer-bottom:22px}
  .retro .footer-summary{font-size:10px;gap:8px;padding-top:10px;padding-bottom:10px}
  .retro .footer-summary strong{font-size:12px;line-height:1.7}
  .retro .footer-prompt{display:none}
- .retro .footer-summary svg{width:14px;height:14px;transform:rotate(180deg)}
- .retro .is-expanded .footer-summary svg{transform:none}
+ .retro .footer-summary svg{width:14px;height:14px}
  .retro .footer-body .note{font-size:10.5px;line-height:1.65}
  .retro .footer-body .footer-row{flex-direction:column;align-items:stretch;gap:4px}
  .retro .footer-body .credit{align-self:flex-end}

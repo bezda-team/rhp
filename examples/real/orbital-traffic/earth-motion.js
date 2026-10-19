@@ -1,6 +1,6 @@
 // Inlined by build-earth-motion.mjs into the two standalone experimental pages.
 const { mode, day, night } = EARTH_MOTION;
-const turnDuration = 300000;
+const turnDuration = 400000;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 function waitForEarth() {

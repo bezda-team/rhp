@@ -146,7 +146,7 @@ for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
       const normalSpeed = await measureSpeed(page);
       await setSpeed(page, 2);
       const doubleSpeed = await measureSpeed(page);
-      assert.ok(normalSpeed > .8 && doubleSpeed > normalSpeed * 1.6 && doubleSpeed < normalSpeed * 2.4, `The speed control changes the actual rotation rate: ${normalSpeed}, ${doubleSpeed}`);
+      assert.ok(Math.abs(normalSpeed - .9) < .2 && doubleSpeed > normalSpeed * 1.6 && doubleSpeed < normalSpeed * 2.4, `The speed control changes the actual rotation rate: ${normalSpeed}, ${doubleSpeed}`);
       await toggle.click();
       await setSpeed(page, 1);
       const paused = await angle(page);
@@ -219,10 +219,13 @@ for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
           assert.equal(await summary.getAttribute('aria-expanded'), 'false');
           assert.equal(await page.locator('.footer-prompt').isVisible(), false, 'Mobile expansion uses the caret without a text prompt');
           const compact = await page.locator('.poster').boundingBox();
+          const collapsedSummary = await summary.boundingBox();
           const boldSize = await page.locator('.footer-summary strong').evaluate(element => getComputedStyle(element).fontSize);
           await summary.click();
           const expanded = await page.locator('.poster').boundingBox();
-          assert.ok(expanded.height > compact.height, 'Mobile notes take space only when expanded');
+          const expandedSummary = await summary.boundingBox();
+          assert.equal(expanded.height, compact.height, 'Opening mobile notes preserves the poster height');
+          assert.ok(collapsedSummary.y - compact.y > expandedSummary.y - expanded.y + 20, 'Collapsing the mobile footer slides it down to reveal more Earth');
           assert.equal(await page.locator('.footer-summary strong').evaluate(element => getComputedStyle(element).fontSize), boldSize, 'The bold summary retains its size');
           const sourceRow = await page.locator('.footer-row > span:first-child').boundingBox();
           const creditRow = await page.locator('.footer-row .credit').boundingBox();

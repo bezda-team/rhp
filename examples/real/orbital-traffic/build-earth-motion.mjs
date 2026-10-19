@@ -10,8 +10,8 @@ const earth = encode('earth-print-night-motion.png', 'png');
 const day = encode('earth-painted-day.jpg', 'jpeg');
 const night = encode('earth-painted-night.jpg', 'jpeg');
 const variants = [
-  { mode: 'artwork', name: 'Rotating artwork', file: 'orbital-retro-rotating-earth.html', description: 'The Earth and its painted sunlight rotate together. One turn takes five minutes.' },
-  { mode: 'fixed', name: 'Fixed lighting', file: 'orbital-retro-fixed-light.html', description: 'The Earth turns beneath fixed sunlight. City lights appear on the night side. One turn takes five minutes.' },
+  { mode: 'artwork', name: 'Rotating artwork', file: 'orbital-retro-rotating-earth.html', description: 'The Earth and its painted sunlight rotate together. One turn takes 6 minutes 40 seconds at 1×.' },
+  { mode: 'fixed', name: 'Fixed lighting', file: 'orbital-retro-fixed-light.html', description: 'The Earth turns beneath fixed sunlight. City lights appear on the night side. One turn takes 6 minutes 40 seconds at 1×.' },
   { mode: 'fixed', name: 'Debris above. Spacecraft below.', file: 'orbital-retro-animated.html', production: true },
 ];
 for (const variant of variants) {
