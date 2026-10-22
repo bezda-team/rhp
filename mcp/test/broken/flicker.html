@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- The pick follows the bar under the mouse, and in the gap between two bars (each takes 64% of its slat) it clears: the readout goes back to its resting text between every two fruits. expect: flicker -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>flicker</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 16px; font: 16px/1.5 system-ui, sans-serif; background: #fff; color: #222; }
+  .poster { max-width: 640px; margin: 0 auto; }
+  .readout { height: 1lh; margin: 0 0 12px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Bananas", "Cherries", "Dates", "Figs"];
+const sold = [12, 18, 7, 9, 4];
+
+const Fruit = slat({ thickness: 40, room: { start: 90, end: 40 } }, (d) => html`
+  <div data-row=${() => d.index}>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} color=${() => (d.on ? "#1d4ed8" : "#64748b")} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const [on, setOn] = createSignal(null);
+// the row of the bar under the pointer, or none (between bars, on a name, beside the chart)
+const barOf = (el) => (el.closest(".rhp-bar") ? +el.closest("[data-row]").dataset.row : null);
+
+render(() => html`
+  <figure class="poster" onPointerMove=${(e) => setOn(barOf(e.target))} onPointerLeave=${() => setOn(null)}>
+    <p class="readout">${() => (on() == null ? "Point at a fruit." : `${fruit[on()]}: ${sold[on()]} crates`)}</p>
+    <${Chart} scale=${[0, 20]} label="Crates of fruit sold">
+      <${Plot} fruit=${fruit} sold=${sold} on=${(d) => on() === d.index}>${Fruit}<//>
+    <//>
+  </figure>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

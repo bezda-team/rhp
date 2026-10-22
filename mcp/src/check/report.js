@@ -44,6 +44,7 @@ export function report(r) {
     list.forEach((f, i) => {
       lines.push(`${i + 1}. [${f.code}] ${f.message}${widthsOf(f)}`);
       if (f.fix) lines.push(`   Fix: ${f.fix}`);
+      if (f.see) lines.push(`   See: ${f.see}`);
     });
   };
 

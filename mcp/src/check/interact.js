@@ -94,9 +94,21 @@ export async function interact(page, { events, capture, shoot, taps = false }) {
       window.__rhpProbe.record(keep);
     }, {keep:texts,view});
     if (!error) await attempt(act);
+    // a control that sets the page moving (Play) is read as it moves too: a text that jitters while the values run
+    // may be back in place at the end
+    const passing = [];
+    for (let k = 0; !lit && !error && k < 5; k++) {
+      await page.waitForTimeout(200);
+      passing.push(...(await page.evaluate((n) => window.__rhpProbe.moved(n, false), used).catch(() => [])).filter((m) => m.text));
+    }
     await page.evaluate(() => window.__rhpProbe.settle(1500)).catch(() => {});
     const seen = await page.evaluate(() => window.__rhpProbe.stop()).catch(() => null);
     const moved = await page.evaluate(([n, l]) => window.__rhpProbe.moved(n, l), [used, lit]).catch(() => []);
+    for (const m of passing) {
+      const was = moved.find((x) => x.what === m.what);
+      if (!was) moved.push(m);
+      else if (Math.abs(m.dx) + Math.abs(m.dy) > Math.abs(was.dx) + Math.abs(was.dy)) Object.assign(was, m);
+    }
     // a value a slat read once, and that this interaction changed, is shown stale (the guard reads them again)
     await page.evaluate(() => globalThis.__rhpCheck?.recheck?.()).catch(() => {});
     const thrown = events.slice(before).filter((e) => e.kind === "pageerror" || e.kind === "console-error");

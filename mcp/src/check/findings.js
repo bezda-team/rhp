@@ -9,6 +9,59 @@ const DOING = { hover: "pointing at", tap: "tapping", click: "clicking", input: 
 // How far something moved: "88px down", "12px right"
 const shift = ({ dx, dy }) => [dy && `${Math.abs(dy)}px ${dy > 0 ? "down" : "up"}`, dx && `${Math.abs(dx)}px ${dx > 0 ? "right" : "left"}`].filter(Boolean).join(" and ");
 
+// How a box changed size: "grows 18px taller", "shrinks 6px narrower"
+const grows = ({ dw, dh }) => [dh && `${dh > 0 ? "grows" : "shrinks"} ${Math.abs(dh)}px ${dh > 0 ? "taller" : "shorter"}`, dw && `${dw > 0 ? "grows" : "shrinks"} ${Math.abs(dw)}px ${dw > 0 ? "wider" : "narrower"}`].filter(Boolean).join(" and ");
+
+// The section of the skill's references that explains a finding's fix, for an agent whose fix did not hold: the
+// report names it ("See: ..."), so the agent reads that section, not the whole file
+const PITFALLS = (title) => `pitfalls.md, "${title}"`;
+export const SEE = {
+  "two-solids": PITFALLS("Mistakes that come from other libraries"),
+  "cdn-version": PITFALLS("Mistakes that come from other libraries"),
+  "no-chart": PITFALLS("Nothing draws, or the chart is empty"),
+  "empty-plot": PITFALLS("Nothing draws, or the chart is empty"),
+  "missing-import-map": PITFALLS("Nothing draws, or the chart is empty"),
+  "plain-script-tag": PITFALLS("Nothing draws, or the chart is empty"),
+  "missing-export": PITFALLS("Nothing draws, or the chart is empty"),
+  "bad-scale": PITFALLS("Bars, dots or labels in the wrong place"),
+  "value-past-scale": PITFALLS("Bars, dots or labels in the wrong place"),
+  "points-past-scale": PITFALLS("Bars, dots or labels in the wrong place"),
+  "nan-value": PITFALLS("Bars, dots or labels in the wrong place"),
+  "dot-size": PITFALLS("Bars, dots or labels in the wrong place"),
+  "sticks-out": PITFALLS("Text sticks out, is cut off or overlaps"),
+  "text-cut-off": PITFALLS("Text sticks out, is cut off or overlaps"),
+  "text-overlap": PITFALLS("Text sticks out, is cut off or overlaps"),
+  "text-outside-poster": PITFALLS("Text sticks out, is cut off or overlaps"),
+  "page-scrolls-sideways": PITFALLS("Text sticks out, is cut off or overlaps"),
+  "tiny-text": PITFALLS("Text sticks out, is cut off or overlaps"),
+  "small-plot": PITFALLS("The chart is tiny, squashed or the wrong size"),
+  "collapsed-chart": PITFALLS("The chart is tiny, squashed or the wrong size"),
+  "cramped": PITFALLS("The chart is tiny, squashed or the wrong size"),
+  "plot-outside-chart": PITFALLS("The chart is tiny, squashed or the wrong size"),
+  "stale-read": PITFALLS("Values never update, or the chart jumps"),
+  "static-chart": PITFALLS("Values never update, or the chart jumps"),
+  "style-string": PITFALLS("Values never update, or the chart jumps"),
+  "block-transition": PITFALLS("Values never update, or the chart jumps"),
+  "bare-boolean": PITFALLS("A click, hover, tap or key does nothing, or the wrong thing"),
+  "handler-at-render": PITFALLS("A click, hover, tap or key does nothing, or the wrong thing"),
+  "flicker": 'interaction.md, "2. Readout on hover, focus and tap"',
+  "selection-reset": 'interaction.md, "2. Readout on hover, focus and tap"',
+  "selection-hover-stays": 'interaction.md, "2. Readout on hover, focus and tap"',
+  "selection-control-reset": 'interaction.md, "2. Readout on hover, focus and tap"',
+  "layout-jump": PITFALLS("The layout jumps when the reader interacts"),
+  "text-shift": PITFALLS("The layout jumps when the reader interacts"),
+  "out-of-view": 'interaction.md, "2. Readout on hover, focus and tap"',
+  "scrolls-away": 'interaction.md, "2. Readout on hover, focus and tap"',
+  "focus-invisible": 'interaction.md, "9. Keyboard"',
+  "page-css-ignored": PITFALLS("Styles or colors do not apply"),
+  "series-past-theme": PITFALLS("Styles or colors do not apply"),
+  "class-name": PITFALLS("Styles or colors do not apply"),
+  "low-contrast": 'design.md, "4. Color"',
+  "faint-marks": 'design.md, "4. Color"',
+  "colorblind": 'design.md, "4. Color"',
+  "rhp-warning": PITFALLS("Console warnings rhp prints"),
+};
+
 // A finding from what measure() saw in the page
 export function fromProbe(f, context) {
 
@@ -173,7 +226,7 @@ export function fromProbe(f, context) {
         fix: "Give it visible text, an aria-label (aria-label=\"Play\" on an icon button), or a <label> around an input or a select.",
       };
     case "layout-jump": {
-      const list = f.moved.slice(0, 3).map((m) => `${m.what} moves ${shift(m)}`).join(", ");
+      const list = f.moved.slice(0, 3).map((m) => (m.box ? `${m.what} ${grows(m)}` : `${m.what} moves ${shift(m)}`)).join(", ");
       const plot = f.moved.some((m) => m.plot);
       return {
         level: "warning",
@@ -181,7 +234,32 @@ export function fromProbe(f, context) {
         message: `The layout jumps when ${DOING[f.kind] ?? f.kind} ${f.target}: ${list}${f.moved.length > 3 ? ` and ${f.moved.length - 3} more` : ""}${f.more ? ` (${f.more} more interaction${f.more > 1 ? "s do" : " does"} the same)` : ""}, so what the reader goes to next is no longer where it was.`,
         fix: plot
           ? "Keep the plot still while a slat is lit: a lit name that gets wider (bolder, larger) makes room: \"auto\" measure the names again, so keep the names' weight and size and change only their color, or give the room in px (room: { start: 140 })."
-          : "Keep what the interaction changes in a box that keeps its size: a readout or a headline on one line (white-space: nowrap; overflow: hidden; text-overflow: ellipsis) or with a min-height for its longest text, and buttons that keep their width when their label or weight changes.",
+          : "Keep what the interaction changes in a box that keeps its size: a readout or a headline on one line (white-space: nowrap; overflow: hidden; text-overflow: ellipsis) or with a min-height for its longest text, a readout's card or a legend's panel with a fixed width or a min-width and min-height for its longest content, and buttons that keep their width when their label or weight changes.",
+      };
+    }
+    case "text-shift": {
+      const list = f.moved.slice(0, 3).map((m) => `${m.what} moves ${shift(m)}`).join(", ");
+      return {
+        level: "warning",
+        code: f.code,
+        message: `Text that says the same thing moves when ${DOING[f.kind] ?? f.kind} ${f.target}: ${list}${f.moved.length > 3 ? ` and ${f.moved.length - 3} more` : ""}${f.more ? ` (${f.more} more interaction${f.more > 1 ? "s" : ""} or pick${f.more > 1 ? "s" : ""} move text too)` : ""}. Labels and values that slide as the numbers change make the reader lose their place.`,
+        fix: "Give what changes a place that keeps its size, so the text around it stays put: numbers in tabular figures (font-variant-numeric: tabular-nums) in a column of their own or with a min-width in ch, right-aligned; a label in its own column (a grid), not after a value on the same line; a readout's lines in a fixed order; and a min-height for the readout's longest text.",
+      };
+    }
+    case "flicker":
+      return {
+        level: "warning",
+        code: f.code,
+        message: `Moving the mouse from ${f.from} to ${f.to}, ${f.readout ? "the readout goes back to what it shows at rest" : "the lit slat goes back to how it looks at rest"} for a moment between them${f.more ? ` (and between ${f.more} more pair${f.more > 1 ? "s" : ""} of neighbors)` : ""}: it flickers as the reader moves along the chart.`,
+        fix: "Keep the pick while the pointer is between slats: change it only when the pointer reaches another slat (on a pointer move over no slat, keep the pick), and clear it only when the pointer leaves the chart or the poster, as the readout example in SKILL.md does.",
+      };
+    case "scrolls-away": {
+      const parts = [f.controls.length && `its controls (${f.controls.join(", ")})`, f.readout && `its readout ("${f.readout}")`].filter(Boolean);
+      return {
+        level: "info",
+        code: f.code,
+        message: `With the middle of the chart in the middle of the ${f.phone ? "phone's screen" : "window"}, ${parts.join(" and ")} ${parts.length > 1 || f.controls.length ? "are" : "is"} scrolled out of view: a reader going through the chart has to scroll back to ${f.controls.length ? "use them" : "read it"}.`,
+        fix: "Consider keeping them in view as the reader scrolls (often better, not always): position: sticky; top: env(safe-area-inset-top, 0px) on the row that holds them, with a background and a z-index over the plot's 1, compact on a phone (one line, the readout under the controls), and scroll-margin-top on the slats so a picked slat is never under it. Leave them where they are when the design needs it.",
       };
     }
     case "out-of-view":

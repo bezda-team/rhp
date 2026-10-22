@@ -1188,7 +1188,55 @@ export function install() {
       while (a.parentElement && a.parentElement !== document.body && a.parentElement !== document.documentElement) a = a.parentElement;
       return a;
     }))].map((el) => ({ el, end: el.getBoundingClientRect().bottom + scrollY }));
+    // the texts around the charts, each placed in the box it floats in (see words), and the boxes with a background or
+    // a border around them that hold no chart (a readout's card, a legend's panel), with their size
+    words = [];
+    boxes = [];
+    for (const { el: root } of sections) {
+      for (const el of [root, ...root.querySelectorAll("*")]) {
+        if (words.length >= 600) break;
+        if (el.closest(".rhp-chart") || el.closest(CONTROLS) || !visible(el) || (viewRoot && !viewRoot.contains(el))) continue;
+        const text = ownText(el);
+        if (text && el.getBoundingClientRect().width > 0) {
+          const frame = frameOf(el);
+          words.push({ ...within(el, frame), text, frame });
+        }
+        if (boxes.length < 60 && framed(el) && !el.querySelector(".rhp-chart") && !/fixed|absolute/.test(getComputedStyle(el).position)) {
+          const r = el.getBoundingClientRect();
+          const scale = scaleOf(el);
+          if (r.width >= 24 && r.height >= 16 && el.textContent.trim()) boxes.push({ el, w: r.width / scale, h: r.height / scale, name: snippet(seenText(el)) });
+        }
+      }
+    }
   }
+
+  // A text is placed in the box it floats in when it floats (fixed, sticky or absolute: a readout pinned to the
+  // window, a tooltip that follows the pointer), else on the page: the box may move as a whole, and only a move inside
+  // it counts. Its own text is its text nodes', not its children's, so a label beside a value that changed keeps its own.
+  let words = [];
+  let boxes = [];
+  const frameOf = (el) => {
+    for (let a = el; a && a.nodeType === 1 && a !== document.body; a = a.parentElement) {
+      if (/fixed|sticky|absolute/.test(getComputedStyle(a).position)) return a;
+    }
+    return null;
+  };
+  const ownText = (el) => [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.data).join(" ").replace(/\s+/g, " ").trim();
+  const scaleOf = (el) => (viewRoot?.contains(el) ? viewRoot.getBoundingClientRect().width / viewRoot.offsetWidth : 1);
+  const within = (el, frame) => {
+    if (!frame) return at(el);
+    const r = el.getBoundingClientRect();
+    const f = frame.getBoundingClientRect();
+    const scale = scaleOf(el);
+    return { el, x: (r.left - f.left) / scale, y: (r.top - f.top) / scale };
+  };
+  // a box the reader sees the edges of: a background, a border or a shadow
+  const framed = (el) => {
+    const s = getComputedStyle(el);
+    const paint = (c) => c && c !== "transparent" && !/rgba\([^)]*,\s*0(\.0+)?\)$/.test(c);
+    const border = ["Top", "Right", "Bottom", "Left"].some((side) => parseFloat(s[`border${side}Width`]) >= 1 && paint(s[`border${side}Color`]) && s[`border${side}Style`] !== "none");
+    return paint(s.backgroundColor) || border || s.boxShadow !== "none";
+  };
 
   function moved(n, lit = false) {
 
@@ -1225,6 +1273,28 @@ export function install() {
     for (const { el, end } of lit ? sections : []) {
       const grew = Math.round(el.getBoundingClientRect().bottom + scrollY - end);
       if (el.isConnected && far(grew)) out.push({ what: "the end of the chart's section", dx: 0, dy: grew });
+    }
+    // lighting a slat leaves a readout's card or a legend's panel its size: one that grows or shrinks with what it says
+    // shows its edges jumping
+    for (const b of lit ? boxes : []) {
+      if (!b.el.isConnected || !visible(b.el)) continue;
+      const r = b.el.getBoundingClientRect();
+      const scale = scaleOf(b.el);
+      const dw = Math.round(r.width / scale - b.w);
+      const dh = Math.round(r.height / scale - b.h);
+      if (far(dw) || far(dh)) out.push({ what: b.name ? `the box of "${b.name}"` : "a box", dx: 0, dy: 0, dw, dh, box: true });
+    }
+    // a text that still says the same thing stays where it was in its box: one that moves because a value beside it got
+    // wider, or because a line above it wrapped, makes the reader lose their place (text-shift)
+    for (const w of words) {
+      if (!w.el.isConnected || !visible(w.el) || ownText(w.el) !== w.text || frameOf(w.el) !== w.frame) continue;
+      const now = within(w.el, w.frame);
+      const dx = Math.round(now.x - w.x);
+      const dy = Math.round(now.y - w.y);
+      // (a phrase of three words or more that only slides along its line, after a name or a value that changed, is a
+      // sentence that reads on: "4.1% of people on Earth speak Hindi". A label of a word or two that slides is not)
+      if (!far(dy) && (w.text.match(/[\p{L}\p{N}]+/gu) ?? []).length >= 3) continue;
+      if (far(dx) || far(dy)) out.push({ what: `"${snippet(w.text)}"`, dx, dy, text: true });
     }
 
     return out;
@@ -1340,5 +1410,96 @@ export function install() {
     return { what: focusName(el), clip: box };
   }
 
-  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, sweepTargets, breakpoints, pointAt, place, moved, record, stop, unseen, focused, focusStop };
+  // Three pairs of neighboring slats of the main Plot (the first two, two in the middle, the last two), for glide() in
+  // index.js
+  function neighbors() {
+
+    const slats = mainSlats();
+    if (slats.length < 3) return [];
+    const list = (window.__rhpTargets ??= []);
+    const one = (i) => ({ index: i + 1, of: slats.length, name: snippet([...slats[i].querySelectorAll(".rhp-label")].map(seenText).find((x) => x) ?? ""), target: list.push(slats[i]) - 1 });
+
+    return [...new Set([0, Math.floor((slats.length - 1) / 2), slats.length - 2])].map((i) => [one(i), one(i + 1)]);
+  }
+
+  // The middle of a slat's largest mark (a target), in the window: where its own pick shows, for the glide. A slat with
+  // marks of its own (a box and its outlier dots) may show several things; its largest mark shows the slat's own.
+  function markCenter(n, scroll = true) {
+
+    const slat = window.__rhpTargets[n];
+    if (scroll) slat.scrollIntoView({ block: "center", inline: "center", behavior: "instant" });
+    const area = (r) => r.width * r.height;
+    const mark = [...slat.querySelectorAll(MARKS)].filter(visible).map((m) => m.getBoundingClientRect()).filter((r) => area(r) > 0).sort((a, b) => area(b) - area(a))[0];
+    if (!mark) return null;
+
+    return { x: mark.left + mark.width / 2, y: mark.top + mark.height / 2 };
+  }
+
+  // What the reader sees of a pick, as two short hashes: the page's visible text, and how the main Plot's slats are
+  // drawn (the classes and inline styles of everything in them)
+  function state() {
+
+    const hash = (s) => {
+      let h = 5381;
+      for (let i = 0; i < s.length; i++) {
+        h = (h * 33 + s.charCodeAt(i)) | 0;
+      }
+      return h;
+    };
+    const look = mainSlats().map((s) => [s, ...s.querySelectorAll("*")].map((e) => (e.getAttribute("class") ?? "") + (e.getAttribute("style") ?? "")).join("")).join("|");
+
+    return { text: hash(document.body.innerText), look: hash(look) };
+  }
+
+  // The elements around the charts whose text a pick changes (the readout), noted while the sweep picks every slat
+  let watcher = null;
+  const readout = new Set();
+  function watch(on) {
+
+    watcher?.disconnect();
+    watcher = null;
+    if (!on) return readout.size;
+    watcher = new MutationObserver((list) => {
+      for (const m of list) {
+        const el = m.type === "characterData" ? m.target.parentElement : m.target;
+        if (el?.nodeType === 1 && el !== document.body && !el.closest(".rhp-chart")) readout.add(el);
+      }
+    });
+    watcher.observe(document.body, { subtree: true, childList: true, characterData: true });
+    return 0;
+  }
+
+  // While the main chart is taller than three quarters of the window (height: a phone's is shorter than the page's),
+  // scrolled so that its middle is in the middle of the window: its controls (in its section, outside its slats, not
+  // the poster's fit and download icons) and its readout (what the sweep's picks wrote), when all of them are out of
+  // view. null when they are in view, or there are none.
+  function scrollsAway(height = innerHeight) {
+
+    const area = (el) => el.getBoundingClientRect().width * el.getBoundingClientRect().height;
+    const chart = all().filter((c) => visible(c) && !c.parentElement?.closest(".rhp-chart")).sort((a, b) => area(b) - area(a))[0];
+    if (!chart || chart.getBoundingClientRect().height < height * 0.75) return null;
+    let section = chart;
+    while (section.parentElement && section.parentElement !== document.body && section.parentElement !== document.documentElement) section = section.parentElement;
+    const utility = /\b(fit|download|save|export|png|svg|share|print|full ?screen|restore|enlarge|shrink)\b/i;
+    const controls = [...section.querySelectorAll(CONTROLS)].filter((el) => visible(el) && !el.closest(".rhp-chart") && el.getBoundingClientRect().width > 0 && !utility.test(nameOf(el) || el.textContent));
+    const said = [...readout].filter((el) => el.isConnected && visible(el) && section.contains(el) && seenText(el));
+    if (!controls.length && !said.length) return null;
+
+    const y = scrollY;
+    const r = chart.getBoundingClientRect();
+    scrollTo({ left: scrollX, top: scrollY + r.top + r.height / 2 - height / 2, behavior: "instant" });
+    const inView = (el) => {
+      const b = el.getBoundingClientRect();
+      return b.width * b.height > 0 && b.bottom > 0 && b.top < height && b.right > 0 && b.left < innerWidth;
+    };
+    const out = {
+      controls: controls.some(inView) ? [] : controls.slice(0, 3).map((el) => focusName(el)),
+      readout: said.length && !said.some(inView) ? snippet(seenText(said[0])) : null,
+    };
+    scrollTo({ left: scrollX, top: y, behavior: "instant" });
+
+    return out.controls.length || out.readout ? out : null;
+  }
+
+  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, sweepTargets, breakpoints, pointAt, place, moved, record, stop, unseen, focused, focusStop, neighbors, markCenter, state, watch, scrollsAway };
 }

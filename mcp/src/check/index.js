@@ -39,7 +39,7 @@ import { pathToFileURL, fileURLToPath } from "url";
 import { detectFormat, bundle, guardedStandalone, htmlProblems, packages, contentType } from "./build.js";
 import { launch, NO_BROWSER_FIX } from "./browser.js";
 import { install } from "./inpage.js";
-import { fromProbe, fixForError, placeOf } from "./findings.js";
+import { fromProbe, fixForError, placeOf, SEE } from "./findings.js";
 import { textContrast, faintMarks, colorBlind } from "./colors.js";
 import { decode } from "./png.js";
 import { interact as interactionPass } from "./interact.js";
@@ -100,7 +100,10 @@ async function sweep(page, touch, events) {
   const slats = await page.evaluate(() => window.__rhpProbe.sweepTargets());
   const jumps = [];
   if (!touch) await page.mouse.move(0, 0);
-  await page.evaluate(() => window.__rhpProbe.place());
+  await page.evaluate(() => {
+    window.__rhpProbe.place();
+    window.__rhpProbe.watch(true);
+  });
   for (const s of slats) {
     // (a slat that something covers has no point: pointing there would pick what covers it)
     const point = await page.evaluate((n) => window.__rhpProbe.pointAt(n), s.target).catch(() => null);
@@ -120,8 +123,56 @@ async function sweep(page, touch, events) {
     const moved = await page.evaluate((n) => window.__rhpProbe.moved(n, true), s.target).catch(() => []);
     if (moved.length) jumps.push({ target: name, moved });
   }
+  await page.evaluate(() => window.__rhpProbe.watch(false)).catch(() => {});
   if (!touch) await page.mouse.move(0, 0);
   return { slats: slats.length, jumps };
+}
+
+// Moves the mouse from a slat to its neighbor in small steps (three pairs of the main Plot: the first, the middle and
+// the last), on a page at rest with reduced motion asked for, and notes each pair where the page, between two slats
+// that each show something, goes back for a moment to what it shows with the pointer away: the readout, or the lit
+// slat, flickers in the gap.
+async function glide(page, events) {
+
+  const start = events.length;
+  const pairs = await page.evaluate(() => window.__rhpProbe.neighbors()).catch(() => []);
+  if (!pairs.length) return [];
+  const frame = () => page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+  const state = () => page.evaluate(() => window.__rhpProbe.state());
+  const name = (s) => `slat ${s.index} of ${s.of}${s.name ? ` (${s.name})` : ""}`;
+  const out = [];
+  try {
+    await page.mouse.move(0, 0);
+    await frame();
+    const rest = await state();
+    for (const [a, b] of pairs) {
+      // (from the middle of one slat's largest mark to the middle of the next one's: what each slat shows of its own)
+      const p = await page.evaluate((n) => window.__rhpProbe.markCenter(n), a.target).catch(() => null);
+      const q = await page.evaluate((n) => window.__rhpProbe.markCenter(n, false), b.target).catch(() => null);
+      if (![p?.x, p?.y, q?.x, q?.y].every(Number.isFinite)) continue;
+      await page.mouse.move(p.x, p.y);
+      await frame();
+      const from = await state();
+      const seen = [];
+      for (let k = 1; k <= 12; k++) {
+        await page.mouse.move(p.x + ((q.x - p.x) * k) / 12, p.y + ((q.y - p.y) * k) / 12);
+        await frame();
+        seen.push(await state());
+      }
+      const to = seen.at(-1);
+      // The text, or the look of the slats, blinks when both slats show something other than the rest in it, and a
+      // step between them shows the rest (a slat the page lights at rest shows the rest of its own, and does not blink)
+      const blinks = (key) => from[key] !== rest[key] && to[key] !== rest[key] && seen.slice(0, -1).some((s) => s[key] === rest[key]);
+      const readout = blinks("text");
+      if (readout || blinks("look")) out.push({ from: name(a), to: name(b), readout });
+    }
+  } finally {
+    await page.mouse.move(0, 0).catch(() => {});
+    for (const e of events.slice(start)) {
+      if (e.kind === "pageerror" || e.kind === "console-error") e.during ??= "moving the mouse from a slat to its neighbor";
+    }
+  }
+  return out;
 }
 
 export async function check(options = {}) {
@@ -374,8 +425,17 @@ export async function check(options = {}) {
       // Every slat picked in turn, here and at the page's own breakpoints between this width and the next narrower
       // one checked (a page of its own at each), where a layout that only fits at the widths checked jumps
       const swept = [];
+      let flicker = [];
+      let away = null;
       if (wantInteract) {
         swept.push({ width, ...(await sweep(page, phone, events)) });
+        // what a reader scrolling through a tall chart loses sight of, and (with a mouse) a readout that flickers between slats
+        const scrolled = events.length;
+        away = await page.evaluate((h) => window.__rhpProbe.scrollsAway(h), phone ? PHONE_WINDOW : 900).catch(() => null);
+        for (const e of events.slice(scrolled)) {
+          if (e.kind === "pageerror" || e.kind === "console-error") e.during ??= "scrolling through the chart";
+        }
+        if (!phone && i === 0) flicker = await glide(page, events);
         const next = [...widths].sort((a, b) => b - a).find((w) => w < width);
         const between = next == null ? [] : (await page.evaluate(() => window.__rhpProbe.breakpoints())).filter((b) => b < width && b > next && !widths.includes(b));
         for (const b of between.slice(0, MAX_BREAKPOINTS)) {
@@ -427,7 +487,7 @@ export async function check(options = {}) {
         guarded.push(...(await fresh.evaluate(() => globalThis.__rhpCheck?.findings ?? []).catch(() => [])));
       }
 
-      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, selection, swept, ms: Math.round(performance.now() - w0) });
+      results.push({ width, index: i, seen, events, guarded, colorFindings, interactions: interactions.map((x) => ({ width, ...x })), unfocused, selection, swept, flicker, away, ms: Math.round(performance.now() - w0) });
       } catch (error) {
         if (error.code !== "page-unsettled") throw error;
         findings.push({ level: "error", code: error.code, message: error.message, fix: "Let finite entry animations finish, honor prefers-reduced-motion for live updates, or increase the check's settleTimeout for a slow machine.", width });
@@ -493,23 +553,49 @@ export async function check(options = {}) {
       findings.push({ ...f, width: r.width });
     }
 
-    // the layout jumping when an interaction runs: the same things moving for several interactions is one finding
+    // the layout jumping when an interaction runs: the same things moving for several interactions is one finding.
+    // Texts that moved with what jumped (by the same amount) are that jump; the others are one text-shift finding for
+    // the width, with each text at the most it moved.
     const jumps = new Map();
+    const shifted = new Map();
+    let shifts = null;
+    const add = (kind, target, moved) => {
+      const other = moved.filter((m) => !m.text);
+      const texts = moved.filter((m) => m.text && !other.some((o) => Math.abs(o.dx - m.dx) <= 1 && Math.abs(o.dy - m.dy) <= 1));
+      if (other.length) {
+        const key = other.map((m) => m.what).join("\n");
+        if (jumps.has(key)) jumps.get(key).more++;
+        else jumps.set(key, { code: "layout-jump", kind, target, moved: other, more: 0 });
+      }
+      if (!texts.length) return;
+      if (shifts) shifts.more++;
+      else shifts = { code: "text-shift", kind, target, more: 0 };
+      for (const m of texts) {
+        const was = shifted.get(m.what);
+        if (!was || Math.abs(m.dx) + Math.abs(m.dy) > Math.abs(was.dx) + Math.abs(was.dy)) shifted.set(m.what, m);
+      }
+    };
     for (const x of r.interactions.filter((x) => x.moved?.length)) {
-      const key = x.moved.map((m) => m.what).join("\n");
-      if (jumps.has(key)) jumps.get(key).more++;
-      else jumps.set(key, { code: "layout-jump", kind: x.kind, target: x.target, moved: x.moved, more: 0 });
+      add(x.kind, x.target, x.moved);
     }
     for (const sw of r.swept) {
       for (const j of sw.jumps) {
-        const key = j.moved.map((m) => m.what).join("\n");
-        if (jumps.has(key)) jumps.get(key).more++;
-        else jumps.set(key, { code: "layout-jump", kind: "pick", target: sw.breakpoint ? `${j.target} at ${sw.width}px, beside one of the page's own breakpoints` : j.target, moved: j.moved, more: 0 });
+        add("pick", sw.breakpoint ? `${j.target} at ${sw.width}px, beside one of the page's own breakpoints` : j.target, j.moved);
       }
     }
     for (const j of jumps.values()) {
       findings.push({ ...fromProbe(j, {}), width: r.width });
     }
+    if (shifts) {
+      const moved = [...shifted.values()].sort((a, b) => Math.abs(b.dx) + Math.abs(b.dy) - Math.abs(a.dx) - Math.abs(a.dy));
+      findings.push({ ...fromProbe({ ...shifts, moved }, {}), width: r.width });
+    }
+
+    // a readout or a lit slat that goes back to how it is at rest between two slats, as the mouse goes from one to the next
+    if (r.flicker.length) findings.push({ ...fromProbe({ code: "flicker", ...r.flicker[0], more: r.flicker.length - 1 }, {}), width: r.width });
+
+    // the controls or the readout out of view while the reader is in the middle of a tall chart
+    if (r.away) findings.push({ ...fromProbe({ code: "scrolls-away", ...r.away, phone: r.width <= PHONE }, {}), width: r.width });
 
     // taps whose every change of text lies outside the window: one finding, on the last of them (the furthest slat)
     const unseen = r.interactions.filter((x) => x.unseen);
@@ -544,7 +630,7 @@ function finish({ findings, started, timings, ...rest }) {
       if (f.width != null && !had.widths.includes(f.width)) had.widths.push(f.width);
       continue;
     }
-    merged.set(key, { level: f.level, code: f.code, message: f.message, fix: f.fix, width: f.width ?? null, widths: f.width != null ? [f.width] : [] });
+    merged.set(key, { level: f.level, code: f.code, message: f.message, fix: f.fix, see: SEE[f.code] ?? null, width: f.width ?? null, widths: f.width != null ? [f.width] : [] });
   }
 
   const list = [...merged.values()].sort((a, b) => LEVELS[a.level] - LEVELS[b.level]);

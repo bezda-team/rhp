@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- A readout card under the chart that shrinks to its text: its background and border grow and shrink with each fruit's sentence, though nothing after it moves. expect: layout-jump -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>layout-jump-box</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 16px; font: 16px/1.5 system-ui, sans-serif; background: #fff; color: #222; }
+  .poster { max-width: 640px; margin: 0 auto; }
+  .card { display: inline-block; height: 1lh; margin-top: 12px; padding: 6px 10px; border: 1px solid #94a3b8; border-radius: 6px; background: #f1f5f9; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+const fruit = ["Apples", "Elderberries", "Figs", "Watermelons"];
+const sold = [12, 18, 7, 9];
+
+const Fruit = slat({ thickness: 36, room: { start: 110, end: 40 } }, (d) => html`
+  <div data-row=${() => d.index}>
+    <${Label} edge="start">${() => d.fruit}<//>
+    <${Bar} to=${() => d.sold} color=${() => (d.on ? "#1d4ed8" : "#64748b")} />
+    <${Label} at=${() => d.sold}>${() => d.sold}<//>
+  </div>`);
+
+const [on, setOn] = createSignal(0);
+const pick = (e) => {
+  const root = e.target.closest("[data-row]");
+  if (root) setOn(+root.dataset.row);
+};
+
+render(() => html`
+  <figure class="poster" onPointerMove=${pick} onClick=${pick}>
+    <${Chart} scale=${[0, 20]} label="Crates of fruit sold">
+      <${Plot} fruit=${fruit} sold=${sold} on=${(d) => on() === d.index}>${Fruit}<//>
+    <//>
+    <div class="card">${() => `${fruit[on()]}: ${sold[on()]} crates sold today`}</div>
+  </figure>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

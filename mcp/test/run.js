@@ -19,6 +19,7 @@ import { check } from "../src/check/index.js";
 import { launch } from "../src/check/browser.js";
 import { decode } from "../src/check/png.js";
 import { examples, mount, DOCS } from "./gallery.js";
+import { SEE } from "../src/check/findings.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const BROKEN = path.join(here, "broken");
@@ -322,6 +323,17 @@ async function skillPart(browser) {
     console.log(`      ${x.kind} ${x.target}: ${x.how}`);
   }
   if (!ok) fail(`skill: the SKILL.md example has ${r.findings.length} findings`);
+
+  // Every reference section a finding names ("See: pitfalls.md, \"...\"") is a heading of that file
+  const missing = [];
+  for (const [code, see] of Object.entries(SEE)) {
+    const [, file, title] = see.match(/^(\S+\.md), "(.+)"$/) ?? [];
+    const ref = file && path.join(SKILL, "references", file);
+    const headings = ref && fs.existsSync(ref) ? fs.readFileSync(ref, "utf8").split("\n").filter((l) => /^#{2,3} /.test(l)).map((l) => l.replace(/^#+ /, "")) : [];
+    if (!headings.includes(title)) missing.push(`${code} -> ${see}`);
+  }
+  console.log(`  ${missing.length ? "FAIL" : "ok  "} ${Object.keys(SEE).length} codes name a section of the references${missing.length ? `; missing: ${missing.join("; ")}` : ""}`);
+  if (missing.length) fail(`skill: findings name sections that are not headings: ${missing.join("; ")}`);
 }
 
 const PARTS = { broken: brokenPart, gallery: galleryPart, recipes: recipesPart, guard: guardPart, skill: skillPart };
