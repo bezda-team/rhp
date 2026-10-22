@@ -57,6 +57,7 @@ const cases = [
   ["single-hit-hover-overwrites", continuous(controlBroken), ["selection-control-reset"], true],
   ["single-hit-selection-persists", continuous(controlled), [], true],
   ["unrelated-control", base.replace('    <figcaption>', '    <label>Display size <input type="range" min="12" max="20" value="16" onInput=${e => e.currentTarget.closest("figure").style.fontSize = e.target.value + "px"} /></label>\n    <figcaption>'), ["selection-reset"], true],
+  ["unrelated-control-clean", clean.replace('    <figcaption>', '    <label>Display size <input type="range" min="12" max="20" value="16" onInput=${e => e.currentTarget.closest("figure").style.fontSize = e.target.value + "px"} /></label>\n    <figcaption>'), [], true],
   ["missing-reset", base, ["selection-reset"], true],
   ["missing-hover-end", sticky, ["selection-hover-stays"], true],
   ["both-broken", sticky.replace(reset + '\n', ''), ["selection-hover-stays", "selection-reset"], true],

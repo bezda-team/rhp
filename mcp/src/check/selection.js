@@ -77,6 +77,21 @@ export async function selectionBehavior(page, { events }) {
     const controlled = await controlSelection(page, { slats, off, look, away, settle });
     findings.push(...controlled.findings);
     if (controlled.tested.length) audit.tested = { controls: controlled.tested };
+    // The control audit leaves focus on the last control it tried. Its focus ring is not the chart's state,
+    // and a click beside the chart takes it away, so the reset would differ from the rest by that ring alone.
+    await page.evaluate(() => document.activeElement?.blur?.());
+    // The reset is the chart's state and its readout, not the controls' own look: a control keeps a focus ring, a hover
+    // or a pressed state of its own after the clicks, so the reset leaves out the controls' boxes (as the control audit
+    // does), with room for a ring around them
+    const controls = await page.evaluate((target) => {
+      const poster = window.__rhpTargets[target]?.closest(".poster, figure") ?? document.body;
+      return [...poster.querySelectorAll('button, input, select, textarea, summary, [role="button"], [role="slider"], [role="switch"], [role="tab"]')]
+        .filter((el) => !el.closest(".rhp-chart"))
+        .map((el) => el.getBoundingClientRect())
+        .filter((r) => r.width > 0 && r.height > 0)
+        .map((r) => ({ left: r.left - 8, right: r.right + 8, top: r.top - 8, bottom: r.bottom + 8 }));
+    }, slats[0].target);
+    const quiet = (a, b) => seenPixels(a, b, controls) < SAME;
     if (slats.length < 2) return audit;
     const candidates = [];
     for (const s of slats) {
@@ -128,7 +143,7 @@ export async function selectionBehavior(page, { events }) {
           await page.mouse.click(off.x, off.y);
           await away();
           reset = await look();
-          resetBroken = !same(rest, reset);
+          resetBroken = !quiet(rest, reset);
         }
         const end = await page.evaluate(() => [scrollX, scrollY]);
         if (position.some((v, i) => v !== end[i]) || !same(reset, await look())) return audit;
