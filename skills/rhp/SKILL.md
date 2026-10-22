@@ -144,6 +144,7 @@ Its numeric sizes mean pixels, updates are immediate and scan the rows, and init
 | `pyramid` | two sides of one population by age |
 | `silhouettes` | things known by their shape (buildings, ships, bottles), each in its own outline to scale |
 | `dial` | how a day, a week or another cycle splits into parts, around a dial |
+| `tape` | how a day, a budget or another whole splits into parts, laid end to end along one ruled tape cut into lengths |
 | `log-line` | a quantity that grows by multiples over years, on a log scale, its falls measured |
 | `unit-stack` | a total made of parts over periods, counted out in units, one part to follow |
 
