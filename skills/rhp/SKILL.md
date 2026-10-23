@@ -253,7 +253,8 @@ A chart with fixed data and no interaction gets `static=${true}` on its Chart: r
 ### 6. Build it, with the recipe's technique
 
 For every standalone HTML poster page, keep the recipe's fit-to-screen and PNG download controls, or copy the complete block from [download.md](references/download.md) before `</body>`.
-**Sketch:** add the block before `</body>` with `node <this skill's folder>/scripts/add-download.mjs <your page>`: it copies it from the recipes without your reading it.
+**Sketch:** when the skill's files are on disk (an installed skill), add the block before `</body>` with `node <this skill's folder>/scripts/add-download.mjs <your page>`: it copies it from the recipes without your reading it.
+Otherwise (the skill read through the rhp MCP server or from the website), copy it from download.md, as above.
 The icons sit above the poster on the right, outside the saved image; on gallery recipe pages they share the row and color of the gallery link.
 The fit toggle scales the view to up to 95% of the viewport height and restores full size on the next activation.
 Download saves the full poster, including the headline and note, even when the view is fitted or the page scrolls.
