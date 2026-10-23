@@ -765,7 +765,9 @@ for (const motion of ["css", "js"]) {
 
   const wave = () => p.evaluate(() => [...document.querySelectorAll("#stem .swing")].map((e) => e.style.getPropertyValue("--rhp-to")).join());
   const w0 = await wave();
-  await p.click("#stem .strike"); await p.waitForTimeout(100);
+  // rhp writes the new values in the next frame, which a loaded CI machine draws more than 100 ms later: the write is
+  // queued during the click, so it has run once two frames have passed
+  await p.click("#stem .strike"); await p.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
   check(`${M}, bell: clicking strikes it again`, (await wave()) !== w0, true);
   check(`${M}: no page errors`, p.errors, []);
   await p.close();
