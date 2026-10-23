@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="U.S. teen vaping from 2018 to 2025 in two national surveys, the National Youth Tobacco Survey and Monitoring the Future, with the 2019 vaping lung-injury outbreak after their 2019 rounds.">
+<title>Teen vaping after the 2019 lung-injury outbreak</title>
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
+<style>
+__FONTS__
+:root { color-scheme: dark; --page: #424750; --paper-rgb: 9 29 40; --paper: rgb(var(--paper-rgb)); --ink: #fff4da; --soft: #cad9df; --rule: #41606c; --vapes: #87d4ff; --mtf: #fff4da; --mtf10: #d9c9a8; --amber-rgb: 245 185 66; --amber: rgb(var(--amber-rgb)); --display: 'Barlow Condensed', Impact, sans-serif; --text: 'IBM Plex Sans', Arial, sans-serif; --poster-pad: clamp(28px, 6.4vw, 64px); }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px 16px 40px; background: var(--page); color: var(--ink); font: 17px/1.5 var(--text); }
+.poster { position: relative; isolation: isolate; overflow: clip; width: 100%; max-width: 1000px; min-height: 1250px; margin: 0 auto; padding: 42px var(--poster-pad) 48px; background: var(--paper); filter: brightness(.94); display: flex; flex-direction: column; }
+.backdrop { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.backdrop img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .5; }
+.backdrop::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse farthest-corner at top left, rgb(var(--paper-rgb) / .15) 0%, rgb(var(--paper-rgb) / .45) 35%, rgb(var(--paper-rgb) / .8) 70%, var(--paper) 100%); }
+.poster figcaption { display: grid; gap: 20px; margin: 0 0 40px; }
+.poster .kicker { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--rule); color: var(--soft); font-size: 18px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.poster .headline { --headline-size: clamp(48px, 6vw, 72px); --number-size: 176px; display: grid; grid-template-columns: minmax(0, 1fr) max-content; column-gap: 16px; align-items: start; font: 700 var(--headline-size)/.98 var(--display); letter-spacing: -.01em; }
+.lead-in { display: block; grid-column: 1 / -1; margin-bottom: 6px; color: var(--amber); font-size: 48px; }
+.finding { display: block; grid-column: 1 / -1; grid-row: 2; }
+/* Align Barlow Condensed's visible capitals at the headline and number line heights. */
+.headline .number-block { display: flex; align-items: center; justify-content: flex-end; grid-column: 2; grid-row: 2; margin-top: calc(var(--headline-size) * .18 - var(--number-size) * .114); }
+.headline .number { font: 700 var(--number-size)/.85 var(--display); letter-spacing: -.04em; white-space: nowrap; }
+.poster .dek { max-width: none; color: var(--soft); font-size: 23px; line-height: 1.38; }
+.poster .dek b { color: var(--ink); font-weight: 600; }
+.plot-unit { margin: 0 0 16px; color: var(--soft); font-size: 22px; }
+.plot-unit b { color: var(--ink); font-weight: 600; }
+.plot-unit .key { display: inline-flex; align-items: center; gap: 8px; margin-left: 18px; color: var(--ink); white-space: nowrap; }
+.plot-unit .key i { display: inline-block; width: 26px; height: 18px; border-left: 2px solid var(--amber); border-right: 2px solid var(--amber); background: repeating-linear-gradient(135deg, rgb(var(--amber-rgb) / .45) 0 2px, transparent 2px 7px), rgb(var(--amber-rgb) / .14); }
+.axis-number { font-size: 22px; }
+.plot-wrap { flex: 1; min-width: 0; margin-bottom: 32px; touch-action: pan-y; }
+.plot-wrap:has(:focus-visible) { outline: 2px solid var(--ink); outline-offset: 4px; }
+.year-controls { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: center; gap: 9px; padding-top: 18px; }
+.year-controls button { height: 43px; border: 1px solid var(--rule); border-radius: 0; color: var(--soft); background: rgb(9 29 40 / .5); font: 600 20px/1 var(--text); font-variant-numeric: tabular-nums; cursor: pointer; }
+.year-controls button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.year-controls button:hover { border-color: var(--ink); }
+.year-controls button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; margin-top: 26px; }
+.readout section { display: grid; align-content: start; row-gap: 5px; min-width: 0; color: var(--soft); font-size: 17px; }
+.readout section + section { padding-left: 18px; border-left: 1px solid var(--rule); }
+.readout .name { display: block; grid-row: 2; min-height: 1.3em; font-size: 17px; line-height: 1.3; }
+.readout .value { display: block; grid-row: 1; font: 700 34px/1.15 var(--display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.readout .nyts .value { color: var(--vapes); }
+.readout .mtf12 .value { color: var(--mtf); }
+.readout .mtf10 .value { color: var(--mtf10); }
+/* Three lines kept for every year (the interval, its label and the change), so no year moves the rows below */
+.readout small { display: block; grid-row: 3; min-height: 4.2em; color: var(--soft); font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.readout .change { color: var(--ink); }
+.ci-range { white-space: nowrap; }
+/* The survey line keeps the height of its longest year */
+.fieldwork { margin: 18px 0 0; min-height: 4.2em; color: var(--soft); font-size: 16px; line-height: 1.4; }
+.fieldwork b { color: var(--ink); font-weight: 600; }
+.poster .note { display: block; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 19px; line-height: 1.35; color: var(--soft); }
+.poster .note b { color: var(--ink); font-weight: 600; }
+.poster .note .footer-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-top: 16px; opacity: .78; }
+.poster .note .source { display: block; flex: 1; min-width: 0; font-size: 16px; }
+.poster .note .built-with { flex: 0 0 auto; white-space: nowrap; text-align: right; font-size: 14px; }
+.poster .note a { color: inherit; text-underline-offset: 3px; }
+.below { max-width: 1000px; margin: 20px auto 0; padding: 0 2px; color: var(--soft); }
+.below h2 { margin: 0 0 8px; color: var(--ink); font-size: 22px; }
+.below p { margin: 0 0 12px; }
+.below a { color: var(--vapes); text-underline-offset: 3px; }
+.below details { margin-top: 18px; }
+.below summary { cursor: pointer; color: var(--ink); }
+.below .table-scroll { overflow-x: auto; }
+.below table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 15px; font-variant-numeric: tabular-nums; }
+.below th, .below td { text-align: right; border-bottom: 1px solid var(--rule); padding: 9px 7px; }
+.below th:first-child, .below td:first-child { text-align: left; }
+.below .files { margin-top: 16px; }
+@media (max-width: 700px) {
+ body { padding: 12px 10px 30px; }
+ .poster { padding: 32px var(--poster-pad) 36px; min-height: 0; }
+ .poster .kicker { font-size: 11px; gap: 8px; letter-spacing: .06em; padding-bottom: 11px; }
+ .poster figcaption { gap: 16px; margin-bottom: 32px; }
+ .poster .headline { --headline-size: clamp(29px, 9.23vw, 54px); --number-size: clamp(88px, 25.4vw, 152px); column-gap: clamp(8px, 2.6vw, 16px); }
+ .lead-in { font-size: clamp(22px, 5.6vw, 38px); }
+ .poster .dek { font-size: 16px; line-height: 1.4; }
+ .plot-unit { font-size: 14px; }
+ .axis-number { font-size: 13px; }
+ .plot-wrap { --chart-pad-left: 34px; margin-bottom: 28px; }
+ .year-controls { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding-top: 16px; }
+ .year-controls button { font-size: 14px; height: 37px; }
+ .readout { gap: 9px; margin-top: 22px; }
+ .readout section { row-gap: 5px; }
+ .readout section + section { padding-left: 9px; }
+ .readout .name { min-height: 2.6em; font-size: 11px; }
+ .readout .value { font-size: 25px; }
+ .readout small { font-size: 10px; min-height: 5.6em; }
+ .fieldwork { font-size: 12px; min-height: 7em; }
+ .plot-unit .key { display: flex; margin: 6px 0 0; }
+ .plot-unit .key i { width: 20px; height: 14px; }
+ .poster .note { font-size: 13px; margin-top: 24px; padding-top: 16px; }
+ .poster .note .footer-row { gap: 12px; margin-top: 12px; }
+ .poster .note .source { font-size: 10.5px; }
+ .poster .note .built-with { font-size: 11px; }
+ .below { font-size: 15px; }
+ .below table { font-size: 11px; }
+ .below th, .below td { padding: 8px 3px; }
+}
+@media (max-width: 350px) {
+ .poster .headline { --headline-size: 27px; }
+}
+</style>
+</head>
+<body>
+<main id="chart"></main>
+<section class="below" aria-labelledby="methods-title">
+ <h2 id="methods-title">What the two surveys can tell us</h2>
+ <p>Both are national surveys of U.S. students in school, asking about use on at least one of the past 30 days. The National Youth Tobacco Survey (NYTS) asks high school students (grades 9 to 12) about e-cigarettes. Monitoring the Future (MTF) asks 10th and 12th graders about vaping nicotine. Their levels are not expected to match; what matters is how each changed.</p>
+ <p>After the surveys' 2019 rounds came the vaping lung-injury outbreak (EVALI, August 2019 to February 2020, peaking in September 2019), the federal Tobacco 21 law (December 2019) and the FDA's flavor enforcement (January 2020); the 2020 rounds ran in early 2020, as the outbreak tailed off, until schools closed in mid-March. The NYTS saw high school e-cigarette use fall from 27.5% to 19.6%, with 95% intervals that do not overlap. MTF saw 12th graders' nicotine vaping go from 25.5% to 24.7% and 10th graders' from 19.9% to 19.3%; its authors report no significant change in past-30-day vaping, a fall in daily vaping, and a rise in how risky students thought vaping was. Both 2020 rounds were cut short by school closures: the NYTS had a 43.6% response rate, and MTF collected about a quarter of its usual sample. Neither survey can separate the outbreak from the policies.</p>
+ <p>The NYTS changed method three times: from paper to electronic in 2019, to an online survey that about half the students took away from school in 2021, and to an online survey in 2022. CDC ran no trend analysis across the 2019 change, said 2021 could not be compared with earlier years, and that comparing 2022 with earlier years is limited; the dotted steps cross those changes. MTF tested its 2019 change in a randomized half of schools, found no effect, and says its years compare directly.</p>
+ <p>Most outbreak cases were linked to THC vaping products with vitamin E acetate, outside both measures. The 2019 outbreak is often remembered as the “popcorn lung” scare, but popcorn lung (bronchiolitis obliterans) is linked to the flavoring diacetyl, a concern raised in 2015, not to the 2019 outbreak's main cause.</p>
+ <details><summary>Every estimate, with its 95% confidence interval where published</summary>
+  <div class="table-scroll" id="table"></div>
+  <p>NYTS 2018 to 2021 are each year's CDC report, the only release for those years; its 2018 report gives no intervals. NYTS 2022 to 2025 come from the latest FDA analysis's four-year table. MTF values are from the federal ChildStats table of the MTF monograph (2025), which gives no intervals and ends with 2024.</p>
+ </details>
+ <p class="files">NYTS: <a href="https://www.cdc.gov/mmwr/volumes/67/wr/mm6745a5.htm">2018</a> · <a href="https://www.cdc.gov/mmwr/volumes/68/ss/ss6812a1.htm">2019</a> · <a href="https://www.cdc.gov/mmwr/volumes/69/wr/mm6950a1.htm">2020</a> · <a href="https://www.cdc.gov/mmwr/volumes/71/ss/ss7105a1.htm">2021</a> · <a href="https://academic.oup.com/ntr/advance-article/doi/10.1093/ntr/ntag116/8712569">2022 to 2025</a>. MTF: <a href="https://www.childstats.gov/americaschildren/tables/beh1b.asp">ChildStats table</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7739194">2017 to 2020 study</a> · <a href="https://www.cdc.gov/nchs/hus/sources-definitions/mtf.htm">methods</a>. <a href="https://archive.cdc.gov/www_cdc_gov/tobacco/basic_information/e-cigarettes/severe-lung-disease.html">CDC outbreak page</a> · <a href="data.json">Data</a> · <a href="estimates.csv">CSV</a> · <a href="analyze.mjs">Calculations</a></p>
+ <p>The locker background is generated artwork, not documentary evidence. All data marks, labels and calculations are drawn in HTML with rhp.</p>
+</section>
+<script type="module">
+import {Chart, Plot, Scale, Line, Dot, Tick, Label, Bar, Place, Poster, slat, nice, html, render, createSignal, onMount, onCleanup} from '@bezda/rhp/standalone';
+const DATA = __DATA__;
+const YEARS = DATA.years;
+const LAST = YEARS.length-1;
+const H = DATA.headline;
+// The three series: two drawn (NYTS high school, MTF 12th grade), MTF 10th grade in the readout only
+const SERIES = DATA.series;
+const DRAWN = SERIES.filter(s=>s.drawn).map((s,i)=>({...s, color:`series-${i+1}`}));
+const byId = Object.fromEntries(SERIES.map(s=>[s.id,s]));
+const lastIndex = s => s.values.findLastIndex(v=>v!=null);
+const ALL = DRAWN.flatMap(s=>s.values).filter(v=>v!=null);
+// room above the data for the outbreak's label
+const Y = nice(0, Math.max(...ALL)*1.3, 5);
+const MIN = YEARS[0]-.15, MAX = YEARS.at(-1)+.04;
+// The lung-injury outbreak, between the 2019 and 2020 rounds (the years are survey rounds, not a calendar)
+const BAND = {from: 2019.14, to: 2019.86};
+const percent = value => `${value.toFixed(1)}%`;
+const points = value => `${value < 0 ? '−' : '+'}${Math.abs(value).toFixed(1)} pts`;
+const THEME = {font:'var(--text)',ink:'var(--ink)',muted:'var(--soft)',grid:'var(--rule)',surface:'var(--paper)',series:['var(--vapes)','var(--mtf)']};
+
+// Each drawn series as its runs of one survey method (drawn as the series is) and the steps across a change of
+// method (dotted), with the years it has no value left out
+const PIECES = DRAWN.flatMap(s => {
+ const known = YEARS.map((_,i)=>i).filter(i=>s.values[i]!=null);
+ const out = [];
+ let run = [];
+ const flush = () => { if(run.length>1) out.push({...s, kind:'run', pts:run.map(i=>[YEARS[i],s.values[i]])}); run = []; };
+ known.forEach((i,k) => {
+  const prev = known[k-1];
+  if(prev!=null && s.method[prev]!==s.method[i]) { flush(); out.push({...s, kind:'step', pts:[[YEARS[prev],s.values[prev]],[YEARS[i],s.values[i]]]}); }
+  run.push(i);
+ });
+ flush();
+ return out;
+});
+
+// The survey rounds under the plot; on a narrow plot ('18 to '25) eight full years would touch, and on the narrowest
+// every other year is named
+const yearTicks = (short, every) => slat({room:{after:42},css:`
+ .tick { top:100%; height:6px; translate:-50% 0; background:var(--rhp-muted); }
+ .year { top:calc(100% + 12px); translate:-50% 0; --rhp-label-gap:0px; font-size:var(--year-size); font-weight:600; color:var(--rhp-muted); }
+`},d=>html`<div><${Tick} at=${()=>d.at} class="tick" /><${Label} at=${()=>d.at} class="year">${()=>(d.at-YEARS[0])%every()?'':short()?`’${String(d.at).slice(2)}`:d.at}<//></div>`);
+
+// The outbreak: an amber hatched band between the two rounds, edged on both sides, and its label above the data, over
+// the band and moved only as far as it must to stay inside the plot (--band-left, measured)
+const Band = slat({room:{},inset:0,css:`
+ .band { background:repeating-linear-gradient(135deg, rgb(var(--amber-rgb) / .34) 0 2px, transparent 2px 9px), rgb(var(--amber-rgb) / .1); border-left:2px solid rgb(var(--amber-rgb) / .9); border-right:2px solid rgb(var(--amber-rgb) / .9); }
+ .band-label { position:absolute; left:var(--band-left, 0px); top:0; width:max-content; max-width:var(--band-max, none); padding:7px 12px 8px; border:2px solid var(--amber); background:var(--rhp-surface); text-align:center; color:var(--rhp-ink); font-size:var(--note-size); line-height:1.25; }
+ .band-label b { display:block; color:var(--amber); font:700 var(--note-title-size)/1.05 var(--display); letter-spacing:.01em; }
+ .band-label::after { content:''; position:absolute; top:100%; left:var(--band-tip, 50%); translate:-50% 0; border:8px solid transparent; border-top-color:var(--amber); border-bottom-width:0; }
+ @container (max-width:600px) { .band-label { padding:5px 8px 6px; border-width:1.5px; } .band-label::after { border-width:6px 6px 0; } }
+`},()=>html`<div>
+ <${Bar} from=${BAND.from} to=${BAND.to} thick=${1} class="band" />
+ <${Place} at=${MIN} cross=${Y.max}><div class="band-label"><b>Lung-injury outbreak</b>Aug 2019 to Feb 2020, peaking in Sept 2019</div><//>
+ </div>`);
+
+const Piece = slat({room:{},css:`
+ .curve {stroke-width:var(--curve-width);}
+ .nyts.run .curve {stroke-dasharray:12 7;}
+ .step .curve {stroke-dasharray:0 calc(var(--curve-width) * 2.2); stroke-linecap:round; opacity:.75;}
+`},d=>html`<div class=${()=>`${d.id} ${d.kind}`} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}><${Line} points=${()=>d.pts} color=${()=>d.color} class="curve" /></div>`);
+
+const endsSlat = (room, crossOf) => slat({room:{get end(){return room();},before:15},css:`
+ .end {--rhp-label-gap:var(--end-gap); font-size:var(--end-name-size); line-height:1; color:var(--rhp-color);}
+ .end b {display:inline; font:700 var(--end-value-size)/1 var(--display); margin-right:9px;}
+ .end .label-name {display:inline-block;vertical-align:baseline;}
+ .stacked .end b {display:block;margin:0 0 3px;}
+ .stacked .end .label-name {white-space:pre-line;}
+`},d=>html`<div class=${()=>`${d.id}${d.stacked?' stacked':''}`} data-series=${d.id} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}>
+ <${Label} at=${YEARS[lastIndex(d)]} cross=${()=>crossOf(d.id) ?? d.values[lastIndex(d)]} class="end"><b>${()=>percent(d.values[lastIndex(d)])}</b><span class="label-name">${()=>d.stacked?d.label.replace(' (','\n('):d.label}</span><//>
+ </div>`);
+const Point = slat({room:{},css:`
+ .point {background:var(--rhp-surface);border:3px solid var(--rhp-color);}
+ @container (max-width:600px) {.point {border-width:2px;}}
+`},d=>html`<div class=${()=>d.id} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}><${Dot} at=${()=>d.year} cross=${()=>d.value} size="13px" class="point" /></div>`);
+const Selected = slat({room:{},css:`
+ .selected {background:var(--rhp-surface);border:4px solid var(--rhp-color);transition:none;}
+ .off .selected {opacity:0;}
+ @container (max-width:600px) {.selected {border-width:3px;}}
+`},d=>html`<div class=${()=>`${d.id}${d.values[d.i]==null?' off':''}`} style=${()=>({'--rhp-color':`var(--rhp-${d.color})`})}><${Dot} at=${()=>d.year} cross=${()=>d.values[d.i] ?? 0} size=${()=>d.size} class="selected" /></div>`);
+const Hair = slat({room:{},css:'.hair{--rhp-tick-width:2px;background:var(--rhp-muted);opacity:.35;transition:none;}'},d=>html`<${Tick} at=${()=>d.year} thick=${1} class="hair" />`);
+const Hit = slat({room:{},css:'.hit{cursor:crosshair;touch-action:pan-y;}.hit:focus-visible{outline:2px solid var(--rhp-ink);outline-offset:-2px;}'},d=>html`<div class="hit" data-hit="" data-i=${()=>d.i} tabindex="0" role="slider" aria-label="Inspect a survey year" aria-valuemin="0" aria-valuemax=${LAST} aria-valuenow=${()=>d.i} aria-valuetext=${()=>`${YEARS[d.i]}: ${SERIES.filter(s=>s.values[d.i]!=null).map(s=>`${s.name} (${s.short}) ${percent(s.values[d.i])}`).join(', ')}`}></div>`);
+const dots = DRAWN.flatMap(s=>YEARS.map((year,i)=>({id:s.id,color:s.color,year,value:s.values[i]})).filter(p=>p.value!=null));
+
+// What a readout says under a value: its interval, and its change from the year before when both used one method
+const detail = (s,i) => {
+ if(s.values[i]==null) return {ci:'Not yet in', label:'the federal table', change:''};
+ const ci = s.ci95[i];
+ const change = s.change[i]!=null ? `${points(s.change[i])} from ${YEARS[i-1]}` : i>0 && s.values[i-1]!=null ? 'New survey method' : '';
+ return {ci: ci ? ci.join(' to ') : 'No interval', label: ci ? '95% CI' : s.short==='MTF' ? 'in the table' : 'published', change};
+};
+
+function TobaccoPoster() {
+ let plotElement;
+ const [plotWidth,setPlotWidth] = createSignal(888);
+ const compact = ()=>plotWidth()<460;
+ const [endRoom,setEndRoom] = createSignal(225);
+ const fit = (value,min,max)=>Math.max(min,Math.min(max,value));
+ const labelStyle = ()=>({
+  '--end-name-size':`${fit(plotWidth()*24/888,12,24)}px`,
+  '--end-value-size':`${fit(plotWidth()*32/888,22,32)}px`,
+  '--end-gap':`${fit(plotWidth()*.017,12,15)}px`,
+  '--year-size':`${fit(plotWidth()*20/888,11,20)}px`,
+  '--curve-width':`${fit(plotWidth()*7/888,4,7)}px`,
+  '--note-size':`${fit(plotWidth()*17/888,10,17)}px`,
+  '--note-title-size':`${fit(plotWidth()*26/888,13,26)}px`,
+  '--band-left':`${bandLeft()}px`,
+  ...(bandMax()?{'--band-max':`${bandMax()}px`}:{}),
+  ...(bandTip()!=null?{'--band-tip':`${bandTip()}px`}:{}),
+ });
+ // Where each end label sits: at its last value, moved apart from the others by their measured heights when they
+ // would touch (a phone's plot is short), in the order of the values and inside the plot
+ const [endCross,setEndCross] = createSignal({});
+ const Ends = endsSlat(endRoom, id=>endCross()[id]);
+ const YearTicks = yearTicks(compact, ()=>plotWidth()<300?2:1);
+ const [bandLeft,setBandLeft] = createSignal(0), [bandMax,setBandMax] = createSignal(null), [bandTip,setBandTip] = createSignal(null);
+ onMount(()=>{
+  let frame = 0, observedWidth, observer;
+  const labelWidths = new Map(), labelHeights = new Map(), watched = new Set();
+  // the band's label over the band's middle, inside the plot's two edges. It is drawn after the chart mounts, so it
+  // is looked for (and watched) at each measure, and its width read in the poster's own pixels
+  const placeBandLabel = ()=>{
+   const label = plotElement.querySelector('.band-label'), plot = plotElement.querySelector('.rhp-plot');
+   // (the plot's own width changes when the end labels' room does, after the poster's width is known)
+   for(const element of [label, plot]) if(element && !watched.has(element)) { watched.add(element); observer.observe(element); }
+   const inner = plot?.offsetWidth;
+   const bandLabelWidth = label?.offsetWidth;
+   if(!inner || !bandLabelWidth)return;
+   const middle = ((BAND.from+BAND.to)/2-MIN)/(MAX-MIN)*inner;
+   // (on the narrowest plot the label wraps to the plot's width)
+   setBandMax(Math.floor(inner));
+   const left = Math.max(0,Math.min(inner-bandLabelWidth,middle-bandLabelWidth/2));
+   setBandLeft(left);
+   // its pointer stays on the band's middle wherever the label had to move
+   setBandTip(middle-left);
+  };
+  const spread = ()=>{
+   const plot = plotElement.querySelector('.rhp-plot');
+   const height = plot?.offsetHeight;
+   if(!height || labelHeights.size<DRAWN.length)return;
+   const perUnit = height/(Y.max-Y.min);
+   const ends = DRAWN.map(s=>({id:s.id, y:(s.values[lastIndex(s)]-Y.min)*perUnit, h:labelHeights.get(s.id)})).sort((a,b)=>b.y-a.y);
+   for(let k=1;k<ends.length;k++) ends[k].y = Math.min(ends[k].y, ends[k-1].y-(ends[k-1].h+ends[k].h)/2-4);
+   const lift = Math.max(0, ends.at(-1).h/2-ends.at(-1).y);
+   setEndCross(Object.fromEntries(ends.map(e=>[e.id, (e.y+lift)/perUnit+Y.min])));
+  };
+  const measurePlot = ()=>{
+   if(!plotElement.isConnected)return;
+   if(observedWidth!=null)setPlotWidth(observedWidth);
+   spread();
+   placeBandLabel();
+   if(!labelWidths.size)return;
+   const left = parseFloat(getComputedStyle(plotElement.querySelector('.rhp-chart')).paddingLeft);
+   // Each label starts at its own last point: the room after the plot is what the furthest-reaching one needs past
+   // the plot's end, without leaving space after its text
+   let room = 0;
+   for(const s of DRAWN) {
+    const width = labelWidths.get(s.id);
+    if(width==null) continue;
+    const position = (YEARS[lastIndex(s)]-MIN)/(MAX-MIN);
+    room = Math.max(room,(width-(1-position)*(plotWidth()-left))/position);
+   }
+   setEndRoom(Math.max(0,room));
+  };
+  const scheduleMeasure = ()=>{
+   if(frame)return;
+   // Apply layout changes in the next frame, outside ResizeObserver delivery.
+   frame = requestAnimationFrame(()=>{frame=0;measurePlot();});
+  };
+  observer = new ResizeObserver(entries=>{
+   for(const entry of entries){
+    if(entry.target===plotElement)observedWidth=entry.contentRect.width;
+    else if(watched.has(entry.target))continue;
+    else {
+     const id = entry.target.closest('[data-series]').dataset.series;
+     labelWidths.set(id,entry.borderBoxSize[0].inlineSize);
+     labelHeights.set(id,entry.borderBoxSize[0].blockSize);
+    }
+   }
+   scheduleMeasure();
+  });
+  observer.observe(plotElement);
+  plotElement.querySelectorAll('.end').forEach(label=>observer.observe(label));
+  scheduleMeasure();
+  document.fonts.ready.then(scheduleMeasure);
+  onCleanup(()=>{observer.disconnect();cancelAnimationFrame(frame);});
+ });
+ // The poster opens on the 2020 round, the first after the outbreak
+ const [picked,setPicked] = createSignal(YEARS.indexOf(H.to)), [hover,setHover] = createSignal(null);
+ const index = ()=>hover() ?? picked();
+ const rowOf = target => {
+  const button = target?.closest?.('[data-year-index]');
+  if(button) return +button.dataset.yearIndex;
+  const hit = target?.closest?.('[data-hit]');
+  return hit ? +hit.dataset.i : null;
+ };
+ const eventIndex = event => {
+  const hit = event.target?.closest?.('[data-hit]');
+  if(hit && Number.isFinite(event.clientX)) {
+   const box = hit.getBoundingClientRect();
+   return Math.max(0,Math.min(LAST,Math.round((event.clientX-box.left)/box.width*(MAX-MIN)+MIN-YEARS[0])));
+  }
+  return rowOf(event.target);
+ };
+ const commit = i=>{setPicked(i);setHover(null);};
+ const pick = event=>{const i=eventIndex(event);if(i!=null)commit(i);};
+ const move = event=>{if(event.pointerType!=='touch')setHover(event.target.closest?.('[data-hit]')?eventIndex(event):null);};
+ const leave = event=>{if(event.pointerType!=='touch')setHover(null);};
+ const key = event=>{
+  if(!event.target.matches?.('[data-hit]'))return;
+  const offsets={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1};
+  if(!(event.key in offsets)&&!['Home','End'].includes(event.key))return;
+  event.preventDefault();
+  commit(event.key==='Home'?0:event.key==='End'?LAST:Math.max(0,Math.min(LAST,picked()+offsets[event.key])));
+ };
+ const fieldwork = i=>`NYTS: ${byId.nyts.fieldwork[YEARS[i]]}. MTF: ${byId.mtf12.fieldwork[YEARS[i]]}.`;
+ return html`<${Poster}
+  kicker=${html`<span>The 2019 vaping scare</span><span>U.S. teens · 2018 to 2025</span>`}
+  title=${html`<span class="lead-in">After the 2019 lung-injury outbreak,</span><span class="finding">one survey saw teen vaping fall ${H.nyts.dropRounded}%. The other saw it level off.</span>`}
+  dek=${html`<span>In the National Youth Tobacco Survey, high school e-cigarette use fell from <b>${percent(H.nyts.before)}</b> to <b>${percent(H.nyts.after)}</b>. In Monitoring the Future, 12th graders' nicotine vaping went from <b>${percent(H.mtf12.before)}</b> to <b>${percent(H.mtf12.after)}</b>, though daily vaping fell. Both 2020 rounds were cut short by school closures, and Tobacco 21 and new flavor rules came in the same months.</span>`}
+  note=${html`<span><b>Dotted steps cross a change of NYTS method</b> (2019, 2021, 2022) and are not direct comparisons; MTF says its years compare directly. The surveys ask different questions of different grades, so compare how each changes, not their levels. Cannabis vaping, behind most outbreak cases, is in neither.<span class="footer-row"><span class="source">Sources: CDC NYTS reports, 2018 to 2021; FDA analysis, Table 3 (June 2026), 2022 to 2025; Monitoring the Future (Miech et al., 2025, ChildStats table); CDC outbreak page.</span><span class="built-with">Built with rhp</span></span></span>`}
+  onPointerMove=${move} onPointerLeave=${leave} onClick=${pick} onKeyDown=${key}
+  onFocusIn=${event=>{if(rowOf(event.target)!=null)setHover(null);}}
+  onFocusOut=${event=>{if(!event.currentTarget.contains(event.relatedTarget))setHover(null);}}>
+  <div class="backdrop" aria-hidden="true"><img src="__BACKGROUND__" width="1120" height="1400" alt="" /></div>
+  <p class="plot-unit"><b>Share of students</b> who vaped in the past 30 days<span class="key"><i aria-hidden="true"></i>The 2019 lung-injury outbreak</span></p>
+  <div class="plot-wrap" ref=${element=>{plotElement=element;}} style=${labelStyle}>
+   <${Chart} scale=${[MIN,MAX]} cross=${[Y.min,Y.max]} crossTicks=${Y.ticks} crossFormat=${v=>html`<span class="axis-number">${v}%</span>`} height=${()=>fit(plotWidth()*.66,330,420)} theme=${THEME} style=${{'--rhp-pad-left':'var(--chart-pad-left, 52px)'}}
+    label="U.S. teen vaping in the past 30 days, 2018 to 2025, in two surveys: high school e-cigarette use in the National Youth Tobacco Survey and 12th-grade nicotine vaping in Monitoring the Future, with the 2019 lung-injury outbreak after their 2019 rounds.">
+    <${Scale} ticks=${YEARS}>${YearTicks}<//>
+    <${Plot} overlap=${true} slats=${1} style=${{'pointer-events':'none'}}>${Band}<//>
+    <${Plot} overlap=${true} rows=${PIECES} style=${{'pointer-events':'none'}}>${Piece}<//>
+    <${Plot} overlap=${true} rows=${DRAWN} stacked=${compact} style=${{'pointer-events':'none'}}>${Ends}<//>
+    <${Plot} overlap=${true} rows=${dots} style=${{'pointer-events':'none'}}>${Point}<//>
+    <${Plot} overlap=${true} slats=${1} year=${()=>YEARS[index()]} style=${{'pointer-events':'none'}}>${Hair}<//>
+    <${Plot} overlap=${true} rows=${DRAWN} year=${()=>YEARS[index()]} i=${index} size=${()=>compact()?'19px':'23px'} style=${{'pointer-events':'none'}}>${Selected}<//>
+    <${Plot} overlap=${true} slats=${1} i=${picked}>${Hit}<//>
+   <//>
+  </div>
+  <div class="year-controls" role="group" aria-label="Choose a survey year">${YEARS.map((year,i)=>html`<button type="button" data-year-index=${i} aria-pressed=${()=>index()===i}>${year}</button>`)}</div>
+  <div class="readout" aria-live="polite">${SERIES.map(s=>html`<section class=${s.id}><span class="name">${s.label}</span><b class="value">${()=>s.values[index()]==null?'n/a':percent(s.values[index()])}</b><small><span class="ci-range">${()=>detail(s,index()).ci}</span><br/>${()=>detail(s,index()).label}<br/><span class="change">${()=>detail(s,index()).change}</span></small></section>`)}</div>
+  <p class="fieldwork"><b>${()=>YEARS[index()]} rounds:</b>${" "}${()=>fieldwork(index())}</p>
+ <//>`;
+}
+render(()=>html`<${TobaccoPoster} />`,document.getElementById('chart'));
+render(()=>html`<table><caption>Percent of U.S. students who vaped in the past 30 days (95% confidence interval where published)</caption><thead><tr><th scope="col">Year</th>${SERIES.map(s=>html`<th scope="col">${s.label}</th>`)}</tr></thead><tbody>${YEARS.map((year,i)=>html`<tr><th scope="row">${year}</th>${SERIES.map(s=>html`<td>${s.values[i]==null?'not yet':percent(s.values[i])}${s.ci95[i]?html`<br/>(${s.ci95[i].join(' to ')})`:''}</td>`)}</tr>`)}</tbody></table>`,document.getElementById('table'));
+</script>
+__DOWNLOAD__
+</body>
+</html>

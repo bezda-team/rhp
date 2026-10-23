@@ -1,0 +1,378 @@
+{
+  "observed": "2026-10-23",
+  "question": "Can you start back around 2018? I'm wondering how much the popcorn lung scare affected use. I think that was in 2019.",
+  "population": "U.S. students in school: high school (grades 9 to 12) in the NYTS; 10th and 12th grade in Monitoring the Future",
+  "measure": "Use on at least one of the past 30 days: e-cigarettes (NYTS); vaping nicotine (Monitoring the Future)",
+  "unit": "Percent of students",
+  "years": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "series": [
+    {
+      "id": "nyts",
+      "survey": "National Youth Tobacco Survey",
+      "short": "NYTS",
+      "name": "High school e-cigarette use",
+      "label": "High school (NYTS)",
+      "drawn": true,
+      "values": [
+        20.8,
+        27.5,
+        19.6,
+        11.3,
+        14.1,
+        10,
+        7.8,
+        7.1
+      ],
+      "ci95": [
+        null,
+        [
+          25.3,
+          29.7
+        ],
+        [
+          17.2,
+          22.2
+        ],
+        [
+          9.7,
+          13
+        ],
+        [
+          12.4,
+          16
+        ],
+        [
+          8.8,
+          11.4
+        ],
+        [
+          6.9,
+          8.8
+        ],
+        [
+          6.3,
+          8.1
+        ]
+      ],
+      "methods": [
+        {
+          "years": [
+            2018
+          ],
+          "survey": "Paper survey in school"
+        },
+        {
+          "years": [
+            2019,
+            2020
+          ],
+          "survey": "Electronic survey in school"
+        },
+        {
+          "years": [
+            2021
+          ],
+          "survey": "Online survey, about half answered away from school"
+        },
+        {
+          "years": [
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "survey": "Online survey"
+        }
+      ],
+      "fieldwork": {
+        "2018": "paper survey in school",
+        "2019": "electronic survey in school, Feb 15 to May 24, 2019, response rate 66.3%",
+        "2020": "electronic survey in school, Jan 16 to Mar 16, 2020, cut short by school closures, response rate 43.6%",
+        "2021": "online, Jan 18 to May 21, 2021, 49% answered at home or elsewhere, response rate 44.6%",
+        "2022": "online, Jan 18 to May 31, 2022",
+        "2023": "online",
+        "2024": "online",
+        "2025": "online, ended six weeks early, response rate 29.7%"
+      },
+      "method": [
+        0,
+        1,
+        1,
+        2,
+        3,
+        3,
+        3,
+        3
+      ],
+      "change": [
+        null,
+        null,
+        -7.9,
+        null,
+        null,
+        -4.1,
+        -2.2,
+        -0.7
+      ]
+    },
+    {
+      "id": "mtf12",
+      "survey": "Monitoring the Future",
+      "short": "MTF",
+      "name": "12th grade nicotine vaping",
+      "label": "12th grade (MTF)",
+      "drawn": true,
+      "values": [
+        20.9,
+        25.5,
+        24.7,
+        19.6,
+        20.7,
+        16.9,
+        15,
+        null
+      ],
+      "ci95": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "methods": [
+        {
+          "years": [
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "survey": "In-school survey; MTF says its years compare directly"
+        }
+      ],
+      "fieldwork": {
+        "2018": "paper questionnaires in class",
+        "2019": "half the schools on tablets, half on paper, with no effect on the estimates",
+        "2020": "tablets in school, halted Mar 15, 2020, about a quarter of the usual sample",
+        "2021": "web survey on students' own devices",
+        "2022": "web survey on students' own devices",
+        "2023": "web survey on students' own devices",
+        "2024": "web survey on students' own devices",
+        "2025": "not yet in the federal table"
+      },
+      "method": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "change": [
+        null,
+        4.6,
+        -0.8,
+        -5.1,
+        1.1,
+        -3.8,
+        -1.9,
+        null
+      ]
+    },
+    {
+      "id": "mtf10",
+      "survey": "Monitoring the Future",
+      "short": "MTF",
+      "name": "10th grade nicotine vaping",
+      "label": "10th grade (MTF)",
+      "drawn": false,
+      "values": [
+        16.1,
+        19.9,
+        19.3,
+        13.1,
+        14.2,
+        11.9,
+        9.8,
+        null
+      ],
+      "ci95": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "methods": [
+        {
+          "years": [
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "survey": "In-school survey; MTF says its years compare directly"
+        }
+      ],
+      "method": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "change": [
+        null,
+        3.8,
+        -0.6,
+        -6.2,
+        1.1,
+        -2.3,
+        -2.1,
+        null
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "evali",
+      "name": "Lung-injury outbreak (EVALI)",
+      "from": "2019-08",
+      "to": "2020-02",
+      "detail": "Emergency visits rose sharply in August 2019 and peaked in September 2019; CDC stopped collecting case reports from states in February 2020, with 2,807 hospitalized cases or deaths reported as of February 18, 2020. Vitamin E acetate is strongly linked to the outbreak, and THC-containing vaping products to most cases.",
+      "source": "https://archive.cdc.gov/www_cdc_gov/tobacco/basic_information/e-cigarettes/severe-lung-disease.html"
+    },
+    {
+      "id": "t21",
+      "name": "Federal minimum sales age raised to 21 (Tobacco 21)",
+      "date": "2019-12",
+      "source": "https://www.cdc.gov/mmwr/volumes/69/wr/mm6950a1.htm"
+    },
+    {
+      "id": "flavors",
+      "name": "FDA guidance prioritizing enforcement against certain flavored e-cigarettes",
+      "date": "2020-01",
+      "source": "https://www.cdc.gov/mmwr/volumes/69/wr/mm6950a1.htm"
+    }
+  ],
+  "sources": {
+    "nyts-2018": {
+      "title": "Notes from the Field: Use of Electronic Cigarettes and Any Tobacco Product Among Middle and High School Students, United States, 2011 to 2018",
+      "published": "2018-11-16",
+      "where": "MMWR 67(45):1276-1277",
+      "url": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6745a5.htm",
+      "text": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6290807/fullTextXML",
+      "quote": "current e-cigarette use increased from 1.5% (220,000 students) in 2011 to 20.8% (3.05 million students) in 2018"
+    },
+    "nyts-2019": {
+      "title": "Tobacco Product Use and Associated Factors Among Middle and High School Students, United States, 2019",
+      "published": "2019-12-06",
+      "where": "MMWR Surveillance Summaries 68(12), Table 2",
+      "url": "https://www.cdc.gov/mmwr/volumes/68/ss/ss6812a1.htm",
+      "text": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6903396/fullTextXML",
+      "quote": "High school E-cigarettes ... 27.5 (25.3–29.7)"
+    },
+    "nyts-2020": {
+      "title": "Tobacco Product Use Among Middle and High School Students, United States, 2020",
+      "published": "2020-12-18",
+      "where": "MMWR 69(50):1881-1888",
+      "url": "https://www.cdc.gov/mmwr/volumes/69/wr/mm6950a1.htm",
+      "text": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7745956/fullTextXML",
+      "quote": "19.6 (17.2–22.2) 3,020,000"
+    },
+    "nyts-2021": {
+      "title": "Tobacco Product Use and Associated Factors Among Middle and High School Students, National Youth Tobacco Survey, United States, 2021",
+      "published": "2022-03-11",
+      "where": "MMWR Surveillance Summaries 71(5), Table 2",
+      "url": "https://www.cdc.gov/mmwr/volumes/71/ss/ss7105a1.htm",
+      "text": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8923300/fullTextXML",
+      "quote": "E-cigarettes ... 11.3 (9.7–13.0) 1,720,000"
+    },
+    "nyts-2022-2025": {
+      "title": "FDA's 2025 National Youth Tobacco Survey analysis",
+      "published": "2026-06-23",
+      "where": "Nicotine & Tobacco Research, Table 3, high school rows",
+      "url": "https://academic.oup.com/ntr/advance-article/doi/10.1093/ntr/ntag116/8712569",
+      "check": "2022, 2023 and 2024 match the CDC's yearly reports (PMC9707354, PMC11486349)"
+    },
+    "mtf": {
+      "title": "BEH1.B Nicotine use: Percentage of 8th-, 10th-, and 12th-grade students who reported vaping nicotine in the past 30 days, 2017 to 2024",
+      "source": "Miech, Johnston, Patrick and O'Malley (2025), Monitoring the Future Monograph Series, University of Michigan",
+      "url": "https://www.childstats.gov/americaschildren/tables/beh1b.asp",
+      "copy": "sources/childstats-beh1b.html"
+    },
+    "mtf-2020": {
+      "title": "Trends in Use and Perceptions of Nicotine Vaping Among US Youth From 2017 to 2020",
+      "authors": "Miech R, Leventhal A, Johnston L, O'Malley PM, Patrick ME, Barrington-Trimis J",
+      "where": "JAMA Pediatrics, 2021",
+      "doi": "10.1001/jamapediatrics.2020.5667",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7739194",
+      "quote": "Nicotine vaping prevalence in 2020 was 22% (95% CI, 19%-25%) for past 30-day use ... these levels did not significantly change from 2019. Daily nicotine vaping ... significantly declined from 9% (95% CI, 8%-10%) to 7% (95% CI, 6%-9%) ... Among all youth, perceived risk of both occasional and regular nicotine vaping increased from 2019 to 2020."
+    },
+    "mtf-methods": {
+      "title": "Health, United States: Monitoring the Future, sources and definitions",
+      "url": "https://www.cdc.gov/nchs/hus/sources-definitions/mtf.htm",
+      "quote": "Starting in 2021, electronic surveys are completed by students using their personal electronic devices ... drug prevalence estimates for 2021 and beyond can be directly compared with estimates from previous data years."
+    }
+  },
+  "notes": [
+    "The two surveys measure different things: any e-cigarette use by high school students (NYTS) and vaping nicotine by 12th and 10th graders (Monitoring the Future). Their levels are not expected to match; the question is how each changed.",
+    "NYTS changed method three times (electronic in 2019, online with about half answering away from school in 2021, online in 2022); steps across those changes are drawn dotted and are not direct comparisons. Monitoring the Future tested its 2019 change in a randomized half of schools and says its years compare directly.",
+    "Both 2020 surveys were cut short by school closures: NYTS had a 43.6% response rate; Monitoring the Future collected about a quarter of its usual sample, which its analysis still supports as nationally representative.",
+    "Between the 2019 surveys and the end of the 2020 surveys came the lung-injury outbreak, the federal Tobacco 21 law and the FDA's flavor enforcement guidance. Neither survey can separate their effects.",
+    "Cannabis vaping, behind most outbreak cases, is outside both measures. Different students each year: neither survey follows anyone who quit or switched.",
+    "\"Popcorn lung\" (bronchiolitis obliterans, linked to the flavoring diacetyl, a concern raised in 2015) has a different cause from the 2019 outbreak, which was mostly linked to vitamin E acetate in THC cartridges; the two conditions can overlap clinically."
+  ],
+  "headline": {
+    "from": 2019,
+    "to": 2020,
+    "nyts": {
+      "before": 27.5,
+      "after": 19.6,
+      "points": -7.9,
+      "percent": -28.727272727272723,
+      "dropRounded": 29
+    },
+    "mtf12": {
+      "before": 25.5,
+      "after": 24.7,
+      "points": -0.8,
+      "percent": -3.137254901960787,
+      "dropRounded": 3
+    },
+    "mtf10": {
+      "before": 19.9,
+      "after": 19.3,
+      "points": -0.6,
+      "percent": -3.0150753768844116
+    }
+  }
+}

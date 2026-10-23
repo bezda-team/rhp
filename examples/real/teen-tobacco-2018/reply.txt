@@ -1,0 +1,14 @@
+Good question, so I made a version that starts in 2018 (image attached). The honest answer is that it's unclear, because the two national surveys of U.S. teens disagree about what happened right after the scare.
+
+The National Youth Tobacco Survey found high school vaping fell from 27.5% in spring 2019 (before the outbreak) to 19.6% in early 2020 (after its peak), about 29% lower.
+
+Monitoring the Future, the other big national survey, taken in the same months, found almost no change: 12th graders went from 25.5% to 24.7%, and its authors say past-month vaping didn't change significantly. They did find fewer daily vapers and more teens seeing vaping as risky.
+
+Both 2020 surveys were cut short when schools closed for COVID, and Tobacco 21 (December 2019) and the FDA's flavor crackdown (January 2020) landed in the same months, so neither can pin a change on the scare. What both agree on is that vaping is well down since: by 2024 it was about 15% of 12th graders in Monitoring the Future and 7.8% of high schoolers in the NYTS.
+
+One note on the name: the 2019 scare was EVALI, mostly linked to vitamin E acetate in black-market THC cartridges. "Popcorn lung" is a different concern, from the flavoring diacetyl, raised around 2015, though the two often get mixed up.
+
+Sources: CDC/FDA National Youth Tobacco Survey reports; Monitoring the Future (University of Michigan) via the federal ChildStats table and Miech et al., JAMA Pediatrics 2021; CDC's EVALI page.
+https://www.childstats.gov/americaschildren/tables/beh1b.asp
+https://pmc.ncbi.nlm.nih.gov/articles/PMC7739194
+https://www.cdc.gov/mmwr/volumes/69/wr/mm6950a1.htm
