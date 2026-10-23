@@ -263,26 +263,30 @@ async function serverPart(pkg) {
     const noRecipe = await call("rhp_recipe", { type: "pie-of-pies" });
     ok(noRecipe.isError && textOf(noRecipe).includes("bar, "), "an unknown type: an error that lists the types");
 
-    // rhp_check: a recipe three times. The second and third reuse the browser and take less time than the first; the
-    // faster of the two is compared, so one slow font download cannot fail the test.
+    // rhp_check: a recipe at one width without the interaction pass, three times, then a whole check of it. The second
+    // and third reuse the browser the first launched and the fonts it fetched, so they take less time than the first;
+    // the faster of the two is compared, so one slow moment cannot fail the test. (A short check, where the launch and
+    // the fonts are a large part of the time: in a whole check, half a minute on CI, they are lost in its noise.)
     const timed = async (args) => {
       const t = performance.now();
       const result = await call("rhp_check", args);
       return { result, ms: since(t) };
     };
-    const first = await timed({ file: BAR });
+    const quick = { file: BAR, widths: [1280], interact: false };
+    const first = await timed(quick);
     const browser = childrenOf(transport.pid);
-    const second = await timed({ file: BAR });
-    const third = await timed({ file: BAR });
-    const report = textOf(first.result);
-    const sizes = sizesOf(first.result);
-    ok(!first.result.isError && report.startsWith("rhp check of bar.html") && /no problems found/.test(report), `rhp_check of the bar recipe: its report, no problems found (${first.ms} ms)`);
-    ok(sizes.length >= 2 && imagesOf(first.result).every((c) => c.mimeType === "image/jpeg") && sizes.every((s) => s && s.width <= 1280 && s.height <= 2000), `and ${sizes.length} JPEG screenshots (${sizes.map((s) => s && `${s.width}x${s.height}`).join(", ")})`);
+    const second = await timed(quick);
+    const third = await timed(quick);
+    const whole = await timed({ file: BAR });
+    const report = textOf(whole.result);
+    const sizes = sizesOf(whole.result);
+    ok(!whole.result.isError && report.startsWith("rhp check of bar.html") && /no problems found/.test(report), `rhp_check of the bar recipe: its report, no problems found (${whole.ms} ms)`);
+    ok(sizes.length >= 2 && imagesOf(whole.result).every((c) => c.mimeType === "image/jpeg") && sizes.every((s) => s && s.width <= 1280 && s.height <= 2000), `and ${sizes.length} JPEG screenshots (${sizes.map((s) => s && `${s.width}x${s.height}`).join(", ")})`);
     // No structuredContent: Claude Code shows the model a tool's structuredContent in place of its text, and Codex in
     // place of all its content, so the report or the screenshots would never reach the agent
-    ok(first.result.structuredContent === undefined && report.length < 20000 && !/[A-Za-z0-9+/]{400}/.test(report), "no structuredContent, and no base64 in the text");
-    ok(!second.result.isError && !third.result.isError && browser.length > 0 && childrenOf(transport.pid).join() === browser.join(), "the next two checks use the same browser");
-    ok(Math.min(second.ms, third.ms) < first.ms, `and take less time: ${second.ms} and ${third.ms} ms after ${first.ms} ms`);
+    ok(whole.result.structuredContent === undefined && report.length < 20000 && !/[A-Za-z0-9+/]{400}/.test(report), "no structuredContent, and no base64 in the text");
+    ok([first, second, third].every((x) => !x.result.isError && /no problems found/.test(textOf(x.result))) && browser.length > 0 && childrenOf(transport.pid).join() === browser.join(), "a check at one width without interactions, three times and then whole: every one uses the same browser");
+    ok(Math.min(second.ms, third.ms) < first.ms, `and the second and third short ones take less time: ${second.ms} and ${third.ms} ms after ${first.ms} ms`);
 
     // A chart given as code; its screenshots wider than 1280px or taller than 2000px come back scaled down to fit
     const tall = await call("rhp_check", { code: TALL, widths: [1440, 390], interact: false });
