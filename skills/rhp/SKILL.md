@@ -20,6 +20,41 @@ rhp 2 was written in September 2026, after your training data.
 An older, unrelated rhp 1 ("react-html-plots", React components with Legend-State, packages `@bezda/rhp@0.0.x`, `@bezda/rhp-core`, `@bezda/rhp-base`) may be in your memory: never use any of it.
 Write rhp code only from this skill's recipes and references, never from memory, and check what you wrote with the checker before you hand it over.
 
+## Careful or sketch
+
+The workflow has two paths, which differ in how much of the design guidance you read before you design.
+Choose one before the brief, and write it in the brief:
+
+- **Careful**, the default: one chart, a chart for real work (a report, an app, a page that will be published), and any request that does not say.
+  You read the whole recipe and all of design.md, and design from the subject's most fitting form.
+  Its results are dependable from one request to the next.
+- **Sketch**: the user is trying out ideas with no design in mind ("I'm exploring", "a quick draft", "surprise me").
+  You read less (the recipe up to its download block, design.md sections 2, 4 and 5) and pick by chance among three of the subject's own objects (step 3).
+  Its results vary more: some are better than a careful chart, some are not as good.
+- **Both**: the user asks for several versions of a chart to choose from ("four options", "a few variations to pick from").
+  Make about half of them careful and half sketch, the first one careful, and say which is which in the handoff: the careful ones give a dependable floor, the sketch ones the variety.
+
+The user's own words win ("be thorough", "just sketch it").
+When it is unclear whether they want one chart or several to choose from, make one, careful.
+
+No two versions on the same path may be the same chart; a careful one and a sketch may meet.
+Before you start them, decide what each one is:
+
+- **The sketches:** write one list of this subject's own objects (step 3 says what counts), one more than there are sketches, and put it in a random order:
+
+  ```sh
+  node -e "const a = [...Array(+process.argv[1])].map((_, i) => i + 1); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } console.log(a.join(' '))" 4
+  ```
+
+  (the number is the length of the list). The first sketch gets the object first in that order, the second the next, and so on: each builds the object it is given and draws no other.
+- **The careful ones:** give each a different reading of the data, a different question the chart answers or a different form for it (forms.md): the first the subject's most fitting form, the others another way into the same data (the whole decade, its cycles, its months; the calendar, the weeks, the weekdays).
+
+Each version starts fresh, or what you read and decided for one pulls the next toward it.
+When you can start subagents, give each version its own, with the request, the data, its path, and its object or its reading; each one follows this workflow on its own.
+When you cannot, make the sketch versions first, each with only what its path reads, and write each version its own brief.
+
+Where a step below differs between the paths, it says **Sketch:** for the sketch path; everything else is the same for both.
+
 ## The workflow
 
 Follow these eight steps in order, for every chart, however short or detailed the request.
@@ -34,9 +69,12 @@ Asked (must all be in the result):
 - "<the user's words>" -> what that means for the chart
 - ...
 Chosen (the user left these open):
-- form, environment and file, data, interaction, motion (CSS by default; JS for data that changes rapidly), size
-Design (from the subject and the intended reading):
-- Idea: the subject's own shape, object or way of drawing this data, and how it helps the reading
+- path (careful or sketch), form, environment and file, data, interaction, motion (CSS by default; JS for data that changes rapidly), size
+Objects (sketch only, step 3):
+- 1. <an object of this subject>  2. <another>  3. <another>
+- Drawn: <the number the command printed>
+Design (from the subject, or the drawn object, and the intended reading):
+- Idea: the subject's own shape, object or way of drawing this data (careful), or the drawn object applied to this data (sketch), and how it helps the reading
 - Marks: how each mark is drawn to carry the idea
 - Composition: where the headline, the chart and the other parts sit, on a desktop and on a phone
 - Palette: the paper, the ink, the accent, and where each comes from
@@ -45,8 +83,8 @@ Design (from the subject and the intended reading):
 
 - Put under **Asked** every explicit request, quoting the user's words: the data and its numbers, the chart type, titles and text, colors, fonts, size, orientation, sort order, labels, legend, interactions, animation, framework, file name, and anything they said not to do.
 - Everything else goes under **Chosen**, filled with the defaults below.
-- The five **Design** lines are written at step 4, after you have looked at the subject (step 3) and at the starting recipe.
-  A line the user or the app has fixed says so ("Palette: theirs, exactly", "Type: the app's"); a "plain", "minimal" or "no poster" request has no Design lines.
+- The five **Design** lines are written at step 4, after you have looked at the subject (step 3) and at the starting recipe; on the sketch path, the **Objects** are written at step 3.
+  A line the user or the app has fixed says so ("Palette: theirs, exactly", "Type: the app's"); a "plain", "minimal" or "no poster" request has no Objects and no Design lines.
 - A request is never dropped, swapped for something "better" or quietly reduced. If rhp cannot do something exactly, say so in the brief and do the closest thing.
 - A part of the data the user did not name (what is left when their parts do not reach 100%) is a quiet remainder: unlabeled, in the quiet color, with no key entry, and explained in the note, never a new series with its own color.
   Write it under **Asked**, beside the request it changes, as a deviation.
@@ -84,6 +122,18 @@ When one of those can hold the data honestly, it is the chart's form: [forms.md]
 When none can, the form comes from the data alone, and the subject shows in the marks and the composition (step 4).
 The form the user named always wins.
 
+**Sketch:** write three answers in the brief, each this subject's own and each a different thing: its shape, an object a reader knows it by, or the way the people who work with it draw this data (for the electricity a country makes: a meter's dial, the bill that comes each month, a map of the grid's pylons).
+Models given the same request reach for the same first answer, so pick one of the three by chance and build that one (a sketch of a request for several builds the object it was given instead):
+
+```sh
+node -e "console.log(1 + Math.floor(Math.random() * 3))"
+```
+
+Draw once and keep it.
+The object gives the poster its idea, its paper, its type and its composition (step 4).
+It shapes the chart only as far as the chart stays as easy to read as plain bars: a tape measure is still bars along a ruler.
+An object that cannot hold the data honestly, or that a reader would have to learn, is replaced by another of the subject's own before you draw.
+
 An rhp chart has no chart type to configure.
 It is one slat, the element drawn for each row of data, composed from blocks, so you design that slat:
 
@@ -94,6 +144,7 @@ It is one slat, the element drawn for each row of data, composed from blocks, so
 
 [forms.md](references/forms.md) maps subjects, data and stories to forms and to these compositions; use the form the user named, if they named one.
 Then open the closest recipe in `recipes/` and read it whole.
+**Sketch:** read it up to the line `<style id="poster-download-styles">`: what follows is the fit-to-screen and download block, the same in every recipe, which step 6 adds to your page.
 
 **A recipe gives technique, not a design.**
 Every recipe is a complete, tested chart page, and its comment at the top says which part is which.
@@ -154,9 +205,10 @@ The rhp MCP server's `rhp_recipe` tool (`rhp:rhp_recipe`) returns the same recip
 
 Unless the user gave a style, the chart is an original **editorial poster**: a magazine, advertisement or feature-article infographic designed for this subject.
 Original means that a reader could not guess which recipe it started from, and that with its words covered it still says what it is about.
-Read [design.md](references/design.md) and make its five decisions, in the brief's Design lines, each from this subject and each different from the starting recipe's:
+Read [design.md](references/design.md) and make its five decisions, in the brief's Design lines, each from this subject and each different from the starting recipe's.
+**Sketch:** read sections 2, 4 and 5 of design.md, and make the five decisions from the object you drew.
 
-- **Idea.** The subject's own shape, object or way of drawing this data (step 3), in one sentence, and how it helps the reading.
+- **Idea.** The subject's own shape, object or way of drawing this data (step 3), or on the sketch path the object you drew, in one sentence, and how it helps the reading.
   It is the one thing a reader remembers, and it shows in the form or the marks, not only in the frame.
 - **Marks.** Drawn to carry the idea: each item in its own outline, a bar counted out in units, a container and what fills it, the stroke of the subject's own instrument.
   Flat and honest: the value is still read from a length, a position or a count.
@@ -187,6 +239,7 @@ Unless the request is plain (design.md section 9 says what a plain or a minimal 
 ### 5. Give it an interaction
 
 Unless the user said otherwise, the chart gets one interaction that serves its story, using [interaction.md](references/interaction.md) for techniques and examples.
+**Sketch:** use the recipe's technique, or read the section of interaction.md for the interaction you choose when the recipe has none like it.
 Choose interaction behavior and presentation for the reader's task and the intended design.
 Familiar patterns are welcome when they fit.
 Recipe examples demonstrate working techniques; their controls, feedback, layout, and transitions are choices to reconsider.
@@ -200,6 +253,7 @@ A chart with fixed data and no interaction gets `static=${true}` on its Chart: r
 ### 6. Build it, with the recipe's technique
 
 For every standalone HTML poster page, keep the recipe's fit-to-screen and PNG download controls, or copy the complete block from [download.md](references/download.md) before `</body>`.
+**Sketch:** add the block before `</body>` with `node <this skill's folder>/scripts/add-download.mjs <your page>`: it copies it from the recipes without your reading it.
 The icons sit above the poster on the right, outside the saved image; on gallery recipe pages they share the row and color of the gallery link.
 The fit toggle scales the view to up to 95% of the viewport height and restores full size on the next activation.
 Download saves the full poster, including the headline and note, even when the view is fitted or the page scrolls.
@@ -224,6 +278,7 @@ Download saves the full poster, including the headline and note, even when the v
 - Real data from yearly releases takes each year from the latest release that covers it, never a mix of first estimates and revisions.
   When the user asks for brands and the source counts companies, the note names every merge shown ("Lenovo includes Motorola").
 - Look up anything you are unsure of in [api.md](references/api.md) rather than guessing a prop.
+  **Sketch:** the recipe shows every prop it uses; look up only the props you add (`grep -n` the prop in api.md, and read the lines around it).
 - Keep the code short and plain: comments at section heads and where a reader needs one.
 
 ### 7. Check it, look at it, fix it
@@ -232,6 +287,9 @@ Run the checker on the file after the first full draft and again after every fix
 
 - with the rhp MCP server: call its `rhp_check` tool (`rhp:rhp_check`) with the file's absolute path;
 - otherwise run `npx -y @bezda/rhp-mcp check <file>` (add `--dark` when the page has a dark mode).
+
+**Sketch:** check at 1280px, 390px and 320px from the first draft (`--widths 1280,390,320`, or `widths: [1280, 390, 320]` for `rhp_check`): most phone layouts that break do it at 320px.
+When a finding comes back after you fixed it once, read the section its See line names.
 
 A chart component that takes its data from the app cannot be drawn on its own: check a small entry file that draws it with fixed data, as environments.md section 13 shows.
 For the experimental `ManyDots` collection, use a build that exports it and also check its rendered point count, coordinates, per-point appearance, native interactions, and keyboard-accessible alternative directly in the browser.
@@ -455,6 +513,7 @@ The full list, with the mistake and the fix for each, is [pitfalls.md](reference
 ## References
 
 Read the ones the chart needs; each is self-contained.
+On the sketch path, read only what the request needs, at the step that needs it (the table after this list).
 
 - [forms.md](references/forms.md): the subject's own form, which chart for which data and story, and which recipe has the technique.
 - [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, color, type, layout, annotation, charts inside an app, a style the user asks for.
@@ -466,5 +525,24 @@ Read the ones the chart needs; each is self-contained.
 - [api.md](references/api.md): every component, prop, helper and CSS variable, exactly.
 - [pitfalls.md](references/pitfalls.md): mistakes and their fixes.
 - `recipes/*.html`: the tested pages listed in step 3, for technique.
+
+On the sketch path:
+
+| When | Read |
+|---|---|
+| every chart | this file, and the closest recipe up to its download block (a second recipe only for a part the first lacks) |
+| a poster, not a plain chart | [design.md](references/design.md) sections 2, 4 and 5, and [forms.md](references/forms.md) "Start from the subject's own form" |
+| no recipe has the slat | forms.md "The compositions rhp charts are made of" |
+| a prop the recipe does not use | [api.md](references/api.md): `grep -n` the prop, and the lines around it |
+| package.json names a framework (step 2) | [environments.md](references/environments.md): sections 2 and 6 (4 and 5 for Solid), the framework's own section, 13 and 14 |
+| the chart goes into an app with a look of its own | design.md section 8 |
+| the user gave colors, fonts, a brand, a publication or "dark" | design.md section 9 |
+| "plain", "minimal", "no poster" | design.md section 9 "A plain or minimal chart" only |
+| an interaction the recipe does not have | [interaction.md](references/interaction.md): that interaction's section, and section 11 |
+| play, a race, live data, an animated refresh, a slider that drives the data | interaction.md section 10, the `race` or `live` recipe, and api.md section 12 when unsure |
+| hundreds of marks, or a slow chart | [performance.md](references/performance.md); for a bulk scatter, api.md "ManyDots" |
+| a layout problem at 390px or 320px the checker reports | design.md section 6 |
+| a checker finding comes back after one fix | the section its See line names |
+| a look written out in full, as an example | [looks.md](references/looks.md) |
 
 Live gallery and docs: https://rhp.vercel.app
