@@ -114,13 +114,17 @@ The code:
 
 The AI kit has its own checks: `npm install` and `npm test` in `mcp/` run the checker against a set of broken charts, the gallery's examples and every recipe in `skills/rhp/recipes/`.
 
-### Releasing
+## Contributing
 
-1. Set the new version in `package.json` and `react/package.json` (and the `@bezda/rhp` version that `react/` depends on).
-2. Run `npm test`, `BROWSER=webkit npm test` and `BROWSER=firefox npm test`.
-3. `npm publish`, then `npm publish` in `react/` (each builds first).
-4. In `mcp/`, publish the checker with the new rhp ("Publishing" in [mcp/README.md](mcp/README.md)), so it checks charts against the rhp that jsDelivr now serves.
-5. In [rhp-documentation](https://github.com/bezda-team/rhp-documentation), `npm run sync-rhp` takes the new build for the website, and `npm run sync-skill` the skill.
+Bug reports, questions and pull requests are welcome on [GitHub](https://github.com/bezda-team/rhp).
+
+- **A bug:** open an issue with the smallest chart that shows it (one HTML file is best), the browser it happens in, and what you expected to see.
+- **A change:** open a pull request against `master`.
+  Run `npm test` before you open it, and `npm test` in `mcp/` as well when you change the skill, a recipe or the checker.
+  CI runs the same tests in Chromium, WebKit and Firefox on every pull request.
+- **A fix** is easiest to accept with a check that fails without it: a test page in `test/`, or a broken chart in `mcp/test/broken/` for the checker.
+- **A recipe or a change to the skill** keeps the checker clean: `node mcp/bin/rhp-mcp.js check <file>` reports no errors and no warnings at the widths the skill checks.
+- Write code the way the code around it is written.
 
 ## History
 
