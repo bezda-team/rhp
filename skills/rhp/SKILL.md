@@ -13,7 +13,7 @@ metadata:
 rhp draws charts out of HTML elements placed by CSS.
 You describe one **slat** (the element drawn for one row of data) from a few **blocks** (Bar, Dot, Tick, Label, Cell, Place, Area, Line), and rhp draws a slat for every row of the data and keeps each one in its place.
 For bulk scatter points, the experimental [`ManyDots` collection](references/api.md#manydots-experimental-point-collection) can draw plain HTML points directly inside a Chart with `cross`, without a Plot or a slat per point.
-Use a repository build that exports it; a version-2 package or CDN URL alone does not establish prototype availability.
+It is in rhp 2.0.3 and later, from npm and from the `@2` CDN URL.
 
 **You do not know rhp yet.**
 rhp 2 was written in September 2026, after your training data.
@@ -293,7 +293,7 @@ Run the checker on the file after the first full draft and again after every fix
 When a finding comes back after you fixed it once, read the section its See line names.
 
 A chart component that takes its data from the app cannot be drawn on its own: check a small entry file that draws it with fixed data, as environments.md section 13 shows.
-For the experimental `ManyDots` collection, use a build that exports it and also check its rendered point count, coordinates, per-point appearance, native interactions, and keyboard-accessible alternative directly in the browser.
+For the experimental `ManyDots` collection, also check its rendered point count, coordinates, per-point appearance, native interactions, and keyboard-accessible alternative directly in the browser.
 A clean standard-chart checker report alone does not establish coverage of its bulk points.
 
 It builds the chart, renders it in a browser at 1280px and 390px, tries its interaction, and reports runtime errors, props rhp does not have, data the slat reads but the Plot lacks, values past the scale, overlapping or cut-off text, marks sticking out, sideways scrolling, low contrast and tiny text, with a fix for each.
@@ -464,7 +464,7 @@ The html template (every format except Solid JSX):
 11. **Chart, Plot and slat roots use style objects.**
     On a Chart or a Plot, use `style=${{ "pointer-events": "none" }}`: a string is dropped.
     On a slat's root, keep a changing style an object (`style=${() => ({ "--n": d.n })}`), because a string that changes or a style that becomes `undefined` erases its stack position.
-    On published rhp 2.0.2, the same replacement can erase a Block's position and color, so use objects there too; the Block bug is fixed in current source for the upcoming 2.0.3 release.
+    On rhp 2.0.2 the same replacement can erase a Block's position and color, so use objects there too; 2.0.3 fixed it for Blocks.
     Other plain elements accept objects or strings.
 
 Structure and layout:

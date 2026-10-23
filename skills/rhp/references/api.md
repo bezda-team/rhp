@@ -42,7 +42,7 @@ Both `@bezda/rhp` and `@bezda/rhp/standalone` export rhp's whole API:
 
 - components: `Chart`, `Plot`, `Scale`, `Axis`, `Theme`, `Poster`
 - blocks: `Bar`, `Dot`, `Tick`, `Label`, `Cell`, `Place`, `Area`, `Line`
-- experimental point collection: [`ManyDots`](#manydots-experimental-point-collection), in builds of this repository that export it
+- experimental point collection: [`ManyDots`](#manydots-experimental-point-collection), in rhp 2.0.3 and later
 - functions: `slat`, `restyle`, `linkedCss`, `shape`, `at`, `useOrientation`, `series`, `cycle`, `sortBy`, `extent`, `every`, `nice`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`, `animated`, `curve`, `drawing`
 - the object `THEME` (the default theme)
 
@@ -661,10 +661,10 @@ render(ChangeChart, document.getElementById("chart"));
 ### ManyDots (experimental point collection)
 
 `ManyDots` draws a bulk collection of points directly inside a `Chart` with `scale` and `cross`.
-It is part of the upcoming npm 2.0.3 release.
+It is in rhp 2.0.3 and later, from npm and from the `@2` CDN URL.
 It is a collection rather than a block in a slat, so do not wrap it in a `Plot` or supply a slat function.
-Use a repository build that exports `ManyDots`; the version-2 CDN URL in the page skeleton does not guarantee this experimental API is available.
-Both package entry points export it in that build, and Solid users can import `ManyDotsProps<T>` and `ManyDotsValue<T, V>` for its types.
+It is experimental: its API may still change.
+Both package entry points export it, and Solid users can import `ManyDotsProps<T>` and `ManyDotsValue<T, V>` for its types.
 
 Choose it explicitly for bulk HTML points, or keep `Dot` for individual blocks, rich point content, and Plot behavior at any point count.
 Neither component switches into the other automatically, including at 500 points.
@@ -1601,8 +1601,8 @@ Every one of these was found by running rhp 2.0.1.
 4. **Use style objects on Chart, Plot and a slat's root.**
    `style="pointer-events: none"` on a Plot or Chart is dropped without a message; write `style=${{ "pointer-events": "none" }}`.
    On a slat's root, a string that changes or a style that becomes `undefined` replaces the whole style attribute and erases the stack position, so keep it an object.
-   Published rhp 2.0.2 has the same problem on Blocks: a Bar can disappear and SVG geometry can be lost, so use `style=${() => ({ "--n": d.n })}` there too.
-   Current source fixes the Block replacement bug for the upcoming 2.0.3 release; Blocks then retain their geometry when strings change or style is removed.
+   rhp 2.0.2 has the same problem on Blocks: a Bar can disappear and SVG geometry can be lost, so use `style=${() => ({ "--n": d.n })}` there too.
+   rhp 2.0.3 fixed it: Blocks keep their geometry when strings change or style is removed.
    Plain children that hold no rhp geometry can use changing strings.
 5. **`className` breaks a block.**
    It replaces rhp's class, so the block is no longer drawn.
