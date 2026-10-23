@@ -89,9 +89,15 @@ export function report(r) {
       if (quiet.includes(x.kind)) continue;
       lines.push(`- ${x.kind} ${x.target}${x.width !== r.interactedAt ? ` at ${x.width}px` : ""}: ${x.how}${x.error ? `, and it threw: ${x.error}` : ""}`);
     }
-    // the sweep: one line, every width at which every slat was picked in turn
+    // the sweep: a line for the pointer moved along the chart, where it was, and one for every slat picked in turn, at
+    // every width at which it was (none when no slat could be reached: nothing was picked)
     const swept = (r.swept ?? []).filter((x) => x.slats);
-    if (swept.length) lines.push(`- every slat picked in turn (${swept[0].slats}) at ${swept.map((x) => `${x.width}px`).join(", ")}: ${swept.some((x) => x.jumps) ? "the layout jumped (see the warnings)" : "nothing else moved"}`);
+    const at = (list) => list.map((x) => `${x.width}px`).join(", ");
+    const scrubbed = swept.filter((x) => x.scrubbed);
+    if (scrubbed.length) lines.push(`- pointer moved along the chart (${scrubbed[0].scrubbed.points} steps) at ${at(scrubbed)}: ${scrubbed.some((x) => x.scrubbed.moved) ? "the layout or the readout moved (see the warnings)" : "nothing else moved"}`);
+    const picked = swept.filter((x) => x.reached ?? x.slats);
+    if (picked.length) lines.push(`- every slat picked in turn (${picked[0].reached < picked[0].slats ? `${picked[0].reached} of ${picked[0].slats} reached` : picked[0].slats}) at ${at(picked)}: ${picked.some((x) => x.jumps) ? "the layout jumped (see the warnings)" : "nothing else moved"}`);
+    else if (swept.length) lines.push(`- no slat picked in turn: something covers the slats' marks at ${at(swept)}`);
   } else if (r.charts?.length && r.interactedAt) {
     lines.push("", "Interactions: nothing to interact with (no slats to point at, no buttons, ranges or selects).");
   }

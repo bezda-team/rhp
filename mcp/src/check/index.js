@@ -27,8 +27,10 @@
 //   findings      [{ level: "error" | "warning" | "info", code, message, fix, width, widths }], errors first
 //   charts        [{ width, slats, blocks: { bar: 3, label: 6 }, box: { width, height } }]
 //   interactions  [{ width, kind, target, changed, how, error, moved, unseen }]
-//   swept         [{ width, breakpoint, slats, jumps }]: the widths at which every slat was picked in turn (each width
-//                 checked, and the page's own breakpoints between them), how many slats, and how many moved the layout
+//   swept         [{ width, breakpoint, slats, reached, jumps, scrubbed }]: the widths at which every slat was picked in
+//                 turn (each width checked, and the page's own breakpoints between them), how many slats, how many the
+//                 pointer could reach, how many moved the layout, and when the pointer was moved along the chart
+//                 instead, scrubbed: { points, moved: how many of its steps moved something }
 //   screenshots   [{ width, dark, hover, path }]
 //   text          the report as plain text (what the CLI prints)
 import fs from "fs";
@@ -94,20 +96,28 @@ function source({ file, code, format }) {
 // Picks every slat of the page's main Plot in turn, as a reader going from one to the next (a tap on a touch screen,
 // the mouse elsewhere), on a page at rest with reduced motion asked for, where a pick shows at once; and lists what moved
 // outside the plot (moved() in inpage.js): a readout that takes another line for one slat, at one width. What a pick
-// throws is tagged with it in events, as the interaction pass does.
+// throws is tagged with it in events, as the interaction pass does. When the main chart draws a line or an area, a
+// layer over the plot takes the pointer (the slats cannot be pointed at) or the Plot has one or two slats (a line per
+// series), the reader moves along the chart, and the sweep scrubs it first (scrub()). { slats, reached: the slats it
+// could point at, jumps, scrub }
 async function sweep(page, touch, events) {
 
   const slats = await page.evaluate(() => window.__rhpProbe.sweepTargets());
   const jumps = [];
-  if (!touch) await page.mouse.move(0, 0);
+  await page.mouse.move(0, 0);
   await page.evaluate(() => {
     window.__rhpProbe.place();
+    window.__rhpProbe.placeLines();
     window.__rhpProbe.watch(true);
   });
+  const first = slats.length ? await page.evaluate((n) => window.__rhpProbe.pointAt(n), slats[0].target).catch(() => null) : null;
+  const scrubbed = slats.length ? await scrub(page, events, slats.length <= 2 || !!first?.covered) : null;
+  let reached = 0;
   for (const s of slats) {
     // (a slat that something covers has no point: pointing there would pick what covers it)
     const point = await page.evaluate((n) => window.__rhpProbe.pointAt(n), s.target).catch(() => null);
     if (!Number.isFinite(point?.x) || !Number.isFinite(point?.y)) continue;
+    reached++;
     const name = `slat ${s.index} of ${s.of}${s.name ? ` (${s.name})` : ""}`;
     const before = events.length;
     try {
@@ -125,7 +135,43 @@ async function sweep(page, touch, events) {
   }
   await page.evaluate(() => window.__rhpProbe.watch(false)).catch(() => {});
   if (!touch) await page.mouse.move(0, 0);
-  return { slats: slats.length, jumps };
+  return { slats: slats.length, reached, jumps, scrub: scrubbed };
+}
+
+// Moves the mouse along the main chart in small steps (scrubPath() in inpage.js, which says when), as a reader reading
+// a chart that follows the pointer across its plot (a line read day by day), at every width: a finger dragging along a phone's plot
+// shows the same readout. Each step is measured against the page at rest (place() and placeLines() before it): the
+// layout, as for a pick (moved()), and the lines of text around the charts (slides()), which jitter when a label
+// slides as the value before it changes width, or a readout takes another line on some days.
+// { points, steps: [what moved at each step that moved anything] }
+async function scrub(page, events, force) {
+
+  const path = await page.evaluate((f) => window.__rhpProbe.scrubPath(f), force).catch(() => null);
+  if (!path?.points.length) return null;
+  const start = events.length;
+  const steps = [];
+  let said = null;
+  let changes = 0;
+  try {
+    for (const p of path.points) {
+      await page.mouse.move(p.x, p.y);
+      await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+      const [moved, text] = await page.evaluate((n) => [[...window.__rhpProbe.moved(n, true).filter((m) => !m.text), ...window.__rhpProbe.slides()], window.__rhpProbe.state().text], path.target).catch(() => [[], said]);
+      if (said !== null && text !== said) changes++;
+      said = text;
+      if (moved.length) steps.push(moved);
+    }
+  } finally {
+    await page.mouse.move(0, 0).catch(() => {});
+    for (const e of events.slice(start)) {
+      if (e.kind === "pageerror" || e.kind === "console-error") e.during ??= "moving the pointer along the chart";
+    }
+  }
+  // (a readout that changes at three steps in four or more follows the pointer along the chart: a sentence that slides
+  // there jitters; one that changes less often changes once per mark, and only what a pick counts counts)
+  const continuous = changes >= 0.75 * (path.points.length - 1);
+  const kept = steps.map((moved) => (continuous ? moved : moved.filter((m) => !m.strict))).filter((moved) => moved.length);
+  return { points: path.points.length, continuous, steps: kept };
 }
 
 // Moves the mouse from a slat to its neighbor in small steps (three pairs of the main Plot: the first, the middle and
@@ -555,11 +601,10 @@ export async function check(options = {}) {
 
     // the layout jumping when an interaction runs: the same things moving for several interactions is one finding.
     // Texts that moved with what jumped (by the same amount) are that jump; the others are one text-shift finding for
-    // the width, with each text at the most it moved.
+    // the width, with each text at the most it moved, or, as the pointer moves along the chart, one jitter finding.
     const jumps = new Map();
-    const shifted = new Map();
-    let shifts = null;
-    const add = (kind, target, moved) => {
+    const texted = { "text-shift": { found: null, by: new Map() }, jitter: { found: null, by: new Map() } };
+    const add = (kind, target, moved, code = "text-shift") => {
       const other = moved.filter((m) => !m.text);
       const texts = moved.filter((m) => m.text && !other.some((o) => Math.abs(o.dx - m.dx) <= 1 && Math.abs(o.dy - m.dy) <= 1));
       if (other.length) {
@@ -568,27 +613,37 @@ export async function check(options = {}) {
         else jumps.set(key, { code: "layout-jump", kind, target, moved: other, more: 0 });
       }
       if (!texts.length) return;
-      if (shifts) shifts.more++;
-      else shifts = { code: "text-shift", kind, target, more: 0 };
+      const t = texted[code];
+      if (t.found) t.found.more++;
+      else t.found = { code, kind, target, more: 0 };
       for (const m of texts) {
-        const was = shifted.get(m.what);
-        if (!was || Math.abs(m.dx) + Math.abs(m.dy) > Math.abs(was.dx) + Math.abs(was.dy)) shifted.set(m.what, m);
+        const was = t.by.get(m.what);
+        if (!was || Math.abs(m.dx) + Math.abs(m.dy) > Math.abs(was.dx) + Math.abs(was.dy)) t.by.set(m.what, m);
       }
     };
     for (const x of r.interactions.filter((x) => x.moved?.length)) {
       add(x.kind, x.target, x.moved);
     }
     for (const sw of r.swept) {
+      const beside = sw.breakpoint ? ` at ${sw.width}px, beside one of the page's own breakpoints` : "";
+      for (const moved of sw.scrub?.steps ?? []) {
+        add("scrub", `the chart${beside}`, moved, "jitter");
+      }
       for (const j of sw.jumps) {
-        add("pick", sw.breakpoint ? `${j.target} at ${sw.width}px, beside one of the page's own breakpoints` : j.target, j.moved);
+        add("pick", `${j.target}${beside}`, j.moved);
       }
     }
     for (const j of jumps.values()) {
       findings.push({ ...fromProbe(j, {}), width: r.width });
     }
-    if (shifts) {
-      const moved = [...shifted.values()].sort((a, b) => Math.abs(b.dx) + Math.abs(b.dy) - Math.abs(a.dx) - Math.abs(a.dy));
-      findings.push({ ...fromProbe({ ...shifts, moved }, {}), width: r.width });
+    // (a text the scrub found jittering is that finding: a pick that moved it is one of the steps along the chart)
+    for (const what of texted.jitter.by.keys()) {
+      texted["text-shift"].by.delete(what);
+    }
+    for (const { found, by } of Object.values(texted)) {
+      if (!found || !by.size) continue;
+      const moved = [...by.values()].sort((a, b) => Math.abs(b.dx) + Math.abs(b.dy) - Math.abs(a.dx) - Math.abs(a.dy));
+      findings.push({ ...fromProbe({ ...found, moved }, {}), width: r.width });
     }
 
     // a readout or a lit slat that goes back to how it is at rest between two slats, as the mouse goes from one to the next
@@ -612,7 +667,7 @@ export async function check(options = {}) {
   const charts = results.flatMap((r) => r.seen.charts.map((c) => ({ width: r.width, ...c })));
   const selectionAudits = results.flatMap((r) => r.selection.tested ? [{ width: r.width, ...r.selection.tested }] : []);
   const interactions = results.flatMap((r) => r.interactions);
-  const swept = results.flatMap((r) => r.swept.map(({ width, breakpoint, slats, jumps }) => ({ width, breakpoint: !!breakpoint, slats, jumps: jumps.length }))).sort((a, b) => b.width - a.width);
+  const swept = results.flatMap((r) => r.swept.map(({ width, breakpoint, slats, reached, jumps, scrub }) => ({ width, breakpoint: !!breakpoint, slats, reached, jumps: jumps.length, scrubbed: scrub ? { points: scrub.points, moved: scrub.steps.length } : null }))).sort((a, b) => b.width - a.width);
   timings.widths = Object.fromEntries(results.map((r) => [r.width, r.ms]));
 
   return finish({ ...base, browser: launched.name, findings, charts, interactions, interactedAt: wantInteract ? widths[0] : null, selectionAudits, swept, screenshots, timings, started });

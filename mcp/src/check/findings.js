@@ -4,7 +4,7 @@
 const q = (text) => `"${text}"`;
 
 // What an interaction is, said as something a reader does ("clicking button "Q2"")
-const DOING = { hover: "pointing at", tap: "tapping", click: "clicking", input: "setting", select: "setting", key: "pressing", pick: "picking" };
+const DOING = { hover: "pointing at", tap: "tapping", click: "clicking", input: "setting", select: "setting", key: "pressing", pick: "picking", scrub: "moving the pointer along" };
 
 // How far something moved: "88px down", "12px right"
 const shift = ({ dx, dy }) => [dy && `${Math.abs(dy)}px ${dy > 0 ? "down" : "up"}`, dx && `${Math.abs(dx)}px ${dx > 0 ? "right" : "left"}`].filter(Boolean).join(" and ");
@@ -50,6 +50,7 @@ export const SEE = {
   "selection-control-reset": 'interaction.md, "2. Readout on hover, focus and tap"',
   "layout-jump": PITFALLS("The layout jumps when the reader interacts"),
   "text-shift": PITFALLS("The layout jumps when the reader interacts"),
+  "jitter": PITFALLS("The layout jumps when the reader interacts"),
   "out-of-view": 'interaction.md, "2. Readout on hover, focus and tap"',
   "scrolls-away": 'interaction.md, "2. Readout on hover, focus and tap"',
   "focus-invisible": 'interaction.md, "9. Keyboard"',
@@ -244,6 +245,16 @@ export function fromProbe(f, context) {
         code: f.code,
         message: `Text that says the same thing moves when ${DOING[f.kind] ?? f.kind} ${f.target}: ${list}${f.moved.length > 3 ? ` and ${f.moved.length - 3} more` : ""}${f.more ? ` (${f.more} more interaction${f.more > 1 ? "s" : ""} or pick${f.more > 1 ? "s" : ""} move text too)` : ""}. Labels and values that slide as the numbers change make the reader lose their place.`,
         fix: "Give what changes a place that keeps its size, so the text around it stays put: numbers in tabular figures (font-variant-numeric: tabular-nums) in a column of their own or with a min-width in ch, right-aligned; a label in its own column (a grid), not after a value on the same line; a readout's lines in a fixed order; and a min-height for the readout's longest text.",
+      };
+    }
+    case "jitter": {
+      const how = (m) => [m.dx && `slides up to ${Math.abs(m.dx)}px ${m.dx > 0 ? "right" : "left"}`, m.dy && `moves up to ${Math.abs(m.dy)}px ${m.dy > 0 ? "down" : "up"}`].filter(Boolean).join(" and ");
+      const list = f.moved.slice(0, 3).map((m) => `${m.what}${m.line ? ` (in "${m.line}")` : ""} ${how(m)}`).join(", ");
+      return {
+        level: "warning",
+        code: f.code,
+        message: `The readout jitters as the pointer moves along ${f.target}: ${list}${f.moved.length > 3 ? ` and ${f.moved.length - 3} more` : ""}. A text that keeps none of its edges in place while the values change, or moves while it says the same thing, shakes under the reader's eyes at every step along the chart.`,
+        fix: "Start each part of the readout where nothing before it changes width: a grid with a column per part, or each part on a line of its own, never a label after a value on the same line. Give each value a box that keeps its size: tabular figures (font-variant-numeric: tabular-nums) with a min-width in ch for the longest value it can show (and the longest date), right-aligned when it ends a column. Keep the readout on its lines whatever it says: white-space: nowrap, or a min-height for its longest text at the narrowest width.",
       };
     }
     case "flicker":

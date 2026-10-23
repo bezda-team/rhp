@@ -1501,5 +1501,119 @@ export function install() {
     return out.controls.length || out.readout ? out : null;
   }
 
-  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, sweepTargets, breakpoints, pointAt, place, moved, record, stop, unseen, focused, focusStop, neighbors, markCenter, state, watch, scrollsAway };
+  // The points the scrub moves the pointer through (see scrub() in index.js), when the reader moves along the chart:
+  // the main chart draws a line or an area (read day by day along its scale), or force (the sweep cannot point at its
+  // slats, or there are one or two). steps points through the middle of the plot, from just inside one end to just
+  // inside the other, with the plot scrolled to the middle of the window: along the scale of the plot that draws the
+  // line or the area, else along the main Plot's scale when it has one or two slats, else across its slats (columns
+  // side by side, or rows one under the other). Points outside the window are left out. { points, target: the plot,
+  // for moved() }
+  function scrubPath(force = false, steps = 40) {
+
+    const slats = mainSlats();
+    const main = slats[0]?.parentElement;
+    const chart = main?.closest(".rhp-chart");
+    const mark = chart ? [...chart.querySelectorAll(".rhp-line, .rhp-area")].find(visible) : null;
+    if (!main || (!mark && !force)) return { points: [] };
+    const plot = mark?.closest(".rhp-plot") ?? main;
+    plot.scrollIntoView({ block: "center", inline: "center", behavior: "instant" });
+    const r = plot.getBoundingClientRect();
+    const vertical = plot.dataset.rhpO === "v";
+    const across = mark || slats.length <= 2 ? !vertical : vertical;
+    const points = [];
+    for (let k = 0; k <= steps; k++) {
+      const f = 0.02 + (0.96 * k) / steps;
+      const p = across ? { x: r.left + r.width * f, y: r.top + r.height / 2 } : { x: r.left + r.width / 2, y: r.top + r.height * f };
+      if (p.x >= 0 && p.y >= 0 && p.x < innerWidth && p.y < innerHeight) points.push(p);
+    }
+
+    return { points, target: (window.__rhpTargets ??= []).push(plot) - 1 };
+  }
+
+  // The lines of text around the charts (outside them and their controls), for the scrub: each text node's first line
+  // box, in the box it floats in (see frameOf), keyed by where the node sits in the page so that one written again
+  // counts as the same. placeLines() notes them before the pointer moves; slides() then says which moved: a text that
+  // says the same thing and moved, or one whose words changed and that kept none of its edges (its start, its end or,
+  // on one line, its middle) where it was. A number at the start of its line may grow; a label after it that slides as
+  // it grows jitters under the reader's eyes at every step, and so does a whole sentence, on a chart whose readout
+  // changes at every step (a line read day by day). Over separate marks the readout changes once per mark, as a pick
+  // does, and only what a pick counts counts (see moved()): what is strict is left out there, a slide along its line of
+  // a text whose words changed, or of a sentence of three words or more. A text that moves up or down jumps, whatever
+  // it says and however often the readout changes. A text first seen after placeLines() is measured against where it
+  // was first seen.
+  let lines = new Map();
+  const keyOf = (node) => {
+    const path = [];
+    for (let n = node; n && n !== document.body && n.parentNode; n = n.parentNode) path.push([...n.parentNode.childNodes].indexOf(n));
+    return path.join(".");
+  };
+  const textNodes = () => {
+    const out = [];
+    for (const { el: root } of sections) {
+      if (!root.isConnected) continue;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node && out.length < 800; node = walker.nextNode()) {
+        const el = node.parentElement;
+        if (!el || !node.data.trim() || el.closest(".rhp-chart") || el.closest(CONTROLS) || !visible(el) || (viewRoot && !viewRoot.contains(el))) continue;
+        out.push(node);
+      }
+    }
+    return out;
+  };
+  const lineOf = (node) => {
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const rects = [...range.getClientRects()].filter((q) => q.width > 0 && q.height > 0);
+    if (!rects.length) return null;
+    const el = node.parentElement;
+    const frame = frameOf(el);
+    const f = frame ? frame.getBoundingClientRect() : { left: -scrollX, top: -scrollY };
+    const scale = scaleOf(el);
+    const left = (rects[0].left - f.left) / scale;
+    const right = (rects.at(-1).right - f.left) / scale;
+    // (the line it is part of: its nearest block, which a finding names when it holds more than this text)
+    let block = el;
+    while (block.parentElement && /^(inline|contents)$/.test(getComputedStyle(block).display)) block = block.parentElement;
+    return { text: node.data.replace(/\s+/g, " ").trim(), frame, left, right, mid: (left + right) / 2, top: (rects[0].top - f.top) / scale, one: rects.length === 1, line: snippet(seenText(block)) };
+  };
+  function placeLines() {
+
+    lines = new Map();
+    for (const node of textNodes()) {
+      const line = lineOf(node);
+      if (line) lines.set(keyOf(node), line);
+    }
+    return lines.size;
+  }
+  function slides() {
+
+    const out = [];
+    for (const node of textNodes()) {
+      const now = lineOf(node);
+      if (!now) continue;
+      const key = keyOf(node);
+      const was = lines.get(key);
+      if (!was) {
+        lines.set(key, now);
+        continue;
+      }
+      if (was.frame !== now.frame) continue;
+      const by = (k) => Math.round(now[k] - was[k]);
+      const dy = by("top");
+      let dx = by("left");
+      // (a line that moves up or down jumps whatever it says: only a slide along the line can be strict)
+      const strict = Math.abs(dy) <= 2 && (now.text !== was.text || (was.text.match(/[\p{L}\p{N}]+/gu) ?? []).length >= 3);
+      if (now.text !== was.text) {
+        const edges = [by("left"), by("right"), ...(now.one && was.one ? [by("mid")] : [])];
+        dx = edges.some((v) => Math.abs(v) <= 2) ? 0 : edges.reduce((a, b) => (Math.abs(b) < Math.abs(a) ? b : a));
+      }
+      // (a comma or a dot moves with the words around it, and is not named apart from them)
+      if ((Math.abs(dx) > 2 || Math.abs(dy) > 2) && /[\p{L}\p{N}]/u.test(was.text)) out.push({ what: `"${snippet(was.text)}"`, line: was.line !== snippet(was.text) ? was.line : null, dx, dy, text: true, strict });
+      if (out.length >= 40) break;
+    }
+
+    return out;
+  }
+
+  window.__rhpProbe = { settle, calm, resized: () => [resizes, mutations], measure, transitions, colorItems, hide, show, contentBox, targets, sweepTargets, breakpoints, pointAt, place, moved, record, stop, unseen, focused, focusStop, neighbors, markCenter, state, watch, scrollsAway, scrubPath, placeLines, slides };
 }

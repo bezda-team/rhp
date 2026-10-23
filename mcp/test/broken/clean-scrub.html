@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- The line of jitter.html read year by year, with a readout that keeps every part in place: the year first, then the tons in a box as wide as the longest value, right-aligned in tabular figures, then the unit. Nothing moves along the chart. expect: none; widths: 1280,390 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>clean-scrub</title>
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  body { margin: 0; padding: 24px 16px; font: 16px/1.5 system-ui, sans-serif; background: #fff; color: #222; }
+  .poster { max-width: 720px; margin: 0 auto; }
+  .readout { height: 1lh; margin: 12px 0 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .readout .tons { display: inline-block; min-width: 5ch; text-align: right; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Line, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Tons a year, growing by 8% from 80 in 1966 to 8,101 in 2026
+const YEARS = Array.from({ length: 61 }, (_, i) => 1966 + i);
+const TONS = YEARS.map((_, i) => Math.round(80 * 1.08 ** i));
+const tons = new Intl.NumberFormat("en-US");
+
+const Curve = slat({}, (d) => html`<${Line} points=${() => d.points} />`);
+
+// One invisible column per year: what the pointer picks
+const Year = slat({ room: {} }, (d) => html`<div data-i=${() => d.index}></div>`);
+
+const [picked, setPicked] = createSignal(null);
+const i = () => picked() ?? YEARS.length - 1;
+const pick = (e) => {
+  const root = e.target.closest("[data-i]");
+  if (root) setPicked(+root.dataset.i);
+};
+
+render(() => html`
+  <figure class="poster">
+    <div onPointerMove=${pick} onClick=${pick} onPointerLeave=${() => setPicked(null)}>
+      <${Chart} scale=${[1965.5, 2026.5]} cross=${[0, 9000]} height=${260} label="Tons a year, 1966 to 2026">
+        <${Plot} overlap=${true} points=${[YEARS.map((y, k) => [y, TONS[k]])]}>${Curve}<//>
+        <${Plot} orientation="vertical" year=${YEARS}>${Year}<//>
+      <//>
+    </div>
+    <p class="readout"><b>${() => YEARS[i()]}</b>: <b class="tons">${() => tons.format(TONS[i()])}</b> tons</p>
+  </figure>`, document.getElementById("chart"));
+</script>
+</body>
+</html>

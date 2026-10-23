@@ -116,12 +116,13 @@ Start from a recipe, never from what another library does.
 
 ## The layout jumps when the reader interacts
 
-The checker warns (`layout-jump`) when a control or the chart moves after one of its interactions; these are the usual causes. It tries only some controls, so try every one yourself and compare.
+The checker warns (`layout-jump`) when a control or the chart moves after one of its interactions, (`text-shift`) when a text that still says the same thing moves, and (`jitter`) when a text moves as the pointer goes along a chart that follows it (a line read day by day); these are the usual causes. It tries only some controls, so try every one yourself and compare.
 
 1. **Text that changes with a switch moves the controls below it** (a headline or a dek per question): stack every version in one grid cell (a wrapper with `display: grid`, each version at `grid-area: 1 / 1`, `visibility: hidden` except the current one), so the cell is always as tall as the longest version.
    Align the versions to the cell's end (`align-self: end`) when the chart is below them, so a short version leaves no empty line above the chart.
 2. **A readout that wraps on a phone pushes the chart down**: give it a `min-height` for its longest text at 320px (`min-height: 2lh`, or `3lh`), counting the longest numbers and dates that gain a year ("Jan 4, 2027").
 3. **Numbers that change width shift what follows them**: use `font-variant-numeric: tabular-nums`, and give a column of numbers a fixed room; in an "auto" end room, align them across slats with `justify-self: stretch` and `justify-content: flex-end` on the label.
+   In a readout, tabular figures alone are not enough when the number of digits changes ("$654" to "$84,176") or a date's month names differ in width: start each part where nothing before it changes width (a grid with a column per part, or each part on its own line), or give the value a box with a `min-width` in `ch` for the longest value it can show, right-aligned. A label or a unit after a value on the same line ("8,101 tons in 2026") slides at every step of a pointer moving along the chart.
 4. **Every bar slides when a slat is lit**: the lit name turns bold in a `room.start` of "auto", which measures the widest name again and moves the plot.
    Change only the lit name's color, or keep its bold width at rest: room in px, or the bold text drawn hidden under the name (`.name::after { content: attr(data-name); display: block; height: 0; overflow: hidden; visibility: hidden; font-weight: 700; }`, with `data-name=${() => d.name}` on the Label; measured: the bars held still at 1280px, where a plain bold name moved them 10.8px).
 5. **A button whose text changes (Play, Pause) moves its neighbors**: stack both texts in one grid cell, the hidden one `visibility: hidden`, so the button is always as wide as the longer one.
