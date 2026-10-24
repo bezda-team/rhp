@@ -57,6 +57,10 @@ Start from a recipe, never from what another library does.
 9. **A vertical Plot over a horizontal chart draws 0px-tall columns**: in rhp 2.0.1, a second top-level Plot with `orientation="vertical"` in a horizontal Chart whose slat type has `room: "auto"` gets columns as wide as the chart and no height. Give the slats room in px, or put the Plot in a chart with `cross` (as the line recipe does).
 10. **A scatter or line chart puts everything on one line**: with Dot slats, the Chart needs `cross=${[min, max]}`, the Plot needs `overlap=${true}`, and each Dot needs `cross=${() => d.y}`.
     The experimental [ManyDots collection](api.md#manydots-experimental-point-collection) goes directly inside a Chart with `cross` and takes its own `rows`, `at`, and `cross` accessors.
+11. **The chart says `noCssGuard`, or the page calls `noCssGuard()`**: page CSS that sets margins, padding, borders or sizes on every `div` or `span` (a framework's base styles) now reaches rhp's elements and moves them, and a slat root that is a `<p>`, `<ul>`, `<h3>` or `<figure>` keeps the browser's margins (performance.md, "Go without the guard").
+    Take `noCssGuard` off, aim those rules at the page's own elements, or use a `div` as the slat's root.
+12. **A position read outside the slat's CSS is empty** (rhp 2.1 and later): `var(--rhp-position)` in a `style` prop on an element inside a slat gets nothing [37].
+    Read it in the slat type's `css`, or copy it on the slat's root (`style=${{ "--row": "var(--rhp-position)" }}`) and read `var(--row)`.
 
 ## Text sticks out, is cut off or overlaps
 
@@ -152,6 +156,7 @@ These are the traps it brings.
 ## Styles or colors do not apply
 
 1. **Page CSS aimed at bars, labels or the axis** [21]: it cannot change their color, background, font, border, radius, shadow, padding or transition, even with `!important`. Move those rules into the slat type's `css`.
+   (A chart that says `noCssGuard` lets page CSS reach what rhp does not set itself, such as fonts, borders and padding, but still not a block's color: performance.md, "Go without the guard".)
 2. **`className`** [5]: on a block it replaces rhp's class and the block vanishes. Use `class`.
 3. **The chart ignores the page's font or colors** [20]: give them in the Chart's `theme` (`font`, `ink`, `muted`, `grid`, `series`, ...).
 4. **`var(--brand)` as a color warns** [20]: put the brand colors in the theme instead.
@@ -167,6 +172,8 @@ These are the traps it brings.
 14. **A pinned readout or a menu over the chart is drawn under the bars** [36]: give it `z-index: 2` or more.
 15. **The marks are invisible when the component is shown on its own**: its theme reads the app's variables with no fallback (`series: ["var(--chart-1)", …]`), so on a page without the app's CSS (the checker's page, a test, Storybook) every mark is transparent.
     Give each a fallback with the app's own value: `"var(--chart-1, oklch(0.646 0.222 41.116))"` (design.md section 8).
+16. **A Label takes a color, font or margin meant for something else on the page**: the chart says `noCssGuard`, and a page rule for one of the slat's classes reaches it (the candlestick recipe's page had `.poster .note` for its footnote, and its earnings Label has `class="note"`).
+    Rename the slat's class, or aim the page rule at the page's own element.
 
 ## Console warnings rhp prints
 
@@ -183,6 +190,7 @@ Each is worth fixing [34]:
 | "--rhp-radius takes one length" | one length, or `--rhp-start-radius` and `--rhp-end-radius` |
 | "unknown ease" | a CSS name, four cubic-bezier numbers, or a function |
 | "linkedCss() was called, but this page doesn't link" | link `@bezda/rhp/rhp.css`, or remove `linkedCss()` |
+| "noCssGuard on a Chart can't turn off the guard in the rhp.css the page links" | link `@bezda/rhp/rhp-no-css-guard.css` instead and call `noCssGuard()`, or remove the prop |
 
 ## Mistakes in the work itself
 
