@@ -32,7 +32,7 @@ O.read = () => {
     return { margin: s.marginTop, sizing: s.boxSizing };
   };
   const text = document.adoptedStyleSheets.map((sheet) => [...sheet.cssRules].map((r) => r.cssText).join("\n")).join("\n");
-  return { guarded: bar(".guarded"), unguarded: bar(".unguarded"), guard: text.includes("display: revert"), checks: text.includes("data-rhp-no-guard") };
+  return { guarded: bar(".guarded"), unguarded: bar(".unguarded"), guard: text.includes("display: revert"), checks: text.includes("data-rhp-guard") };
 };
 
 O.guarded = async () => {

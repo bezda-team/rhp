@@ -471,6 +471,10 @@ export function noCssGuard() {
   guarded = false;
 }
 
+// Whether charts that don't say noCssGuard have the guard: they carry data-rhp-guard, which the guard checks once a
+// Chart says noCssGuard
+export const pageGuarded = () => guarded;
+
 // inheritPosition() where the app starts, before the first chart: --rhp-position is passed down from each slat root
 // again, so anything inside a slat can read it. The browser then can't reuse a style between rows, and charts take
 // longer to draw.
@@ -487,9 +491,12 @@ const position = (inherits) => `@property --rhp-position { syntax: "*"; inherits
 // The core reset is protected wholesale. Bulk points specify their own narrow geometry protection.
 export const coreSheet = () => (coreText ??= LAYERS + "\n" + position(positionInherits) + "\n" + important(CORE) + "\n" + MANYDOTS);
 
-// The guard, or (gated) the guard applying only inside charts that don't say noCssGuard: every selector of guard.css
-// gets the chart around as a condition. (guard.css comes minified: style rules in one @layer and nothing else.)
-const gate = (css) => css.replace(/(^|[{}])([^{}@]+)\{/g, (_, end, list) => end + split(list).map((sel) => ":where(.rhp-chart:not([data-rhp-no-guard])) " + sel).join(", ") + "{");
+// The guard, or (gated) the guard applying only inside charts that keep it: every selector of guard.css gets a chart
+// with data-rhp-guard around it as a condition. A mark on the charts that keep the guard, not on the ones that don't: for
+// an element of a chart without the mark, the browser rules the condition out at once instead of walking up the page,
+// so a Chart's noCssGuard saves as much as noCssGuard() does. (guard.css comes minified: style rules in one @layer and
+// nothing else.)
+const gate = (css) => css.replace(/(^|[{}])([^{}@]+)\{/g, (_, end, list) => end + split(list).map((sel) => ":where([data-rhp-guard]) " + sel).join(", ") + "{");
 export const guardSheet = (gated) => (gated ? (gatedText ??= important(gate(GUARD))) : (guardText ??= important(GUARD)));
 
 // The rules for gutters sized by their labels (room "auto"), added when a chart first asks for them
@@ -540,7 +547,7 @@ export function serverSheets(slats, render, gutters, crossed) {
     out += coreSheet();
   }
 
-  // The guard a server writes applies only inside charts that don't say noCssGuard, so it is right whichever charts
+  // The guard a server writes applies only inside charts that keep it (data-rhp-guard), so it is right whichever charts
   // come later in the page. (The browser starts from the plain guard and checks charts once one says noCssGuard.)
   if (!linked && guarded && !seen.has("guard")) {
     seen.add("guard");
@@ -605,8 +612,9 @@ export function useCore() {
   if (linked && positionInherits) add(position(true));
 }
 
-// A Chart that says noCssGuard: from now on the guard applies only inside charts that don't. The check this takes makes
-// every chart that keeps its guard a little slower to draw, so the guard only gets it once a chart turns it off.
+// A Chart that says noCssGuard: from now on the guard applies only inside charts that keep it (data-rhp-guard). The
+// check this takes makes every chart that keeps its guard a little slower to draw, so the guard only gets it once a
+// chart turns it off.
 let warnedLinkedGuard = false;
 export function useChartGuard() {
 

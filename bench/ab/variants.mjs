@@ -483,6 +483,20 @@ VARIANTS.csstext = {
     return { c, dir, a, st, css, v };`)],
 };
 
+// markgate (the guard checked by a data-rhp-guard mark on the charts that keep it, not by :not([data-rhp-no-guard])) is
+// rhp itself now: results/options-2026-10-24/focus-markgate*.json measured it against the old check.
+
+// Where a slat type's position copy (--rhp-row) costs: on its roots only (a Plot inside its slats then reads the outer
+// place, so this is for measuring), and with the roots of Plots inside matched by attribute instead of by *
+VARIANTS.aliasroots = {
+  about: "the --rhp-row copy on the slat type's roots only",
+  edits: [js("style.js", "const row = reads ? `:where(${S}, ${S} .rhp-plot > *) { --rhp-row: var(--rhp-position); }\\n` : \"\";", "const row = reads ? `:where(${S}) { --rhp-row: var(--rhp-position); }\\n` : \"\";")],
+};
+VARIANTS.aliasattr = {
+  about: "the --rhp-row copy on the roots of Plots inside matched as .rhp-plot > [data-rhp-o]",
+  edits: [js("style.js", "const row = reads ? `:where(${S}, ${S} .rhp-plot > *) { --rhp-row: var(--rhp-position); }\\n` : \"\";", "const row = reads ? `:where(${S}, ${S} .rhp-plot > [data-rhp-o]) { --rhp-row: var(--rhp-position); }\\n` : \"\";")],
+};
+
 // Applies a variant's edits to one source file's text (file is its name in src/)
 export function applyEdits(variant, file, text) {
 

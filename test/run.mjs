@@ -1191,8 +1191,8 @@ const dom = (p, charts) => p.evaluate((charts) => {
   check("server: two renders (two islands) each bring rhp's core, once", [core(SSR.html()), core(SSR.html())], [1, 1]);
   check("server: renderToStringAsync writes the same HTML", await SSR.htmlAsync(), SSR.html());
   check("server: a chart's aspect is written for the page's CSS", ((h) => /data-rhp-aspect/.test(h) && /--rhp-aspect:2/.test(h))(SSR.aspect()), true);
-  check("server: a Chart with noCssGuard is marked, and the guard a server writes checks charts, so a page of both draws right before the browser takes over",
-    ((h) => [(h.match(/<div[^>]*class="rhp-chart"[^>]*>/g) ?? []).map((tag) => tag.includes("data-rhp-no-guard")), /:where\(\.rhp-chart:not\(\[data-rhp-no-guard\]\)\)/.test(h)])(SSR.noGuard()), [[false, true], true]);
+  check("server: a Chart that keeps the guard is marked and one with noCssGuard isn't, and the guard a server writes checks charts, so a page of both draws right before the browser takes over",
+    ((h) => [(h.match(/<div[^>]*class="rhp-chart"[^>]*>/g) ?? []).map((tag) => tag.includes("data-rhp-guard")), /:where\(\[data-rhp-guard\]\)/.test(h)])(SSR.noGuard()), [[true, false], true]);
   const plain = SSR.plain();
   check("server: without hydration keys, the charts are all there", [/data-hk/.test(plain), (plain.match(/class="rhp-bar/g) ?? []).length], [false, (SSR.html().match(/class="rhp-bar/g) ?? []).length]);
   let err = "";

@@ -1,6 +1,6 @@
 /* The guard: the rules that keep a page's CSS from reaching a chart. style.js adds them after the core and makes them
    !important in rhp.core like the core, unless the page calls noCssGuard(). When a Chart says noCssGuard, style.js
-   rewrites every rule here to apply only inside charts that don't (data-rhp-no-guard on the chart root). */
+   rewrites every rule here to apply only inside charts that keep it (data-rhp-guard on the chart root). */
 
 @layer rhp.core {
 
