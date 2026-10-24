@@ -7,6 +7,14 @@
    NOTE: A shorthand whose value uses var() is parsed again for every element, so those are written as longhands. Not
    background and font: which of their longhands a value sets depends on the value. */
 
+/* A slat's place stays on its root and isn't passed down to what is inside. Passed down, every row would give its
+   elements a value of their own, and the browser could never reuse a style it worked out for one row in another.
+   (A slat type whose CSS reads it gets it inside its slats too: style.js.) */
+@property --rhp-position {
+  syntax: "*";
+  inherits: false;
+}
+
 @layer rhp.core {
 
   /* The guard: resets what a page might set on any div, span or svg, so a page's CSS can't bend a chart out of shape.

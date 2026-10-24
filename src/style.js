@@ -657,7 +657,13 @@ function slatSheet(fn) {
     ? `:where(${S}, ${S} :where(.rhp-plot, .rhp-plot > *))::before, :where(${S}, ${S} :where(.rhp-plot, .rhp-plot > *))::after { content: none; display: inline; }\n`
     : "";
 
-  return `@layer rhp.slat {\n${important(own + scoped(fn.css, fn.scope))}\n}`;
+  // --rhp-position stays on the slat root (rhp.css). A slat type whose CSS reads it reads --rhp-row instead, which its
+  // roots set from their position and which is passed down like any variable, so it works anywhere inside its slats.
+  const reads = /var\(\s*--rhp-position\b/.test(fn.css);
+  const css = reads ? fn.css.replace(/var\(\s*--rhp-position\b/g, "var(--rhp-row") : fn.css;
+  const row = reads ? `:where(${S}) { --rhp-row: var(--rhp-position); }\n` : "";
+
+  return `@layer rhp.slat {\n${important(row + own + scoped(css, fn.scope))}\n}`;
 }
 
 // Gives a slat type new CSS. Every slat of that type restyles at once, wherever it is shown, and none is made again.
