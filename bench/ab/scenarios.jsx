@@ -12,8 +12,11 @@ const VALUES = { 1: (n) => Array(n).fill(50), 1000: (n) => Array.from({ length: 
 const points = (n) => Array.from({ length: n }, (_, i) => ({ x: ((i * 0.6180339887498949) % 1) * 100, y: ((i * 0.7548776662466927) % 1) * 100 }));
 const wave = (n) => Array.from({ length: n }, (_, i) => [i, Math.sin(i / 50) * 1.4 + Math.sin(i / 7) * 0.3]);
 
+// ?noguard=1: every chart here says noCssGuard, so it goes without rhp's guard
+const NO_GUARD = typeof location !== "undefined" && new URLSearchParams(location.search).get("noguard") === "1";
+
 // A bar chart: a name, a bar and its value per row (the bench's chart)
-function bars({ n, thickness, animate, still, distinct }) {
+function bars({ n, thickness, animate, still, distinct, noGuard }) {
   return (el) => {
     const [vals, setVals] = createSignal(distinct ? VALUES[distinct](n) : values(n));
     const [scale, setScale] = createSignal([0, 100]);
@@ -27,7 +30,7 @@ function bars({ n, thickness, animate, still, distinct }) {
     ));
     const list = names(n);
     const dispose = render(() => (
-      <Chart scale={scale()} animate={animate} static={still}>
+      <Chart scale={scale()} animate={animate} static={still} noCssGuard={noGuard || NO_GUARD}>
         <Plot name={list} value={vals()} order={order()}>{Row}</Plot>
       </Chart>
     ), el);
@@ -62,7 +65,7 @@ function positioned({ n }) {
     ));
     const list = names(n);
     const dispose = render(() => (
-      <Chart scale={[0, 100]}>
+      <Chart noCssGuard={NO_GUARD} scale={[0, 100]}>
         <Plot name={list} value={values(n)}>{Row}</Plot>
       </Chart>
     ), el);
@@ -83,7 +86,7 @@ function nestedPositioned({ rows, cols }) {
       </div>
     ));
     const dispose = render(() => (
-      <Chart scale={[0, 100]} ticks={false}>
+      <Chart noCssGuard={NO_GUARD} scale={[0, 100]} ticks={false}>
         <Plot day={days} hours={hours}>{Day}</Plot>
       </Chart>
     ), el);
@@ -103,7 +106,7 @@ function dashboard({ k, n }) {
     ));
     const list = names(n);
     const dispose = render(() => Array.from({ length: k }, (_, c) => (
-      <Chart scale={[0, 100]}>
+      <Chart noCssGuard={NO_GUARD} scale={[0, 100]}>
         <Plot name={list} value={values(n, c)}>{Row}</Plot>
       </Chart>
     )), el);
@@ -117,7 +120,7 @@ function dots({ n }) {
     const pts = points(n);
     const Point = slat({}, (d) => <Dot at={d.x} cross={d.y} size="4px" />);
     const dispose = render(() => (
-      <Chart scale={[0, 100]} cross={[0, 100]} height={400} static={true}>
+      <Chart noCssGuard={NO_GUARD} scale={[0, 100]} cross={[0, 100]} height={400} static={true}>
         <Plot overlap={true} rows={pts}>{Point}</Plot>
       </Chart>
     ), el);
@@ -129,7 +132,7 @@ function manyDots({ n }) {
   return (el) => {
     const pts = points(n);
     const dispose = render(() => (
-      <Chart scale={[0, 100]} cross={[0, 100]} height={400} static={true}>
+      <Chart noCssGuard={NO_GUARD} scale={[0, 100]} cross={[0, 100]} height={400} static={true}>
         <ManyDots rows={pts} at={(d) => d.x} cross={(d) => d.y} size="4px" />
       </Chart>
     ), el);
@@ -150,7 +153,7 @@ function heatmap({ rows, cols, unique }) {
       </div>
     ));
     const dispose = render(() => (
-      <Chart scale={[0, 100]} ticks={false}>
+      <Chart noCssGuard={NO_GUARD} scale={[0, 100]} ticks={false}>
         <Plot day={days} hours={hours}>{Day}</Plot>
       </Chart>
     ), el);
@@ -163,7 +166,7 @@ function line({ n }) {
     const pts = wave(n);
     const Curve = slat({}, (d) => <Line points={d.points} />);
     const dispose = render(() => (
-      <Chart scale={[0, n - 1]} cross={[-2, 2]} height={400} static={true}>
+      <Chart noCssGuard={NO_GUARD} scale={[0, n - 1]} cross={[-2, 2]} height={400} static={true}>
         <Plot overlap={true} points={[pts]}>{Curve}</Plot>
       </Chart>
     ), el);
@@ -198,6 +201,7 @@ function plain({ n }) {
 
 export const SCENARIOS = {
   bars20: bars({ n: 20, thickness: 24 }),
+  bars20noguard: bars({ n: 20, thickness: 24, noGuard: true }),
   bars1000: bars({ n: 1000, thickness: 8 }),
   bars1000js: bars({ n: 1000, thickness: 8, animate: true }),
   bars1000static: bars({ n: 1000, thickness: 8, still: true }),

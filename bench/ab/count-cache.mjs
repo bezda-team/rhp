@@ -1,11 +1,11 @@
 // Chromium's own style counters for one mount (or update): elements styled, and how many styles came from its cache.
-//   node count-cache.mjs --variants count-base,count-pos --scenarios bars1000,heat50,dash50,dots10k [--update sort]
+//   node count-cache.mjs --variants count-inherit,count-base --scenarios bars1000,heat50,dash50,dots10k [--update sort]
 import fs from "node:fs"; import path from "node:path"; import http from "node:http"; import { fileURLToPath } from "node:url";
 const RHP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const { chromium } = await import(`${RHP}/node_modules/playwright/index.mjs`);
 const here = path.dirname(fileURLToPath(import.meta.url));
 const arg = (n, f) => { const i = process.argv.indexOf("--" + n); return i < 0 ? f : process.argv[i + 1]; };
-const variants = arg("variants", "count-base,count-pos").split(","), scenarios = arg("scenarios", "bars1000").split(","), update = arg("update", null), dir = arg("dir", "out");
+const variants = arg("variants", "count-inherit,count-base").split(","), scenarios = arg("scenarios", "bars1000").split(","), update = arg("update", null), dir = arg("dir", "out");
 const server = http.createServer((q, r) => { const f = path.join(here, dir, new URL(q.url, "http://x").pathname); fs.existsSync(f) ? r.writeHead(200, { "content-type": f.endsWith(".html") ? "text/html" : "text/javascript" }).end(fs.readFileSync(f)) : r.writeHead(404).end(); }).listen(0, "127.0.0.1");
 await new Promise((r) => server.on("listening", r));
 const browser = await chromium.launch({ channel: "chromium" });

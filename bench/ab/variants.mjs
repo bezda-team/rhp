@@ -3,7 +3,8 @@
 // must occur exactly once. So a variant can't silently measure nothing.
 import { editCss, drop, decls, setDecls, rules } from "./css-edit.mjs";
 
-// The rules that protect a chart from the page's CSS (rhp.css, first rules of rhp.core)
+// The rules that protect a chart from the page's CSS (guard.css). The 2026-10-24 study measured these variants on
+// rhp 2.0.5, whose rhp.css held them (results/study-2026-10-24, and this file at dc06a3a); they edit guard.css now.
 const isGuard = (r) => r.prelude.startsWith(":where(.rhp-body") && r.body.includes("display: revert");
 const isSizes = (r) => r.prelude.startsWith(":where(.rhp-body") && r.body.includes("width: auto") && !r.body.includes("display");
 const isViewTransition = (r) => r.prelude.includes(":active-view-transition");
@@ -15,22 +16,14 @@ const isTransition = (r) => /transition-property/.test(r.body) && !r.prelude.inc
 const css = (file, f, expect) => ({ file, css: (text) => editCss(text, f, expect) });
 const js = (file, find, replace) => ({ file, find, replace });
 
-// The guard without its resets, keeping box-sizing (rhp's own geometry needs it), so a clean page draws the same
-const keepBoxSizing = (tree) => {
-  let n = 0;
-  for (const r of rules(tree)) {
-    if (!isGuard(r)) continue;
-    setDecls(r, [["box-sizing", "border-box"]]);
-    n++;
-  }
-  return n;
-};
+// The guard without its resets (box-sizing, which rhp's own geometry needs, is a rule of rhp.css)
+const noResets = (tree) => drop(tree, isGuard);
 
 const guardOnly = (keep) => (tree) => {
   let n = 0;
   for (const r of rules(tree)) {
     if (!isGuard(r)) continue;
-    setDecls(r, decls(r).filter(([k, v]) => k === "box-sizing" || keep(k, v)));
+    setDecls(r, decls(r).filter(([k, v]) => keep(k, v)));
     n++;
   }
   return n;
@@ -42,27 +35,27 @@ export const VARIANTS = {
 
   noguard: {
     about: "the guard's 42 resets gone (box-sizing kept, so a clean page draws the same)",
-    edits: [css("rhp.css", keepBoxSizing, 1)],
+    edits: [css("guard.css", noResets, 1)],
   },
 
   "guard-inherit": {
     about: "the guard keeps only its 25 inherit declarations (font, color, letter-spacing...)",
-    edits: [css("rhp.css", guardOnly((k, v) => v === "inherit"), 1)],
+    edits: [css("guard.css", guardOnly((k, v) => v === "inherit"), 1)],
   },
 
   "guard-reset": {
     about: "the guard keeps only its 17 resets that aren't inherit (margin, padding, border, display...)",
-    edits: [css("rhp.css", guardOnly((k, v) => v !== "inherit"), 1)],
+    edits: [css("guard.css", guardOnly((k, v) => v !== "inherit"), 1)],
   },
 
   noprotect: {
-    about: "every page-protection rule gone: guard, sizes, view-transition, [hidden], ::before/::after, ::selection",
-    edits: [css("rhp.css", (tree) => keepBoxSizing(tree) + drop(tree, (r) => isSizes(r) || isViewTransition(r) || isHidden(r) || isPseudo(r) || isSelection(r)), 6)],
+    about: "every page-protection rule gone: guard, sizes, view-transition, [hidden], ::before/::after, ::selection (as noCssGuard())",
+    edits: [css("guard.css", (tree) => noResets(tree) + drop(tree, (r) => isSizes(r) || isViewTransition(r) || isHidden(r) || isPseudo(r) || isSelection(r)), 6)],
   },
 
   noselection: {
     about: "the ::selection rule gone",
-    edits: [css("rhp.css", (tree) => drop(tree, isSelection), 1)],
+    edits: [css("guard.css", (tree) => drop(tree, isSelection), 1)],
   },
 
   notransition: {
@@ -76,7 +69,8 @@ export const VARIANTS = {
     about: "no !important anywhere (layers reversed so precedence among rhp's own rules stays the same)",
     edits: [
       js("style.js", 'const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";', 'const LAYERS = "@layer rhp.core, rhp.slat, rhp.place;";'),
-      js("style.js", 'export const coreSheet = () => (coreText ??= LAYERS + "\\n" + important(CORE) + "\\n" + MANYDOTS);', 'export const coreSheet = () => (coreText ??= LAYERS + "\\n" + CORE + "\\n" + MANYDOTS);'),
+      js("style.js", 'export const coreSheet = () => (coreText ??= LAYERS + "\\n" + position(positionInherits) + "\\n" + important(CORE) + "\\n" + MANYDOTS);', 'export const coreSheet = () => (coreText ??= LAYERS + "\\n" + position(positionInherits) + "\\n" + CORE + "\\n" + MANYDOTS);'),
+      js("style.js", "export const guardSheet = (gated) => (gated ? (gatedText ??= important(gate(GUARD))) : (guardText ??= important(GUARD)));", "export const guardSheet = (gated) => (gated ? (gatedText ??= gate(GUARD)) : (guardText ??= GUARD));"),
       js("style.js", 'export const gutterSheet = () => (guttersText ??= important(GUTTERS));', "export const gutterSheet = () => (guttersText ??= GUTTERS);"),
       js("style.js", 'export const crossSheet = () => (crossText ??= important(CROSS));', "export const crossSheet = () => (crossText ??= CROSS);"),
     ],
@@ -106,7 +100,7 @@ const all = (...fs) => (tree) => fs.reduce((n, f) => n + f(tree), 0);
 Object.assign(VARIANTS, {
   regprops: {
     about: "--rhp-lo, --rhp-hi and --rhp-p registered as <number> (inherits: true), so each is worked out once per element",
-    edits: [js("rhp.css", "@layer rhp.core {\n\n  /* The guard", '@property --rhp-lo { syntax: "<number>"; inherits: true; initial-value: 0; }\n@property --rhp-hi { syntax: "<number>"; inherits: true; initial-value: 0; }\n@property --rhp-p { syntax: "<number>"; inherits: true; initial-value: 0; }\n@layer rhp.core {\n\n  /* The guard')],
+    edits: [js("rhp.css", "@layer rhp.core {\n\n  /* Every element rhp makes", '@property --rhp-lo { syntax: "<number>"; inherits: true; initial-value: 0; }\n@property --rhp-hi { syntax: "<number>"; inherits: true; initial-value: 0; }\n@property --rhp-p { syntax: "<number>"; inherits: true; initial-value: 0; }\n@layer rhp.core {\n\n  /* Every element rhp makes')],
   },
 
   noknobs: {
@@ -116,7 +110,7 @@ Object.assign(VARIANTS, {
 
   leanguard: {
     about: "the guard's shorthands that expand to many longhands narrowed to the longhands that stop the page: animation-name, transition-property/delay/behavior, text-decoration-line",
-    edits: [css("rhp.css", (tree) => {
+    edits: [css("guard.css", (tree) => {
       let n = 0;
       for (const r of rules(tree)) {
         if (!isGuard(r)) continue;
@@ -217,7 +211,7 @@ const splitWhere = (prelude) => {
 Object.assign(VARIANTS, {
   "sel-labels": {
     about: "::selection only on labels and axis numbers themselves, not on what is inside blocks",
-    edits: [css("rhp.css", (tree) => {
+    edits: [css("guard.css", (tree) => {
       let n = 0;
       for (const r of rules(tree)) {
         if (!isSelection(r)) continue;
@@ -230,7 +224,7 @@ Object.assign(VARIANTS, {
 
   "sel-inside": {
     about: "::selection only on what is inside blocks and labels (the descendant half of the rule)",
-    edits: [css("rhp.css", (tree) => {
+    edits: [css("guard.css", (tree) => {
       let n = 0;
       for (const r of rules(tree)) {
         if (!isSelection(r)) continue;
@@ -243,7 +237,7 @@ Object.assign(VARIANTS, {
 
   wheresplit: {
     about: "every :where(a, b, ...) guard rule written as :where(a), :where(b), ... (same specificity and protection)",
-    edits: [css("rhp.css", (tree) => {
+    edits: [css("guard.css", (tree) => {
       let n = 0;
       for (const r of rules(tree)) {
         const next = r.prelude.startsWith(":where(.rhp-body") && !r.prelude.includes("::") ? splitWhere(r.prelude) : null;
@@ -259,7 +253,7 @@ Object.assign(VARIANTS, {
   // labels inherit from them), and any block with something inside. An empty Bar, Dot, Tick or Cell skips them.
   emptyguard: {
     about: "the guard's inherit declarations skipped on empty blocks (:empty), everything else as before",
-    edits: [css("rhp.css", (tree) => {
+    edits: [css("guard.css", (tree) => {
       let n = 0;
       for (let i = 0; i < tree.length; i++) {
         const layer = tree[i];
@@ -293,7 +287,7 @@ const NO_OWN_BG = ".rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .r
 const TEXT = ".rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell), .rhp-label, .rhp-place, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path, :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell):not(:empty)";
 VARIANTS.trimguard = {
   about: "the guard split by element kind, without the resets that do nothing there, and with leanguard's narrowed shorthands",
-  edits: [css("rhp.css", (tree) => {
+  edits: [css("guard.css", (tree) => {
     let n = 0;
     for (const layer of tree) {
       if (!layer.children) continue;
@@ -320,7 +314,7 @@ VARIANTS.trimguard = {
 // trimguard without its text-skip on empty blocks: every element keeps every inherit declaration
 VARIANTS.safetrim = {
   about: "trimguard keeping the inherit declarations on every element: only background on blocks that set their own, float/vertical-align off the body, and leanguard's shorthands",
-  edits: [css("rhp.css", (tree) => {
+  edits: [css("guard.css", (tree) => {
     let n = 0;
     for (const layer of tree) {
       if (!layer.children) continue;
@@ -342,92 +336,19 @@ VARIANTS.safetrim = {
 };
 
 
-// A guard a chart can turn off for itself: the guard's rules apply only inside a chart without data-rhp-unguarded.
-// gated: every chart keeps its guard (what the check costs); gated-off: every chart turns it off (what that saves).
-const gate = (tree) => {
-  let n = 0;
-  for (const r of rules(tree)) {
-    if (!(isGuard(r) || isSizes(r) || isSelection(r))) continue;
-    if (isSelection(r)) {
-      r.prelude = ":where(.rhp-chart:not([data-rhp-unguarded])) :is(.rhp-label, .rhp-gridline > span)::selection, :where(.rhp-chart:not([data-rhp-unguarded])) :is(.rhp-label, .rhp-gridline > span, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) ::selection";
-    } else {
-      r.prelude = r.prelude.replace(/^:where\((.*)\)$/s, ":where(.rhp-chart:not([data-rhp-unguarded]) :is($1))");
-    }
-    n++;
-  }
-  // box-sizing is rhp's own geometry, not protection: it stays for every chart (as in noguard)
-  for (const layer of tree) {
-    if (!layer.children) continue;
-    const i = layer.children.findIndex((r) => r.body?.includes("display: revert") && r.prelude.includes("data-rhp-unguarded"));
-    if (i >= 0) layer.children.splice(i, 0, { prelude: `:where(${ALL})`, body: "box-sizing: border-box" });
-  }
-  return n;
-};
-VARIANTS.gated = { about: "the guard, its sizes and ::selection apply only inside charts without data-rhp-unguarded (all charts keep it)", edits: [css("rhp.css", gate, 3)] };
-VARIANTS["gated-off"] = {
-  about: "as gated, with every chart turning its guard off",
-  edits: [css("rhp.css", gate, 3), js("plot.jsx", "id={props.id} role={figure()}", 'id={props.id} data-rhp-unguarded="" role={figure()}')],
-};
-
-
-// --rhp-position stops at the slat root: registered with universal syntax (tokens, no animation) and inherits: false,
-// so the blocks inside a slat no longer inherit a value unique to their row, and blocks alike can share one style.
-// Surface: CSS inside a slat that reads var(--rhp-position) gets nothing (the docs' radial bars do, on .name).
-const POSITION = '@property --rhp-position { syntax: "*"; inherits: false; }\n';
-const positionEdit = js("rhp.css", "@layer rhp.core {\n\n  /* The guard", POSITION + "@layer rhp.core {\n\n  /* The guard");
-VARIANTS.posnoinherit = { about: "--rhp-position registered as not inherited (universal syntax)", edits: [positionEdit] };
-VARIANTS.posfast = {
-  about: "posnoinherit and noprotect together",
-  edits: [positionEdit, css("rhp.css", (tree) => keepBoxSizing(tree) + drop(tree, (r) => isSizes(r) || isViewTransition(r) || isHidden(r) || isPseudo(r) || isSelection(r)), 6)],
-};
-VARIANTS.possafe = {
-  about: "posnoinherit and safetrim together (protection kept)",
-  edits: [positionEdit, ...VARIANTS.safetrim.edits],
-};
-
-
-// posnoinherit, and a slat type whose CSS reads --rhp-position gets it inside its slats again (only that type then
-// gives up shared styles): rhp adds `--rhp-position: inherit` for the descendants of its roots
-VARIANTS.poscompat = {
-  about: "posnoinherit, with --rhp-position inherited again inside slat types whose CSS reads it",
-  edits: [positionEdit, js("style.js", "  return `@layer rhp.slat {\\n${important(own + scoped(fn.css, fn.scope))}\\n}`;",
-    "  // --rhp-position stops at the slat root (rhp.css), so blocks alike share one style. A slat type whose CSS reads it\n" +
-    "  // gets it inside its slats again.\n" +
-    "  const position = /--rhp-position\\b/.test(fn.css) ? `:where(${S} *) { --rhp-position: inherit; }\\n` : \"\";\n\n" +
-    "  return `@layer rhp.slat {\\n${important(position + own + scoped(fn.css, fn.scope))}\\n}`;")],
-};
-
-
-// poscompat, with a guard that has no inherit declarations (WebKit may refuse to cache any style that inherits explicitly)
-VARIANTS.posnoinh = {
-  about: "poscompat with the guard's 25 inherit declarations gone (resets kept)",
-  edits: [...VARIANTS.poscompat.edits, css("rhp.css", guardOnly((k, v) => v !== "inherit"), 1)],
-};
-
-
-// posnoinherit, and a slat type whose CSS reads --rhp-position reads an alias instead: --rhp-row, an ordinary
-// (inherited) variable its roots set from their own --rhp-position. Only that type's slats keep a value unique to
-// their row, as today.
-VARIANTS.posalias = {
-  about: "posnoinherit, with slat CSS that reads --rhp-position rewritten to an inherited alias set on its roots",
-  edits: [positionEdit, js("style.js", "  return `@layer rhp.slat {\\n${important(own + scoped(fn.css, fn.scope))}\\n}`;",
-    "  // --rhp-position stops at the slat root (rhp.css), so blocks alike share one style. A slat type whose CSS reads it\n" +
-    "  // reads --rhp-row, which its roots set from their own position and pass down like any variable.\n" +
-    "  const reads = /var\\(\\s*--rhp-position\\b/.test(fn.css);\n" +
-    "  const css = reads ? fn.css.replace(/var\\(\\s*--rhp-position\\b/g, \"var(--rhp-row\") : fn.css;\n" +
-    "  const row = reads ? `:where(${S}) { --rhp-row: var(--rhp-position); }\\n` : \"\";\n\n" +
-    "  return `@layer rhp.slat {\\n${important(row + own + scoped(css, fn.scope))}\\n}`;")],
-};
+// The study's gated, gated-off and pos* variants are rhp itself now: noCssGuard on a Chart gates the guard (measure it
+// with base?pre=noguard and base?noguard=1), and --rhp-position stays on slat roots (base?inherit=1 passes it down as
+// rhp 2.0 did). Their definitions are in this file at dc06a3a.
 
 
 // ::selection written as one rule for everything inside a chart body (a superset of what today's rule covers)
 VARIANTS["sel-body"] = {
   about: "::selection as .rhp-body ::selection (everything inside a chart, one simple rule)",
-  edits: [css("rhp.css", (tree) => { let n = 0; for (const r of rules(tree)) if (isSelection(r)) { r.prelude = ".rhp-body ::selection"; n++; } return n; }, 1)],
+  edits: [css("guard.css", (tree) => { let n = 0; for (const r of rules(tree)) if (isSelection(r)) { r.prelude = ".rhp-body ::selection"; n++; } return n; }, 1)],
 };
 VARIANTS["sel-flat"] = {
   about: "::selection as today, written as a plain list without :is()",
-  edits: [css("rhp.css", (tree) => { let n = 0; for (const r of rules(tree)) if (isSelection(r)) { r.prelude = ".rhp-label::selection, .rhp-gridline > span::selection, .rhp-label ::selection, .rhp-gridline > span ::selection, .rhp-bar ::selection, .rhp-dot ::selection, .rhp-tick ::selection, .rhp-cell ::selection"; n++; } return n; }, 1)],
+  edits: [css("guard.css", (tree) => { let n = 0; for (const r of rules(tree)) if (isSelection(r)) { r.prelude = ".rhp-label::selection, .rhp-gridline > span::selection, .rhp-label ::selection, .rhp-gridline > span ::selection, .rhp-bar ::selection, .rhp-dot ::selection, .rhp-tick ::selection, .rhp-cell ::selection"; n++; } return n; }, 1)],
 };
 
 // The guard rules in a layer of their own after rhp.core (for !important the later layer loses, so rhp's own rules
@@ -438,7 +359,7 @@ VARIANTS.guardlayer = {
   about: "guard, sizes and [hidden] rules in their own last layer (rhp.guard) with plain selectors",
   edits: [
     js("style.js", 'const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";', 'const LAYERS = "@layer rhp.place, rhp.slat, rhp.core, rhp.guard;";'),
-    css("rhp.css", (tree) => {
+    css("guard.css", (tree) => {
       const moved = [];
       for (const layer of tree) {
         if (!layer.children || layer.prelude !== "@layer rhp.core") continue;
@@ -513,9 +434,12 @@ VARIANTS["nocenter-shapes"] = {
 
 
 // For counting the browser's style cache: without the size container, a mount's style is worked out in one style pass
-// (which the trace reports with its counters), not inside layout
+// (which the trace reports with its counters), not inside layout. count-inherit passes --rhp-position down, as rhp 2.0.
 VARIANTS["count-base"] = { about: "nocontainer, for style counters", edits: [...VARIANTS.nocontainer.edits] };
-VARIANTS["count-pos"] = { about: "nocontainer and posalias, for style counters", edits: [...VARIANTS.posalias.edits, ...VARIANTS.nocontainer.edits] };
+VARIANTS["count-inherit"] = {
+  about: "nocontainer with --rhp-position passed down (inheritPosition), for style counters",
+  edits: [...VARIANTS.nocontainer.edits, js("style.js", "let positionInherits = false;", "let positionInherits = true;")],
+};
 
 
 // A block's first values written as one cssText instead of a setProperty each, when it has no style prop and every

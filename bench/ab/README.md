@@ -78,6 +78,8 @@ Every value comes from a formula of its index (no generator, seeded or not), so 
 
 `--engine chromium` (the default, new headless), `chrome`, `webkit` or `firefox`; WebKit and Firefox report the frames measured in the page only.
 A variant can carry its own query: `base?pre=1`, `base?css=selection`, `base?as=bars1000u1` (another scenario in the same round).
+For the guard: `base?off=1` calls `noCssGuard()` before the first chart, `base?noguard=1` gives every chart drawn the `noCssGuard` prop, and `base?pre=noguard` draws the `?pre` chart with it, so the measured chart keeps its guard on a page where another chart turned it off.
+`base?inherit=1` calls `inheritPosition()` first, so `--rhp-position` is passed down from slat roots as in rhp 2.0.
 
 ## Where the time goes
 
@@ -86,8 +88,8 @@ A variant can carry its own query: `base?pre=1`, `base?css=selection`, `base?as=
   Those counts don't depend on the machine, so CI can check them (a one-value update restyles 2 elements) without timing anything.
   `--update all` traces an update instead; `--selectors` adds Chrome's selector statistics.
 - `count-cache.mjs` reads Chromium's own style counters for one mount or update: elements styled, styles added to its style cache and styles taken from it, pseudo-element styles.
-  A chart's body is a size container, so Chromium styles a mount's contents during layout, where the trace has no counters: count mounts on `count-base` and `count-pos` (the same without the container), and `--cold` counts the first chart on a page.
-  On rhp as it is, a first chart of 1,000 bars takes 0 of its 6,029 styles from the cache; with `--rhp-position` not inherited, 4,759.
+  A chart's body is a size container, so Chromium styles a mount's contents during layout, where the trace has no counters: count mounts on `count-base` (rhp without the container) and `count-inherit` (the same with `--rhp-position` passed down, as in rhp 2.0), and `--cold` counts the first chart on a page.
+  With `--rhp-position` passed down, a first chart of 1,000 bars takes 0 of its 6,029 styles from the cache; as rhp is now, 4,759.
 - `profile.mjs` gives script self time by function, on an unminified build: `MINIFY=0 OUT=out/dev node build.mjs base`.
 - `micro/` holds pages without rhp that isolate one browser behavior, such as what makes a style unshareable: `node micro/run-micro.mjs style-cache.html`.
 - `bundle-audit.mjs` lists the bytes each source file puts into an app's bundle, and `size-ablate.mjs` what a piece of rhp costs in gzip bytes.

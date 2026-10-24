@@ -1,5 +1,6 @@
 // The page side of the benchmark: one variant of rhp, every scenario, and the timing primitives. run.mjs drives it.
 import { SCENARIOS } from "./scenarios.jsx";
+import * as rhp from "rhp";
 
 const params = new URLSearchParams(location.search);
 const stage = document.getElementById("stage");
@@ -14,9 +15,15 @@ const PAGE_CSS = {
 };
 if (params.get("css")) document.head.appendChild(document.createElement("style")).textContent = PAGE_CSS[params.get("css")];
 
+// ?off=1: noCssGuard() before the first chart, so no chart on the page gets rhp's guard. ?inherit=1: inheritPosition(),
+// so --rhp-position is passed down from slat roots as rhp 2.0 did.
+if (params.get("off")) rhp.noCssGuard?.();
+if (params.get("inherit")) rhp.inheritPosition?.();
+
 // ?pre=1: a small chart is drawn when the page loads (and kept), so rhp's stylesheet is in the page before the
-// measured mount: for the cost rhp's CSS adds to an app's own elements
-if (params.get("pre")) SCENARIOS.bars20(document.body.appendChild(document.createElement("div")));
+// measured mount: for the cost rhp's CSS adds to an app's own elements. ?pre=noguard: that chart says noCssGuard, so
+// from then on the guard checks which chart each element is in (the cost to the charts that keep it).
+if (params.get("pre")) SCENARIOS[params.get("pre") === "noguard" ? "bars20noguard" : "bars20"](document.body.appendChild(document.createElement("div")));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Calls back once the frame we are in has rendered: a message posted during a frame's animation callbacks is handled
