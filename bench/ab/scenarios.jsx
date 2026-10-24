@@ -70,6 +70,27 @@ function positioned({ n }) {
   };
 }
 
+// A heatmap whose slat CSS reads --rhp-position on the cells of the Plot inside each row: there it is the cell's column
+function nestedPositioned({ rows, cols }) {
+  return (el) => {
+    const days = Array.from({ length: rows }, (_, i) => "Day " + (i + 1));
+    const hours = days.map((_, r) => Array.from({ length: cols }, (_, c) => (r * 13 + c * 29) % 100));
+    const Hour = (h) => <div><Cell value={h.v} class="cell" /></div>;
+    const Day = slat({ thickness: { horizontal: 12 }, room: { start: 48 }, css: ".cell { opacity: calc(0.3 + var(--rhp-position) * 0.03); }" }, (d) => (
+      <div>
+        <Label edge="start">{d.day}</Label>
+        <Plot orientation="across" v={d.hours}>{Hour}</Plot>
+      </div>
+    ));
+    const dispose = render(() => (
+      <Chart scale={[0, 100]} ticks={false}>
+        <Plot day={days} hours={hours}>{Day}</Plot>
+      </Chart>
+    ), el);
+    return { dispose };
+  };
+}
+
 // k charts of n bars each, made at once (a dashboard)
 function dashboard({ k, n }) {
   return (el) => {
@@ -182,6 +203,7 @@ export const SCENARIOS = {
   bars1000static: bars({ n: 1000, thickness: 8, still: true }),
   bars1000u1: bars({ n: 1000, thickness: 8, distinct: 1 }),
   positioned1000: positioned({ n: 1000 }),
+  nestedPositioned: nestedPositioned({ rows: 20, cols: 24 }),
   bars1000u1000: bars({ n: 1000, thickness: 8, distinct: 1000 }),
   heat50u: heatmap({ rows: 50, cols: 50, unique: true }),
   dash50: dashboard({ k: 50, n: 7 }),

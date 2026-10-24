@@ -659,9 +659,10 @@ function slatSheet(fn) {
 
   // --rhp-position stays on the slat root (rhp.css). A slat type whose CSS reads it reads --rhp-row instead, which its
   // roots set from their position and which is passed down like any variable, so it works anywhere inside its slats.
+  // The roots of a Plot inside its slats set it too, so in there it is the inner slat's place, as --rhp-position was.
   const reads = /var\(\s*--rhp-position\b/.test(fn.css);
   const css = reads ? fn.css.replace(/var\(\s*--rhp-position\b/g, "var(--rhp-row") : fn.css;
-  const row = reads ? `:where(${S}) { --rhp-row: var(--rhp-position); }\n` : "";
+  const row = reads ? `:where(${S}, ${S} .rhp-plot > *) { --rhp-row: var(--rhp-position); }\n` : "";
 
   return `@layer rhp.slat {\n${important(row + own + scoped(css, fn.scope))}\n}`;
 }
