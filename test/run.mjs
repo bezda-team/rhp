@@ -1351,10 +1351,11 @@ const dom = (p, charts) => p.evaluate((charts) => {
 }
 
 // noCssGuard() on a server: its HTML has rhp's core without the guard, and so does the browser once it takes over; with
-// linkedCss, the page links rhp-no-css-guard.css. The app's page CSS leaves charts alone, so each looks as it does guarded.
+// linkedCss, the page links rhp-no-css-guard.css. Each looks as the browser draws the app itself without the guard (not
+// as guarded: the app's svg slat root keeps the browser's overflow: hidden there, which Firefox draws a pixel apart).
 {
   const shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
-  const fresh = await open("file://" + at("out/ssr.html") + "#fresh"), want = await shot(fresh);
+  const fresh = await open("file://" + at("out/ssr-no-guard.html") + "#fresh"), want = await shot(fresh);
   const sheets = (p) => p.evaluate(() => {
     const server = [...document.querySelectorAll("style[data-rhp-server]")].map((s) => s.textContent).join("\n");
     const adopted = document.adoptedStyleSheets.map((s) => [...s.cssRules].map((r) => r.cssText).join("\n")).join("\n");
