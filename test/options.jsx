@@ -75,3 +75,22 @@ O.position = async () => {
     cells: [...document.querySelectorAll(".nested .cell")].map((c) => css(c, "--column")),
   };
 };
+
+// A chart in a slat of another chart goes without the guard only when the chart around it does too: [outer bar, inner bar]
+O.nested = async () => {
+  const Inner = (d) => <div><Bar to={d.v} class="inner-bar" /></div>;
+  const Outer = (inner) => slat({ thickness: 60 }, (d) => (
+    <div>
+      <Bar to={d.v} class="outer-bar" />
+      <Chart scale={[0, 10]} ticks={false} noCssGuard={inner}><Plot v={[d.v]}>{Inner}</Plot></Chart>
+    </div>
+  ));
+  render(() => <>
+    <Chart class="n1" scale={[0, 10]} ticks={false}><Plot v={[4]}>{Outer(true)}</Plot></Chart>
+    <Chart class="n2" scale={[0, 10]} ticks={false} noCssGuard><Plot v={[4]}>{Outer(true)}</Plot></Chart>
+    <Chart class="n3" scale={[0, 10]} ticks={false} noCssGuard><Plot v={[4]}>{Outer(false)}</Plot></Chart>
+  </>, box());
+  await frame();
+  const margin = (q) => getComputedStyle(document.querySelector(q)).marginTop;
+  return Object.fromEntries(["n1", "n2", "n3"].map((n) => [n, [margin(`.${n} .outer-bar`), margin(`.${n} .inner-bar`)]]));
+};

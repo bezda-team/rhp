@@ -37,6 +37,13 @@ await ssrClient(at("ssr-linked.jsx"), at("out/ssr-linked-client.js"));
 const SSRL = await import("file://" + at("out/ssr-linked-server.mjs") + "?" + Date.now());
 fs.writeFileSync(at("out/ssr-linked.html"), SSRL.page());
 fs.writeFileSync(at("out/ssr-unlinked.html"), SSRL.page(false));
+// The app with noCssGuard(), on its own and with linkedCss on a page that links dist/rhp-no-css-guard.css
+await ssrServer(at("ssr-no-guard.jsx"), at("out/ssr-no-guard-server.mjs"));
+await ssrClient(at("ssr-no-guard.jsx"), at("out/ssr-no-guard-client.js"));
+fs.writeFileSync(at("out/ssr-no-guard.html"), (await import("file://" + at("out/ssr-no-guard-server.mjs") + "?" + Date.now())).page());
+await ssrServer(at("ssr-no-guard-linked.jsx"), at("out/ssr-no-guard-linked-server.mjs"));
+await ssrClient(at("ssr-no-guard-linked.jsx"), at("out/ssr-no-guard-linked-client.js"));
+fs.writeFileSync(at("out/ssr-no-guard-linked.html"), (await import("file://" + at("out/ssr-no-guard-linked-server.mjs") + "?" + Date.now())).page());
 // The gallery drawn on a server
 await ssrServer(at("ssr-gallery.jsx"), at("out/ssr-gallery-server.mjs"));
 await ssrClient(at("ssr-gallery.jsx"), at("out/ssr-gallery-client.js"));
@@ -555,6 +562,8 @@ const open = async (url, opts = {}) => {
     const pos = await p.evaluate(() => O.position());
     check("position: --rhp-position stays on the slat root; read in the slat type's css, through a copy the root passes down, and on a nested Plot's cells it reads as before; a style prop inside the slat gets nothing",
       pos, { root: "2", slatCss: "2", byHand: "2", styleProp: "", inside: "", cells: ["0", "1", "2", "0", "1", "2"] });
+    check("guard: a chart in another chart's slat goes without the guard only when the chart around it says noCssGuard too",
+      await p.evaluate(() => O.nested()), { n1: ["0px", "0px"], n2: ["3px", "3px"], n3: ["3px", "0px"] });
     check("no page errors", p.errors, []);
     await p.close();
   }
@@ -1327,8 +1336,11 @@ const dom = (p, charts) => p.evaluate((charts) => {
   const coreIn = (p) => p.evaluate(() => [[...document.querySelectorAll("style[data-rhp-server]")].some((s) => s.textContent.includes(".rhp-body{all:initial")),
     document.adoptedStyleSheets.some((s) => [...s.cssRules].some((r) => r.cssText.includes(".rhp-body")))]);
   check("linkedCss: the server's HTML carries no core CSS, and looks the same with the page's link", [await coreIn(server), Buffer.compare(await shot(server), want)], [[false, false], 0]);
+  const told = [];
+  server.on("console", (m) => m.type() === "warning" && told.push(m.text()));
   await server.evaluate(() => window.go()); await server.waitForTimeout(300);
   check("linkedCss: taken over, the browser adopts no core of its own, and it looks the same", [await coreIn(server), Buffer.compare(await shot(server), want)], [[false, false], 0]);
+  check("linkedCss: a Chart with noCssGuard is warned that the linked rhp.css keeps its guard", told.some((w) => w.includes("rhp-no-css-guard.css")), true);
   const warned = [];
   const unlinked = await newPage({ viewport: { width: 900, height: 900 } });
   unlinked.on("console", (m) => m.type() === "warning" && warned.push(m.text()));
@@ -1336,6 +1348,37 @@ const dom = (p, charts) => p.evaluate((charts) => {
   check("linkedCss: a page that doesn't link the stylesheet is warned, and rhp adopts its core after all", [warned.some((w) => w.includes("linkedCss")), Buffer.compare(await shot(unlinked), want)], [true, 0]);
   check("linkedCss: no page errors", [...server.errors, ...fresh.errors], []);
   for (const p of [fresh, server, unlinked]) await p.close();
+}
+
+// noCssGuard() on a server: its HTML has rhp's core without the guard, and so does the browser once it takes over; with
+// linkedCss, the page links rhp-no-css-guard.css. The app's page CSS leaves charts alone, so each looks as it does guarded.
+{
+  const shot = (p) => p.locator("main").screenshot({ animations: "disabled" });
+  const fresh = await open("file://" + at("out/ssr.html") + "#fresh"), want = await shot(fresh);
+  const sheets = (p) => p.evaluate(() => {
+    const server = [...document.querySelectorAll("style[data-rhp-server]")].map((s) => s.textContent).join("\n");
+    const adopted = document.adoptedStyleSheets.map((s) => [...s.cssRules].map((r) => r.cssText).join("\n")).join("\n");
+    return { serverCore: server.includes(".rhp-body{all:initial"), serverGuard: /display:\s*revert/.test(server), adoptedCore: adopted.includes(".rhp-body"), adoptedGuard: /display:\s*revert/.test(adopted) };
+  });
+  const own = await open("file://" + at("out/ssr-no-guard.html") + "?wait");
+  check("noCssGuard() on a server: its HTML has rhp's core and no guard, and looks the same", [await sheets(own), Buffer.compare(await shot(own), want)],
+    [{ serverCore: true, serverGuard: false, adoptedCore: false, adoptedGuard: false }, 0]);
+  await own.evaluate(() => window.go()); await own.waitForTimeout(300);
+  check("noCssGuard() on a server: taken over, the browser adopts rhp's core and no guard, and it looks the same", [(await sheets(own)).adoptedCore, (await sheets(own)).adoptedGuard, Buffer.compare(await shot(own), want)], [true, false, 0]);
+  const warned = [];
+  const linked = await newPage({ viewport: { width: 900, height: 900 } });
+  linked.on("console", (m) => m.type() === "warning" && warned.push(m.text()));
+  linked.errors = [];
+  linked.on("pageerror", (e) => linked.errors.push(e.message));
+  await linked.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+  await linked.goto("file://" + at("out/ssr-no-guard-linked.html") + "?wait"); await linked.waitForTimeout(300);
+  const before = await sheets(linked);
+  await linked.evaluate(() => window.go()); await linked.waitForTimeout(300);
+  const after = await sheets(linked);
+  check("noCssGuard() with linkedCss and rhp-no-css-guard.css: no rhp CSS in the HTML or adopted, the same look, and no warning", [before, after, Buffer.compare(await shot(linked), want), warned],
+    [{ serverCore: false, serverGuard: false, adoptedCore: false, adoptedGuard: false }, { serverCore: false, serverGuard: false, adoptedCore: false, adoptedGuard: false }, 0, []]);
+  check("noCssGuard() on a server: no page errors", [...own.errors, ...linked.errors], []);
+  for (const p of [fresh, own, linked]) await p.close();
 }
 
 // An app built by Vite from rhp's source (test/vite)

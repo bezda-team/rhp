@@ -488,7 +488,7 @@ const position = (inherits) => `@property --rhp-position { syntax: "*"; inherits
 export const coreSheet = () => (coreText ??= LAYERS + "\n" + position(positionInherits) + "\n" + important(CORE) + "\n" + MANYDOTS);
 
 // The guard, or (gated) the guard applying only inside charts that don't say noCssGuard: every selector of guard.css
-// gets the chart around as a condition. (guard.css has style rules in one @layer and nothing else.)
+// gets the chart around as a condition. (guard.css comes minified: style rules in one @layer and nothing else.)
 const gate = (css) => css.replace(/(^|[{}])([^{}@]+)\{/g, (_, end, list) => end + split(list).map((sel) => ":where(.rhp-chart:not([data-rhp-no-guard])) " + sel).join(", ") + "{");
 export const guardSheet = (gated) => (gated ? (gatedText ??= important(gate(GUARD))) : (guardText ??= important(GUARD)));
 
@@ -616,7 +616,7 @@ export function useChartGuard() {
   if (guardEntry) update(guardEntry, guardSheet(true));
   if (linked && guarded && !warnedLinkedGuard) {
     warnedLinkedGuard = true;
-    console.warn("rhp: noCssGuard on a Chart doesn't turn off the guard in a stylesheet the page links itself (linkedCss). To go without it, link @bezda/rhp/rhp-no-css-guard.css, which leaves it out for the whole page.");
+    console.warn("rhp: noCssGuard on a Chart can't turn off the guard in the rhp.css the page links (linkedCss). To go without it, link @bezda/rhp/rhp-no-css-guard.css instead and call noCssGuard().");
   }
 }
 
