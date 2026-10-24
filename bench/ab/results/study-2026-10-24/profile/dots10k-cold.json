@@ -1,0 +1,184 @@
+{
+  "variant": "base",
+  "scenario": "dots10k",
+  "warm": false,
+  "update": null,
+  "runs": 8,
+  "total": 38.84574999999998,
+  "top": [
+    {
+      "fn": "(garbage collector) (native):0",
+      "ms": 8.72525
+    },
+    {
+      "fn": "(anonymous) base.js:2772",
+      "ms": 8.525375
+    },
+    {
+      "fn": "(anonymous) base.js:3484",
+      "ms": 2.566375
+    },
+    {
+      "fn": "setAttribute (native):0",
+      "ms": 1.6622500000000002
+    },
+    {
+      "fn": "(anonymous) base.js:4638",
+      "ms": 1.059375
+    },
+    {
+      "fn": "runComputation base.js:325",
+      "ms": 0.9015000000000002
+    },
+    {
+      "fn": "others base.js:2743",
+      "ms": 0.741125
+    },
+    {
+      "fn": "cloneNode (native):0",
+      "ms": 0.7193750000000001
+    },
+    {
+      "fn": "important base.js:1624",
+      "ms": 0.5985000000000001
+    },
+    {
+      "fn": "drawn2 base.js:3481",
+      "ms": 0.58875
+    },
+    {
+      "fn": "(anonymous) base.js:4452",
+      "ms": 0.500625
+    },
+    {
+      "fn": "insertBefore (native):0",
+      "ms": 0.43862500000000004
+    },
+    {
+      "fn": "adoptInto base.js:1882",
+      "ms": 0.38375
+    },
+    {
+      "fn": "range base.js:3019",
+      "ms": 0.3835
+    },
+    {
+      "fn": "read base.js:3220",
+      "ms": 0.35825
+    },
+    {
+      "fn": "getNode base.js:2184",
+      "ms": 0.35775000000000007
+    },
+    {
+      "fn": "updateFn base.js:61",
+      "ms": 0.35162499999999997
+    },
+    {
+      "fn": "appendChild (native):0",
+      "ms": 0.34725
+    },
+    {
+      "fn": "createSignal base.js:71",
+      "ms": 0.33825
+    },
+    {
+      "fn": "readSignal base.js:240",
+      "ms": 0.335625
+    },
+    {
+      "fn": "cleanNode base.js:576",
+      "ms": 0.328875
+    },
+    {
+      "fn": "(anonymous) base.js:829",
+      "ms": 0.30374999999999996
+    },
+    {
+      "fn": "setProperty base.js:2240",
+      "ms": 0.30225
+    },
+    {
+      "fn": "(anonymous) base.js:2831",
+      "ms": 0.26987500000000003
+    },
+    {
+      "fn": "points base.js:4450",
+      "ms": 0.26349999999999996
+    },
+    {
+      "fn": "normalizeIncomingArray base.js:1561",
+      "ms": 0.25550000000000006
+    },
+    {
+      "fn": "createRoot base.js:55",
+      "ms": 0.24687500000000007
+    },
+    {
+      "fn": "updateArray base.js:2272",
+      "ms": 0.23975000000000002
+    },
+    {
+      "fn": "Plot base.js:3172",
+      "ms": 0.237375
+    },
+    {
+      "fn": "get base.js:3024",
+      "ms": 0.233875
+    },
+    {
+      "fn": "(anonymous) base.js:2840",
+      "ms": 0.20174999999999998
+    },
+    {
+      "fn": "updateComputation base.js:309",
+      "ms": 0.200875
+    },
+    {
+      "fn": "runUpdates base.js:444",
+      "ms": 0.19537499999999997
+    },
+    {
+      "fn": "(anonymous) base.js:3511",
+      "ms": 0.19350000000000003
+    },
+    {
+      "fn": "uncomment base.js:1677",
+      "ms": 0.171125
+    },
+    {
+      "fn": "flush2 base.js:1632",
+      "ms": 0.16650000000000004
+    },
+    {
+      "fn": "unwrap base.js:2153",
+      "ms": 0.16575
+    },
+    {
+      "fn": "Chart base.js:3680",
+      "ms": 0.16362500000000002
+    },
+    {
+      "fn": "createComputation base.js:360",
+      "ms": 0.15549999999999997
+    },
+    {
+      "fn": "browserBlock base.js:2750",
+      "ms": 0.143875
+    }
+  ],
+  "byFile": [
+    {
+      "file": "base.js",
+      "ms": 26.43887499999994
+    },
+    {
+      "file": "(gc)",
+      "ms": 8.72525
+    },
+    {
+      "file": "(native)",
+      "ms": 3.6816250000000004
+    }
+  ]
+}

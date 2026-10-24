@@ -1,0 +1,1332 @@
+{
+  "engine": "chromium",
+  "browser": "153.0.8010.12",
+  "protocol": "mount",
+  "rounds": 10,
+  "target": null,
+  "maxRounds": 10,
+  "warm": 2,
+  "dpr": 1,
+  "clock": "wall",
+  "query": "",
+  "variants": [
+    "base",
+    "base-b"
+  ],
+  "scenarios": [
+    "bars1000",
+    "dash50"
+  ],
+  "bundles": {
+    "base": {
+      "about": "rhp as it is",
+      "src": "/Users/anasb/repositories/rhp/src",
+      "sha256": "8a2780182381f551",
+      "bytes": 101355
+    },
+    "base-b": {
+      "about": "rhp as it is, a second bundle (A/A control)",
+      "src": "/Users/anasb/repositories/rhp/src",
+      "sha256": "8a2780182381f551",
+      "bytes": 101355
+    }
+  },
+  "start": {
+    "at": "2026-10-24T06:40:51.677Z",
+    "load": [
+      2.79,
+      3.22,
+      3.28
+    ],
+    "idleSinceLast": 53.6,
+    "cpuSpeedLimit": 100,
+    "thermalWarning": null,
+    "power": "battery",
+    "lowPower": false
+  },
+  "machine": [
+    {
+      "scenario": "bars1000",
+      "round": 0,
+      "at": "2026-10-24T06:40:53.703Z",
+      "load": [
+        2.79,
+        3.22,
+        3.28
+      ],
+      "idleSinceLast": 83.9,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2003,
+        "samples": [
+          85.7,
+          83.1
+        ],
+        "met": true
+      },
+      "canary": 16.949999809265137
+    },
+    {
+      "scenario": "bars1000",
+      "round": 1,
+      "at": "2026-10-24T06:41:01.288Z",
+      "load": [
+        2.97,
+        3.25,
+        3.28
+      ],
+      "idleSinceLast": 79.8,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2003,
+        "samples": [
+          85.2,
+          84.8
+        ],
+        "met": true
+      },
+      "canary": 16.94000005722046
+    },
+    {
+      "scenario": "bars1000",
+      "round": 2,
+      "at": "2026-10-24T06:41:08.787Z",
+      "load": [
+        2.97,
+        3.24,
+        3.28
+      ],
+      "idleSinceLast": 79.9,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2002,
+        "samples": [
+          82.1,
+          85.9
+        ],
+        "met": true
+      },
+      "canary": 16.510000228881836
+    },
+    {
+      "scenario": "bars1000",
+      "round": 3,
+      "at": "2026-10-24T06:41:16.291Z",
+      "load": [
+        3.27,
+        3.3,
+        3.3
+      ],
+      "idleSinceLast": 77.3,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2002,
+        "samples": [
+          80.3,
+          84
+        ],
+        "met": true
+      },
+      "canary": 16.80500030517578
+    },
+    {
+      "scenario": "bars1000",
+      "round": 4,
+      "at": "2026-10-24T06:41:28.798Z",
+      "load": [
+        3.22,
+        3.29,
+        3.3
+      ],
+      "idleSinceLast": 76,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 7007,
+        "samples": [
+          62.9,
+          74.5,
+          79.1,
+          83.8,
+          75.4,
+          81.6,
+          81.5
+        ],
+        "met": true
+      },
+      "canary": 16.27500009536743
+    },
+    {
+      "scenario": "bars1000",
+      "round": 5,
+      "at": "2026-10-24T06:41:38.301Z",
+      "load": [
+        3.42,
+        3.33,
+        3.31
+      ],
+      "idleSinceLast": 79.8,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 4005,
+        "samples": [
+          81.3,
+          75,
+          82.9,
+          83.3
+        ],
+        "met": true
+      },
+      "canary": 16.21999979019165
+    },
+    {
+      "scenario": "bars1000",
+      "round": 6,
+      "at": "2026-10-24T06:41:52.802Z",
+      "load": [
+        3.68,
+        3.39,
+        3.33
+      ],
+      "idleSinceLast": 77.4,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 9010,
+        "samples": [
+          78.7,
+          86.6,
+          79.1,
+          75.9,
+          77.4,
+          61.2,
+          76.3,
+          82.7,
+          85.1
+        ],
+        "met": true
+      },
+      "canary": 16.69000005722046
+    },
+    {
+      "scenario": "bars1000",
+      "round": 7,
+      "at": "2026-10-24T06:42:01.300Z",
+      "load": [
+        3.5,
+        3.36,
+        3.32
+      ],
+      "idleSinceLast": 80.6,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 3004,
+        "samples": [
+          79,
+          80.2,
+          87.4
+        ],
+        "met": true
+      },
+      "canary": 17.55999994277954
+    },
+    {
+      "scenario": "bars1000",
+      "round": 8,
+      "at": "2026-10-24T06:42:12.792Z",
+      "load": [
+        3.19,
+        3.3,
+        3.3
+      ],
+      "idleSinceLast": 80,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 6007,
+        "samples": [
+          78.8,
+          78.1,
+          76.5,
+          79.1,
+          83.8,
+          85.2
+        ],
+        "met": true
+      },
+      "canary": 16.549999713897705
+    },
+    {
+      "scenario": "bars1000",
+      "round": 9,
+      "at": "2026-10-24T06:42:22.321Z",
+      "load": [
+        3.38,
+        3.34,
+        3.32
+      ],
+      "idleSinceLast": 80.7,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 4004,
+        "samples": [
+          77.9,
+          77.6,
+          84.3,
+          87.5
+        ],
+        "met": true
+      },
+      "canary": 16.18000030517578
+    },
+    {
+      "scenario": "dash50",
+      "round": 0,
+      "at": "2026-10-24T06:42:29.843Z",
+      "load": [
+        3.09,
+        3.28,
+        3.29
+      ],
+      "idleSinceLast": 81.2,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2001,
+        "samples": [
+          84.6,
+          87.4
+        ],
+        "met": true
+      },
+      "canary": 16.574999809265137
+    },
+    {
+      "scenario": "dash50",
+      "round": 1,
+      "at": "2026-10-24T06:42:37.093Z",
+      "load": [
+        3,
+        3.26,
+        3.29
+      ],
+      "idleSinceLast": 77.5,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2002,
+        "samples": [
+          83.9,
+          85.5
+        ],
+        "met": true
+      },
+      "canary": 16.575000286102295
+    },
+    {
+      "scenario": "dash50",
+      "round": 2,
+      "at": "2026-10-24T06:42:44.343Z",
+      "load": [
+        3.89,
+        3.44,
+        3.35
+      ],
+      "idleSinceLast": 79.5,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2002,
+        "samples": [
+          80.1,
+          86
+        ],
+        "met": true
+      },
+      "canary": 16.514999866485596
+    },
+    {
+      "scenario": "dash50",
+      "round": 3,
+      "at": "2026-10-24T06:42:51.597Z",
+      "load": [
+        3.98,
+        3.47,
+        3.36
+      ],
+      "idleSinceLast": 73.3,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2001,
+        "samples": [
+          85.7,
+          81
+        ],
+        "met": true
+      },
+      "canary": 17.359999656677246
+    },
+    {
+      "scenario": "dash50",
+      "round": 4,
+      "at": "2026-10-24T06:42:59.823Z",
+      "load": [
+        3.83,
+        3.45,
+        3.36
+      ],
+      "idleSinceLast": 80.1,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 3003,
+        "samples": [
+          74.9,
+          85,
+          81.2
+        ],
+        "met": true
+      },
+      "canary": 16.34999990463257
+    },
+    {
+      "scenario": "dash50",
+      "round": 5,
+      "at": "2026-10-24T06:43:10.079Z",
+      "load": [
+        3.63,
+        3.42,
+        3.35
+      ],
+      "idleSinceLast": 80.9,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 5006,
+        "samples": [
+          79.4,
+          78.4,
+          77.9,
+          86.8,
+          83.8
+        ],
+        "met": true
+      },
+      "canary": 16.290000438690186
+    },
+    {
+      "scenario": "dash50",
+      "round": 6,
+      "at": "2026-10-24T06:43:17.304Z",
+      "load": [
+        3.58,
+        3.42,
+        3.34
+      ],
+      "idleSinceLast": 80,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2002,
+        "samples": [
+          82.1,
+          84.4
+        ],
+        "met": true
+      },
+      "canary": 16.394999980926514
+    },
+    {
+      "scenario": "dash50",
+      "round": 7,
+      "at": "2026-10-24T06:43:30.527Z",
+      "load": [
+        3.29,
+        3.36,
+        3.32
+      ],
+      "idleSinceLast": 80.7,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 8009,
+        "samples": [
+          78.6,
+          79.7,
+          78.6,
+          85.1,
+          78.3,
+          74.3,
+          85.3,
+          85.6
+        ],
+        "met": true
+      },
+      "canary": 18.760000228881836
+    },
+    {
+      "scenario": "dash50",
+      "round": 8,
+      "at": "2026-10-24T06:43:37.773Z",
+      "load": [
+        3.11,
+        3.32,
+        3.31
+      ],
+      "idleSinceLast": 80.4,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2003,
+        "samples": [
+          82.2,
+          85.3
+        ],
+        "met": true
+      },
+      "canary": 18.65999984741211
+    },
+    {
+      "scenario": "dash50",
+      "round": 9,
+      "at": "2026-10-24T06:43:45.042Z",
+      "load": [
+        3.16,
+        3.33,
+        3.31
+      ],
+      "idleSinceLast": 80.1,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 2002,
+        "samples": [
+          83.9,
+          86.3
+        ],
+        "met": true
+      },
+      "canary": 16.47499990463257
+    }
+  ],
+  "canary": [],
+  "samples": {
+    "bars1000": {
+      "base": [
+        {
+          "cold.frame": 68.67500019073486,
+          "cold.call": 11.825000286102295,
+          "cold.task": 70.03899999999999,
+          "cold.script": 13.693999999999999,
+          "cold.style": 38.190000000000005,
+          "cold.layout": 9.122,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.99000000953674,
+          "warm.call": 6.0325000286102295,
+          "warm.task": 60.580999999999996,
+          "warm.script": 6.117499999999999,
+          "warm.style": 36.760000000000005,
+          "warm.layout": 6.946,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 68.06500005722046,
+          "cold.call": 11.119999885559082,
+          "cold.task": 69.532,
+          "cold.script": 13.056,
+          "cold.style": 38.14,
+          "cold.layout": 9.318999999999999,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 63.53250002861023,
+          "warm.call": 5.9375,
+          "warm.task": 64.7585,
+          "warm.script": 6.889999999999999,
+          "warm.style": 41.0835,
+          "warm.layout": 6.943000000000001,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 74.50500011444092,
+          "cold.call": 13.165000438690186,
+          "cold.task": 75.918,
+          "cold.script": 15.443,
+          "cold.style": 40.002,
+          "cold.layout": 10.631,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 59.65499997138977,
+          "warm.call": 5.980000019073486,
+          "warm.task": 61.549500000000016,
+          "warm.script": 6.077999999999999,
+          "warm.style": 37.12599999999999,
+          "warm.layout": 6.838499999999999,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 67.56500005722046,
+          "cold.call": 11.195000171661377,
+          "cold.task": 69.04400000000001,
+          "cold.script": 13.045000000000002,
+          "cold.style": 37.871,
+          "cold.layout": 9.007,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.67999982833862,
+          "warm.call": 6.5,
+          "warm.task": 60.193000000000005,
+          "warm.script": 6.5920000000000005,
+          "warm.style": 36.699999999999996,
+          "warm.layout": 6.631000000000002,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 67.82499980926514,
+          "cold.call": 11.505000114440918,
+          "cold.task": 69.308,
+          "cold.script": 13.55,
+          "cold.style": 37.378,
+          "cold.layout": 9.011999999999999,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.28000020980835,
+          "warm.call": 6.050000190734863,
+          "warm.task": 59.803999999999995,
+          "warm.script": 6.1385000000000005,
+          "warm.style": 36.5515,
+          "warm.layout": 6.865999999999999,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.4350004196167,
+          "cold.call": 11.255000114440918,
+          "cold.task": 70.761,
+          "cold.script": 13.216000000000001,
+          "cold.style": 38.623,
+          "cold.layout": 9.436,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 57.83500003814697,
+          "warm.call": 6.125,
+          "warm.task": 59.33749999999999,
+          "warm.script": 6.206999999999999,
+          "warm.style": 36.185,
+          "warm.layout": 6.586499999999999,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.26000022888184,
+          "cold.call": 11.315000057220459,
+          "cold.task": 70.66799999999999,
+          "cold.script": 13.202,
+          "cold.style": 38.586000000000006,
+          "cold.layout": 9.520000000000001,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.13749980926514,
+          "warm.call": 5.952499866485596,
+          "warm.task": 59.581999999999994,
+          "warm.script": 6.038,
+          "warm.style": 36.3815,
+          "warm.layout": 6.873499999999998,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.68499994277954,
+          "cold.call": 11.929999828338623,
+          "cold.task": 70.98899999999999,
+          "cold.script": 14.043,
+          "cold.style": 38.439,
+          "cold.layout": 9.321,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.125,
+          "warm.call": 6.082499980926514,
+          "warm.task": 59.552499999999995,
+          "warm.script": 6.172499999999999,
+          "warm.style": 36.3035,
+          "warm.layout": 6.803500000000001,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 67.2350001335144,
+          "cold.call": 11.529999732971191,
+          "cold.task": 68.58800000000001,
+          "cold.script": 13.452,
+          "cold.style": 37.359,
+          "cold.layout": 8.971,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.292500019073486,
+          "warm.call": 6.085000038146973,
+          "warm.task": 59.8045,
+          "warm.script": 6.178000000000001,
+          "warm.style": 36.099999999999994,
+          "warm.layout": 6.9094999999999995,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.70499992370605,
+          "cold.call": 11.335000038146973,
+          "cold.task": 70.98,
+          "cold.script": 13.280999999999999,
+          "cold.style": 40.148,
+          "cold.layout": 8.712,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 57.33500003814697,
+          "warm.call": 5.922499895095825,
+          "warm.task": 58.95250000000001,
+          "warm.script": 6.008499999999998,
+          "warm.style": 35.947,
+          "warm.layout": 6.670000000000001,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        }
+      ],
+      "base-b": [
+        {
+          "cold.frame": 69.07000017166138,
+          "cold.call": 11.255000114440918,
+          "cold.task": 70.48400000000001,
+          "cold.script": 13.275,
+          "cold.style": 38.737,
+          "cold.layout": 9.274,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 57.167500019073486,
+          "warm.call": 5.922500133514404,
+          "warm.task": 58.64750000000001,
+          "warm.script": 6.004499999999998,
+          "warm.style": 35.690999999999995,
+          "warm.layout": 6.543499999999999,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.67500019073486,
+          "cold.call": 11.210000038146973,
+          "cold.task": 71.133,
+          "cold.script": 13.288,
+          "cold.style": 38.262,
+          "cold.layout": 10.177999999999999,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 59.06500005722046,
+          "warm.call": 6.119999885559082,
+          "warm.task": 60.601500000000016,
+          "warm.script": 6.2125,
+          "warm.style": 37.131,
+          "warm.layout": 6.809999999999999,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.71000003814697,
+          "cold.call": 11.349999904632568,
+          "cold.task": 71.04400000000001,
+          "cold.script": 13.286,
+          "cold.style": 39.329,
+          "cold.layout": 9.121,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 60.1800000667572,
+          "warm.call": 6.697499990463257,
+          "warm.task": 61.67649999999999,
+          "warm.script": 6.7995,
+          "warm.style": 36.964,
+          "warm.layout": 7.116499999999999,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.6100001335144,
+          "cold.call": 11.614999771118164,
+          "cold.task": 71.117,
+          "cold.script": 13.790999999999999,
+          "cold.style": 38.373999999999995,
+          "cold.layout": 9.215,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.87250018119812,
+          "warm.call": 5.997499942779541,
+          "warm.task": 60.28450000000001,
+          "warm.script": 6.085000000000001,
+          "warm.style": 36.641999999999996,
+          "warm.layout": 6.786499999999998,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 68.90000009536743,
+          "cold.call": 11.404999732971191,
+          "cold.task": 70.203,
+          "cold.script": 13.309,
+          "cold.style": 38.417,
+          "cold.layout": 9.358,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.65249991416931,
+          "warm.call": 6.099999904632568,
+          "warm.task": 60.09100000000002,
+          "warm.script": 6.1835,
+          "warm.style": 36.637,
+          "warm.layout": 6.866000000000001,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 70.51999998092651,
+          "cold.call": 11.380000114440918,
+          "cold.task": 71.961,
+          "cold.script": 13.416,
+          "cold.style": 38.474000000000004,
+          "cold.layout": 10.417,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.392499685287476,
+          "warm.call": 6.039999961853027,
+          "warm.task": 59.80799999999999,
+          "warm.script": 6.130500000000001,
+          "warm.style": 36.777,
+          "warm.layout": 6.6695,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 66.75,
+          "cold.call": 11.279999732971191,
+          "cold.task": 68.201,
+          "cold.script": 13.11,
+          "cold.style": 36.981,
+          "cold.layout": 9.128,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.31500029563904,
+          "warm.call": 6.2250001430511475,
+          "warm.task": 59.94749999999998,
+          "warm.script": 6.314499999999998,
+          "warm.style": 36.276,
+          "warm.layout": 6.9275,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 68.19000005722046,
+          "cold.call": 11.225000381469727,
+          "cold.task": 69.53399999999999,
+          "cold.script": 13.535,
+          "cold.style": 37.341,
+          "cold.layout": 9.091999999999999,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 59.00499987602234,
+          "warm.call": 6.082499980926514,
+          "warm.task": 60.5445,
+          "warm.script": 6.173999999999999,
+          "warm.style": 36.701499999999996,
+          "warm.layout": 6.7524999999999995,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 69.14999961853027,
+          "cold.call": 11.444999694824219,
+          "cold.task": 70.45000000000002,
+          "cold.script": 13.498999999999999,
+          "cold.style": 38.758,
+          "cold.layout": 9.32,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 57.97249984741211,
+          "warm.call": 5.954999923706055,
+          "warm.task": 59.49100000000001,
+          "warm.script": 6.039500000000002,
+          "warm.style": 36.491499999999995,
+          "warm.layout": 6.8295,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 68.50500011444092,
+          "cold.call": 11.34000015258789,
+          "cold.task": 69.896,
+          "cold.script": 13.294,
+          "cold.style": 38.35,
+          "cold.layout": 9.254,
+          "cold.styleCount": 2,
+          "cold.layoutCount": 1,
+          "warm.frame": 58.61500000953674,
+          "warm.call": 5.977499961853027,
+          "warm.task": 60.33200000000001,
+          "warm.script": 6.070000000000002,
+          "warm.style": 36.595,
+          "warm.layout": 6.796,
+          "warm.styleCount": 2,
+          "warm.layoutCount": 1
+        }
+      ]
+    },
+    "dash50": {
+      "base": [
+        {
+          "cold.frame": 33.19499969482422,
+          "cold.call": 10.860000133514404,
+          "cold.task": 34.257999999999996,
+          "cold.script": 12.026,
+          "cold.style": 12.47,
+          "cold.layout": 5.227,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 27.24749994277954,
+          "warm.call": 9.232500076293945,
+          "warm.task": 29.803000000000004,
+          "warm.script": 9.3765,
+          "warm.style": 11.915,
+          "warm.layout": 3.1419999999999995,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 34.46499967575073,
+          "cold.call": 11.099999904632568,
+          "cold.task": 35.558,
+          "cold.script": 12.356,
+          "cold.style": 12.942,
+          "cold.layout": 5.453,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 26.367500066757202,
+          "warm.call": 8.21749997138977,
+          "warm.task": 28.726499999999994,
+          "warm.script": 8.365,
+          "warm.style": 12.1505,
+          "warm.layout": 3.0035,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 35.35499954223633,
+          "cold.call": 12.444999694824219,
+          "cold.task": 36.541000000000004,
+          "cold.script": 13.641,
+          "cold.style": 13.107000000000001,
+          "cold.layout": 5.0889999999999995,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 29.930000066757202,
+          "warm.call": 10.730000019073486,
+          "warm.task": 33.202,
+          "warm.script": 10.9085,
+          "warm.style": 12.462500000000002,
+          "warm.layout": 3.2439999999999998,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.325000286102295,
+          "cold.call": 10.96500015258789,
+          "cold.task": 34.55800000000001,
+          "cold.script": 12.128,
+          "cold.style": 12.73,
+          "cold.layout": 5.1370000000000005,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 25.12999987602234,
+          "warm.call": 7.732499837875366,
+          "warm.task": 27.475499999999997,
+          "warm.script": 7.8795,
+          "warm.style": 11.487,
+          "warm.layout": 2.957,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.15000009536743,
+          "cold.call": 11.070000171661377,
+          "cold.task": 34.433,
+          "cold.script": 12.075,
+          "cold.style": 12.562999999999999,
+          "cold.layout": 5.164000000000001,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 26.335000038146973,
+          "warm.call": 8.567499876022339,
+          "warm.task": 29.016500000000008,
+          "warm.script": 8.7155,
+          "warm.style": 11.815999999999999,
+          "warm.layout": 2.985,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.21499967575073,
+          "cold.call": 10.989999771118164,
+          "cold.task": 34.413,
+          "cold.script": 12.136,
+          "cold.style": 12.745,
+          "cold.layout": 5.074000000000001,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 27.12999987602234,
+          "warm.call": 9.457499742507935,
+          "warm.task": 29.61549999999999,
+          "warm.script": 9.6235,
+          "warm.style": 11.702000000000002,
+          "warm.layout": 3,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 32.920000076293945,
+          "cold.call": 10.825000286102295,
+          "cold.task": 34.077,
+          "cold.script": 12.004000000000001,
+          "cold.style": 12.424,
+          "cold.layout": 5.061000000000001,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 26.707500219345093,
+          "warm.call": 8.847500324249268,
+          "warm.task": 29.05449999999999,
+          "warm.script": 9.003499999999999,
+          "warm.style": 11.806000000000001,
+          "warm.layout": 3.0580000000000003,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 32.40499973297119,
+          "cold.call": 10.824999809265137,
+          "cold.task": 35.142,
+          "cold.script": 11.108999999999998,
+          "cold.style": 12.762,
+          "cold.layout": 5.14,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 23.302500009536743,
+          "warm.call": 5.532500267028809,
+          "warm.task": 25.722500000000004,
+          "warm.script": 5.674999999999999,
+          "warm.style": 11.617,
+          "warm.layout": 2.994,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 32.640000343322754,
+          "cold.call": 10.760000228881836,
+          "cold.task": 35.359,
+          "cold.script": 11.049000000000001,
+          "cold.style": 12.723999999999998,
+          "cold.layout": 5.261,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 26.492500066757202,
+          "warm.call": 7.96750020980835,
+          "warm.task": 29.030500000000004,
+          "warm.script": 8.1295,
+          "warm.style": 12.23,
+          "warm.layout": 3.1890000000000005,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.74000024795532,
+          "cold.call": 11.15500020980835,
+          "cold.task": 34.944,
+          "cold.script": 12.257,
+          "cold.style": 12.519,
+          "cold.layout": 5.199,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 27.25250005722046,
+          "warm.call": 9.1875,
+          "warm.task": 29.963,
+          "warm.script": 9.387500000000001,
+          "warm.style": 11.882499999999999,
+          "warm.layout": 3.0655,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        }
+      ],
+      "base-b": [
+        {
+          "cold.frame": 33.82000017166138,
+          "cold.call": 11.494999885559082,
+          "cold.task": 35.008,
+          "cold.script": 12.561,
+          "cold.style": 12.754,
+          "cold.layout": 5.096,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 25.12750005722046,
+          "warm.call": 7.3399999141693115,
+          "warm.task": 27.575000000000003,
+          "warm.script": 7.4985,
+          "warm.style": 11.873,
+          "warm.layout": 2.9444999999999997,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.18000030517578,
+          "cold.call": 10.950000286102295,
+          "cold.task": 34.332,
+          "cold.script": 12.072000000000001,
+          "cold.style": 12.814,
+          "cold.layout": 5.0969999999999995,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 27.287500143051147,
+          "warm.call": 9.044999837875366,
+          "warm.task": 29.878,
+          "warm.script": 9.2135,
+          "warm.style": 12.1665,
+          "warm.layout": 2.9895000000000005,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 34.27500009536743,
+          "cold.call": 11.15500020980835,
+          "cold.task": 35.289,
+          "cold.script": 12.269,
+          "cold.style": 13.457,
+          "cold.layout": 5.354,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 32.357499837875366,
+          "warm.call": 9.054999828338623,
+          "warm.task": 35.08350000000001,
+          "warm.script": 9.218,
+          "warm.style": 15.127,
+          "warm.layout": 3.923,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.014999866485596,
+          "cold.call": 11.014999866485596,
+          "cold.task": 36.02100000000001,
+          "cold.script": 11.309,
+          "cold.style": 12.751999999999999,
+          "cold.layout": 5.196,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 26.320000171661377,
+          "warm.call": 8.417500257492065,
+          "warm.task": 28.6925,
+          "warm.script": 8.575500000000002,
+          "warm.style": 11.743,
+          "warm.layout": 3.042,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.47500038146973,
+          "cold.call": 10.980000019073486,
+          "cold.task": 34.656,
+          "cold.script": 12.078999999999999,
+          "cold.style": 12.737,
+          "cold.layout": 5.128,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 25.664999961853027,
+          "warm.call": 7.630000114440918,
+          "warm.task": 28.110500000000002,
+          "warm.script": 7.782,
+          "warm.style": 12.057999999999998,
+          "warm.layout": 2.9560000000000004,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.08500003814697,
+          "cold.call": 10.990000247955322,
+          "cold.task": 34.263000000000005,
+          "cold.script": 12.076,
+          "cold.style": 12.472999999999999,
+          "cold.layout": 5.091,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 27.300000190734863,
+          "warm.call": 9.120000123977661,
+          "warm.task": 29.85450000000001,
+          "warm.script": 9.277,
+          "warm.style": 12.14,
+          "warm.layout": 2.9624999999999995,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.28499984741211,
+          "cold.call": 11.005000114440918,
+          "cold.task": 34.730999999999995,
+          "cold.script": 12.164000000000001,
+          "cold.style": 12.602,
+          "cold.layout": 5.101,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 27.442500114440918,
+          "warm.call": 9.599999904632568,
+          "warm.task": 29.77199999999999,
+          "warm.script": 9.755999999999997,
+          "warm.style": 11.988,
+          "warm.layout": 2.9559999999999995,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 32.700000286102295,
+          "cold.call": 10.789999961853027,
+          "cold.task": 33.84,
+          "cold.script": 11.835,
+          "cold.style": 12.459,
+          "cold.layout": 5.061999999999999,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 26.75,
+          "warm.call": 8.769999980926514,
+          "warm.task": 29.020999999999997,
+          "warm.script": 8.933,
+          "warm.style": 12.192,
+          "warm.layout": 2.8255000000000003,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 33.41499996185303,
+          "cold.call": 10.759999752044678,
+          "cold.task": 34.643,
+          "cold.script": 12.072,
+          "cold.style": 12.625,
+          "cold.layout": 5.15,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 27.37249994277954,
+          "warm.call": 8.317500114440918,
+          "warm.task": 30.15,
+          "warm.script": 8.5125,
+          "warm.style": 12.224,
+          "warm.layout": 2.9864999999999995,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        },
+        {
+          "cold.frame": 32.61999988555908,
+          "cold.call": 10.954999923706055,
+          "cold.task": 35.272999999999996,
+          "cold.script": 11.23,
+          "cold.style": 12.786000000000001,
+          "cold.layout": 5.148,
+          "cold.styleCount": 51,
+          "cold.layoutCount": 1,
+          "warm.frame": 26.90000009536743,
+          "warm.call": 8.9375,
+          "warm.task": 29.607000000000006,
+          "warm.script": 9.1055,
+          "warm.style": 11.788,
+          "warm.layout": 3.0839999999999996,
+          "warm.styleCount": 51,
+          "warm.layoutCount": 1
+        }
+      ]
+    }
+  },
+  "census": {
+    "bars1000": {
+      "base": {
+        "elements": 4017,
+        "geometry": "1t5iuu5"
+      },
+      "base-b": {
+        "elements": 4017,
+        "geometry": "1t5iuu5"
+      }
+    },
+    "dash50": {
+      "base": {
+        "elements": 2201,
+        "geometry": "jy9nvn"
+      },
+      "base-b": {
+        "elements": 2201,
+        "geometry": "jy9nvn"
+      }
+    }
+  },
+  "errors": [],
+  "isolated": true,
+  "end": {
+    "at": "2026-10-24T06:43:50.306Z",
+    "load": [
+      3.47,
+      3.39,
+      3.33
+    ],
+    "idleSinceLast": 75.7,
+    "cpuSpeedLimit": 100,
+    "thermalWarning": null,
+    "power": "battery",
+    "lowPower": false
+  }
+}

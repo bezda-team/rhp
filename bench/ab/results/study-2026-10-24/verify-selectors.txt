@@ -1,0 +1,20 @@
+bars20: base draws 97 elements
+  sel-body       0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-flat       0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  guardlayer     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+dash50: base draws 2201 elements
+  sel-body       0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-flat       0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  guardlayer     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+dots1000: base draws 1030 elements
+  sel-body       0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-flat       0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  guardlayer     0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+heat50: base draws 5154 elements
+  sel-body       0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-flat       0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  guardlayer     0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+positioned1000: base draws 4017 elements
+  sel-body       0 of 4017 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-flat       0 of 4017 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  guardlayer     0 of 4017 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)

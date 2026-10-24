@@ -1,0 +1,18 @@
+bars1000static: base draws 4017 elements
+  staticfast     0 of 4017 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter-shapes 0 of 4017 boxes moved, at most 0.008 px; 224909 pixels differ (largest channel difference 126)
+dots1000: base draws 1030 elements
+  staticfast     0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter-shapes 0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+line100k: base draws 29 elements
+  staticfast     0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter-shapes 0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+bars20: base draws 97 elements
+  staticfast     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter-shapes 0 of 97 boxes moved, at most 0.008 px; 9028 pixels differ (largest channel difference 153)
+heat50: base draws 5154 elements
+  staticfast     0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter-shapes 0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+dash50: base draws 2201 elements
+  staticfast     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter-shapes 0 of 2201 boxes moved, at most 0.008 px; 65130 pixels differ (largest channel difference 153)

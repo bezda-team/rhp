@@ -1,0 +1,184 @@
+{
+  "variant": "base",
+  "scenario": "dash50",
+  "warm": true,
+  "update": null,
+  "runs": 8,
+  "total": 7.220000000000006,
+  "top": [
+    {
+      "fn": "(garbage collector) (native):0",
+      "ms": 1.596375
+    },
+    {
+      "fn": "setProperty (native):0",
+      "ms": 0.6465000000000002
+    },
+    {
+      "fn": "setAttribute (native):0",
+      "ms": 0.24274999999999997
+    },
+    {
+      "fn": "runComputation base.js:325",
+      "ms": 0.23962499999999998
+    },
+    {
+      "fn": "insertBefore (native):0",
+      "ms": 0.19150000000000003
+    },
+    {
+      "fn": "readSignal base.js:240",
+      "ms": 0.16525
+    },
+    {
+      "fn": "insertExpression base.js:1478",
+      "ms": 0.164
+    },
+    {
+      "fn": "createMemo base.js:105",
+      "ms": 0.15925
+    },
+    {
+      "fn": "slat2 base.js:3426",
+      "ms": 0.14775
+    },
+    {
+      "fn": "(anonymous) base.js:4590",
+      "ms": 0.147
+    },
+    {
+      "fn": "cloneNode (native):0",
+      "ms": 0.14537500000000003
+    },
+    {
+      "fn": "createComponent base.js:819",
+      "ms": 0.14112499999999997
+    },
+    {
+      "fn": "createRenderEffect.e base.js:3906",
+      "ms": 0.12175
+    },
+    {
+      "fn": "makePlot base.js:3175",
+      "ms": 0.11475
+    },
+    {
+      "fn": "(anonymous) base.js:3435",
+      "ms": 0.097625
+    },
+    {
+      "fn": "(anonymous) base.js:2772",
+      "ms": 0.094625
+    },
+    {
+      "fn": "(anonymous) base.js:4064",
+      "ms": 0.0935
+    },
+    {
+      "fn": "createComputation base.js:360",
+      "ms": 0.09137500000000001
+    },
+    {
+      "fn": "replaceChildren (native):0",
+      "ms": 0.08875
+    },
+    {
+      "fn": "read base.js:3220",
+      "ms": 0.08862500000000001
+    },
+    {
+      "fn": "insert base.js:1349",
+      "ms": 0.08687500000000001
+    },
+    {
+      "fn": "updateComputation base.js:309",
+      "ms": 0.083625
+    },
+    {
+      "fn": "nice base.js:2594",
+      "ms": 0.08299999999999999
+    },
+    {
+      "fn": "untrack base.js:149",
+      "ms": 0.08099999999999999
+    },
+    {
+      "fn": "style base.js:1316",
+      "ms": 0.074875
+    },
+    {
+      "fn": "createSignal base.js:71",
+      "ms": 0.07475000000000001
+    },
+    {
+      "fn": "children base.js:3551",
+      "ms": 0.066625
+    },
+    {
+      "fn": "tickValues base.js:3606",
+      "ms": 0.065625
+    },
+    {
+      "fn": "arrange base.js:3746",
+      "ms": 0.05625
+    },
+    {
+      "fn": "Plot base.js:3172",
+      "ms": 0.051000000000000004
+    },
+    {
+      "fn": "setProperty base.js:2240",
+      "ms": 0.050625
+    },
+    {
+      "fn": "Chart base.js:3680",
+      "ms": 0.049375
+    },
+    {
+      "fn": "(anonymous) base.js:2831",
+      "ms": 0.047125
+    },
+    {
+      "fn": "observe (native):0",
+      "ms": 0.046000000000000006
+    },
+    {
+      "fn": "fn base.js:1255",
+      "ms": 0.041875
+    },
+    {
+      "fn": "cleanChildren base.js:1589",
+      "ms": 0.04175
+    },
+    {
+      "fn": "createRoot base.js:55",
+      "ms": 0.041625
+    },
+    {
+      "fn": "values base.js:4441",
+      "ms": 0.0415
+    },
+    {
+      "fn": "useRoot base.js:2025",
+      "ms": 0.04075
+    },
+    {
+      "fn": "others base.js:2743",
+      "ms": 0.03925
+    }
+  ],
+  "byFile": [
+    {
+      "file": "base.js",
+      "ms": 4.099625000000004
+    },
+    {
+      "file": "(gc)",
+      "ms": 1.596375
+    },
+    {
+      "file": "(native)",
+      "ms": 1.524
+    }
+  ]
+}

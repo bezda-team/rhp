@@ -1,0 +1,81 @@
+{
+  "variants": [
+    "count-base",
+    "count-pos"
+  ],
+  "scenarios": [
+    "bars1000",
+    "heat50"
+  ],
+  "update": null,
+  "counters": {
+    "bars1000": {
+      "count-base": {
+        "baseStylesUsed": 0,
+        "customPropertiesApplied": 0,
+        "elementsStyled": 4023,
+        "independentInheritedStylesPropagated": 0,
+        "matchedPropertyApply": 0,
+        "matchedPropertyCacheAdded": 6029,
+        "matchedPropertyCacheHit": 0,
+        "pseudoElementsStyled": 2006,
+        "rulesFastRejected": 51240,
+        "rulesMatched": 47159,
+        "rulesRejected": 89231,
+        "stylesAnimated": 0,
+        "stylesChanged": 4017,
+        "stylesUnchanged": 0
+      },
+      "count-pos": {
+        "baseStylesUsed": 0,
+        "customPropertiesApplied": 0,
+        "elementsStyled": 4028,
+        "independentInheritedStylesPropagated": 0,
+        "matchedPropertyApply": 0,
+        "matchedPropertyCacheAdded": 1276,
+        "matchedPropertyCacheHit": 4759,
+        "pseudoElementsStyled": 2008,
+        "rulesFastRejected": 51296,
+        "rulesMatched": 47170,
+        "rulesRejected": 89294,
+        "stylesAnimated": 0,
+        "stylesChanged": 4020,
+        "stylesUnchanged": 2
+      }
+    },
+    "heat50": {
+      "count-base": {
+        "baseStylesUsed": 0,
+        "customPropertiesApplied": 0,
+        "elementsStyled": 5154,
+        "independentInheritedStylesPropagated": 0,
+        "matchedPropertyApply": 0,
+        "matchedPropertyCacheAdded": 5204,
+        "matchedPropertyCacheHit": 0,
+        "pseudoElementsStyled": 50,
+        "rulesFastRejected": 18741,
+        "rulesMatched": 44124,
+        "rulesRejected": 45428,
+        "stylesAnimated": 0,
+        "stylesChanged": 5154,
+        "stylesUnchanged": 0
+      },
+      "count-pos": {
+        "baseStylesUsed": 0,
+        "customPropertiesApplied": 0,
+        "elementsStyled": 5159,
+        "independentInheritedStylesPropagated": 0,
+        "matchedPropertyApply": 0,
+        "matchedPropertyCacheAdded": 212,
+        "matchedPropertyCacheHit": 4998,
+        "pseudoElementsStyled": 52,
+        "rulesFastRejected": 18797,
+        "rulesMatched": 44135,
+        "rulesRejected": 45491,
+        "stylesAnimated": 0,
+        "stylesChanged": 5157,
+        "stylesUnchanged": 2
+      }
+    }
+  }
+}

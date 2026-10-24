@@ -1,0 +1,125 @@
+{
+  "variant": "posalias",
+  "scenario": "bars1000",
+  "warm": false,
+  "update": "all",
+  "runs": 4,
+  "query": "",
+  "phases": {
+    "other": 104.96100000000057,
+    "script": 17.221499999999498,
+    "layout": 0.262,
+    "prepaint": 0.08550000000000002,
+    "paint": 11.725999999999656,
+    "layerize": 0.7050000000000001,
+    "commit": 1.2035,
+    "gc": 5.440499999999991,
+    "style": 0.025,
+    "window": 760.193
+  },
+  "top": [
+    {
+      "name": "Document::recalcStyle",
+      "ms": 52.5245
+    },
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 16.0565
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 12.590499999999999
+    },
+    {
+      "name": "Paint",
+      "ms": 11.725999999999656
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 8.058000000000003
+    },
+    {
+      "name": "LocalFrameView::UpdateStyleAndLayout",
+      "ms": 5.432499999999999
+    },
+    {
+      "name": "AnimationTimeline::serviceAnimations",
+      "ms": 5.261000000000001
+    },
+    {
+      "name": "LocalFrameView::RunPaintLifecyclePhase",
+      "ms": 4.314500000000001
+    },
+    {
+      "name": "RunTask",
+      "ms": 3.8754999999999367
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 2.918
+    },
+    {
+      "name": "PageAnimator::serviceScriptedAnimations",
+      "ms": 2.1240000000000006
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL",
+      "ms": 1.7889999999999993
+    },
+    {
+      "name": "HitTest",
+      "ms": 1.6905000000000001
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 1.438999999999999
+    },
+    {
+      "name": "Commit",
+      "ms": 1.2035
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+      "ms": 1.1195
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING",
+      "ms": 0.8085000000000004
+    },
+    {
+      "name": "Layerize",
+      "ms": 0.6375
+    }
+  ],
+  "counts": [
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    }
+  ],
+  "selectors": null
+}

@@ -1,0 +1,56 @@
+round 1/10round 2/10round 3/10round 4/10round 5/10round 6/10round 7/10round 8/10round 9/10round 10/10
+frame:
+  same           11.97 ms (±2.4%)  (base)
+  parentVar      28.12 ms (±1.1%)  +133.8% [+106.1, +135.9] *
+  parentVarRead   30.31 ms (±1.4%)  +152.3% [+123.5, +158.5] *
+  parentTop      15.79 ms (±1.9%)  +31.3% [+15.3, +36.0] *
+style:
+  same            3.35 ms (±3.9%)  (base)
+  parentVar      15.67 ms (±1.1%)  +361.1% [+283.1, +374.7] *
+  parentVarRead   17.58 ms (±1.5%)  +419.8% [+329.5, +437.2] *
+  parentTop       4.76 ms (±4.7%)  +42.1% [+14.8, +46.0] *
+layout:
+  same            2.50 ms (±3.1%)  (base)
+  parentVar       3.57 ms (±5.0%)  +39.8% [+34.4, +44.9] *
+  parentVarRead    3.63 ms (±2.4%)  +39.4% [+34.1, +44.8] *
+  parentTop       3.17 ms (±2.9%)  +24.8% [+20.1, +30.1] *
+bars1000 round 1/10 (canary 17.3 ms, load 2.01, quiet wait 2002 ms)   bars1000 round 2/10 (canary 16.3 ms, load 1.92, quiet wait 2002 ms)   bars1000 round 3/10 (canary 16.0 ms, load 2.02, quiet wait 2003 ms)   bars1000 round 4/10 (canary 16.7 ms, load 2.52, quiet wait 333280 ms)   bars1000 round 5/10 (canary 16.1 ms, load 3.17, quiet wait 8011 ms)   bars1000 round 6/10 (canary 17.5 ms, load 2.99, quiet wait 2003 ms)   bars1000 round 7/10 (canary 16.8 ms, load 2.84, quiet wait 2003 ms)   bars1000 round 8/10 (canary 15.6 ms, load 2.56, quiet wait 2003 ms)   bars1000 round 9/10 (canary 17.3 ms, load 2.63, quiet wait 5004 ms)   bars1000 round 10/10 (canary 16.2 ms, load 2.5, quiet wait 2002 ms)   
+  ! base?as=bars1000u1 draws differently: 4017 elements, geometry 14v3kt1 (base 4017, 1t5iuu5)
+  ! base?as=bars1000u1000 draws differently: 4017 elements, geometry nltlvn (base 4017, 1t5iuu5)
+
+bars1000 (chromium, mount, 10 rounds)
+  cold.frame         base 68.53 (±2.7%) | base?as=bars1000u1 68.52 (±1.9%) -0.6% [-14.5, +3.0] | base?as=bars1000u1000 69.56 (±2.6%) +1.5% [-14.3, +5.0]
+  cold.call          base 11.30 (±2.9%) | base?as=bars1000u1 11.28 (±1.0%) -0.2% [-27.6, +3.7] | base?as=bars1000u1000 11.65 (±4.8%) +2.8% [-20.7, +20.1]
+  cold.task          base 68.92 (±2.6%) | base?as=bars1000u1 69.01 (±2.1%) -0.6% [-5.3, +3.0] | base?as=bars1000u1000 69.99 (±2.5%) +1.7% [-3.8, +5.0]
+  cold.script        base 12.50 (±2.8%) | base?as=bars1000u1 12.43 (±1.8%) -0.4% [-10.9, +4.0] | base?as=bars1000u1000 12.92 (±5.3%) +2.1% [-7.8, +15.3]
+  cold.style         base 37.87 (±2.4%) | base?as=bars1000u1 38.13 (±1.6%) -0.3% [-5.2, +3.3] | base?as=bars1000u1000 37.75 (±2.4%) -1.2% [-6.1, +1.3]
+  cold.layout        base 9.17 (±3.8%) | base?as=bars1000u1 8.88 (±2.2%) -2.4% [-5.9, +4.3] | base?as=bars1000u1000 9.79 (±2.3%) +7.7% [+3.1, +12.8] *
+  cold.styleCount    base 2.00 (±0.0%) | base?as=bars1000u1 2.00 (±0.0%) 0.0% [0.0, 0.0] | base?as=bars1000u1000 2.00 (±0.0%) 0.0% [0.0, 0.0]
+  cold.layoutCount   base 1.00 (±0.0%) | base?as=bars1000u1 1.00 (±0.0%) 0.0% [0.0, 0.0] | base?as=bars1000u1000 1.00 (±0.0%) 0.0% [0.0, 0.0]
+  warm.frame         base 59.76 (±7.6%) | base?as=bars1000u1 58.92 (±2.2%) -1.7% [-13.6, +1.8] | base?as=bars1000u1000 59.13 (±1.6%) -2.5% [-14.2, +4.1]
+  warm.call          base 6.42 (±10.3%) | base?as=bars1000u1 6.12 (±2.4%) -9.1% [-24.7, +2.2] | base?as=bars1000u1000 6.31 (±1.6%) -7.1% [-22.2, +5.3]
+  warm.task          base 60.92 (±7.9%) | base?as=bars1000u1 59.93 (±2.7%) -1.8% [-13.4, +1.8] | base?as=bars1000u1000 59.91 (±1.5%) -2.2% [-14.0, +3.9]
+  warm.script        base 6.02 (±9.7%) | base?as=bars1000u1 5.86 (±5.0%) -8.7% [-27.9, +0.7] | base?as=bars1000u1000 5.82 (±1.7%) -11.1% [-27.1, +4.3]
+  warm.style         base 36.82 (±7.7%) | base?as=bars1000u1 36.73 (±3.2%) -2.1% [-10.1, +2.9] | base?as=bars1000u1000 36.24 (±1.4%) -3.8% [-12.8, +2.3]
+  warm.layout        base 6.75 (±5.0%) | base?as=bars1000u1 6.67 (±1.8%) -2.8% [-21.8, +0.9] | base?as=bars1000u1000 7.30 (±2.5%) +6.8% [-17.9, +12.5]
+  warm.styleCount    base 2.00 (±0.0%) | base?as=bars1000u1 2.00 (±0.0%) 0.0% [0.0, 0.0] | base?as=bars1000u1000 2.00 (±0.0%) 0.0% [0.0, 0.0]
+  warm.layoutCount   base 1.00 (±0.0%) | base?as=bars1000u1 1.00 (±0.0%) 0.0% [0.0, 0.0] | base?as=bars1000u1000 1.00 (±0.0%) 0.0% [0.0, 0.0]
+heat50 round 1/10 (canary 16.4 ms, load 2.43, quiet wait 2003 ms)   heat50 round 2/10 (canary 16.0 ms, load 2.36, quiet wait 2003 ms)   heat50 round 3/10 (canary 16.3 ms, load 2.41, quiet wait 2003 ms)   heat50 round 4/10 (canary 23.6 ms, load 2.34, quiet wait 2003 ms)   heat50 round 5/10 (canary 16.3 ms, load 2.4, quiet wait 2002 ms)   heat50 round 6/10 (canary 16.4 ms, load 2.18, quiet wait 2004 ms)   heat50 round 7/10 (canary 16.6 ms, load 2.17, quiet wait 2003 ms)   heat50 round 8/10 (canary 16.7 ms, load 2.29, quiet wait 2001 ms)   heat50 round 9/10 (canary 17.5 ms, load 2.67, quiet wait 2002 ms)   heat50 round 10/10 (canary 16.0 ms, load 2.65, quiet wait 2003 ms)   
+
+heat50 (chromium, mount, 10 rounds)
+  cold.frame         base 66.88 (±3.9%) | base?as=heat50u 67.25 (±1.3%) +0.7% [-5.3, +2.9]
+  cold.call          base 12.29 (±5.6%) | base?as=heat50u 12.33 (±1.3%) +1.8% [-10.8, +5.1]
+  cold.task          base 68.21 (±3.8%) | base?as=heat50u 67.81 (±1.3%) -0.6% [-5.3, +2.1]
+  cold.script        base 13.09 (±4.5%) | base?as=heat50u 13.44 (±1.5%) +3.9% [-7.5, +10.3]
+  cold.style         base 42.25 (±4.0%) | base?as=heat50u 42.01 (±1.5%) -0.9% [-4.6, +1.8]
+  cold.layout        base 5.73 (±1.9%) | base?as=heat50u 5.78 (±2.7%) +1.6% [-6.8, +4.8]
+  cold.styleCount    base 2.00 (±0.0%) | base?as=heat50u 2.00 (±0.0%) 0.0% [0.0, 0.0]
+  cold.layoutCount   base 1.00 (±0.0%) | base?as=heat50u 1.00 (±0.0%) 0.0% [0.0, 0.0]
+  warm.frame         base 53.86 (±1.9%) | base?as=heat50u 54.99 (±3.3%) +1.4% [-0.7, +3.3]
+  warm.call          base 6.45 (±2.4%) | base?as=heat50u 7.00 (±3.0%) +8.4% [+5.4, +10.5] *
+  warm.task          base 57.04 (±1.8%) | base?as=heat50u 58.34 (±3.4%) +1.9% [-0.6, +3.6]
+  warm.script        base 6.06 (±4.7%) | base?as=heat50u 6.59 (±4.0%) +7.8% [+5.1, +11.1] *
+  warm.style         base 39.89 (±1.7%) | base?as=heat50u 40.70 (±4.0%) +0.7% [-1.5, +2.9]
+  warm.layout        base 3.49 (±0.9%) | base?as=heat50u 3.46 (±3.4%) -0.9% [-4.8, +3.0]
+  warm.styleCount    base 2.00 (±0.0%) | base?as=heat50u 2.00 (±0.0%) 0.0% [0.0, 0.0]
+  warm.layoutCount   base 1.00 (±0.0%) | base?as=heat50u 1.00 (±0.0%) 0.0% [0.0, 0.0]

@@ -1,0 +1,132 @@
+{
+  "variant": "posalias",
+  "scenario": "dots10k",
+  "warm": true,
+  "update": null,
+  "runs": 5,
+  "query": "",
+  "phases": {
+    "other": 118.02900000000005,
+    "script": 31.444,
+    "gc": 4.607999999999997,
+    "style": 0.006,
+    "layout": 0.003,
+    "prepaint": 0.002,
+    "paint": 7.111,
+    "layerize": 0.005,
+    "commit": 0.03,
+    "window": 158.188
+  },
+  "top": [
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 106.885
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 31.348
+    },
+    {
+      "name": "Paint",
+      "ms": 7.111
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 5.159000000000001
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+      "ms": 3.549
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 3.466
+    },
+    {
+      "name": "CullRectUpdate",
+      "ms": 1.225
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 1.0859999999999999
+    },
+    {
+      "name": "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED",
+      "ms": 0.307
+    },
+    {
+      "name": "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL",
+      "ms": 0.152
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_ROOTS",
+      "ms": 0.132
+    },
+    {
+      "name": "Document::recalcStyle",
+      "ms": 0.112
+    },
+    {
+      "name": "LocalFrameView::RunPaintLifecyclePhase",
+      "ms": 0.093
+    },
+    {
+      "name": "Blink.Paint.UpdateTime",
+      "ms": 0.091
+    },
+    {
+      "name": "MinorGC",
+      "ms": 0.088
+    },
+    {
+      "name": "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL",
+      "ms": 0.08299999999999999
+    },
+    {
+      "name": "v8.callFunction",
+      "ms": 0.07100000000000001
+    },
+    {
+      "name": "WebFrameWidgetImpl::UpdateLifecycle",
+      "ms": 0.052
+    }
+  ],
+  "counts": [
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    }
+  ],
+  "selectors": null
+}

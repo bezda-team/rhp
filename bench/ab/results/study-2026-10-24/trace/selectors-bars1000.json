@@ -1,0 +1,294 @@
+{
+  "variant": "base",
+  "scenario": "bars1000",
+  "warm": true,
+  "update": null,
+  "runs": 3,
+  "query": "",
+  "phases": {
+    "other": 130.94000000000383,
+    "script": 9.091999999999999,
+    "gc": 4.629,
+    "style": 0.01,
+    "layout": 0.007,
+    "prepaint": 0.003,
+    "paint": 2.966,
+    "layerize": 0.004,
+    "commit": 0.031,
+    "window": 147.294
+  },
+  "top": [
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 119.018
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 8.994
+    },
+    {
+      "name": "Paint",
+      "ms": 2.966
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+      "ms": 2.504
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 2.492
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 1.183
+    },
+    {
+      "name": "InlineNode::ShapeTextIncludingFirstLine",
+      "ms": 0.8340000000000006
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 0.756
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING",
+      "ms": 0.7450000000000002
+    },
+    {
+      "name": "CullRectUpdate",
+      "ms": 0.732
+    },
+    {
+      "name": "Document::recalcStyle",
+      "ms": 0.618
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL",
+      "ms": 0.22500000000000003
+    },
+    {
+      "name": "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL",
+      "ms": 0.143
+    },
+    {
+      "name": "MinorGC",
+      "ms": 0.129
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_ROOTS",
+      "ms": 0.124
+    },
+    {
+      "name": "Blink.Paint.UpdateTime",
+      "ms": 0.068
+    },
+    {
+      "name": "v8.callFunction",
+      "ms": 0.067
+    },
+    {
+      "name": "V8.GC_TIME_TO_SAFEPOINT",
+      "ms": 0.067
+    }
+  ],
+  "counts": [
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    }
+  ],
+  "selectors": [
+    {
+      "sel": ":is(.rhp-label, .rhp-gridline > span, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) ::selection",
+      "elapsed": 0.002,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": "div",
+      "elapsed": 0.0016666666666666666,
+      "attempts": 6,
+      "matches": 6,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object), .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell)",
+      "elapsed": 0.0016666666666666666,
+      "attempts": 3,
+      "matches": 1,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path)",
+      "elapsed": 0.0013333333333333333,
+      "attempts": 3,
+      "matches": 1,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-o=\"h\"]:not([data-rhp-aspect]) > .rhp-body",
+      "elapsed": 0.0003333333333333333,
+      "attempts": 1,
+      "matches": 1,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-place, .rhp-area, .rhp-line, .rhp-gridline)",
+      "elapsed": 0.0003333333333333333,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(:root:active-view-transition .rhp-plot > *)",
+      "elapsed": 0.0003333333333333333,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-turning] .rhp-plot[data-rhp-reorder] > *",
+      "elapsed": 0.0003333333333333333,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ".rhp-body > *",
+      "elapsed": 0.0003333333333333333,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::before",
+      "elapsed": 0.0003333333333333333,
+      "attempts": 3,
+      "matches": 1,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-chart",
+      "elapsed": 0,
+      "attempts": 1,
+      "matches": 1,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::after",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 1,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-turning] *",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-o=\"h\"][data-rhp-sized]:not([data-rhp-aspect]) > .rhp-body",
+      "elapsed": 0,
+      "attempts": 1,
+      "matches": 0,
+      "fastRejects": 1
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-o=\"h\"]:not([data-rhp-overlap]) > *",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-turning]",
+      "elapsed": 0,
+      "attempts": 1,
+      "matches": 0,
+      "fastRejects": 1
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-aspect] > .rhp-body",
+      "elapsed": 0,
+      "attempts": 1,
+      "matches": 0,
+      "fastRejects": 1
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-overlap] > :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line)",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ".rhp-plot > *",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ":is(.rhp-label, .rhp-gridline > span)::selection",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-reorder=\"slide\"]:not([data-rhp-overlap]) > *",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-o=\"v\"]:not([data-rhp-aspect]) > .rhp-body",
+      "elapsed": 0,
+      "attempts": 1,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-o=\"v\"]:not([data-rhp-overlap]) > *",
+      "elapsed": 0,
+      "attempts": 3,
+      "matches": 0,
+      "fastRejects": 3
+    },
+    {
+      "sel": ".rhp-body",
+      "elapsed": 0,
+      "attempts": 2,
+      "matches": 2,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-aspect]",
+      "elapsed": 0,
+      "attempts": 1,
+      "matches": 0,
+      "fastRejects": 1
+    }
+  ]
+}

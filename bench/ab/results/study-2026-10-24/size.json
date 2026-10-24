@@ -1,0 +1,22 @@
+{
+  "whole": {
+    "min": 55700,
+    "gz": 17409
+  },
+  "no gutters.css + cross.css text": {
+    "min": 50234,
+    "gz": 16674
+  },
+  "no manydots.css in the core sheet": {
+    "min": 54801,
+    "gz": 17235
+  },
+  "no rhp.css text": {
+    "min": 40231,
+    "gz": 14766
+  },
+  "no console.warn messages": {
+    "min": 54404,
+    "gz": 16821
+  }
+}
