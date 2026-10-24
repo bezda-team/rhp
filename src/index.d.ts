@@ -129,6 +129,9 @@ export interface ChartProps {
   theme?: ThemeValues;
   /** For data that doesn't change: each row is drawn once and keeps no signals. */
   static?: boolean;
+  /** This chart goes without the guard, the CSS that keeps a page's own rules (on div, span, svg...) from reaching it.
+   * It draws faster, and the page's CSS must then leave its elements alone. noCssGuard() does this for the whole page. */
+  noCssGuard?: boolean;
   /** A second axis across the band, [min, max]: an overlap Plot's slats share the whole plot, and a Dot, Label or Line takes
    * a cross value on it (scatter plots, lines). */
   cross?: readonly [number, number];
@@ -347,6 +350,13 @@ export function slat<T extends object = Record<string, any>>(layout: SlatLayout,
 export function restyle(type: { scope?: string; css?: unknown }, css: string | readonly (string | null | undefined)[]): void;
 /** Call where the app starts, on the server and in the browser, when the page links @bezda/rhp/rhp.css itself. */
 export function linkedCss(): void;
+/** Call where the app starts, before the first chart, on the server and in the browser: no chart on the page gets the
+ * guard (the CSS that keeps a page's own rules from reaching a chart). Charts draw faster, and the page's CSS must leave
+ * their elements alone. A page that links rhp's stylesheet itself links @bezda/rhp/rhp-no-css-guard.css instead. */
+export function noCssGuard(): void;
+/** Call where the app starts, before the first chart: --rhp-position is passed down from each slat root again, so
+ * anything inside a slat can read it, as in rhp 2.0. Charts take longer to draw (no style is shared between rows). */
+export function inheritPosition(): void;
 
 /** rhp's default theme. */
 export const THEME: Required<ThemeValues>;

@@ -1,5 +1,5 @@
 // Chart, Plot and Scale. A Plot stacks slats (one per row of data), and a Chart holds the scale, the orientation and the axis.
-import { useCore, useGutters, useCross, useSlatCss, useRoot, watchRoot, serverSheets, checkLinked } from "./style.js";
+import { useCore, useGutters, useCross, useSlatCss, useRoot, watchRoot, serverSheets, checkLinked, useChartGuard } from "./style.js";
 import {
   createMemo, createComputed, createRenderEffect, createEffect, createContext, useContext, getOwner, runWithOwner, onMount,
   onCleanup, createSignal, createSelector, createRoot, createUniqueId, mergeProps, splitProps, untrack, sharedConfig, Index,
@@ -1022,7 +1022,7 @@ export function Chart(props) {
       <div ref={(e) => { el = e; props.ref?.(e); }} id={props.id} role={figure()} aria-label={name()} aria-labelledby={props["aria-labelledby"]}
         aria-describedby={props["aria-describedby"]} class={props.class ? "rhp-chart " + props.class : "rhp-chart"} data-rhp-o={short(orientation())}
         data-rhp-animate={anim() ? "js" : undefined} data-rhp-turning={turning() ? "" : undefined} data-rhp-sized={arranged().sized ? "" : undefined}
-        data-rhp-aspect={aspect() != null ? "" : undefined}
+        data-rhp-aspect={aspect() != null ? "" : undefined} data-rhp-no-guard={props.noCssGuard ? "" : undefined}
         data-rhp-gutters={arranged().gutters ? short(orientation()) : undefined} data-rhp-cross={crossed() ? "" : undefined} style={{ ...KNOBS, ...theme(), ...arranged().vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-aspect": aspect() }}>
         <div class="rhp-body">
           {props.children}
@@ -1047,6 +1047,9 @@ export function Chart(props) {
   frame.root = () => el;
   frame.scaleNow = () => untrack(scaleVars);
 
+  // noCssGuard: this chart goes without the guard (guard.css), so the page's CSS reaches it like any other element
+  if (!isServer) createRenderEffect(() => props.noCssGuard && useChartGuard());
+
   if (!isServer && moreAria().length) {
     createRenderEffect(() => {
       for (const key of moreAria()) {
@@ -1064,6 +1067,7 @@ export function Chart(props) {
       style: withVars(undefined, { ...KNOBS, ...theme(), ...vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-aspect": aspect(), ...scaleVars() }),
       "data-rhp-sized": sized ? true : null,
       "data-rhp-aspect": aspect() != null ? true : null,
+      "data-rhp-no-guard": props.noCssGuard ? true : null,
       "data-rhp-gutters": gutters ? short(orientation()) : null,
     });
   }

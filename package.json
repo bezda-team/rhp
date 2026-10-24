@@ -41,6 +41,7 @@
       "default": "./dist/standalone.js"
     },
     "./rhp.css": "./dist/rhp.css",
+    "./rhp-no-css-guard.css": "./dist/rhp-no-css-guard.css",
     "./posters.css": "./dist/posters.css"
   },
   "module": "./dist/index.js",

@@ -11,7 +11,7 @@ import { build } from "esbuild";
 import { runDevChecks } from "./vite/dev.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
-for (const t of ["core", "cost", "mount", "edges"]) {
+for (const t of ["core", "cost", "mount", "edges", "options"]) {
   await bundle(at(t + ".jsx"), at(`out/${t}.js`));
   fs.writeFileSync(at(`out/${t}.html`), `<!doctype html><html><head><meta charset=utf-8></head><body><script src="${t}.js"></script></body></html>`);
 }
@@ -539,6 +539,44 @@ const open = async (url, opts = {}) => {
   check("no page errors", p.errors, []);
   console.log(`     mount, 50 charts x 7 slats, with style and layout: ${ms.toFixed(1)} ms`);
   await p.close();
+}
+
+// noCssGuard and --rhp-position (test/options.jsx): each setting is for the whole page, so each mode is a page of its own
+{
+  const options = "file://" + at("out/options.html");
+  {
+    const p = await open(options);
+    const first = await p.evaluate(() => O.guarded());
+    check("guard: a page's CSS on div and span doesn't reach a chart, and until a chart says noCssGuard the guard checks no chart",
+      [first.guarded, first.guard, first.checks], [{ margin: "0px", sizing: "border-box" }, true, false]);
+    const both = await p.evaluate(() => O.unguarded());
+    check("guard: a Chart with noCssGuard takes the page's CSS, the chart before it keeps its guard, and the guard now checks charts",
+      [both.unguarded, both.guarded.margin, both.checks], [{ margin: "3px", sizing: "border-box" }, "0px", true]);
+    const pos = await p.evaluate(() => O.position());
+    check("position: --rhp-position stays on the slat root; read in the slat type's css, through a copy the root passes down, and on a nested Plot's cells it reads as before; a style prop inside the slat gets nothing",
+      pos, { root: "2", slatCss: "2", byHand: "2", styleProp: "", inside: "", cells: ["0", "1", "2", "0", "1", "2"] });
+    check("no page errors", p.errors, []);
+    await p.close();
+  }
+  {
+    const p = await open(options + "#page-off");
+    const r = await p.evaluate(async () => {
+      await O.guarded();
+      return O.unguarded();
+    });
+    check("noCssGuard(): no chart on the page gets the guard, and rhp's own box-sizing stays",
+      [r.guarded, r.unguarded, r.guard], [{ margin: "3px", sizing: "border-box" }, { margin: "3px", sizing: "border-box" }, false]);
+    check("no page errors", p.errors, []);
+    await p.close();
+  }
+  {
+    const p = await open(options + "#inherit");
+    const pos = await p.evaluate(() => O.position());
+    check("inheritPosition(): --rhp-position is passed down again, so a style prop inside a slat reads it", pos,
+      { root: "2", slatCss: "2", byHand: "2", styleProp: "2", inside: "2", cells: ["0", "1", "2", "0", "1", "2"] });
+    check("no page errors", p.errors, []);
+    await p.close();
+  }
 }
 
 // Inputs at the edges (test/edges.jsx), each on a page of its own
@@ -1144,6 +1182,8 @@ const dom = (p, charts) => p.evaluate((charts) => {
   check("server: two renders (two islands) each bring rhp's core, once", [core(SSR.html()), core(SSR.html())], [1, 1]);
   check("server: renderToStringAsync writes the same HTML", await SSR.htmlAsync(), SSR.html());
   check("server: a chart's aspect is written for the page's CSS", ((h) => /data-rhp-aspect/.test(h) && /--rhp-aspect:2/.test(h))(SSR.aspect()), true);
+  check("server: a Chart with noCssGuard is marked, and the guard a server writes checks charts, so a page of both draws right before the browser takes over",
+    ((h) => [(h.match(/<div[^>]*class="rhp-chart"[^>]*>/g) ?? []).map((tag) => tag.includes("data-rhp-no-guard")), /:where\(\.rhp-chart:not\(\[data-rhp-no-guard\]\)\)/.test(h)])(SSR.noGuard()), [[false, true], true]);
   const plain = SSR.plain();
   check("server: without hydration keys, the charts are all there", [/data-hk/.test(plain), (plain.match(/class="rhp-bar/g) ?? []).length], [false, (SSR.html().match(/class="rhp-bar/g) ?? []).length]);
   let err = "";

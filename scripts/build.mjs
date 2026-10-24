@@ -3,6 +3,7 @@
 //   dist/server.js      the package for a server
 //   dist/source/        the source, for a Solid app's own build ("solid" condition in package.json)
 //   dist/rhp.css        rhp's stylesheet, for a page that links it once itself (linkedCss)
+//   dist/rhp-no-css-guard.css  the same without the guard, for such a page that goes without it (noCssGuard)
 //   dist/posters.css    the gallery's poster looks, for a page that wants them (import "@bezda/rhp/posters.css")
 //   dist/standalone.js  rhp and Solid in one module, for a page with no build step
 //   dist/*.d.ts         the types, written by hand in src (index.d.ts, standalone.d.ts)
@@ -15,6 +16,7 @@ await lib("src/index.js", "dist/index.js");
 await server("src/index.js", "dist/server.js");
 await standalone("src/standalone.js", "dist/standalone.js");
 fs.writeFileSync("dist/rhp.css", (await coreStylesheet()) + "\n");
+fs.writeFileSync("dist/rhp-no-css-guard.css", (await coreStylesheet(false)) + "\n");
 // The poster looks are the page's CSS, not rhp's: copied as they are, comments and all, for a page to start from.
 fs.copyFileSync("src/posters.css", "dist/posters.css");
 
@@ -44,6 +46,7 @@ const built = [
   ["dist/server.js", "for a server"],
   ["dist/standalone.js", "Solid included"],
   ["dist/rhp.css", "the stylesheet to link"],
+  ["dist/rhp-no-css-guard.css", "the same without the guard"],
   ["dist/posters.css", "the poster looks, if imported"],
 ];
 for (const [f, note] of built) {

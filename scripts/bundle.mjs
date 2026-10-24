@@ -43,11 +43,11 @@ export const minifiedCss = async (file) => {
   return r.code.trim();
 };
 
-// The stylesheet a page can link itself (dist/rhp.css): pageSheet() from style.js
-export const coreStylesheet = async () => {
+// The stylesheet a page can link itself (dist/rhp.css): pageSheet() from style.js, without the guard when guard is false
+export const coreStylesheet = async (guard = true) => {
 
   const r = await build({
-    stdin: { contents: 'import { pageSheet } from "./src/style.js"; export default pageSheet();', resolveDir: process.cwd(), loader: "js" },
+    stdin: { contents: `import { pageSheet } from "./src/style.js"; export default pageSheet(${guard});`, resolveDir: process.cwd(), loader: "js" },
     bundle: true,
     write: false,
     format: "esm",
