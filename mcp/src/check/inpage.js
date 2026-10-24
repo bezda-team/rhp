@@ -654,16 +654,29 @@ export function install() {
       if (past.size) add({ code: "series-past-theme", keys: [...past.keys()].sort((a, b) => a - b), count: [...past.values()].reduce((a, b) => a + b, 0), have });
     }
 
-    // Page CSS that reaches into a chart and sets what rhp's own CSS sets there: it loses, so it changes nothing
+    // Page CSS that reaches into a chart and sets what rhp's own CSS sets there: it loses, so it changes nothing. rhp's
+    // rules are the ones it adopts and, on a page that links rhp.css (linkedCss), the ones in rhp's layers there.
+    const pageSheets = [...document.styleSheets].filter((s) => !s.ownerNode?.matches?.("[data-rhp-layers], [data-rhp-server]"));
+    const pageRules = styleRules(pageSheets);
+    const rhpRules = [...own, ...pageRules.filter((r) => /^rhp(\.|$)/.test(r.layer))];
     const byProp = new Map();
-    for (const r of own) {
+    for (const r of rhpRules) {
       for (const p of r.props) {
         if (!byProp.has(p)) byProp.set(p, []);
         byProp.get(p).push(r.selector);
       }
     }
-    const pageSheets = [...document.styleSheets].filter((s) => !s.ownerNode?.matches?.("[data-rhp-layers], [data-rhp-server]"));
-    for (const r of styleRules(pageSheets)) {
+    // A chart without the guard (noCssGuard): page CSS reaches what rhp doesn't set itself on the elements rhp makes.
+    // The guard is the rhp rule with display: revert; once a chart says noCssGuard it applies only to charts that don't,
+    // and with noCssGuard() there is none.
+    const guardRule = rhpRules.find((r) => r.rule.style.getPropertyValue("display") === "revert" && r.selector.includes(".rhp-body"));
+    const RHP_MADE = ".rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path";
+    const unguarded = (el) => matches(el, RHP_MADE) && (!guardRule || !matches(el, guardRule.selector));
+    // what the guard resets (display, float and box-sizing move nothing there), and values that change nothing
+    const GUARDED = /^(margin|padding|border|outline|background|box-shadow|overflow|min-width|min-height|max-width|max-height|width$|height$|vertical-align|transition|animation|text-decoration|user-select|touch-action|font|line-height|letter-spacing|word-spacing|text-transform|text-indent|text-align|text-shadow|color$|white-space|text-wrap|word-break|overflow-wrap|hyphens|line-break)/;
+    const harmless = (v) => /^(0|0px|0%|0s|none|auto|visible|baseline|normal|initial|unset|inherit|revert|revert-layer|transparent|currentcolor|rgba\(0, 0, 0, 0\))$/i.test(v.trim());
+    const family = (p) => p.match(/^(background|border|margin|padding|font|outline|text-decoration|transition|animation|inset|overflow|grid|flex|columns?|list-style)/)?.[1] ?? p;
+    for (const r of pageRules) {
       if (/^rhp(\.|$)/.test(r.layer) || !r.props.length) continue;
       let matched = [];
       try {
@@ -673,14 +686,49 @@ export function install() {
       }
       const reached = matched.filter((el) => el.closest(".rhp-chart")).slice(0, 60);
       if (!reached.length) continue;
+      const loose = reached.filter(unguarded);
+      const live = r.props.filter((p) => GUARDED.test(p) && !harmless(r.rule.style.getPropertyValue(p)) && loose.some((el) => !(byProp.get(p) ?? []).some((sel) => matches(el, sel))));
+      if (live.length) {
+        const first = loose.find((el) => live.some((p) => !(byProp.get(p) ?? []).some((sel) => matches(el, sel))));
+        add({ code: "page-css-reaches", selector: snippet(r.selector), props: [...new Set(live.map(family))], what: first.matches(".rhp-gridline > span") ? "an axis number" : describe(first), count: loose.length });
+      }
       // only a rule aimed at the chart: one that names rhp's classes, or one with a class, an id or an attribute on its
       // subject that reaches only elements in charts (a reset such as svg { display: block } is not aimed at it)
       const subjects = r.selector.split(/,(?![^(]*\))/).map((x) => x.trim().split(/\s*[\s>+~]\s*(?![^(]*\))/).pop());
       if (!/\.rhp-/.test(r.selector) && !(reached.length === matched.length && subjects.every((x) => /[.#[]/.test(x)))) continue;
       const dead = r.props.filter((p) => byProp.has(p) && reached.every((el) => byProp.get(p).some((sel) => matches(el, sel))));
       if (!dead.length) continue;
-      const family = (p) => p.match(/^(background|border|margin|padding|font|outline|text-decoration|transition|animation|inset|overflow|grid|flex|columns?|list-style)/)?.[1] ?? p;
       add({ code: "page-css-ignored", selector: snippet(r.selector), props: [...new Set(dead.map(family))], what: describe(reached[0]), count: reached.length });
+    }
+
+    // The browser's own styles for a slat root's element (a button's border, a p's margins, an svg's overflow), which the
+    // guard resets: in a chart without it they stay. What no rule (rhp's, a slat's, the page's) and no style attribute
+    // sets on the root, and differs from what the guard gives, comes from the browser.
+    const setByRule = (el, p) => el.style.getPropertyValue(p) !== "" || (byProp.get(p) ?? []).some((sel) => matches(el, sel))
+      || pageRules.some((r) => r.props.includes(p) && matches(el, r.selector));
+    const defaults = new Map();
+    for (const el of document.querySelectorAll(".rhp-chart .rhp-plot > *")) {
+      if (!unguarded(el)) continue;
+      const s = getComputedStyle(el);
+      const up = getComputedStyle(el.parentElement);
+      const sides = ["top", "right", "bottom", "left"];
+      const off = [
+        ...sides.map((d) => [`margin-${d}`, s.getPropertyValue(`margin-${d}`) !== "0px"]),
+        ...sides.map((d) => [`padding-${d}`, s.getPropertyValue(`padding-${d}`) !== "0px"]),
+        ...sides.map((d) => [`border-${d}-width`, s.getPropertyValue(`border-${d}-style`) !== "none" && s.getPropertyValue(`border-${d}-width`) !== "0px"]),
+        ["text-decoration-line", s.getPropertyValue("text-decoration-line") !== "none"],
+        ["background-color", s.getPropertyValue("background-color") !== "rgba(0, 0, 0, 0)"],
+        ["overflow-x", el.localName === "svg" && s.getPropertyValue("overflow-x") !== "visible"],
+        ...["font-size", "font-weight", "font-family", "color"].map((p) => [p, s.getPropertyValue(p) !== up.getPropertyValue(p)]),
+      ].filter(([p, differs]) => differs && !setByRule(el, p)).map(([p]) => family(p.replace(/^border-\w+-width$/, "border").replace(/^overflow-x$/, "overflow")));
+      if (!off.length) continue;
+      const seen = defaults.get(el.localName) ?? { props: new Set(), count: 0, el };
+      off.forEach((p) => seen.props.add(p));
+      seen.count++;
+      defaults.set(el.localName, seen);
+    }
+    for (const [tag, d] of defaults) {
+      add({ code: "page-css-reaches", browser: tag, props: [...d.props], what: describe(d.el), count: d.count });
     }
 
     // Text too small to read

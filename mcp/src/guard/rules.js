@@ -25,7 +25,7 @@ export const SETTING_VALUE = {
   children: (v) => typeof v === "function",
 };
 
-export const CHART_PROPS = ["scale", "orientation", "height", "aspect", "ticks", "grid", "format", "animate", "theme", "static", "cross", "crossTicks", "crossGrid", "crossFormat", "label", "id", "class", "role", "style", "ref", "children"];
+export const CHART_PROPS = ["scale", "orientation", "height", "aspect", "ticks", "grid", "format", "animate", "theme", "static", "noCssGuard", "cross", "crossTicks", "crossGrid", "crossFormat", "label", "id", "class", "role", "style", "ref", "children"];
 
 export const THEME_KEYS = ["series", "positive", "negative", "ink", "muted", "grid", "surface", "low", "high", "font"];
 
@@ -58,7 +58,7 @@ export const RENAMES = {
   Label: { value: "at", x: "at", y: "cross", position: "side", align: "side", text: "children", label: "children" },
   Area: { data: "points", values: "points", max: "peak", fill: "color", colour: "color", curved: "smooth" },
   Line: { data: "points", values: "points", max: "peak", curved: "smooth", area: "fill", colour: "color" },
-  Chart: { domain: "scale", range: "scale", extent: "scale", horizontal: "orientation", vertical: "orientation", direction: "orientation", colors: "theme", palette: "theme", tickFormat: "format", ariaLabel: "label", title: "label" },
+  Chart: { domain: "scale", range: "scale", extent: "scale", horizontal: "orientation", vertical: "orientation", direction: "orientation", colors: "theme", palette: "theme", tickFormat: "format", ariaLabel: "label", title: "label", noGuard: "noCssGuard", unguarded: "noCssGuard", noCSSGuard: "noCssGuard" },
   Poster: { headline: "title", heading: "title", subtitle: "dek", subheading: "dek", subhead: "dek", description: "dek", lede: "dek", standfirst: "dek", source: "note", footnote: "note", credit: "note", credits: "note", caption: "note", footer: "note", eyebrow: "kicker", overline: "kicker", tag: "kicker" },
   slat: { height: "thickness", width: "thickness", size: "thickness", thick: "thickness", pitch: "thickness", padding: "room", margin: "room", gutter: "room", gutters: "room", gap: "inset", style: "css", styles: "css", class: "css", className: "css" },
   theme: { colors: "series", palette: "series", accent: "series", text: "ink", foreground: "ink", color: "ink", background: "surface", bg: "surface", paper: "surface", gridline: "grid", gridlines: "grid", axis: "grid", fontFamily: "font", family: "font", typeface: "font" },
