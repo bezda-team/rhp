@@ -7,7 +7,7 @@
 <meta name="description" content="Tape: the parts of one whole laid end to end along a ruled measure and cut into equal lengths (a Chart per length, an overlap Plot of the parts that fall in it, a Scale of rules, notches and numerals that counts on), names and times inside a part only where the measured text fits, one group lit at rest, a big-number readout and a grouped key that picks too. Use it for how a day, a budget or any whole splits into parts that add up, read as lengths along one measure.">
 <!--
   A recipe gives technique, not a design.
-  Take: the parts of one whole laid end to end (where each starts and ends, summed in order) and cut into equal lengths, a Chart per length with an overlap Plot of the parts that fall in it (a part carried over from the length before is drawn open at its start); a Scale of rules, notches and numerals that counts on from the length before; names and times inside a part only where the text, measured once its font is in, fits; picking a part by pointer, tap, keyboard or its line in the key; one group lit at rest; a big-number readout.
+  Take: the parts of one whole laid end to end (where each starts and ends, summed in order) and cut into equal lengths, a Chart per length with an overlap Plot of the parts that fall in it (a part carried over from the length before is drawn open at its start); a Scale of rules, notches and numerals that counts on from the length before; names and times inside a part only where the text, measured once its font is in, fits; picking a part by pointer, tap, keyboard or its line in the key; section headings that toggle all their parts; one group lit at rest; a big-number readout.
   Leave: the design. This poster was made for its own subject (the average American day as a yellow tape measure in three 8-hour lengths, its numerals and rules printed in black, leisure in one deep blue, a grouped key under the tape).
   Its look, the place of its parts and the way its marks are drawn say that subject: design yours from your own (design.md, section 2).
 -->
@@ -43,7 +43,7 @@
 
   /* The readout: the stretch picked, in big printed numerals; it keeps its height so nothing below moves */
   .readout { grid-area: readout; display: flex; align-items: center; gap: 18px; min-height: 84px; margin: 6px 0 10px; }
-  .readout .big { flex: none; font: 700 clamp(48px, 9vw, 76px)/1 var(--display); font-variant-numeric: tabular-nums; color: var(--accent); white-space: nowrap; }
+  .readout .big { flex: none; min-width: 2.46em; font: 700 clamp(48px, 9vw, 76px)/1 var(--display); font-variant-numeric: tabular-nums; color: var(--accent); white-space: nowrap; }
   .readout .big span { margin: 0 .12em 0 .05em; font-size: .46em; font-weight: 600; }
   .readout .what { min-width: 0; font-size: 16px; line-height: 1.3; color: var(--soft); }
   .readout .what strong { display: block; font: 700 clamp(22px, 3.4vw, 28px)/1.1 var(--display); color: var(--ink); }
@@ -64,11 +64,16 @@
   .key button b { font: 700 16px/1.2 var(--display); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .key button.on { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
   .key button.on i { background: var(--accent); box-shadow: none; }
+  .key h3 button { display: flex; justify-content: space-between; align-items: normal; gap: 10px; padding: 0;
+    color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; }
 
   @media (min-width: 860px) {
     .poster { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: 40px;
       grid-template-areas: "kicker kicker" "headline headline" "dek readout" "tapes tapes" "key key" "note note"; }
     .readout { margin: 0; }
+  }
+  @media (min-width: 860px) and (max-width: 960px) {
+    .readout .what strong { min-height: 2lh; }
   }
   @media (max-width: 640px) {
     body { padding: 16px 16px 32px; }
@@ -76,6 +81,9 @@
     .poster .dek { font-size: 15px; }
     .readout { gap: 12px; min-height: 128px; }
     .readout .what { font-size: 14px; }
+  }
+  @media (max-width: 360px) {
+    .readout .what strong { min-height: 2lh; }
   }
 </style>
 </head>
@@ -195,11 +203,14 @@ const Hour = slat({
     </div>`;
 });
 
-// Chart component: the stretch the reader points at, taps or reaches with the keyboard is lit, the rest is quiet
+// Chart component: an individual preview takes over until it ends, then the selected sections return
 function DayTape() {
+  const [groups, setGroups] = createSignal([LEAD]);
   const [on, setOn] = createSignal(null);
-  const lit = (i) => (on() == null ? ACTS[i].group === LEAD : on() === i);
+  const lit = (i) => (on() == null ? groups().includes(ACTS[i].group) : on() === i);
   const shown = () => (on() == null ? null : ACTS[on()]);
+  const selectedHours = () => groups().reduce((sum, g) => sum + groupHours[g], 0);
+  const selectedCount = () => ACTS.filter((a) => groups().includes(a.group)).length;
 
   // The activity of the element under the pointer or focus, or null
   const actOf = (el) => {
@@ -210,14 +221,23 @@ function DayTape() {
   const pick = (e) => {
     const act = actOf(e.target);
     if (act != null) setOn(act);
+    else if (e.target.closest("[data-group]")) setOn(null);
   };
   const tap = (e) => {
+    const heading = e.target.closest("[data-group]");
+    if (heading) {
+      const group = +heading.dataset.group;
+      heading.focus({ preventScroll: true });
+      setGroups((now) => now.includes(group) ? now.filter((g) => g !== group) : [...now, group]);
+      setOn(null);
+      return;
+    }
     const act = actOf(e.target);
     if (act == null) return;
     setOn(act);
     e.currentTarget.querySelector(`.seg[data-act="${act}"]`)?.focus({ preventScroll: true });
   };
-  // Leaving the poster: back to the stretch that has focus (a keyboard's or a tap's pick), or to the lead
+  // Leaving the poster: back to the focused stretch, or the sections the reader selected
   const leave = (e) => {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setOn(actOf(document.activeElement && e.currentTarget.contains(document.activeElement) ? document.activeElement : e.currentTarget));
@@ -246,10 +266,13 @@ function DayTape() {
       onPointerMove=${move} onClick=${tap} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <div class="readout" aria-live="polite">
-        <b class="big">${() => big(shown() ? shown().hours : groupHours[LEAD])}</b>
+        <b class="big">${() => big(shown() ? shown().hours : selectedHours())}</b>
         <span class="what">
-          <strong>${() => (shown() ? shown().name : GROUPS[LEAD])}</strong>
-          ${() => (shown() ? `${share(shown().hours)}, part of ${GROUPS[shown().group].toLowerCase()}` : `${share(groupHours[LEAD])}, all four kinds of it together`)}
+          <strong>${() => shown() ? shown().name : groups().length === 1 ? GROUPS[groups()[0]] : groups().length ? "Selected sections" : "No activities selected"}</strong>
+          ${() => shown() ? `${share(shown().hours)}, part of ${GROUPS[shown().group].toLowerCase()}` : groups().length
+            ? groups().length === 1 && groups()[0] === LEAD ? `${share(selectedHours())}, all four kinds of it together`
+              : `${share(selectedHours())}, ${selectedCount()} ${selectedCount() === 1 ? "activity" : "activities"} in all`
+            : "Choose a section heading or an activity."}
         </span>
       </div>
       <div class="tapes">
@@ -263,7 +286,7 @@ function DayTape() {
       <div class="key" onPointerLeave=${leave}>
         ${GROUPS.map((g, gi) => html`
           <section>
-            <h3>${g}<span>${short(groupHours[gi])}</span></h3>
+            <h3><button type="button" data-group=${gi} aria-pressed=${() => groups().includes(gi)}>${g}<span>${short(groupHours[gi])}</span></button></h3>
             <ul>
               ${ACTS.map((x, i) => (x.group === gi ? html`
                 <li><button type="button" data-act=${i} class=${() => (lit(i) ? "on" : "")}><i></i><span>${x.name}</span><b>${short(x.hours)}</b></button></li>` : null))}
