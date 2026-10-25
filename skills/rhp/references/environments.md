@@ -236,7 +236,7 @@ For a poster page, copy the complete [PNG download block](download.md) before `<
 - Keep the module script inline.
   A page that loads its own module file (`<script type="module" src="chart.js">`) does not run from the disk in Chrome (a blocked cross-origin request) or in Safari; it runs in Firefox, and in every browser when the folder is served (`npx serve`).
 - `@bezda/rhp@2` in the URL takes the latest rhp 2 release.
-  Pin the version (`@bezda/rhp@2.0.1`) for a page that must never change.
+  For a page that must never change, replace the `2` with the latest release's exact version, which `npm view @bezda/rhp version` prints.
 
 ## 4. Solid
 
