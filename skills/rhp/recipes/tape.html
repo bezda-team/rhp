@@ -203,14 +203,19 @@ const Hour = slat({
     </div>`;
 });
 
-// Chart component: an individual preview takes over until it ends, then the selected sections return
+// Chart component: section toggles and individual picks share one selection; hover and focus only preview
 function DayTape() {
-  const [groups, setGroups] = createSignal([LEAD]);
+  const members = GROUPS.map((_, g) => ACTS.flatMap((a, i) => a.group === g ? [i] : []));
+  const [selected, setSelected] = createSignal(members[LEAD]);
   const [on, setOn] = createSignal(null);
-  const lit = (i) => (on() == null ? groups().includes(ACTS[i].group) : on() === i);
-  const shown = () => (on() == null ? null : ACTS[on()]);
-  const selectedHours = () => groups().reduce((sum, g) => sum + groupHours[g], 0);
-  const selectedCount = () => ACTS.filter((a) => groups().includes(a.group)).length;
+  const lit = (i) => (on() == null ? selected().includes(i) : on() === i);
+  const shown = () => ACTS[on() ?? (selected().length === 1 ? selected()[0] : -1)];
+  const allSelected = (g) => members[g].every((i) => selected().includes(i));
+  const selectedGroup = () => {
+    const group = ACTS[selected()[0]]?.group;
+    return group != null && selected().every((i) => ACTS[i].group === group) ? group : null;
+  };
+  const selectedHours = () => selected().reduce((sum, i) => sum + ACTS[i].hours, 0);
 
   // The activity of the element under the pointer or focus, or null
   const actOf = (el) => {
@@ -228,16 +233,19 @@ function DayTape() {
     if (heading) {
       const group = +heading.dataset.group;
       heading.focus({ preventScroll: true });
-      setGroups((now) => now.includes(group) ? now.filter((g) => g !== group) : [...now, group]);
+      const clear = allSelected(group);
+      setSelected((now) => clear ? now.filter((i) => ACTS[i].group !== group)
+        : ACTS.flatMap((a, i) => now.includes(i) || a.group === group ? [i] : []));
       setOn(null);
       return;
     }
     const act = actOf(e.target);
     if (act == null) return;
+    setSelected([act]);
     setOn(act);
     e.currentTarget.querySelector(`.seg[data-act="${act}"]`)?.focus({ preventScroll: true });
   };
-  // Leaving the poster: back to the focused stretch, or the sections the reader selected
+  // Leaving the poster: back to the focused stretch, or the committed selection
   const leave = (e) => {
     if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
     setOn(actOf(document.activeElement && e.currentTarget.contains(document.activeElement) ? document.activeElement : e.currentTarget));
@@ -268,10 +276,10 @@ function DayTape() {
       <div class="readout" aria-live="polite">
         <b class="big">${() => big(shown() ? shown().hours : selectedHours())}</b>
         <span class="what">
-          <strong>${() => shown() ? shown().name : groups().length === 1 ? GROUPS[groups()[0]] : groups().length ? "Selected sections" : "No activities selected"}</strong>
-          ${() => shown() ? `${share(shown().hours)}, part of ${GROUPS[shown().group].toLowerCase()}` : groups().length
-            ? groups().length === 1 && groups()[0] === LEAD ? `${share(selectedHours())}, all four kinds of it together`
-              : `${share(selectedHours())}, ${selectedCount()} ${selectedCount() === 1 ? "activity" : "activities"} in all`
+          <strong>${() => shown() ? shown().name : selectedGroup() != null ? GROUPS[selectedGroup()] : selected().length ? "Selected activities" : "No activities selected"}</strong>
+          ${() => shown() ? `${share(shown().hours)}, part of ${GROUPS[shown().group].toLowerCase()}` : selected().length
+            ? selectedGroup() === LEAD ? `${share(selectedHours())}, all four kinds of it together`
+              : `${share(selectedHours())}, ${selected().length} activities in all`
             : "Choose a section heading or an activity."}
         </span>
       </div>
@@ -286,7 +294,7 @@ function DayTape() {
       <div class="key" onPointerLeave=${leave}>
         ${GROUPS.map((g, gi) => html`
           <section>
-            <h3><button type="button" data-group=${gi} aria-pressed=${() => groups().includes(gi)}>${g}<span>${short(groupHours[gi])}</span></button></h3>
+            <h3><button type="button" data-group=${gi} aria-pressed=${() => allSelected(gi)}>${g}<span>${short(groupHours[gi])}</span></button></h3>
             <ul>
               ${ACTS.map((x, i) => (x.group === gi ? html`
                 <li><button type="button" data-act=${i} class=${() => (lit(i) ? "on" : "")}><i></i><span>${x.name}</span><b>${short(x.hours)}</b></button></li>` : null))}
