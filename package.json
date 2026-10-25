@@ -62,6 +62,7 @@
     "@types/react": "^19.3.0",
     "babel-preset-solid": "^1.9.15",
     "esbuild": "^0.28.2",
+    "gifenc": "1.0.3",
     "modern-screenshot": "4.7.0",
     "playwright": "^1.56.1",
     "react": "^19.3.0",

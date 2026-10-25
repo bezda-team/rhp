@@ -164,7 +164,7 @@ render(() => html`<${CommuteTimes} />`, document.getElementById("chart"));
 </script>
 <style id="poster-download-styles">
   .poster-download-tools { display: flex; justify-content: flex-end; align-items: center; margin: 0 auto 12px; max-width: 100%; }
-  .poster-actions { display: flex; align-items: center; margin-left: auto; }
+  .poster-actions { position: relative; display: flex; align-items: center; margin-left: auto; }
   .poster-download, .poster-fit-toggle { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
   .poster-actions svg { display: block; width: 20px; height: 20px; }
   .poster-actions button:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
@@ -175,7 +175,14 @@ render(() => html`<${CommuteTimes} />`, document.getElementById("chart"));
   .poster-fit-frame.is-fitted { display: block; margin: 0 auto; overflow: clip; }
   .poster-fit-frame.is-fitted > .poster-fit-content { display: block; transform-origin: top left; }
   .poster-download-error { margin: 8px auto; font: 14px/1.4 system-ui, sans-serif; color: inherit; }
-  @media print { .poster-download-tools, .poster-actions, .poster-download-error { display: none !important; } }
+  .poster-download-progress { font: 600 11px/1 system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  .poster-download-menu { position: absolute; top: calc(100% + 4px); right: 0; z-index: 20; display: grid; gap: 2px; min-width: 220px; padding: 6px; border: 1px solid color-mix(in srgb, currentColor 24%, transparent); border-radius: 8px; background: var(--poster-tools-ground, Canvas); box-shadow: 0 8px 24px rgb(0 0 0 / .28); }
+  .poster-download-menu[hidden] { display: none; }
+  .poster-download-menu button { display: grid; gap: 2px; width: 100%; padding: 8px 10px; border: 0; border-radius: 5px; background: none; color: inherit; font: 600 14px/1.3 system-ui, sans-serif; text-align: left; cursor: pointer; }
+  .poster-download-menu button span { font-weight: 400; font-size: 12.5px; opacity: .8; }
+  .poster-download-menu button:hover { background: color-mix(in srgb, currentColor 9%, transparent); }
+  .poster-download-menu button:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+  @media print { .poster-download-tools, .poster-actions, .poster-download-menu, .poster-download-error { display: none !important; } }
 </style>
 <script type="module" id="poster-download-script">
 function addPosterFit(poster, button, changed) {
@@ -253,6 +260,8 @@ function addPosterDownloads() {
         tools.style.color = light[0] * .2126 + light[1] * .7152 + light[2] * .0722 < .179 ? '#eef2f5' : '#1d1b17';
       }
     }
+    const ground = getComputedStyle(document.body).backgroundColor;
+    if (!/^(transparent|rgba\(0, 0, 0, 0\))$/.test(ground)) tools.style.setProperty('--poster-tools-ground', ground);
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'poster-download';
@@ -298,154 +307,302 @@ function addPosterDownloads() {
     for (const type of ['keydown', 'keyup']) actions.addEventListener(type, event => {
       if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
     });
-    let exporter, retries = 0, busy = false;
-    button.addEventListener('click', async event => {
-      event.stopPropagation();
-      if (busy) return;
+    // A poster that plays through its data gives itself a playback ({ duration, position, seek }): its download then
+    // offers the poster as it is now, a PNG, or the whole playback, an animated GIF
+    let exporter, encoder, retries = 0, busy = false, making = null, cancelled = false;
+    const playable = () => typeof poster.playback?.seek === 'function';
+    const icon = button.innerHTML;
+    const menu = document.createElement('div');
+    menu.className = 'poster-download-menu';
+    menu.setAttribute('role', 'menu');
+    menu.setAttribute('aria-label', 'Download poster');
+    menu.hidden = true;
+    menu.innerHTML = '<button type="button" role="menuitem" data-format="png">PNG image<span>The poster as it is now</span></button>'
+      + '<button type="button" role="menuitem" data-format="gif">Animated GIF<span>The whole playback</span></button>';
+    const items = [...menu.querySelectorAll('[role="menuitem"]')];
+    actions.append(menu);
+    const label = text => { button.setAttribute('aria-label', text); button.title = text; };
+    const rest = () => {
+      label(playable() ? 'Download poster' : 'Download poster as PNG');
+      if (playable()) { button.setAttribute('aria-haspopup', 'menu'); button.setAttribute('aria-expanded', String(!menu.hidden)); }
+    };
+    rest();
+    const closeMenu = focus => {
+      if (menu.hidden) return;
+      menu.hidden = true;
+      rest();
+      if (focus) button.focus();
+    };
+    const openMenu = focus => {
+      menu.hidden = false;
+      rest();
+      if (focus) items[0].focus();
+    };
+    document.addEventListener('pointerdown', event => { if (!actions.contains(event.target)) closeMenu(false); }, true);
+    menu.addEventListener('keydown', event => {
+      const at = items.indexOf(document.activeElement);
+      const to = { ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: items.length - 1 }[event.key];
+      if (to !== undefined) { event.preventDefault(); items[(to + items.length) % items.length].focus(); }
+      else if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeMenu(true); }
+      else if (event.key === 'Tab') closeMenu(false);
+    });
+    menu.addEventListener('focusout', event => { if (!menu.contains(event.relatedTarget) && event.relatedTarget !== button) closeMenu(false); });
+    // The capture options, made once for a download and for every frame of a GIF
+    const loadExporter = () => (exporter ||= import('https://cdn.jsdelivr.net/npm/modern-screenshot@4.7.0/+esm' + (retries ? `?retry=${retries}` : '')));
+    async function captureOptions() {
+      await document.fonts.ready;
+      // Preserve author layout rules where computed styles lose the grid's used geometry.
+      // Safari misreports percentage insets in subgrids, and grid auto margins resolve to zero.
+      const autoMargins = new Set(), positioned = new Set();
+      const isMargin = name => name === 'margin' || name.startsWith('margin-');
+      const isInset = name => name === 'inset' || name.startsWith('inset-') || ['top', 'right', 'bottom', 'left'].includes(name);
+      const layoutRules = rules => [...rules].map(rule => {
+        if (rule.selectorText && rule.style) {
+          const margins = [...rule.style].filter(isMargin);
+          if (margins.some(name => /\bauto\b/.test(rule.style.getPropertyValue(name)))) autoMargins.add(rule.selectorText);
+          const insets = [...rule.style].filter(isInset);
+          if (insets.length) positioned.add(rule.selectorText);
+          const layout = [...margins, ...insets];
+          return layout.length ? `${rule.selectorText} { ${layout.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
+        }
+        if (!rule.cssRules) return /^@layer\b/.test(rule.cssText) ? rule.cssText : '';
+        if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? layoutRules(rule.cssRules) : '';
+        if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? layoutRules(rule.cssRules) : '';
+        return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + layoutRules(rule.cssRules) + '}';
+      }).join('\n');
+      const sheets = [...document.styleSheets, ...document.adoptedStyleSheets];
+      const layout = sheets.map(sheet => {
+        try { return layoutRules(sheet.cssRules); } catch (cause) { return ''; }
+      }).join('\n');
+      // Omit display-none HTML subtrees, such as collapsed chart rows, from the image and its SVG payload.
+      const includeNode = node => !(node instanceof HTMLElement) || getComputedStyle(node).display !== 'none';
+      const restoreLayout = (source, clone) => {
+        if (clone.style && source !== poster) {
+          const margins = [...autoMargins].some(selector => source.matches(selector));
+          const computed = getComputedStyle(source);
+          const insets = computed.position === 'absolute' && [...positioned].some(selector => source.matches(selector));
+          const restore = name => (margins && isMargin(name)) || (insets && isInset(name));
+          [...clone.style].filter(restore).forEach(name => clone.style.removeProperty(name));
+          [...source.style].filter(restore).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
+          if (insets) {
+            // Only the scaled axis needs its percentage rule. Freeze the other axis in pixels:
+            // Firefox does not reevaluate container queries reliably inside an SVG foreignObject.
+            const axis = source.getAttribute('data-rhp-o');
+            const fixed = axis === 'h' ? ['top', 'bottom'] : axis === 'v' ? ['left', 'right'] : ['top', 'right', 'bottom', 'left'];
+            fixed.forEach(name => clone.style.setProperty(name, computed.getPropertyValue(name), 'important'));
+          }
+        }
+        const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName) && includeNode(node));
+        [...clone.children].forEach((child, i) => { if (children[i]) restoreLayout(children[i], child); });
+      };
+      // Cross-origin font stylesheets are readable through fetch, but not through cssRules.
+      const fontFiles = new Map();
+      const fontRules = await Promise.all(sheets.map(async sheet => {
+        let css;
+        try { css = [...sheet.cssRules].map(rule => rule.cssText).join('\n'); }
+        catch (cause) {
+          if (!sheet.href) return '';
+          const response = await fetch(sheet.href);
+          if (!response.ok) throw new Error('Font stylesheet could not be loaded');
+          css = await response.text();
+        }
+        const rules = css.match(/@font-face\s*\{[^}]*\}/g) || [];
+        return (await Promise.all(rules.map(async rule => {
+          for (const match of [...rule.matchAll(/url\(["']?([^"')]+)["']?\)/g)]) {
+            const source = new URL(match[1], sheet.href || document.baseURI).href;
+            if (!fontFiles.has(source)) fontFiles.set(source, (async () => {
+              const response = await fetch(source);
+              if (!response.ok) throw new Error('Font could not be loaded');
+              const blob = await response.blob();
+              return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+              });
+            })());
+            rule = rule.replace(match[1], await fontFiles.get(source));
+          }
+          return rule;
+        }))).join('\n');
+      }));
+      // Rasterize SVG paper textures before nesting them inside the exporter's SVG.
+      // This keeps SVG filter fragment references local to their own image.
+      const textures = new Map();
+      const embedTexture = async (node) => {
+        if (!node.style) return;
+        let background = node.style.backgroundImage;
+        for (const [, source] of background.matchAll(/url\("(data:image\/svg\+xml[^"]+)"\)/g)) {
+          if (!textures.has(source)) textures.set(source, (async () => {
+            const image = new Image();
+            image.src = source;
+            await image.decode();
+            const canvas = document.createElement('canvas');
+            canvas.width = image.naturalWidth;
+            canvas.height = image.naturalHeight;
+            canvas.getContext('2d').drawImage(image, 0, 0);
+            return canvas.toDataURL();
+          })());
+          background = background.replace(source, await textures.get(source));
+        }
+        node.style.backgroundImage = background;
+      };
+      return {
+        ...fit.dimensions(), style: { margin: '0' }, filter: includeNode,
+        font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
+        onCloneNode: clone => {
+          restoreLayout(poster, clone);
+          const style = document.createElement('style');
+          style.textContent = layout;
+          clone.prepend(style);
+        },
+        // CSS content's alternative text follows a slash and must not be painted.
+        onCreateForeignObjectSvg: svg => svg.querySelectorAll('style').forEach(style => {
+          style.textContent = style.textContent.replace(/(content:\s*')([^']*)(')/g, (_, start, text, end) => start + text.split(' / ')[0] + end);
+        }),
+      };
+    }
+    let url;
+    const save = (blob, extension) => {
+      url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const title = poster.querySelector('.headline')?.textContent || document.title || 'poster';
+      link.download = (title.trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '').slice(0, 100) || 'poster') + '.' + extension;
+      link.href = url;
+      link.addEventListener('click', event => event.stopPropagation(), { once: true });
+      document.body.append(link);
+      link.click();
+      link.remove();
+    };
+    const begin = kind => {
       busy = true;
-      button.setAttribute('aria-disabled', 'true');
+      making = kind;
       button.setAttribute('aria-busy', 'true');
       fitButton.setAttribute('aria-disabled', 'true');
-      button.setAttribute('aria-label', 'Preparing poster PNG');
+      // A GIF takes a while: the button shows its progress and cancels it
+      if (kind === 'gif') label('Cancel the GIF');
+      else { button.setAttribute('aria-disabled', 'true'); label('Preparing poster PNG'); }
       error.hidden = true;
-      let url;
+    };
+    const end = () => {
+      if (url) setTimeout(() => URL.revokeObjectURL(url), 60000);
+      url = null;
+      busy = false;
+      making = null;
+      cancelled = false;
+      button.innerHTML = icon;
+      button.removeAttribute('aria-disabled');
+      button.removeAttribute('aria-busy');
+      fitButton.removeAttribute('aria-disabled');
+      rest();
+    };
+    const fail = message => {
+      exporter = null;
+      encoder = null;
+      retries++;
+      error.textContent = message;
+      error.hidden = false;
+    };
+    async function savePng() {
+      begin('png');
       try {
-        exporter ||= import('https://cdn.jsdelivr.net/npm/modern-screenshot@4.7.0/+esm' + (retries ? `?retry=${retries}` : ''));
-        const { domToBlob } = await exporter;
-        await document.fonts.ready;
-        // Preserve author layout rules where computed styles lose the grid's used geometry.
-        // Safari misreports percentage insets in subgrids, and grid auto margins resolve to zero.
-        const autoMargins = new Set(), positioned = new Set();
-        const isMargin = name => name === 'margin' || name.startsWith('margin-');
-        const isInset = name => name === 'inset' || name.startsWith('inset-') || ['top', 'right', 'bottom', 'left'].includes(name);
-        const layoutRules = rules => [...rules].map(rule => {
-          if (rule.selectorText && rule.style) {
-            const margins = [...rule.style].filter(isMargin);
-            if (margins.some(name => /\bauto\b/.test(rule.style.getPropertyValue(name)))) autoMargins.add(rule.selectorText);
-            const insets = [...rule.style].filter(isInset);
-            if (insets.length) positioned.add(rule.selectorText);
-            const layout = [...margins, ...insets];
-            return layout.length ? `${rule.selectorText} { ${layout.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
-          }
-          if (!rule.cssRules) return /^@layer\b/.test(rule.cssText) ? rule.cssText : '';
-          if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? layoutRules(rule.cssRules) : '';
-          if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? layoutRules(rule.cssRules) : '';
-          return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + layoutRules(rule.cssRules) + '}';
-        }).join('\n');
-        const sheets = [...document.styleSheets, ...document.adoptedStyleSheets];
-        const layout = sheets.map(sheet => {
-          try { return layoutRules(sheet.cssRules); } catch (cause) { return ''; }
-        }).join('\n');
-        // Omit display-none HTML subtrees, such as collapsed chart rows, from the image and its SVG payload.
-        const includeNode = node => !(node instanceof HTMLElement) || getComputedStyle(node).display !== 'none';
-        const restoreLayout = (source, clone) => {
-          if (clone.style && source !== poster) {
-            const margins = [...autoMargins].some(selector => source.matches(selector));
-            const computed = getComputedStyle(source);
-            const insets = computed.position === 'absolute' && [...positioned].some(selector => source.matches(selector));
-            const restore = name => (margins && isMargin(name)) || (insets && isInset(name));
-            [...clone.style].filter(restore).forEach(name => clone.style.removeProperty(name));
-            [...source.style].filter(restore).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
-            if (insets) {
-              // Only the scaled axis needs its percentage rule. Freeze the other axis in pixels:
-              // Firefox does not reevaluate container queries reliably inside an SVG foreignObject.
-              const axis = source.getAttribute('data-rhp-o');
-              const fixed = axis === 'h' ? ['top', 'bottom'] : axis === 'v' ? ['left', 'right'] : ['top', 'right', 'bottom', 'left'];
-              fixed.forEach(name => clone.style.setProperty(name, computed.getPropertyValue(name), 'important'));
-            }
-          }
-          const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName) && includeNode(node));
-          [...clone.children].forEach((child, i) => { if (children[i]) restoreLayout(children[i], child); });
-        };
-        // Cross-origin font stylesheets are readable through fetch, but not through cssRules.
-        const fontFiles = new Map();
-        const fontRules = await Promise.all(sheets.map(async sheet => {
-          let css;
-          try { css = [...sheet.cssRules].map(rule => rule.cssText).join('\n'); }
-          catch (cause) {
-            if (!sheet.href) return '';
-            const response = await fetch(sheet.href);
-            if (!response.ok) throw new Error('Font stylesheet could not be loaded');
-            css = await response.text();
-          }
-          const rules = css.match(/@font-face\s*\{[^}]*\}/g) || [];
-          return (await Promise.all(rules.map(async rule => {
-            for (const match of [...rule.matchAll(/url\(["']?([^"')]+)["']?\)/g)]) {
-              const source = new URL(match[1], sheet.href || document.baseURI).href;
-              if (!fontFiles.has(source)) fontFiles.set(source, (async () => {
-                const response = await fetch(source);
-                if (!response.ok) throw new Error('Font could not be loaded');
-                const blob = await response.blob();
-                return new Promise((resolve, reject) => {
-                  const reader = new FileReader();
-                  reader.onload = () => resolve(reader.result);
-                  reader.onerror = reject;
-                  reader.readAsDataURL(blob);
-                });
-              })());
-              rule = rule.replace(match[1], await fontFiles.get(source));
-            }
-            return rule;
-          }))).join('\n');
-        }));
-        // Rasterize SVG paper textures before nesting them inside the exporter's SVG.
-        // This keeps SVG filter fragment references local to their own image.
-        const textures = new Map();
-        const embedTexture = async (node) => {
-          if (!node.style) return;
-          let background = node.style.backgroundImage;
-          for (const [, source] of background.matchAll(/url\("(data:image\/svg\+xml[^"]+)"\)/g)) {
-            if (!textures.has(source)) textures.set(source, (async () => {
-              const image = new Image();
-              image.src = source;
-              await image.decode();
-              const canvas = document.createElement('canvas');
-              canvas.width = image.naturalWidth;
-              canvas.height = image.naturalHeight;
-              canvas.getContext('2d').drawImage(image, 0, 0);
-              return canvas.toDataURL();
-            })());
-            background = background.replace(source, await textures.get(source));
-          }
-          node.style.backgroundImage = background;
-        };
-        const blob = await domToBlob(poster, {
-          ...fit.dimensions(), scale: 2, style: { margin: '0' }, filter: includeNode,
-          font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
-          onCloneNode: clone => {
-            restoreLayout(poster, clone);
-            const style = document.createElement('style');
-            style.textContent = layout;
-            clone.prepend(style);
-          },
-          // CSS content's alternative text follows a slash and must not be painted.
-          onCreateForeignObjectSvg: svg => svg.querySelectorAll('style').forEach(style => {
-            style.textContent = style.textContent.replace(/(content:\s*')([^']*)(')/g, (_, start, text, end) => start + text.split(' / ')[0] + end);
-          }),
-        });
+        const { domToBlob } = await loadExporter();
+        const blob = await domToBlob(poster, { ...(await captureOptions()), scale: 2 });
         if (!blob) throw new Error('No PNG was created');
-        url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        const title = poster.querySelector('.headline')?.textContent || document.title || 'poster';
-        link.download = (title.trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '').slice(0, 100) || 'poster') + '.png';
-        link.href = url;
-        link.addEventListener('click', event => event.stopPropagation(), { once: true });
-        document.body.append(link);
-        link.click();
-        link.remove();
+        save(blob, 'png');
       } catch (cause) {
-        exporter = null;
-        retries++;
-        error.textContent = 'The PNG could not be saved. Check your connection and try again.';
-        error.hidden = false;
+        fail('The PNG could not be saved. Check your connection and try again.');
       } finally {
-        if (url) setTimeout(() => URL.revokeObjectURL(url), 60000);
-        busy = false;
-        button.removeAttribute('aria-disabled');
-        button.removeAttribute('aria-busy');
-        fitButton.removeAttribute('aria-disabled');
-        button.setAttribute('aria-label', 'Download poster as PNG');
+        end();
       }
+    }
+    // The GIF: the playback in frames 80 ms apart, for up to 15 seconds, at most 1200 pixels wide. One palette from
+    // the first and the last frame serves every frame; its last color is never drawn and marks the pixels a frame leaves
+    // as the frame before had them, so each frame stores only what changed.
+    async function saveGif() {
+      const playback = poster.playback;
+      const from = playback.position();
+      begin('gif');
+      try {
+        encoder ||= import('https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm' + (retries ? `?retry=${retries}` : ''));
+        const [{ domToCanvas }, { GIFEncoder, quantize, applyPalette }] = await Promise.all([loadExporter(), encoder]);
+        const options = await captureOptions();
+        const scale = Math.min(1, 1200 / options.width);
+        const count = Math.max(2, Math.round(Math.min(playback.duration ?? 15000, 15000) / 80) + 1);
+        const frame = async (at, settled) => {
+          playback.seek(at);
+          // rhp moves the marks to their new values over 150 ms
+          await new Promise(requestAnimationFrame);
+          await new Promise(resolve => setTimeout(resolve, 200));
+          // After a jump, rows that come back fade in: the frames the palette is made from wait for them
+          if (settled) await Promise.all(poster.getAnimations({ subtree: true }).filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {})));
+          const canvas = await domToCanvas(poster, { ...options, scale });
+          return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+        };
+        const last = await frame(1, true), first = await frame(0, true);
+        const both = new Uint8ClampedArray(first.data.length + last.data.length);
+        both.set(first.data);
+        both.set(last.data, first.data.length);
+        const palette = quantize(both, 255), kept = palette.length;
+        // A flat color that fills a part of the poster keeps its exact value: it takes the nearest palette entry
+        const counts = new Map(), taken = new Set();
+        for (let j = 0; j < both.length; j += 4) {
+          const color = (both[j] << 16) | (both[j + 1] << 8) | both[j + 2];
+          counts.set(color, (counts.get(color) ?? 0) + 1);
+        }
+        for (const [color] of [...counts].filter(([, n]) => n > both.length / 8000).sort((a, b) => b[1] - a[1])) {
+          const rgb = [color >> 16, (color >> 8) & 255, color & 255];
+          let nearest = -1, distance = Infinity;
+          palette.forEach((entry, k) => {
+            const d = (entry[0] - rgb[0]) ** 2 + (entry[1] - rgb[1]) ** 2 + (entry[2] - rgb[2]) ** 2;
+            if (!taken.has(k) && d < distance) { nearest = k; distance = d; }
+          });
+          if (nearest >= 0) { palette[nearest] = rgb; taken.add(nearest); }
+        }
+        palette.push([255, 0, 255]);
+        const gif = GIFEncoder();
+        let previous = null;
+        for (let i = 0; i < count; i++) {
+          if (cancelled) return;
+          const image = i === 0 ? first : await frame(i / (count - 1));
+          const index = applyPalette(image.data, palette.slice(0, kept));
+          const pixels = previous ? index.map((p, j) => (p === previous[j] ? kept : p)) : index;
+          gif.writeFrame(pixels, image.width, image.height, {
+            palette: i === 0 ? palette : undefined, delay: i === 0 ? 1000 : i === count - 1 ? 3000 : 80,
+            transparent: i > 0, transparentIndex: kept, dispose: 1,
+          });
+          previous = index;
+          const done = Math.round(((i + 1) / count) * 100);
+          button.innerHTML = `<span class="poster-download-progress" aria-hidden="true">${done}%</span>`;
+          label(`Cancel the GIF, ${done}% made`);
+        }
+        gif.finish();
+        save(new Blob([gif.bytes()], { type: 'image/gif' }), 'gif');
+      } catch (cause) {
+        fail('The GIF could not be made. Check your connection and try again.');
+      } finally {
+        playback.seek(from);
+        end();
+      }
+    }
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      if (busy) {
+        if (making === 'gif') cancelled = true;
+        return;
+      }
+      if (!playable()) return savePng();
+      // A key press is a click with no pointer detail: it opens the menu on its first item
+      if (menu.hidden) openMenu(event.detail === 0);
+      else closeMenu(event.detail === 0);
+    });
+    menu.addEventListener('click', event => {
+      const item = event.target.closest('[data-format]');
+      if (!item) return;
+      event.stopPropagation();
+      closeMenu(event.detail === 0);
+      if (item.dataset.format === 'gif') saveGif();
+      else savePng();
     });
     tools.append(actions);
   });

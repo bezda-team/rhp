@@ -520,7 +520,7 @@ On the sketch path, read only what the request needs, at the step that needs it 
 - [design.md](references/design.md): art direction from the subject (idea, marks, composition, palette, type), the poster, color, type, layout, annotation, charts inside an app, a style the user asks for.
 - [looks.md](references/looks.md): eight looks written out in full (tokens, fonts, texture, type), as examples of how a look is written, not a menu.
 - [interaction.md](references/interaction.md): choosing interaction behavior and presentation for the reader's task, with complete implementation examples.
-- [download.md](references/download.md): the fit-to-screen and download icons for standalone HTML posters, with a complete PNG export block.
+- [download.md](references/download.md): the fit-to-screen and download icons for standalone HTML posters, with a complete PNG and GIF export block.
 - [performance.md](references/performance.md): measured optimizations for an expensive chart, preserving its slats, styling, state, and interactions.
 - [environments.md](references/environments.md): plain HTML, Solid, Astro, React, Next.js, Vue, Svelte and Angular, each verified, and the html template to JSX rules.
 - [api.md](references/api.md): every component, prop, helper and CSS variable, exactly.

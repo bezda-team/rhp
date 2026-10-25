@@ -17,6 +17,23 @@ fs.mkdirSync(out, { recursive: true });
 await standalone(path.join(root, "src/standalone.js"), path.join(out, "standalone.js"));
 const exporter = (await build({ entryPoints: [path.join(root, "node_modules/modern-screenshot/dist/index.mjs")], bundle: true, write: false, format: "esm" })).outputFiles[0].text;
 const exportURL = /https:\/\/cdn\.jsdelivr\.net\/npm\/modern-screenshot@4\.7\.0\/\+esm(?:\?.*)?$/;
+const encoder = fs.readFileSync(path.join(root, "node_modules/gifenc/dist/gifenc.esm.js"), "utf8");
+const encoderURL = /https:\/\/cdn\.jsdelivr\.net\/npm\/gifenc@1\.0\.3\/\+esm(?:\?.*)?$/;
+// A GIF's frames: its image descriptors, read block by block (a byte pattern could also occur inside image data)
+const gifFrames = bytes => {
+  let i = 13 + (bytes[10] & 0x80 ? 3 * 2 ** ((bytes[10] & 7) + 1) : 0), frames = 0;
+  const skipBlocks = () => { while (bytes[i]) i += bytes[i] + 1; i++; };
+  while (i < bytes.length && bytes[i] !== 0x3b) {
+    if (bytes[i] === 0x21) { i += 2; skipBlocks(); }
+    else if (bytes[i] === 0x2c) {
+      frames++;
+      const local = bytes[i + 9];
+      i += 10 + (local & 0x80 ? 3 * 2 ** ((local & 7) + 1) : 0) + 1;
+      skipBlocks();
+    } else throw new Error(`Unexpected GIF block ${bytes[i]} at ${i}`);
+  }
+  return frames;
+};
 const browser = await { chromium, webkit, firefox }[engine].launch(engine === "chromium" ? { executablePath: process.env.CHROMIUM } : {});
 const settle = page => page.evaluate(async () => {
   await document.fonts.ready;
@@ -31,6 +48,7 @@ try {
     page.on("pageerror", error => errors.push(error.message));
     await page.route(/https:\/\/cdn.jsdelivr.net\/npm\/@bezda\/rhp@[^/]+\/dist\/standalone.js/, route => route.fulfill({ body: fs.readFileSync(path.join(out, "standalone.js")), contentType: "text/javascript" }));
     await page.route(exportURL, route => route.fulfill({ body: exporter, contentType: "text/javascript" }));
+    await page.route(encoderURL, route => route.fulfill({ body: encoder, contentType: "text/javascript" }));
     // A real, distinctive font behind a cross-origin stylesheet catches missing font embedding.
     const cors = { "access-control-allow-origin": "*" };
     await page.route("https://fonts.googleapis.com/**", route => route.fulfill({
@@ -89,9 +107,11 @@ try {
       const source = fs.readFileSync(path.join(recipes, file), "utf8");
       assert.equal(withPosterDownload(source), source, `${file}: generated controls are current and idempotent`);
       await page.goto("file://" + path.join(recipes, file));
-      const button = page.getByRole("button", { name: "Download poster as PNG", exact: true });
+      // A chart with playback (the race) opens a menu of PNG and GIF; every other saves the PNG at once
+      const button = page.getByRole("button", { name: file === "race.html" ? "Download poster" : "Download poster as PNG", exact: true });
       await button.waitFor();
       await settle(page);
+      assert.equal(await button.getAttribute("aria-haspopup"), file === "race.html" ? "menu" : null, `${file}: only a chart with playback has a download menu`);
       const bounds = await page.locator(".poster").boundingBox();
       const control = await button.boundingBox();
       assert(control.y + control.height <= bounds.y, `${file}: control is above the poster`);
@@ -276,6 +296,65 @@ try {
       assert.notEqual(await readout.innerText(), selected);
       console.log(`PASS ${width}px ${recipe} ${activation}: selection survives pointer return after the completed download`);
     }
+    // A chart with playback: its download menu offers the PNG and the GIF by pointer and by keyboard. The GIF holds every
+    // frame of the playback, a cancelled GIF saves nothing, and either way the chart returns to where it was.
+    await page.goto("file://" + path.join(recipes, "race.html"));
+    const race = page.getByRole("button", { name: "Download poster", exact: true });
+    await race.waitFor();
+    await settle(page);
+    const menu = page.getByRole("menu", { name: "Download poster" });
+    const idle = () => page.waitForFunction(() => !document.querySelector(".poster-download").hasAttribute("aria-busy"), null, { timeout: 120000 });
+    const position = () => page.evaluate(() => document.querySelector(".poster").playback.position());
+    await race.click();
+    await menu.waitFor();
+    const pngDownload = page.waitForEvent("download");
+    await page.getByRole("menuitem", { name: /PNG image/ }).click();
+    assert.match((await pngDownload).suggestedFilename(), /\.png$/);
+    await idle();
+    assert.equal(await menu.isHidden(), true, "the menu closes after a choice");
+    await race.focus();
+    await page.keyboard.press("Enter");
+    assert.equal(await page.evaluate(() => document.activeElement.dataset.format), "png", "Enter opens the menu on its first item");
+    await page.keyboard.press("ArrowDown");
+    assert.equal(await page.evaluate(() => document.activeElement.dataset.format), "gif");
+    await page.keyboard.press("Escape");
+    assert.equal(await menu.isHidden(), true);
+    assert.equal(await race.evaluate(button => document.activeElement === button), true, "Escape returns to the download icon");
+    // A short playback keeps the test quick: 400 ms of it is 6 frames, 80 ms apart
+    await page.evaluate(() => { const playback = document.querySelector(".poster").playback; playback.duration = 400; playback.seek(0.5); });
+    await settle(page);
+    const before = await position();
+    await page.keyboard.press("Enter");
+    await page.keyboard.press("ArrowDown");
+    const gifDownload = page.waitForEvent("download", { timeout: 120000 });
+    await page.keyboard.press("Enter");
+    const gif = await gifDownload;
+    assert.match(gif.suggestedFilename(), /\.gif$/);
+    const gifPath = path.join(out, `${width}-race.gif`);
+    await gif.saveAs(gifPath);
+    const bytes = fs.readFileSync(gifPath);
+    assert.equal(bytes.subarray(0, 6).toString(), "GIF89a");
+    const raceBounds = await page.locator(".poster").boundingBox();
+    assert(Math.abs(bytes.readUInt16LE(6) - Math.min(raceBounds.width, 1200)) <= 2, "the GIF is the poster's width, up to 1200 pixels");
+    assert(Math.abs(bytes.readUInt16LE(8) / bytes.readUInt16LE(6) - raceBounds.height / raceBounds.width) < .01, "the GIF holds the whole poster");
+    assert.equal(gifFrames(bytes), 6, "a frame every 80 ms, the first and the last included");
+    await idle();
+    assert(Math.abs(await position() - before) < 1e-9, "after the GIF the chart returns to where it was");
+    // A click on the busy icon cancels: nothing is saved, and the chart returns
+    await page.evaluate(() => { document.querySelector(".poster").playback.duration = 8000; });
+    await race.click();
+    await page.getByRole("menuitem", { name: /Animated GIF/ }).click();
+    const cancel = page.getByRole("button", { name: /^Cancel the GIF, \d+% made$/ });
+    await cancel.waitFor({ timeout: 120000 });
+    let saved = false;
+    page.once("download", () => { saved = true; });
+    await cancel.click();
+    await idle();
+    await page.waitForTimeout(300);
+    assert.equal(saved, false, "a cancelled GIF saves nothing");
+    assert(Math.abs(await position() - before) < 1e-9, "after a cancelled GIF the chart returns to where it was");
+    assert.equal(await race.getAttribute("aria-label"), "Download poster");
+    console.log(`PASS ${width}px race: the download menu offers the PNG and a GIF by pointer and keyboard; the GIF has every frame; cancel saves nothing; the chart returns`);
     // A failed import leaves a visible error and lets the user retry.
     await page.goto("file://" + path.join(recipes, "bar.html"));
     await page.route(exportURL, route => route.abort());
