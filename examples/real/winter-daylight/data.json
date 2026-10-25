@@ -1,0 +1,16 @@
+{
+  "date": "2026-12-21",
+  "retrieved": "2026-10-24",
+  "timezone": "UTC-7",
+  "previousWinterTimezone": "UTC-8",
+  "source": "Timeanddate astronomical tables, December 2026",
+  "policySource": "https://www2.gov.bc.ca/gov/content/governments/celebrating-british-columbia/daylight-saving-time",
+  "cities": [
+    {"id":"vancouver","name":"Vancouver","sunrise":"09:05","sunset":"17:16","civilDawn":"08:27","civilDusk":"17:53","daylength":"08:11:01","source":"https://www.timeanddate.com/sun/canada/vancouver?month=12&year=2026"},
+    {"id":"victoria","name":"Victoria","sunrise":"09:02","sunset":"17:20","civilDawn":"08:25","civilDusk":"17:57","daylength":"08:18:34","source":"https://www.timeanddate.com/sun/canada/victoria?month=12&year=2026"},
+    {"id":"kelowna","name":"Kelowna","sunrise":"08:53","sunset":"16:58","civilDawn":"08:15","civilDusk":"17:37","daylength":"08:05:28","source":"https://www.timeanddate.com/sun/canada/kelowna?month=12&year=2026"},
+    {"id":"kamloops","name":"Kamloops","sunrise":"09:00","sunset":"16:58","civilDawn":"08:21","civilDusk":"17:37","daylength":"07:57:57","source":"https://www.timeanddate.com/sun/canada/kamloops?month=12&year=2026"},
+    {"id":"prince-george","name":"Prince George","sunrise":"09:27","sunset":"16:50","civilDawn":"08:43","civilDusk":"17:34","daylength":"07:23:18","source":"https://www.timeanddate.com/sun/canada/prince-george?month=12&year=2026"},
+    {"id":"prince-rupert","name":"Prince Rupert","sunrise":"10:00","sunset":"17:18","civilDawn":"09:15","civilDusk":"18:03","daylength":"07:18:36","source":"https://www.timeanddate.com/sun/canada/prince-rupert?month=12&year=2026"}
+  ]
+}

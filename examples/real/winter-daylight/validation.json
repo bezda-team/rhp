@@ -1,0 +1,707 @@
+{
+  "date": "2026-10-24",
+  "defaultState": {
+    "city": "Vancouver",
+    "finishTime": "17:00"
+  },
+  "dimensions": {
+    "css": {
+      "width": 1080,
+      "height": 1671
+    },
+    "png": {
+      "width": 2160,
+      "height": 3342
+    },
+    "scale": 2,
+    "layout": "1080px width, natural height"
+  },
+  "rhpChecker": {
+    "ok": true,
+    "widths": [
+      1280,
+      1024,
+      768,
+      390,
+      360,
+      320
+    ],
+    "findings": []
+  },
+  "browsers": [
+    "Chromium",
+    "WebKit",
+    "Firefox"
+  ],
+  "exportComparisons": [
+    {
+      "browser": "chromium",
+      "width": 1280,
+      "city": "vancouver",
+      "finish": 1020,
+      "fitted": false,
+      "label": "desktop",
+      "png": {
+        "width": 2160,
+        "height": 3342
+      },
+      "meanRgbDifference": 0.11666837518747553,
+      "clockMeanRgbDifference": 0.12993017719908476,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.05050096109604034
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.19303594139418026
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "chromium",
+      "width": 1280,
+      "city": "prince-rupert",
+      "finish": 960,
+      "fitted": true,
+      "label": "selected-fitted",
+      "png": {
+        "width": 2160,
+        "height": 3342
+      },
+      "meanRgbDifference": 0.20267517417677003,
+      "clockMeanRgbDifference": 0.13010604882978832,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.018281283735053517
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.08634836338683
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "chromium",
+      "width": 390,
+      "city": "vancouver",
+      "finish": 1020,
+      "fitted": false,
+      "label": "mobile",
+      "png": {
+        "width": 732,
+        "height": 2496
+      },
+      "meanRgbDifference": 0.6280573507776377,
+      "clockMeanRgbDifference": 0.44022516817710816,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.3272295087169206
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.5483718725344507
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "webkit",
+      "width": 1280,
+      "city": "vancouver",
+      "finish": 1020,
+      "fitted": false,
+      "label": "desktop",
+      "png": {
+        "width": 2160,
+        "height": 3317
+      },
+      "meanRgbDifference": 2.0175726336828235,
+      "clockMeanRgbDifference": 0.9355049712192569,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.2446398437440324
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 1,
+          "centroidDifference": 0.3051294415069035
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "webkit",
+      "width": 1280,
+      "city": "prince-rupert",
+      "finish": 960,
+      "fitted": true,
+      "label": "selected-fitted",
+      "png": {
+        "width": 2160,
+        "height": 3317
+      },
+      "meanRgbDifference": 2.1401412755836935,
+      "clockMeanRgbDifference": 0.9263610893075179,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.2820369055790701
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.6560287120849101
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "webkit",
+      "width": 390,
+      "city": "vancouver",
+      "finish": 1020,
+      "fitted": false,
+      "label": "mobile",
+      "png": {
+        "width": 732,
+        "height": 2460
+      },
+      "meanRgbDifference": 2.6120348157033484,
+      "clockMeanRgbDifference": 2.318738795045971,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 1,
+          "centroidDifference": 0.8622851223474566
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 1,
+          "centroidDifference": 1.0748154568078123
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "firefox",
+      "width": 1280,
+      "city": "vancouver",
+      "finish": 1020,
+      "fitted": false,
+      "label": "desktop",
+      "png": {
+        "width": 2160,
+        "height": 3342
+      },
+      "meanRgbDifference": 0.2615872804781642,
+      "clockMeanRgbDifference": 0.01615614194395707,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 1,
+          "centroidDifference": 0.009065865418759193
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.38825353820278946
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "firefox",
+      "width": 1280,
+      "city": "prince-rupert",
+      "finish": 960,
+      "fitted": true,
+      "label": "selected-fitted",
+      "png": {
+        "width": 2160,
+        "height": 3342
+      },
+      "meanRgbDifference": 0.371050592533487,
+      "clockMeanRgbDifference": 0.016306522609043618,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 0,
+          "centroidDifference": 0.0325948933398812
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 1,
+          "centroidDifference": 0.46406383113385724
+        }
+      ],
+      "selectionPreserved": true
+    },
+    {
+      "browser": "firefox",
+      "width": 390,
+      "city": "vancouver",
+      "finish": 1020,
+      "fitted": false,
+      "label": "mobile",
+      "png": {
+        "width": 732,
+        "height": 2496
+      },
+      "meanRgbDifference": 1.007599408598384,
+      "clockMeanRgbDifference": 0.7689653664031145,
+      "clockGeometry": [
+        {
+          "color": [
+            255,
+            211,
+            148
+          ],
+          "boundsDifference": 1,
+          "centroidDifference": 0.26291491354077634
+        },
+        {
+          "color": [
+            174,
+            200,
+            221
+          ],
+          "boundsDifference": 1,
+          "centroidDifference": 0.44536930687454257
+        }
+      ],
+      "selectionPreserved": true
+    }
+  ],
+  "inputChecks": {
+    "cities": 6,
+    "viewportWidths": [
+      1280,
+      768,
+      390,
+      320
+    ],
+    "keyboard": true,
+    "touch": true,
+    "fitScrollStable": true,
+    "sourceDisclosure": true
+  },
+  "readoutExtremeStates": [
+    {
+      "width": 1280,
+      "city": "vancouver",
+      "finish": 840,
+      "posterHeight": 1671,
+      "readoutHeight": 176.765625
+    },
+    {
+      "width": 1280,
+      "city": "vancouver",
+      "finish": 1020,
+      "posterHeight": 1671,
+      "readoutHeight": 176.765625
+    },
+    {
+      "width": 1280,
+      "city": "vancouver",
+      "finish": 1140,
+      "posterHeight": 1671,
+      "readoutHeight": 176.765625
+    },
+    {
+      "width": 1280,
+      "city": "prince-rupert",
+      "finish": 840,
+      "posterHeight": 1671,
+      "readoutHeight": 176.765625
+    },
+    {
+      "width": 1280,
+      "city": "prince-rupert",
+      "finish": 1020,
+      "posterHeight": 1671,
+      "readoutHeight": 176.765625
+    },
+    {
+      "width": 1280,
+      "city": "prince-rupert",
+      "finish": 1140,
+      "posterHeight": 1671,
+      "readoutHeight": 176.765625
+    },
+    {
+      "width": 768,
+      "city": "vancouver",
+      "finish": 840,
+      "posterHeight": 1475.84375,
+      "readoutHeight": 221.515625
+    },
+    {
+      "width": 768,
+      "city": "vancouver",
+      "finish": 1020,
+      "posterHeight": 1475.84375,
+      "readoutHeight": 221.515625
+    },
+    {
+      "width": 768,
+      "city": "vancouver",
+      "finish": 1140,
+      "posterHeight": 1475.84375,
+      "readoutHeight": 221.515625
+    },
+    {
+      "width": 768,
+      "city": "prince-rupert",
+      "finish": 840,
+      "posterHeight": 1475.84375,
+      "readoutHeight": 221.515625
+    },
+    {
+      "width": 768,
+      "city": "prince-rupert",
+      "finish": 1020,
+      "posterHeight": 1475.84375,
+      "readoutHeight": 221.515625
+    },
+    {
+      "width": 768,
+      "city": "prince-rupert",
+      "finish": 1140,
+      "posterHeight": 1475.84375,
+      "readoutHeight": 221.515625
+    },
+    {
+      "width": 390,
+      "city": "vancouver",
+      "finish": 840,
+      "posterHeight": 1248.28125,
+      "readoutHeight": 175.53125
+    },
+    {
+      "width": 390,
+      "city": "vancouver",
+      "finish": 1020,
+      "posterHeight": 1248.28125,
+      "readoutHeight": 175.53125
+    },
+    {
+      "width": 390,
+      "city": "vancouver",
+      "finish": 1140,
+      "posterHeight": 1248.28125,
+      "readoutHeight": 175.53125
+    },
+    {
+      "width": 390,
+      "city": "prince-rupert",
+      "finish": 840,
+      "posterHeight": 1248.28125,
+      "readoutHeight": 175.53125
+    },
+    {
+      "width": 390,
+      "city": "prince-rupert",
+      "finish": 1020,
+      "posterHeight": 1248.28125,
+      "readoutHeight": 175.53125
+    },
+    {
+      "width": 390,
+      "city": "prince-rupert",
+      "finish": 1140,
+      "posterHeight": 1248.28125,
+      "readoutHeight": 175.53125
+    },
+    {
+      "width": 320,
+      "city": "vancouver",
+      "finish": 840,
+      "posterHeight": 1242.375,
+      "readoutHeight": 209.8125
+    },
+    {
+      "width": 320,
+      "city": "vancouver",
+      "finish": 1020,
+      "posterHeight": 1242.375,
+      "readoutHeight": 209.8125
+    },
+    {
+      "width": 320,
+      "city": "vancouver",
+      "finish": 1140,
+      "posterHeight": 1242.375,
+      "readoutHeight": 209.8125
+    },
+    {
+      "width": 320,
+      "city": "prince-rupert",
+      "finish": 840,
+      "posterHeight": 1242.375,
+      "readoutHeight": 209.8125
+    },
+    {
+      "width": 320,
+      "city": "prince-rupert",
+      "finish": 1020,
+      "posterHeight": 1242.375,
+      "readoutHeight": 209.8125
+    },
+    {
+      "width": 320,
+      "city": "prince-rupert",
+      "finish": 1140,
+      "posterHeight": 1242.375,
+      "readoutHeight": 209.8125
+    }
+  ],
+  "displayReview": {
+    "staticImageWidth": 390,
+    "directRedditMediaInspection": false
+  },
+  "sha256": "cab010c4a3586817aa6cc1bfabcff2484792a7b4e404e019650c913bb5f8ff3c",
+  "motionChecks": [
+    {
+      "browser": "chromium",
+      "widths": [
+        1280,
+        320
+      ],
+      "sunIconsFollowEndpoints": true,
+      "sunBarSeparation": true,
+      "concaveEnds": true,
+      "noRayOverlap": true,
+      "bidirectional": true,
+      "bothArcsPositionAndLength": true,
+      "interruptedChanges": true,
+      "downloadDuringMotion": true,
+      "cachedDownloadDuringMotion": true,
+      "animationResumesAfterDownload": true,
+      "reducedMotion": true
+    },
+    {
+      "browser": "webkit",
+      "widths": [
+        1280,
+        320
+      ],
+      "sunIconsFollowEndpoints": true,
+      "sunBarSeparation": true,
+      "concaveEnds": true,
+      "noRayOverlap": true,
+      "bidirectional": true,
+      "bothArcsPositionAndLength": true,
+      "interruptedChanges": true,
+      "downloadDuringMotion": true,
+      "cachedDownloadDuringMotion": true,
+      "animationResumesAfterDownload": true,
+      "reducedMotion": true
+    },
+    {
+      "browser": "firefox",
+      "widths": [
+        1280,
+        320
+      ],
+      "sunIconsFollowEndpoints": true,
+      "sunBarSeparation": true,
+      "concaveEnds": true,
+      "noRayOverlap": true,
+      "bidirectional": true,
+      "bothArcsPositionAndLength": true,
+      "interruptedChanges": true,
+      "downloadDuringMotion": true,
+      "cachedDownloadDuringMotion": true,
+      "animationResumesAfterDownload": true,
+      "reducedMotion": true
+    }
+  ],
+  "titleLayoutUpdate": {
+    "change": "Reduced desktop title size by approximately 4% so all locations fit on one line. Mobile retains natural wrapping.",
+    "checkedWidths": [
+      1280,
+      1024,
+      768,
+      390,
+      360,
+      320
+    ],
+    "widestTitle": {
+      "city": "Prince Rupert",
+      "contentWidth": 952,
+      "textWidth": 945.75,
+      "fontSize": 69.972
+    },
+    "pngRegenerated": true
+  },
+  "panelThemeUpdate": {
+    "boundary": "Trade-off row through the footer",
+    "background": "#ffd394",
+    "primary": "#11283b",
+    "secondary": "#263c51",
+    "fullWidth": true,
+    "upperGradientEndsAtBoundary": true,
+    "upperPanelShadow": true
+  },
+  "exportGeometryMeasurement": "Each SVG arc is measured in its own stroke-inclusive bounds, excluding nearby blue-grey readout text.",
+  "sunEndpointUpdate": {
+    "style": "Tapered sun rays with the three bar-facing rays omitted",
+    "scale": 1.1,
+    "centerMarksExactTime": true,
+    "concaveEndRadius": 3.35,
+    "sunDiskGap": 0.93,
+    "dialRadius": 46,
+    "previousArcRadius": 37,
+    "dialEnlargement": "15%"
+  },
+  "legendPosition": "Below the complete chart, including the event times and caption, above the yellow section",
+  "sliderFocusChecks": [
+    {
+      "browser": "chromium",
+      "pointerNoBorder": true,
+      "dragNoBorder": true,
+      "keyboardThumbRing": true,
+      "arrowKeysWork": true,
+      "touchChecked": true
+    },
+    {
+      "browser": "webkit",
+      "pointerNoBorder": true,
+      "dragNoBorder": true,
+      "keyboardThumbRing": true,
+      "arrowKeysWork": true,
+      "touchChecked": true
+    },
+    {
+      "browser": "firefox",
+      "pointerNoBorder": true,
+      "dragNoBorder": true,
+      "keyboardThumbRing": true,
+      "arrowKeysWork": true,
+      "touchChecked": false
+    }
+  ],
+  "legendLabels": {
+    "yellow": "Daylight under new winter clocks",
+    "blue": "Under previous winter clocks"
+  },
+  "galleryIntegration": {
+    "url": "https://rhp.vercel.app/gallery/real-posters/winter-daylight/",
+    "posterNumber": 7,
+    "productionBuildPassed": true,
+    "packagedApiChecksPassed": true,
+    "checks": [
+      {
+        "width": 1280,
+        "galleryColumns": 2,
+        "posterNumber": 7,
+        "thumbnailLoaded": true,
+        "toolbarAligned": true,
+        "controlsPreserved": true,
+        "stableFit": true,
+        "refreshPreservesVisitor": true,
+        "pngChecked": true
+      },
+      {
+        "width": 390,
+        "galleryColumns": 1,
+        "posterNumber": 7,
+        "thumbnailLoaded": true,
+        "toolbarAligned": true,
+        "controlsPreserved": true,
+        "stableFit": true,
+        "refreshPreservesVisitor": true,
+        "pngChecked": false
+      },
+      {
+        "width": 320,
+        "galleryColumns": 1,
+        "posterNumber": 7,
+        "thumbnailLoaded": true,
+        "toolbarAligned": true,
+        "controlsPreserved": true,
+        "stableFit": true,
+        "refreshPreservesVisitor": true,
+        "pngChecked": true
+      }
+    ]
+  }
+}

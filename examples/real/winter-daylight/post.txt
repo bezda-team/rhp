@@ -1,0 +1,27 @@
+TITLE
+[OC] Vancouver's later winter sunset leaves 16 minutes of sun after 5 p.m., with a 9:05 a.m. sunrise on the solstice
+
+BODY
+British Columbia is keeping summer time this winter instead of turning clocks back on November 1. In Vancouver, that puts sunrise at 9:05 a.m. and sunset at 5:16 p.m. on December 21, 2026. The previous winter clock setting would label the same events 8:05 a.m. and 4:16 p.m.
+
+The day still contains about 8 hours 11 minutes of daylight. The clock moves an hour, but that does not necessarily mean an extra hour of sun after work. For someone finishing at 5 p.m., Vancouver's solstice sunset leaves 16 minutes before the Sun goes down, compared with none under the previous setting.
+
+Sunrise also isn't the start of all morning light. Civil dawn begins at 8:27 a.m., and twilight continues after sunset. The poster's after-work comparison excludes twilight, clouds and mountain shadows. It describes this particular day, not the whole winter or the policy's health effects.
+
+Sources:
+Vancouver sun calculations, December 2026: https://www.timeanddate.com/sun/canada/vancouver?month=12&year=2026
+B.C.'s official explanation of the change: https://www2.gov.bc.ca/gov/content/governments/celebrating-british-columbia/daylight-saving-time
+What civil twilight means: https://www.timeanddate.com/astronomy/different-types-twilight.html
+
+FIRST TOP-LEVEL COMMENT FOR R/DATAISBEAUTIFUL
+Data: Timeanddate's astronomical calculations for Vancouver on December 21, 2026:
+https://www.timeanddate.com/sun/canada/vancouver?month=12&year=2026
+
+Time-zone policy: Government of British Columbia:
+https://www2.gov.bc.ca/gov/content/governments/celebrating-british-columbia/daylight-saving-time
+
+Tools: JavaScript for the calculations; RHP (https://rhp.vercel.app/), HTML, CSS and SVG for the visualization; modern-screenshot for PNG export.
+
+Method: The source table already reflects UTC-7. I subtracted 60 minutes to show how the same day's sunrise and sunset would be labeled under the previous UTC-8 winter setting. The arcs use a 24-hour clock, with noon at the top. They compare clock settings on the same date, rather than two different years. Daylight duration and minutes remaining after 5 p.m. are calculated from the table's minute-rounded times.
+
+These are astronomical predictions for an unobstructed horizon. Sunrise is distinct from civil dawn, twilight continues after sunset, and the winter solstice is not necessarily the date of the latest sunrise or earliest sunset.

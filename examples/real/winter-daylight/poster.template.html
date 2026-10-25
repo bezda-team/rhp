@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B.C.'s first winter without changing the clocks</title>
+<meta name="description" content="The winter daylight trade-off in six British Columbia cities: sunrise and sunset on December 21, 2026, under permanent UTC-7 versus the previous winter's UTC-8 clock setting.">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.0.5/dist/standalone.js"}}</script>
+<style>
+__FONTS__
+:root {
+  color-scheme: dark;
+  --page: #263c51; --paper: #11283b; --ink: #f5efdf; --soft: #c5d1da;
+  --accent: #ffd394; --previous: #aec8dd; --rule: #3b5267;
+  --display: 'DM Serif Display', Georgia, serif;
+  --text: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px 20px 72px; background: var(--page); color: var(--ink); font: 16px/1.55 var(--text); }
+button, input, select { font: inherit; }
+.poster {
+  --poster-pad-top: 52px; --poster-pad-side: 64px; --poster-pad-bottom: 36px;
+  --sunlight: var(--accent);
+  position: relative; isolation: isolate; container-type: inline-size;
+  width: 100%; max-width: 1080px; min-height: 1440px; margin: 0 auto;
+  padding: var(--poster-pad-top) var(--poster-pad-side) var(--poster-pad-bottom);
+  overflow: hidden; background: var(--sunlight); color: var(--ink);
+  display: flex; flex-direction: column;
+}
+.poster-upper {
+  position: relative; z-index: 1;
+  margin: calc(-1 * var(--poster-pad-top)) calc(-1 * var(--poster-pad-side)) 0;
+  padding: var(--poster-pad-top) var(--poster-pad-side) 0;
+  background: var(--paper);
+  background-image: radial-gradient(ellipse at 70% 89%, rgb(193 121 63 / .12), transparent 54%), linear-gradient(155deg, #11283b 28%, #1d3444);
+  box-shadow: 0 14px 22px -9px rgb(8 20 32 / .55);
+  display: flex; flex-direction: column;
+}
+.poster-lower {
+  --ink: var(--paper); --soft: var(--page); --accent: var(--paper); --rule: rgb(17 40 59 / .28);
+  position: relative; z-index: 0; flex: 1; color-scheme: light;
+  margin: 0 calc(-1 * var(--poster-pad-side)) calc(-1 * var(--poster-pad-bottom));
+  padding: 0 var(--poster-pad-side) var(--poster-pad-bottom);
+  background: var(--sunlight); color: var(--ink);
+  display: flex; flex-direction: column;
+}
+.poster-heading { margin: 0 0 26px; }
+.eyebrow { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 15px; line-height: 1.3; letter-spacing: .13em; text-transform: uppercase; color: var(--soft); }
+.eyebrow b { flex: 0 0 36%; color: var(--accent); font-weight: 700; }
+.headline { margin: 22px 0 20px; font: 400 clamp(31px, 7.35cqi, 78px)/1.05 var(--display); letter-spacing: -.025em; white-space: nowrap; }
+.headline em { font-style: normal; color: var(--accent); white-space: nowrap; display: inline-flex; align-items: baseline; }
+.headline .headline-number { display: inline-block; font-variant-numeric: tabular-nums; }
+.headline em small { font-size: .6em; margin-left: .12em; }
+.dek { max-width: 59ch; margin: 0; color: var(--soft); font-size: clamp(15px, 2.65cqi, 26px); line-height: 1.45; }
+.location-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 9px 0 16px; }
+.location-control { display: flex; align-items: center; gap: 12px; font-size: 17px; color: var(--soft); }
+.location-control select { min-height: 44px; padding: 5px 32px 5px 0; border: 0; border-bottom: 1px solid #70889b; border-radius: 0; background: transparent; color: var(--ink); font-size: 21px; font-weight: 700; cursor: pointer; }
+.location-control option { background: var(--paper); }
+.plot-date { font-size: 16px; color: var(--soft); }
+.key { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 28px; margin: 0 0 32px; padding: 16px 0 0; border-top: 1px solid var(--rule); font-size: 24px; color: var(--soft); }
+.key span { display: inline-flex; align-items: center; gap: 10px; }
+.key i { display: inline-block; width: 24px; height: 9px; background: var(--accent); }
+.key .old { background: repeating-linear-gradient(90deg, var(--previous) 0 6px, transparent 6px 10px); height: 6px; }
+.stage { position: relative; width: 100%; margin: 42px auto 32px; }
+.dial { width: 100%; }
+.dial-background { position: absolute; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; }
+.dial-background .track { fill: none; stroke: #42586a; stroke-width: .4; }
+.dial-background .hour-tick { stroke: #8096a7; stroke-width: .3; }
+.dial-background .major-tick { stroke: #aec0cd; stroke-width: .4; }
+.clock-label { position: absolute; font-size: clamp(11px, 2.4cqi, 24px); color: var(--soft); white-space: nowrap; line-height: 1; pointer-events: none; }
+.clock-label.noon { top: 0; left: 50%; translate: -50% 0; }
+.clock-label.morning { bottom: 0; left: 0; }
+.clock-label.evening { bottom: 0; right: 0; }
+.sun-events { display: flex; justify-content: space-between; gap: 20px; margin-top: 26px; }
+.sun-event { width: 42%; pointer-events: none; }
+.sun-event.set { text-align: right; }
+.sun-event .event-name { display: block; margin-bottom: 4px; font-size: clamp(11px, 2.2cqi, 22px); letter-spacing: .09em; text-transform: uppercase; color: var(--soft); }
+.sun-event strong { display: block; font: 400 clamp(23px, 4.9cqi, 50px)/1.12 var(--display); color: var(--accent); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sun-event strong small { font: 600 .34em var(--text); margin-left: .25em; }
+.sun-event .was { display: block; margin-top: 5px; color: var(--previous); font-size: clamp(11px, 2.4cqi, 24px); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dial-center { position: absolute; left: 28%; right: 28%; top: 62%; text-align: center; pointer-events: none; }
+.dial-center .duration { display: block; font: 400 clamp(24px, 5.3cqi, 54px)/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.dial-center .duration small { font: 500 .44em var(--text); margin: 0 .15em 0 .03em; }
+.dial-center .same { display: block; margin-top: 8px; font-size: clamp(11px, 2.15cqi, 22px); line-height: 1.4; color: var(--soft); }
+.dial-caption { margin: 22px 0 0; text-align: center; font-size: clamp(11px, 1.6cqi, 16px); line-height: 1.4; color: var(--soft); }
+.dial-caption b { color: var(--ink); font-weight: 600; }
+.tradeoff { display: grid; grid-template-columns: 1fr 1fr; gap: 42px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+.tradeoff section { min-width: 0; }
+.tradeoff h2 { margin: 0 0 10px; font-size: 23px; line-height: 1.3; font-weight: 500; color: var(--soft); }
+.tradeoff .stat { display: block; margin: 0 0 9px; font: 400 clamp(31px, 4.8cqi, 49px)/1.06 var(--display); font-variant-numeric: tabular-nums; }
+.tradeoff .stat small { font: 500 .38em var(--text); }
+.tradeoff .after-work { color: var(--accent); }
+.tradeoff p { margin: 0; font-size: 21px; line-height: 1.45; color: var(--soft); }
+.finish-control { display: grid; grid-template-columns: auto minmax(90px, 1fr) auto; align-items: center; gap: 18px; margin: 20px 0 20px; font-size: 16px; color: var(--soft); }
+.finish-control label { white-space: nowrap; }
+.range-wrap { position: relative; display: block; height: 44px; min-width: 0; }
+.range-wrap:has(input:focus-visible) .range-thumb { outline: 2px solid var(--accent); outline-offset: 3px; }
+.range-track { position: absolute; left: 0; right: 0; top: 50%; height: 6px; margin-top: -3px; border: 1px solid #758b9b; border-radius: 8px; pointer-events: none; background: linear-gradient(to right, var(--accent) calc(var(--fraction) * 100%), #445565 0); }
+.poster-lower .range-track { border-color: rgb(17 40 59 / .5); background: linear-gradient(to right, var(--accent) calc(var(--fraction) * 100%), rgb(17 40 59 / .18) 0); }
+.range-thumb { position: absolute; left: calc(9px + (100% - 18px) * var(--fraction)); top: 50%; width: 18px; height: 18px; translate: -50% -50%; border-radius: 50%; background: var(--accent); pointer-events: none; }
+.finish-control input { position: absolute; inset: 0; display: block; width: 100%; height: 44px; margin: 0; opacity: 0; cursor: pointer; }
+.finish-control output { min-width: 5.8em; color: var(--ink); text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.poster-footer { margin-top: auto; }
+.context-note { margin: 0 0 18px; font-size: 19px; line-height: 1.5; color: var(--soft); }
+.source-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; color: var(--soft); font-size: 13px; line-height: 1.5; }
+.source-row p { margin: 0; max-width: 74ch; }
+.source-row .brand { flex-shrink: 0; font-size: 12px; letter-spacing: .1em; white-space: nowrap; }
+.below { width: min(1080px, 100%); margin: 42px auto 0; color: #ecf0f1; }
+.below details { border-top: 1px solid #748695; padding: 22px 0; }
+.below summary { cursor: pointer; font-weight: 700; font-size: 18px; }
+.below p { max-width: 76ch; }
+.below a { color: #ffe0ac; text-underline-offset: 3px; }
+.below table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+.below td, .below th { padding: 12px 14px 12px 0; text-align: left; border-bottom: 1px solid #63798a; }
+.table-scroll { overflow-x: auto; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+@media (max-width: 760px) {
+  body { padding: 20px 12px 44px; }
+  .poster { --poster-pad-top: 30px; --poster-pad-side: 26px; --poster-pad-bottom: 26px; min-height: 0; }
+  .eyebrow { font-size: 11px; letter-spacing: .08em; gap: 10px; min-height: 2.6em; align-items: flex-start; }
+  .headline { margin: 20px 0 18px; font-size: clamp(31px, 7.65cqi, 81px); white-space: normal; }
+  .poster-heading { margin-bottom: 20px; }
+  .location-control { gap: 8px; font-size: 13px; }
+  .location-control select { font-size: 16px; max-width: 185px; }
+  .plot-date { font-size: 12px; text-align: right; }
+  .key { font-size: 12px; gap: 10px 20px; padding-top: 15px; margin-bottom: 28px; }
+  .key span { gap: 8px; }
+  .key i { width: 20px; }
+  .stage { margin: 32px 0 24px; }
+  .sun-events { margin-top: 25px; }
+  .sun-event strong { font-size: clamp(25px, 5.3cqi, 40px); }
+  .sun-event strong small { font-size: 11px; }
+  .sun-event .was { font-size: 11px; }
+  .dial-center { left: 22%; right: 22%; }
+  .dial-center .duration { font-size: clamp(30px, 6cqi, 46px); }
+  .dial-center .same { margin-top: 5px; }
+  .dial-caption { margin-top: 18px; font-size: 11px; }
+  .tradeoff { gap: 22px; padding: 24px 0; }
+  .tradeoff h2 { font-size: 13px; }
+  .tradeoff p { font-size: 12px; }
+  .finish-control { gap: 10px; font-size: 12px; margin: 20px 0 24px; }
+  .context-note { font-size: 12px; }
+  .source-row { font-size: 11px; gap: 12px; flex-wrap: wrap; }
+  .source-row .brand { font-size: 10px; margin-left: auto; }
+  .below { font-size: 14px; }
+  .below table { font-size: 13px; }
+}
+@media (max-width: 390px) {
+  .poster { --poster-pad-top: 26px; --poster-pad-side: 20px; --poster-pad-bottom: 24px; }
+  .eyebrow { font-size: 10px; }
+  .location-control label { display: none; }
+  .location-control select { max-width: 154px; }
+  .sun-event strong { font-size: 25px; }
+  .sun-event .event-name { font-size: 11px; }
+  .dial-center { top: auto; bottom: 12px; }
+  .dial-center .duration { font-size: 29px; }
+  .tradeoff .after-work small { display: block; margin-top: 6px; font-size: 12px; }
+  .finish-control { grid-template-columns: auto 1fr; gap: 4px 10px; }
+  .finish-control .range-wrap { grid-row: 2; grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import {Chart, Plot, Bar, slat, html, render, createSignal, createMemo, animated, curve, onCleanup} from '@bezda/rhp/standalone';
+
+// The source already uses UTC-7. Subtract one hour only for the previous winter setting.
+const DATA = __DATA__;
+const minutes = value => value.split(':').slice(0, 2).reduce((sum, n, i) => sum + Number(n) * (i ? 1 : 60), 0);
+const clock = value => `${Math.floor(value / 60) % 12 || 12}:${String(value % 60).padStart(2, '0')}`;
+const meridiem = value => value >= 720 ? 'p.m.' : 'a.m.';
+const fullClock = value => `${clock(value)} ${meridiem(value)}`;
+const remaining = (rise, set, finish) => Math.max(0, set - Math.max(rise, finish));
+const dialRadius = 46, previousRadius = 37;
+const point = (hour, radius) => {
+  const angle = (hour - 12) / 24 * 2 * Math.PI;
+  return [radius * Math.sin(angle), -radius * Math.cos(angle)];
+};
+const xy = values => values.map(n => n.toFixed(4)).join(',');
+const sunRays = Array.from({length:12}, (_,index) => index)
+  .filter(index => point(index*2,1)[0] <= Math.cos(55*Math.PI/180))
+  .map(index => `M${xy(point(index*2-.28,2.8))}L${xy(point(index*2,index%2 ? 3.9 : 4.8))}L${xy(point(index*2+.28,2.8))}Z`).join('');
+const lineArc = (from, to, radius) => `M${xy(point(from, radius))}A${radius},${radius} 0 ${to - from > 12 ? 1 : 0} 1 ${xy(point(to, radius))}`;
+// Circular notches follow each sun while leaving its center at the exact event time.
+const sunNotchRadius = 3.35;
+const band = (from, to, inner, outer) => {
+  const offset = radius => Math.acos((dialRadius**2+radius**2-sunNotchRadius**2)/(2*dialRadius*radius))*12/Math.PI;
+  const outerOffset = offset(outer), innerOffset = offset(inner);
+  return `${lineArc(from+outerOffset,to-outerOffset,outer)}A${sunNotchRadius},${sunNotchRadius} 0 0 0 ${xy(point(to-innerOffset,inner))}A${inner},${inner} 0 ${to-from>12 ? 1 : 0} 0 ${xy(point(from+innerOffset,inner))}A${sunNotchRadius},${sunNotchRadius} 0 0 0 ${xy(point(from+outerOffset,outer))}Z`;
+};
+const THEME = {font:'var(--text)', ink:'var(--ink)', muted:'var(--soft)', grid:'var(--rule)', surface:'var(--paper)', series:['var(--accent)', 'var(--previous)']};
+const viewBox = '-54 -56 108 62';
+
+// Each row is one clock setting, drawn as a daylight arc in its real hours of the day.
+const Daylight = slat({
+  room: {},
+  css: `
+    .daylight { pointer-events: none; }
+    .arc { inset: 0; width: 100%; height: 100%; translate: none; background: none; }
+    .arc svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .new-band { fill: var(--rhp-color); }
+    .old-band { fill: none; stroke: var(--rhp-color); stroke-width: 2; stroke-dasharray: 1.1 .75; }
+    .sun-core { fill: var(--rhp-color); }
+    .sun-rays { fill: var(--rhp-color); }
+  `,
+}, d => html`
+  <div class="daylight" role="img" aria-label=${() => `${d.city}, ${d.name}: sunrise ${fullClock(Math.round(d.from * 60))}, sunset ${fullClock(Math.round(d.to * 60))}`}>
+    <${Bar} from=${() => d.from} to=${() => d.to} color=${() => d.color} class="arc">
+      <svg viewBox=${viewBox} aria-hidden="true">
+        <path class=${() => d.current ? 'new-band' : 'old-band'} d=${() => d.current ? band(d.from, d.to, dialRadius-2.2, dialRadius+2.2) : lineArc(d.from, d.to, previousRadius)} />
+        <g style=${() => ({display:d.current ? 'inline' : 'none'})}>
+          <g class="sun-endpoint sunrise" transform=${() => `translate(${xy(point(d.from,dialRadius))}) scale(1.1)`}>
+            <circle class="sun-core" r="2.2" />
+            <path class="sun-rays" d=${sunRays} transform=${() => `rotate(${(d.from-12)*15})`} />
+          </g>
+          <g class="sun-endpoint sunset" transform=${() => `translate(${xy(point(d.to,dialRadius))}) scale(1.1)`}>
+            <circle class="sun-core" r="2.2" />
+            <path class="sun-rays" d=${sunRays} transform=${() => `rotate(${(d.to-12)*15+180})`} />
+          </g>
+        </g>
+      </svg>
+    <//>
+  </div>`);
+
+function WinterDaylight() {
+  const [cityId, setCityId] = createSignal('vancouver');
+  const [finish, setFinish] = createSignal(17 * 60);
+  const city = () => DATA.cities.find(row => row.id === cityId());
+  const rise = () => minutes(city().sunrise), set = () => minutes(city().sunset);
+  const length = () => set() - rise();
+  const [motionVersion, setMotionVersion] = createSignal(0);
+  const daylightTimes = createMemo(() => {
+    motionVersion();
+    return animated(() => [rise()/60, set()/60], () => ({duration:600, ease:curve('ease-in-out')}));
+  });
+  const drawnTimes = () => daylightTimes()();
+  // Settle both arcs before the PNG utility clones the selected location.
+  const prepareDownload = event => {
+    const button = event.target.closest?.('.poster-download');
+    if (button && button.getAttribute('aria-disabled') !== 'true' && !button.hasAttribute('aria-busy')) setMotionVersion(version => version + 1);
+  };
+  document.addEventListener('click', prepareDownload, true);
+  onCleanup(() => document.removeEventListener('click', prepareDownload, true));
+  const settings = [{name:'Previous winter setting, UTC-8', current:false, color:'series-2'}, {name:'New winter setting, UTC-7', current:true, color:'series-1'}];
+  return html`
+    <figure class="poster" aria-labelledby="daylight-headline">
+      <div class="poster-upper">
+      <header class="poster-heading">
+        <div class="eyebrow"><b>${() => city().name}, B.C.</b><span>The first winter without clock changes</span></div>
+        <h1 class="headline" id="daylight-headline">Winter sunrise moves to <em><b class="headline-number" style="font-weight:400">${() => clock(rise())}</b><small>${() => meridiem(rise())}</small></em></h1>
+        <p class="dek">B.C. keeps summer time. Sunrise and sunset move one hour later by the clock; daylight does not increase.</p>
+      </header>
+      <div class="location-row">
+        <div class="location-control"><label for="daylight-location">Location</label>
+          <select id="daylight-location" aria-label="Location" value=${cityId} onChange=${e => setCityId(e.currentTarget.value)}>
+            ${DATA.cities.map(row => html`<option value=${row.id}>${row.name}</option>`)}
+          </select>
+        </div>
+        <span class="plot-date">21 December 2026</span>
+      </div>
+      <div class="stage">
+        <${Chart} class="dial" scale=${[0,24]} aspect=${108/62} ticks=${false} theme=${THEME} label="Daytime half of a 24-hour sun clock, from 6 a.m. to 6 p.m., comparing new and previous winter clock settings">
+          <svg class="dial-background" viewBox=${viewBox} aria-hidden="true">
+            <path class="track" d=${lineArc(6,18,dialRadius)} /><path class="track" d=${lineArc(6,18,previousRadius)} />
+            <path class="hour-tick" d=${Array.from({length:13}, (_,index) => index+6).filter(hour => hour % 6).map(hour => `M${xy(point(hour,dialRadius+4))}L${xy(point(hour,dialRadius+5))}`).join('')} />
+          </svg>
+          <${Plot} overlap=${true} rows=${settings} city=${() => city().name} from=${() => [drawnTimes()[0]-1,drawnTimes()[0]]} to=${() => [drawnTimes()[1]-1,drawnTimes()[1]]}>${Daylight}<//>
+          <span class="clock-label noon">Noon</span><span class="clock-label morning">6 a.m.</span><span class="clock-label evening">6 p.m.</span>
+          <div class="dial-center"><span class="duration">${() => Math.floor(length()/60)}<small>h</small>${() => length()%60}<small>min</small></span><span class="same">Daylight unchanged</span></div>
+        <//>
+        <div class="sun-events">
+          <div class="sun-event rise"><span class="event-name">Sunrise</span><strong>${() => clock(rise())}<small>a.m.</small></strong><span class="was">was ${() => clock(rise()-60)} a.m.</span></div>
+          <div class="sun-event set"><span class="event-name">Sunset</span><strong>${() => clock(set())}<small>p.m.</small></strong><span class="was">was ${() => clock(set()-60)} p.m.</span></div>
+        </div>
+        <p class="dial-caption">Daytime half of a 24-hour clock</p>
+      </div>
+      <div class="key" aria-label="Daylight under each winter clock setting"><span><i aria-hidden="true"></i>Daylight under new winter clocks</span><span><i class="old" aria-hidden="true"></i>Under previous winter clocks</span></div>
+      </div>
+      <div class="poster-lower">
+      <div class="tradeoff">
+        <section><h2>Light arrives before sunrise</h2><strong class="stat">${() => clock(minutes(city().civilDawn))}<small> a.m.</small></strong><p>Civil dawn begins, ${() => rise()-minutes(city().civilDawn)} minutes before sunrise.</p></section>
+        <section><h2>With a ${() => fullClock(finish())} finish</h2><strong class="stat after-work">${() => remaining(rise(),set(),finish())}<small> min of sun left</small></strong><p>Previously ${() => remaining(rise()-60,set()-60,finish())} min. Twilight is not counted.</p></section>
+      </div>
+      <div class="finish-control"><label for="finish-time">Change your finish time</label><span class="range-wrap" style=${() => ({'--fraction':(finish()-840)/300})}><i class="range-track" aria-hidden="true"></i><i class="range-thumb" aria-hidden="true"></i><input id="finish-time" type="range" min="840" max="1140" step="15" value=${finish} aria-valuetext=${() => fullClock(finish())} onInput=${e => setFinish(Number(e.currentTarget.value))}></span><output for="finish-time">${() => fullClock(finish())}</output></div>
+      <footer class="poster-footer">
+        <p class="context-note">B.C. skips the November 1 fall-back. Solstice calculations assume an unobstructed horizon; clouds and mountains can hide the Sun.</p>
+        <div class="source-row"><p>Sun calculations: Timeanddate, 21 Dec 2026. Time policy: Government of B.C.<br>Previous winter setting: one hour earlier. Times rounded to minutes.</p><span class="brand">BUILT WITH RHP</span></div>
+      </footer>
+      </div>
+    </figure>
+    <section class="below">
+      <details><summary>The numbers and their sources</summary>
+        <p>These six locations illustrate southern coast, interior and northern British Columbia. They are examples, not a population-weighted sample. The listed cities all adopt permanent UTC-7; some other B.C. communities follow different time practices.</p>
+        <div class="table-scroll"><table><thead><tr><th>21 Dec 2026</th><th>Civil dawn</th><th>Sunrise</th><th>Sunset</th><th>Source</th></tr></thead><tbody>
+          ${DATA.cities.map(row => html`<tr><th scope="row">${row.name}</th><td>${fullClock(minutes(row.civilDawn))}</td><td>${fullClock(minutes(row.sunrise))}</td><td>${fullClock(minutes(row.sunset))}</td><td><a href=${row.source}>Sun table</a></td></tr>`)}
+        </tbody></table></div>
+        <p>The source tables already reflect UTC-7. The previous winter setting is calculated by subtracting 60 minutes from the same day’s events, rather than comparing two different years. The displayed daylight duration is the difference between the source’s minute-rounded sunset and sunrise.</p>
+        <p>Civil dawn is the start of morning civil twilight, when the Sun’s centre is 6 degrees below the horizon. It is not the first detectable light: nautical and astronomical twilight begin earlier. Sunset is also followed by twilight. The finish-time control measures only the interval between your chosen time and sunset, assuming a flat, unobstructed horizon.</p>
+        <p>December 21 is the winter solstice, not necessarily the date of the latest sunrise or earliest sunset. This chart does not estimate health, traffic safety, electricity use or actual sunlight through cloud cover.</p>
+        <p><a href=${DATA.policySource}>B.C.’s official time change explanation</a> · <a href="https://www.timeanddate.com/astronomy/about-sun-calculator.html">How the sun calculations work</a></p>
+      </details>
+    </section>`;
+}
+
+render(() => html`<${WinterDaylight} />`, document.getElementById('chart'));
+</script>
+__DOWNLOAD__
+</body>
+</html>

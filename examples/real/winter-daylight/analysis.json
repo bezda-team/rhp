@@ -1,0 +1,71 @@
+{
+  "date": "2026-12-21",
+  "cities": [
+    {
+      "city": "Vancouver",
+      "sunrise": "9:05 a.m.",
+      "previousWinterSunrise": "8:05 a.m.",
+      "sunset": "5:16 p.m.",
+      "previousWinterSunset": "4:16 p.m.",
+      "civilDawn": "8:27 a.m.",
+      "daylightFromRoundedEndpointsMinutes": 491,
+      "sunAfter5pmMinutes": 16,
+      "previousWinterSunAfter5pmMinutes": 0
+    },
+    {
+      "city": "Victoria",
+      "sunrise": "9:02 a.m.",
+      "previousWinterSunrise": "8:02 a.m.",
+      "sunset": "5:20 p.m.",
+      "previousWinterSunset": "4:20 p.m.",
+      "civilDawn": "8:25 a.m.",
+      "daylightFromRoundedEndpointsMinutes": 498,
+      "sunAfter5pmMinutes": 20,
+      "previousWinterSunAfter5pmMinutes": 0
+    },
+    {
+      "city": "Kelowna",
+      "sunrise": "8:53 a.m.",
+      "previousWinterSunrise": "7:53 a.m.",
+      "sunset": "4:58 p.m.",
+      "previousWinterSunset": "3:58 p.m.",
+      "civilDawn": "8:15 a.m.",
+      "daylightFromRoundedEndpointsMinutes": 485,
+      "sunAfter5pmMinutes": 0,
+      "previousWinterSunAfter5pmMinutes": 0
+    },
+    {
+      "city": "Kamloops",
+      "sunrise": "9:00 a.m.",
+      "previousWinterSunrise": "8:00 a.m.",
+      "sunset": "4:58 p.m.",
+      "previousWinterSunset": "3:58 p.m.",
+      "civilDawn": "8:21 a.m.",
+      "daylightFromRoundedEndpointsMinutes": 478,
+      "sunAfter5pmMinutes": 0,
+      "previousWinterSunAfter5pmMinutes": 0
+    },
+    {
+      "city": "Prince George",
+      "sunrise": "9:27 a.m.",
+      "previousWinterSunrise": "8:27 a.m.",
+      "sunset": "4:50 p.m.",
+      "previousWinterSunset": "3:50 p.m.",
+      "civilDawn": "8:43 a.m.",
+      "daylightFromRoundedEndpointsMinutes": 443,
+      "sunAfter5pmMinutes": 0,
+      "previousWinterSunAfter5pmMinutes": 0
+    },
+    {
+      "city": "Prince Rupert",
+      "sunrise": "10:00 a.m.",
+      "previousWinterSunrise": "9:00 a.m.",
+      "sunset": "5:18 p.m.",
+      "previousWinterSunset": "4:18 p.m.",
+      "civilDawn": "9:15 a.m.",
+      "daylightFromRoundedEndpointsMinutes": 438,
+      "sunAfter5pmMinutes": 18,
+      "previousWinterSunAfter5pmMinutes": 0
+    }
+  ]
+}
