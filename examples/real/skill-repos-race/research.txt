@@ -1,0 +1,47 @@
+AUDIENCE INTEREST
+
+The request came from a post in r/claudeskills listing the top 10 fastest-growing Claude skill repos of September 2026 as a table in an image:
+https://www.reddit.com/r/claudeskills/comments/1wuc6so/top_10_fastestgrowing_claude_skill_repos/
+Reddit refused plain and API requests from this machine, and a headless browser was not used to get around that, so the post, its table and its comments were not inspected.
+The interest it shows is in which skill repos are growing fastest, as a ranking at one moment; the poster answers the follow-up question of how that ranking changed over the whole year since Agent Skills launched.
+Web searches found no Reddit threads on the race itself, only third-party rankings with conflicting star counts and dates (for example walma.ai, ayautomate.com, firecrawl.dev, githublb.vercel.app), which suggests demand for one consistent, sourced history.
+Observed October 25, 2026.
+
+WHICH REPOS
+
+Candidates: GitHub search on October 25, 2026, for every public repository created since September 1, 2025 with more than 20,000 stars, and for repositories above 5,000 stars with the topics claude-skills, agent-skills, claude-code-skills, skills, skill, claude-skill, agent-skill, codex-skills, claude-code-plugin or anthropic-skills, or with "skill" or "skills" in their name.
+That gave 396 repositories; 309 contain at least one SKILL.md file (checked in each repository's file tree).
+A SKILL.md file alone does not make a skill repo: agent apps, harnesses, MCP servers and command-line tools ship them too.
+The rule: a repo is tracked when its README presents it as a skill or a collection of skills for coding agents and it ships SKILL.md files.
+repos.json lists the 55 tracked repos, notes on the judgment calls among them, and 19 borderline repos left out with the reason for each.
+Judgment calls that matter for the top ten:
+- multica-ai/andrej-karpathy-skills (4th today) calls itself a single CLAUDE.md file, but it also ships the same guidelines as a skill and is named and widely listed as a skill repo: tracked.
+- affaan-m/ECC (3rd) calls itself an agent harness optimization system; its content is mostly skills (over 1,000 SKILL.md files): tracked.
+- garrytan/gstack (8th) is a Claude Code setup made of skills: tracked.
+- morluto/rea (383,000 stars, more than any skill repo) is an MCP server: left out.
+- Egonex-AI/Understand-Anything (88,000) presents itself as a plugin with a dashboard: left out.
+Change repos.json and rerun the scripts to test another rule.
+
+DATA
+
+GitHub's stargazer lists, which tools such as star-history.com used to rebuild daily star histories, are no longer available: the REST endpoint returns 404 and GraphQL returns an empty list, and repository pages now carry "canOpenStargazersAndWatchers": false.
+GH Archive's star events (WatchEvent) cover only a small and changing share of stars since mid-2025 (about 6 million a month across GitHub in 2024, under 100,000 in July and August 2026), so they cannot give totals.
+The history therefore comes from the GitHub pages the Internet Archive saved: each page shows the repository's exact star count (in the Star button's label until October 2026, then in the page's embedded JSON) and its repository id.
+wayback.mjs lists each repo's captures (under its current and former names), reads the capture nearest to every 14th day, and two days apart around the lead changes, and keeps a count only when the page's repository id matches.
+The last value of every repo is its live count from the GitHub API, read at the time in live.json.
+Before its first capture a repo is counted from zero at the later of its creation and the first day GH Archive recorded a star for it (a repository made public after it was created has no stars before).
+Between observations, the counts are straight-line estimates, one value a day.
+Counts are stars a repository had at the time: unstarring and stars GitHub removed lower them, and analyze.mjs lists every fall between captures.
+
+THE RACE
+
+A repo joins the race once it has 5,000 stars: the candidate search found every skill repo above 5,000 stars today, and a repo below 5,000 today was below it on every earlier day, so each day's ranking among repos past 5,000 is complete.
+So the race opens with no bars on launch day, anthropics/skills enters on October 19, and the field fills to ten on January 20, 2026.
+The leaders, lead changes and every number on the poster come from data.json, which analyze.mjs builds from the saved inputs.
+
+LIMITATIONS
+
+Days between captures are estimates; around the three lead changes captures are two days apart or closer.
+A lead change can therefore be off by a day or two.
+Stars are not users or installs, and some repos are known to attract bought or automated stars; the poster makes no claim about either.
+The count of 55 tracked repos depends on the inclusion rule in repos.json.

@@ -1,0 +1,280 @@
+{
+ "readAt": "2026-10-25T19:15:31Z",
+ "repos": {
+  "obra/superpowers": {
+   "id": "1073224795",
+   "created": "2025-10-09T19:45:18Z",
+   "stars": 304973
+  },
+  "mattpocock/skills": {
+   "id": "1148788086",
+   "created": "2026-02-03T11:15:53Z",
+   "stars": 303117
+  },
+  "affaan-m/ECC": {
+   "id": "1136590548",
+   "created": "2026-01-18T00:51:51Z",
+   "stars": 288707
+  },
+  "multica-ai/andrej-karpathy-skills": {
+   "id": "1142983825",
+   "created": "2026-01-27T03:53:13Z",
+   "stars": 223740
+  },
+  "anthropics/skills": {
+   "id": "1061953414",
+   "created": "2025-09-22T15:53:31Z",
+   "stars": 183722
+  },
+  "DietrichGebert/ponytail": {
+   "id": "1266797999",
+   "created": "2026-06-12T00:52:37Z",
+   "stars": 176067
+  },
+  "nextlevelbuilder/ui-ux-pro-max-skill": {
+   "id": "1106996539",
+   "created": "2025-11-30T11:36:31Z",
+   "stars": 140313
+  },
+  "garrytan/gstack": {
+   "id": "1179264259",
+   "created": "2026-03-11T21:22:45Z",
+   "stars": 137680
+  },
+  "JuliusBrussee/caveman": {
+   "id": "1201173969",
+   "created": "2026-04-04T10:03:00Z",
+   "stars": 115003
+  },
+  "addyosmani/agent-skills": {
+   "id": "1158722119",
+   "created": "2026-02-15T20:20:26Z",
+   "stars": 110448
+  },
+  "Leonxlnx/taste-skill": {
+   "id": "1162099055",
+   "created": "2026-02-19T21:44:05Z",
+   "stars": 102401
+  },
+  "tt-a1i/archify": {
+   "id": "1211139949",
+   "created": "2026-04-15T05:27:37Z",
+   "stars": 89107
+  },
+  "pbakaus/impeccable": {
+   "id": "1097346685",
+   "created": "2025-11-16T01:52:04Z",
+   "stars": 87468
+  },
+  "ComposioHQ/awesome-claude-skills": {
+   "id": "1078079172",
+   "created": "2025-10-17T07:15:01Z",
+   "stars": 77920
+  },
+  "hugohe3/ppt-master": {
+   "id": "1113573066",
+   "created": "2025-12-10T06:54:33Z",
+   "stars": 68065
+  },
+  "mvanhorn/last30days-skill": {
+   "id": "1140843380",
+   "created": "2026-01-23T20:37:37Z",
+   "stars": 65431
+  },
+  "cathrynlavery/diagram-design": {
+   "id": "1212769188",
+   "created": "2026-04-16T18:01:16Z",
+   "stars": 61005
+  },
+  "blader/humanizer": {
+   "id": "1136666433",
+   "created": "2026-01-18T05:30:15Z",
+   "stars": 60541
+  },
+  "ayghri/i-have-adhd": {
+   "id": "1238120057",
+   "created": "2026-05-13T20:42:06Z",
+   "stars": 58698
+  },
+  "coreyhaines31/marketingskills": {
+   "id": "1135212071",
+   "created": "2026-01-15T19:45:23Z",
+   "stars": 56492
+  },
+  "K-Dense-AI/scientific-agent-skills": {
+   "id": "1079456184",
+   "created": "2025-10-19T20:54:15Z",
+   "stars": 54560
+  },
+  "Imbad0202/academic-research-skills": {
+   "id": "1167300963",
+   "created": "2026-02-26T06:31:01Z",
+   "stars": 53848
+  },
+  "Yuan1z0825/nature-skills": {
+   "id": "1219596233",
+   "created": "2026-04-24T03:11:46Z",
+   "stars": 50571
+  },
+  "kepano/obsidian-skills": {
+   "id": "1126947080",
+   "created": "2026-01-02T21:45:11Z",
+   "stars": 50060
+  },
+  "emilkowalski/skills": {
+   "id": "1183325896",
+   "created": "2026-03-16T13:52:31Z",
+   "stars": 49588
+  },
+  "sickn33/agentic-awesome-skills": {
+   "id": "1134426800",
+   "created": "2026-01-14T17:48:09Z",
+   "stars": 48499
+  },
+  "cloudflare/security-audit-skill": {
+   "id": "1273427276",
+   "created": "2026-06-18T14:08:44Z",
+   "stars": 46507
+  },
+  "zhaoxuya520/reverse-skill": {
+   "id": "1237819660",
+   "created": "2026-05-13T14:37:57Z",
+   "stars": 43330
+  },
+  "virgiliojr94/book-to-skill": {
+   "id": "1226123343",
+   "created": "2026-05-01T02:09:39Z",
+   "stars": 36059
+  },
+  "alchaincyf/nuwa-skill": {
+   "id": "1201730379",
+   "created": "2026-04-05T04:33:04Z",
+   "stars": 35915
+  },
+  "mukul975/Anthropic-Cybersecurity-Skills": {
+   "id": "1166506614",
+   "created": "2026-02-25T09:47:50Z",
+   "stars": 35000
+  },
+  "Nutlope/hallmark": {
+   "id": "1222917575",
+   "created": "2026-04-27T20:47:10Z",
+   "stars": 33441
+  },
+  "vercel-labs/agent-skills": {
+   "id": "1112540808",
+   "created": "2025-12-08T19:10:06Z",
+   "stars": 33001
+  },
+  "zarazhangrui/frontend-slides": {
+   "id": "1143767804",
+   "created": "2026-01-28T00:42:34Z",
+   "stars": 31271
+  },
+  "alirezarezvani/claude-skills": {
+   "id": "1079084637",
+   "created": "2025-10-19T04:04:05Z",
+   "stars": 28710
+  },
+  "op7418/guizang-ppt-skill": {
+   "id": "1219042200",
+   "created": "2026-04-23T13:23:07Z",
+   "stars": 28630
+  },
+  "openai/skills": {
+   "id": "1103643573",
+   "created": "2025-11-25T06:25:42Z",
+   "stars": 28300
+  },
+  "OthmanAdi/planning-with-files": {
+   "id": "1127110039",
+   "created": "2026-01-03T07:37:28Z",
+   "stars": 27641
+  },
+  "phuryn/pm-skills": {
+   "id": "1170266927",
+   "created": "2026-03-01T23:33:44Z",
+   "stars": 27365
+  },
+  "JimLiu/baoyu-skills": {
+   "id": "1133207146",
+   "created": "2026-01-13T03:04:56Z",
+   "stars": 26948
+  },
+  "titanwings/distilly": {
+   "id": "1195828337",
+   "created": "2026-03-30T05:22:23Z",
+   "stars": 26004
+  },
+  "KKKKhazix/khazix-skills": {
+   "id": "1202599845",
+   "created": "2026-04-06T07:37:02Z",
+   "stars": 21654
+  },
+  "google/skills": {
+   "id": "1197652028",
+   "created": "2026-03-31T19:02:20Z",
+   "stars": 21567
+  },
+  "op7418/Humanizer-zh": {
+   "id": "1137212306",
+   "created": "2026-01-19T04:23:44Z",
+   "stars": 20857
+  },
+  "AgriciDaniel/claude-seo": {
+   "id": "1152014594",
+   "created": "2026-02-07T08:17:38Z",
+   "stars": 20613
+  },
+  "muratcankoylan/Agent-Skills-for-Context-Engineering": {
+   "id": "1120349776",
+   "created": "2025-12-21T02:43:42Z",
+   "stars": 18215
+  },
+  "wanshuiyin/Auto-claude-code-research-in-sleep": {
+   "id": "1177608268",
+   "created": "2026-03-10T07:31:45Z",
+   "stars": 18057
+  },
+  "greensock/gsap-skills": {
+   "id": "1172781277",
+   "created": "2026-03-04T17:22:35Z",
+   "stars": 17127
+  },
+  "nidhinjs/prompt-master": {
+   "id": "1179046874",
+   "created": "2026-03-11T16:25:43Z",
+   "stars": 15049
+  },
+  "Orchestra-Research/AI-Research-SKILLs": {
+   "id": "1088558237",
+   "created": "2025-11-03T06:13:06Z",
+   "stars": 13936
+  },
+  "Jeffallan/claude-skills": {
+   "id": "1080070047",
+   "created": "2025-10-20T20:27:22Z",
+   "stars": 12058
+  },
+  "huggingface/skills": {
+   "id": "1102903896",
+   "created": "2025-11-24T07:31:48Z",
+   "stars": 11211
+  },
+  "PleasePrompto/notebooklm-skill": {
+   "id": "1079107863",
+   "created": "2025-10-19T05:36:13Z",
+   "stars": 7788
+  },
+  "czlonkowski/n8n-skills": {
+   "id": "1079619168",
+   "created": "2025-10-20T05:51:27Z",
+   "stars": 6521
+  },
+  "SawyerHood/dev-browser": {
+   "id": "1108682714",
+   "created": "2025-12-02T19:20:20Z",
+   "stars": 6697
+  }
+ }
+}

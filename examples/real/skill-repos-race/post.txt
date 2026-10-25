@@ -1,0 +1,38 @@
+REDDIT POSTS
+
+Where: r/ClaudeAI or r/claudeskills (the community of the post that prompted this), as an image post with the PNG.
+The race itself is the interactive page; link it in the first comment. For a post with motion, save the race from the poster's download menu as an animated GIF (about 19 seconds, 5.6 MB) and post that instead of the PNG.
+For r/dataisbeautiful, use the [OC] title and the same first comment; check the current rules on animated and self-made data first.
+
+Title (r/ClaudeAI, r/claudeskills):
+A year of Claude skill repos on GitHub: Anthropic's own repo led for five months, obra/superpowers has led since April, and mattpocock/skills, 1,856 stars behind, is on pace to pass it this month
+
+Title (r/dataisbeautiful):
+[OC] The most-starred GitHub skill repos since Agent Skills launched, Oct 2025 to Oct 2026: obra/superpowers leads mattpocock/skills by 1,856 stars
+
+Image:
+skill-repos-race.png
+
+Body (for communities that take text with an image post):
+After the top-10 fastest-growing skill repos post, I wanted to see how the ranking moved over the whole year since Agent Skills launched on October 16, 2025.
+Each day shows the ten most-starred skill repos among those with 5,000 stars or more (every skill repo above that today is tracked, so each day's ranking is complete).
+anthropics/skills was the first to reach 5,000 stars, three days after launch, and led for five months; obra/superpowers passed it in March, affaan-m/ECC led for 20 days in April, and superpowers has led since.
+mattpocock/skills got its first stars in February and is now second, 1,856 stars behind; over the last 30 days it gained 33,550 stars to superpowers' 13,426, so at that pace it would take first place around October 28.
+Interactive version (press play, or drag through the year): <link to the interactive page>
+
+FIRST TOP-LEVEL COMMENT
+
+Data: star counts read from 734 copies of the repos' GitHub pages saved by the Internet Archive (each page shows the exact count and the repository id), plus GitHub's live counts on Oct 25, 2026.
+Between captures the counts are straight-line estimates; around the lead changes the captures are two days apart or closer, so a lead change can be off by a day or two.
+Why not star-history: GitHub no longer lists who starred a repo (the stargazers API returns nothing), which is what tools like star-history used to rebuild daily histories, and GH Archive now records only a small share of stars.
+Which repos count: repos that present themselves as skills and ship SKILL.md files; apps, agents, MCP servers, plugins and link lists are left out even when they ship a SKILL.md.
+Judgment calls: andrej-karpathy-skills is in (named and shipped as a skill, though its README calls it a CLAUDE.md file), ECC and gstack are in (mostly skills), and morluto/rea (an MCP server, more stars than any skill repo) is out. The full list, with reasons for 19 borderline exclusions, is in repos.json.
+The week squares are GitHub's contribution-graph colors for the stars all 55 tracked repos gained each week (3,714,392 since launch).
+Stars are not users or installs.
+Tools: JavaScript for collection and checks, rhp (@bezda/rhp) for the chart, Mona Sans and GitHub's Primer colors for the look.
+Source files: <link to this folder>
+
+POSTING NOTES
+
+The counts were read on Oct 25, 2026 at 19:15 UTC; the gap at the top changes by the hour, so collect again before posting if more than a day passes (README, "To collect again").
+The October 28 date is a projection from the last 30 days' pace, not a measurement: say "at that pace" whenever you repeat it. On the Sunday afternoon of the read, the gap closed more slowly (about 290 stars a day), which would put the pass around October 31 to November 1.

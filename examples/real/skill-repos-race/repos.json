@@ -1,0 +1,271 @@
+{
+ "rule": "A repo is tracked when its README presents it as a skill or a collection of skills for coding agents and it ships SKILL.md files. Apps, agents, harnesses, MCP servers, command-line tools, plugins presented as plugins, and link lists without skills are left out, even when they ship a SKILL.md. Candidates: every public repo created since September 2025 with more than 20,000 stars, and repos above 5,000 stars with a skills topic or 'skill' in their name, found with GitHub search on October 25, 2026.",
+ "tracked": [
+  {
+   "full": "obra/superpowers"
+  },
+  {
+   "full": "mattpocock/skills"
+  },
+  {
+   "full": "affaan-m/ECC",
+   "aliases": [
+    "affaan-m/everything-claude-code"
+   ],
+   "note": "Describes itself as an agent harness optimization system; its content is mostly skills (over 1,000 SKILL.md files), installed as a Claude Code plugin."
+  },
+  {
+   "full": "multica-ai/andrej-karpathy-skills",
+   "aliases": [
+    "forrestchang/andrej-karpathy-skills"
+   ],
+   "note": "Its README calls it a single CLAUDE.md file; it also ships the same guidelines as a skill (skills/karpathy-guidelines/SKILL.md) and is named and widely listed as a skill repo."
+  },
+  {
+   "full": "anthropics/skills"
+  },
+  {
+   "full": "DietrichGebert/ponytail"
+  },
+  {
+   "full": "nextlevelbuilder/ui-ux-pro-max-skill"
+  },
+  {
+   "full": "garrytan/gstack",
+   "note": "A Claude Code setup made of skills (65 SKILL.md files)."
+  },
+  {
+   "full": "JuliusBrussee/caveman"
+  },
+  {
+   "full": "addyosmani/agent-skills"
+  },
+  {
+   "full": "Leonxlnx/taste-skill"
+  },
+  {
+   "full": "tt-a1i/archify"
+  },
+  {
+   "full": "pbakaus/impeccable"
+  },
+  {
+   "full": "ComposioHQ/awesome-claude-skills",
+   "note": "A curated list that also contains the skills themselves (over 800 SKILL.md files), unlike link-only lists."
+  },
+  {
+   "full": "hugohe3/ppt-master"
+  },
+  {
+   "full": "mvanhorn/last30days-skill"
+  },
+  {
+   "full": "cathrynlavery/diagram-design"
+  },
+  {
+   "full": "blader/humanizer"
+  },
+  {
+   "full": "ayghri/i-have-adhd"
+  },
+  {
+   "full": "coreyhaines31/marketingskills"
+  },
+  {
+   "full": "K-Dense-AI/scientific-agent-skills",
+   "aliases": [
+    "K-Dense-AI/claude-scientific-skills"
+   ]
+  },
+  {
+   "full": "Imbad0202/academic-research-skills"
+  },
+  {
+   "full": "Yuan1z0825/nature-skills",
+   "aliases": [
+    "Yuan1z0825/nature-polishing"
+   ]
+  },
+  {
+   "full": "kepano/obsidian-skills"
+  },
+  {
+   "full": "emilkowalski/skills"
+  },
+  {
+   "full": "sickn33/agentic-awesome-skills",
+   "aliases": [
+    "sickn33/antigravity-awesome-skills"
+   ]
+  },
+  {
+   "full": "cloudflare/security-audit-skill"
+  },
+  {
+   "full": "zhaoxuya520/reverse-skill"
+  },
+  {
+   "full": "virgiliojr94/book-to-skill"
+  },
+  {
+   "full": "alchaincyf/nuwa-skill"
+  },
+  {
+   "full": "mukul975/Anthropic-Cybersecurity-Skills"
+  },
+  {
+   "full": "Nutlope/hallmark"
+  },
+  {
+   "full": "vercel-labs/agent-skills",
+   "aliases": [
+    "vercel-labs/claude-skills"
+   ]
+  },
+  {
+   "full": "zarazhangrui/frontend-slides"
+  },
+  {
+   "full": "alirezarezvani/claude-skills"
+  },
+  {
+   "full": "op7418/guizang-ppt-skill"
+  },
+  {
+   "full": "openai/skills",
+   "note": "Written for Codex, in the same Agent Skills format that Claude Code reads."
+  },
+  {
+   "full": "OthmanAdi/planning-with-files"
+  },
+  {
+   "full": "phuryn/pm-skills"
+  },
+  {
+   "full": "JimLiu/baoyu-skills"
+  },
+  {
+   "full": "titanwings/distilly"
+  },
+  {
+   "full": "KKKKhazix/khazix-skills"
+  },
+  {
+   "full": "google/skills"
+  },
+  {
+   "full": "op7418/Humanizer-zh"
+  },
+  {
+   "full": "AgriciDaniel/claude-seo"
+  },
+  {
+   "full": "muratcankoylan/Agent-Skills-for-Context-Engineering"
+  },
+  {
+   "full": "wanshuiyin/Auto-claude-code-research-in-sleep"
+  },
+  {
+   "full": "greensock/gsap-skills"
+  },
+  {
+   "full": "nidhinjs/prompt-master"
+  },
+  {
+   "full": "Orchestra-Research/AI-Research-SKILLs"
+  },
+  {
+   "full": "Jeffallan/claude-skills"
+  },
+  {
+   "full": "huggingface/skills"
+  },
+  {
+   "full": "PleasePrompto/notebooklm-skill"
+  },
+  {
+   "full": "czlonkowski/n8n-skills"
+  },
+  {
+   "full": "SawyerHood/dev-browser"
+  }
+ ],
+ "excluded": [
+  {
+   "full": "morluto/rea",
+   "reason": "An MCP server for reverse engineering, not a skill repo (it ships a few SKILL.md files)."
+  },
+  {
+   "full": "openclaw/openclaw",
+   "reason": "An agent app."
+  },
+  {
+   "full": "deepseek-ai/deepseek-harness",
+   "reason": "An agent harness."
+  },
+  {
+   "full": "ultraworkers/claw-code",
+   "reason": "An agent."
+  },
+  {
+   "full": "Graphify-Labs/graphify",
+   "reason": "A codebase knowledge-graph tool."
+  },
+  {
+   "full": "Egonex-AI/Understand-Anything",
+   "reason": "Presents itself as a Claude Code plugin with a multi-agent pipeline and a dashboard, not as skills."
+  },
+  {
+   "full": "Panniantong/Agent-Reach",
+   "reason": "A command-line tool that gives agents web access."
+  },
+  {
+   "full": "thedotmack/claude-mem",
+   "reason": "A memory plugin."
+  },
+  {
+   "full": "paperclipai/paperclip",
+   "reason": "An app for managing agents."
+  },
+  {
+   "full": "wshobson/agents",
+   "reason": "A plugin marketplace of agents, commands and skills, presented as plugins."
+  },
+  {
+   "full": "EveryInc/compound-engineering-plugin",
+   "reason": "Presented as a plugin."
+  },
+  {
+   "full": "anthropics/knowledge-work-plugins",
+   "reason": "Presented as plugins."
+  },
+  {
+   "full": "anthropics/claude-plugins-official",
+   "reason": "A plugin directory."
+  },
+  {
+   "full": "vercel-labs/skills",
+   "reason": "The npx skills installer tool."
+  },
+  {
+   "full": "travisvn/awesome-claude-skills",
+   "reason": "A link list with no skills in it (no SKILL.md files)."
+  },
+  {
+   "full": "VoltAgent/awesome-agent-skills",
+   "reason": "A link list with no skills in it (no SKILL.md files)."
+  },
+  {
+   "full": "hesreallyhim/awesome-claude-code",
+   "reason": "A link list of Claude Code resources (no SKILL.md files)."
+  },
+  {
+   "full": "yusufkaraaslan/Skill_Seekers",
+   "reason": "A tool that converts documentation into skills."
+  },
+  {
+   "full": "NVIDIA/SkillSpector",
+   "reason": "A security scanner for skills."
+  }
+ ]
+}

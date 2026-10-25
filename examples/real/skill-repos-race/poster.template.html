@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Claude skill repo race</title>
+<meta name="description" content="A bar chart race of the most-starred Claude skill repositories on GitHub, every day from the launch of Agent Skills on October 16, 2025 to October 25, 2026, with a weekly star graph that plays and scrubs the year.">
+<script type="importmap">{"imports":{"@bezda/rhp/standalone":"https://cdn.jsdelivr.net/npm/@bezda/rhp@2.1.0/dist/standalone.js"}}</script>
+<style>
+__FONTS__
+/* GitHub's dark default theme, from Primer's tokens: the canvas, its borders, text and link colors, the starred star's
+   gold, and the contribution graph's greens */
+:root { color-scheme: dark; --canvas: #0d1117; --canvas-muted: #151b23; --page: #010409; --fg: #f0f6fc; --muted: #9198a1;
+  --border: #3d444d; --border-muted: #3d444db3; --link: #4493f8; --topic-bg: #121d2f; --disabled: #656c76;
+  --btn: #212830; --btn-hover: #262c36; --label-gold: #bb800926; --label-gold-edge: #bb800966; --star: #e3b341;
+  --attention: #d29922; --bar: #1d232b; --bar-edge: #656c76;
+  --g0: #151b23; --g1: #033a16; --g2: #196c2e; --g3: #2ea043; --g4: #56d364; --g-edge: #0104090d;
+  --text: "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px 16px; background: var(--page); color: var(--fg); font: 16px/1.5 var(--text); }
+/* The poster is a GitHub Box: a bordered canvas with a muted header row */
+.poster { max-width: 1080px; margin: 0 auto; padding: 0 44px 22px; background: var(--canvas); border: 1px solid var(--border); border-radius: 12px; overflow: clip; }
+.poster figcaption { display: grid; gap: 14px; margin: 0 0 16px; }
+.poster .kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 -44px 10px; padding: 14px 44px; background: var(--canvas-muted); border-bottom: 1px solid var(--border); font-size: 15px; color: var(--muted); }
+.topic { padding: 2px 11px; border-radius: 2em; background: var(--topic-bg); color: var(--link); font-size: 14px; font-weight: 600; line-height: 22px; }
+/* The headline is a README's h1: semibold, with its rule under it */
+.poster .headline { padding-bottom: 12px; border-bottom: 1px solid var(--border-muted); font: 600 50px/1.15 var(--text); letter-spacing: -.01em; text-wrap: balance; }
+.poster .headline a { color: var(--link); text-decoration: none; }
+.poster .dek { max-width: 92ch; font-size: 19px; line-height: 1.5; color: var(--fg); }
+.poster .dek b { font-weight: 600; }
+.repo-link { color: var(--link); font-weight: 600; text-decoration: none; }
+.repo-link:hover { font-weight: 700; }
+.repo-link:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 3px; }
+/* The race: on a desktop the readout above the chart and the week graph under it; on a phone the two ride together
+   above the chart, in a dock that stays at the top of the screen while the chart scrolls under it */
+.race { display: grid; grid-template-areas: "readout" "stage" "timeline"; }
+.dock { display: contents; }
+.readout { grid-area: readout; height: 28px; margin: 0 0 6px; overflow: hidden; font-size: 17px; line-height: 28px; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
+.readout b { color: var(--fg); font-weight: 600; }
+.stage { grid-area: stage; position: relative; --slat: 60px; --inset: 19px; }
+/* The date, large in the empty place under the shortest bars, as the race plays */
+.when { position: absolute; right: 0; bottom: 34px; z-index: 2; padding: 0 0 0 12px; background: var(--canvas); font: 600 62px/1 var(--text); letter-spacing: -.02em; color: var(--disabled); pointer-events: none; }
+.stage .rhp-chart { position: relative; z-index: 1; }
+.tick { font-variant-numeric: proportional-nums; }
+/* The year as GitHub's contribution graph: one square a week, colored by the stars every tracked repo gained that
+   week, filled up to the date shown, with the graph's own heading counting the stars; the native slider over the
+   squares scrubs the year */
+.timeline { grid-area: timeline; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "count play" "graph graph"; align-items: center; gap: 10px 18px; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--border); }
+.count { grid-area: count; margin: 0; font-size: 18px; font-weight: 400; color: var(--fg); }
+.play { grid-area: play; display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 104px; height: 40px; padding: 0 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--btn); color: var(--fg); font: 600 15px/1 var(--text); cursor: pointer; }
+.play svg { width: 16px; height: 16px; fill: currentColor; }
+.play:hover { background: var(--btn-hover); }
+.play:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
+.graph { grid-area: graph; position: relative; min-width: 0; }
+.months { position: relative; height: 18px; font-size: 13px; color: var(--fg); }
+.months span { position: absolute; top: 0; }
+/* Who was first, as GitHub labels across the days they led: a starred repo's label in attention gold */
+.leads { position: relative; height: 24px; margin-bottom: 6px; }
+.leads span { position: absolute; top: 0; height: 22px; padding: 0 9px; overflow: hidden; border: 1px solid var(--border); border-radius: 2em; font-size: 12.5px; font-weight: 500; line-height: 20px; white-space: nowrap; color: var(--muted); opacity: .45; }
+.leads span.lit { border-color: var(--label-gold-edge); background: var(--label-gold); color: var(--attention); }
+.leads span.on { opacity: 1; }
+.leads span.bare { padding: 0; }
+.weeks { display: grid; grid-template-columns: repeat(var(--weeks), minmax(0, 1fr)); gap: 3px; }
+.weeks i { aspect-ratio: 1; border-radius: 2px; background: var(--g0); box-shadow: inset 0 0 0 1px var(--g-edge); }
+.weeks i[data-l="1"].on { background: var(--g1); }
+.weeks i[data-l="2"].on { background: var(--g2); }
+.weeks i[data-l="3"].on { background: var(--g3); }
+.weeks i[data-l="4"].on { background: var(--g4); }
+.weeks i.now { outline: 2px solid var(--fg); outline-offset: 2px; }
+.scrub { position: absolute; left: 0; top: 48px; width: var(--span); height: 30px; margin: -8px 0 0; opacity: 0; cursor: pointer; appearance: none; -webkit-appearance: none; touch-action: pan-y; }
+.scrub::-webkit-slider-thumb { width: 1px; height: 30px; -webkit-appearance: none; }
+.scrub::-moz-range-thumb { width: 1px; height: 30px; border: 0; }
+.graph:has(.scrub:focus-visible) .weeks { outline: 2px solid var(--link); outline-offset: 5px; border-radius: 3px; }
+.under { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 18px; margin-top: 8px; font-size: 13px; color: var(--muted); }
+.legend { display: inline-flex; align-items: center; gap: 3px; }
+.legend i { width: 12px; height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px var(--g-edge); }
+.legend span { margin: 0 4px; }
+.poster .note { display: block; margin: 18px -44px -22px; padding: 14px 44px 16px; border-top: 1px solid var(--border); background: var(--canvas-muted); font-size: 13px; line-height: 1.5; color: var(--muted); }
+.poster .note b { color: var(--fg); font-weight: 600; }
+@media (min-width: 641px) and (max-width: 999px) {
+  .readout { height: auto; min-height: 2lh; line-height: 26px; white-space: normal; }
+}
+@media (max-width: 640px) {
+  body { padding: 16px 12px 28px; }
+  .poster { padding: 0 16px 16px; border-radius: 6px; }
+  .poster figcaption { gap: 12px; margin-bottom: 12px; }
+  .poster .kicker { margin: 0 -16px 4px; padding: 10px 16px; font-size: 13px; gap: 6px 10px; }
+  .topic { font-size: 12px; padding: 0 9px; }
+  .poster .headline { padding-bottom: 8px; font-size: clamp(26px, 7.6vw, 38px); }
+  .poster .dek { font-size: 15.5px; }
+  .race { display: flex; flex-direction: column; }
+  .stage { --slat: 46px; --inset: 15px; }
+  .when { font-size: 34px; bottom: 28px; }
+  .dock { display: block; order: -1; position: sticky; top: 0; z-index: 3; margin: 0 -16px 6px; padding: 8px 16px 10px; background: var(--canvas); border-bottom: 1px solid var(--border); }
+  .readout { height: auto; min-height: 3lh; margin: 0 0 6px; font-size: 14px; line-height: 20px; white-space: normal; }
+  .timeline { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "play graph"; gap: 0 12px; margin-top: 0; padding-top: 0; border-top: 0; }
+  .count { display: none; }
+  /* On a phone Play is its icon, and the week graph takes the width */
+  .play { width: 44px; min-width: 0; height: 44px; padding: 0; }
+  .play .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .months { height: 15px; font-size: 11px; }
+  .months .alt { display: none; }
+  .leads { display: none; }
+  .scrub { top: 15px; }
+  .weeks { gap: 1px; }
+  .weeks i { border-radius: 1px; }
+  .weeks i.now { outline-offset: 1px; }
+  .under { display: none; }
+  .poster .note { margin: 14px -16px -16px; padding: 12px 16px 14px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, html, render, createSignal, createMemo, onMount, onCleanup } from "@bezda/rhp/standalone";
+
+// Data: daily stars of every repo that was ever among each day's ten most-starred skill repos past the entry bar, from
+// the launch of Agent Skills to the moment the live counts were read; each day's top ten; the stars of all tracked repos
+// together each day and each week; and who led when. analyze.mjs makes it from archived GitHub pages, GitHub's API and
+// GH Archive.
+const DATA = __DATA__;
+const N = 10;
+const REPOS = DATA.repos;
+const LAST = DATA.frames - 1;
+const START = Date.parse(DATA.start);
+const DAY = 86400e3;
+const RACE = DATA.top.map((ids) => new Set(ids));
+// First and second on the last day: the dek compares them, and they start starred
+const [FIRST, SECOND] = DATA.top[LAST].slice(0, 2).map((i) => REPOS[i]);
+const GAP = FIRST.stars[LAST] - SECOND.stars[LAST];
+// When the second would pass the first if both kept their pace of the last 30 days (none when it is not closing)
+const CLOSING = (SECOND.stars[LAST] - SECOND.stars[LAST - 30] - (FIRST.stars[LAST] - FIRST.stars[LAST - 30])) / 30;
+const PASS = CLOSING > 0 ? new Date(START + (LAST + GAP / CLOSING) * DAY) : null;
+// A repo's name as GitHub writes it, linked to the repo; it opens in a new tab
+const repoLink = (full) => html`<a class="repo-link" href=${`https://github.com/${full}`} target="_blank" rel="noopener">${full}</a>`;
+// Anthropic's own repo: its first run at the top
+const ANTHROPIC = DATA.leads.find((l) => l.full === "anthropics/skills");
+const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+const DAY_MS = 80; // how long a day takes while playing: the year in 30 seconds
+
+// Stars at t, a frame with a fraction: each repo's on the straight line between the days around t
+const starsAt = (t) => {
+  const k = Math.min(Math.floor(t), LAST - 1);
+  const f = t - k;
+  return REPOS.map((r) => r.stars[k] * (1 - f) + r.stars[k + 1] * f);
+};
+const count = new Intl.NumberFormat("en-US");
+const short = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 0 });
+const dateOf = (k) => new Date(START + Math.round(k) * DAY);
+const longDate = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+const monthYear = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+const month = new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" });
+const shortDate = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+
+// The weeks: four levels of stars gained a day, at the quartiles of the year, as GitHub's graph colors its days
+const WEEKS = DATA.weeks;
+const rates = WEEKS.map((w) => w.perDay).sort((a, b) => a - b);
+const cut = [0.25, 0.5, 0.75].map((q) => rates[Math.floor(q * (rates.length - 1))]);
+const level = (v) => 1 + cut.filter((c) => v > c).length;
+// A day's place along the week graph, whose squares hold seven days each
+const x = (day) => `${(day / (7 * WEEKS.length)) * 100}%`;
+// A month's name over its first week, as GitHub labels its graph; on a phone every other one
+const MONTHS = WEEKS.flatMap((w, i) => {
+  const d = new Date(Date.parse(w.from));
+  const prev = i > 0 ? new Date(Date.parse(WEEKS[i - 1].from)).getUTCMonth() : -1;
+  return d.getUTCMonth() !== prev && i < WEEKS.length - 2 ? [{ i, name: d.toLocaleString("en-US", { month: "short", timeZone: "UTC" }) }] : [];
+}).map((m, j) => ({ ...m, alt: j % 2 === 1 }));
+
+// The star GitHub draws on a repo's Star button: filled once starred (Octicons, MIT)
+const STAR = "M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z";
+const STAR_OUTLINE = STAR.slice(0, -1) + "m0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z";
+
+// Slat type: the repo's name over its bar, a Star button's counter at the bar's end, and its place in the gutter.
+// A repo that drops out of the top ten slides to place 11 and fades there; one that comes in fades in at its place.
+const Repo = slat({
+  thickness: { horizontal: "var(--slat)" },
+  inset: "var(--inset)",
+  room: { start: 46, end: 6, before: 12 },
+  css: `
+    .repo { outline: none; cursor: pointer; animation: repo-in .3s; scroll-margin-top: 130px; }
+    .repo.out { animation: repo-out .3s forwards; }
+    @keyframes repo-in { from { opacity: 0; } }
+    @keyframes repo-out { to { opacity: 0; visibility: hidden; } }
+    .rank { --rhp-label-gap: 14px; font: 600 24px/1 var(--text); color: var(--rhp-muted); font-variant-numeric: proportional-nums; }
+    .out .rank { visibility: hidden; }
+    /* Outlines are borders: Safari's PNG export drops inset shadows */
+    .bar { --rhp-radius: 6px; box-sizing: border-box; background: var(--bar); border: 1.5px solid var(--bar-edge); }
+    .lit .bar { background: var(--star); border-color: var(--attention); }
+    /* A name longer than the chart ends in an ellipsis; the slat's label and the readout give it whole */
+    .name { position: absolute; left: 1px; bottom: calc(100% + 4px); max-width: calc(var(--chart-w) - 54px); overflow: hidden; text-overflow: ellipsis; font-size: 21px; line-height: 1.1; white-space: nowrap; color: var(--link); text-decoration: none; }
+    .name b { font-weight: 600; }
+    .name:hover, .name:hover b { font-weight: 700; }
+    .repo:has(.name:hover) .ring, .repo:has(.name:focus-visible) .ring { opacity: 0; }
+    .name:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 3px; }
+    .value { --rhp-label-gap: 10px; display: inline-flex; align-items: center; gap: 6px; font-size: 21px; color: var(--rhp-muted); font-variant-numeric: proportional-nums; }
+    .lit .value { color: var(--rhp-ink); font-weight: 600; }
+    .value svg { flex: none; width: 19px; height: 19px; fill: var(--rhp-muted); }
+    .lit .value svg { fill: var(--star); }
+    .ring { position: absolute; inset: -5px; border: 2px solid var(--link); border-radius: 9px; opacity: 0; transition: opacity .2s; }
+    .on .ring, .repo:focus-visible .ring { opacity: 1; }
+    @container (max-width: 584px) {
+      .rank { --rhp-label-gap: 8px; font-size: 15px; }
+      .name { left: -45px; max-width: calc(var(--chart-w) - 2px); font-size: 13.5px; bottom: calc(100% + 3px); }
+      .value { --rhp-label-gap: 6px; gap: 3px; font-size: 13px; }
+      .value svg { width: 12px; height: 12px; }
+      .ring { inset: -4px; border-radius: 7px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .repo, .repo.out { animation: none; } .repo.out { visibility: hidden; } .ring { transition: none; } }
+  `,
+}, (d) => html`
+  <div class=${() => `repo${d.lit ? " lit" : ""}${d.position === N ? " out" : ""}${d.on ? " on" : ""}`}
+    data-row=${() => d.index} aria-label=${() => `${d.say}${d.lit ? ", starred" : ""}`}>
+    <${Label} edge="start" class="rank" aria-hidden="true">${() => (d.position ?? 0) + 1}<//>
+    <${Bar} to=${() => d.stars} class="bar">
+      <a class="name" href=${() => `https://github.com/${d.full}`} target="_blank" rel="noopener"
+        aria-label=${() => `${d.full} on GitHub (opens in a new tab)`}>${() => d.owner} / <b>${() => d.repo}</b></a><i class="ring"></i>
+    <//>
+    <${Label} at=${() => d.stars} class="value" aria-hidden="true">
+      <svg viewBox="0 0 16 16"><path d=${() => (d.lit ? STAR : STAR_OUTLINE)} /></svg>${() => count.format(Math.round(d.stars))}
+    <//>
+  </div>`);
+// N + 1 empty slats under the data keep the chart as tall as eleven places, so a leaving repo has room to fade
+const Band = slat({ thickness: { horizontal: "var(--slat)" }, room: {} }, () => html`<div></div>`);
+
+const PLAY = () => html`<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11a.5.5 0 0 0 .76.43l9-5.5a.5.5 0 0 0 0-.86l-9-5.5A.5.5 0 0 0 4 2.5Z" /></svg>`;
+const PAUSE = () => html`<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z" /></svg>`;
+// The slider's keys, in days from the nearest day
+const KEYS = { ArrowLeft: -7, ArrowDown: -7, ArrowRight: 7, ArrowUp: 7, PageDown: -28, PageUp: 28, Home: -Infinity, End: Infinity };
+
+// Chart component: the playhead t, a day with a fraction, is the app's state, and the bars show the stars at t.
+// Play moves t on with time, Pause leaves it where it is, and the week graph's slider puts it where the pointer is.
+function SkillRace() {
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [t, setT] = createSignal(LAST);
+  const [playing, setPlaying] = createSignal(false);
+  const [picked, setPicked] = createSignal(null);
+  // The starred repos, drawn in a starred repo's gold: a click or a tap on a repo, or Enter or Space on it, stars it or
+  // unstars it, as GitHub's Star button does
+  const [starred, setStarred] = createSignal(new Set(DATA.top[LAST].slice(0, 2)));
+  const toggleStar = (row) => {
+    const next = new Set(starred());
+    if (next.has(row)) next.delete(row);
+    else next.add(row);
+    setStarred(next);
+  };
+  const stars = createMemo(() => starsAt(t()));
+  const day = () => Math.round(t());
+  // The repos in the race of the day nearest to t, by their stars at t; a repo that has just dropped out takes place
+  // N, below the last, until t reaches its first day out; the others are hidden
+  const places = (rows) => {
+    const race = RACE[day()];
+    const ranked = [...race].sort((a, b) => rows[b].stars - rows[a].stars);
+    return rows.map((_, i) => (race.has(i) ? ranked.indexOf(i) : RACE[Math.floor(t())].has(i) ? N : null));
+  };
+  // The scale follows the leader, from the entry bar while no repo has reached it
+  const top = () => Math.max(DATA.entry, ...[...RACE[day()]].map((i) => stars()[i]));
+  // The scale leaves the leader's star counter room inside the plot: the counter's width at this size over the plot's
+  const [width, setWidth] = createSignal(900);
+  const headroom = () => {
+    const label = width() <= 584 ? 74 : 134;
+    const plot = width() - 46 - 6;
+    return plot / (plot - label);
+  };
+  const rankOf = (i) => [...RACE[day()]].sort((a, b) => stars()[b] - stars()[a]).indexOf(i) + 1;
+  // What screen readers get: while playing, whole days only (the text changes once a day, not every frame)
+  const told = createMemo(() => (playing() ? day() : t()));
+  const when = () => longDate.format(dateOf(told()));
+  const say = () => starsAt(told()).map((v, i) => `${REPOS[i].full}: ${count.format(Math.round(v))} stars on ${when()}`);
+
+  let frame;
+  let autoplay;
+  let auto = !still; // the race may start by itself until the reader uses a control
+  const pause = () => {
+    cancelAnimationFrame(frame);
+    setPlaying(false);
+  };
+  // Each frame moves the playhead on by the time since the last frame (at most 250 ms, so a hidden tab resumes where it
+  // was). Under reduced motion t moves a whole week at a time, and the bars jump.
+  const play = () => {
+    let p = t() < LAST ? t() : 0; // from the last day, the race starts again from the launch
+    let last = null;
+    const move = (now) => {
+      p = Math.min(LAST, p + Math.min(now - (last ?? now), 250) / (still ? DAY_MS * 4 : DAY_MS));
+      last = now;
+      setT(still ? Math.min(LAST, Math.floor(p / 7) * 7) : p);
+      if (p < LAST) frame = requestAnimationFrame(move);
+      else {
+        setT(LAST);
+        pause();
+      }
+    };
+    setPlaying(true);
+    if (t() >= LAST) setT(0);
+    frame = requestAnimationFrame(move);
+  };
+  const toggle = () => {
+    auto = false;
+    if (playing()) pause();
+    else play();
+  };
+  // A drag or a tap on the week graph pauses, and t goes where the pointer is, between two days too
+  const seek = (e) => {
+    auto = false;
+    pause();
+    setT(+e.currentTarget.value);
+  };
+  const key = (e) => {
+    const by = KEYS[e.key];
+    if (by === undefined || e.altKey || e.ctrlKey || e.metaKey) return;
+    e.preventDefault();
+    auto = false;
+    pause();
+    setT(Math.min(LAST, Math.max(0, day() + by)));
+  };
+  onCleanup(() => {
+    cancelAnimationFrame(frame);
+    clearTimeout(autoplay);
+  });
+
+  // The race replays the year once by itself when half of it is in view, unless the reader asked for reduced motion
+  let stage;
+  onMount(() => {
+    if (!auto) return;
+    const seen = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      seen.disconnect();
+      autoplay = setTimeout(() => auto && play(), 800);
+    }, { threshold: 0.5 });
+    seen.observe(stage);
+    onCleanup(() => seen.disconnect());
+  });
+  // The poster's playback: its download offers the year as an animated GIF as well as the PNG
+  onMount(() => {
+    stage.closest(".poster").playback = {
+      duration: LAST * DAY_MS,
+      position: () => t() / LAST,
+      seek: (at) => {
+        auto = false;
+        pause();
+        setT(at * LAST);
+      },
+    };
+  });
+  onMount(() => {
+    let request = 0;
+    const sized = new ResizeObserver(([e]) => {
+      cancelAnimationFrame(request);
+      request = requestAnimationFrame(() => setWidth(e.contentBoxSize[0].inlineSize));
+    });
+    sized.observe(stage);
+    onCleanup(() => {
+      sized.disconnect();
+      cancelAnimationFrame(request);
+    });
+  });
+
+  // The row of the slat that has focus (not a link inside it), or null
+  const focusedRow = () => (document.activeElement?.matches("[data-row]") ? +document.activeElement.dataset.row : null);
+  // The row of the slat an element is in, or null (between slats, on the axis or the text)
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no slat the pick stays
+  const pick = (e) => {
+    if (e.target.closest("a")) return setPicked(focusedRow()); // a repo's name is a link, not a pick
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  // A click or a tap picks the repo and stars or unstars it; a click on its name opens it on GitHub instead
+  const star = (e) => {
+    const row = rowOf(e.target);
+    if (row == null || e.target.closest("a")) return;
+    setPicked(row);
+    toggleStar(row);
+  };
+  const starKey = (e) => {
+    if ((e.key !== "Enter" && e.key !== " ") || !e.target.matches("[data-row]")) return;
+    e.preventDefault();
+    toggleStar(rowOf(e.target));
+  };
+  // Leaving the chart: back to the slat that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(focusedRow());
+  };
+  const readout = () => {
+    const i = picked();
+    if (i == null || !RACE[day()].has(i)) {
+      // At rest: what the two leading repos gained in the 30 days to the date shown, then the hint
+      const k = day();
+      const from = Math.max(0, k - 30);
+      const two = [...RACE[k]].sort((a, b) => REPOS[b].stars[k] - REPOS[a].stars[k]).slice(0, 2);
+      if (two.length < 2) return "Point at a repo to read it; click or tap to star it";
+      const gain = (j) => `${REPOS[j].full} +${count.format(REPOS[j].stars[k] - REPOS[j].stars[from])}`;
+      return html`<span>${k - from} days to ${shortDate.format(dateOf(k))}: <b>${gain(two[0])}</b>, <b>${gain(two[1])}</b> stars. Click or tap a repo to star it.</span>`;
+    }
+    const r = REPOS[i];
+    return html`<b>${r.full}</b>: #${rankOf(i)} with ${count.format(Math.round(stars()[i]))} stars on ${longDate.format(dateOf(t()))}, created ${monthYear.format(new Date(r.created))}`;
+  };
+  const week = () => Math.min(WEEKS.length - 1, Math.floor(t() / 7));
+  // The graph's heading counts, as GitHub's counts contributions: the stars all tracked repos gained since the launch
+  const gained = () => {
+    const k = Math.min(Math.floor(t()), LAST - 1);
+    const f = t() - k;
+    return DATA.totals[k] * (1 - f) + DATA.totals[k + 1] * f - DATA.totals[0];
+  };
+
+  return html`
+    <${Poster}
+      kicker=${html`<span class="topic">claude-skills</span><span>Daily, ${longDate.format(dateOf(0))} to ${longDate.format(dateOf(LAST))}</span>`}
+      title="Most-starred GitHub skills repositories since Agent Skills launched"
+      dek=${html`<span>Each day's ten most-starred Claude skill repos on GitHub, among those with ${count.format(DATA.entry)} stars or more. Anthropic's own ${repoLink("anthropics/skills")} led for ${WORDS[Math.round((ANTHROPIC.to + 1 - ANTHROPIC.from) / 30.44)]} months, until ${month.format(dateOf(ANTHROPIC.to + 1))}. ${repoLink(SECOND.full)} got its first stars in ${month.format(new Date(SECOND.zero))} and is currently ${count.format(GAP)} stars behind ${repoLink(FIRST.full)}.${PASS ? html`<span>${" "}At its current pace, it should take first place by end of ${month.format(PASS)}.</span>` : ""}</span>`}
+      note=${html`<b>Source:</b> star counts on ${count.format(DATA.captures)} archived copies of the repos' GitHub pages (Internet Archive) and GitHub's live counts on ${longDate.format(dateOf(LAST))}; between captures, straight-line estimates. GitHub no longer lists who starred a repo, so exact daily histories cannot be rebuilt. <b>Skill repos:</b> the ${DATA.tracked} repos with ${count.format(DATA.entry)} or more stars today that present themselves as skills and ship SKILL.md files; apps, MCP servers, plugins and link lists are left out. Chart: Anas Bouzid, with rhp.`}>
+      <div class="race">
+      <div class="stage" ref=${(el) => (stage = el)} style=${() => ({ "--chart-w": `${width()}px` })}
+        onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${star} onKeyDown=${starKey} onFocusIn=${pick}
+        onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+        <span class="when" aria-hidden="true">${() => longDate.format(dateOf(t()))}</span>
+        <${Chart} scale=${() => [0, top() * headroom()]} ticks=${4} animate=${{ slide: 300 }}
+          format=${(v) => html`<span class="tick">${short.format(v).toLowerCase()}</span>`}
+          label=${() => `GitHub stars of the ten most-starred Claude skill repos on ${when()}`}
+          theme=${{ font: "var(--text)", ink: "var(--fg)", muted: "var(--muted)", grid: "var(--border)", surface: "var(--canvas)" }}>
+          <${Plot} slats=${N + 1} style=${{ visibility: "hidden" }}>${Band}<//>
+          <${Plot} keyboard=${true} rows=${REPOS} stars=${stars} say=${say} order=${places}
+            owner=${(d) => d.full.split("/")[0]} repo=${(d) => d.full.split("/")[1]}
+            lit=${(d) => starred().has(d.index)} on=${(d) => d.index === picked()}>${Repo}<//>
+        <//>
+      </div>
+      <div class="dock">
+      <p class="readout" aria-live=${() => (playing() ? "off" : "polite")}>${readout}</p>
+      <div class="timeline">
+        <h2 class="count">${() => count.format(Math.round(gained()))} stars gained by the ${DATA.tracked} skill repos since launch</h2>
+        <button type="button" class="play" onClick=${toggle}>${() => (playing() ? PAUSE() : PLAY())}<span class="label">${() => (playing() ? "Pause" : "Play")}</span></button>
+        <div class="graph" style=${{ "--weeks": WEEKS.length, "--span": `${(LAST / (7 * WEEKS.length)) * 100}%` }}>
+          <div class="months" aria-hidden="true">${MONTHS.map((m) => html`<span class=${m.alt ? "alt" : ""} style=${{ left: `${(m.i / WEEKS.length) * 100}%` }}>${m.name}</span>`)}</div>
+          <div class="leads" aria-hidden="true">${DATA.leads.map((l) => html`<span class=${() => `${starred().has(REPOS.findIndex((r) => r.full === l.full)) ? "lit" : ""}${t() >= l.from ? " on" : ""}${l.to - l.from < 30 ? " bare" : ""}`}
+            style=${{ left: x(l.from), width: `calc(${x(l.to + 1)} - ${x(l.from)} - 2px)` }}>${l.to - l.from >= 30 ? `#1 ${l.full}` : ""}</span>`)}</div>
+          <div class="weeks" aria-hidden="true">${WEEKS.map((w, i) => html`<i data-l=${level(w.perDay)} class=${() => `${i <= week() ? "on" : ""}${i === week() ? " now" : ""}`}></i>`)}</div>
+          <input type="range" class="scrub" min="0" max=${LAST} step="any" value=${t} aria-label="Date"
+            aria-valuetext=${when} onInput=${seek} onKeyDown=${key}>
+          <div class="under">
+            <span>One square a week, colored by the stars gained a day that week</span>
+            <span class="legend" aria-hidden="true"><span>Less</span><i style="background: var(--g1)"></i><i style="background: var(--g2)"></i><i style="background: var(--g3)"></i><i style="background: var(--g4)"></i><span>More</span></span>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${SkillRace} />`, document.getElementById("chart"));
+</script>
+__DOWNLOAD__
+</body>
+</html>
