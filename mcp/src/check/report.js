@@ -5,7 +5,7 @@
 const PASSES = [
   [["runtime-error", "console-error", "syntax-error", "missing-import", "missing-import-map", "plain-script-tag", "interaction-error", "missing-export"], "no errors thrown"],
   [["rhp-warning"], "no rhp warnings"],
-  [["unknown-prop", "bad-prop", "bad-scale", "dot-size", "missing-group", "plot-typo", "group-lengths", "no-component", "bare-boolean", "handler-at-render", "style-string", "class-name", "two-solids", "series-past-theme", "page-css-ignored", "block-transition", "stale-read", "static-chart"], "rhp used as documented"],
+  [["unknown-prop", "bad-prop", "bad-scale", "dot-size", "missing-group", "plot-typo", "group-lengths", "no-component", "bare-boolean", "handler-at-render", "style-string", "class-name", "two-solids", "series-past-theme", "page-css-ignored", "page-css-reaches", "block-transition", "stale-read", "static-chart"], "rhp used as documented"],
   [["no-chart", "empty-plot", "small-plot", "collapsed-chart", "plot-outside-chart"], null],
   [["nan-value"], "no NaN values"],
   [["value-past-scale", "points-past-scale"], "values inside the scale"],

@@ -9,83 +9,10 @@
 
 @layer rhp.core {
 
-  /* The guard: resets what a page might set on any div, span or svg, so a page's CSS can't bend a chart out of shape.
-     It has zero specificity so everything below (and a slat's CSS) still applies. We leave opacity, cursor, filter and
-     transform to the page on purpose. */
+  /* Every element rhp makes measures its size with its padding and border in it (the guard in guard.css also resets
+     what a page might set on them, unless the page or the chart says noCssGuard) */
   :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path) {
-    display: revert;
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 0 solid transparent;
-    border-radius: 0;
-    box-shadow: none;
-    outline: revert;
-    outline-offset: revert;
-    background: none;
-    overflow: visible;
-    float: none;
-    min-width: 0;
-    min-height: 0;
-    max-width: none;
-    max-height: none;
-    vertical-align: baseline;
-    transition: none;
-    animation: none;
-    text-decoration: none;
-    user-select: auto;
-    touch-action: auto;
-    font: inherit;
-    font-synthesis: inherit;
-    letter-spacing: inherit;
-    word-spacing: inherit;
-    text-transform: inherit;
-    text-indent: inherit;
-    text-align: inherit;
-    text-shadow: inherit;
-    color: inherit;
-    white-space: inherit;
-    text-rendering: inherit;
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
-    -webkit-text-stroke: inherit;
-    -webkit-tap-highlight-color: inherit;
-    word-break: inherit;
-    overflow-wrap: inherit;
-    hyphens: inherit;
-    line-break: inherit;
-    print-color-adjust: inherit;
-  }
-
-  /* A page's width or height on a common class (like Milligram's .row) can't resize a slat root or a plot */
-  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object), .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell) {
-    width: auto;
-    height: auto;
-  }
-
-  /* A page's view-transition-name on a common class would morph slat roots (only while a view transition runs, since
-     the rule costs mount time) */
-  :where(:root:active-view-transition .rhp-plot > *) {
-    view-transition-name: none;
-  }
-
-  /* display: revert skips the hidden attribute, so it is set again here */
-  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line)[hidden] {
-    display: none;
-  }
-
-  /* A page's ::before and ::after (a clearfix) would add boxes to the body grid, the axis, a plot or a slat root.
-     NOTE: display: none is much cheaper here than content: none. A slat that draws them gets them back (style.js). */
-  :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::before, :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::after {
-    display: none;
-  }
-
-  /* Selected text uses the browser's own colors instead of a page's ::selection (only on elements that hold text,
-     because a ::selection rule on every element makes mounting a lot slower) */
-  :is(.rhp-label, .rhp-gridline > span)::selection, :is(.rhp-label, .rhp-gridline > span, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) ::selection {
-    color: HighlightText;
-    background-color: Highlight;
-    text-shadow: none;
   }
 
   /* The chart root belongs to the page (margin, width, display, background...) except its padding, which is the gutters,

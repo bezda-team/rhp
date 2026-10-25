@@ -1,0 +1,258 @@
+{
+  "variant": "base",
+  "scenario": "plain1000",
+  "warm": false,
+  "update": null,
+  "runs": 3,
+  "query": "pre=1",
+  "phases": {
+    "other": 57.792999999997036,
+    "script": 4.884,
+    "style": 0.009,
+    "layout": 0.029,
+    "prepaint": 0.002,
+    "paint": 1.753,
+    "layerize": 0.006,
+    "commit": 0.034,
+    "window": 64.78
+  },
+  "top": [
+    {
+      "name": "Document::recalcStyle",
+      "ms": 49.157
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 4.774
+    },
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 3.838
+    },
+    {
+      "name": "Paint",
+      "ms": 1.753
+    },
+    {
+      "name": "InlineNode::ShapeTextIncludingFirstLine",
+      "ms": 1.6669999999999403
+    },
+    {
+      "name": "Document::rebuildLayoutTree",
+      "ms": 1.011
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 0.902
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 0.564
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 0.22
+    },
+    {
+      "name": "CullRectUpdate",
+      "ms": 0.1
+    },
+    {
+      "name": "v8.callFunction",
+      "ms": 0.07200000000000001
+    },
+    {
+      "name": "MessagePort::Accept",
+      "ms": 0.067
+    },
+    {
+      "name": "Blink.Paint.UpdateTime",
+      "ms": 0.056
+    },
+    {
+      "name": "RunTask",
+      "ms": 0.036
+    },
+    {
+      "name": "Commit",
+      "ms": 0.034
+    },
+    {
+      "name": "Layout",
+      "ms": 0.029
+    },
+    {
+      "name": "WebFrameWidgetImpl::UpdateLifecycle",
+      "ms": 0.024
+    },
+    {
+      "name": "SelectorStats",
+      "ms": 0.021
+    }
+  ],
+  "counts": [
+    {
+      "styled": 4002,
+      "stylePasses": 1,
+      "layoutDirty": 6006,
+      "layoutTotal": 6149,
+      "layouts": 1
+    },
+    {
+      "styled": 4002,
+      "stylePasses": 1,
+      "layoutDirty": 6006,
+      "layoutTotal": 6149,
+      "layouts": 1
+    },
+    {
+      "styled": 4002,
+      "stylePasses": 1,
+      "layoutDirty": 6006,
+      "layoutTotal": 6149,
+      "layouts": 1
+    }
+  ],
+  "selectors": [
+    {
+      "sel": ":is(.rhp-label, .rhp-gridline > span, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) ::selection",
+      "elapsed": 1.1666666666666667,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object), .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell)",
+      "elapsed": 0.4613333333333334,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-area path, .rhp-line, .rhp-line path)",
+      "elapsed": 0.42866666666666664,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-place, .rhp-area, .rhp-line, .rhp-gridline)",
+      "elapsed": 0.22366666666666668,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::after",
+      "elapsed": 0.18833333333333335,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::before",
+      "elapsed": 0.17833333333333332,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":is(.rhp-label, .rhp-gridline > span)::selection",
+      "elapsed": 0.11666666666666664,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": ":where(:root:active-view-transition .rhp-plot > *)",
+      "elapsed": 0.11333333333333334,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 0
+    },
+    {
+      "sel": "div",
+      "elapsed": 0.088,
+      "attempts": 4004,
+      "matches": 4004,
+      "fastRejects": 0
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-overlap] > :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line)",
+      "elapsed": 0.064,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-plot > *",
+      "elapsed": 0.064,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-turning] .rhp-plot[data-rhp-reorder] > *",
+      "elapsed": 0.064,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-reorder=\"slide\"]:not([data-rhp-overlap]) > *",
+      "elapsed": 0.062,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-o=\"v\"]:not([data-rhp-overlap]) > *",
+      "elapsed": 0.06133333333333334,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-plot[data-rhp-o=\"h\"]:not([data-rhp-overlap]) > *",
+      "elapsed": 0.05966666666666666,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-chart[data-rhp-turning] *",
+      "elapsed": 0.056999999999999995,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-body > *",
+      "elapsed": 0.05500000000000001,
+      "attempts": 4002,
+      "matches": 0,
+      "fastRejects": 4002
+    },
+    {
+      "sel": ".rhp-gridline > span",
+      "elapsed": 0.031,
+      "attempts": 2000,
+      "matches": 0,
+      "fastRejects": 2000
+    },
+    {
+      "sel": ".rhp-gridline[data-rhp-o=\"v\"] > span",
+      "elapsed": 0.029,
+      "attempts": 2000,
+      "matches": 0,
+      "fastRejects": 2000
+    },
+    {
+      "sel": ".rhp-gridline[data-rhp-o=\"h\"] > span",
+      "elapsed": 0.023666666666666666,
+      "attempts": 2000,
+      "matches": 0,
+      "fastRejects": 2000
+    }
+  ]
+}

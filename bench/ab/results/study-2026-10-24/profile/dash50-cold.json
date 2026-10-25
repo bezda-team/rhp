@@ -1,0 +1,184 @@
+{
+  "variant": "base",
+  "scenario": "dash50",
+  "warm": false,
+  "update": null,
+  "runs": 8,
+  "total": 15.582124999999971,
+  "top": [
+    {
+      "fn": "(garbage collector) (native):0",
+      "ms": 3.0215
+    },
+    {
+      "fn": "runComputation base.js:325",
+      "ms": 0.6242500000000002
+    },
+    {
+      "fn": "important base.js:1624",
+      "ms": 0.607875
+    },
+    {
+      "fn": "style base.js:1316",
+      "ms": 0.472375
+    },
+    {
+      "fn": "(anonymous) base.js:2772",
+      "ms": 0.39637500000000003
+    },
+    {
+      "fn": "(anonymous) base.js:829",
+      "ms": 0.36887499999999995
+    },
+    {
+      "fn": "adoptInto base.js:1882",
+      "ms": 0.3335
+    },
+    {
+      "fn": "insertExpression base.js:1478",
+      "ms": 0.3195
+    },
+    {
+      "fn": "Chart base.js:3680",
+      "ms": 0.29625
+    },
+    {
+      "fn": "uncomment base.js:1677",
+      "ms": 0.2865
+    },
+    {
+      "fn": "insertBefore (native):0",
+      "ms": 0.26725
+    },
+    {
+      "fn": "(anonymous) base.js:3435",
+      "ms": 0.264625
+    },
+    {
+      "fn": "cloneNode (native):0",
+      "ms": 0.256625
+    },
+    {
+      "fn": "Plot base.js:3172",
+      "ms": 0.2545
+    },
+    {
+      "fn": "createRenderEffect.e base.js:3906",
+      "ms": 0.24274999999999997
+    },
+    {
+      "fn": "readSignal base.js:240",
+      "ms": 0.22149999999999997
+    },
+    {
+      "fn": "flush2 base.js:1632",
+      "ms": 0.20825000000000002
+    },
+    {
+      "fn": "makePlot base.js:3175",
+      "ms": 0.19862500000000002
+    },
+    {
+      "fn": "updateComputation base.js:309",
+      "ms": 0.19575000000000004
+    },
+    {
+      "fn": "createMemo base.js:105",
+      "ms": 0.19275
+    },
+    {
+      "fn": "setAttribute (native):0",
+      "ms": 0.16024999999999998
+    },
+    {
+      "fn": "setProperty base.js:2240",
+      "ms": 0.156
+    },
+    {
+      "fn": "untrack base.js:149",
+      "ms": 0.14487500000000003
+    },
+    {
+      "fn": "slat2 base.js:3426",
+      "ms": 0.140125
+    },
+    {
+      "fn": "runUpdates base.js:444",
+      "ms": 0.137125
+    },
+    {
+      "fn": "(anonymous) base.js:4590",
+      "ms": 0.13225
+    },
+    {
+      "fn": "(anonymous) base.js:3828",
+      "ms": 0.12562500000000001
+    },
+    {
+      "fn": "nice base.js:2594",
+      "ms": 0.12387500000000001
+    },
+    {
+      "fn": "(anonymous) base.js:1352",
+      "ms": 0.11999999999999998
+    },
+    {
+      "fn": "serialize (native):175",
+      "ms": 0.112875
+    },
+    {
+      "fn": "children base.js:4038",
+      "ms": 0.11050000000000001
+    },
+    {
+      "fn": "createRenderEffect.e base.js:3572",
+      "ms": 0.09975
+    },
+    {
+      "fn": "tickValues base.js:3606",
+      "ms": 0.09687499999999999
+    },
+    {
+      "fn": "arrange base.js:3746",
+      "ms": 0.0955
+    },
+    {
+      "fn": "create base.js:1250",
+      "ms": 0.0905
+    },
+    {
+      "fn": "createComponent base.js:819",
+      "ms": 0.09012499999999998
+    },
+    {
+      "fn": "children base.js:3551",
+      "ms": 0.08850000000000001
+    },
+    {
+      "fn": "insert base.js:1349",
+      "ms": 0.08725000000000001
+    },
+    {
+      "fn": "get children base.js:3857",
+      "ms": 0.08200000000000002
+    },
+    {
+      "fn": "Chart.createMemo.equals base.js:3703",
+      "ms": 0.08175
+    }
+  ],
+  "byFile": [
+    {
+      "file": "base.js",
+      "ms": 11.313874999999996
+    },
+    {
+      "file": "(gc)",
+      "ms": 3.0215
+    },
+    {
+      "file": "(native)",
+      "ms": 1.2467500000000005
+    }
+  ]
+}

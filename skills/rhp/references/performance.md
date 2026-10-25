@@ -104,6 +104,51 @@ Both widened when a longer label became visible, with identical widths before an
 Conditional rendering does not by itself require fixed room.
 Verify the chart's gutter geometry, including its own sizing constraints, when changing which labels are mounted.
 
+## Go without the guard when the page's CSS leaves charts alone
+
+The guard is the part of rhp's CSS that resets, on every element rhp makes, what a page's CSS might set there, so the page cannot change a chart (api.md section 11, "What page CSS can and cannot change").
+Without it, a chart's first draw is 18 to 28% faster in Chromium (1,000 bars: 34 to 24 ms), about 30% faster in WebKit, and 4 to 16% faster in Firefox.
+A chart goes without it with `noCssGuard=${true}` on the Chart, and every chart on a page with `noCssGuard()` before the first one (rhp 2.1 and later).
+Without it, rhp's own CSS still places and colors every block, keeps hidden slats hidden and keeps `box-sizing: border-box`, but page CSS reaches whatever rhp does not set itself (measured with page rules on every `div` and `span`):
+
+| Page CSS | Without the guard |
+|---|---|
+| `margin`, `padding`, `border` | moves blocks, Labels and grid lines |
+| `width`, `height`, `min-width`, `max-width`, `min-height`, `max-height` | resizes bars, slat roots and Labels |
+| `font`, `line-height`, `letter-spacing`, `text-indent`, `text-transform` | changes Labels and axis numbers, and moves them |
+| `::before` and `::after` with `content` (a clearfix) | adds boxes to the chart's grid, the axis, Plots and slat roots |
+| `background`, `box-shadow`, `border-radius`, `outline` | drawn on rhp's elements |
+| `transition` | reaches the axis numbers and edge Labels (rhp keeps its own on blocks and slat roots) |
+| `animation` | runs on every element |
+| `::selection` | colors selected text in Labels |
+| a rule for a class a slat uses too (`.poster .note`, written for the poster's note, and a Label with `class="note"`) | reaches that element |
+| `display`, `float`, `box-sizing` | moves nothing |
+
+The browser's own styles reach a chart without the guard too, on a slat root that isn't a `div` (measured in Chromium, WebKit and Firefox): an `<svg>` root cuts off what it draws outside its box, an `<a>` is blue and underlined, a `<button>` or `<input>` has the browser's border, background and font, and a `<p>`, `<ul>`, `<h3>` or `<figure>` has margins that move it off its place.
+A `div`, `li`, `span`, `section`, `label` or `table` root looks the same either way.
+Set those properties in the slat's `css` (`margin: 0`, `overflow: visible`), or use a `div`.
+
+Choose it for a page made for its charts, such as a poster or an article, or for one large chart among small ones.
+Then check that the page's CSS leaves the chart alone: compare screenshots of the chart with and without it, at rest, while hovered and focused, and after a data change.
+The checker reports `page-css-reaches` for a page rule that reaches an element rhp makes in a chart without the guard.
+Drawn without the guard under 12 popular stylesheets, the docs site's 92 example charts and the slat gallery's 20 changed only where a slat used one of the framework's class names: Bootstrap 5's `.row` and `.mark`, Bulma's `.box`, `.tag`, `.icon` and `.progress`, Milligram's `.row`.
+Tailwind (browser build and preflight), normalize.css, modern-normalize, sanitize.css, Pico, Water.css, Simple.css and new.css changed none of them.
+The prop saves as much as `noCssGuard()` for its own chart, but once one chart says `noCssGuard`, the guard checks which chart each element is in (a `data-rhp-guard` mark on the charts that keep it), and those charts draw 2 to 6% slower.
+So prefer `noCssGuard()` when every chart on the page can go without it.
+A chart inside another chart's slat goes without the guard only when the chart around it does too.
+A page that links rhp's CSS itself (`linkedCss()`) links `@bezda/rhp/rhp-no-css-guard.css`, the same without the guard, instead of `rhp.css`, and calls `noCssGuard()` too: the prop can't change a stylesheet the page links, and rhp warns.
+In the html template the prop is written out, `noCssGuard=${true}`: bare, it is `""`, which is false.
+
+## Read a slat's position in its CSS
+
+From rhp 2.1, each slat's `--rhp-position` is written on its root and not passed down to the elements inside, so the browser can reuse one slat's styles for the next: in Chromium a 1,000-bar chart draws about 40% faster (57 to 33 ms), a 50 by 50 heatmap 57% faster, 50 small charts 17% faster; WebKit gains about 10% on bars, and Firefox is unchanged.
+Where nothing can be shared anyway (a scatter of 1,000 dots, every value changing at once), keeping the position on the root costs 1 to 2 ms (3 to 5%) in Chromium; WebKit shows no cost there, and Firefox none beyond its run-to-run noise.
+The slat type's `css` still reads it on any element in the slat: rhp rewrites `var(--rhp-position)` there to a copy its roots pass down (DevTools shows it as `--rhp-row`), and in a Plot inside the slat it is the inner slat's place.
+Its slats then share no styles, as in 2.0, and draw about 4% slower than in 2.0 (1,000 bars: 63 against 61 ms in Chromium).
+A `style` prop or page CSS on an element inside a slat gets nothing from `var(--rhp-position)`.
+Read it in the slat's `css`, or copy it on the root and read the copy inside: `style=${{ "--row": "var(--rhp-position)" }}`, then `var(--row)` (those slats then draw as slowly as before).
+`inheritPosition()` before the first chart passes it down again in every chart on the page, as rhp did before 2.1, and charts draw as in 2.0 or a little slower (1,000 bars: 59 against 57 ms in Chromium).
+
 ## Verified example and limits
 
 The vocabulary article already uses these patterns.

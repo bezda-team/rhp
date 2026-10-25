@@ -1,0 +1,184 @@
+{
+  "variant": "base",
+  "scenario": "bars1000",
+  "warm": true,
+  "update": null,
+  "runs": 8,
+  "total": 12.48587499999999,
+  "top": [
+    {
+      "fn": "(garbage collector) (native):0",
+      "ms": 5.5285
+    },
+    {
+      "fn": "setProperty (native):0",
+      "ms": 0.589375
+    },
+    {
+      "fn": "setAttribute (native):0",
+      "ms": 0.5178749999999999
+    },
+    {
+      "fn": "insertExpression base.js:1478",
+      "ms": 0.3595
+    },
+    {
+      "fn": "(anonymous) base.js:2772",
+      "ms": 0.35575
+    },
+    {
+      "fn": "insertBefore (native):0",
+      "ms": 0.29900000000000004
+    },
+    {
+      "fn": "readSignal base.js:240",
+      "ms": 0.29750000000000004
+    },
+    {
+      "fn": "(anonymous) base.js:4472",
+      "ms": 0.29212499999999997
+    },
+    {
+      "fn": "(anonymous) base.js:3435",
+      "ms": 0.26862500000000006
+    },
+    {
+      "fn": "runComputation base.js:325",
+      "ms": 0.251875
+    },
+    {
+      "fn": "others base.js:2743",
+      "ms": 0.23712500000000003
+    },
+    {
+      "fn": "slat2 base.js:3426",
+      "ms": 0.18812499999999996
+    },
+    {
+      "fn": "cloneNode (native):0",
+      "ms": 0.18762500000000004
+    },
+    {
+      "fn": "createComponent base.js:819",
+      "ms": 0.146625
+    },
+    {
+      "fn": "insert base.js:1349",
+      "ms": 0.13962500000000003
+    },
+    {
+      "fn": "createComputation base.js:360",
+      "ms": 0.13375
+    },
+    {
+      "fn": "appendChild (native):0",
+      "ms": 0.12325
+    },
+    {
+      "fn": "get base.js:3024",
+      "ms": 0.10925000000000001
+    },
+    {
+      "fn": "createSignal base.js:71",
+      "ms": 0.09875
+    },
+    {
+      "fn": "children base.js:3551",
+      "ms": 0.09787500000000002
+    },
+    {
+      "fn": "js base.js:3265",
+      "ms": 0.09337500000000001
+    },
+    {
+      "fn": "updateComputation base.js:309",
+      "ms": 0.091
+    },
+    {
+      "fn": "fn base.js:1255",
+      "ms": 0.08949999999999998
+    },
+    {
+      "fn": "setProperty base.js:2240",
+      "ms": 0.088875
+    },
+    {
+      "fn": "(anonymous) base.js:2831",
+      "ms": 0.064375
+    },
+    {
+      "fn": "completeUpdates base.js:461",
+      "ms": 0.05825
+    },
+    {
+      "fn": "cleanChildren base.js:1589",
+      "ms": 0.05575
+    },
+    {
+      "fn": "evaluate (native):305",
+      "ms": 0.052125000000000005
+    },
+    {
+      "fn": "isList base.js:2971",
+      "ms": 0.04925000000000001
+    },
+    {
+      "fn": "values base.js:4441",
+      "ms": 0.048375
+    },
+    {
+      "fn": "(anonymous) base.js:2839",
+      "ms": 0.0465
+    },
+    {
+      "fn": "unwrap base.js:2153",
+      "ms": 0.046125000000000006
+    },
+    {
+      "fn": "browserBlock base.js:2750",
+      "ms": 0.045000000000000005
+    },
+    {
+      "fn": "names base.js:4438",
+      "ms": 0.043125000000000004
+    },
+    {
+      "fn": "createRenderEffect base.js:93",
+      "ms": 0.042375
+    },
+    {
+      "fn": "read base.js:3220",
+      "ms": 0.041875
+    },
+    {
+      "fn": "toggleAttribute (native):0",
+      "ms": 0.04175
+    },
+    {
+      "fn": "createRoot base.js:55",
+      "ms": 0.0415
+    },
+    {
+      "fn": "mapper base.js:810",
+      "ms": 0.0415
+    },
+    {
+      "fn": "Label base.js:2865",
+      "ms": 0.04125
+    }
+  ],
+  "byFile": [
+    {
+      "file": "(gc)",
+      "ms": 5.5285
+    },
+    {
+      "file": "base.js",
+      "ms": 4.9756250000000035
+    },
+    {
+      "file": "(native)",
+      "ms": 1.981750000000001
+    }
+  ]
+}

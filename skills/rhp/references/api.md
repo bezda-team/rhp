@@ -43,7 +43,7 @@ Both `@bezda/rhp` and `@bezda/rhp/standalone` export rhp's whole API:
 - components: `Chart`, `Plot`, `Scale`, `Axis`, `Theme`, `Poster`
 - blocks: `Bar`, `Dot`, `Tick`, `Label`, `Cell`, `Place`, `Area`, `Line`
 - experimental point collection: [`ManyDots`](#manydots-experimental-point-collection), in rhp 2.0.3 and later
-- functions: `slat`, `restyle`, `linkedCss`, `shape`, `at`, `useOrientation`, `series`, `cycle`, `sortBy`, `extent`, `every`, `nice`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`, `animated`, `curve`, `drawing`
+- functions: `slat`, `restyle`, `linkedCss`, `noCssGuard`, `inheritPosition`, `shape`, `at`, `useOrientation`, `series`, `cycle`, `sortBy`, `extent`, `every`, `nice`, `stackUp`, `shares`, `running`, `summary`, `bins`, `density`, `animated`, `curve`, `drawing`
 - the object `THEME` (the default theme)
 
 `@bezda/rhp/standalone` adds these from Solid, and nothing else: `render`, `html`, `createSignal`, `createMemo`, `createEffect`, `createRoot`, `createSelector`, `createComputed`, `on`, `onMount`, `onCleanup`, `batch`, `untrack`, `mergeProps`, `splitProps`, `For`, `Index`, `Show`, `Switch`, `Match`, `createStore`, `reconcile`, `produce`, `unwrap`.
@@ -169,6 +169,7 @@ export default function FruitChart() {
 | `animate` | `true` or `{ duration, ease, slide }` | off | the JS version of motion (section 12); the Plots inside take it |
 | `theme` | theme object (section 8) | `THEME` | colors and font, over those of a `<Theme>` around it |
 | `static` | boolean | `false` | for data that never changes: slats are drawn once and keep no signals; a data change draws them all again, without motion |
+| `noCssGuard` | boolean | `false` | faster, and page CSS reaches the chart (performance.md) |
 | `cross` | `[min, max]` | none | a second axis across the band (scatter plots, line charts; section 7) |
 | `crossTicks`, `crossFormat` | like `ticks`, `format` | about 5, the number | the second axis |
 | `crossGrid` | boolean | `true` | `false` hides only the second axis' grid lines, keeping its numbers. |
@@ -1219,7 +1220,7 @@ Even where page CSS reaches rhp's custom properties, set them in the slat's `css
 | `--rhp-slide-time`, `--rhp-slide-ease` | `.3s`, `ease-in-out` | how slats slide to new places |
 | `--rhp-gutter-max` | `40cqw` | with `room: "auto"`, the widest a name (and the room) can be |
 
-**Variables a slat's CSS reads**: the theme (`--rhp-ink`, `--rhp-muted`, `--rhp-grid`, `--rhp-surface`, `--rhp-series-1`…, `--rhp-positive`, `--rhp-negative`, `--rhp-low`, `--rhp-high`, `--rhp-font`), `--rhp-color` (the block's color), `--rhp-toward-end` (the direction from a Bar's start to its end: `linear-gradient(var(--rhp-toward-end), …)`), `--rhp-p` (where a Dot, Tick, Label or Place sits on the scale, 0 to 1: a Label's room to the scale's end is `calc((1 - var(--rhp-p)) * 100%)`), `--rhp-lo` and `--rhp-hi` (where a Bar, an Area or a Line starts and ends on the scale, 0 to 1, clipped to it: the donut and radial-bars recipes turn a Bar's into angles), `--rhp-min`, `--rhp-max`, a block's `--rhp-from`, `--rhp-to`, `--rhp-at`, `--rhp-value`, a slat's `--rhp-position`, and `--rhp-n` (how many places the slat's Plot has on screen).
+**Variables a slat's CSS reads**: the theme (`--rhp-ink`, `--rhp-muted`, `--rhp-grid`, `--rhp-surface`, `--rhp-series-1`…, `--rhp-positive`, `--rhp-negative`, `--rhp-low`, `--rhp-high`, `--rhp-font`), `--rhp-color` (the block's color), `--rhp-toward-end` (the direction from a Bar's start to its end: `linear-gradient(var(--rhp-toward-end), …)`), `--rhp-p` (where a Dot, Tick, Label or Place sits on the scale, 0 to 1: a Label's room to the scale's end is `calc((1 - var(--rhp-p)) * 100%)`), `--rhp-lo` and `--rhp-hi` (where a Bar, an Area or a Line starts and ends on the scale, 0 to 1, clipped to it: the donut and radial-bars recipes turn a Bar's into angles), `--rhp-min`, `--rhp-max`, a block's `--rhp-from`, `--rhp-to`, `--rhp-at`, `--rhp-value`, a slat's `--rhp-position` (its place in its Plot, 0 for the first), and `--rhp-n` (how many places the slat's Plot has on screen).
 
 **Styling the axis.** Page CSS and slat CSS cannot reach rhp's grid lines and numbers.
 Their colors are the theme's `grid` and `muted`, their font the theme's `font`; `ticks` and `format` choose them (`format` may return an element with a class, which page CSS styles).
@@ -1682,3 +1683,4 @@ Every one of these was found by running rhp 2.0.1.
     Write the space as `${" "}`, or keep it next to other text (`<b>Name</b>: <em>12</em>`).
 36. **A Plot sits at `z-index: 1`.**
     A page element that overlaps a chart (a readout pinned with `position: sticky`, a menu that opens over the chart) is drawn under the slats unless its own `z-index` is 2 or more.
+37. **`var(--rhp-position)` in a `style` prop inside a slat is empty** (rhp 2.1 and later): read it in the slat's `css`.

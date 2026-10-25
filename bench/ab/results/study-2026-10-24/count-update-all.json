@@ -1,0 +1,46 @@
+{
+  "variants": [
+    "count-base",
+    "count-pos"
+  ],
+  "scenarios": [
+    "bars1000"
+  ],
+  "update": "all",
+  "counters": {
+    "bars1000": {
+      "count-base": {
+        "baseStylesUsed": 8000,
+        "customPropertiesApplied": 0,
+        "elementsStyled": 10000,
+        "independentInheritedStylesPropagated": 0,
+        "matchedPropertyApply": 0,
+        "matchedPropertyCacheAdded": 1000,
+        "matchedPropertyCacheHit": 4000,
+        "pseudoElementsStyled": 5000,
+        "rulesFastRejected": 80000,
+        "rulesMatched": 30000,
+        "rulesRejected": 125000,
+        "stylesAnimated": 8000,
+        "stylesChanged": 10000,
+        "stylesUnchanged": 0
+      },
+      "count-pos": {
+        "baseStylesUsed": 8000,
+        "customPropertiesApplied": 0,
+        "elementsStyled": 10000,
+        "independentInheritedStylesPropagated": 0,
+        "matchedPropertyApply": 0,
+        "matchedPropertyCacheAdded": 0,
+        "matchedPropertyCacheHit": 5000,
+        "pseudoElementsStyled": 5000,
+        "rulesFastRejected": 80000,
+        "rulesMatched": 30000,
+        "rulesRejected": 125000,
+        "stylesAnimated": 8000,
+        "stylesChanged": 10000,
+        "stylesUnchanged": 0
+      }
+    }
+  }
+}

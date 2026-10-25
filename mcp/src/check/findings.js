@@ -55,6 +55,7 @@ export const SEE = {
   "scrolls-away": 'interaction.md, "2. Readout on hover, focus and tap"',
   "focus-invisible": 'interaction.md, "9. Keyboard"',
   "page-css-ignored": PITFALLS("Styles or colors do not apply"),
+  "page-css-reaches": 'performance.md, "Go without the guard when the page\'s CSS leaves charts alone"',
   "series-past-theme": PITFALLS("Styles or colors do not apply"),
   "class-name": PITFALLS("Styles or colors do not apply"),
   "low-contrast": 'design.md, "4. Color"',
@@ -148,6 +149,21 @@ export function fromProbe(f, context) {
         fix: `Style what is in a chart in the slat type's css (slat({ css: \`.bar { ... }\` }, fn))${colors ? ", and give colors with the block's color prop or the Chart's theme" : ""}${font ? ", and the font with the theme's font" : ""}. Page CSS can only set opacity, cursor, filter, transform, z-index and pointer-events there.`,
       };
     }
+    case "page-css-reaches":
+      if (f.browser) {
+        return {
+          level: "warning",
+          code: f.code,
+          message: `The chart goes without the guard (noCssGuard), and ${f.count > 1 ? `${f.count} slat roots` : "a slat root"} (<${f.browser}>) keep${f.count > 1 ? "" : "s"} the browser's own ${f.props.join(", ")} for that element${f.browser === "svg" ? ": what it draws outside its box is cut off" : ""}.`,
+          fix: `Use a div as the slat's root, or set ${f.props.join(", ")} in the slat type's css, or take noCssGuard off.`,
+        };
+      }
+      return {
+        level: "warning",
+        code: f.code,
+        message: `The chart goes without the guard (noCssGuard), and the page's CSS rule ${f.selector} sets ${f.props.join(", ")} on ${f.what}${f.count > 1 ? ` and ${f.count - 1} more` : ""} in it.`,
+        fix: "Aim that rule at the page's own elements, or give the slat a class name the page doesn't use, or take noCssGuard off: without the guard, page CSS reaches what rhp doesn't set itself.",
+      };
     case "value-past-scale": {
       const where = `${f.cross ? "the Chart's cross scale" : "the Chart's scale"} [${f.min}, ${f.max}]`;
       const count = f.count > 1 ? ` (${f.count} values)` : "";
@@ -313,7 +329,7 @@ export function fromProbe(f, context) {
   }
 }
 
-const STANDALONE = ["render", "html", "createSignal", "createMemo", "createEffect", "createRoot", "onMount", "onCleanup", "batch", "untrack", "For", "Index", "Show", "createStore", "reconcile", "produce", "unwrap", "Plot", "Scale", "Chart", "Theme", "Axis", "at", "useOrientation", "THEME", "series", "slat", "restyle", "linkedCss", "shape", "Bar", "Dot", "Tick", "Label", "Cell", "Place", "Area", "Line", "Poster", "sortBy", "cycle", "every", "extent", "nice", "stackUp", "shares", "running", "summary", "bins", "density", "animated", "curve", "drawing"];
+const STANDALONE = ["render", "html", "createSignal", "createMemo", "createEffect", "createRoot", "onMount", "onCleanup", "batch", "untrack", "For", "Index", "Show", "createStore", "reconcile", "produce", "unwrap", "Plot", "Scale", "Chart", "Theme", "Axis", "at", "useOrientation", "THEME", "series", "slat", "restyle", "linkedCss", "noCssGuard", "inheritPosition", "shape", "Bar", "Dot", "Tick", "Label", "Cell", "Place", "Area", "Line", "Poster", "sortBy", "cycle", "every", "extent", "nice", "stackUp", "shares", "running", "summary", "bins", "density", "animated", "curve", "drawing"];
 
 // What to do about an error the page threw
 export function fixForError(message, format) {

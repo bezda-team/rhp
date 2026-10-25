@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>style cache</title>
+<style>
+/* 40 declarations like a guarded block's, and a position from a variable */
+.b { position: absolute; box-sizing: border-box; margin: 0; padding: 0; border: 0 solid transparent; border-radius: 2px;
+  box-shadow: none; outline: revert; background: #2a78d6; overflow: visible; float: none; min-width: 0; min-height: 0;
+  max-width: none; max-height: none; vertical-align: baseline; transition: none; animation: none; text-decoration: none;
+  font: inherit; letter-spacing: inherit; word-spacing: inherit; text-transform: inherit; text-indent: inherit;
+  text-align: inherit; color: inherit; white-space: inherit; width: 6px; height: 6px; top: 10px;
+  left: calc(var(--x, 0) * 0.1%); }
+.k0 { --x: 0 } .k1 { --x: 100 } .k2 { --x: 200 } .k3 { --x: 300 } .k4 { --x: 400 } .k5 { --x: 500 } .k6 { --x: 600 } .k7 { --x: 700 } .k8 { --x: 800 } .k9 { --x: 900 }
+.lit0 { left: 0% } .lit1 { left: 10% } .lit2 { left: 20% } .lit3 { left: 30% } .lit4 { left: 40% } .lit5 { left: 50% } .lit6 { left: 60% } .lit7 { left: 70% } .lit8 { left: 80% } .lit9 { left: 90% }
+</style></head>
+<body style="margin:0"><div id="stage" style="position:relative;width:600px;height:400px"></div>
+<script>
+// Each way makes N elements with the same rule and differs only in how each element gets its position
+const N = 4000;
+const WAYS = {
+  // no inline style at all: every element matches the same rules
+  none: (el, i) => {},
+  // a class per value (10 values): no inline style
+  classes: (el, i) => el.classList.add("k" + (i % 10)),
+  // a literal left per class (10 values): no variable at all
+  literal: (el, i) => el.classList.add("lit" + (i % 10)),
+  // an inline variable, unique per element
+  unique: (el, i) => el.style.setProperty("--x", String(i % 1000)),
+  // an inline variable with only 10 values
+  ten: (el, i) => el.style.setProperty("--x", String((i % 10) * 100)),
+  // the same 10 values, as a style attribute string
+  tenAttr: (el, i) => el.setAttribute("style", "--x:" + (i % 10) * 100),
+  // an inline left (no variable), unique
+  inlineLeft: (el, i) => (el.style.left = ((i % 1000) / 10) + "%"),
+};
+window.run = (way) => new Promise((resolve) => requestAnimationFrame(() => {
+  const t0 = performance.now();
+  const stage = document.getElementById("stage");
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < N; i++) {
+    const el = document.createElement("div");
+    el.className = "b";
+    WAYS[way](el, i);
+    frag.append(el);
+  }
+  stage.append(frag);
+  const c = new MessageChannel();
+  c.port1.onmessage = () => resolve(performance.now() - t0);
+  c.port2.postMessage(0);
+}));
+window.ways = Object.keys(WAYS);
+</script></body></html>

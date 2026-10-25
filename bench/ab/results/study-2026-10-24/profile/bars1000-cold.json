@@ -1,0 +1,184 @@
+{
+  "variant": "base",
+  "scenario": "bars1000",
+  "warm": false,
+  "update": null,
+  "runs": 8,
+  "total": 17.246249999999982,
+  "top": [
+    {
+      "fn": "(garbage collector) (native):0",
+      "ms": 3.0362500000000003
+    },
+    {
+      "fn": "(anonymous) base.js:2772",
+      "ms": 0.9538750000000001
+    },
+    {
+      "fn": "runComputation base.js:325",
+      "ms": 0.7498749999999998
+    },
+    {
+      "fn": "important base.js:1624",
+      "ms": 0.61825
+    },
+    {
+      "fn": "setAttribute (native):0",
+      "ms": 0.5418750000000001
+    },
+    {
+      "fn": "insertExpression base.js:1478",
+      "ms": 0.4775
+    },
+    {
+      "fn": "(anonymous) base.js:3435",
+      "ms": 0.46587500000000004
+    },
+    {
+      "fn": "(anonymous) base.js:4472",
+      "ms": 0.43624999999999997
+    },
+    {
+      "fn": "readSignal base.js:240",
+      "ms": 0.396375
+    },
+    {
+      "fn": "adoptInto base.js:1882",
+      "ms": 0.3635
+    },
+    {
+      "fn": "(anonymous) base.js:829",
+      "ms": 0.314875
+    },
+    {
+      "fn": "cloneNode (native):0",
+      "ms": 0.274625
+    },
+    {
+      "fn": "Label base.js:2865",
+      "ms": 0.267125
+    },
+    {
+      "fn": "Plot base.js:3172",
+      "ms": 0.24125000000000002
+    },
+    {
+      "fn": "slat2 base.js:3426",
+      "ms": 0.22775
+    },
+    {
+      "fn": "insertBefore (native):0",
+      "ms": 0.21625000000000003
+    },
+    {
+      "fn": "setProperty base.js:2240",
+      "ms": 0.21400000000000002
+    },
+    {
+      "fn": "uncomment base.js:1677",
+      "ms": 0.20375
+    },
+    {
+      "fn": "others base.js:2743",
+      "ms": 0.202125
+    },
+    {
+      "fn": "flush2 base.js:1632",
+      "ms": 0.19412500000000002
+    },
+    {
+      "fn": "browserBlock base.js:2750",
+      "ms": 0.175
+    },
+    {
+      "fn": "updateComputation base.js:309",
+      "ms": 0.173125
+    },
+    {
+      "fn": "coreSheet base.js:1967",
+      "ms": 0.165125
+    },
+    {
+      "fn": "(anonymous) base.js:769",
+      "ms": 0.151125
+    },
+    {
+      "fn": "appendChild (native):0",
+      "ms": 0.14725
+    },
+    {
+      "fn": "insert base.js:1349",
+      "ms": 0.14500000000000002
+    },
+    {
+      "fn": "updateArray base.js:2272",
+      "ms": 0.14175000000000001
+    },
+    {
+      "fn": "createComputation base.js:360",
+      "ms": 0.139
+    },
+    {
+      "fn": "(anonymous) base.js:1352",
+      "ms": 0.13525
+    },
+    {
+      "fn": "children base.js:3551",
+      "ms": 0.12974999999999998
+    },
+    {
+      "fn": "setter base.js:79",
+      "ms": 0.129125
+    },
+    {
+      "fn": "normalizeIncomingArray base.js:1561",
+      "ms": 0.127875
+    },
+    {
+      "fn": "updateFn base.js:61",
+      "ms": 0.127
+    },
+    {
+      "fn": "runUpdates base.js:444",
+      "ms": 0.12662500000000002
+    },
+    {
+      "fn": "read base.js:3220",
+      "ms": 0.120875
+    },
+    {
+      "fn": "getNode base.js:2184",
+      "ms": 0.118375
+    },
+    {
+      "fn": "get base.js:3024",
+      "ms": 0.111125
+    },
+    {
+      "fn": "untrack base.js:149",
+      "ms": 0.111125
+    },
+    {
+      "fn": "raw base.js:3215",
+      "ms": 0.10612500000000002
+    },
+    {
+      "fn": "create base.js:1250",
+      "ms": 0.10562500000000002
+    }
+  ],
+  "byFile": [
+    {
+      "file": "base.js",
+      "ms": 12.439749999999991
+    },
+    {
+      "file": "(gc)",
+      "ms": 3.0362500000000003
+    },
+    {
+      "file": "(native)",
+      "ms": 1.7702499999999999
+    }
+  ]
+}

@@ -56,6 +56,7 @@ Choose it explicitly, or keep `Dot` for individual blocks and custom slat conten
 
 - Charts are plain DOM with no shadow root: `querySelector`, Testing Library and your page's event listeners all work.
 - A slat's CSS reaches only its own slats, and the page's CSS can't change a chart's layout.
+  A Chart that says `noCssGuard` leaves that protection out and draws faster, for a page whose CSS leaves its elements alone; `noCssGuard()` does it for every chart on the page.
 - `slat(settings, fn)` returns a new function, the slat type, and leaves `fn` as it was, so one function can make several slat types with different settings.
   Give the Plot what `slat()` returns: `fn` itself carries no settings.
 
@@ -78,6 +79,7 @@ rhp comes with an Agent Skill and a checker, so an AI coding agent that has neve
 | `dist/source/` | the source, for a Solid app's own build (the `solid` export condition) |
 | `dist/standalone.js` | rhp and Solid in one module, for pages with no build step |
 | `dist/rhp.css` | rhp's stylesheet, for a page that links it once itself (`linkedCss()`) |
+| `dist/rhp-no-css-guard.css` | the same without the guard, for such a page that also calls `noCssGuard()` |
 | `dist/posters.css` | the gallery's poster looks, for `<Poster>` (optional) |
 
 ## Development
@@ -97,6 +99,7 @@ npm test                  # builds the test pages and checks them in Chromium
 | `npm test` | checks the types with `tsc`, then the test pages in Chromium with Playwright. `BROWSER=webkit` or `BROWSER=firefox` runs them in that engine; CI runs all three on every pull request and on `master`. |
 | `npm run gallery` | `examples/gallery/out/slat-gallery.html`, a page of plots the tests also check |
 | `bench/` | rhp against eleven other chart libraries: see [`bench/README.md`](bench/README.md) |
+| `bench/ab/` | rhp against itself (a change against `master`), measured so the answer holds on a machine in use: see [`bench/ab/README.md`](bench/ab/README.md) |
 
 The code:
 
@@ -106,7 +109,7 @@ The code:
 | `src/blocks.jsx` | the blocks |
 | `src/manydots.jsx`, `src/manydots.css` | the experimental bulk HTML scatter collection and its narrow geometry rules |
 | `src/style.js` | how CSS gets into the page: `slat()`, `restyle()`, scoping a slat's CSS, and the CSS a server writes |
-| `src/rhp.css` | the core CSS; `gutters.css` and `cross.css` are added when a chart first needs them |
+| `src/rhp.css` | the core CSS; `guard.css` (the rules that keep a page's CSS out of charts, left out with `noCssGuard`), and `gutters.css` and `cross.css`, added when a chart first needs them |
 | `src/frame.js`, `src/animate.js` | when changes are written, and the JS version's clock |
 | `src/data.js`, `src/shape.js` | the data helpers and `shape()` |
 | `src/poster.jsx`, `src/posters.css` | Poster and its looks |

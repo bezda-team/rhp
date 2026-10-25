@@ -1,0 +1,125 @@
+{
+  "variant": "posalias",
+  "scenario": "bars1000",
+  "warm": false,
+  "update": "one",
+  "runs": 4,
+  "query": "",
+  "phases": {
+    "other": 37.1880000000001,
+    "script": 10.08399999999999,
+    "layout": 0.773,
+    "prepaint": 0.11700000000000005,
+    "paint": 6.846,
+    "layerize": 0.924499999999999,
+    "commit": 1.423,
+    "gc": 1.3224999999999993,
+    "style": 0.0625,
+    "window": 761.9545
+  },
+  "top": [
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 13.652
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 9.079
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 7.689999999999998
+    },
+    {
+      "name": "Paint",
+      "ms": 6.846
+    },
+    {
+      "name": "HitTest",
+      "ms": 6.565499999999999
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 1.6824999999999992
+    },
+    {
+      "name": "RunTask",
+      "ms": 1.5414999999999996
+    },
+    {
+      "name": "Commit",
+      "ms": 1.423
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+      "ms": 1.0405
+    },
+    {
+      "name": "Layerize",
+      "ms": 0.9039999999999992
+    },
+    {
+      "name": "Layout",
+      "ms": 0.773
+    },
+    {
+      "name": "Document::recalcStyle",
+      "ms": 0.766
+    },
+    {
+      "name": "Blink.Paint.UpdateTime",
+      "ms": 0.7145000000000001
+    },
+    {
+      "name": "v8.callFunction",
+      "ms": 0.7140000000000003
+    },
+    {
+      "name": "LocalFrameView::RunPaintLifecyclePhase",
+      "ms": 0.5710000000000002
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 0.5395000000000001
+    },
+    {
+      "name": "MessagePort::Accept",
+      "ms": 0.48650000000000015
+    },
+    {
+      "name": "WebFrameWidgetImpl::UpdateLifecycle",
+      "ms": 0.4195000000000001
+    }
+  ],
+  "counts": [
+    {
+      "styled": 18,
+      "stylePasses": 6,
+      "layoutDirty": 61,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18,
+      "stylePasses": 6,
+      "layoutDirty": 61,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18,
+      "stylePasses": 6,
+      "layoutDirty": 61,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18,
+      "stylePasses": 6,
+      "layoutDirty": 61,
+      "layoutTotal": 36162,
+      "layouts": 6
+    }
+  ],
+  "selectors": null
+}

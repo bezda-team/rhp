@@ -1,5 +1,5 @@
 export { Plot, Scale, Chart, Theme, Axis, at, useOrientation, THEME, series } from "./plot.jsx";
-export { slat, restyle, linkedCss } from "./style.js";
+export { slat, restyle, linkedCss, noCssGuard, inheritPosition } from "./style.js";
 export { shape } from "./shape.js";
 export { Bar, Dot, Tick, Label, Cell, Place, Area, Line } from "./blocks.jsx";
 export { ManyDots } from "./manydots.jsx";

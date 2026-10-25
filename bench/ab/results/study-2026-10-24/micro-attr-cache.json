@@ -1,0 +1,65 @@
+{
+  "file": "attr-cache.html",
+  "engine": "chromium",
+  "rounds": 12,
+  "ways": [
+    "vars",
+    "attr"
+  ],
+  "metrics": {
+    "frame": {
+      "vars": {
+        "median": 37.62750005722046,
+        "spread": 1.6548847483544886,
+        "change": null
+      },
+      "attr": {
+        "median": 38.044999837875366,
+        "spread": 1.2372865598003713,
+        "change": {
+          "n": 12,
+          "change": 1.3601932408102257,
+          "lo": 0.06535847981770093,
+          "hi": 2.8198282900125493,
+          "clear": true
+        }
+      }
+    },
+    "style": {
+      "vars": {
+        "median": 21.4325,
+        "spread": 2.1859400443251995,
+        "change": null
+      },
+      "attr": {
+        "median": 24.163,
+        "spread": 1.196486363448249,
+        "change": {
+          "n": 12,
+          "change": 12.636817946808133,
+          "lo": 11.1671335295217,
+          "hi": 14.650159216805502,
+          "clear": true
+        }
+      }
+    },
+    "layout": {
+      "vars": {
+        "median": 3.1345,
+        "spread": 3.1217610464188894,
+        "change": null
+      },
+      "attr": {
+        "median": 2.833,
+        "spread": 3.139992940345937,
+        "change": {
+          "n": 12,
+          "change": -8.941190629534024,
+          "lo": -11.698981268485042,
+          "hi": -5.967278616994276,
+          "clear": true
+        }
+      }
+    }
+  }
+}

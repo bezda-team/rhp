@@ -1,0 +1,164 @@
+=== verify (Chromium)
+bars20: base draws 97 elements
+  base-b         0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noguard        0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noselection    0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noprotect      0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notransition   0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  regprops       0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noknobs        0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  leanguard      0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nostarting     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noclip         0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noradius       0 of 97 boxes moved, at most 0.000 px; 240 pixels differ (largest channel difference 115)
+  notoward       0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocontainer    0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter       0 of 97 boxes moved, at most 0.008 px; 9028 pixels differ (largest channel difference 153)
+  sel-labels     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-inside     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  wheresplit     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  emptyguard     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  trimguard      0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  safetrim       0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated          0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated-off      0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+dash50: base draws 2201 elements
+  base-b         0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noguard        0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noselection    0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noprotect      0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notransition   0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  regprops       0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noknobs        0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  leanguard      0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nostarting     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noclip         0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noradius       0 of 2201 boxes moved, at most 0.000 px; 1734 pixels differ (largest channel difference 115)
+  notoward       0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocontainer    0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter       0 of 2201 boxes moved, at most 0.008 px; 65130 pixels differ (largest channel difference 153)
+  sel-labels     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-inside     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  wheresplit     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  emptyguard     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  trimguard      0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  safetrim       0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated          0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated-off      0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+dots1000: base draws 1030 elements
+  base-b         0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noguard        0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noselection    0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noprotect      0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notransition   0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  regprops       8 of 1030 boxes moved, at most 0.016 px; 0 pixels differ (largest channel difference 0)
+  noknobs        0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  leanguard      0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nostarting     0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noclip         0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noradius       0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notoward       0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocontainer    0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter       0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-labels     0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-inside     0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  wheresplit     0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  emptyguard     0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  trimguard      0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  safetrim       0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated          0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated-off      0 of 1030 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+heat50: base draws 5154 elements
+  base-b         0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noguard        0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noselection    0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noprotect      0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notransition   0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  regprops       0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noknobs        0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  leanguard      0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nostarting     0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noclip         0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noradius       0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notoward       0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocontainer    0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter       0 of 5154 boxes moved, at most 0.008 px; 0 pixels differ (largest channel difference 0)
+  sel-labels     0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-inside     0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  wheresplit     0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  emptyguard     0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  trimguard      0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  safetrim       0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated          0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated-off      0 of 5154 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+line100k: base draws 29 elements
+  base-b         0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noguard        0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noselection    0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noprotect      0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notransition   0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  regprops       0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noknobs        0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  leanguard      0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nostarting     0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noclip         0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  noradius       0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  notoward       0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocontainer    0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  nocenter       0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-labels     0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-inside     0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  wheresplit     0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  emptyguard     0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  trimguard      0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  safetrim       0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated          0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  gated-off      0 of 29 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+=== smoke: update and stream
+bars1000 (chromium, update:all, 1 rounds)
+  first              base 17.94 (±0.0%)
+  second             base 50.12 (±0.0%)
+  frames             base 149.52 (±0.0%)
+  peak               base 50.12 (±0.0%)
+  busy               base 10.50 (±0.0%)
+  task               base 160.75 (±0.0%)
+  script             base 8.45 (±0.0%)
+  style              base 69.57 (±0.0%)
+  layout             base 29.43 (±0.0%)
+  styleCount         base 9.00 (±0.0%)
+  layoutCount        base 9.00 (±0.0%)
+  workP90            base 39.22 (±0.0%)
+  dropped            base 118.00 (±0.0%)
+  task               base 36.77 (±0.0%)
+  script             base 4.37 (±0.0%)
+  style              base 21.57 (±0.0%)
+  layout             base 5.81 (±0.0%)
+  styleCount         base 2.07 (±0.0%)
+  layoutCount        base 1.03 (±0.0%)
+=== micro: style cache
+round 1/10round 2/10round 3/10round 4/10round 5/10round 6/10round 7/10round 8/10round 9/10round 10/10
+frame:
+  none            8.52 ms (±1.4%)  (base)
+  classes         9.58 ms (±1.6%)  +11.7% [+4.3, +17.0] *
+  literal         9.52 ms (±1.2%)  +11.6% [+2.2, +13.9] *
+  unique         13.67 ms (±1.8%)  +60.0% [+47.4, +64.7] *
+  ten             9.53 ms (±1.6%)  +11.6% [+5.1, +16.0] *
+  tenAttr         9.33 ms (±1.2%)  +9.5% [+0.4, +21.3] *
+  inlineLeft     12.67 ms (±1.8%)  +48.2% [+37.1, +53.1] *
+style:
+  none            2.60 ms (±1.1%)  (base)
+  classes         2.83 ms (±1.4%)  +8.8% [-9.2, +12.3]
+  literal         2.74 ms (±1.1%)  +5.2% [-10.9, +8.6]
+  unique          5.54 ms (±1.7%)  +114.6% [+78.2, +119.5] *
+  ten             2.82 ms (±1.0%)  +9.7% [-6.5, +13.7]
+  tenAttr         2.78 ms (±0.4%)  +7.0% [-10.0, +16.4]
+  inlineLeft      4.74 ms (±3.0%)  +83.2% [+52.1, +88.5] *
+layout:
+  none            1.66 ms (±3.3%)  (base)
+  classes         1.64 ms (±3.4%)  -2.4% [-10.2, +1.4]
+  literal         1.63 ms (±2.6%)  -2.1% [-12.5, +2.2]
+  unique          2.19 ms (±1.5%)  +31.0% [+15.8, +34.6] *
+  ten             1.61 ms (±3.6%)  -2.1% [-13.2, +2.4]
+  tenAttr         1.62 ms (±1.6%)  -0.8% [-13.2, +7.3]
+  inlineLeft      2.20 ms (±5.2%)  +31.0% [+16.4, +36.8] *
+=== done

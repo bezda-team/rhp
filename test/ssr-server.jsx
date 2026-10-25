@@ -12,6 +12,11 @@ export const plain = () => renderToString(() => <NoHydration><App /></NoHydratio
 export const bad = () => renderToString(() => <Chart><Plot v={[1]}>{() => "text"}</Plot></Chart>);
 // a chart with an aspect, whose ratio a server writes for the page's CSS
 export const aspect = () => renderToString(() => <Chart aspect={2}><Plot v={[1]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>);
+// A chart that keeps its guard and one that says noCssGuard, rendered together
+export const noGuard = () => renderToString(() => <>
+  <Chart><Plot v={[1]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+  <Chart noCssGuard><Plot v={[2]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+</>);
 // values from users: none may end the <style> a server writes, or add a declaration of its own
 const Untrusted = slat({ css: '.u { content: "</style><img src=x onerror=window.ran=1>"; }' }, (d) => (
   <div class="u"><Bar to={d.v} color={d.c} /><Label at={1} style={{ "--note": '"a;b"', "--mix": "{a:1}" }}>{d.v}</Label></div>

@@ -1,0 +1,125 @@
+{
+  "variant": "posalias",
+  "scenario": "bars1000",
+  "warm": false,
+  "update": "scale",
+  "runs": 4,
+  "query": "",
+  "phases": {
+    "other": 96.21000000000024,
+    "script": 8.100999999999988,
+    "style": 0.0345,
+    "layout": 0.3405000000000001,
+    "prepaint": 0.07550000000000001,
+    "paint": 10.307999999999842,
+    "layerize": 0.11550000000000002,
+    "commit": 1.1155,
+    "gc": 4.11799999999999,
+    "window": 760.7135
+  },
+  "top": [
+    {
+      "name": "Document::recalcStyle",
+      "ms": 50.0925
+    },
+    {
+      "name": "Paint",
+      "ms": 10.307999999999842
+    },
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 9.3275
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 6.363999999999999
+    },
+    {
+      "name": "LocalFrameView::UpdateStyleAndLayout",
+      "ms": 5.606
+    },
+    {
+      "name": "AnimationTimeline::serviceAnimations",
+      "ms": 5.204000000000004
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 4.931
+    },
+    {
+      "name": "LocalFrameView::RunPaintLifecyclePhase",
+      "ms": 4.524499999999999
+    },
+    {
+      "name": "RunTask",
+      "ms": 4.013499999999923
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 3.418499999999999
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL",
+      "ms": 1.9299999999999986
+    },
+    {
+      "name": "PageAnimator::serviceScriptedAnimations",
+      "ms": 1.7925
+    },
+    {
+      "name": "HitTest",
+      "ms": 1.5275
+    },
+    {
+      "name": "Commit",
+      "ms": 1.1155
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 1.0339999999999998
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING",
+      "ms": 0.8565000000000003
+    },
+    {
+      "name": "CullRectUpdate",
+      "ms": 0.5834999999999999
+    },
+    {
+      "name": "Blink.Paint.UpdateTime",
+      "ms": 0.5625000000000002
+    }
+  ],
+  "counts": [
+    {
+      "styled": 21043,
+      "stylePasses": 7,
+      "layoutDirty": 10059,
+      "layoutTotal": 36126,
+      "layouts": 6
+    },
+    {
+      "styled": 21043,
+      "stylePasses": 7,
+      "layoutDirty": 10059,
+      "layoutTotal": 36126,
+      "layouts": 6
+    },
+    {
+      "styled": 21043,
+      "stylePasses": 7,
+      "layoutDirty": 10059,
+      "layoutTotal": 36126,
+      "layouts": 6
+    },
+    {
+      "styled": 21043,
+      "stylePasses": 7,
+      "layoutDirty": 10059,
+      "layoutTotal": 36126,
+      "layouts": 6
+    }
+  ],
+  "selectors": null
+}

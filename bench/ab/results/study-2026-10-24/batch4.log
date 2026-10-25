@@ -1,0 +1,805 @@
+=== 02:56:18 trace base bars1000 warm
+base bars1000 (warm): main-thread self time, median of 5 traces (ms)
+  other      21.54
+  script     12.08
+  gc         4.10
+  style      0.01
+  layout     0.00
+  prepaint   0.00
+  paint      2.26
+  layerize   0.00
+  commit     0.03
+  window     39.17
+  counts (first trace): {"styled":3,"stylePasses":1,"layoutDirty":7,"layoutTotal":7,"layouts":1}
+  top events by self time:
+      16.64  LocalFrameView::performLayout
+      11.98  FunctionCall
+       3.19  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       2.26  Paint
+       1.82  Blink.PrePaint.UpdateTime
+       0.78  InlineNode::ShapeTextIncludingFirstLine
+       0.75  Blink.CompositingInputs.UpdateTime
+       0.64  PaintArtifactCompositor::Update
+       0.41  CullRectUpdate
+       0.18  V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL
+       0.17  MinorGC
+       0.12  V8.GC_SCAVENGER_SCAVENGE_ROOTS
+       0.11  V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL
+       0.07  v8.callFunction
+       0.07  V8.GC_SCAVENGER_SCAVENGE
+       0.06  V8.DeoptimizeCode
+       0.05  V8.GC_SCAVENGER
+       0.05  Blink.Paint.UpdateTime
+=== 02:56:25 trace base heat50 warm
+base heat50 (warm): main-thread self time, median of 5 traces (ms)
+  other      16.57
+  script     12.08
+  gc         3.79
+  style      0.01
+  layout     0.01
+  prepaint   0.00
+  paint      1.86
+  layerize   0.00
+  commit     0.03
+  window     34.38
+  counts (first trace): {"styled":3,"stylePasses":1,"layoutDirty":7,"layoutTotal":7,"layouts":1}
+  top events by self time:
+      14.20  LocalFrameView::performLayout
+      11.98  FunctionCall
+       3.15  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       1.86  Paint
+       1.00  Blink.PrePaint.UpdateTime
+       0.47  InlineNode::ShapeTextIncludingFirstLine
+       0.33  Blink.CompositingInputs.UpdateTime
+       0.12  CullRectUpdate
+       0.12  PaintArtifactCompositor::Update
+       0.11  V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL
+       0.11  V8.GC_SCAVENGER_SCAVENGE_ROOTS
+       0.11  MinorGC
+       0.07  V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL
+       0.06  v8.callFunction
+       0.06  V8.GC_SCAVENGER_SCAVENGE
+       0.04  Blink.Paint.UpdateTime
+       0.04  V8.GC_SCAVENGER
+       0.04  Document::recalcStyle
+=== 02:56:31 trace base dots10k warm
+base dots10k (warm): main-thread self time, median of 5 traces (ms)
+  other      116.08
+  script     24.93
+  gc         4.25
+  style      0.01
+  layout     0.01
+  prepaint   0.00
+  paint      6.90
+  layerize   0.01
+  commit     0.03
+  window     154.41
+  counts (first trace): {"styled":3,"stylePasses":1,"layoutDirty":7,"layoutTotal":7,"layouts":1}
+  top events by self time:
+     104.12  LocalFrameView::performLayout
+      24.81  FunctionCall
+       6.90  Paint
+       5.22  Blink.PrePaint.UpdateTime
+       3.47  PaintArtifactCompositor::Update
+       3.21  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       1.31  CullRectUpdate
+       1.25  Blink.CompositingInputs.UpdateTime
+       0.31  V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED
+       0.16  V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL
+       0.14  V8.GC_SCAVENGER_SCAVENGE_ROOTS
+       0.11  Document::recalcStyle
+       0.09  Blink.Paint.UpdateTime
+       0.08  MinorGC
+       0.08  V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL
+       0.06  v8.callFunction
+       0.06  LocalFrameView::RunPaintLifecyclePhase
+       0.05  RunTask
+=== 02:56:39 trace base bars1000 update:one
+base bars1000 update:one: main-thread self time, median of 4 traces (ms)
+  other      29.18
+  script     9.68
+  layout     0.49
+  prepaint   0.14
+  paint      5.50
+  layerize   1.06
+  commit     1.39
+  gc         1.41
+  style      0.04
+  window     759.33
+  counts (first trace): {"styled":18,"stylePasses":6,"layoutDirty":61,"layoutTotal":36162,"layouts":6}
+  top events by self time:
+       9.73  LocalFrameView::performLayout
+       7.63  HitTest
+       7.30  FunctionCall
+       6.22  PaintArtifactCompositor::Update
+       5.50  Paint
+       1.46  RunTask
+       1.39  Commit
+       1.30  Blink.CompositingInputs.UpdateTime
+       1.07  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       1.04  Layerize
+       0.71  Blink.Paint.UpdateTime
+       0.69  v8.callFunction
+       0.56  LocalFrameView::RunPaintLifecyclePhase
+       0.54  Document::recalcStyle
+       0.49  Layout
+       0.45  MessagePort::Accept
+       0.42  AsyncTask Run
+       0.42  WebFrameWidgetImpl::UpdateLifecycle
+=== 02:56:47 trace base bars1000 update:all
+base bars1000 update:all: main-thread self time, median of 4 traces (ms)
+  other      112.87
+  script     18.55
+  layout     0.26
+  prepaint   0.09
+  paint      12.46
+  layerize   0.76
+  commit     1.20
+  gc         4.58
+  style      0.03
+  window     759.41
+  counts (first trace): {"styled":18000,"stylePasses":6,"layoutDirty":13048,"layoutTotal":36162,"layouts":6}
+  top events by self time:
+      56.04  Document::recalcStyle
+      18.04  LocalFrameView::performLayout
+      13.23  FunctionCall
+      12.46  Paint
+       8.88  Blink.PrePaint.UpdateTime
+       6.68  LocalFrameView::UpdateStyleAndLayout
+       5.99  AnimationTimeline::serviceAnimations
+       4.80  LocalFrameView::RunPaintLifecyclePhase
+       4.61  RunTask
+       3.17  PaintArtifactCompositor::Update
+       2.02  PageAnimator::serviceScriptedAnimations
+       2.00  HitTest
+       1.68  Blink.CompositingInputs.UpdateTime
+       1.20  Commit
+       1.11  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       1.09  V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING
+       0.87  V8.GC_MARK_COMPACTOR
+       0.72  CullRectUpdate
+=== 02:56:56 trace base bars1000 update:scale
+base bars1000 update:scale: main-thread self time, median of 4 traces (ms)
+  other      124.39
+  script     8.37
+  style      0.03
+  layout     0.28
+  prepaint   0.07
+  paint      9.56
+  layerize   0.11
+  commit     1.04
+  gc         4.33
+  window     777.52
+  counts (first trace): {"styled":21043,"stylePasses":7,"layoutDirty":10059,"layoutTotal":36126,"layouts":6}
+  top events by self time:
+      75.05  Document::recalcStyle
+      10.72  LocalFrameView::performLayout
+       9.56  Paint
+       7.32  Blink.PrePaint.UpdateTime
+       6.07  LocalFrameView::UpdateStyleAndLayout
+       5.35  AnimationTimeline::serviceAnimations
+       4.96  PaintArtifactCompositor::Update
+       4.40  LocalFrameView::RunPaintLifecyclePhase
+       4.07  RunTask
+       3.65  FunctionCall
+       2.02  HitTest
+       1.86  PageAnimator::serviceScriptedAnimations
+       1.69  V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING
+       1.52  V8.GC_MARK_COMPACTOR
+       1.11  Blink.CompositingInputs.UpdateTime
+       1.04  Commit
+       0.68  CullRectUpdate
+       0.61  Blink.Paint.UpdateTime
+=== 02:57:05 trace base bars1000 update:sort
+base bars1000 update:sort: main-thread self time, median of 4 traces (ms)
+  other      113.28
+  script     10.50
+  style      0.04
+  gc         3.75
+  prepaint   0.07
+  layerize   0.85
+  commit     0.93
+  layout     0.31
+  paint      42.22
+  window     758.45
+  counts (first trace): {"styled":16000,"stylePasses":11,"layoutDirty":80,"layoutTotal":60270,"layouts":10}
+  top events by self time:
+      54.74  Document::recalcStyle
+      42.22  Paint
+      26.23  Blink.PrePaint.UpdateTime
+       7.81  PaintArtifactCompositor::Update
+       6.30  FunctionCall
+       6.01  AnimationTimeline::serviceAnimations
+       4.45  LocalFrameView::performLayout
+       3.63  LocalFrameView::RunPaintLifecyclePhase
+       3.58  RunTask
+       3.39  LocalFrameView::UpdateStyleAndLayout
+       1.92  CullRectUpdate
+       1.58  V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING
+       1.24  V8.GC_MARK_COMPACTOR
+       0.94  PageAnimator::serviceScriptedAnimations
+       0.93  Commit
+       0.81  UpdateLayer
+       0.77  Blink.CompositingInputs.UpdateTime
+       0.61  Blink.Paint.UpdateTime
+=== 02:57:15 trace posalias bars1000 warm
+posalias bars1000 (warm): main-thread self time, median of 5 traces (ms)
+  other      18.11
+  script     12.92
+  gc         4.42
+  style      0.01
+  layout     0.00
+  prepaint   0.00
+  paint      2.02
+  layerize   0.00
+  commit     0.03
+  window     38.23
+  counts (first trace): {"styled":3,"stylePasses":1,"layoutDirty":7,"layoutTotal":7,"layouts":1}
+  top events by self time:
+      14.13  LocalFrameView::performLayout
+      12.82  FunctionCall
+       3.43  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       2.02  Paint
+       1.35  Blink.PrePaint.UpdateTime
+       0.76  InlineNode::ShapeTextIncludingFirstLine
+       0.57  PaintArtifactCompositor::Update
+       0.55  Blink.CompositingInputs.UpdateTime
+       0.37  CullRectUpdate
+       0.18  V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL
+       0.16  MinorGC
+       0.13  V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL
+       0.12  V8.GC_SCAVENGER_SCAVENGE_ROOTS
+       0.07  V8.GC_SCAVENGER_SCAVENGE
+       0.06  v8.callFunction
+       0.06  V8.DeoptimizeCode
+       0.05  V8.GC_SCAVENGER
+       0.04  V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_PROCESS
+=== 02:57:21 trace posalias heat50 warm
+posalias heat50 (warm): main-thread self time, median of 5 traces (ms)
+  other      14.03
+  script     11.05
+  gc         3.22
+  style      0.01
+  layout     0.00
+  prepaint   0.00
+  paint      1.75
+  layerize   0.00
+  commit     0.02
+  window     31.02
+  counts (first trace): {"styled":3,"stylePasses":1,"layoutDirty":7,"layoutTotal":7,"layouts":1}
+  top events by self time:
+      11.77  LocalFrameView::performLayout
+      10.96  FunctionCall
+       2.71  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       1.75  Paint
+       0.88  Blink.PrePaint.UpdateTime
+       0.49  InlineNode::ShapeTextIncludingFirstLine
+       0.28  Blink.CompositingInputs.UpdateTime
+       0.16  Blink.Paint.UpdateTime
+       0.12  CullRectUpdate
+       0.11  PaintArtifactCompositor::Update
+       0.09  V8.GC_SCAVENGER_SCAVENGE_ROOTS
+       0.08  MinorGC
+       0.08  V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL
+       0.05  v8.callFunction
+       0.05  V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL
+       0.04  V8.GC_SCAVENGER_SCAVENGE
+       0.03  V8.GC_SCAVENGER
+       0.03  Document::recalcStyle
+=== 02:57:28 trace posalias dots10k warm
+posalias dots10k (warm): main-thread self time, median of 5 traces (ms)
+  other      118.03
+  script     31.44
+  gc         4.61
+  style      0.01
+  layout     0.00
+  prepaint   0.00
+  paint      7.11
+  layerize   0.01
+  commit     0.03
+  window     158.19
+  counts (first trace): {"styled":3,"stylePasses":1,"layoutDirty":7,"layoutTotal":7,"layouts":1}
+  top events by self time:
+     106.89  LocalFrameView::performLayout
+      31.35  FunctionCall
+       7.11  Paint
+       5.16  Blink.PrePaint.UpdateTime
+       3.55  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       3.47  PaintArtifactCompositor::Update
+       1.23  CullRectUpdate
+       1.09  Blink.CompositingInputs.UpdateTime
+       0.31  V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED
+       0.15  V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL
+       0.13  V8.GC_SCAVENGER_SCAVENGE_ROOTS
+       0.11  Document::recalcStyle
+       0.09  LocalFrameView::RunPaintLifecyclePhase
+       0.09  Blink.Paint.UpdateTime
+       0.09  MinorGC
+       0.08  V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL
+       0.07  v8.callFunction
+       0.05  WebFrameWidgetImpl::UpdateLifecycle
+=== 02:57:36 trace posalias bars1000 update:one
+posalias bars1000 update:one: main-thread self time, median of 4 traces (ms)
+  other      37.19
+  script     10.08
+  layout     0.77
+  prepaint   0.12
+  paint      6.85
+  layerize   0.92
+  commit     1.42
+  gc         1.32
+  style      0.06
+  window     761.95
+  counts (first trace): {"styled":18,"stylePasses":6,"layoutDirty":61,"layoutTotal":36162,"layouts":6}
+  top events by self time:
+      13.65  LocalFrameView::performLayout
+       9.08  PaintArtifactCompositor::Update
+       7.69  FunctionCall
+       6.85  Paint
+       6.57  HitTest
+       1.68  Blink.CompositingInputs.UpdateTime
+       1.54  RunTask
+       1.42  Commit
+       1.04  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       0.90  Layerize
+       0.77  Layout
+       0.77  Document::recalcStyle
+       0.71  Blink.Paint.UpdateTime
+       0.71  v8.callFunction
+       0.57  LocalFrameView::RunPaintLifecyclePhase
+       0.54  Blink.PrePaint.UpdateTime
+       0.49  MessagePort::Accept
+       0.42  WebFrameWidgetImpl::UpdateLifecycle
+=== 02:57:44 trace posalias bars1000 update:all
+posalias bars1000 update:all: main-thread self time, median of 4 traces (ms)
+  other      104.96
+  script     17.22
+  layout     0.26
+  prepaint   0.09
+  paint      11.73
+  layerize   0.71
+  commit     1.20
+  gc         5.44
+  style      0.03
+  window     760.19
+  counts (first trace): {"styled":18000,"stylePasses":6,"layoutDirty":13048,"layoutTotal":36162,"layouts":6}
+  top events by self time:
+      52.52  Document::recalcStyle
+      16.06  LocalFrameView::performLayout
+      12.59  FunctionCall
+      11.73  Paint
+       8.06  Blink.PrePaint.UpdateTime
+       5.43  LocalFrameView::UpdateStyleAndLayout
+       5.26  AnimationTimeline::serviceAnimations
+       4.31  LocalFrameView::RunPaintLifecyclePhase
+       3.88  RunTask
+       2.92  PaintArtifactCompositor::Update
+       2.12  PageAnimator::serviceScriptedAnimations
+       1.79  V8.GC_MC_INCREMENTAL
+       1.69  HitTest
+       1.44  Blink.CompositingInputs.UpdateTime
+       1.20  Commit
+       1.12  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       0.81  V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING
+       0.64  Layerize
+=== 02:57:53 trace posalias bars1000 update:scale
+posalias bars1000 update:scale: main-thread self time, median of 4 traces (ms)
+  other      96.21
+  script     8.10
+  style      0.03
+  layout     0.34
+  prepaint   0.08
+  paint      10.31
+  layerize   0.12
+  commit     1.12
+  gc         4.12
+  window     760.71
+  counts (first trace): {"styled":21043,"stylePasses":7,"layoutDirty":10059,"layoutTotal":36126,"layouts":6}
+  top events by self time:
+      50.09  Document::recalcStyle
+      10.31  Paint
+       9.33  LocalFrameView::performLayout
+       6.36  Blink.PrePaint.UpdateTime
+       5.61  LocalFrameView::UpdateStyleAndLayout
+       5.20  AnimationTimeline::serviceAnimations
+       4.93  PaintArtifactCompositor::Update
+       4.52  LocalFrameView::RunPaintLifecyclePhase
+       4.01  RunTask
+       3.42  FunctionCall
+       1.93  V8.GC_MC_INCREMENTAL
+       1.79  PageAnimator::serviceScriptedAnimations
+       1.53  HitTest
+       1.12  Commit
+       1.03  Blink.CompositingInputs.UpdateTime
+       0.86  V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING
+       0.58  CullRectUpdate
+       0.56  Blink.Paint.UpdateTime
+=== 02:58:02 trace posalias bars1000 update:sort
+posalias bars1000 update:sort: main-thread self time, median of 4 traces (ms)
+  other      70.28
+  script     9.60
+  style      0.04
+  prepaint   0.06
+  layerize   0.84
+  commit     1.01
+  gc         1.23
+  layout     0.31
+  paint      38.68
+  window     759.01
+  counts (first trace): {"styled":11000,"stylePasses":11,"layoutDirty":80,"layoutTotal":60270,"layouts":10}
+  top events by self time:
+      38.68  Paint
+      25.37  Document::recalcStyle
+      17.13  Blink.PrePaint.UpdateTime
+       8.09  FunctionCall
+       7.47  PaintArtifactCompositor::Update
+       4.63  AnimationTimeline::serviceAnimations
+       4.26  LocalFrameView::performLayout
+       3.16  LocalFrameView::RunPaintLifecyclePhase
+       2.49  LocalFrameView::UpdateStyleAndLayout
+       1.60  CullRectUpdate
+       1.03  RunTask
+       1.01  Commit
+       0.95  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       0.91  PageAnimator::serviceScriptedAnimations
+       0.80  UpdateLayer
+       0.78  Blink.CompositingInputs.UpdateTime
+       0.58  Blink.Paint.UpdateTime
+       0.50  v8.callFunction
+=== 02:58:11 selectors base bars1000
+base bars1000 (warm): main-thread self time, median of 3 traces (ms)
+  other      130.94
+  script     9.09
+  gc         4.63
+  style      0.01
+  layout     0.01
+  prepaint   0.00
+  paint      2.97
+  layerize   0.00
+  commit     0.03
+  window     147.29
+  counts (first trace): {"styled":3,"stylePasses":1,"layoutDirty":7,"layoutTotal":7,"layouts":1}
+  top events by self time:
+     119.02  LocalFrameView::performLayout
+       8.99  FunctionCall
+       2.97  Paint
+       2.50  V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE
+       2.49  Blink.PrePaint.UpdateTime
+       1.18  Blink.CompositingInputs.UpdateTime
+       0.83  InlineNode::ShapeTextIncludingFirstLine
+       0.76  PaintArtifactCompositor::Update
+       0.75  V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING
+       0.73  CullRectUpdate
+       0.62  Document::recalcStyle
+       0.23  V8.GC_MC_INCREMENTAL
+       0.14  V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL
+       0.13  MinorGC
+       0.12  V8.GC_SCAVENGER_SCAVENGE_ROOTS
+       0.07  Blink.Paint.UpdateTime
+       0.07  v8.callFunction
+       0.07  V8.GC_TIME_TO_SAFEPOINT
+  selector matching total 0.01 ms; top selectors (ms, attempts, matches):
+      0.00       3       0  :is(.rhp-label, .rhp-gridline > span, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) ::selection
+      0.00       6       6  div
+      0.00       3       1  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object), .rhp-ba
+      0.00       3       1  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp
+      0.00       1       1  .rhp-chart[data-rhp-o="h"]:not([data-rhp-aspect]) > .rhp-body
+      0.00       3       0  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-place, .rhp-area, .rhp-line, .rhp-gridline)
+      0.00       3       0  :where(:root:active-view-transition .rhp-plot > *)
+      0.00       3       0  .rhp-chart[data-rhp-turning] .rhp-plot[data-rhp-reorder] > *
+      0.00       3       0  .rhp-body > *
+      0.00       3       1  :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::before
+      0.00       1       1  .rhp-chart
+      0.00       3       1  :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::after
+      0.00       3       0  .rhp-chart[data-rhp-turning] *
+      0.00       1       0  .rhp-chart[data-rhp-o="h"][data-rhp-sized]:not([data-rhp-aspect]) > .rhp-body
+      0.00       3       0  .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap]) > *
+      0.00       1       0  .rhp-chart[data-rhp-turning]
+      0.00       1       0  .rhp-chart[data-rhp-aspect] > .rhp-body
+      0.00       3       0  .rhp-plot[data-rhp-overlap] > :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line)
+      0.00       3       0  .rhp-plot > *
+      0.00       3       0  :is(.rhp-label, .rhp-gridline > span)::selection
+      0.00       3       0  .rhp-plot[data-rhp-reorder="slide"]:not([data-rhp-overlap]) > *
+      0.00       1       0  .rhp-chart[data-rhp-o="v"]:not([data-rhp-aspect]) > .rhp-body
+      0.00       3       0  .rhp-plot[data-rhp-o="v"]:not([data-rhp-overlap]) > *
+      0.00       2       2  .rhp-body
+      0.00       1       0  .rhp-chart[data-rhp-aspect]
+=== 02:58:16 selectors base plain1000 pre
+base plain1000: main-thread self time, median of 3 traces (ms)
+  other      57.79
+  script     4.88
+  style      0.01
+  layout     0.03
+  prepaint   0.00
+  paint      1.75
+  layerize   0.01
+  commit     0.03
+  window     64.78
+  counts (first trace): {"styled":4002,"stylePasses":1,"layoutDirty":6006,"layoutTotal":6149,"layouts":1}
+  top events by self time:
+      49.16  Document::recalcStyle
+       4.77  FunctionCall
+       3.84  LocalFrameView::performLayout
+       1.75  Paint
+       1.67  InlineNode::ShapeTextIncludingFirstLine
+       1.01  Document::rebuildLayoutTree
+       0.90  Blink.PrePaint.UpdateTime
+       0.56  Blink.CompositingInputs.UpdateTime
+       0.22  PaintArtifactCompositor::Update
+       0.10  CullRectUpdate
+       0.07  v8.callFunction
+       0.07  MessagePort::Accept
+       0.06  Blink.Paint.UpdateTime
+       0.04  RunTask
+       0.03  Commit
+       0.03  Layout
+       0.02  WebFrameWidgetImpl::UpdateLifecycle
+       0.02  SelectorStats
+  selector matching total 3.54 ms; top selectors (ms, attempts, matches):
+      1.17    4002       0  :is(.rhp-label, .rhp-gridline > span, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell) ::selection
+      0.46    4002       0  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > :not(svg, img, canvas, video, iframe, embed, object), .rhp-ba
+      0.43    4002       0  :where(.rhp-body, .rhp-axis, .rhp-gridline, .rhp-gridline > span, .rhp-plot, .rhp-plot > *, .rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp
+      0.22    4002       0  :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label[data-rhp-at], .rhp-place, .rhp-area, .rhp-line, .rhp-gridline)
+      0.19    4002       0  :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::after
+      0.18    4002       0  :where(.rhp-body, .rhp-axis, .rhp-plot, .rhp-plot > *)::before
+      0.12    4002       0  :is(.rhp-label, .rhp-gridline > span)::selection
+      0.11    4002       0  :where(:root:active-view-transition .rhp-plot > *)
+      0.09    4004    4004  div
+      0.06    4002       0  .rhp-plot[data-rhp-overlap] > :not(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-label, .rhp-cell, .rhp-place, .rhp-area, .rhp-line)
+      0.06    4002       0  .rhp-plot > *
+      0.06    4002       0  .rhp-chart[data-rhp-turning] .rhp-plot[data-rhp-reorder] > *
+      0.06    4002       0  .rhp-plot[data-rhp-reorder="slide"]:not([data-rhp-overlap]) > *
+      0.06    4002       0  .rhp-plot[data-rhp-o="v"]:not([data-rhp-overlap]) > *
+      0.06    4002       0  .rhp-plot[data-rhp-o="h"]:not([data-rhp-overlap]) > *
+      0.06    4002       0  .rhp-chart[data-rhp-turning] *
+      0.06    4002       0  .rhp-body > *
+      0.03    2000       0  .rhp-gridline > span
+      0.03    2000       0  .rhp-gridline[data-rhp-o="v"] > span
+      0.02    2000       0  .rhp-gridline[data-rhp-o="h"] > span
+=== 02:58:19 profile base bars1000 cold
+base bars1000: 17.25 ms of samples per run (mean of 8)
+    3.04 ms  (garbage collector) (native):0
+    0.95 ms  (anonymous) base.js:2772
+    0.75 ms  runComputation base.js:325
+    0.62 ms  important base.js:1624
+    0.54 ms  setAttribute (native):0
+    0.48 ms  insertExpression base.js:1478
+    0.47 ms  (anonymous) base.js:3435
+    0.44 ms  (anonymous) base.js:4472
+    0.40 ms  readSignal base.js:240
+    0.36 ms  adoptInto base.js:1882
+    0.31 ms  (anonymous) base.js:829
+    0.27 ms  cloneNode (native):0
+    0.27 ms  Label base.js:2865
+    0.24 ms  Plot base.js:3172
+    0.23 ms  slat2 base.js:3426
+    0.22 ms  insertBefore (native):0
+    0.21 ms  setProperty base.js:2240
+    0.20 ms  uncomment base.js:1677
+    0.20 ms  others base.js:2743
+    0.19 ms  flush2 base.js:1632
+    0.17 ms  browserBlock base.js:2750
+    0.17 ms  updateComputation base.js:309
+    0.17 ms  coreSheet base.js:1967
+    0.15 ms  (anonymous) base.js:769
+    0.15 ms  appendChild (native):0
+    0.15 ms  insert base.js:1349
+    0.14 ms  updateArray base.js:2272
+    0.14 ms  createComputation base.js:360
+    0.14 ms  (anonymous) base.js:1352
+    0.13 ms  children base.js:3551
+=== 02:58:24 profile base bars1000 warm
+base bars1000 (warm): 12.49 ms of samples per run (mean of 8)
+    5.53 ms  (garbage collector) (native):0
+    0.59 ms  setProperty (native):0
+    0.52 ms  setAttribute (native):0
+    0.36 ms  insertExpression base.js:1478
+    0.36 ms  (anonymous) base.js:2772
+    0.30 ms  insertBefore (native):0
+    0.30 ms  readSignal base.js:240
+    0.29 ms  (anonymous) base.js:4472
+    0.27 ms  (anonymous) base.js:3435
+    0.25 ms  runComputation base.js:325
+    0.24 ms  others base.js:2743
+    0.19 ms  slat2 base.js:3426
+    0.19 ms  cloneNode (native):0
+    0.15 ms  createComponent base.js:819
+    0.14 ms  insert base.js:1349
+    0.13 ms  createComputation base.js:360
+    0.12 ms  appendChild (native):0
+    0.11 ms  get base.js:3024
+    0.10 ms  createSignal base.js:71
+    0.10 ms  children base.js:3551
+    0.09 ms  js base.js:3265
+    0.09 ms  updateComputation base.js:309
+    0.09 ms  fn base.js:1255
+    0.09 ms  setProperty base.js:2240
+    0.06 ms  (anonymous) base.js:2831
+    0.06 ms  completeUpdates base.js:461
+    0.06 ms  cleanChildren base.js:1589
+    0.05 ms  evaluate (native):305
+    0.05 ms  isList base.js:2971
+    0.05 ms  values base.js:4441
+=== 02:58:33 profile base dash50 cold
+base dash50: 15.58 ms of samples per run (mean of 8)
+    3.02 ms  (garbage collector) (native):0
+    0.62 ms  runComputation base.js:325
+    0.61 ms  important base.js:1624
+    0.47 ms  style base.js:1316
+    0.40 ms  (anonymous) base.js:2772
+    0.37 ms  (anonymous) base.js:829
+    0.33 ms  adoptInto base.js:1882
+    0.32 ms  insertExpression base.js:1478
+    0.30 ms  Chart base.js:3680
+    0.29 ms  uncomment base.js:1677
+    0.27 ms  insertBefore (native):0
+    0.26 ms  (anonymous) base.js:3435
+    0.26 ms  cloneNode (native):0
+    0.25 ms  Plot base.js:3172
+    0.24 ms  createRenderEffect.e base.js:3906
+    0.22 ms  readSignal base.js:240
+    0.21 ms  flush2 base.js:1632
+    0.20 ms  makePlot base.js:3175
+    0.20 ms  updateComputation base.js:309
+    0.19 ms  createMemo base.js:105
+    0.16 ms  setAttribute (native):0
+    0.16 ms  setProperty base.js:2240
+    0.14 ms  untrack base.js:149
+    0.14 ms  slat2 base.js:3426
+    0.14 ms  runUpdates base.js:444
+    0.13 ms  (anonymous) base.js:4590
+    0.13 ms  (anonymous) base.js:3828
+    0.12 ms  nice base.js:2594
+    0.12 ms  (anonymous) base.js:1352
+    0.11 ms  serialize (native):175
+=== 02:58:38 profile base dash50 warm
+base dash50 (warm): 7.22 ms of samples per run (mean of 8)
+    1.60 ms  (garbage collector) (native):0
+    0.65 ms  setProperty (native):0
+    0.24 ms  setAttribute (native):0
+    0.24 ms  runComputation base.js:325
+    0.19 ms  insertBefore (native):0
+    0.17 ms  readSignal base.js:240
+    0.16 ms  insertExpression base.js:1478
+    0.16 ms  createMemo base.js:105
+    0.15 ms  slat2 base.js:3426
+    0.15 ms  (anonymous) base.js:4590
+    0.15 ms  cloneNode (native):0
+    0.14 ms  createComponent base.js:819
+    0.12 ms  createRenderEffect.e base.js:3906
+    0.11 ms  makePlot base.js:3175
+    0.10 ms  (anonymous) base.js:3435
+    0.09 ms  (anonymous) base.js:2772
+    0.09 ms  (anonymous) base.js:4064
+    0.09 ms  createComputation base.js:360
+    0.09 ms  replaceChildren (native):0
+    0.09 ms  read base.js:3220
+    0.09 ms  insert base.js:1349
+    0.08 ms  updateComputation base.js:309
+    0.08 ms  nice base.js:2594
+    0.08 ms  untrack base.js:149
+    0.07 ms  style base.js:1316
+    0.07 ms  createSignal base.js:71
+    0.07 ms  children base.js:3551
+    0.07 ms  tickValues base.js:3606
+    0.06 ms  arrange base.js:3746
+    0.05 ms  Plot base.js:3172
+=== 02:58:46 profile base dots10k cold
+base dots10k: 38.85 ms of samples per run (mean of 8)
+    8.73 ms  (garbage collector) (native):0
+    8.53 ms  (anonymous) base.js:2772
+    2.57 ms  (anonymous) base.js:3484
+    1.66 ms  setAttribute (native):0
+    1.06 ms  (anonymous) base.js:4638
+    0.90 ms  runComputation base.js:325
+    0.74 ms  others base.js:2743
+    0.72 ms  cloneNode (native):0
+    0.60 ms  important base.js:1624
+    0.59 ms  drawn2 base.js:3481
+    0.50 ms  (anonymous) base.js:4452
+    0.44 ms  insertBefore (native):0
+    0.38 ms  adoptInto base.js:1882
+    0.38 ms  range base.js:3019
+    0.36 ms  read base.js:3220
+    0.36 ms  getNode base.js:2184
+    0.35 ms  updateFn base.js:61
+    0.35 ms  appendChild (native):0
+    0.34 ms  createSignal base.js:71
+    0.34 ms  readSignal base.js:240
+    0.33 ms  cleanNode base.js:576
+    0.30 ms  (anonymous) base.js:829
+    0.30 ms  setProperty base.js:2240
+    0.27 ms  (anonymous) base.js:2831
+    0.26 ms  points base.js:4450
+    0.26 ms  normalizeIncomingArray base.js:1561
+    0.25 ms  createRoot base.js:55
+    0.24 ms  updateArray base.js:2272
+    0.24 ms  Plot base.js:3172
+    0.23 ms  get base.js:3024
+=== 02:58:52 profile base dots10k warm
+base dots10k (warm): 29.13 ms of samples per run (mean of 8)
+    7.55 ms  setProperty (native):0
+    4.65 ms  (garbage collector) (native):0
+    2.14 ms  (anonymous) base.js:2772
+    1.58 ms  setAttribute (native):0
+    1.16 ms  (anonymous) base.js:4638
+    1.02 ms  (anonymous) base.js:3484
+    0.76 ms  others base.js:2743
+    0.70 ms  drawn2 base.js:3481
+    0.70 ms  insertBefore (native):0
+    0.53 ms  runComputation base.js:325
+    0.52 ms  cloneNode (native):0
+    0.39 ms  readSignal base.js:240
+    0.36 ms  (anonymous) base.js:4452
+    0.36 ms  createSignal base.js:71
+    0.34 ms  range base.js:3019
+    0.33 ms  read base.js:3220
+    0.33 ms  updateFn base.js:61
+    0.29 ms  cleanNode base.js:576
+    0.26 ms  appendChild (native):0
+    0.25 ms  get base.js:3024
+    0.25 ms  normalizeIncomingArray base.js:1561
+    0.23 ms  points base.js:4450
+    0.21 ms  runUpdates base.js:444
+    0.21 ms  getNode base.js:2184
+    0.20 ms  browserBlock base.js:2750
+    0.20 ms  updateArray base.js:2272
+    0.19 ms  setProperty base.js:2240
+    0.18 ms  (anonymous) base.js:2840
+    0.18 ms  unwrap base.js:2153
+    0.17 ms  (anonymous) base.js:2831
+=== 02:59:03 micro style-cache
+round 1/12round 2/12round 3/12round 4/12round 5/12round 6/12round 7/12round 8/12round 9/12round 10/12round 11/12round 12/12
+frame:
+  none            8.39 ms (±0.5%)  (base)
+  classes         9.45 ms (±1.2%)  +12.9% [+11.6, +14.2] *
+  literal         9.40 ms (±1.6%)  +12.9% [+11.2, +16.0] *
+  unique         13.64 ms (±1.4%)  +62.8% [+61.1, +64.5] *
+  ten             9.41 ms (±0.5%)  +12.4% [+11.8, +13.1] *
+  tenAttr         9.25 ms (±1.3%)  +10.5% [+9.1, +12.7] *
+  inlineLeft     12.64 ms (±1.2%)  +50.9% [+49.7, +52.5] *
+style:
+  none            2.60 ms (±0.8%)  (base)
+  classes         2.83 ms (±1.4%)  +9.0% [+7.9, +10.1] *
+  literal         2.75 ms (±1.8%)  +6.4% [+4.2, +8.2] *
+  unique          5.59 ms (±1.7%)  +117.8% [+114.2, +120.2] *
+  ten             2.81 ms (±1.0%)  +8.8% [+7.7, +9.9] *
+  tenAttr         2.80 ms (±1.7%)  +8.5% [+7.2, +10.1] *
+  inlineLeft      4.74 ms (±3.1%)  +83.1% [+78.6, +88.4] *
+layout:
+  none            1.63 ms (±2.3%)  (base)
+  classes         1.63 ms (±2.9%)  +1.0% [-1.3, +4.1]
+  literal         1.62 ms (±1.8%)  +0.3% [-1.7, +3.9]
+  unique          2.19 ms (±1.8%)  +34.8% [+31.7, +37.5] *
+  ten             1.62 ms (±1.2%)  -0.7% [-1.9, +0.8]
+  tenAttr         1.63 ms (±1.8%)  -0.2% [-1.8, +2.5]
+  inlineLeft      2.18 ms (±4.0%)  +34.4% [+30.0, +40.1] *
+=== 02:59:44 micro inherit-cache
+round 1/12round 2/12round 3/12round 4/12round 5/12round 6/12round 7/12round 8/12round 9/12round 10/12round 11/12round 12/12
+frame:
+  same           11.86 ms (±0.7%)  (base)
+  parentVar      27.33 ms (±1.3%)  +130.3% [+124.5, +134.6] *
+  parentVarRead   30.39 ms (±2.0%)  +154.5% [+146.4, +159.2] *
+  parentTop      15.57 ms (±1.5%)  +31.1% [+29.2, +33.2] *
+style:
+  same            3.36 ms (±1.9%)  (base)
+  parentVar      15.38 ms (±2.5%)  +355.0% [+345.3, +365.4] *
+  parentVarRead   17.53 ms (±1.9%)  +419.4% [+408.6, +429.5] *
+  parentTop       4.75 ms (±2.4%)  +42.2% [+40.0, +44.5] *
+layout:
+  same            2.50 ms (±0.9%)  (base)
+  parentVar       3.47 ms (±2.1%)  +37.9% [+33.8, +40.9] *
+  parentVarRead    3.53 ms (±3.3%)  +41.5% [+35.6, +44.7] *
+  parentTop       3.14 ms (±2.8%)  +25.6% [+22.8, +29.6] *
+=== 03:00:09 micro attr-cache
+round 1/12round 2/12round 3/12round 4/12round 5/12round 6/12round 7/12round 8/12round 9/12round 10/12round 11/12round 12/12
+frame:
+  vars           37.63 ms (±1.7%)  (base)
+  attr           38.04 ms (±1.2%)  +1.4% [+0.1, +2.8] *
+style:
+  vars           21.43 ms (±2.2%)  (base)
+  attr           24.16 ms (±1.2%)  +12.6% [+11.2, +14.7] *
+layout:
+  vars            3.13 ms (±3.1%)  (base)
+  attr            2.83 ms (±3.1%)  -8.9% [-11.7, -6.0] *
+=== 03:00:22 done

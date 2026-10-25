@@ -1,0 +1,6 @@
+bars20: base draws 97 elements
+  guardlayer     0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-body       0 of 97 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+dash50: base draws 2201 elements
+  guardlayer     0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)
+  sel-body       0 of 2201 boxes moved, at most 0.000 px; 0 pixels differ (largest channel difference 0)

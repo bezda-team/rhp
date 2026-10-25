@@ -1,0 +1,125 @@
+{
+  "variant": "base",
+  "scenario": "bars1000",
+  "warm": false,
+  "update": "sort",
+  "runs": 4,
+  "query": "",
+  "phases": {
+    "other": 113.27900000000042,
+    "script": 10.499500000000065,
+    "style": 0.038000000000000006,
+    "gc": 3.74899999999999,
+    "prepaint": 0.0665,
+    "layerize": 0.8505,
+    "commit": 0.9315,
+    "layout": 0.31400000000000006,
+    "paint": 42.2164999999983,
+    "window": 758.4545
+  },
+  "top": [
+    {
+      "name": "Document::recalcStyle",
+      "ms": 54.74
+    },
+    {
+      "name": "Paint",
+      "ms": 42.2164999999983
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 26.229
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 7.811999999999999
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 6.298
+    },
+    {
+      "name": "AnimationTimeline::serviceAnimations",
+      "ms": 6.011000000000003
+    },
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 4.4475
+    },
+    {
+      "name": "LocalFrameView::RunPaintLifecyclePhase",
+      "ms": 3.626999999999999
+    },
+    {
+      "name": "RunTask",
+      "ms": 3.575999999999918
+    },
+    {
+      "name": "LocalFrameView::UpdateStyleAndLayout",
+      "ms": 3.3869999999999987
+    },
+    {
+      "name": "CullRectUpdate",
+      "ms": 1.915999999999999
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING",
+      "ms": 1.5834999999999977
+    },
+    {
+      "name": "V8.GC_MARK_COMPACTOR",
+      "ms": 1.2375
+    },
+    {
+      "name": "PageAnimator::serviceScriptedAnimations",
+      "ms": 0.9395
+    },
+    {
+      "name": "Commit",
+      "ms": 0.9315
+    },
+    {
+      "name": "UpdateLayer",
+      "ms": 0.8105
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 0.766
+    },
+    {
+      "name": "Blink.Paint.UpdateTime",
+      "ms": 0.6065000000000002
+    }
+  ],
+  "counts": [
+    {
+      "styled": 16000,
+      "stylePasses": 11,
+      "layoutDirty": 80,
+      "layoutTotal": 60270,
+      "layouts": 10
+    },
+    {
+      "styled": 16000,
+      "stylePasses": 11,
+      "layoutDirty": 80,
+      "layoutTotal": 60270,
+      "layouts": 10
+    },
+    {
+      "styled": 16000,
+      "stylePasses": 11,
+      "layoutDirty": 80,
+      "layoutTotal": 60270,
+      "layouts": 10
+    },
+    {
+      "styled": 16000,
+      "stylePasses": 11,
+      "layoutDirty": 80,
+      "layoutTotal": 60270,
+      "layouts": 10
+    }
+  ],
+  "selectors": null
+}

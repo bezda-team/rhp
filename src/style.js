@@ -4,6 +4,7 @@
 // layer wins for !important, and layered !important beats unlayered rules. Bulk points protect their geometry
 // explicitly, leaving their appearance defaults open to ordinary application classes.
 import CORE from "./rhp.css";
+import GUARD from "./guard.css";
 import MANYDOTS from "./manydots.css";
 import GUTTERS from "./gutters.css";
 import CROSS from "./cross.css";
@@ -457,11 +458,46 @@ function update(entry, css) {
 }
 
 let coreText;
+let guardText;
+let gatedText;
 let guttersText;
 let crossText;
 
+// noCssGuard() where the app starts, before the first chart (on the server and in the browser): no chart on the page
+// gets the guard (guard.css). For a page whose own CSS leaves rhp's elements alone, such as a poster or an article
+// with one large chart. A Chart can also say noCssGuard for itself.
+let guarded = true;
+export function noCssGuard() {
+  guarded = false;
+}
+
+// Whether charts that don't say noCssGuard have the guard: they carry data-rhp-guard, which the guard checks once a
+// Chart says noCssGuard
+export const pageGuarded = () => guarded;
+
+// inheritPosition() where the app starts, before the first chart: --rhp-position is passed down from each slat root
+// again, so anything inside a slat can read it. The browser then can't reuse a style between rows, and charts take
+// longer to draw.
+let positionInherits = false;
+export function inheritPosition() {
+  positionInherits = true;
+}
+
+// A slat's place stays on its root and isn't passed down to what is inside. Passed down, every row would give its
+// elements a value of their own, and the browser could never reuse a style it worked out for one row in another.
+// (A slat type whose CSS reads it gets it inside its slats as --rhp-row: slatSheet.)
+const position = (inherits) => `@property --rhp-position { syntax: "*"; inherits: ${inherits}; }`;
+
 // The core reset is protected wholesale. Bulk points specify their own narrow geometry protection.
-export const coreSheet = () => (coreText ??= LAYERS + "\n" + important(CORE) + "\n" + MANYDOTS);
+export const coreSheet = () => (coreText ??= LAYERS + "\n" + position(positionInherits) + "\n" + important(CORE) + "\n" + MANYDOTS);
+
+// The guard, or (gated) the guard applying only inside charts that keep it: every selector of guard.css gets a chart
+// with data-rhp-guard around it as a condition. A mark on the charts that keep the guard, not on the ones that don't: for
+// an element of a chart without the mark, the browser rules the condition out at once instead of walking up the page,
+// so a Chart's noCssGuard saves as much as noCssGuard() does. (guard.css comes minified: style rules in one @layer and
+// nothing else.)
+const gate = (css) => css.replace(/(^|[{}])([^{}@]+)\{/g, (_, end, list) => end + split(list).map((sel) => ":where([data-rhp-guard]) " + sel).join(", ") + "{");
+export const guardSheet = (gated) => (gated ? (gatedText ??= important(gate(GUARD))) : (guardText ??= important(GUARD)));
 
 // The rules for gutters sized by their labels (room "auto"), added when a chart first asks for them
 export const gutterSheet = () => (guttersText ??= important(GUTTERS));
@@ -469,8 +505,8 @@ export const gutterSheet = () => (guttersText ??= important(GUTTERS));
 // The rules for a second axis (cross), added when a chart first has one
 export const crossSheet = () => (crossText ??= important(CROSS));
 
-// What a page can link itself (dist/rhp.css)
-export const pageSheet = () => coreSheet() + "\n" + gutterSheet() + "\n" + crossSheet();
+// What a page can link itself: dist/rhp.css, and dist/rhp-no-css-guard.css without the guard
+export const pageSheet = (guard = true) => coreSheet() + (guard ? "\n" + guardSheet(false) : "") + "\n" + gutterSheet() + "\n" + crossSheet();
 
 // A page that links rhp's stylesheet itself (@bezda/rhp/rhp.css) calls linkedCss() where the app starts, on the server
 // and in the browser. The server then leaves the core out of each chart's HTML (it would come with every island), and
@@ -509,6 +545,19 @@ export function serverSheets(slats, render, gutters, crossed) {
   if (!linked && !seen.has("core")) {
     seen.add("core");
     out += coreSheet();
+  }
+
+  // The guard a server writes applies only inside charts that keep it (data-rhp-guard), so it is right whichever charts
+  // come later in the page. (The browser starts from the plain guard and checks charts once one says noCssGuard.)
+  if (!linked && guarded && !seen.has("guard")) {
+    seen.add("guard");
+    out += "\n" + guardSheet(true);
+  }
+
+  // A page that links rhp.css has --rhp-position not passed down: inheritPosition() writes the rule again after it
+  if (linked && positionInherits && !seen.has("position")) {
+    seen.add("position");
+    out += "\n" + position(true);
   }
 
   if (!linked && gutters && !seen.has("gutters")) {
@@ -550,12 +599,33 @@ export function useCross() {
 }
 
 let core = false;
+let guardEntry = null;
+let gatedNow = false;
 export function useCore() {
 
   if (core || typeof document === "undefined") return;
 
   core = true;
   add(coreSheet(), true);
+  if (guarded) guardEntry = add(guardSheet(gatedNow), true);
+  // A linked rhp.css has --rhp-position not passed down; this sheet comes after it and passes it down again
+  if (linked && positionInherits) add(position(true));
+}
+
+// A Chart that says noCssGuard: from now on the guard applies only inside charts that keep it (data-rhp-guard). The
+// check this takes makes every chart that keeps its guard a little slower to draw, so the guard only gets it once a
+// chart turns it off.
+let warnedLinkedGuard = false;
+export function useChartGuard() {
+
+  if (gatedNow || typeof document === "undefined") return;
+
+  gatedNow = true;
+  if (guardEntry) update(guardEntry, guardSheet(true));
+  if (linked && guarded && !warnedLinkedGuard) {
+    warnedLinkedGuard = true;
+    console.warn("rhp: noCssGuard on a Chart can't turn off the guard in the rhp.css the page links (linkedCss). To go without it, link @bezda/rhp/rhp-no-css-guard.css instead and call noCssGuard().");
+  }
 }
 
 // Called by a Chart once it is in the page and whenever its size changes. A chart in another document or in a shadow
@@ -657,7 +727,14 @@ function slatSheet(fn) {
     ? `:where(${S}, ${S} :where(.rhp-plot, .rhp-plot > *))::before, :where(${S}, ${S} :where(.rhp-plot, .rhp-plot > *))::after { content: none; display: inline; }\n`
     : "";
 
-  return `@layer rhp.slat {\n${important(own + scoped(fn.css, fn.scope))}\n}`;
+  // --rhp-position stays on the slat root (coreSheet). A slat type whose CSS reads it reads --rhp-row instead, which its
+  // roots set from their position and which is passed down like any variable, so it works anywhere inside its slats.
+  // The roots of a Plot inside its slats set it too, so in there it is the inner slat's place, as --rhp-position was.
+  const reads = !positionInherits && /var\(\s*--rhp-position\b/.test(fn.css);
+  const css = reads ? fn.css.replace(/var\(\s*--rhp-position\b/g, "var(--rhp-row") : fn.css;
+  const row = reads ? `:where(${S}, ${S} .rhp-plot > *) { --rhp-row: var(--rhp-position); }\n` : "";
+
+  return `@layer rhp.slat {\n${important(row + own + scoped(css, fn.scope))}\n}`;
 }
 
 // Gives a slat type new CSS. Every slat of that type restyles at once, wherever it is shown, and none is made again.

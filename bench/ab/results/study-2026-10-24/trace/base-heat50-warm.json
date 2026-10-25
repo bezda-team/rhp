@@ -1,0 +1,132 @@
+{
+  "variant": "base",
+  "scenario": "heat50",
+  "warm": true,
+  "update": null,
+  "runs": 5,
+  "query": "",
+  "phases": {
+    "other": 16.56899999999976,
+    "script": 12.075999999999999,
+    "gc": 3.791,
+    "style": 0.008,
+    "layout": 0.005,
+    "prepaint": 0.002,
+    "paint": 1.861,
+    "layerize": 0.003,
+    "commit": 0.025,
+    "window": 34.378
+  },
+  "top": [
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 14.196
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 11.975000000000001
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+      "ms": 3.146
+    },
+    {
+      "name": "Paint",
+      "ms": 1.861
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 1.002
+    },
+    {
+      "name": "InlineNode::ShapeTextIncludingFirstLine",
+      "ms": 0.47100000000000036
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 0.332
+    },
+    {
+      "name": "CullRectUpdate",
+      "ms": 0.124
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 0.117
+    },
+    {
+      "name": "V8.GC_SCAVENGER_TRACED_HANDLES_COMPUTE_WEAKNESS_PARALLEL",
+      "ms": 0.111
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_ROOTS",
+      "ms": 0.11
+    },
+    {
+      "name": "MinorGC",
+      "ms": 0.109
+    },
+    {
+      "name": "V8.GC_SCAVENGER_TRACED_HANDLES_RESET_PARALLEL",
+      "ms": 0.067
+    },
+    {
+      "name": "v8.callFunction",
+      "ms": 0.06
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE",
+      "ms": 0.055
+    },
+    {
+      "name": "Blink.Paint.UpdateTime",
+      "ms": 0.042
+    },
+    {
+      "name": "V8.GC_SCAVENGER",
+      "ms": 0.039
+    },
+    {
+      "name": "Document::recalcStyle",
+      "ms": 0.038
+    }
+  ],
+  "counts": [
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    },
+    {
+      "styled": 3,
+      "stylePasses": 1,
+      "layoutDirty": 7,
+      "layoutTotal": 7,
+      "layouts": 1
+    }
+  ],
+  "selectors": null
+}

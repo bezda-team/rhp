@@ -13,10 +13,11 @@ import { closest } from "../guard/rules.js";
 const STANDALONE = "@bezda/rhp/standalone";
 
 // The props of rhp's components (and Solid's Show) that take a boolean, and what "" (false) does to each
-const BOOLEANS = { Chart: ["animate", "static"], Plot: ["overlap", "static", "keyboard", "animate"], Area: ["mirror", "smooth"], Line: ["fill", "smooth"], Show: ["keyed"] };
+const BOOLEANS = { Chart: ["animate", "static", "noCssGuard"], Plot: ["overlap", "static", "keyboard", "animate"], Area: ["mirror", "smooth"], Line: ["fill", "smooth"], Show: ["keyed"] };
 const OFF = {
   overlap: "its slats don't share one band",
   static: "the chart is not static",
+  noCssGuard: "the chart keeps the guard",
   keyboard: "its slats take no focus",
   animate: "the JS version stays off",
   mirror: "the Area is not mirrored",

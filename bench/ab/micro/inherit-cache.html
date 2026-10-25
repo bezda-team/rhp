@@ -1,0 +1,48 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>inherit cache</title>
+<style>
+/* A parent like a slat root, a child like a block: the child's rule is 40 declarations and reads --x */
+.p { position: absolute; left: 0; right: 0; height: 8px; top: calc(var(--row, 0) * 1px); }
+.c { position: absolute; box-sizing: border-box; margin: 0; padding: 0; border: 0 solid transparent; border-radius: 2px;
+  box-shadow: none; outline: revert; background: #2a78d6; overflow: visible; float: none; min-width: 0; min-height: 0;
+  max-width: none; max-height: none; vertical-align: baseline; transition: none; animation: none; text-decoration: none;
+  font: inherit; letter-spacing: inherit; word-spacing: inherit; text-transform: inherit; text-indent: inherit;
+  text-align: inherit; color: inherit; white-space: inherit; width: 6px; height: 6px; top: 1px;
+  left: calc(var(--x, 0) * 0.1%); }
+.c.reads { width: calc(6px + var(--row, 0) * 0px); }
+</style></head>
+<body style="margin:0"><div id="stage" style="position:relative;width:600px;height:400px"></div>
+<script>
+// N rows: a parent and its child. The child's own value repeats (10 values); what differs is the parent.
+const N = 3000;
+const WAYS = {
+  // parents alike: nothing unique anywhere
+  same: (p, c, i) => {},
+  // each parent has a unique variable its child never reads (like --rhp-position on a slat root)
+  parentVar: (p, c, i) => p.style.setProperty("--row", String(i)),
+  // each parent has a unique variable its child does read
+  parentVarRead: (p, c, i) => { p.style.setProperty("--row", String(i)); c.classList.add("reads"); },
+  // each parent has a unique top (not a variable)
+  parentTop: (p, c, i) => (p.style.top = i + "px"),
+};
+window.run = (way) => new Promise((resolve) => requestAnimationFrame(() => {
+  const t0 = performance.now();
+  const stage = document.getElementById("stage");
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < N; i++) {
+    const p = document.createElement("div");
+    p.className = "p";
+    const c = document.createElement("div");
+    c.className = "c";
+    c.style.setProperty("--x", String((i % 10) * 100));
+    WAYS[way](p, c, i);
+    p.append(c);
+    frag.append(p);
+  }
+  stage.append(frag);
+  const ch = new MessageChannel();
+  ch.port1.onmessage = () => resolve(performance.now() - t0);
+  ch.port2.postMessage(0);
+}));
+window.ways = Object.keys(WAYS);
+</script></body></html>

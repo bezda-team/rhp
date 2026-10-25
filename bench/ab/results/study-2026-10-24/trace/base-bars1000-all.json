@@ -1,0 +1,125 @@
+{
+  "variant": "base",
+  "scenario": "bars1000",
+  "warm": false,
+  "update": "all",
+  "runs": 4,
+  "query": "",
+  "phases": {
+    "other": 112.86650000000051,
+    "script": 18.553499999999556,
+    "layout": 0.257,
+    "prepaint": 0.08750000000000002,
+    "paint": 12.462999999999669,
+    "layerize": 0.7630000000000001,
+    "commit": 1.1959999999999997,
+    "gc": 4.579999999999988,
+    "style": 0.025,
+    "window": 759.4075
+  },
+  "top": [
+    {
+      "name": "Document::recalcStyle",
+      "ms": 56.042
+    },
+    {
+      "name": "LocalFrameView::performLayout",
+      "ms": 18.036
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 13.227000000000004
+    },
+    {
+      "name": "Paint",
+      "ms": 12.462999999999669
+    },
+    {
+      "name": "Blink.PrePaint.UpdateTime",
+      "ms": 8.878000000000002
+    },
+    {
+      "name": "LocalFrameView::UpdateStyleAndLayout",
+      "ms": 6.676499999999999
+    },
+    {
+      "name": "AnimationTimeline::serviceAnimations",
+      "ms": 5.993500000000002
+    },
+    {
+      "name": "LocalFrameView::RunPaintLifecyclePhase",
+      "ms": 4.802000000000001
+    },
+    {
+      "name": "RunTask",
+      "ms": 4.609499999999963
+    },
+    {
+      "name": "PaintArtifactCompositor::Update",
+      "ms": 3.1734999999999998
+    },
+    {
+      "name": "PageAnimator::serviceScriptedAnimations",
+      "ms": 2.0214999999999996
+    },
+    {
+      "name": "HitTest",
+      "ms": 1.9995
+    },
+    {
+      "name": "Blink.CompositingInputs.UpdateTime",
+      "ms": 1.678999999999999
+    },
+    {
+      "name": "Commit",
+      "ms": 1.1959999999999997
+    },
+    {
+      "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+      "ms": 1.1065
+    },
+    {
+      "name": "V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING",
+      "ms": 1.0854999999999988
+    },
+    {
+      "name": "V8.GC_MARK_COMPACTOR",
+      "ms": 0.8694999999999999
+    },
+    {
+      "name": "CullRectUpdate",
+      "ms": 0.7170000000000001
+    }
+  ],
+  "counts": [
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    },
+    {
+      "styled": 18000,
+      "stylePasses": 6,
+      "layoutDirty": 13048,
+      "layoutTotal": 36162,
+      "layouts": 6
+    }
+  ],
+  "selectors": null
+}

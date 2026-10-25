@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "rhp (reactive html plots): plots as stacks of slats, built with SolidJS out of HTML elements and CSS",
   "keywords": [
     "solid",
@@ -41,6 +41,7 @@
       "default": "./dist/standalone.js"
     },
     "./rhp.css": "./dist/rhp.css",
+    "./rhp-no-css-guard.css": "./dist/rhp-no-css-guard.css",
     "./posters.css": "./dist/posters.css"
   },
   "module": "./dist/index.js",
