@@ -203,7 +203,7 @@ const Hour = slat({
     </div>`;
 });
 
-// Chart component: section toggles and individual picks share one selection; hover and focus only preview
+// Chart component: section toggles and individual picks share one selection; hover only previews
 function DayTape() {
   const members = GROUPS.map((_, g) => ACTS.flatMap((a, i) => a.group === g ? [i] : []));
   const [selected, setSelected] = createSignal(members[LEAD]);
@@ -227,6 +227,11 @@ function DayTape() {
     const act = actOf(e.target);
     if (act != null) setOn(act);
     else if (e.target.closest("[data-group]")) setOn(null);
+  };
+  const focus = (e) => {
+    const act = actOf(e.target);
+    if (act != null && e.target.matches(":focus-visible")) setSelected([act]);
+    pick(e);
   };
   const tap = (e) => {
     const heading = e.target.closest("[data-group]");
@@ -271,7 +276,7 @@ function DayTape() {
       title=${HEADLINE}
       dek="The average American day as a tape measure cut into three lengths of 8 hours: each stretch is how long an activity takes in all, laid end to end, so read the numbers as hours used up, not as clock times. Point at or tap a stretch to read it."
       note=${NOTE}
-      onPointerMove=${move} onClick=${tap} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${tap} onFocusIn=${focus}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
       <div class="readout" aria-live="polite">
         <b class="big">${() => big(shown() ? shown().hours : selectedHours())}</b>
