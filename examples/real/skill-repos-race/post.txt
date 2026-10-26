@@ -1,7 +1,7 @@
 REDDIT POSTS
 
 Where: r/ClaudeAI or r/claudeskills (the community of the post that prompted this), as an image post with the PNG.
-The race itself is the interactive page; link it in the first comment. For a post with motion, save the race from the poster's download menu as an animated GIF (about 19 seconds, 5.6 MB) and post that instead of the PNG.
+The race itself is the interactive page; link it in the first comment. For a post with motion, save the race from the poster's download menu as an animated GIF (25 frames a second, about 19 seconds, 11 MB) and post that instead of the PNG.
 For r/dataisbeautiful, use the [OC] title and the same first comment; check the current rules on animated and self-made data first.
 
 Title (r/ClaudeAI, r/claudeskills):

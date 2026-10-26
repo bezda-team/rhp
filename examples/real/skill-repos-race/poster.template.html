@@ -26,6 +26,8 @@ body { margin: 0; padding: 40px 16px; background: var(--page); color: var(--fg);
 /* The headline is a README's h1: semibold, with its rule under it */
 .poster .headline { padding-bottom: 12px; border-bottom: 1px solid var(--border-muted); font: 600 50px/1.15 var(--text); letter-spacing: -.01em; text-wrap: balance; }
 .poster .headline a { color: var(--link); text-decoration: none; }
+/* "starred" in the starred repos' gold */
+.poster .headline .starred { color: var(--star); }
 .poster .dek { max-width: 92ch; font-size: 19px; line-height: 1.5; color: var(--fg); }
 .poster .dek b { font-weight: 600; }
 .repo-link { color: var(--link); font-weight: 600; text-decoration: none; }
@@ -410,7 +412,7 @@ function SkillRace() {
   return html`
     <${Poster}
       kicker=${html`<span class="topic">claude-skills</span><span>Daily, ${longDate.format(dateOf(0))} to ${longDate.format(dateOf(LAST))}</span>`}
-      title="Most-starred GitHub skills repositories since Agent Skills launched"
+      title=${html`<span>Most-<span class="starred">starred</span> GitHub skills repositories since Agent Skills launched</span>`}
       dek=${html`<span>Each day's ten most-starred Claude skill repos on GitHub, among those with ${count.format(DATA.entry)} stars or more. Anthropic's own ${repoLink("anthropics/skills")} led for ${WORDS[Math.round((ANTHROPIC.to + 1 - ANTHROPIC.from) / 30.44)]} months, until ${month.format(dateOf(ANTHROPIC.to + 1))}. ${repoLink(SECOND.full)} got its first stars in ${month.format(new Date(SECOND.zero))} and is currently ${count.format(GAP)} stars behind ${repoLink(FIRST.full)}.${PASS ? html`<span>${" "}At its current pace, it should take first place by end of ${month.format(PASS)}.</span>` : ""}</span>`}
       note=${html`<b>Source:</b> star counts on ${count.format(DATA.captures)} archived copies of the repos' GitHub pages (Internet Archive) and GitHub's live counts on ${longDate.format(dateOf(LAST))}; between captures, straight-line estimates. GitHub no longer lists who starred a repo, so exact daily histories cannot be rebuilt. <b>Skill repos:</b> the ${DATA.tracked} repos with ${count.format(DATA.entry)} or more stars today that present themselves as skills and ship SKILL.md files; apps, MCP servers, plugins and link lists are left out. Chart: Anas Bouzid, with rhp.`}>
       <div class="race">

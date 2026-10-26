@@ -38,7 +38,7 @@ Open the HTML with an internet connection for the pinned rhp module and the PNG 
 The race plays once by itself when half of it is in view (not under reduced motion); Play replays it, and pointing, tapping or dragging on the week graph, or its arrow keys, move through the year.
 A click or a tap on a repo stars it or unstars it, as GitHub's Star button does: a starred repo's bar and its leader labels turn gold, and it stays starred as it moves through the race; Enter or Space does the same on a focused bar, and the first two of the last day start starred.
 A click on a repo's name opens it on GitHub in a new tab instead.
-The download icon opens a menu: the poster as a PNG, or the whole race as an animated GIF (about 19 seconds and 5.6 MB at 1080 pixels wide, made in the browser in a little over a minute); both keep the stars and the picked repo as they are on screen.
+The download icon opens a menu: the poster as a PNG, or the whole race as an animated GIF (25 frames a second, about 19 seconds and 11 MB at 1080 pixels wide, made in the browser in about a minute); both keep the stars and the picked repo as they are on screen.
 The poster uses GitHub's dark theme, with Primer's colors.
 
 `audit.mjs` recomputes every number on the poster and in the post from `data.json`, and checks that each day's top ten is sorted and past the entry bar and that every repo ends on its live count; all checks pass.
