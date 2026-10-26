@@ -68,8 +68,9 @@ body { margin: 0; padding: 40px 16px; background: var(--page); color: var(--fg);
 .weeks i[data-l="2"].on { background: var(--g2); }
 .weeks i[data-l="3"].on { background: var(--g3); }
 .weeks i[data-l="4"].on { background: var(--g4); }
-.weeks i.now { outline: 2px solid var(--fg); outline-offset: 2px; }
-.scrub { position: absolute; left: 0; top: 48px; width: var(--span); height: 30px; margin: -8px 0 0; opacity: 0; cursor: pointer; appearance: none; -webkit-appearance: none; touch-action: pan-y; }
+/* The current week's ring lies over its neighbors, and the slider over all the squares */
+.weeks i.now { position: relative; z-index: 1; outline: 2px solid var(--fg); outline-offset: 2px; }
+.scrub { position: absolute; z-index: 2; left: 0; top: 48px; width: var(--span); height: 30px; margin: -8px 0 0; opacity: 0; cursor: pointer; appearance: none; -webkit-appearance: none; touch-action: pan-y; }
 .scrub::-webkit-slider-thumb { width: 1px; height: 30px; -webkit-appearance: none; }
 .scrub::-moz-range-thumb { width: 1px; height: 30px; border: 0; }
 .graph:has(.scrub:focus-visible) .weeks { outline: 2px solid var(--link); outline-offset: 5px; border-radius: 3px; }

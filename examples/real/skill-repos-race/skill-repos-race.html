@@ -70,8 +70,9 @@ body { margin: 0; padding: 40px 16px; background: var(--page); color: var(--fg);
 .weeks i[data-l="2"].on { background: var(--g2); }
 .weeks i[data-l="3"].on { background: var(--g3); }
 .weeks i[data-l="4"].on { background: var(--g4); }
-.weeks i.now { outline: 2px solid var(--fg); outline-offset: 2px; }
-.scrub { position: absolute; left: 0; top: 48px; width: var(--span); height: 30px; margin: -8px 0 0; opacity: 0; cursor: pointer; appearance: none; -webkit-appearance: none; touch-action: pan-y; }
+/* The current week's ring lies over its neighbors, and the slider over all the squares */
+.weeks i.now { position: relative; z-index: 1; outline: 2px solid var(--fg); outline-offset: 2px; }
+.scrub { position: absolute; z-index: 2; left: 0; top: 48px; width: var(--span); height: 30px; margin: -8px 0 0; opacity: 0; cursor: pointer; appearance: none; -webkit-appearance: none; touch-action: pan-y; }
 .scrub::-webkit-slider-thumb { width: 1px; height: 30px; -webkit-appearance: none; }
 .scrub::-moz-range-thumb { width: 1px; height: 30px; border: 0; }
 .graph:has(.scrub:focus-visible) .weeks { outline: 2px solid var(--link); outline-offset: 5px; border-radius: 3px; }
@@ -854,7 +855,7 @@ function addPosterDownloads() {
         },
       };
     };
-    // The GIF: the playback at 25 frames a second for up to 15 seconds, at most 1200 pixels wide. One palette from the
+    // The GIF: the playback at its own pace, 25 frames a second, at most 1200 pixels wide. One palette from the
     // first and the last frame serves every frame; its last color is never drawn and marks the pixels a frame leaves as
     // the frame before had them, so each frame stores only what changed.
     async function saveGif() {
@@ -867,7 +868,8 @@ function addPosterDownloads() {
         const [{ domToCanvas }, { GIFEncoder, quantize, applyPalette }] = await Promise.all([loadExporter(), encoder]);
         const options = await captureOptions();
         const scale = Math.min(1, 1200 / options.width);
-        const step = 40, count = Math.max(2, Math.round(Math.min(playback.duration ?? 15000, 15000) / step) + 1);
+        // The GIF plays at the chart's own pace: its playback's duration, in frames 40 ms apart
+        const step = 40, count = Math.max(2, Math.round((playback.duration ?? 15000) / step) + 1);
         const capture = async () => {
           const canvas = await domToCanvas(poster, { ...options, scale });
           return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
