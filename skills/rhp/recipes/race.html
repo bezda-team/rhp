@@ -45,7 +45,8 @@
   .scrub:focus-visible { outline: 2px solid #1d5b44; outline-offset: 4px; border-radius: 2px; }
   .year { flex: none; min-width: 2.4em; text-align: right; font: italic 500 92px/.8 "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif; font-variant-numeric: lining-nums tabular-nums; color: #1d5b44; }
   /* One line that reads out the country in focus; its height is fixed, so nothing below it moves */
-  .readout { height: 24px; margin: 18px 0 12px; font-size: 16px; line-height: 24px; white-space: nowrap; color: #434b46; }
+  /* Its numbers change on every frame of the race: Jost's equal-width digits keep the words after them still */
+  .readout { height: 24px; margin: 18px 0 12px; font-size: 16px; line-height: 24px; white-space: nowrap; color: #434b46; font-variant-numeric: tabular-nums; }
   .readout b { font-weight: 600; color: #17201b; }
   .unit { display: block; margin-top: 4px; font-size: 12px; text-align: right; color: #5b645e; }
   .poster .note { display: block; margin-top: 22px; padding-top: 12px; border-top: 1px solid #c3cac3; font-size: 12px; line-height: 1.5; color: #5b645e; }

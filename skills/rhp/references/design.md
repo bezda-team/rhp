@@ -444,6 +444,19 @@ More lettering to start from, by where it comes from (each a Google Font; check 
 Nothing in a chart under 11px, and nothing anywhere under 9px (the checker's floor).
 
 Numbers line up when they use `font-variant-numeric: tabular-nums` (values, readouts, tables; rhp's axis already does).
+
+**Tip: numbers that change rapidly outside the chart.** A count, a date or a readout that runs with playback or follows the pointer changes width with its digits, and the words beside it shift on every frame (a right-aligned date shifts its left edge).
+Consider the font's tabular figures; when they do not suit the poster (Mona Sans, for one, draws its equal-width zero slashed), keep the font's own digits and give each a slot as wide as the widest digit:
+
+```js
+// Each digit in a slot as wide as the widest (measure it: .625em fits Mona Sans), so the words around the number keep still
+const steady = (text) => [...text].map((c) => (c >= "0" && c <= "9" ? html`<span class="digit">${c}</span>` : c));
+// CSS: .digit { display: inline-block; width: .625em; text-align: center; }
+// html`<h2 class="count">${() => steady(count.format(Math.round(gained())))} stars since launch</h2>`
+```
+
+The words still move when the number gains a digit, or a date its month: give that part a `min-width` (pitfalls.md, "The layout jumps").
+To check, read the position of the word after the number while it plays (measured on the skill repo race: 58 positions over 60 days before, 1 after).
 Format every number with an `Intl.NumberFormat` made once, in the user's locale when you know it:
 
 ```js

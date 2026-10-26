@@ -738,6 +738,7 @@ render(() => html`<${League} />`, document.getElementById("chart"));
   The output keeps one width (`min-width` in the page's CSS): when "Round 9" became "Round 10", a wider output would shorten the slider and the handle would jump back.
 - The button's text says what it will do (Play or Pause), so it has no `aria-pressed`.
 - **Reduced motion:** rhp stops its own motion when the reader asks for less (values jump), and the playhead moves a whole round at a time, each round kept on screen for two seconds; your own CSS animations need `@media (prefers-reduced-motion: reduce) { … }`.
+- **Tip, numbers outside the chart:** a year, a count or a readout that changes on every frame of the playback shifts the words beside it as its digits change width; consider tabular figures, or digits in equal-width slots when the font's tabular figures do not suit it (design.md, section 5).
 - **Download:** give the poster a `playback` (`duration`, `position`, `seek`) once the chart is mounted, and its download icon offers the whole playback as an animated GIF beside the PNG; download.md has the lines, and the `race` recipe uses them.
 
 **Option: snap the slider to important points.**
