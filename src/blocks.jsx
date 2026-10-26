@@ -9,6 +9,7 @@ import { isServer } from "./env.js";
 import { useOrientation, useCrossed, short } from "./plot.jsx";
 import { write } from "./frame.js";
 import { transitioned, cssEase } from "./animate.js";
+import { missing } from "./data.js";
 
 const cls = (base, c) => (c ? base + " " + c : base);
 
@@ -64,6 +65,36 @@ const trace = (pts, smooth) => {
   }
 
   return d;
+};
+
+// A point of an Area or a Line that is there with both numbers, and the runs of two points or more between missing
+// ones (null in the list): a missing point breaks the outline into pieces instead of drawing it at 0. With no missing
+// point there is one run, and the outline is the same as it always was.
+const present = (q) => q != null && !missing(q[0]) && !missing(q[1]);
+const runs = (pts) => {
+
+  if (!pts.includes(null)) return pts.length > 1 ? [pts] : [];
+
+  const out = [[]];
+
+  for (const q of pts) {
+    if (q) out[out.length - 1].push(q);
+    else if (out[out.length - 1].length) out.push([]);
+  }
+
+  return out.filter((run) => run.length > 1);
+};
+
+// The points that are there: the list itself when every point is two finite numbers (most lines), so a long line costs
+// no copy and only this quick look (0.3 ms for 100,000 points)
+const there = (pts) => {
+
+  for (let i = 0; i < pts.length; i++) {
+    const q = pts[i];
+    if (q == null || !Number.isFinite(q[0]) || !Number.isFinite(q[1])) return pts.filter(present);
+  }
+
+  return pts;
 };
 
 // The outline of an Area or a Line moves with a CSS transition of d (rhp.css), but Safari has no d property, so there
@@ -131,8 +162,9 @@ function setStyle(el, st, prev, keys) {
 }
 
 // Writes an element's CSS variables, and only the ones that changed (the first ones now, the rest in the next frame).
-// back(v) is for a Bar: whether it runs backward. st() is the element's style prop, set with them.
-export function writeVars(el, vars, back, st) {
+// back(v) is for a Bar: whether it runs backward. st() is the element's style prop, set with them, and attrs() gives a
+// block's own attributes, read after the variables (a block finds whether it has a missing value while reading them).
+export function writeVars(el, vars, back, st, attrs) {
 
   if (isServer) return; // on a server they go into the element's style attribute (withVars)
 
@@ -149,7 +181,10 @@ export function writeVars(el, vars, back, st) {
 
     if (back) el.toggleAttribute("data-rhp-back", back(v));
 
-    return { v, s, css };
+    const a = attrs?.();
+    setAttrs(el, a, prev?.a);
+
+    return { v, s, css, a };
   });
 }
 
@@ -212,8 +247,21 @@ const others = (props, mine) => {
 
 const MINE = ["class", "style", "ref", "children"];
 
-// A block's element. attrs() gives its own attributes (a Label's edge and side), and back(v) is true when a Bar runs
-// backward along the value axis.
+// Sets a block's own attributes that changed. The one that hides a block with a missing value is written in the same
+// frame as the block's CSS variables, so a style read in between never draws the block with the variables it had
+// before (a bar coming back would grow from 0).
+function setAttrs(el, a, prev) {
+
+  for (const key in a) {
+    if (a[key] === prev?.[key]) continue;
+    if (prev && key === "data-rhp-missing") write(el, key, a[key]);
+    else if (a[key] == null) el.removeAttribute(key);
+    else el.setAttribute(key, a[key]);
+  }
+}
+
+// A block's element. attrs() gives its own attributes (a Label's edge and side), read after vars(), and back(v) is true
+// when a Bar runs backward along the value axis.
 // NOTE: Most blocks get no props other than their own, so they skip Solid's spread and update everything in one effect.
 // This makes a chart much faster to mount and lighter (a chart of 1,000 rows has 3,000 fewer computations).
 function browserBlock(props, mine, base, vars, attrs, back) {
@@ -223,12 +271,11 @@ function browserBlock(props, mine, base, vars, attrs, back) {
   if (others(props, mine)) {
     // The class comes before the spread so that a classList adds to it instead of replacing it
     const el = (
-      <div class={cls(base, props.class)} data-rhp-o={short(orientation())} {...splitProps(props, [...mine])[1]} ref={(e) => props.ref?.(e)}
-        {...(attrs ? attrs() : {})}>
+      <div class={cls(base, props.class)} data-rhp-o={short(orientation())} {...splitProps(props, [...mine])[1]} ref={(e) => props.ref?.(e)}>
         {props.children}
       </div>
     );
-    writeVars(el, () => vars(orientation() === "vertical"), back, () => props.style);
+    writeVars(el, () => vars(orientation() === "vertical"), back, () => props.style, attrs);
     return el;
   }
 
@@ -239,17 +286,12 @@ function browserBlock(props, mine, base, vars, attrs, back) {
     const c = cls(base, props.class);
     const dir = short(orientation());
     const st = readStyle(props.style, prev?.st);
-    const a = attrs?.();
     const v = vars(orientation() === "vertical");
+    const a = attrs?.();
 
     if (c !== prev?.c) el.setAttribute("class", c);
     if (dir !== prev?.dir) el.setAttribute("data-rhp-o", dir);
-
-    for (const key in a) {
-      if (a[key] === prev?.a[key]) continue;
-      if (a[key] == null) el.removeAttribute(key);
-      else el.setAttribute(key, a[key]);
-    }
+    setAttrs(el, a, prev?.a);
 
     const css = st !== prev?.st ? setStyle(el, st, prev?.css, Object.keys(v)) : prev?.css;
 
@@ -287,18 +329,40 @@ function serverBlock(props, mine, base, vars, attrs, back) {
 // Each build keeps only the one it needs (isServer is a constant there)
 const blockElement = isServer ? serverBlock : browserBlock;
 
-function block(base, own, vars, back) {
+// The attribute of a block with a missing value and of one without, shared so that a change makes no new object
+const GONE = { "data-rhp-missing": "" };
+const HERE = { "data-rhp-missing": undefined };
+
+// A block type. vars(p, vertical, placed) gives its CSS variables, reading each value that places it with placed(key),
+// so that each is read once per change (a value worked out in the slat runs once), and attrs(p, gone) its own
+// attributes, data-rhp-missing among them.
+// placed() keeps whether a value the block was given is missing (null, undefined, NaN or infinite): such a block draws
+// nothing, rather than sit at the start of the scale as if the value were 0. A value not given at all keeps its
+// default (a Bar's from is 0).
+function block(base, own, vars, back, attrs) {
 
   const mine = new Set([...MINE, ...own]);
 
-  return (props) => blockElement(props, mine, base, (vertical) => vars(props, vertical), null, back);
+  return (props) => {
+    let gone = false;
+    const placed = (key) => {
+      const v = props[key];
+      if (missing(v) && key in props) gone = true;
+      return v;
+    };
+
+    return blockElement(props, mine, base, (vertical) => {
+      gone = false;
+      return vars(props, vertical, placed);
+    }, attrs ? () => attrs(props, gone) : () => (gone ? GONE : HERE), back);
+  };
 }
 
 // A span along the value axis from `from` (0 by default) to `to`: bars, boxes, whiskers, stems, Gantt tasks.
 // `thick` is its size across the band, a CSS length ("2px") or a share of the band (0.6).
-export const Bar = block("rhp-bar", ["from", "to", "thick", "color", "shape"], (p, vertical) => ({
-  "--rhp-from": p.from ?? 0,
-  "--rhp-to": p.to ?? 0,
+export const Bar = block("rhp-bar", ["from", "to", "thick", "color", "shape"], (p, vertical, placed) => ({
+  "--rhp-from": placed("from") ?? 0,
+  "--rhp-to": placed("to") ?? 0,
   "--rhp-thick": length(p.thick),
   "--rhp-color": tok(p.color),
   "--rhp-clip": p.shape?.clip(vertical, (p.to ?? 0) < (p.from ?? 0)),
@@ -306,11 +370,11 @@ export const Bar = block("rhp-bar", ["from", "to", "thick", "color", "shape"], (
 
 // A round point at value `at`. `size` is its diameter (10px by default) and `across` places it across the band (0..1).
 // In a Chart with a cross scale, `cross` places it on that scale instead (a scatter plot's y).
-export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color", "shape"], (p, vertical) => ({
-  "--rhp-at": p.at,
+export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color", "shape"], (p, vertical, placed) => ({
+  "--rhp-at": placed("at"),
   "--rhp-size": length(p.size),
   "--rhp-across": p.across,
-  "--rhp-cross": p.cross,
+  "--rhp-cross": placed("cross"),
   "--rhp-color": tok(p.color),
   "--rhp-clip": p.shape?.clip(vertical, false),
 }));
@@ -318,40 +382,48 @@ export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color", "
 // A place on the chart and nothing else: no size, no color, nothing drawn. Whatever a slat puts inside it sits at
 // value `at`, so a bubble, a badge or a needle of your own needs no CSS to find its value. `across` (0 to 1) places
 // it across the band, and in a Chart with a cross scale `cross` places it on that scale.
-export const Place = block("rhp-place", ["at", "across", "cross"], (p) => ({
-  "--rhp-at": p.at,
+export const Place = block("rhp-place", ["at", "across", "cross"], (p, vertical, placed) => ({
+  "--rhp-at": placed("at"),
   "--rhp-across": p.across,
-  "--rhp-cross": p.cross,
+  "--rhp-cross": placed("cross"),
 }));
 
 // A short line across the band at value `at` (medians, targets). `thick` is its length across the band.
-export const Tick = block("rhp-tick", ["at", "thick", "color", "shape"], (p, vertical) => ({
-  "--rhp-at": p.at,
+export const Tick = block("rhp-tick", ["at", "thick", "color", "shape"], (p, vertical, placed) => ({
+  "--rhp-at": placed("at"),
   "--rhp-thick": length(p.thick),
   "--rhp-color": tok(p.color),
   "--rhp-clip": p.shape?.clip(vertical, false),
 }));
 
 // A cell that fills its slat, colored by `value` on the scale (from --rhp-low to --rhp-high), for heatmaps
-export const Cell = block("rhp-cell", ["value", "color", "shape"], (p, vertical) => ({
-  "--rhp-value": p.value,
+export const Cell = block("rhp-cell", ["value", "color", "shape"], (p, vertical, placed) => ({
+  "--rhp-value": placed("value"),
   "--rhp-color": tok(p.color),
   "--rhp-clip": p.shape?.clip(vertical, false),
 }));
 
 // Text on the value axis. at={v} puts it just after the value v (side="before" puts it just before), and
 // edge="start" or "end" puts it outside the track, in the chart's gutter (names, totals). In a Chart with a cross scale,
-// `cross` places it on that scale too (a point's label).
-const LABEL = new Set([...MINE, "at", "side", "edge", "cross", "shape"]);
-export const Label = (props) => blockElement(props, LABEL, "rhp-label", (vertical) => ({ "--rhp-at": props.at, "--rhp-cross": props.cross, "--rhp-clip": props.shape?.clip(vertical, false) }), () => ({
-  "data-rhp-edge": props.edge,
-  "data-rhp-side": props.side,
-  "data-rhp-at": props.edge == null ? "" : undefined,
+// `cross` places it on that scale too (a point's label). A Label at an edge isn't placed by its values.
+export const Label = block("rhp-label", ["at", "side", "edge", "cross", "shape"], (p, vertical, placed) => {
+  const edge = p.edge != null;
+  return {
+    "--rhp-at": edge ? p.at : placed("at"),
+    "--rhp-cross": edge ? p.cross : placed("cross"),
+    "--rhp-clip": p.shape?.clip(vertical, false),
+  };
+}, null, (p, gone) => ({
+  "data-rhp-edge": p.edge,
+  "data-rhp-side": p.side,
+  "data-rhp-at": p.edge == null ? "" : undefined,
+  "data-rhp-missing": gone ? "" : undefined,
 }));
 
 // A filled shape over the value axis from `points`, a list of [x, y] sorted by x (y >= 0).
 // y is drawn across the band, scaled so that `peak` (the largest y by default) fills it. With `mirror` it is drawn both
-// ways from the middle of the band (violins), otherwise it grows from the band's edge (ridgelines).
+// ways from the middle of the band (violins), otherwise it grows from the band's edge (ridgelines). A point that is null
+// or has a missing x or y breaks the shape: each run of points between missing ones is a shape of its own.
 // NOTE: The path is drawn in the shape's own box, and CSS places the box from the first x to the last. So when the scale
 // changes, the box moves and the path doesn't need to be redrawn.
 export function Area(props) {
@@ -359,22 +431,25 @@ export function Area(props) {
   const orientation = useOrientation();
   const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "mirror", "color", "smooth"]);
 
+  const kept = createMemo(() => there(p.points ?? []));
   const span = createMemo(() => {
-    const pts = p.points ?? [];
+    const pts = kept();
     if (!pts.length) return [0, 0];
     return [pts[0][0], pts[pts.length - 1][0]];
   });
 
   // The outline's points in the shape's box: along the value axis from 0 to 1000, and across as a share of the peak
+  // (null for a missing point)
   const points = () => {
     const pts = p.points ?? [];
-    if (pts.length < 2) return null;
+    if (kept().length < 2) return null;
 
     const [x0, x1] = span();
     const w = x1 - x0 || 1;
-    const peak = p.peak ?? extentOf(pts.map((q) => q[1]))[1];
+    const peak = p.peak ?? extentOf(kept().map((q) => q[1]))[1];
+    const at = ([x, y]) => [((x - x0) / w) * 1000, Math.min(1, y / (peak || 1))];
 
-    return pts.map(([x, y]) => [((x - x0) / w) * 1000, Math.min(1, y / (peak || 1))]);
+    return kept() === pts ? pts.map(at) : pts.map((q) => (present(q) ? at(q) : null));
   };
   let pathEl;
   const shown = drawn(points, () => pathEl);
@@ -386,14 +461,16 @@ export function Area(props) {
     const vertical = orientation() === "vertical";
     // u runs along the value axis and t across the band, both from 0 to 1000 in the shape's box
     const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
-    // The outline: the top edge (both edges when mirrored), and the base under it, which is never curved
-    if (p.mirror) {
-      return "M" + trace(ut.map(([u, y]) => xy(u, 500 - y * 500)), p.smooth)
-        + "L" + trace(ut.slice().reverse().map(([u, y]) => xy(u, 500 + y * 500)), p.smooth) + "Z";
-    }
+    // Each run's outline: the top edge (both edges when mirrored), and the base under it, which is never curved
+    return runs(ut).map((run) => {
+      if (p.mirror) {
+        return "M" + trace(run.map(([u, y]) => xy(u, 500 - y * 500)), p.smooth)
+          + "L" + trace(run.slice().reverse().map(([u, y]) => xy(u, 500 + y * 500)), p.smooth) + "Z";
+      }
 
-    return "M" + fmt(xy(ut[0][0], 1000)) + "L" + trace(ut.map(([u, y]) => xy(u, 1000 - y * 1000)), p.smooth)
-      + "L" + fmt(xy(ut[ut.length - 1][0], 1000)) + "Z";
+      return "M" + fmt(xy(run[0][0], 1000)) + "L" + trace(run.map(([u, y]) => xy(u, 1000 - y * 1000)), p.smooth)
+        + "L" + fmt(xy(run[run.length - 1][0], 1000)) + "Z";
+    }).join("");
   });
 
   // The path is also given in CSS (d: var(--rhp-d)) so a page's "all: revert" can't remove the shape
@@ -419,7 +496,8 @@ export function Area(props) {
 // A line through `points`, a list of [x, y]: x on the value axis, and y across the band, scaled so that `peak` (the
 // largest y by default) fills it, as a sparkline in a row. In a Chart with a cross scale, y is on that scale: a line
 // chart, or with points out of x's order, a connected scatter plot. With `fill`, what is under the line is filled too,
-// down to the band's edge, or on a cross scale down to `base` (0 by default).
+// down to the band's edge, or on a cross scale down to `base` (0 by default). A point that is null or has a missing x
+// or y breaks the line, and its fill: each run of points between missing ones is drawn on its own.
 // NOTE: Like an Area, the line is drawn in its own box, which CSS places from the smallest x to the largest (and on a
 // cross scale from the smallest y to the largest), so a scale that changes moves the box and the path stays as it is.
 export function Line(props) {
@@ -429,8 +507,9 @@ export function Line(props) {
   const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "fill", "base", "color", "smooth"]);
 
   // [smallest x, largest x, smallest y, largest y], y on the cross scale (a flat line still gets a box to be drawn in)
+  const kept = createMemo(() => there(p.points ?? []));
   const box = createMemo(() => {
-    const pts = p.points ?? [];
+    const pts = kept();
     if (!pts.length) return [0, 0, 0, 1];
 
     const xs = pts.map((q) => q[0]);
@@ -446,19 +525,20 @@ export function Line(props) {
   });
 
   // The line's points in its box, u along the value axis and t across (from the top when horizontal), both from 0 to
-  // 1000, and the t where the fill under it ends
+  // 1000 (null for a missing point), and the t where the fill under it ends
   const points = () => {
     const pts = p.points ?? [];
-    if (pts.length < 2) return null;
+    if (kept().length < 2) return null;
 
     const [x0, x1, y0, y1] = box();
     const w = x1 - x0 || 1;
-    const peak = p.peak ?? extentOf(pts.map((q) => q[1]))[1];
+    const peak = p.peak ?? extentOf(kept().map((q) => q[1]))[1];
     // up is y's place across, 0 to 1: on the cross scale within the box, or in the band
     const up = crossed() ? (y) => (y - y0) / (y1 - y0) : (y) => Math.min(1, y / (peak || 1));
+    const at = ([x, y]) => [((x - x0) / w) * 1000, 1000 - up(y) * 1000];
 
     return {
-      ut: pts.map(([x, y]) => [((x - x0) / w) * 1000, 1000 - up(y) * 1000]),
+      ut: kept() === pts ? pts.map(at) : pts.map((q) => (present(q) ? at(q) : null)),
       floor: !p.fill ? 1000 : crossed() ? 1000 - up(p.base ?? 0) * 1000 : 1000,
     };
   };
@@ -473,10 +553,13 @@ export function Line(props) {
     const { ut, floor } = pts;
     const vertical = orientation() === "vertical";
     const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
-    const line = "M" + trace(ut.map(([u, t]) => xy(u, t)), p.smooth);
+    const parts = runs(ut);
+    const pieces = parts.map((run) => "M" + trace(run.map(([u, t]) => xy(u, t)), p.smooth));
+    const line = pieces.join("");
     if (!p.fill) return [line, ""];
 
-    const under = line + "L" + fmt(xy(ut[ut.length - 1][0], floor)) + "L" + fmt(xy(ut[0][0], floor)) + "Z";
+    // Under each piece, down to the floor
+    const under = parts.map((run, i) => pieces[i] + "L" + fmt(xy(run[run.length - 1][0], floor)) + "L" + fmt(xy(run[0][0], floor)) + "Z").join("");
 
     return [line, under];
   });

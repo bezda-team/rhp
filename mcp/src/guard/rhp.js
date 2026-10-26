@@ -42,6 +42,11 @@ const show = (v) => {
 const isColor = (c) => typeof CSS !== "undefined" && typeof CSS.supports === "function" && CSS.supports("color", c);
 const SPAN = new Set(["from", "to", "value"]);
 
+// A missing value (null, undefined, NaN or infinite), as rhp sees one: a block given one for its place draws nothing,
+// and a Line or an Area breaks at a point with one
+const missing = (v) => v == null || (typeof v === "number" && !Number.isFinite(v));
+const PLACED = new Set(["from", "to", "at", "cross", "value"]);
+
 // A number a block draws at: finite, or left out
 function checkNumber(name, prop, v) {
 
@@ -321,12 +326,16 @@ function inspectBlock(name, props) {
 
   for (const prop of spec.numbers) {
     const v = read(props, prop);
-    checkNumber(name, prop, v);
-    // a place given with no value (a row with no data) is drawn at the start of the scale, with no error
-    if (v == null && (prop === "at" || prop === "to") && given.includes(prop)) {
-      note("error", "nan-value", `${name}'s ${prop} is ${v} (a row with no value), so rhp draws it at the start of the scale.`,
-        `Leave rows with no value out of the data, or draw the ${name} only when there is one: <\${Show} when=\${() => d.value != null}>...<//>.`);
+    // a place given a missing value (a row with no data) is not drawn, which is right, so it is a note: the slat should
+    // say there is no data (a Label at an edge is drawn there and doesn't use its at)
+    if (PLACED.has(prop) && given.includes(prop) && missing(v)) {
+      if (!(name === "Label" && read(props, "edge") != null)) {
+        note("info", "missing-value", `${name}'s ${prop} is ${v}, a missing value, so rhp draws no ${name} there.`,
+          `For a row with no data that is right: say so in the slat (a Label at its edge: "no data"). If the row should have a value, check the data it is worked out from (a misspelled name, an empty cell, a division by zero).`);
+      }
+      continue;
     }
+    checkNumber(name, prop, v);
   }
 
   for (const prop of LENGTHS[name] ?? []) {
@@ -358,22 +367,33 @@ function checkPoints(name, points) {
 
   if (points == null) return;
 
-  const pairs = isList(points) && Array.from(points).every((p) => isList(p) && p.length >= 2);
+  // (a point may be null: a missing one)
+  const list = isList(points) ? Array.from(points) : null;
+  const pairs = list && list.every((p) => p == null || (isList(p) && p.length >= 2));
   if (!pairs) {
     note("error", "bad-prop", `${name}'s points is ${show(points)}, not a list of [x, y] pairs.`, `Give points as [[x, y], [x, y], ...]: x on the value axis, y across the band.`);
     return;
   }
 
-  const bad = Array.from(points).findIndex((p) => !Number.isFinite(p[0]) || !Number.isFinite(p[1]));
+  const shownPoint = (p) => (p == null ? String(p) : `[${p[0]}, ${p[1]}]`);
+  const bad = list.findIndex((p) => p != null && [p[0], p[1]].some((v) => !missing(v) && !Number.isFinite(v)));
   if (bad >= 0) {
-    note("error", Number.isNaN(points[bad][0]) || Number.isNaN(points[bad][1]) ? "nan-value" : "bad-prop", `${name}'s point ${bad} is [${points[bad][0]}, ${points[bad][1]}].`, "Give every point two finite numbers.");
+    note("error", "bad-prop", `${name}'s point ${bad} is ${shownPoint(list[bad])}, not two numbers.`, "Give every point two numbers (null for a value that is missing).");
     return;
   }
 
+  const gap = list.findIndex((p) => p == null || missing(p[0]) || missing(p[1]));
+  if (gap >= 0) {
+    note("info", "missing-value", `${name}'s point ${gap} is ${shownPoint(list[gap])}, a missing value, so the ${name === "Line" ? "line" : "shape"} breaks there.`,
+      `For a gap in the data that is right: a break shows the reader where it is. To join the points around it, leave the missing point out of the list. If it should have a value, check the data it is worked out from.`);
+  }
+
   if (name === "Area") {
-    const unsorted = points.findIndex((p, i) => i > 0 && p[0] < points[i - 1][0]);
-    if (unsorted > 0) note("error", "bad-prop", `Area's points are not sorted by x (point ${unsorted} comes before point ${unsorted - 1}).`, "Sort an Area's points by x.");
-    if (points.some((p) => p[1] < 0)) note("error", "bad-prop", "Area has a point with y below 0.", "An Area's y is 0 or more; for values on both sides use a Line on a cross scale.");
+    // the points that are there, with their places in the list
+    const kept = list.map((p, i) => [i, p]).filter(([, p]) => p != null && !missing(p[0]) && !missing(p[1]));
+    const unsorted = kept.findIndex(([, p], k) => k > 0 && p[0] < kept[k - 1][1][0]);
+    if (unsorted > 0) note("error", "bad-prop", `Area's points are not sorted by x (point ${kept[unsorted][0]} comes before point ${kept[unsorted - 1][0]}).`, "Sort an Area's points by x.");
+    if (kept.some(([, p]) => p[1] < 0)) note("error", "bad-prop", "Area has a point with y below 0.", "An Area's y is 0 or more; for values on both sides use a Line on a cross scale.");
   }
 }
 

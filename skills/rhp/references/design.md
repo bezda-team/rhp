@@ -619,6 +619,9 @@ const Reference = slat({
 - **Units** once, where the reader looks first: in the dek, the Chart's `label` and the axis `format`.
   A short symbol ($, %, °C) may repeat on every value; a unit word ("megawatts", "TWh") goes in the dek or a column head, or after the first value only.
 - **Numbers** rounded to what matters (two or three significant figures), with the same decimals down a column.
+- **Missing data said, never drawn as 0.** A row with no value keeps its name and says "no data" where its value would be (api.md, "Missing data"), and a line breaks at a gap.
+  Join a line across a gap only when the dek or note says the points are joined.
+  When many values are missing, the note says how many and why ("no survey in 2020").
 
 ## 8. Inside an existing app
 
@@ -708,12 +711,12 @@ Whatever they did not mention keeps the defaults: text at 4.5:1 and marks at 3:1
 - A size that fits the content (about 480 to 640px wide for a few bars), centered with room around it (`#chart { max-width: 480px; margin: 0 auto; }` and `body { padding: 64px 16px; }`), not pinned to the top of an empty page.
 
 ```js
-import { Chart, Plot, Bar, Label, Tick, slat, nice, html, render } from "@bezda/rhp/standalone";
+import { Chart, Plot, Bar, Label, Tick, slat, nice, extent, html, render } from "@bezda/rhp/standalone";
 
 // Data
 const NAME = ["A", "B", "C"];
 const VALUE = [3, 7, 5];
-const scale = nice(Math.min(0, ...VALUE), Math.max(0, ...VALUE));
+const scale = nice(...extent([0, ...VALUE]));
 
 // Slat types: columns with their numbers (no axis numbers) and square feet, and a baseline, a Tick at 0 across the plot
 const Column = slat({

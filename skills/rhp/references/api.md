@@ -659,6 +659,31 @@ const ChangeChart = () => html`
 render(ChangeChart, document.getElementById("chart"));
 ```
 
+### Missing data
+
+`null`, `undefined`, `NaN` and infinite numbers are missing values, and rhp never draws one as 0.
+
+- A block given a missing value for its place draws nothing: a Bar's `from` or `to`, the `at` or `cross` of a Dot, Tick, Label or Place, a Cell's `value`.
+  Its slat and the slat's other blocks stay.
+- Only given values count: a Bar with no `from` starts at 0, and a Label at an `edge` is always drawn.
+- A Line or an Area breaks at a point that is `null` or has a missing x or y, and draws each run of two or more points.
+  To join the line across a gap, leave the point out: `points.filter(([, y]) => y != null)`.
+- The helpers leave missing values out, and `sortBy` puts them last in either direction (section 9).
+- A value that comes back is drawn where it is, without moving from where it was.
+- Read a CSV's empty cells as `null`, never 0: `(s) => (s.trim() === "" ? null : +s)`.
+
+Say "no data" where the value would be, in the slat and in any readout:
+
+```js
+const shown = (v) => (Number.isFinite(v) ? v.toLocaleString() : "no data");
+const Country = slat({ room: { start: 90, end: 60 } }, (d) => html`
+  <div>
+    <${Label} edge="start">${() => d.country}<//>
+    <${Bar} to=${() => d.rate} />
+    <${Label} edge="end">${() => shown(d.rate)}<//>
+  </div>`);
+```
+
 ### ManyDots (experimental point collection)
 
 `ManyDots` draws a bulk collection of points directly inside a `Chart` with `scale` and `cross`.
@@ -947,15 +972,15 @@ When their input changes, call them inside `createMemo` so they run once per cha
 | Helper | Returns | Example (real output) |
 |---|---|---|
 | `nice(lo, hi, count = 5)` | a round scale `{ min, max, step, ticks }` | `nice(0, 87)` → `{ min: 0, max: 100, step: 20, ticks: [0, 20, 40, 60, 80, 100] }`; `nice(-23, 41)` → min -40, max 60, step 20 |
-| `extent(values)` | `[smallest, largest]` (`[Infinity, -Infinity]` when empty) | `extent([5, -2, 9])` → `[-2, 9]` |
+| `extent(values)` | `[smallest, largest]` (`[Infinity, -Infinity]` when empty) | `extent([5, null, -2, 9])` → `[-2, 9]` |
 | `every(step, { ends })` | a ticks function of `[min, max]` (a step not above 0 throws) | `every(25)([0, 100])` → `[0, 25, 50, 75, 100]`; `every(5, { ends: true })([0, 27])` → `[0, 5, …, 25, 27]` |
-| `stackUp(values)` | `{ from, to }`: positives stack up from 0, negatives down | `stackUp([5, -3, 4])` → from `[0, 0, 5]`, to `[5, -3, 9]` |
+| `stackUp(values)` | `{ from, to }`: positives stack up from 0, negatives down; a missing value's are `null` | `stackUp([5, -3, 4])` → from `[0, 0, 5]`, to `[5, -3, 9]` |
 | `shares(values, total = 100)` | each value's share of the sum of absolute values, scaled to `total` | `shares([1, 1, 2])` → `[25, 25, 50]` |
 | `running(changes)` | `{ from, to }`: running totals (waterfall) | `running([100, -30, 45])` → from `[0, 100, 70]`, to `[100, 70, 115]` |
 | `summary(samples)` | `{ min, q1, median, q3, max, low, high, mean, outliers }`; low and high are the whisker ends (within 1.5 × IQR) | `summary([1, …, 9, 40])` → median 5.5, high 9, outliers `[40]` |
 | `bins(samples, { domain, count = 10 })` | `{ x0, x1, tally }`: bin k covers x0[k] to x1[k] | `bins([1, 2, 2, 3, 9, 10], { count: 3 })` → x0 `[1, 4, 7]`, tally `[4, 0, 2]` |
 | `density(samples, { domain, points = 40, bandwidth })` | `[[x, density], …]` for an Area (Gaussian kernel, Silverman's bandwidth) | keep `domain` inside the Chart's scale |
-| `sortBy(key, "asc" or "desc")` | an `order` function; `key` is a group name or `(d) => value`; ties keep their places on screen | `order=${sortBy("sold", "desc")}` |
+| `sortBy(key, "asc" or "desc")` | an `order` function; `key` is a group name or `(d) => value`; ties keep their places on screen, missing values go last | `order=${sortBy("sold", "desc")}` |
 | `series(n = 6)` | a data group: `"series-1"`… by row index | `color=${series(4)}` |
 | `cycle(list)` | a data group repeating `list` over the rows (does not set the number of rows) | `color=${cycle(["#111", "#999"])}` |
 | `at(group, i)` | item i of a data group (a list wraps around, a single value is every row's) | `at([1, 2, 3], 4)` → `2` |
@@ -966,6 +991,8 @@ When their input changes, call them inside `createMemo` so they run once per cha
 | `useOrientation()` | the orientation of the Plot around, as an accessor | call it in a slat: `const o = useOrientation();` then `o()` |
 | `restyle(slatType, css)` | gives a slat type made with `css` new CSS; its slats restyle in place | for style editors |
 | `linkedCss()` | tells rhp the page links `@bezda/rhp/rhp.css` itself | call before the first chart; without the link rhp warns and adds its CSS anyway |
+
+`extent`, `summary`, `bins` and `density` leave missing values out (section 6, Missing data); `stackUp` and `running` give one `null` for `from` and `to`, and `shares` gives it no share (`null`).
 
 A shape must start with `M`.
 Further `M` commands start separate subpaths, allowing disconnected pieces or holes with the opposite winding direction.
@@ -1364,7 +1391,8 @@ const VoteChart = () => {
 render(VoteChart, document.getElementById("chart"));
 ```
 
-**A top-N race whose rows leave and come in.**
+### A top-N race whose rows leave and come in
+
 A row that leaves the top N slides to place N, just below the last place, fades there, and is hidden at the next step; a row that comes in fades in at its place.
 Rows a source leaves out (a table of the top four each year) are `null` in the data.
 Three parts do it:
@@ -1635,8 +1663,8 @@ Every one of these was found by running rhp 2.0.1.
 15. **`scale` needs `min < max`.**
     An equal or reversed pair draws Bars with no length and no axis.
     To run bars right to left, use negative values and `format=${(v) => Math.abs(v)}`.
-16. **NaN, `undefined` and `null` draw at the scale's start without an error**, and a Label prints "NaN".
-    Clean the data first.
+16. **A missing value draws nothing, and a Label prints it as "NaN" or "null".**
+    Print "no data" for it (section 6, Missing data).
 17. **A numeric Dot `size` makes an ellipse** (a share of the slat's width and height).
     Give a length: `size="12px"`.
 18. **`series()` counts 6 colors whatever the theme holds.**

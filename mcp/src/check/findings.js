@@ -27,6 +27,7 @@ export const SEE = {
   "value-past-scale": PITFALLS("Bars, dots or labels in the wrong place"),
   "points-past-scale": PITFALLS("Bars, dots or labels in the wrong place"),
   "nan-value": PITFALLS("Bars, dots or labels in the wrong place"),
+  "missing-value": 'api.md, "Missing data"',
   "dot-size": PITFALLS("Bars, dots or labels in the wrong place"),
   "sticks-out": PITFALLS("Text sticks out, is cut off or overlaps"),
   "text-cut-off": PITFALLS("Text sticks out, is cut off or overlaps"),
@@ -95,6 +96,7 @@ export function fromProbe(f, context) {
         fix: f.vertical ? "Give the Chart a height (height={320}) or an aspect (aspect={16 / 9}), and its parent the room for it." : "Give the chart more width: its parent is too narrow, or the room for labels (room start and end) takes it all.",
       };
     case "nan-value":
+      if (f.everything) return { level: "error", code: f.code, message: `Every value ${f.chart} would draw is missing (${f.count} blocks given null, undefined, NaN or an infinite number), so it draws no data.`, fix: "Check the data the values come from: a misspelled data group or key, numbers read as text and not converted, or a division by zero." };
       if (f.printed) return { level: "error", code: f.code, message: `${f.what} in the chart shows ${q(f.text)}: a value it prints is missing or not a number.`, fix: "Check the data the label prints (a missing value, a misspelled name, a division by zero), and format numbers before printing them." };
       return { level: "error", code: f.code, message: `${f.block}'s ${f.prop} is ${f.value}.`, fix: `Give ${f.block} a number for ${f.prop}: check the data it is computed from (a missing value, a name that is misspelled, a division by zero).` };
     case "plot-outside-chart":

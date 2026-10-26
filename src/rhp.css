@@ -589,6 +589,12 @@
 /* Placement: every slat sits in its band by --rhp-position, and a slat's own CSS can't move it off its band.
    The JS version, reduced motion and turning are here too, so a slat's own transition can't undo them. */
 @layer rhp.place {
+  /* A block with a missing value (null, undefined, NaN or infinite) draws nothing, rather than sit at the start of the
+     scale as if the value were 0, and a slat's own CSS can't show it */
+  [data-rhp-missing] {
+    display: none;
+  }
+
   .rhp-plot>* {
     position: absolute;
     box-sizing: border-box;
