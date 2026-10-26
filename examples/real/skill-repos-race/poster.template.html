@@ -39,6 +39,7 @@ body { margin: 0; padding: 40px 16px; background: var(--page); color: var(--fg);
 .dock { display: contents; }
 .readout { grid-area: readout; height: 28px; margin: 0 0 6px; overflow: hidden; font-size: 17px; line-height: 28px; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
 .readout b { color: var(--fg); font-weight: 600; }
+.digit { display: inline-block; width: .625em; text-align: center; }
 .stage { grid-area: stage; position: relative; --slat: 60px; --inset: 19px; }
 /* The date, large in the empty place under the shortest bars, as the race plays */
 .when { position: absolute; right: 0; bottom: 34px; z-index: 2; padding: 0 0 0 12px; background: var(--canvas); font: 600 62px/1 var(--text); letter-spacing: -.02em; color: var(--disabled); pointer-events: none; }
@@ -155,6 +156,9 @@ const longDate = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeri
 const monthYear = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
 const month = new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" });
 const shortDate = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+// Text whose numbers change as the race plays: each digit in a slot as wide as the widest, so the words around the
+// number keep still (Mona Sans's own equal-width digits draw a slashed zero)
+const steady = (text) => [...text].map((c) => (c >= "0" && c <= "9" ? html`<span class="digit">${c}</span>` : c));
 
 // The weeks: four levels of stars gained a day, at the quartiles of the year, as GitHub's graph colors its days
 const WEEKS = DATA.weeks;
@@ -396,11 +400,11 @@ function SkillRace() {
       const from = Math.max(0, k - 30);
       const two = [...RACE[k]].sort((a, b) => REPOS[b].stars[k] - REPOS[a].stars[k]).slice(0, 2);
       if (two.length < 2) return "Point at a repo to read it; click or tap to star it";
-      const gain = (j) => `${REPOS[j].full} +${count.format(REPOS[j].stars[k] - REPOS[j].stars[from])}`;
-      return html`<span>${k - from} days to ${shortDate.format(dateOf(k))}: <b>${gain(two[0])}</b>, <b>${gain(two[1])}</b> stars. Click or tap a repo to star it.</span>`;
+      const gain = (j) => steady(`${REPOS[j].full} +${count.format(REPOS[j].stars[k] - REPOS[j].stars[from])}`);
+      return html`<span>${steady(`${k - from} days to ${shortDate.format(dateOf(k))}`)}: <b>${gain(two[0])}</b>, <b>${gain(two[1])}</b> stars. Click or tap a repo to star it.</span>`;
     }
     const r = REPOS[i];
-    return html`<b>${r.full}</b>: #${rankOf(i)} with ${count.format(Math.round(stars()[i]))} stars on ${longDate.format(dateOf(t()))}, created ${monthYear.format(new Date(r.created))}`;
+    return html`<b>${r.full}</b>: ${steady(`#${rankOf(i)} with ${count.format(Math.round(stars()[i]))} stars on ${longDate.format(dateOf(t()))}`)}, created ${monthYear.format(new Date(r.created))}`;
   };
   const week = () => Math.min(WEEKS.length - 1, Math.floor(t() / 7));
   // The graph's heading counts, as GitHub's counts contributions: the stars all tracked repos gained since the launch
@@ -420,7 +424,7 @@ function SkillRace() {
       <div class="stage" ref=${(el) => (stage = el)} style=${() => ({ "--chart-w": `${width()}px` })}
         onPointerMove=${(e) => e.pointerType !== "touch" && pick(e)} onClick=${star} onKeyDown=${starKey} onFocusIn=${pick}
         onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
-        <span class="when" aria-hidden="true">${() => longDate.format(dateOf(t()))}</span>
+        <span class="when" aria-hidden="true">${() => steady(longDate.format(dateOf(t())))}</span>
         <${Chart} scale=${() => [0, top() * headroom()]} ticks=${4} animate=${{ slide: 300 }}
           format=${(v) => html`<span class="tick">${short.format(v).toLowerCase()}</span>`}
           label=${() => `GitHub stars of the ten most-starred Claude skill repos on ${when()}`}
@@ -434,7 +438,7 @@ function SkillRace() {
       <div class="dock">
       <p class="readout" aria-live=${() => (playing() ? "off" : "polite")}>${readout}</p>
       <div class="timeline">
-        <h2 class="count">${() => count.format(Math.round(gained()))} stars gained by the ${DATA.tracked} skill repos since launch</h2>
+        <h2 class="count">${() => steady(count.format(Math.round(gained())))} stars gained by the ${DATA.tracked} skill repos since launch</h2>
         <button type="button" class="play" onClick=${toggle}>${() => (playing() ? PAUSE() : PLAY())}<span class="label">${() => (playing() ? "Pause" : "Play")}</span></button>
         <div class="graph" style=${{ "--weeks": WEEKS.length, "--span": `${(LAST / (7 * WEEKS.length)) * 100}%` }}>
           <div class="months" aria-hidden="true">${MONTHS.map((m) => html`<span class=${m.alt ? "alt" : ""} style=${{ left: `${(m.i / WEEKS.length) * 100}%` }}>${m.name}</span>`)}</div>
