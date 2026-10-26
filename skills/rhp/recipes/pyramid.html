@@ -514,30 +514,76 @@ function addPosterDownloads() {
         end();
       }
     }
-    // The GIF: the playback in frames 80 ms apart, for up to 15 seconds, at most 1200 pixels wide. One palette from
-    // the first and the last frame serves every frame; its last color is never drawn and marks the pixels a frame leaves
-    // as the frame before had them, so each frame stores only what changed.
+    // The GIF's clock: while it is made, rhp's motion (performance.now and animation frames) and the page's CSS
+    // animations run on a time of their own, which only moves on when a frame asks it to, so every frame shows the chart
+    // exactly as it is that many milliseconds into playing, its glides and slides included
+    const gifClock = () => {
+      const raf = window.requestAnimationFrame, caf = window.cancelAnimationFrame;
+      const queue = new Map(), started = new Map();
+      let time = performance.now(), id = 0, pump = 0;
+      const flush = () => {
+        const due = [...queue.values()];
+        queue.clear();
+        due.forEach(callback => { try { callback(time); } catch (cause) { reportError(cause); } });
+      };
+      // Callbacks still run every real frame, at the clock's time, so whatever waits for a frame is not held up
+      const loop = () => { flush(); pump = raf.call(window, loop); };
+      window.requestAnimationFrame = callback => { queue.set(++id, callback); return id; };
+      window.cancelAnimationFrame = n => queue.delete(n);
+      performance.now = () => time;
+      pump = raf.call(window, loop);
+      return {
+        // Two of the browser's frames: callbacks that were already waiting for one (rhp's ticker) come over to the clock
+        ready: new Promise(resolve => raf.call(window, () => raf.call(window, resolve))),
+        advance(ms, steps = 1) {
+          for (let i = 0; i < steps; i++) {
+            time += ms / steps;
+            // A frame's motion, then the style writes it schedules
+            flush(); flush(); flush();
+            for (const animation of document.getAnimations()) {
+              if (!started.has(animation)) started.set(animation, time - (animation.currentTime ?? 0));
+              animation.pause();
+              animation.currentTime = time - started.get(animation);
+            }
+          }
+        },
+        stop() {
+          caf.call(window, pump);
+          window.requestAnimationFrame = raf;
+          window.cancelAnimationFrame = caf;
+          delete performance.now;
+          for (const callback of queue.values()) raf.call(window, callback);
+          started.forEach((_, animation) => animation.play());
+        },
+      };
+    };
+    // The GIF: the playback at 25 frames a second for up to 15 seconds, at most 1200 pixels wide. One palette from the
+    // first and the last frame serves every frame; its last color is never drawn and marks the pixels a frame leaves as
+    // the frame before had them, so each frame stores only what changed.
     async function saveGif() {
       const playback = poster.playback;
       const from = playback.position();
+      let clock = null;
       begin('gif');
       try {
         encoder ||= import('https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm' + (retries ? `?retry=${retries}` : ''));
         const [{ domToCanvas }, { GIFEncoder, quantize, applyPalette }] = await Promise.all([loadExporter(), encoder]);
         const options = await captureOptions();
         const scale = Math.min(1, 1200 / options.width);
-        const count = Math.max(2, Math.round(Math.min(playback.duration ?? 15000, 15000) / 80) + 1);
-        const frame = async (at, settled) => {
-          playback.seek(at);
-          // rhp moves the marks to their new values over 150 ms
-          await new Promise(requestAnimationFrame);
-          await new Promise(resolve => setTimeout(resolve, 200));
-          // After a jump, rows that come back fade in: the frames the palette is made from wait for them
-          if (settled) await Promise.all(poster.getAnimations({ subtree: true }).filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {})));
+        const step = 40, count = Math.max(2, Math.round(Math.min(playback.duration ?? 15000, 15000) / step) + 1);
+        const capture = async () => {
           const canvas = await domToCanvas(poster, { ...options, scale });
           return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
         };
-        const last = await frame(1, true), first = await frame(0, true);
+        clock = gifClock();
+        await clock.ready;
+        // The end and the start, each given a second to settle, for the palette; the start is also the first frame
+        playback.seek(1);
+        clock.advance(1000, 25);
+        const last = await capture();
+        playback.seek(0);
+        clock.advance(1000, 25);
+        const first = await capture();
         const both = new Uint8ClampedArray(first.data.length + last.data.length);
         both.set(first.data);
         both.set(last.data, first.data.length);
@@ -562,11 +608,17 @@ function addPosterDownloads() {
         let previous = null;
         for (let i = 0; i < count; i++) {
           if (cancelled) return;
-          const image = i === 0 ? first : await frame(i / (count - 1));
+          if (i > 0) {
+            playback.seek(i / (count - 1));
+            clock.advance(step);
+            // The last frame is held: it shows the end settled
+            if (i === count - 1) clock.advance(1000, 25);
+          }
+          const image = i === 0 ? first : await capture();
           const index = applyPalette(image.data, palette.slice(0, kept));
           const pixels = previous ? index.map((p, j) => (p === previous[j] ? kept : p)) : index;
           gif.writeFrame(pixels, image.width, image.height, {
-            palette: i === 0 ? palette : undefined, delay: i === 0 ? 1000 : i === count - 1 ? 3000 : 80,
+            palette: i === 0 ? palette : undefined, delay: i === 0 ? 1000 : i === count - 1 ? 3000 : step,
             transparent: i > 0, transparentIndex: kept, dispose: 1,
           });
           previous = index;
@@ -579,6 +631,7 @@ function addPosterDownloads() {
       } catch (cause) {
         fail('The GIF could not be made. Check your connection and try again.');
       } finally {
+        clock?.stop();
         playback.seek(from);
         end();
       }

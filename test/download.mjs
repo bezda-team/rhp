@@ -19,20 +19,25 @@ const exporter = (await build({ entryPoints: [path.join(root, "node_modules/mode
 const exportURL = /https:\/\/cdn\.jsdelivr\.net\/npm\/modern-screenshot@4\.7\.0\/\+esm(?:\?.*)?$/;
 const encoder = fs.readFileSync(path.join(root, "node_modules/gifenc/dist/gifenc.esm.js"), "utf8");
 const encoderURL = /https:\/\/cdn\.jsdelivr\.net\/npm\/gifenc@1\.0\.3\/\+esm(?:\?.*)?$/;
-// A GIF's frames: its image descriptors, read block by block (a byte pattern could also occur inside image data)
-const gifFrames = bytes => {
-  let i = 13 + (bytes[10] & 0x80 ? 3 * 2 ** ((bytes[10] & 7) + 1) : 0), frames = 0;
+// A GIF's frame delays in milliseconds, one per image, read block by block (a byte pattern could also occur inside
+// image data)
+const gifDelays = bytes => {
+  let i = 13 + (bytes[10] & 0x80 ? 3 * 2 ** ((bytes[10] & 7) + 1) : 0), delay = 0;
+  const delays = [];
   const skipBlocks = () => { while (bytes[i]) i += bytes[i] + 1; i++; };
   while (i < bytes.length && bytes[i] !== 0x3b) {
-    if (bytes[i] === 0x21) { i += 2; skipBlocks(); }
-    else if (bytes[i] === 0x2c) {
-      frames++;
+    if (bytes[i] === 0x21) {
+      if (bytes[i + 1] === 0xf9) delay = bytes.readUInt16LE(i + 4) * 10;
+      i += 2;
+      skipBlocks();
+    } else if (bytes[i] === 0x2c) {
+      delays.push(delay);
       const local = bytes[i + 9];
       i += 10 + (local & 0x80 ? 3 * 2 ** ((local & 7) + 1) : 0) + 1;
       skipBlocks();
     } else throw new Error(`Unexpected GIF block ${bytes[i]} at ${i}`);
   }
-  return frames;
+  return delays;
 };
 const browser = await { chromium, webkit, firefox }[engine].launch(engine === "chromium" ? { executablePath: process.env.CHROMIUM } : {});
 const settle = page => page.evaluate(async () => {
@@ -320,7 +325,7 @@ try {
     await page.keyboard.press("Escape");
     assert.equal(await menu.isHidden(), true);
     assert.equal(await race.evaluate(button => document.activeElement === button), true, "Escape returns to the download icon");
-    // A short playback keeps the test quick: 400 ms of it is 6 frames, 80 ms apart
+    // A short playback keeps the test quick: 400 ms of it is 11 frames, 40 ms apart
     await page.evaluate(() => { const playback = document.querySelector(".poster").playback; playback.duration = 400; playback.seek(0.5); });
     await settle(page);
     const before = await position();
@@ -337,7 +342,11 @@ try {
     const raceBounds = await page.locator(".poster").boundingBox();
     assert(Math.abs(bytes.readUInt16LE(6) - Math.min(raceBounds.width, 1200)) <= 2, "the GIF is the poster's width, up to 1200 pixels");
     assert(Math.abs(bytes.readUInt16LE(8) / bytes.readUInt16LE(6) - raceBounds.height / raceBounds.width) < .01, "the GIF holds the whole poster");
-    assert.equal(gifFrames(bytes), 6, "a frame every 80 ms, the first and the last included");
+    const delays = gifDelays(bytes);
+    assert.equal(delays.length, 11, "a frame every 40 ms, the first and the last included");
+    assert.deepEqual([delays[0], delays.at(-1)], [1000, 3000], "the first frame is held a second, the last three");
+    assert(delays.slice(1, -1).every(delay => delay === 40), "25 frames a second between them");
+    assert.equal(await page.evaluate(() => typeof performance.now === "function" && !Object.hasOwn(performance, "now")), true, "the page's own clock is back");
     await idle();
     assert(Math.abs(await position() - before) < 1e-9, "after the GIF the chart returns to where it was");
     // A click on the busy icon cancels: nothing is saved, and the chart returns
