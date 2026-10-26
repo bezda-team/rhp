@@ -38,17 +38,17 @@ Start from a recipe, never from what another library does.
 3. **`render` got the result instead of a function.** Write ``render(() => html`<${MyChart} />`, element)``.
 4. **The slat returns two elements, text, or nothing** [30]. Return one root element (`<div>`) holding the blocks.
 5. **The Plot is outside a Chart** [29], or the Plot got the bare function instead of what `slat()` returned (the slat then has no CSS or layout).
-6. **Data groups are empty** or the Plot has none of the names the slat reads: every slat reads `undefined` and draws at the start of the scale [16]. Check the names: `d.sold` needs a Plot prop `sold`; a list of objects goes in `rows`, not `data` [7].
+6. **Data groups are empty** or the Plot has none of the names the slat reads: every slat reads `undefined`, a missing value, and its blocks draw nothing [16]. Check the names: `d.sold` needs a Plot prop `sold`; a list of objects goes in `rows`, not `data` [7].
 
 ## Bars, dots or labels in the wrong place
 
 1. **The scale does not hold the data** [13]: bars are cut at the end, dots and ticks land outside the plot.
-   Build it from the data: `const s = nice(Math.min(0, ...values), Math.max(0, ...values))`, then `scale=${[s.min, s.max]} ticks=${s.ticks}`.
+   Build it from the data: `const s = nice(...extent([0, ...values]))`, then `scale=${[s.min, s.max]} ticks=${s.ticks}`.
 2. **Negative values on a scale that starts at 0**: a value below the scale's min draws nothing; the scale above takes its min below 0.
    A Bar whose `to` is below its `from` runs backward.
 3. **Area or Line points past the scale squeeze the whole outline** [14]: keep every x inside the scale; give `density()` a `domain` inside it.
 4. **A reversed or equal scale** (`[100, 0]`, `[5, 5]`) draws nothing [15]. For bars that run the other way, use negative values and print them with `format=${(v) => Math.abs(v)}`.
-5. **NaN, undefined or null** draw at the scale's start and print "NaN" [16]: clean or filter the data first.
+5. **A Label prints "NaN", "null" or "undefined"**: its value is missing, and the blocks it places draw nothing [16]. Print "no data" for it (api.md, "Missing data"), and check the data when the value should be there.
 6. **Every slat got one item of a list meant for all of them**: an array given to a Plot is a column, item i for row i. To give every slat the same list (the series still shown, a set of picked names), pass a function of the row: `shown=${(d) => shown()}`.
 7. **Lists of different lengths** wrap around without an error [8]: the third slat of a 3-item list shown beside a 5-item list repeats the first values. Give every data group the same length.
 8. **A Dot is an oval**: its `size` was a number [17].

@@ -391,6 +391,12 @@ export function install() {
       // or a Plot of slats with none, draws no data
       const empty = (p) => ![...p.children].some((s) => !s.hidden);
       if (plots.length && (plots.every(empty) || plots.some((p) => empty(p) && !p.hasAttribute("data-rhp-overlap")))) add({ code: "empty-plot", chart: describe(c) });
+      // every block that could show a value has a missing one: the chart draws no data (a misspelled name, values read
+      // as text), though each block alone is a note
+      const gone = c.querySelectorAll(".rhp-body [data-rhp-missing]").length;
+      if (gone && !c.querySelector(".rhp-body :is(.rhp-bar, .rhp-dot, .rhp-tick, .rhp-cell, .rhp-place, .rhp-label[data-rhp-at], .rhp-line, .rhp-area):not([data-rhp-missing])")) {
+        add({ code: "nan-value", everything: true, count: gone, chart: describe(c) });
+      }
       for (const p of plots) {
         const shown = [...p.children].filter((s) => !s.hidden);
         if (!shown.length) continue;
@@ -409,10 +415,11 @@ export function install() {
       }
     }
 
-    // CSS variables that came out as NaN or undefined, and values past the Chart's scale
+    // CSS variables that came out as NaN or undefined (not a block rhp hides for a missing value), and values past the
+    // Chart's scale
     const VALUE = { "--rhp-from": "from", "--rhp-to": "to", "--rhp-at": "at", "--rhp-value": "value", "--rhp-size": "size", "--rhp-across": "across", "--rhp-cross": "cross", "--rhp-min": "scale", "--rhp-max": "scale", "--rhp-thick": "thick" };
     for (const c of all) {
-      for (const el of [c, ...c.querySelectorAll("[style]")]) {
+      for (const el of [c, ...c.querySelectorAll("[style]:not([data-rhp-missing])")]) {
         for (let i = 0; i < el.style.length; i++) {
           const name = el.style[i];
           if (!name.startsWith("--rhp-")) continue;

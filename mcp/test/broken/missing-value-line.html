@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- A row with no value: its Dot is drawn at the start of the scale. expect: nan-value -->
+<!-- A line with a gap: it breaks at the missing point, a note. expect: missing-value:info -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>nan-value</title>
+<title>missing-value</title>
 <script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
 <style>
   body { margin: 0; padding: 24px 40px; font-family: system-ui, sans-serif; background: #fff; color: #222; }
@@ -14,20 +14,16 @@
 <body>
 <div id="chart"></div>
 <script type="module">
-import { Chart, Plot, Dot, Label, slat, html, render } from "@bezda/rhp/standalone";
+import { Chart, Plot, Line, slat, html, render } from "@bezda/rhp/standalone";
 
-const fruit = ["Apples", "Bananas", "Cherries"];
-const sold = [12, null, 7];
+// Weekly sales, with no count for week 3
+const weeks = [[1, 12], [2, 15], [3, null], [4, 9], [5, 14]];
 
-const Fruit = slat({ thickness: 36, room: { start: 90, end: 40 } }, (d) => html`
-  <div>
-    <${Label} edge="start">${() => d.fruit}<//>
-    <${Dot} at=${() => d.sold} size="12px" />
-  </div>`);
+const Trend = slat({ room: {} }, () => html`<${Line} points=${weeks} />`);
 
 render(() => html`
-  <${Chart} scale=${[0, 20]} label="Fruit sold today">
-    <${Plot} fruit=${fruit} sold=${sold}>${Fruit}<//>
+  <${Chart} scale=${[1, 5]} cross=${[0, 20]} height=${200} label="Sales by week">
+    <${Plot} overlap=${true} slats=${1}>${Trend}<//>
   <//>`, document.getElementById("chart"));
 </script>
 </body>

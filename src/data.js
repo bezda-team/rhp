@@ -1,6 +1,10 @@
 // Data helpers. These are plain functions (no signals) that turn raw data into data groups.
 // Wrap a call in createMemo when its input changes so it runs once per change.
 
+// A value that was not measured: null, undefined, NaN or an infinite number. A block draws nothing for it, sortBy puts
+// it last, and the helpers leave it out of extents, totals and summaries. Missing is never 0.
+export const missing = (v) => v == null || (typeof v === "number" && !Number.isFinite(v));
+
 const compare = (a, b) => {
 
   if (a < b) return -1;
@@ -10,7 +14,8 @@ const compare = (a, b) => {
 };
 
 // An order function that sorts the rows by `key` (a function of d, or a data group name), "asc" or "desc".
-// It starts from the order on screen, so rows with equal keys keep their places.
+// It starts from the order on screen, so rows with equal keys keep their places. Rows with a missing key go last in
+// either direction.
 export const sortBy = (key, direction = "asc") => (rows, current) => {
 
   const keys = rows.map((d) => (typeof key === "function" ? key(d) : d[key]));
@@ -19,7 +24,10 @@ export const sortBy = (key, direction = "asc") => (rows, current) => {
   const positions = Array(rows.length);
 
   onScreen
-    .sort((a, b) => sign * compare(keys[a], keys[b]))
+    .sort((a, b) => {
+      const gone = missing(keys[a]) - missing(keys[b]);
+      return gone || (missing(keys[a]) ? 0 : sign * compare(keys[a], keys[b]));
+    })
     .forEach((row, position) => (positions[row] = position));
 
   return positions;
@@ -28,13 +36,14 @@ export const sortBy = (key, direction = "asc") => (rows, current) => {
 // A data group that repeats `list` over the rows (palettes). Unlike a list, it doesn't set the number of rows.
 export const cycle = (list) => (d) => list[d.index % list.length];
 
-// [smallest, largest] of a list of numbers
+// [smallest, largest] of a list of numbers, leaving out missing ones
 export const extent = (values) => {
 
   let lo = Infinity;
   let hi = -Infinity;
 
   for (const v of values) {
+    if (missing(v)) continue;
     if (v < lo) lo = v;
     if (v > hi) hi = v;
   }
@@ -63,9 +72,11 @@ export const every = (step, { ends = false } = {}) => ([min, max]) => {
   return out;
 };
 
-// A round scale that covers lo..hi with about `count` ticks: { min, max, step, ticks }
+// A round scale that covers lo..hi with about `count` ticks: { min, max, step, ticks }. With no numbers at all (the
+// extent of a list that is empty or all missing), a scale from 0 to 1.
 export function nice(lo, hi, count = 5) {
 
+  if (missing(lo) || missing(hi)) [lo, hi] = [0, 1];
   if (!(hi > lo)) hi = lo + 1;
 
   const raw = (hi - lo) / Math.max(1, count);
@@ -85,7 +96,8 @@ export function nice(lo, hi, count = 5) {
 }
 
 // Stacked segments: each value starts where the one before it ended.
-// Positive values stack up from 0 and negative values stack down from 0. Returns { from, to }.
+// Positive values stack up from 0 and negative values stack down from 0. Returns { from, to }. A missing value is a
+// missing segment (from and to null), and the next one starts where the one before it ended.
 export function stackUp(values) {
 
   let up = 0;
@@ -94,7 +106,10 @@ export function stackUp(values) {
   const to = [];
 
   for (const v of values) {
-    if (v >= 0) {
+    if (missing(v)) {
+      from.push(null);
+      to.push(null);
+    } else if (v >= 0) {
       from.push(up);
       up += v;
       to.push(up);
@@ -108,15 +123,17 @@ export function stackUp(values) {
   return { from, to };
 }
 
-// Each value as a share of the total, scaled to `total` (100 by default), for segmented (100%) bars
+// Each value as a share of the total, scaled to `total` (100 by default), for segmented (100%) bars. A missing value
+// has no share (null) and is not in the total.
 export const shares = (values, total = 100) => {
 
-  const sum = values.reduce((s, v) => s + Math.abs(v), 0) || 1;
+  const sum = values.reduce((s, v) => (missing(v) ? s : s + Math.abs(v)), 0) || 1;
 
-  return values.map((v) => (v / sum) * total);
+  return values.map((v) => (missing(v) ? null : (v / sum) * total));
 };
 
-// Running totals for a waterfall: step k goes from the total before it to the total after it. Returns { from, to }.
+// Running totals for a waterfall: step k goes from the total before it to the total after it. Returns { from, to }. A
+// missing change is a missing step (from and to null), and the total goes on from where it was.
 export function running(changes) {
 
   let total = 0;
@@ -124,6 +141,11 @@ export function running(changes) {
   const to = [];
 
   for (const change of changes) {
+    if (missing(change)) {
+      from.push(null);
+      to.push(null);
+      continue;
+    }
     from.push(total);
     total += change;
     to.push(total);
@@ -140,11 +162,11 @@ const quantile = (sorted, p) => {
   return sorted[lo] + (sorted[Math.min(lo + 1, sorted.length - 1)] - sorted[lo]) * (h - lo);
 };
 
-// Box and whisker numbers for a list of samples. low and high are the whisker ends: the furthest samples within
-// 1.5 x IQR of the box. Samples beyond them are outliers.
+// Box and whisker numbers for a list of samples, leaving out missing ones. low and high are the whisker ends: the
+// furthest samples within 1.5 x IQR of the box. Samples beyond them are outliers.
 export function summary(samples) {
 
-  const sorted = samples.slice().sort((a, b) => a - b);
+  const sorted = samples.filter((v) => !missing(v)).sort((a, b) => a - b);
   const q1 = quantile(sorted, 0.25);
   const median = quantile(sorted, 0.5);
   const q3 = quantile(sorted, 0.75);
@@ -166,7 +188,7 @@ export function summary(samples) {
 }
 
 // Histogram bins over `domain` ([lo, hi], the samples' extent by default), `count` bins (10 by default).
-// Returns { x0, x1, tally }: bin k covers x0[k]..x1[k] and holds tally[k] samples.
+// Returns { x0, x1, tally }: bin k covers x0[k]..x1[k] and holds tally[k] samples. Missing samples are in no bin.
 export function bins(samples, { domain = extent(samples), count = 10 } = {}) {
 
   let [lo, hi] = domain;
@@ -184,17 +206,19 @@ export function bins(samples, { domain = extent(samples), count = 10 } = {}) {
   }
 
   for (const v of samples) {
-    if (v < lo || v > hi) continue;
+    if (missing(v) || v < lo || v > hi) continue;
     tally[Math.min(count - 1, Math.floor((v - lo) / width))]++;
   }
 
   return { x0, x1, tally };
 }
 
-// A smooth estimate of how samples are spread (Gaussian kernel density), for violins and ridgelines.
-// Returns `points` pairs of [x, density] across the domain. The bandwidth follows Silverman's rule by default.
-export function density(samples, { domain = extent(samples), points = 40, bandwidth } = {}) {
+// A smooth estimate of how samples are spread (Gaussian kernel density), for violins and ridgelines, leaving out
+// missing samples. Returns `points` pairs of [x, density] across the domain. The bandwidth follows Silverman's rule by
+// default.
+export function density(all, { domain = extent(all), points = 40, bandwidth } = {}) {
 
+  const samples = all.filter((v) => !missing(v));
   const n = samples.length;
   const mean = samples.reduce((a, b) => a + b, 0) / n;
   const sd = Math.sqrt(samples.reduce((a, v) => a + (v - mean) ** 2, 0) / Math.max(1, n - 1)) || 1;

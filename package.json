@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "rhp (reactive html plots): plots as stacks of slats, built with SolidJS out of HTML elements and CSS",
   "keywords": [
     "solid",
@@ -51,7 +51,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "gallery": "node examples/gallery/make.mjs",
-    "test": "node test/style-object-run.mjs && node test/style-string-run.mjs && node test/comparison-regressions.mjs && node test/download.mjs && node test/manydots-run.mjs && node test/run.mjs",
+    "test": "node test/style-object-run.mjs && node test/style-string-run.mjs && node test/missing-run.mjs && node test/comparison-regressions.mjs && node test/download.mjs && node test/manydots-run.mjs && node test/run.mjs",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {

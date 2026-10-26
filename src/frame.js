@@ -9,14 +9,16 @@ let idle = 0;
 let direct = 0;
 const canWait = typeof requestAnimationFrame === "function" && typeof document !== "undefined";
 
+// A CSS variable, or an attribute that has to change in the same frame as the variables (data-rhp-missing)
 const put = (el, key, value) => {
 
+  if (!key.startsWith("--")) return value == null ? el.removeAttribute(key) : el.setAttribute(key, value);
   if (value == null) return el.style.removeProperty(key);
 
   return el.style.setProperty(key, value);
 };
 
-// Sets a CSS variable on an element in the next frame (or right away while drawing)
+// Sets a CSS variable (or an attribute) on an element in the next frame (or right away while drawing)
 export function write(el, key, value) {
 
   if (direct || !canWait) {

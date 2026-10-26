@@ -35,7 +35,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@bezda/rhp": "^2.1.0"
+    "@bezda/rhp": "^2.2.0"
   },
   "peerDependencies": {
     "react": ">=18"

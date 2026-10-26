@@ -27,6 +27,10 @@ export function App() {
   const { from, to } = stackUp(shares([30, 20, 50]));
   const ease = curve([0.4, 0, 0.2, 1]);
   const moving = animated(() => sold()[0], () => ({ duration: 300, ease: "ease-out" }));
+  // Values that may be missing: the helpers give null where one is
+  const gaps: (number | null)[] = stackUp([3, null, 2]).from;
+  // @ts-expect-error: a segment of a value that may be missing may be null
+  const sure: number[] = running([1, undefined]).to;
   linkedCss();
   restyle(Row, ".bar { color: red; }");
   setSold([1, 2, 3]);
@@ -46,6 +50,14 @@ export function App() {
       <Chart scale={[0, 10]} cross={[0, 50]} grid={false} crossGrid={false} crossTicks={every(10)} crossFormat={(v) => v + "%"}>
         <Plot overlap x={[1, 2]} y={[10, 40]}>{(d) => <div><Dot at={d.x as number} cross={d.y as number} /><Label at={d.x as number} cross={d.y as number}>{String(d.y)}</Label></div>}</Plot>
         <Plot overlap pts={[[[0, 5], [10, 45]]]}>{(d) => <div><Line points={d.pts as [number, number][]} fill base={0} color="series-3" /></div>}</Plot>
+      </Chart>
+      <Chart scale={[0, 10]} cross={[0, 10]}>
+        <Plot overlap v={gaps}>{(d) => (
+          <div>
+            <Bar from={null} to={undefined} /><Dot at={NaN} cross={null} /><Tick at={null} /><Cell value={null} /><Label at={null} cross={undefined}>{sure.length}</Label>
+            <Line points={[[0, 1], null, [2, null]]} /><Area points={[[0, 1], [1, undefined]]} />
+          </div>
+        )}</Plot>
       </Chart>
       <Chart scale={[0, 10]}><Plot keyboard fruit={["Apples"]}>{(d) => <div onFocus={() => d.index}>{String(d.fruit)}</div>}</Plot></Chart>
       <Poster look="day" kicker="A day" title="Four hours" dek={<em>Sleep first</em>} note="Illustrative" id="p" onClick={() => {}}>

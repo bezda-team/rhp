@@ -269,7 +269,7 @@ Download saves the full poster, including the headline and note, even when the v
 - A request about the user's own data with none given ("chart my spending") gets illustrative numbers in one obvious data block at the top of the script, with the note's text in the same block, so the user changes both in one place.
   The headline and the dek compute their numbers from that data, so they stay true for the user's own.
   The handoff says exactly how to put their own numbers in, or offers to read a file they point to.
-- Compute the scale from the data: `nice(Math.min(0, ...values), Math.max(0, ...values))` (rule 2 below).
+- Compute the scale from the data: `nice(...extent([0, ...values]))`, which skips missing values (rule 2 below).
 - Compute the ranks, the leader and every number in the headline and the dek from a sorted copy of the data, never from its input order: a Plot's `order` sorts only what it draws.
 - Text computed from the data (the headline, the dek, a readout, an `aria-label`) must stay true for any data it may get:
   - A change from a zero or missing base prints "new" or "up from none", never ∞%, NaN% or "as many as"; a change in a rate is in percentage points ("down 0.8 points").
@@ -375,12 +375,12 @@ A complete chart in the plain HTML format (the format of every recipe), with a p
 <body>
 <div id="chart"></div>
 <script type="module">
-import { Chart, Plot, Bar, Label, Poster, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+import { Chart, Plot, Bar, Label, Poster, slat, nice, extent, html, render, createSignal } from "@bezda/rhp/standalone";
 
 // Data, and what depends on it
 const fruit = ["Bananas", "Apples", "Cherries", "Pears", "Plums"];
 const sold = [18, 12, 7, 5, 3];
-const scale = nice(Math.min(0, ...sold), Math.max(0, ...sold)); // 0 to 20, ticks every 5
+const scale = nice(...extent([0, ...sold])); // 0 to 20, ticks every 5
 const lead = sold.indexOf(Math.max(...sold)); // the fruit the headline names: lit until the reader picks another
 
 // Slat type: one slat per row; its CSS reaches only these slats
@@ -449,7 +449,7 @@ Data:
 
 1. **Data names must match.** A slat reads `d.sold` only if the Plot has a prop `sold`. A list of objects goes in `rows={[...]}`, never `data={...}`: `data` would just be a column named "data". Any prop a Plot does not know (`id`, `title`, `onClick`) is a column too, and an array is always a column, item i for row i: to give every slat the same list, pass a function of the row (`shown=${(d) => shown()}`).
 2. **The scale must hold the data.** `scale={[min, max]}` with min below max covers every value: a Bar past it is cut off, and Dots, Ticks, Places and the points of an Area or a Line past it land outside or squeeze the outline.
-   Build it from the data, `const s = nice(Math.min(0, ...values), Math.max(0, ...values))`, which keeps 0 and holds negative values too, and give the Chart `scale=${[s.min, s.max]} ticks=${s.ticks}`.
+   Build it from the data, `const s = nice(...extent([0, ...values]))`, which keeps 0, holds negative values and skips missing ones, and give the Chart `scale=${[s.min, s.max]} ticks=${s.ticks}`.
 3. **Rows that come and go need a `key`** on the Plot (`key="city"`), or slats swap data instead of leaving. `d.index` can change then, so read it in a function: `data-row=${() => d.index}`.
 4. **Format numbers** with `Intl.NumberFormat` (thousands, units, percentages, currency) and use `font-variant-numeric: tabular-nums` where numbers line up. In the JS version (`animate`), values in between are fractional: round what you print.
 

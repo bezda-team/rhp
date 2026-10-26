@@ -202,6 +202,11 @@ export interface ScaleProps {
   children: Slat<ScaleTick> | ((t: Row<ScaleTick>) => JSX.Element);
 }
 
+/** A number on a scale, or a missing one (null, undefined, NaN or infinite), for which a block draws nothing. */
+export type Value = number | null | undefined;
+/** A point of a Line or an Area: null, or a missing x or y, breaks the outline there. */
+export type Point = readonly [Value, Value] | null | undefined;
+
 type BlockProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "color" | "style"> & {
   style?: JSX.CSSProperties | string;
   children?: JSX.Element;
@@ -211,9 +216,9 @@ export interface BarProps extends BlockProps {
   /** An outline to wear instead of its rectangle, from shape(). */
   shape?: Shape;
   /** Where the bar starts on the value axis (0 by default). */
-  from?: number;
+  from?: Value;
   /** Where it ends. */
-  to?: number;
+  to?: Value;
   /** Its size across the band: a CSS length, or a share of the band (0.6). */
   thick?: number | string;
   color?: Color;
@@ -223,20 +228,20 @@ export interface DotProps extends BlockProps {
   /** An outline to wear instead of its circle, from shape(). */
   shape?: Shape;
   /** Its value on the value axis. */
-  at?: number;
+  at?: Value;
   /** Its diameter: a CSS length (10px by default), or a share of the band. */
   size?: number | string;
   /** Where it sits across the band, 0 to 1 (0.5 by default). */
   across?: number;
   /** Its value on the Chart's cross scale (a scatter plot's y), instead of across. */
-  cross?: number;
+  cross?: Value;
   color?: Color;
 }
 
 export interface TickProps extends BlockProps {
   /** An outline to wear instead of its rectangle, from shape(). */
   shape?: Shape;
-  at?: number;
+  at?: Value;
   /** Its length across the band: a CSS length, or a share of the band. */
   thick?: number | string;
   color?: Color;
@@ -244,18 +249,18 @@ export interface TickProps extends BlockProps {
 
 export interface PlaceProps extends BlockProps {
   /** Its value on the value axis. */
-  at?: number;
+  at?: Value;
   /** Where it sits across the band, 0 to 1 (0.5 by default). */
   across?: number;
   /** Its value on the Chart's cross scale, instead of across. */
-  cross?: number;
+  cross?: Value;
 }
 
 export interface CellProps extends BlockProps {
   /** An outline to wear instead of its rectangle, from shape(). */
   shape?: Shape;
   /** Colored on the scale, from the theme's low to its high. */
-  value?: number;
+  value?: Value;
   color?: Color;
 }
 
@@ -263,18 +268,18 @@ export interface LabelProps extends BlockProps {
   /** An outline to wear instead of its box, from shape(). */
   shape?: Shape;
   /** Just after this value (or before it, with side="before"). */
-  at?: number;
+  at?: Value;
   side?: "after" | "before";
   /** Outside the track, in the chart's gutter: names at the start, totals at the end. */
   edge?: "start" | "end";
   /** Its value on the Chart's cross scale (a point's label). */
-  cross?: number;
+  cross?: Value;
 }
 
 export interface LineProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "color" | "style" | "fill"> {
   /** [x, y] pairs: x on the value axis, y across the band (or on the Chart's cross scale). In any order: out of x's order, a
-   * connected scatter plot. */
-  points?: readonly (readonly [number, number])[];
+   * connected scatter plot. A missing point breaks the line. */
+  points?: readonly Point[];
   /** Across the band, the y that fills it (the largest y by default). Not used on a cross scale. */
   peak?: number;
   /** Also fill what is under the line, down to the band's edge or, on a cross scale, down to base. */
@@ -288,8 +293,8 @@ export interface LineProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "co
 }
 
 export interface AreaProps extends Omit<JSX.SvgSVGAttributes<SVGSVGElement>, "color" | "style"> {
-  /** [x, y] pairs, sorted by x, y >= 0. */
-  points?: readonly (readonly [number, number])[];
+  /** [x, y] pairs, sorted by x, y >= 0. A missing point breaks the shape. */
+  points?: readonly Point[];
   /** The y that fills the band (the largest y by default). */
   peak?: number;
   /** Drawn both ways from the middle of the band (violins), not up from its edge (ridgelines). */
@@ -371,20 +376,23 @@ export function series(n?: number): (d: Row) => `series-${number}`;
 export function sortBy(key: string | ((d: Row) => unknown), direction?: "asc" | "desc"): OrderFn;
 /** A data group that repeats a list over the rows (palettes). */
 export function cycle<T>(list: readonly T[]): (d: Row) => T;
-/** [smallest, largest]. */
-export function extent(values: Iterable<number>): [number, number];
+/** [smallest, largest], leaving out missing values ([Infinity, -Infinity] when there are none, which nice() makes 0 to 1). */
+export function extent(values: Iterable<Value>): [number, number];
 /** Ticks at every multiple of step in the scale; with ends, its min and max too. A step that is not above 0 throws. */
 export function every(step: number, options?: { ends?: boolean }): (range: [number, number]) => number[];
 /** A round scale covering lo..hi with about count ticks. */
 export function nice(lo: number, hi: number, count?: number): { min: number; max: number; step: number; ticks: number[] };
-/** Stacked segments: positive values stack up from 0, negative ones down. */
+/** Stacked segments: positive values stack up from 0, negative ones down. A missing value is a missing segment (null). */
 export function stackUp(values: readonly number[]): { from: number[]; to: number[] };
-/** Each value as a share of the total, scaled to total (100 by default). */
+export function stackUp(values: readonly Value[]): { from: (number | null)[]; to: (number | null)[] };
+/** Each value as a share of the total, scaled to total (100 by default). A missing value has no share (null). */
 export function shares(values: readonly number[], total?: number): number[];
-/** Running totals for a waterfall. */
+export function shares(values: readonly Value[], total?: number): (number | null)[];
+/** Running totals for a waterfall. A missing change is a missing step (null). */
 export function running(changes: readonly number[]): { from: number[]; to: number[] };
-/** Box and whisker numbers; low and high are the whisker ends (1.5 x IQR). */
-export function summary(samples: readonly number[]): {
+export function running(changes: readonly Value[]): { from: (number | null)[]; to: (number | null)[] };
+/** Box and whisker numbers, leaving out missing samples; low and high are the whisker ends (1.5 x IQR). */
+export function summary(samples: readonly Value[]): {
   min: number;
   q1: number;
   median: number;
@@ -397,9 +405,9 @@ export function summary(samples: readonly number[]): {
 };
 /** Histogram bins: bin k covers x0[k]..x1[k] and holds tally[k] samples. Samples all alike get a scale one wide around
  * them, and no samples a scale from 0 to 1. */
-export function bins(samples: readonly number[], options?: { domain?: [number, number]; count?: number }): { x0: number[]; x1: number[]; tally: number[] };
+export function bins(samples: readonly Value[], options?: { domain?: [number, number]; count?: number }): { x0: number[]; x1: number[]; tally: number[] };
 /** A Gaussian kernel density estimate: points pairs of [x, density] (for Area). */
-export function density(samples: readonly number[], options?: { domain?: [number, number]; points?: number; bandwidth?: number }): [number, number][];
+export function density(samples: readonly Value[], options?: { domain?: [number, number]; points?: number; bandwidth?: number }): [number, number][];
 
 /** Runs f with rhp's style writes going to the page at once instead of in the next frame: for an app that changes
  * chart data inside its own requestAnimationFrame callback, so the change shows in that frame. */

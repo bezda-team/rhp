@@ -2,6 +2,7 @@
 // same in-between value in the same frame.
 import { createSignal, untrack } from "solid-js";
 import { drawing } from "./frame.js";
+import { missing } from "./data.js";
 
 // CSS timing curves (cubic-bezier), solved for x, so JS and CSS can use the same curve
 export const bezier = (x1, y1, x2, y2) => {
@@ -110,7 +111,7 @@ export const whenStill = (f) => {
 export const framesDrawn = () => frameCount;
 
 // What can move: finite numbers, and arrays or plain objects of them (a box's numbers, a list of segments).
-// Anything else, or a list whose length changed, jumps to its new value.
+// Anything else, or a list whose length changed or where a value went missing or came back, jumps to its new value.
 const plain = (v) => v !== null && typeof v === "object" && !Array.isArray(v) && Object.getPrototypeOf(v) === Object.prototype;
 
 const movable = (v) => {
@@ -129,7 +130,8 @@ function diff(b, a) {
   }
 
   if (Array.isArray(b)) {
-    if (Array.isArray(a) && a.length === b.length) return b.map((v, i) => diff(v, a[i]));
+    // A gap that opens or closes changes what is drawn (an outline in pieces), as a new length does
+    if (Array.isArray(a) && a.length === b.length && b.every((v, i) => missing(v) === missing(a[i]))) return b.map((v, i) => diff(v, a[i]));
     return undefined;
   }
 
@@ -200,7 +202,12 @@ export function animated(read, settings = () => ({})) {
 
   return (ahead = 0) => {
     const v = read();
-    if (!movable(v) || reduce.matches) return v;
+    if (!movable(v) || reduce.matches) {
+      // The next value jumps, so a value that was missing comes back where it is, not from where it was before
+      to = undefined;
+      moves = [];
+      return v;
+    }
 
     if (to === undefined || !same(to, v)) {
       // The value changed: add a move of the difference (the first value, or a new shape, jumps)
@@ -263,7 +270,11 @@ export function transitioned(read, settings) {
 
   return () => {
     const v = read();
-    if (!movable(v) || reduce.matches) return v;
+    if (!movable(v) || reduce.matches) {
+      to = undefined;
+      run = null;
+      return v;
+    }
 
     if (to === undefined || !same(to, v)) {
       const target = snapshot(v);
