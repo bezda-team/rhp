@@ -747,7 +747,7 @@ function addPosterDownloads() {
         },
       };
     };
-    // The GIF: the playback at 25 frames a second for up to 15 seconds, at most 1200 pixels wide. One palette from the
+    // The GIF: the playback at its own pace, 25 frames a second, at most 1200 pixels wide. One palette from the
     // first and the last frame serves every frame; its last color is never drawn and marks the pixels a frame leaves as
     // the frame before had them, so each frame stores only what changed.
     async function saveGif() {
@@ -760,7 +760,8 @@ function addPosterDownloads() {
         const [{ domToCanvas }, { GIFEncoder, quantize, applyPalette }] = await Promise.all([loadExporter(), encoder]);
         const options = await captureOptions();
         const scale = Math.min(1, 1200 / options.width);
-        const step = 40, count = Math.max(2, Math.round(Math.min(playback.duration ?? 15000, 15000) / step) + 1);
+        // The GIF plays at the chart's own pace: its playback's duration, in frames 40 ms apart
+        const step = 40, count = Math.max(2, Math.round((playback.duration ?? 15000) / step) + 1);
         const capture = async () => {
           const canvas = await domToCanvas(poster, { ...options, scale });
           return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);

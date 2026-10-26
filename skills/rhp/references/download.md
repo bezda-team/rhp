@@ -14,7 +14,7 @@ Activating the download control preserves the poster's selection, including keyb
 Like the chart's CDN import, the first download needs a connection.
 
 A chart that plays through its data (a race, a year slider with Play) gives its poster a `playback`, and its download icon then opens a menu of two: **PNG image**, the poster as it is now, and **Animated GIF**, the whole playback.
-The GIF plays the playback from start to end at 25 frames a second, up to 15 seconds (a longer playback plays faster), at the poster's size up to 1200 pixels wide, holds the first frame for a second and the last for three, and loops.
+The GIF plays the playback from start to end at the chart's own pace (its `duration`), at 25 frames a second, at the poster's size up to 1200 pixels wide, holds the first frame for a second and the last for three, and loops; a longer playback makes a longer and larger GIF.
 While it is made, rhp's motion and the page's CSS animations run on a clock of the GIF's own that moves 40 ms a frame, so each frame shows the chart exactly as it is at that moment of playing, its glides and slides included.
 Each frame is captured as the PNG is, with one palette for all in which the poster's flat colors keep their exact values, and stores only the pixels that changed, so a poster of flat colors stays a few megabytes.
 While it is made, the icon shows the percentage done and a click on it cancels; either way the chart returns to where it was.
@@ -433,7 +433,7 @@ function addPosterDownloads() {
         },
       };
     };
-    // The GIF: the playback at 25 frames a second for up to 15 seconds, at most 1200 pixels wide. One palette from the
+    // The GIF: the playback at its own pace, 25 frames a second, at most 1200 pixels wide. One palette from the
     // first and the last frame serves every frame; its last color is never drawn and marks the pixels a frame leaves as
     // the frame before had them, so each frame stores only what changed.
     async function saveGif() {
@@ -446,7 +446,8 @@ function addPosterDownloads() {
         const [{ domToCanvas }, { GIFEncoder, quantize, applyPalette }] = await Promise.all([loadExporter(), encoder]);
         const options = await captureOptions();
         const scale = Math.min(1, 1200 / options.width);
-        const step = 40, count = Math.max(2, Math.round(Math.min(playback.duration ?? 15000, 15000) / step) + 1);
+        // The GIF plays at the chart's own pace: its playback's duration, in frames 40 ms apart
+        const step = 40, count = Math.max(2, Math.round((playback.duration ?? 15000) / step) + 1);
         const capture = async () => {
           const canvas = await domToCanvas(poster, { ...options, scale });
           return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
