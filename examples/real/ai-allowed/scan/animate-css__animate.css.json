@@ -1,0 +1,18 @@
+{
+ "full": "animate-css/animate.css",
+ "stars": 82928,
+ "license": "NOASSERTION",
+ "archived": false,
+ "created": "2011-10-12T10:07:38Z",
+ "pushed": "2024-07-29T19:34:21Z",
+ "ref": "main",
+ "homepage": "https://animate.style/",
+ "description": "🍿 A cross-browser library of CSS animations. As easy to use as an easy thing.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

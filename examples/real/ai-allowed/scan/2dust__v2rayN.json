@@ -1,0 +1,16 @@
+{
+ "full": "2dust/v2rayN",
+ "stars": 119255,
+ "license": "GPL-3.0",
+ "archived": false,
+ "created": "2019-07-30T03:47:24Z",
+ "pushed": "2026-10-27T18:48:13Z",
+ "ref": "master",
+ "homepage": "https://v2rayn.2dust.link",
+ "description": "A GUI client for Windows, Linux and macOS, support Xray and sing-box and others",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

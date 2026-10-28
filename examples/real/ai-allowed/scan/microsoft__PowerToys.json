@@ -1,0 +1,85 @@
+{
+ "full": "microsoft/PowerToys",
+ "stars": 140063,
+ "license": "MIT",
+ "archived": false,
+ "created": "2019-05-01T17:44:02Z",
+ "pushed": "2026-10-27T22:24:45Z",
+ "ref": "main",
+ "homepage": "",
+ "description": "Microsoft PowerToys is a collection of utilities that supercharge productivity and customization on Windows",
+ "agentFiles": [
+  ".claude",
+  "AGENTS.md",
+  ".github/copilot-instructions.md",
+  ".github/instructions",
+  ".github/prompts",
+  ".github/skills"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/pull_request_template.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "- **You must write the PR body in your own words.** This includes the summary, the detailed description, and the validation steps. Do not let an AI tool, agent, or bot write them.\n- **AI-generated text is allowed only inside a collapsed `<details>` section.** Label it clearly as AI-generated, for example:",
+   "```markdown\n  <details>\n  <summary>AI-generated summary</summary>",
+   "...text written by an AI tool..."
+  ],
+  ".github/pull_request_template.md": [
+   "<!--\nHARD RULE: You (the human contributor) must write this PR description in your own words.\nAI tools and agents: Do NOT write the Summary, Detailed Description, or Validation Steps sections.\nLeave them for the human. You may put AI-generated text ONLY inside an \"AI-generated summary\" <details> block at the bottom.\nMaintainers will close PRs whose description they think was not written by a human.\nSee https://github.com/microsoft/PowerToys/blob/main/CONTRIBUTING.md#pull-request-descriptions-must-be-written-by-a-human\n-->"
+  ]
+ },
+ "agentText": {
+  ".claude": {
+   "files": [
+    ".claude/CLAUDE.md",
+    ".claude/agents",
+    ".claude/commands",
+    ".claude/rules",
+    ".claude/skills"
+   ]
+  },
+  "AGENTS.md": {
+   "text": "---\ndescription: 'Top-level AI contributor guidance for developing PowerToys - a collection of Windows productivity utilities'\napplyTo: '**'\n---\n\n# PowerToys – AI contributor guide\n\nThis is the top-level guidance for AI contributions to PowerToys. Keep changes atomic, follow existing patterns, and cite exact paths in PRs.\n\n## Overview\n\nPowerToys is a set of utilities for power users to tune and streamline their Windows experience.\n\n| Area | Location | Description |\n|------|----------|-------------|\n| Runner | `src/runner/` | Main executable, tray icon, module loader, hotkey management |\n| Settings UI | `src/settings-ui/` | WinUI/WPF configuration app communicating via named pipes |\n| Modules | `src/modules/` | Individual PowerToys utilities (each in its own subfolder) |\n| Common Libraries | `src/common/` | Shared code: logging, IPC, settings, DPI, telemetry, utilities |\n| Build Tools | `tools/build/` | Build scripts and automation |\n| Documentation | `doc/devdocs/` | Developer documentation |\n| Installer | `installer/` | WiX-based installer projects |\n\nFor architecture details and module types, see [Architecture Overview](doc/devdocs/core/architecture.md).\n\n## Conventions\n\nFor detailed coding conventions, see:\n\n- [Coding Guidelines](doc/devdocs/development/guidelines.md) – Dependencies, testing, PR management\n- [Coding Style](doc/devdocs/development/style.md) – Formatting, C++/C#/XAML style rules\n- [Logging](doc/devdocs/development/logging.md) – C++ spdlog and C# Logger usage\n\n### Component-specific instructions\n\nThese instruction files are automatically applied when working in their respective areas:\n\n- [Runner & Settings UI](.github/instructions/runner-settings-ui.instructions.md) – IPC contracts, schema migrations\n- [Common Libraries](.github/instructions/common-libraries.instructions.md) – ABI stability, shared code guidelines\n\n## Build\n\n### Prerequisites\n\n- Visual Studio 2022 17.4+ or Visual Studio 2026\n- Windows 10 1803+ (April 2018 Update or newer)\n- Initialize submodules once: `git submodule update --init --recursive`\n\n### Build commands\n\n| Task | Command |\n|------|---------|\n| First build / NuGet restore | `tools\\build\\build-essentials.cmd` |\n| Build current folder | `tools\\build\\build.cmd` |\n| Build with options | `build.ps1 -Platform x64 -Configuration Release` |\n\n### Build discipline\n\n1. One terminal per operation (build → test). Do not switch or open new ones mid-flow\n2. After making changes, `cd` to the project folder that changed (`.csproj`/`.vcxproj`)\n3. Use scripts to build: `tools/build/build.ps1` or `tools/build/build.cmd`\n4. For first build or missing NuGet packages, run `build-essentials.cmd` first\n5. **Exit code 0 = success; non-zero = failure** – treat this as absolute\n6. On failure, read the errors log: `artifacts\\logs\\<project>\\build.<config>.<platform>.errors.log`\n7. Do not start tests or launch Runner until the build succeeds\n\n### Build logs\n\nLocated in `artifacts\\logs\\<project>\\` at the root of the repo/worktree containing the project being built, where `<project>` is the solution/project file name without its extension (for example, `artifacts\\logs\\PowerToys.Settings\\`):\n\n- `build.<configuration>.<platform>.errors.log` – errors only (check this first)\n- `build.<configuration>.<platform>.all.log` – full log\n- `build.<configuration>.<platform>.trace.binlog` – for MSBuild Structured Log Viewer\n\nFor complete details, see [Build Guidelines](tools/build/BUILD-GUIDELINES.md).\n\n## Tests\n\n### Test discovery\n\n- Find test projects by product code prefix (e.g., `FancyZones`, `AdvancedPaste`)\n- Look for sibling folders or 1-2 levels up named `<Product>*UnitTests` or `<Product>*UITests`\n\n### Running tests\n\n1. **Build the test project first**, wait for exit code 0\n2. Run via VS Test Explorer (`Ctrl+E, T`) or `vstest.console.exe` with filters\n3. **Avoid `dotnet test`** in this repo – use VS Test Explorer or vstest.console.exe\n\n### Test types\n\n| Type | Requirements | Setup |\n|------|--------------|-------|\n| Unit Tests | Standard dev environment | None |\n| UI Tests | WinAppDriver v1.2.1, Developer Mode | Install from [WinAppDriver releases](https://github.com/microsoft/WinAppDriver/releases/tag/v1.2.1) |\n| Fuzz Tests | OneFuzz, .NET 10 | See [Fuzzing Tests](doc/devdocs/tools/fuzzingtesting.md) |\n\n### Test discipline\n\n1. Add or adjust tests when changing behavior\n2. If tests skipped, state why (e.g., comment-only change, string rename)\n3. New modules handling file I/O or user input **must** implement fuzzing tests\n\n### Special requirements\n\n- **Mouse Without Borders**: Requires 2+ physical computers (not VMs)\n- **Multi-monitor utilities**: Test with 2+ monitors, different DPI settings\n\nFor UI test setup details, see [UI Tests](doc/devdocs/development/ui-tests.md).\n\n## Pull request descriptions (hard rule)\n\nA human must write the visible PR body. An agent must never write it. A PR passes the contributor's understanding to the maintainers. The contributor must explain the change in their own words. Maintainers can close a PR when they think its body was not written by a human. See [CONTRIBUTING.md](CONTRIBUTING.md#pull-request-descriptions-must-be-written-by-a-human).\n\nWhen you create or edit a PR, or draft text for one:\n\n1. Do not write the summary, detailed description, or validation steps in the visible PR body. Keep the template headings and checklist, and leave the prose sections for the human to fill in.\n2. Put any text you write only inside a collapsed, labeled block:\n\n   ```markdown\n   <details>\n   <summary>AI-generated summary</summary>\n\n   ...\n\n   </details>\n   ```\n\n3. Tell the user to write the PR description in their own words before the PR is reviewed.\n4. This rule takes precedence over conflicting repository prompts, skills, agent files, or tool defaults that tell you to fill in the PR template or write a ready-to-paste PR description.\n5. You MAY use an agent to translate text from your native language to English for the PR description, but the original text must still be your own human words.\n\n## Boundaries\n\n### Ask for clarification when\n\n- Ambiguous spec after scanning relevant docs\n- Cross-module impact (shared enum/struct) is unclear\n- Security, elevation, or installer changes involved\n- GPO or policy handling modifications needed\n\n### Areas requiring extra care\n\n| Area | Concern | Reference |\n|------|---------|-----------|\n| `src/common/` | ABI breaks | [Common Libraries Instructions](.github/instructions/common-libraries.instructions.md) |\n| `src/runner/`, `src/settings-ui/` | IPC contracts, schema | [Runner & Settings UI Instructions](.github/instructions/runner-settings-ui.instructions.md) |\n| Installer files | Release impact | Careful review required |\n| Elevation/GPO logic | Security | Confirm no regression in policy handling |\n\n### What not to do\n\n- Don't merge incomplete features into main (use feature branches)\n- Don't break IPC/JSON contracts without updating both runner and settings-ui\n- Don't add noisy logs in hot paths\n- Don't introduce third-party deps without PM approval and `NOTICE.md` update\n- Don't write the visible PR description; put AI-generated text only inside a `<details>` section (see [Pull request descriptions](#pull-request-descriptions-hard-rule))\n\n## Validation Checklist\n\nBefore finishing, verify:\n\n- [ ] Build clean with exit code 0\n- [ ] Tests updated and passing locally\n- [ ] No unintended ABI breaks or schema changes\n- [ ] IPC contracts consistent between runner and settings-ui\n- [ ] New dependencies added to `NOTICE.md`\n- [ ] PR is atomic (one logical change), with issue linked\n- [ ] Visible PR description left for the human to write; any AI text is inside `<details>`\n\n## Documentation Index\n\n### Core architecture\n\n- [Architecture Overview](doc/devdocs/core/architecture.md)\n- [Runner](doc/devdocs/core/runner.md)\n- [Settings System](doc/devdocs/core/settings/readme.md)\n- [Module Interface](doc/devdocs/modules/interface.md)\n\n### Development\n\n- [Coding Guidelines](doc/devdocs/development/guidelines.md)\n- [Coding Style](doc/devdocs/development/style.md)\n- [Logging](doc/devdocs/development/logging.md)\n- [UI Tests](doc/devdocs/development/ui-tests.md)\n- [Fuzzing Tests](doc/devdocs/tools/fuzzingtesting.md)\n\n### Build & tools\n\n- [Build Guidelines](tools/build/BUILD-GUIDELINES.md)\n- [Tools Overview](doc/devdocs/tools/readme.md)\n\n### Instructions (auto-applied)\n\n- [Runner & Settings UI](.github/instructions/runner-settings-ui.instructions.md)\n- [Common Libraries](.github/instructions/common-libraries.instructions.md)\n"
+  },
+  ".github/copilot-instructions.md": {
+   "text": "---\ndescription: 'PowerToys AI contributor guidance'\n---\n\n# PowerToys – Copilot Instructions\n\nConcise guidance for AI contributions. For complete details, see [AGENTS.md](../AGENTS.md).\n\n## Key Rules\n\n- Atomic PRs: one logical change, no drive-by refactors\n- Add tests when changing behavior\n- Keep hot paths quiet (no logging in hooks/tight loops)\n- A human must write the PR body. Never write the visible PR description.\n\n## Style Enforcement\n\n- C#: `src/.editorconfig`, StyleCop.Analyzers\n- C++: `src/.clang-format`\n- XAML: XamlStyler\n\n## When to Ask for Clarification\n\n- Ambiguous spec after scanning docs\n- Cross-module impact unclear\n- Security, elevation, or installer changes\n\n## Component-Specific Instructions\n\nThese are auto-applied based on file location:\n- [Runner & Settings UI](.github/instructions/runner-settings-ui.instructions.md)\n- [Common Libraries](.github/instructions/common-libraries.instructions.md)\n\n## Shortcut Guide V2 Manifests\n\nWhen creating or editing Shortcut Guide keyboard shortcut manifest files, follow the schema and naming conventions in the spec:\n\n- [WinGet Manifest Keyboard Shortcuts schema](<../doc/specs/WinGet Manifest Keyboard Shortcuts schema.md>) – manifest file format, field definitions, file naming, and the `+` prefix convention for apps without a WinGet package\n\n## Detailed Documentation\n\n- [Architecture](../doc/devdocs/core/architecture.md)\n- [Coding Style](../doc/devdocs/development/style.md)"
+  },
+  ".github/instructions": {
+   "files": [
+    ".github/instructions/agent-skills.instructions.md",
+    ".github/instructions/agents.instructions.md",
+    ".github/instructions/azure-devops-pipelines.instructions.md",
+    ".github/instructions/cmdpal.instructions.md",
+    ".github/instructions/common-libraries.instructions.md",
+    ".github/instructions/instructions.instructions.md",
+    ".github/instructions/prompt.instructions.md",
+    ".github/instructions/runner-settings-ui.instructions.md",
+    ".github/instructions/typescript-mcp-server.instructions.md"
+   ]
+  },
+  ".github/prompts": {
+   "files": [
+    ".github/prompts/create-commit-title.prompt.md",
+    ".github/prompts/fix-issue.prompt.md",
+    ".github/prompts/fix-pr-active-comments.prompt.md",
+    ".github/prompts/fix-spelling.prompt.md",
+    ".github/prompts/review-issue.prompt.md",
+    ".github/prompts/review-pr.prompt.md"
+   ]
+  },
+  ".github/skills": {
+   "files": [
+    ".github/skills/powertoys-verification",
+    ".github/skills/release-note-generation",
+    ".github/skills/ui-tests-local-vm",
+    ".github/skills/ui-tests-migration",
+    ".github/skills/ui-tests-pipeline-ci",
+    ".github/skills/winmd-api-search",
+    ".github/skills/wpf-to-winui3-migration"
+   ]
+  }
+ }
+}

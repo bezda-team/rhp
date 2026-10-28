@@ -1,0 +1,18 @@
+{
+ "full": "3b1b/manim",
+ "stars": 95733,
+ "license": "MIT",
+ "archived": false,
+ "created": "2015-03-22T18:50:58Z",
+ "pushed": "2026-09-09T16:23:48Z",
+ "ref": "master",
+ "homepage": null,
+ "description": "Animation engine for explanatory math videos",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

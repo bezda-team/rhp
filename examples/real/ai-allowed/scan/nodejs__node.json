@@ -1,0 +1,32 @@
+{
+ "full": "nodejs/node",
+ "stars": 123142,
+ "license": "NOASSERTION",
+ "archived": false,
+ "created": "2014-11-26T19:57:11Z",
+ "pushed": "2026-10-27T22:28:19Z",
+ "ref": "main",
+ "homepage": "https://nodejs.org",
+ "description": "Node.js JavaScript runtime ✨🐢🚀✨",
+ "agentFiles": [
+  "AGENTS.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "* [Code of Conduct](#code-of-conduct)\n* [Issues](#issues)\n* [Pull Requests](#pull-requests)\n* [Automation and bots](#automation-and-bots)\n* [AI Use Policy and Guidelines](#ai-use-policy-and-guidelines)\n* [Developer's Certificate of Origin 1.1](#developers-certificate-of-origin-11)",
+   "## [AI Use Policy and Guidelines](./doc/contributing/ai-guidelines.md)",
+   "Node.js requires contributors to understand and take full responsibility for\nevery change they propose. Pull requests containing AI-generated code the\ncontributor has not personally understood, tested, and verified will likely be closed\nwithout review.",
+   "See [details on our AI use policy and guidelines](./doc/contributing/ai-guidelines.md)."
+  ]
+ },
+ "agentText": {
+  "AGENTS.md": {
+   "text": "# Agents and Automated Tools\n\nThis document outlines rules and requirements for AI automation agents and automated\ntooling that interact with the Node.js project.\n\nExisting Node.js collaborators (as listed in the README.md) may use AI agents to\ncontribute but must do so responsibly.\n\nNew Node.js contributors should avoid using AI agents to interact with the project.\n\n## Code Contributions\n\n* **No unreviewed automation**: Automated pull requests must not be created without\n  ongoing human oversight. The pull request must be actively maintained by a human\n  contributor who responds to feedback. The AI agent is not permitted to create pull\n  requests, open issues, post comments, respond to reviews, or push commits without\n  ongoing human oversight.\n\n* **Commit responsibility**: Commits created with agent assistance must follow all\n  Node.js [commit message guidelines](./doc/contributing/pull-requests.md#commit-message-guidelines).\n  The human contributor opening the PR takes full responsibility for the changes.\n\n* **Testing and verification**: All changes must pass the Node.js continuous integration.\n  Human judgment must verify that existing tests are not removed or modified inappropriately,\n  and that new tests correctly validate the intended behavior.\n\n### Requirements\n\n* All commits must be signed off by the human user using `Signed-off-by: Your Name <your@email.example>`\n  as an attestation to the [Developer Certificate of Origin](https://developercertificate.org/).\n* AI-assistance must be acknowledged using the `Assisted-by: <agent name>` annotation.\n* AI-authored code contributions must be compatible with the project's licensing and\n  contribution guidelines.\n\n## Prohibited Activities\n\nAI agents **must not**:\n\n* Push to any branch or tag in nodejs/node.\n* Create unsupervised pull requests or issues without active human engagement.\n* Make claims about code without human verification against actual source code.\n* Remove or modify existing tests without human judgment.\n* Interact with the repository through means other than those explicitly authorized.\n* Use commit messages to promote for-profit AI tools or commercial brands. A single\n  `Assisted-by: <agent-name>` annotation is required disclosure, not promotion, and is\n  permitted.\n* Post AI-generated messages directly into pull requests, issues, or project communication\n  channels without direct human review and editing to ensure clarity, accuracy, and respect\n  for collaborator time.\n* Sign off commits using `Signed-off-by: <agent name>` or `Co-authored-by: <agent name>`.\n\n## Violations\n\nAutomated interactions that violate these rules may result in:\n\n* Immediate closure of pull requests without review.\n* Blocking of the automation tool from further interaction with the project.\n* Blocking of the tool's account or its owner from contributing.\n* Reports to relevant platforms or organizations operating the automation.\n\n***\n\nFor more information on AI use in general contributions (not specific to agents),\nsee [AI use policy and guidelines](./doc/contributing/ai-guidelines.md).\n"
+  }
+ }
+}

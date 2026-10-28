@@ -1,0 +1,19 @@
+{
+ "full": "nestjs/nest",
+ "stars": 76922,
+ "license": "MIT",
+ "archived": false,
+ "created": "2017-02-04T20:12:52Z",
+ "pushed": "2026-10-27T19:05:23Z",
+ "ref": "master",
+ "homepage": "https://nestjs.com",
+ "description": "A progressive Node.js framework for building efficient, scalable, and enterprise-grade server-side applications with TypeScript/JavaScript 🚀",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

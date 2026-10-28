@@ -1,0 +1,58 @@
+{
+ "full": "google-gemini/gemini-cli",
+ "stars": 108579,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2025-04-17T17:04:31Z",
+ "pushed": "2026-10-27T22:18:43Z",
+ "ref": "main",
+ "homepage": "https://geminicli.com",
+ "description": "An open-source AI agent that brings the power of Gemini directly into your terminal.",
+ "agentFiles": [
+  ".gemini",
+  "GEMINI.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/pull_request_template.md",
+  "docs/CONTRIBUTING.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "- **[Before you begin](#before-you-begin):** Essential steps to take before\n  becoming a Gemini CLI contributor.\n- **[Code contribution process](#code-contribution-process):** How to contribute\n  code to Gemini CLI.\n- **[Development setup and workflow](#development-setup-and-workflow):** How to\n  set up your development environment and workflow.\n- **[Documentation contribution process](#documentation-contribution-process):**\n  How to contribute documentation to Gemini CLI.",
+   "2.  **Manually from within Gemini CLI:** If you already have the PR checked out\n    and built, you can run the tool directly from the CLI prompt:",
+   "To start the Gemini CLI from the source code (after building), run the following\ncommand from the root directory:",
+   "The integration tests are designed to validate the end-to-end functionality of\nthe Gemini CLI. They are not run as part of the default `npm run test` command.",
+   "- Please adhere to the coding style, patterns, and conventions used throughout\n  the existing codebase.\n- Consult\n  [GEMINI.md](https://github.com/google-gemini/gemini-cli/blob/main/GEMINI.md)\n  (typically found in the project root) for specific instructions related to\n  AI-assisted development, including conventions for React, comments, and Git\n  usage.\n- **Imports:** Pay special attention to import paths. The project uses ESLint to\n  enforce restrictions on relative imports between packages.",
+   "1.  **Start the Gemini CLI in development mode:**",
+   "Container-based sandboxing mounts the project directory (and system temp\ndirectory) with read-write access and is started/stopped/removed automatically\nas you start/stop Gemini CLI. Files created within the sandbox should be\nautomatically mapped to your user/group on host machine. You can easily specify\nadditional mounts, ports, or environment variables by setting\n`SANDBOX_{MOUNTS,PORTS,ENV}` as needed. You can also fully customize the sandbox\nfor your projects by creating the files `.gemini/sandbox.Dockerfile` and/or\n`.gemini/sandbox.bashrc` under your project settings directory (`.gemini`) and\nrunning `gemini` with `BUILD_SANDBOX=1` to trigger building of your custom\nsandbox.",
+   "- **Clarity:** Use simple and direct language. Avoid jargon where possible.\n- **Accuracy:** Ensure all information is correct and up-to-date.\n- **Completeness:** Cover all aspects of a feature or topic.\n- **Examples:** Provide practical examples to help users understand how to use\n  Gemini CLI.",
+   "We appreciate your contributions to making Gemini CLI documentation better!"
+  ],
+  "docs/CONTRIBUTING.md": [
+   "- **[Before you begin](#before-you-begin):** Essential steps to take before\n  becoming a Gemini CLI contributor.\n- **[Code contribution process](#code-contribution-process):** How to contribute\n  code to Gemini CLI.\n- **[Development setup and workflow](#development-setup-and-workflow):** How to\n  set up your development environment and workflow.\n- **[Documentation contribution process](#documentation-contribution-process):**\n  How to contribute documentation to Gemini CLI.",
+   "2.  **Manually from within Gemini CLI:** If you already have the PR checked out\n    and built, you can run the tool directly from the CLI prompt:",
+   "To start the Gemini CLI from the source code (after building), run the following\ncommand from the root directory:",
+   "The integration tests are designed to validate the end-to-end functionality of\nthe Gemini CLI. They are not run as part of the default `npm run test` command.",
+   "- Please adhere to the coding style, patterns, and conventions used throughout\n  the existing codebase.\n- Consult\n  [GEMINI.md](https://github.com/google-gemini/gemini-cli/blob/main/GEMINI.md)\n  (typically found in the project root) for specific instructions related to\n  AI-assisted development, including conventions for React, comments, and Git\n  usage.\n- **Imports:** Pay special attention to import paths. The project uses ESLint to\n  enforce restrictions on relative imports between packages.",
+   "1.  **Start the Gemini CLI in development mode:**",
+   "Container-based sandboxing mounts the project directory (and system temp\ndirectory) with read-write access and is started/stopped/removed automatically\nas you start/stop Gemini CLI. Files created within the sandbox should be\nautomatically mapped to your user/group on host machine. You can easily specify\nadditional mounts, ports, or environment variables by setting\n`SANDBOX_{MOUNTS,PORTS,ENV}` as needed. You can also fully customize the sandbox\nfor your projects by creating the files `.gemini/sandbox.Dockerfile` and/or\n`.gemini/sandbox.bashrc` under your project settings directory (`.gemini`) and\nrunning `gemini` with `BUILD_SANDBOX=1` to trigger building of your custom\nsandbox.",
+   "- **Clarity:** Use simple and direct language. Avoid jargon where possible.\n- **Accuracy:** Ensure all information is correct and up-to-date.\n- **Completeness:** Cover all aspects of a feature or topic.\n- **Examples:** Provide practical examples to help users understand how to use\n  Gemini CLI.",
+   "We appreciate your contributions to making Gemini CLI documentation better!"
+  ]
+ },
+ "agentText": {
+  ".gemini": {
+   "files": [
+    ".gemini/commands",
+    ".gemini/config.yaml",
+    ".gemini/settings.json",
+    ".gemini/skills"
+   ]
+  },
+  "GEMINI.md": {
+   "text": "# Gemini CLI Project Context\n\nGemini CLI is an open-source AI agent that brings the power of Gemini directly\ninto the terminal. It is designed to be a terminal-first, extensible, and\npowerful tool for developers.\n\n## Project Overview\n\n- **Purpose:** Provide a seamless terminal interface for Gemini models,\n  supporting code understanding, generation, automation, and integration via MCP\n  (Model Context Protocol).\n- **Main Technologies:**\n  - **Runtime:** Node.js (>=20.0.0, recommended ~20.19.0 for development)\n  - **Language:** TypeScript\n  - **UI Framework:** React (using [Ink](https://github.com/vadimdemedes/ink)\n    for CLI rendering)\n  - **Testing:** Vitest\n  - **Bundling:** esbuild\n  - **Linting/Formatting:** ESLint, Prettier\n- **Architecture:** Monorepo structure using npm workspaces.\n  - `packages/cli`: User-facing terminal UI, input processing, and display\n    rendering.\n  - `packages/core`: Backend logic, Gemini API orchestration, prompt\n    construction, and tool execution.\n  - `packages/a2a-server`: Experimental Agent-to-Agent server.\n  - `packages/sdk`: Programmatic SDK for embedding Gemini CLI capabilities.\n  - `packages/devtools`: Integrated developer tools (Network/Console inspector).\n  - `packages/test-utils`: Shared test utilities and test rig.\n  - `packages/vscode-ide-companion`: VS Code extension pairing with the CLI.\n\n## Building and Running\n\n- **Install Dependencies:** `npm install`\n- **Build All:** `npm run build:all` (Builds packages, sandbox, and VS Code\n  companion)\n- **Build Packages:** `npm run build`\n- **Run in Development:** `npm run start`\n- **Run in Debug Mode:** `npm run debug` (Enables Node.js inspector)\n- **Bundle Project:** `npm run bundle`\n- **Clean Artifacts:** `npm run clean`\n\n## Testing and Quality\n\n- **Test Commands:**\n  - **Unit (All):** `npm run test`\n  - **Integration (E2E):** `npm run test:e2e`\n  - > **NOTE**: Please run the memory and perf tests locally **only if** you are\n    > implementing changes related to those test areas. Otherwise skip these\n    > tests locally and rely on CI to run them on nightly builds.\n  - **Memory (Nightly):** `npm run test:memory` (Runs memory regression tests\n    against baselines. Excluded from `preflight`, run nightly.)\n  - **Performance (Nightly):** `npm run test:perf` (Runs CPU performance\n    regression tests against baselines. Excluded from `preflight`, run nightly.)\n  - **Workspace-Specific:** `npm test -w <pkg> -- <path>` (Note: `<path>` must\n    be relative to the workspace root, e.g.,\n    `-w @google/gemini-cli-core -- src/routing/modelRouterService.test.ts`)\n- **Full Validation:** `npm run preflight` (Heaviest check; runs clean, install,\n  build, lint, type check, and tests. Recommended before submitting PRs. Due to\n  its long runtime, only run this at the very end of a code implementation task.\n  If it fails, use faster, targeted commands (e.g., `npm run test`,\n  `npm run lint`, or workspace-specific tests) to iterate on fixes before\n  re-running `preflight`. For simple, non-code changes like documentation or\n  prompting updates, skip `preflight` at the end of the task and wait for PR\n  validation.)\n- **Individual Checks:** `npm run lint` / `npm run format` / `npm run typecheck`\n\n## Development Conventions\n\n- **Contributions:** Follow the process outlined in `CONTRIBUTING.md`. Requires\n  signing the Google CLA.\n- **Pull Requests:** Keep PRs small, focused, and linked to an existing issue.\n  Always activate the `pr-creator` skill for PR generation, even when using the\n  `gh` CLI.\n- **Commit Messages:** Follow the\n  [Conventional Commits](https://www.conventionalcommits.org/) standard.\n- **Imports:** Use specific imports and avoid restricted relative imports\n  between packages (enforced by ESLint).\n- **License Headers:** For all new source code files (`.ts`, `.tsx`, `.js`),\n  include the Apache-2.0 license header with the current year. (e.g.,\n  `Copyright 2026 Google LLC`). This is enforced by ESLint.\n\n## Testing Conventions\n\n- **Environment Variables:** When testing code that depends on environment\n  variables, use `vi.stubEnv('NAME', 'value')` in `beforeEach` and\n  `vi.unstubAllEnvs()` in `afterEach`. Avoid modifying `process.env` directly as\n  it can lead to test leakage and is less reliable. To \"unset\" a variable, use\n  an empty string `vi.stubEnv('NAME', '')`.\n\n## Documentation\n\n- Always use the `docs-writer` skill when you are asked to write, edit, or\n  review any documentation.\n- Documentation is located in the `docs/` directory.\n- Suggest documentation updates when code changes render existing documentation\n  obsolete or incomplete.\n"
+  }
+ }
+}

@@ -1,0 +1,39 @@
+{
+ "full": "firecrawl/firecrawl",
+ "stars": 196058,
+ "license": "AGPL-3.0",
+ "archived": false,
+ "created": "2024-04-15T21:02:29Z",
+ "pushed": "2026-10-27T21:51:16Z",
+ "ref": "main",
+ "homepage": "https://firecrawl.dev",
+ "description": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+ "agentFiles": [
+  "AGENTS.md",
+  "CLAUDE.md",
+  "skills"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  "AGENTS.md": {
+   "text": "Firecrawl is a web scraper API. The directory you have access to is a monorepo:\n - `apps/api` has the actual API and worker code\n - `apps/*-sdk` are various SDKs\n\nWhen making changes to the API, here are the general steps you should take:\n1. Write some end-to-end tests that assert your win conditions, if they don't already exist\n  - 1 happy path (more is encouraged if there are multiple happy paths with significantly different code paths taken)\n  - 1+ failure path(s)\n  - Generally, E2E (called `snips` in the API) is always preferred over unit testing.\n  - In the API, always use `scrapeTimeout` from `./lib` to set the timeout you use for scrapes.\n  - These tests will be ran on a variety of configurations. You should gate tests in the following manner:\n    - If it requires fire-engine: `!process.env.TEST_SUITE_SELF_HOSTED`\n    - If it requires AI: `!process.env.TEST_SUITE_SELF_HOSTED || process.env.OPENAI_API_KEY || process.env.OLLAMA_BASE_URL`\n2. Write code to achieve your win conditions\n3. Run your tests using `pnpm harness pnpm exec vitest run ...`\n  - `pnpm harness` is a command that gets the API server and workers up for you to run the tests. Don't try to `pnpm start` manually.\n  - The full test suite takes a long time to run, so you should try to only execute the relevant tests locally, and let CI run the full test suite.\n4. Push to a branch, open a PR, and let CI run to verify your win condition.\nKeep these steps in mind while building your TODO list."
+  },
+  "CLAUDE.md": {
+   "text": "Firecrawl is a web scraper API. The directory you have access to is a monorepo:\n - `apps/api` has the actual API and worker code\n - `apps/*-sdk` are various SDKs\n\nWhen making changes to the API, here are the general steps you should take:\n1. Write some end-to-end tests that assert your win conditions, if they don't already exist\n  - 1 happy path (more is encouraged if there are multiple happy paths with significantly different code paths taken)\n  - 1+ failure path(s)\n  - Generally, E2E (called `snips` in the API) is always preferred over unit testing.\n  - In the API, always use `scrapeTimeout` from `./lib` to set the timeout you use for scrapes.\n  - These tests will be ran on a variety of configurations. You should gate tests in the following manner:\n    - If it requires fire-engine: `!process.env.TEST_SUITE_SELF_HOSTED`\n    - If it requires AI: `!process.env.TEST_SUITE_SELF_HOSTED || process.env.OPENAI_API_KEY || process.env.OLLAMA_BASE_URL`\n2. Write code to achieve your win conditions\n3. Run your tests using `pnpm harness pnpm exec vitest run ...`\n  - `pnpm harness` is a command that gets the API server and workers up for you to run the tests. Don't try to `pnpm start` manually.\n  - The full test suite takes a long time to run, so you should try to only execute the relevant tests locally, and let CI run the full test suite.\n4. Push to a branch, open a PR, and let CI run to verify your win condition.\nKeep these steps in mind while building your TODO list.\n\nNever bypass `knip` failures (e.g. with `git commit --no-verify`). If the pre-commit `knip` check fails, fix the reported unused exports/files — even if they predate your change — before committing."
+  },
+  "skills": {
+   "files": [
+    "skills/README.md",
+    "skills/firecrawl-build-interact",
+    "skills/firecrawl-build-onboarding",
+    "skills/firecrawl-build-scrape",
+    "skills/firecrawl-build-search",
+    "skills/firecrawl-build"
+   ]
+  }
+ }
+}

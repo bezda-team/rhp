@@ -1,0 +1,862 @@
+{
+ "readAt": "2026-10-27T23:06:24Z",
+ "projects": {
+  "freeCodeCamp/freeCodeCamp": {
+   "name": "freeCodeCamp",
+   "stance": "allows",
+   "basis": "policy",
+   "note": "freeCodeCamp's contributor guide lives in its own repository, freeCodeCamp/contribute.",
+   "stars": 458049,
+   "description": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free.",
+   "file": {
+    "repo": "freeCodeCamp/contribute",
+    "path": "src/content/docs/faq.mdx",
+    "quote": [
+     "Can I use AI tools to help with my contributions?",
+     "Yes, but use them productively.",
+     "We use tools like GitHub Copilot and Claude every day."
+    ],
+    "sha": "457f88965af3e1936b30ea7789351edbe5f38355",
+    "line": 20,
+    "url": "https://github.com/freeCodeCamp/contribute/blob/457f88965af3e1936b30ea7789351edbe5f38355/src/content/docs/faq.mdx#L20"
+   }
+  },
+  "torvalds/linux": {
+   "name": "Linux",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 253710,
+   "description": "Linux kernel source tree",
+   "file": {
+    "repo": "torvalds/linux",
+    "path": "Documentation/process/coding-assistants.rst",
+    "quote": [
+     "This document provides guidance for AI tools and developers using AI assistance when contributing to the Linux kernel."
+    ],
+    "sha": "8a36f53fd5ec3eff01f1b637d42cbdc3821d0493",
+    "line": 8,
+    "url": "https://github.com/torvalds/linux/blob/8a36f53fd5ec3eff01f1b637d42cbdc3821d0493/Documentation/process/coding-assistants.rst#L8"
+   },
+   "commit": {
+    "repo": "torvalds/linux",
+    "sha": "183895979c441e52dbd651b388553b09eaa35cfa",
+    "date": "2026-10-24T08:56:43Z",
+    "title": "mm: multi-gen LRU: fix NULL lruvec->pgdat deref with memcg disabled on cmdline",
+    "trailer": "Assisted-by: LLM",
+    "url": "https://github.com/torvalds/linux/commit/183895979c441e52dbd651b388553b09eaa35cfa"
+   }
+  },
+  "react/react": {
+   "name": "React",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 251790,
+   "description": "The library for web and native user interfaces.",
+   "agentFile": {
+    "repo": "react/react",
+    "path": "CLAUDE.md",
+    "sha": "dc9aed364252a34966f4f2c4a98272317fdddb60",
+    "url": "https://github.com/react/react/blob/dc9aed364252a34966f4f2c4a98272317fdddb60/CLAUDE.md"
+   },
+   "commit": {
+    "repo": "react/react",
+    "sha": "9ca7a2713e2602dd5b75bd3f74024d5fc93d2116",
+    "date": "2026-10-26T11:33:37Z",
+    "title": "[compiler] Type react-native PanResponder.create to fix react-hooks/refs false positive (#37970)",
+    "trailer": "Co-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>",
+    "url": "https://github.com/react/react/commit/9ca7a2713e2602dd5b75bd3f74024d5fc93d2116"
+   }
+  },
+  "yt-dlp/yt-dlp": {
+   "name": "yt-dlp",
+   "stance": "forbids",
+   "basis": "policy",
+   "stars": 202990,
+   "description": "A feature-rich command-line audio/video downloader",
+   "file": {
+    "repo": "yt-dlp/yt-dlp",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "This project strictly forbids the usage of LLMs, agents, or any other AI tools for any kind of contribution."
+    ],
+    "sha": "f264a6cbd1f630894da0f368df00f8aae50140e0",
+    "line": 35,
+    "url": "https://github.com/yt-dlp/yt-dlp/blob/f264a6cbd1f630894da0f368df00f8aae50140e0/CONTRIBUTING.md#L35"
+   }
+  },
+  "massgravel/Microsoft-Activation-Scripts": {
+   "name": "Microsoft Activation Scripts",
+   "short": "MS Activation Scripts",
+   "stance": "none",
+   "stars": 196436,
+   "description": "Open-source Windows and Office activator featuring HWID, Ohook, TSforge, and Online KMS activation methods, along with advanced troubleshooting."
+  },
+  "microsoft/vscode": {
+   "name": "VS Code",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 194390,
+   "description": "Visual Studio Code",
+   "file": {
+    "repo": "microsoft/vscode",
+    "path": "AGENTS.md",
+    "quote": [
+     "This file provides instructions for AI coding agents working with the VS Code codebase."
+    ],
+    "sha": "20c56d94b9280ba39861b49caec9bcf93d567f3a",
+    "line": 3,
+    "url": "https://github.com/microsoft/vscode/blob/20c56d94b9280ba39861b49caec9bcf93d567f3a/AGENTS.md#L3"
+   },
+   "commit": {
+    "repo": "microsoft/vscode",
+    "sha": "ac717e6cb298133160d287113b2b1c421cb981ab",
+    "date": "2026-09-20T13:58:32Z",
+    "title": "github-authentication: skip education.github.com check for EMU accounts (#336608)",
+    "trailer": "Co-authored-by: Claude Opus 4.8 <noreply@anthropic.com>",
+    "url": "https://github.com/microsoft/vscode/commit/ac717e6cb298133160d287113b2b1c421cb981ab"
+   }
+  },
+  "ohmyzsh/ohmyzsh": {
+   "name": "Oh My Zsh",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 190192,
+   "description": "🙃   A delightful community-driven (with 2,500+ contributors) framework for managing your zsh configuration. Includes 300+ optional plugins (rails, git, macOS, hub, docker, homebrew, node, php, python, etc), 140+ themes to spice up your morning, and an auto-update tool that makes it easy to keep up with the latest updates from the community.",
+   "file": {
+    "repo": "ohmyzsh/ohmyzsh",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "AI tools can be pretty helpful for coding tasks, and we're not here to gatekeep how you get your work done.",
+     "We use these tools ourselves!"
+    ],
+    "sha": "17a2b4c3a5855524ad4772a17ada0dc474e2fdf3",
+    "line": 131,
+    "url": "https://github.com/ohmyzsh/ohmyzsh/blob/17a2b4c3a5855524ad4772a17ada0dc474e2fdf3/CONTRIBUTING.md#L131"
+   }
+  },
+  "flutter/flutter": {
+   "name": "Flutter",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 180453,
+   "description": "Flutter makes it easy and fast to build beautiful apps for mobile and beyond",
+   "file": {
+    "repo": "flutter/flutter",
+    "path": "CONTRIBUTING.ai.md",
+    "quote": [
+     "This does not prohibit the use of coding assistance tools",
+     "You must review all AI-generated code before opening a (non-draft) PR"
+    ],
+    "sha": "9ece36552a9ea2f2fe91c00e407d6d530200eea2",
+    "line": 45,
+    "url": "https://github.com/flutter/flutter/blob/9ece36552a9ea2f2fe91c00e407d6d530200eea2/CONTRIBUTING.ai.md#L45"
+   }
+  },
+  "twbs/bootstrap": {
+   "name": "Bootstrap",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 175022,
+   "description": "The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web.",
+   "file": {
+    "repo": "twbs/bootstrap",
+    "path": "AGENTS.md",
+    "quote": [
+     "Guidance for AI coding agents working in this repository."
+    ],
+    "sha": "05331e182f29d02a684516bd804b80a53f9fdfc3",
+    "line": 3,
+    "url": "https://github.com/twbs/bootstrap/blob/05331e182f29d02a684516bd804b80a53f9fdfc3/AGENTS.md#L3"
+   },
+   "commit": {
+    "repo": "twbs/bootstrap",
+    "sha": "05331e182f29d02a684516bd804b80a53f9fdfc3",
+    "date": "2026-10-27T20:19:24Z",
+    "title": "Update postcss-selector-parser in the lockfile (#43219)",
+    "trailer": "Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "url": "https://github.com/twbs/bootstrap/commit/05331e182f29d02a684516bd804b80a53f9fdfc3"
+   }
+  },
+  "clash-verge-rev/clash-verge-rev": {
+   "name": "Clash Verge Rev",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 154364,
+   "description": "A modern GUI client based on Tauri, designed to run in Windows, macOS and Linux for tailored proxy experience",
+   "file": {
+    "repo": "clash-verge-rev/clash-verge-rev",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "We welcome AI-assisted contributions",
+     "AI assistance itself is not a problem."
+    ],
+    "sha": "3953e125b223defcec28a3c822c292c743fc1b1e",
+    "line": 11,
+    "url": "https://github.com/clash-verge-rev/clash-verge-rev/blob/3953e125b223defcec28a3c822c292c743fc1b1e/CONTRIBUTING.md#L11"
+   }
+  },
+  "Genymobile/scrcpy": {
+   "name": "scrcpy",
+   "stance": "none",
+   "stars": 153312,
+   "description": "Display and control your Android device"
+  },
+  "vercel/next.js": {
+   "name": "Next.js",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 143172,
+   "description": "The React Framework",
+   "file": {
+    "repo": "vercel/next.js",
+    "path": ".github/pull_request_template.md",
+    "quote": [
+     "We encourage you to use AI to assist you in researching, creating, and reviewing changes.",
+     "you must review and deeply understand the contributions you are making."
+    ],
+    "sha": "4bb4e8f1dd65e8903718c9b0b8b3e6acb215ca7f",
+    "line": 7,
+    "url": "https://github.com/vercel/next.js/blob/4bb4e8f1dd65e8903718c9b0b8b3e6acb215ca7f/.github/pull_request_template.md#L7"
+   }
+  },
+  "ytdl-org/youtube-dl": {
+   "name": "youtube-dl",
+   "stance": "none",
+   "stars": 141406,
+   "description": "Command-line program to download videos from YouTube.com and other video sites"
+  },
+  "microsoft/PowerToys": {
+   "name": "PowerToys",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 140064,
+   "description": "Microsoft PowerToys is a collection of utilities that supercharge productivity and customization on Windows",
+   "file": {
+    "repo": "microsoft/PowerToys",
+    "path": "AGENTS.md",
+    "quote": [
+     "This is the top-level guidance for AI contributions to PowerToys."
+    ],
+    "sha": "a9fd27873110a8a535ba607bef6470d643cadbc8",
+    "line": 8,
+    "url": "https://github.com/microsoft/PowerToys/blob/a9fd27873110a8a535ba607bef6470d643cadbc8/AGENTS.md#L8"
+   }
+  },
+  "golang/go": {
+   "name": "Go",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 139513,
+   "description": "The Go programming language",
+   "commit": {
+    "repo": "golang/go",
+    "sha": "a6964733769a02ae49052bdd8f35b928e19c4aaa",
+    "date": "2026-09-28T22:26:55Z",
+    "title": "compress/flate: combine codes in the writeBlockHuff literal loop",
+    "trailer": "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "url": "https://github.com/golang/go/commit/a6964733769a02ae49052bdd8f35b928e19c4aaa"
+   }
+  },
+  "excalidraw/excalidraw": {
+   "name": "Excalidraw",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 134668,
+   "description": "Virtual whiteboard for sketching hand-drawn like diagrams",
+   "agentFile": {
+    "repo": "excalidraw/excalidraw",
+    "path": "CLAUDE.md",
+    "sha": "14bb42edee3d6fee6be264e3ee78670b3b9cee79",
+    "url": "https://github.com/excalidraw/excalidraw/blob/14bb42edee3d6fee6be264e3ee78670b3b9cee79/CLAUDE.md"
+   },
+   "commit": {
+    "repo": "excalidraw/excalidraw",
+    "sha": "d3a9c2a195182bf65b526ccb7a19de96f4bdfdb3",
+    "date": "2026-10-20T03:53:27Z",
+    "title": "fix(packages/excalidraw): complete cross-document runtime ownership (#11997)",
+    "trailer": "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "url": "https://github.com/excalidraw/excalidraw/commit/d3a9c2a195182bf65b526ccb7a19de96f4bdfdb3"
+   }
+  },
+  "kubernetes/kubernetes": {
+   "name": "Kubernetes",
+   "stance": "allows",
+   "basis": "policy",
+   "note": "Kubernetes keeps its contributor guide in kubernetes/community; its pull request template asks for an AI usage disclosure.",
+   "stars": 128613,
+   "description": "Production-Grade Container Scheduling and Management",
+   "file": {
+    "repo": "kubernetes/community",
+    "path": "contributors/guide/pull-requests.md",
+    "quote": [
+     "Using AI tools to help write your PR is acceptable, but as the author, you are responsible for understanding every change."
+    ],
+    "sha": "aeee117fa02e25b68298999d699fb45bdc91acb7",
+    "line": 628,
+    "url": "https://github.com/kubernetes/community/blob/aeee117fa02e25b68298999d699fb45bdc91acb7/contributors/guide/pull-requests.md#L628"
+   }
+  },
+  "rustdesk/rustdesk": {
+   "name": "RustDesk",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 127291,
+   "description": "An open-source remote desktop application designed for self-hosting, as an alternative to TeamViewer.",
+   "agentFile": {
+    "repo": "rustdesk/rustdesk",
+    "path": "AGENTS.md",
+    "sha": "eb239024503160707cca87ba6cef5fbfb8fa3f0d",
+    "url": "https://github.com/rustdesk/rustdesk/blob/eb239024503160707cca87ba6cef5fbfb8fa3f0d/AGENTS.md"
+   },
+   "commit": {
+    "repo": "rustdesk/rustdesk",
+    "sha": "ed6a1acce896fb165f2642aa13b609166d57a734",
+    "date": "2026-10-24T02:41:57Z",
+    "title": "feat(address-book): add a toolbar button to open the web console (#16680)",
+    "trailer": "Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "url": "https://github.com/rustdesk/rustdesk/commit/ed6a1acce896fb165f2642aa13b609166d57a734"
+   }
+  },
+  "react/react-native": {
+   "name": "React Native",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 126803,
+   "description": "A framework for building native applications using React",
+   "agentFile": {
+    "repo": "react/react-native",
+    "path": "AGENTS.md",
+    "sha": "eaf4c261101889c46f0efd44931e6738e7d535b8",
+    "url": "https://github.com/react/react-native/blob/eaf4c261101889c46f0efd44931e6738e7d535b8/AGENTS.md"
+   },
+   "commit": {
+    "repo": "react/react-native",
+    "sha": "98291bcb99b49c0d83d67d2fa58f02a12497cddd",
+    "date": "2026-10-27T14:21:41Z",
+    "title": "Look up Android image resources without throwing an exception (#59456)",
+    "trailer": "🤖 Generated with Claude Code",
+    "url": "https://github.com/react/react-native/commit/98291bcb99b49c0d83d67d2fa58f02a12497cddd"
+   }
+  },
+  "shadcn-ui/ui": {
+   "name": "shadcn/ui",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 126710,
+   "description": "Composable, accessible components with thoughtful defaults. Build your own component library with code you can customize, extend, and make your own.",
+   "commit": {
+    "repo": "shadcn-ui/ui",
+    "sha": "71f0e497e6e2a8e5a6584546c938a2db5329637e",
+    "date": "2026-09-30T08:12:09Z",
+    "title": "fix(registry): move @sekei to sekei.design (#12044)",
+    "trailer": "Co-authored-by: Claude <noreply@anthropic.com>",
+    "url": "https://github.com/shadcn-ui/ui/commit/71f0e497e6e2a8e5a6584546c938a2db5329637e"
+   }
+  },
+  "electron/electron": {
+   "name": "Electron",
+   "stance": "allows",
+   "basis": "policy",
+   "note": "electron/electron's CONTRIBUTING.md links this policy in Electron's governance repository.",
+   "stars": 123576,
+   "description": ":electron: Build cross-platform desktop apps with JavaScript, HTML, and CSS",
+   "file": {
+    "repo": "electron/governance",
+    "path": "policy/ai.md",
+    "quote": [
+     "If you use AI tools to help write code, documentation, comments, or any other contribution, you are still the author and bear full responsibility for the work."
+    ],
+    "sha": "2ef8a9e040a8213eb9e2fa5bbd6d7a599cb34efd",
+    "line": 9,
+    "url": "https://github.com/electron/governance/blob/2ef8a9e040a8213eb9e2fa5bbd6d7a599cb34efd/policy/ai.md#L9"
+   }
+  },
+  "nodejs/node": {
+   "name": "Node.js",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 123143,
+   "description": "Node.js JavaScript runtime ✨🐢🚀✨",
+   "file": {
+    "repo": "nodejs/node",
+    "path": "doc/contributing/ai-guidelines.md",
+    "quote": [
+     "The Node.js project does not prohibit the use of AI tools in contributions"
+    ],
+    "sha": "c9b30827e8e7b0713177504579d11f4425be2961",
+    "line": 18,
+    "url": "https://github.com/nodejs/node/blob/c9b30827e8e7b0713177504579d11f4425be2961/doc/contributing/ai-guidelines.md#L18"
+   }
+  },
+  "rust-lang/rust": {
+   "name": "Rust",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 120898,
+   "description": "Empowering everyone to build reliable and efficient software.",
+   "file": {
+    "repo": "rust-lang/rust",
+    "path": ".github/pull_request_template.md",
+    "quote": [
+     "LLM contributions are not banned, but are held to a higher standard of review and correctness."
+    ],
+    "sha": "41089d07a0a2afc16adfe28a760d94d73d7298a4",
+    "line": 5,
+    "url": "https://github.com/rust-lang/rust/blob/41089d07a0a2afc16adfe28a760d94d73d7298a4/.github/pull_request_template.md#L5"
+   }
+  },
+  "2dust/v2rayN": {
+   "name": "v2rayN",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 119256,
+   "description": "A GUI client for Windows, Linux and macOS, support Xray and sing-box and others",
+   "commit": {
+    "repo": "2dust/v2rayN",
+    "sha": "4869a6cbba405066f84fbf508daeed98610d8930",
+    "date": "2026-10-11T02:55:39Z",
+    "title": "Route IPv6 into the Xray TUN when EnableIPv6Address is on (#10329)",
+    "trailer": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "url": "https://github.com/2dust/v2rayN/commit/4869a6cbba405066f84fbf508daeed98610d8930"
+   }
+  },
+  "godotengine/godot": {
+   "name": "Godot",
+   "stance": "limits",
+   "basis": "policy",
+   "note": "Godot's pull request template links these rules in its contributing-docs repository.",
+   "stars": 119172,
+   "description": "Godot Engine – Multi-platform 2D and 3D game engine",
+   "file": {
+    "repo": "godotengine/godot-contributing-docs",
+    "path": "development/contribution_rules.rst",
+    "quote": [
+     "Do not use AI to generate substantial pieces of code",
+     "For example using AI for code completion is permissible."
+    ],
+    "sha": "33fc05323770b57e70b4a7aafc1809fba5d0c079",
+    "line": 142,
+    "url": "https://github.com/godotengine/godot-contributing-docs/blob/33fc05323770b57e70b4a7aafc1809fba5d0c079/development/contribution_rules.rst#L142"
+   }
+  },
+  "immich-app/immich": {
+   "name": "Immich",
+   "stance": "limits",
+   "basis": "policy",
+   "stars": 117423,
+   "description": "High performance self-hosted photo and video management solution.",
+   "file": {
+    "repo": "immich-app/immich",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "We ask you not to open PRs generated with an LLM."
+    ],
+    "sha": "37c34343e1b98edf07dc3ff34c5da461de03c746",
+    "line": 26,
+    "url": "https://github.com/immich-app/immich/blob/37c34343e1b98edf07dc3ff34c5da461de03c746/CONTRIBUTING.md#L26"
+   }
+  },
+  "mrdoob/three.js": {
+   "name": "three.js",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 117072,
+   "description": "JavaScript 3D Library.",
+   "commit": {
+    "repo": "mrdoob/three.js",
+    "sha": "02b15eeaaf4230c2f4fa5b8d61da7716092a37f4",
+    "date": "2026-10-27T12:38:31Z",
+    "title": "Docs: Fix callback parameters of `Object3D` and `Interpolant`. (#35231)",
+    "trailer": "Co-authored-by: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+    "url": "https://github.com/mrdoob/three.js/commit/02b15eeaaf4230c2f4fa5b8d61da7716092a37f4"
+   }
+  },
+  "supabase/supabase": {
+   "name": "Supabase",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 114173,
+   "description": "The Postgres development platform. Supabase gives you a dedicated Postgres database to build your web, mobile, and AI applications.",
+   "agentFile": {
+    "repo": "supabase/supabase",
+    "path": "AGENTS.md",
+    "sha": "845ed5a1e3e8e39f8eef41b2875be4e7a9b8bdfc",
+    "url": "https://github.com/supabase/supabase/blob/845ed5a1e3e8e39f8eef41b2875be4e7a9b8bdfc/AGENTS.md"
+   },
+   "commit": {
+    "repo": "supabase/supabase",
+    "sha": "4b2c09c44ee676c771b722e81c4725b68c7884df",
+    "date": "2026-10-27T19:10:03Z",
+    "title": "docs: set descriptions for federated wrapper, python, and terraform pages (DEVREL-772) (#52407)",
+    "trailer": "Co-authored-by: Claude Haiku 5.5 <noreply@anthropic.com>",
+    "url": "https://github.com/supabase/supabase/commit/4b2c09c44ee676c771b722e81c4725b68c7884df"
+   }
+  },
+  "d3/d3": {
+   "name": "D3",
+   "stance": "none",
+   "stars": 113810,
+   "description": "Bring data to life with SVG, Canvas and HTML. :bar_chart::chart_with_upwards_trend::tada:"
+  },
+  "obra/superpowers": {
+   "name": "Superpowers",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 306388,
+   "description": "An agentic skills framework & software development methodology that works.",
+   "file": {
+    "repo": "obra/superpowers",
+    "path": "AGENTS.md",
+    "quote": [
+     "Disclose your model, harness, harness version, every installed plugin, and what your human partner asked you to do in the PR."
+    ],
+    "sha": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+    "line": 17,
+    "url": "https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/AGENTS.md#L17"
+   }
+  },
+  "NousResearch/hermes-agent": {
+   "name": "Hermes Agent",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 257737,
+   "description": "The agent that grows with you",
+   "file": {
+    "repo": "NousResearch/hermes-agent",
+    "path": "AGENTS.md",
+    "quote": [
+     "For AI coding assistants and developers working on hermes-agent."
+    ],
+    "sha": "508d6ec24ed293e46e5d7d1b88a6d67285243d97",
+    "line": 3,
+    "url": "https://github.com/NousResearch/hermes-agent/blob/508d6ec24ed293e46e5d7d1b88a6d67285243d97/AGENTS.md#L3"
+   }
+  },
+  "anomalyco/opencode": {
+   "name": "opencode",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 222362,
+   "description": "The open source coding agent.",
+   "agentFile": {
+    "repo": "anomalyco/opencode",
+    "path": "AGENTS.md",
+    "sha": "45b53fe6fee909dbf6a24e6ee067d420c27202ff",
+    "url": "https://github.com/anomalyco/opencode/blob/45b53fe6fee909dbf6a24e6ee067d420c27202ff/AGENTS.md"
+   },
+   "commit": {
+    "repo": "anomalyco/opencode",
+    "sha": "a5bf171649036d866604eaaefdd0a4be6d29f516",
+    "date": "2026-10-19T19:29:10Z",
+    "title": "fix(core): keep the instruction baseline on committed revert (#54410)",
+    "trailer": "Co-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>",
+    "url": "https://github.com/anomalyco/opencode/commit/a5bf171649036d866604eaaefdd0a4be6d29f516"
+   }
+  },
+  "tensorflow/tensorflow": {
+   "name": "TensorFlow",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 201311,
+   "description": "An Open Source Machine Learning Framework for Everyone",
+   "commit": {
+    "repo": "tensorflow/tensorflow",
+    "sha": "afe922e2008ce705c81b5774295fb47c0c16444f",
+    "date": "2026-10-09T09:21:16Z",
+    "title": "PR #50178: [XLA:TSL] BFC: grow spatially partitioned pools within a reserved arena",
+    "trailer": "🤖 Generated with Claude Code",
+    "url": "https://github.com/tensorflow/tensorflow/commit/afe922e2008ce705c81b5774295fb47c0c16444f"
+   }
+  },
+  "firecrawl/firecrawl": {
+   "name": "Firecrawl",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 196060,
+   "description": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+   "agentFile": {
+    "repo": "firecrawl/firecrawl",
+    "path": "AGENTS.md",
+    "sha": "67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e",
+    "url": "https://github.com/firecrawl/firecrawl/blob/67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e/AGENTS.md"
+   },
+   "commit": {
+    "repo": "firecrawl/firecrawl",
+    "sha": "67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e",
+    "date": "2026-10-27T21:44:13Z",
+    "title": "fix(branding): better logo picks, page background, link and accent colors (#5425)",
+    "trailer": "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "url": "https://github.com/firecrawl/firecrawl/commit/67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e"
+   }
+  },
+  "microsoft/markitdown": {
+   "name": "MarkItDown",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 192563,
+   "description": "Python tool for converting files and office documents to Markdown.",
+   "commit": {
+    "repo": "microsoft/markitdown",
+    "sha": "a5ddc8efd5572ac52362d4ea1269d1cfb3a5bfd4",
+    "date": "2026-09-03T19:18:46Z",
+    "title": "fix: handle DOCX files with inconsistent ZIP filename casing (#1812) (#2016)",
+    "trailer": "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+    "url": "https://github.com/microsoft/markitdown/commit/a5ddc8efd5572ac52362d4ea1269d1cfb3a5bfd4"
+   }
+  },
+  "ollama/ollama": {
+   "name": "Ollama",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 185022,
+   "description": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+   "agentFile": {
+    "repo": "ollama/ollama",
+    "path": "AGENTS.md",
+    "sha": "f067033f9126993b6172bdfffa71a74ad693fda4",
+    "url": "https://github.com/ollama/ollama/blob/f067033f9126993b6172bdfffa71a74ad693fda4/AGENTS.md"
+   },
+   "commit": {
+    "repo": "ollama/ollama",
+    "sha": "612f0a17d32cf7fe9bde5f31703a37b49c98ea2f",
+    "date": "2026-04-09T00:41:12Z",
+    "title": "fix: improve error message for unknown input item type in responses API (#15424)",
+    "trailer": "Co-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>",
+    "url": "https://github.com/ollama/ollama/commit/612f0a17d32cf7fe9bde5f31703a37b49c98ea2f"
+   }
+  },
+  "huggingface/transformers": {
+   "name": "Transformers",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 168254,
+   "description": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training. ",
+   "file": {
+    "repo": "huggingface/transformers",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "AI-assisted contributions are welcome."
+    ],
+    "sha": "494470d677d05d44153d235d795e0d01040307ab",
+    "line": 220,
+    "url": "https://github.com/huggingface/transformers/blob/494470d677d05d44153d235d795e0d01040307ab/CONTRIBUTING.md#L220"
+   }
+  },
+  "AUTOMATIC1111/stable-diffusion-webui": {
+   "name": "Stable Diffusion web UI",
+   "short": "SD web UI",
+   "stance": "none",
+   "stars": 165162,
+   "description": "Stable Diffusion web UI"
+  },
+  "msitarzewski/agency-agents": {
+   "name": "The Agency",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 164524,
+   "description": "A complete AI agency at your fingertips - From frontend wizards to Reddit community ninjas, from whimsy injectors to reality checkers. Each agent is a specialized expert with personality, processes, and proven deliverables.",
+   "commit": {
+    "repo": "msitarzewski/agency-agents",
+    "sha": "226907db6a3e27fcc512c56e3b827e69654f20ed",
+    "date": "2026-10-23T10:30:33Z",
+    "title": "fix(electrical-engineer): address review on worked examples and rule guard",
+    "trailer": "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "url": "https://github.com/msitarzewski/agency-agents/commit/226907db6a3e27fcc512c56e3b827e69654f20ed"
+   }
+  },
+  "langflow-ai/langflow": {
+   "name": "Langflow",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 156069,
+   "description": "Langflow is a powerful tool for building and deploying AI-powered agents and workflows.",
+   "file": {
+    "repo": "langflow-ai/langflow",
+    "path": "AGENTS.md",
+    "quote": [
+     "This file provides guidance to AI coding agents when working with code in this repository."
+    ],
+    "sha": "aeb10d96bb2ea797696613af931e91ddf51f3320",
+    "line": 3,
+    "url": "https://github.com/langflow-ai/langflow/blob/aeb10d96bb2ea797696613af931e91ddf51f3320/AGENTS.md#L3"
+   }
+  },
+  "farion1231/cc-switch": {
+   "name": "CC Switch",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 149371,
+   "description": "A cross-platform desktop All-in-One assistant for Claude Code, Codex, OpenCode, OpenClaw, Grok Build & Hermes Agent. Only official website: ccswitch.io",
+   "file": {
+    "repo": "farion1231/cc-switch",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "We welcome AI-assisted contributions, but the responsibility stays with you."
+    ],
+    "sha": "983113a132ab1754e6bb1fab3994fb3b23d15f62",
+    "line": 214,
+    "url": "https://github.com/farion1231/cc-switch/blob/983113a132ab1754e6bb1fab3994fb3b23d15f62/CONTRIBUTING.md#L214"
+   }
+  },
+  "langchain-ai/langchain": {
+   "name": "LangChain",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 148567,
+   "description": "The agent engineering platform.",
+   "agentFile": {
+    "repo": "langchain-ai/langchain",
+    "path": "AGENTS.md",
+    "sha": "0808e17e29b59ee1cc45a5ce2aa4cb4006671c1c",
+    "url": "https://github.com/langchain-ai/langchain/blob/0808e17e29b59ee1cc45a5ce2aa4cb4006671c1c/AGENTS.md"
+   },
+   "commit": {
+    "repo": "langchain-ai/langchain",
+    "sha": "4717cfc83bbed25883ce3e300c1dfe63f35123d3",
+    "date": "2026-07-10T18:11:10Z",
+    "title": "feat(openai): support explicit prompt caching (#38762)",
+    "trailer": "Co-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+    "url": "https://github.com/langchain-ai/langchain/commit/4717cfc83bbed25883ce3e300c1dfe63f35123d3"
+   }
+  },
+  "Comfy-Org/ComfyUI": {
+   "name": "ComfyUI",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 143554,
+   "description": "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface. The fastest local inference engine in the world.",
+   "agentFile": {
+    "repo": "Comfy-Org/ComfyUI",
+    "path": "AGENTS.md",
+    "sha": "49abb64b25ff72bad792f1cd4bc977e6545cb98c",
+    "url": "https://github.com/Comfy-Org/ComfyUI/blob/49abb64b25ff72bad792f1cd4bc977e6545cb98c/AGENTS.md"
+   },
+   "commit": {
+    "repo": "Comfy-Org/ComfyUI",
+    "sha": "2bd4d82b4f19c30dc979a3a16ddae97068e1bdc8",
+    "date": "2026-03-16T19:34:04Z",
+    "title": "feat(assets): align local API with cloud spec (#12863)",
+    "trailer": "Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>",
+    "url": "https://github.com/Comfy-Org/ComfyUI/commit/2bd4d82b4f19c30dc979a3a16ddae97068e1bdc8"
+   }
+  },
+  "github/spec-kit": {
+   "name": "Spec Kit",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 143331,
+   "description": "💫 Toolkit to help you get started with SDD or any other process!",
+   "file": {
+    "repo": "github/spec-kit",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "human and AI-assisted contributions are judged identically."
+    ],
+    "sha": "222a973f8b8794366680c043fb935a31f71902af",
+    "line": 83,
+    "url": "https://github.com/github/spec-kit/blob/222a973f8b8794366680c043fb935a31f71902af/CONTRIBUTING.md#L83"
+   }
+  },
+  "harry0703/MoneyPrinterTurbo": {
+   "name": "MoneyPrinterTurbo",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 135829,
+   "description": "利用 AI 大模型和自动化工作流，根据主题或关键词一键生成高清短视频。Generate HD short videos from a topic or keyword with an automated AI workflow.",
+   "commit": {
+    "repo": "harry0703/MoneyPrinterTurbo",
+    "sha": "933cb102909e63dfe9873f60c4ac2071f471040f",
+    "date": "2026-10-23T04:33:05Z",
+    "title": "fix(video): open render output read-write before fsync for Windows",
+    "trailer": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+    "url": "https://github.com/harry0703/MoneyPrinterTurbo/commit/933cb102909e63dfe9873f60c4ac2071f471040f"
+   },
+   "short": "MoneyPrinter​Turbo"
+  },
+  "ggml-org/llama.cpp": {
+   "name": "llama.cpp",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 132561,
+   "description": "LLM inference in C/C++",
+   "file": {
+    "repo": "ggml-org/llama.cpp",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "AI-generated code is allowed. You are 100% responsible for every line, however it was produced."
+    ],
+    "sha": "d05706b4f32a545814856e98ca518292585443b9",
+    "line": 13,
+    "url": "https://github.com/ggml-org/llama.cpp/blob/d05706b4f32a545814856e98ca518292585443b9/CONTRIBUTING.md#L13"
+   }
+  },
+  "openai/codex": {
+   "name": "Codex",
+   "stance": "allows",
+   "basis": "practice",
+   "note": "Codex takes no outside code at all; its own team writes it with Codex.",
+   "stars": 131268,
+   "description": "Lightweight coding agent that runs in your terminal",
+   "file": {
+    "repo": "openai/codex",
+    "path": "docs/contributing.md",
+    "quote": [
+     "We do not accept external code contributions or pull requests.",
+     "implementation is comparatively straightforward with the help of Codex itself."
+    ],
+    "sha": "37f199dab1d80dc25d899fa83557de892610bc4b",
+    "line": 5,
+    "url": "https://github.com/openai/codex/blob/37f199dab1d80dc25d899fa83557de892610bc4b/docs/contributing.md#L5"
+   }
+  },
+  "browser-use/browser-use": {
+   "name": "Browser Use",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 119310,
+   "description": "Open-source Python library for AI browser agents, plus Browser Use Cloud: stealth browsers and a hosted agent API.",
+   "file": {
+    "repo": "browser-use/browser-use",
+    "path": "CLAUDE.md",
+    "quote": [
+     "This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository."
+    ],
+    "sha": "2cc71890e65056b67fdb29d98bb407749c15bb08",
+    "line": 3,
+    "url": "https://github.com/browser-use/browser-use/blob/2cc71890e65056b67fdb29d98bb407749c15bb08/CLAUDE.md#L3"
+   }
+  },
+  "earendil-works/pi": {
+   "name": "Pi",
+   "stance": "allows",
+   "basis": "policy",
+   "stars": 118281,
+   "description": "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI",
+   "file": {
+    "repo": "earendil-works/pi",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "Using AI to write code is fine."
+    ],
+    "sha": "85c2ee3e761e4fc4f901ff0ed584fb2465aa552e",
+    "line": 17,
+    "url": "https://github.com/earendil-works/pi/blob/85c2ee3e761e4fc4f901ff0ed584fb2465aa552e/CONTRIBUTING.md#L17"
+   }
+  },
+  "TauricResearch/TradingAgents": {
+   "name": "TradingAgents",
+   "stance": "allows",
+   "basis": "practice",
+   "stars": 117281,
+   "description": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+   "commit": {
+    "repo": "TauricResearch/TradingAgents",
+    "sha": "04f434e86db88e7707bf16db8ed7183f9764fe26",
+    "date": "2026-06-01T02:02:47Z",
+    "title": "chore: README housekeeping and remove stale TODO",
+    "trailer": "Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+    "url": "https://github.com/TauricResearch/TradingAgents/commit/04f434e86db88e7707bf16db8ed7183f9764fe26"
+   }
+  }
+ }
+}

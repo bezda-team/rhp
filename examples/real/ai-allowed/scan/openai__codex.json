@@ -1,0 +1,18 @@
+{
+ "full": "openai/codex",
+ "stars": 131265,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2025-04-13T05:37:54Z",
+ "pushed": "2026-10-27T22:26:30Z",
+ "ref": "main",
+ "homepage": "",
+ "description": "Lightweight coding agent that runs in your terminal",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "docs/contributing.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

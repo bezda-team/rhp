@@ -1,0 +1,16 @@
+{
+ "full": "TauricResearch/TradingAgents",
+ "stars": 117277,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2024-12-28T03:31:08Z",
+ "pushed": "2026-10-27T08:43:04Z",
+ "ref": "main",
+ "homepage": "https://arxiv.org/pdf/2412.20138",
+ "description": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

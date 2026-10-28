@@ -1,0 +1,22 @@
+{
+ "full": "junegunn/fzf",
+ "stars": 83826,
+ "license": "MIT",
+ "archived": false,
+ "created": "2013-10-23T16:04:23Z",
+ "pushed": "2026-10-25T13:44:07Z",
+ "ref": "master",
+ "homepage": "https://junegunn.github.io/fzf/",
+ "description": ":cherry_blossom: A command-line fuzzy finder",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  ".github/PULL_REQUEST_TEMPLATE.md": [
+   "We do not accept pull requests generated primarily by AI without genuine understanding or real-world usage context."
+  ]
+ },
+ "agentText": {}
+}

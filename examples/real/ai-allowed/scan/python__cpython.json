@@ -1,0 +1,25 @@
+{
+ "full": "python/cpython",
+ "stars": 77788,
+ "license": "NOASSERTION",
+ "archived": false,
+ "created": "2017-02-10T19:23:51Z",
+ "pushed": "2026-10-27T22:17:28Z",
+ "ref": "main",
+ "homepage": "https://www.python.org",
+ "description": "The Python programming language",
+ "agentFiles": [
+  "AGENTS.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/CONTRIBUTING.rst",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  "AGENTS.md": {
+   "text": "# AI agent guidance\n\nCPython has a [policy on the use of AI tools](https://devguide.python.org/getting-started/ai-tools/).\nAll use of AI tools and agents when working on or interacting with CPython\nmust follow it.\n\n> [!important]\n> **Primary directive**: Read the policy before making or proposing any changes.\n\nWhen acting on this repository, apply the policy's core principles:\n\n- Consider whether the change is necessary.\n- Make minimal, focused changes.\n- Follow existing coding style and patterns.\n- Write tests that exercise the change.\n- Keep backwards compatibility with prior releases in mind.\n"
+  }
+ }
+}

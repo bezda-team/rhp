@@ -1,0 +1,16 @@
+{
+ "full": "fastapi/fastapi",
+ "stars": 104161,
+ "license": "MIT",
+ "archived": false,
+ "created": "2018-12-08T08:21:47Z",
+ "pushed": "2026-10-27T04:56:28Z",
+ "ref": "master",
+ "homepage": "https://fastapi.tiangolo.com/",
+ "description": "FastAPI framework, high performance, easy to learn, fast to code, ready for production",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

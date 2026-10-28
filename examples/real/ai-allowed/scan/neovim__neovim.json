@@ -1,0 +1,31 @@
+{
+ "full": "neovim/neovim",
+ "stars": 103220,
+ "license": "NOASSERTION",
+ "archived": false,
+ "created": "2014-01-31T13:39:22Z",
+ "pushed": "2026-10-27T19:17:59Z",
+ "ref": "master",
+ "homepage": "https://neovim.io",
+ "description": "Vim-fork focused on extensibility and usability",
+ "agentFiles": [
+  "AGENTS.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/pull_request_template.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "### AI-assisted work",
+   "Using AI for contributions is acceptable, given the following:",
+   "- YOU review the output before sending a non-Draft PR. Do NOT request review\n  until YOU have checked the AI generated PR and verify the following:\n- REMOVE verbosity and blathering from documentation, comments, PR description,\n  commit message, etc. All resources, including names, should be CONCISE and\n  CLEAR. They should contain USEFUL information and nothing more.\n- REMOVE and DEDUPLICATE redundant code, tests, explanations, etc. Explicitness\n  and clarity are GOOD but verbosity, over-explanation, and redundancy is BAD."
+  ]
+ },
+ "agentText": {
+  "AGENTS.md": {
+   "text": "# AGENTS.md\n\n## AI Disclosure\n\nIf AI was used for a commit, add a generic `AI-assisted` trailer to the commit message.\nDo NOT add any info mentioning the particular model or the AI service.\nDo NOT list an AI service as the author name/email.\n"
+  }
+ }
+}

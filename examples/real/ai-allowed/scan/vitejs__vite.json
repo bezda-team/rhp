@@ -1,0 +1,35 @@
+{
+ "full": "vitejs/vite",
+ "stars": 83611,
+ "license": "MIT",
+ "archived": false,
+ "created": "2020-04-21T05:03:57Z",
+ "pushed": "2026-10-27T10:40:47Z",
+ "ref": "main",
+ "homepage": "http://vite.dev",
+ "description": "Next generation frontend tooling. It's fast!",
+ "agentFiles": [
+  ".github/copilot-instructions.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "## AI Policy",
+   "We welcome the thoughtful use of AI tools when contributing to Vite, but ask all contributors to follow [two core principles](https://roe.dev/blog/using-ai-in-open-source):",
+   "1. **Never let an LLM speak for you** - all comments, issues, and PR descriptions should be written in your own words, reflecting your own understanding.\n2. **Never let an LLM think for you** - only submit contributions you fully understand and can explain."
+  ],
+  ".github/PULL_REQUEST_TEMPLATE.md": [
+   "If you have used AI:",
+   "- Read the AI Policy at https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md#ai-policy.\n- Keep the PR description and discussion concise. Use your own words, do not let AI write for you.\n- Disclose and describe how you have reviewed its code, e.g. the thought process and decisions that lead to the final code."
+  ]
+ },
+ "agentText": {
+  ".github/copilot-instructions.md": {
+   "text": "This is a TypeScript project that implements a frontend build tooling called Vite. Please follow these guidelines when contributing:\n\n## Code Standards\n\n- Run `pnpm run lint` to ensure that your code adheres to the code standards.\n- Run `pnpm run format` to format your code.\n- Build: `pnpm run build`\n- Test: `pnpm run test` (uses Vitest and Playwright)\n\n## Repository Structure\n\n- `docs/`: Documentation\n- `packages/create-vite`: The source code for the `create-vite` command\n- `packages/plugin-legacy`: The source code for the `@vitejs/plugin-legacy` plugin\n- `packages/vite`: The source code for the Vite core\n- `playground/`: E2E tests\n\n## PR Guidelines\n\n### PR Title & Commit Messages\n\n- Follow the [commit message convention](./commit-convention.md)\n\n### PR Description\n\n- What does this PR solve? - Clear problem/feature description\n- Why was this approach chosen? - Implementation rationale\n- If this is a new feature, include a convincing reason.\n- If this adds a new config option, verify problem can't be solved with smarter defaults, existing options, or a plugin\n- If this is a bug fix, explain what caused the bug - Link to relevant code if possible\n\n### Code Style & Standards\n\n- Code follows TypeScript best practices\n- Maintains existing code structure and organization\n- Comments explain \"why\", not \"what\"\n\n### Testing\n\n- Prefer unit tests if it can be tested without using mocks\n- E2E tests should be added in the `playground/` directory\n\n### Documentation\n\n- Update documentation for public API changes\n- Documentation changes go in `docs/` folder\n\n### Other Considerations\n\n- No concerning performance impacts\n"
+  }
+ }
+}

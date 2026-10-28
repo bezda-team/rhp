@@ -1,0 +1,16 @@
+{
+ "full": "ventoy/Ventoy",
+ "stars": 80396,
+ "license": "GPL-3.0",
+ "archived": false,
+ "created": "2020-03-10T15:19:19Z",
+ "pushed": "2026-10-22T08:11:00Z",
+ "ref": "master",
+ "homepage": "https://www.ventoy.net",
+ "description": "A new bootable USB solution.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

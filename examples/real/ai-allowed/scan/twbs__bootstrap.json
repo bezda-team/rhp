@@ -1,0 +1,47 @@
+{
+ "full": "twbs/bootstrap",
+ "stars": 175022,
+ "license": "MIT",
+ "archived": false,
+ "created": "2011-07-29T21:19:00Z",
+ "pushed": "2026-10-27T20:19:27Z",
+ "ref": "main",
+ "homepage": "https://getbootstrap.com",
+ "description": "The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web.",
+ "agentFiles": [
+  ".cursor",
+  "AGENTS.md",
+  "skills"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".cursor": {
+   "files": [
+    ".cursor/skills"
+   ]
+  },
+  "AGENTS.md": {
+   "text": "# AGENTS.md\n\nGuidance for AI coding agents working in this repository. Tool-agnostic; `CLAUDE.md` points here.\n\nBootstrap v6.0.0-alpha.1 — CSS/JS framework.\nSass source in `scss/`, TypeScript source in `js/src/`, docs site in `site/` (Astro 5 + MDX).\n\n## Quick commands\n\n- `npm start` — dev server (watch + Astro on port 9001)\n- `npm run dist` — full CSS + JS build\n- `npm run css` — compile, prefix, minify CSS\n- `npm run js` — compile + minify JS\n- `npm run css-lint` / `npm run js-lint` — lint\n- `npm run docs-build` — build docs site\n- `npm test` — full test suite (lint + dist + tests + docs)\n\n## Writing style\n\nUse ASD-STE100 Simplified Technical English for all prose: replies to the user, docs, code comments, commit messages, and PR text.\n\n- Write short sentences. Use approximately 20 words or fewer.\n- Give one instruction per sentence.\n- Use the active voice. Name the actor.\n- Use simple verbs. Do not use a complex verb when a simple one works.\n- Use one term for one thing. Keep terms the same across the project.\n- Keep paragraphs short. Cover one topic per paragraph.\n\n## Reply length\n\nBe extremely brief. Report the result, not the journey.\n\n- Target 75 words or fewer. Hard cap 150 words, and only for a genuinely multi-part answer.\n- Answer in the first sentence. Then stop.\n- Give one supporting fact per claim, at most. Cut the rest.\n- Do not narrate your process, tool calls, or verification steps. Report a check only when it failed or changed the outcome.\n- Do not restate the work you just did. The user reads the diff, the commit, and the PR.\n- State a finding once. Never repeat it in a summary or closing line.\n- No headings. No tables. Use a list of 5 items or fewer only when the answer is a real list.\n- Cut praise, apologies, hedging, and filler such as \"great question\" or \"worth noting\".\n- Do not explain what you did not do, or list caveats the user did not ask about.\n- Do not offer next steps unless the user asks or the work is blocked.\n- Expand only when the user asks for detail, or asks you to teach.\n\n## Teaching\n\nAct as a teacher for JavaScript, TypeScript, React, and all JavaScript-family topics.\n\n- When the work hits a new problem, concept, or language feature, stop and explain it.\n- Keep each explanation short and plain. Define jargon on first use.\n- Use a small code example when it makes the idea clear.\n- Assume strong HTML/CSS knowledge. Do not assume deep JS internals knowledge.\n\n## SCSS conventions\n\n- Variable naming: `$component-state-property-size` (e.g., `$nav-link-disabled-color`)\n- Module system: `@use` / `@forward` only — never `@import`\n- Token system: component tokens are SCSS maps of CSS custom properties, merged via `defaults()`, output via `@include tokens($map)` on the component root selector\n- Disallowed: raw `border-radius` / `transition` properties (use mixins), `lighten()` / `darken()`, `border: none` / `outline: none`\n- Order: `@use` → `@forward` → `$variables` → `--custom-properties` → declarations → rules\n- Variables use `!default` (except locals)\n- CSS layers: `colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities`\n- Logical properties: prefer `padding-inline-start` over `padding-left`, etc.\n- Modern CSS: `color-mix()`, `light-dark()`, range media queries (`@media (width >= 1024px)`)\n- Doc markers: `// scss-docs-start name` / `// scss-docs-end name` for docs extraction\n\n## JavaScript/TypeScript conventions\n\n- Source is TypeScript (`js/src/**/*.ts`, entry `js/src/index.ts`); ESM-only, no semicolons, 2-space indent\n- Imports use `.js` extensions (standard TS ESM style); Rolldown resolves them to `.ts` via `resolve.extensionAlias`, Vitest via the `tsResolve` plugin in `js/tests/vitest.config.mts`\n- Dist builds use Rolldown (`build/rolldown.config.mjs`, `build/build-plugins.mjs`) with built-in TS transforms; `build/browser-targets.mjs` derives the browser floors from `.browserslistrc` at build time, so there is nothing to keep in sync. Rollup and Babel are gone from the repo — Vitest transforms the specs itself\n- Strict tsconfig with `verbatimModuleSyntax` + `erasableSyntaxOnly`; `tsc` only type-checks and emits `.d.ts` (`npm run js-typecheck`, `npm run js-emit-types`)\n- Components extend `BaseComponent` (which extends `Config`); per-component config `type XxxConfig` typed off `Default`, refined on the class via `protected declare _config: XxxConfig`\n- Instance fields use `declare` (no runtime emit); constructor `element` param stays optional to keep `typeof Component` assignable to `typeof BaseComponent`\n- Every `_`-prefixed instance member is `protected` (never `private`, so subclasses keep access); public API methods and statics stay public. This keeps the internals out of the published `.d.ts` surface\n- Constants: `NAME`, `DATA_KEY`, `EVENT_KEY`, `VERSION`\n- DOM utilities via `dom/event-handler.ts`, `dom/selector-engine.ts`, `dom/manipulator.ts`\n- Floating UI for positioning (dropdown, tooltip, popover)\n- Tests: Vitest browser mode (real Chromium via Playwright), config in `js/tests/vitest.config.mts`, specs in `js/tests/unit/*.spec.js` (plain JS, bundled against the TS sources). `js/tests/vitest-setup.js` maps the Jasmine API the specs are written against onto Vitest — note `spyOn` stubs by default, unlike `vi.spyOn`. Async specs return a promise; Vitest 4 dropped `done`. Coverage is Istanbul over all of `js/src`, thresholds 90/88/90/90\n- Type-level API tests in `js/tests/types/` — `api.ts` checks the source (`npm run js-typecheck`), `consumer.ts` checks the shipped `js/dist/*.d.ts` through the package `exports` map (`npm run js-typecheck-dist`, after the build). Keep the two in sync\n\n## Docs conventions\n\n- Astro 5 + MDX in `site/src/content/docs/`\n- Frontmatter schema: `title` (required), `description` (required), `toc`, `aliases`, `added`, `mdn`, `reference`, etc.\n- Shortcodes: `Example`, `Callout`, `Code`, `Details`\n- Internal links: `[[docsref:/path/]]`\n- JS component \"Dependencies\" tables are auto-generated — add a `### Dependencies` heading with `<JsDependencies component=\"<js-src-basename>\" />` (before `### Options`) on any doc for a `js/src/*.ts` component. The table is derived at build time by walking the component's import graph in `site/src/libs/js-dependencies.ts`; never hand-write the file list. When a new source file or third-party package enters the graph, add its human-readable label to `FILE_DESCRIPTIONS` / `PACKAGE_DESCRIPTIONS` in that lib (the build throws if a label is missing).\n\n## Formatting\n\n- 2 spaces, UTF-8, LF line endings, trim trailing whitespace, final newline\n- Preserve smart punctuation (curly apostrophes U+2019, curly quotes) — never replace with ASCII equivalents\n- Use `StrReplace` for targeted edits; avoid full-file rewrites on MDX files to protect typography\n\n## Workflow\n\n- Validate after changes: `npm run css-lint`, `npm run js-lint`, `npm run dist`, `npm run docs-build`\n- Keep config files in sync: `config.yml`, `site/src/libs/config.ts` (Zod schema), `build/rolldown.config.mjs`, `build/generate-sri.mjs`, `package.json`\n- For rebases/conflicts: favor base branch structure, layer feature changes on top\n\n## Commits & PRs\n\n- Commit messages: direct, succinct prose explaining why the change was made.\n- PR descriptions: direct bulleted lists, minimal fluff — one bullet per notable change.\n- Reference related issues/PRs explicitly with `Fixes #{issue}`, `Closes #{issue}`, or `Supersedes #{pr}`.\n- No \"Test plan\" section and no extra headings — just the bullets and the references.\n\n## Do not edit\n\nBuilt output in `dist/`, `_site/`, `js/dist/` — these are generated.\n"
+  },
+  "skills": {
+   "files": [
+    "skills/bootstrap-color-system",
+    "skills/bootstrap-component-js",
+    "skills/bootstrap-component",
+    "skills/bootstrap-npm",
+    "skills/bootstrap-parcel",
+    "skills/bootstrap-utility-api",
+    "skills/bootstrap-v4-v6-migration",
+    "skills/bootstrap-v5-v6-migration",
+    "skills/bootstrap-v6-install",
+    "skills/bootstrap-vite",
+    "skills/bootstrap-webpack"
+   ]
+  }
+ }
+}

@@ -1,0 +1,1095 @@
+{
+ "total_count": 763,
+ "items": [
+  {
+   "full_name": "base/node",
+   "stargazers_count": 68315,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-02-01T13:55:02Z",
+   "pushed_at": "2026-09-08T20:01:17Z",
+   "archived": true,
+   "description": "Everything required to run your own Base node"
+  },
+  {
+   "full_name": "remotion-dev/remotion",
+   "stargazers_count": 68254,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2020-06-23T19:49:10Z",
+   "pushed_at": "2026-10-27T17:37:59Z",
+   "archived": false,
+   "description": "🎥      Make videos programmatically with React"
+  },
+  {
+   "full_name": "shanraisshan/claude-code-best-practice",
+   "stargazers_count": 68211,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-10-31T14:15:28Z",
+   "pushed_at": "2026-10-27T06:34:03Z",
+   "archived": false,
+   "description": "from vibe coding to agentic engineering - practice makes claude perfect"
+  },
+  {
+   "full_name": "scikit-learn/scikit-learn",
+   "stargazers_count": 67968,
+   "license": {
+    "spdx_id": "BSD-3-Clause"
+   },
+   "created_at": "2010-08-17T09:43:38Z",
+   "pushed_at": "2026-10-27T14:46:33Z",
+   "archived": false,
+   "description": "scikit-learn: machine learning in Python"
+  },
+  {
+   "full_name": "mem0ai/mem0",
+   "stargazers_count": 67933,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2023-06-20T08:58:36Z",
+   "pushed_at": "2026-10-26T14:51:55Z",
+   "archived": false,
+   "description": "The Memory Layer for AI Agents - Drop-in memory infrastructure for AI agents and apps. Context that persists. Built for production."
+  },
+  {
+   "full_name": "chartjs/Chart.js",
+   "stargazers_count": 67763,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2013-03-17T23:56:36Z",
+   "pushed_at": "2026-10-23T11:47:55Z",
+   "archived": false,
+   "description": "Simple HTML5 Charts using the <canvas> tag"
+  },
+  {
+   "full_name": "Mintplex-Labs/anything-llm",
+   "stargazers_count": 67646,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-06-04T02:29:14Z",
+   "pushed_at": "2026-10-27T22:03:57Z",
+   "archived": false,
+   "description": "Stop renting your intelligence. Own it with AnythingLLM. Everything you need for a powerful local-first agent experience "
+  },
+  {
+   "full_name": "apache/echarts",
+   "stargazers_count": 67611,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2013-04-03T03:18:59Z",
+   "pushed_at": "2026-10-13T09:27:20Z",
+   "archived": false,
+   "description": "Apache ECharts is a powerful, interactive charting and data visualization library for browser"
+  },
+  {
+   "full_name": "labmlai/annotated_deep_learning_paper_implementations",
+   "stargazers_count": 67604,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2020-08-25T02:29:34Z",
+   "pushed_at": "2026-10-25T17:01:15Z",
+   "archived": false,
+   "description": "🧑‍🏫 60+ Implementations/tutorials of deep learning papers with side-by-side notes 📝; including transformers (original, xl, switch, feedback, vit, ...), optimizers (adam, adabelief, sophia, ...), gans(cyclegan, stylegan2, ...), 🎮 reinforcement learning (ppo, dqn), capsnet, distillation, ... 🧠"
+  },
+  {
+   "full_name": "sindresorhus/awesome-nodejs",
+   "stargazers_count": 67285,
+   "license": {
+    "spdx_id": "CC0-1.0"
+   },
+   "created_at": "2014-07-11T13:35:34Z",
+   "pushed_at": "2026-09-02T02:11:34Z",
+   "archived": false,
+   "description": ":zap: Delightful Node.js packages and resources [BECAUSE OF TOO MUCH SPAM AND LOW-QUALITY SUBMISSIONS, SUBMISSIONS ARE PAUSED TEMPORARILY]"
+  },
+  {
+   "full_name": "bradtraversy/design-resources-for-developers",
+   "stargazers_count": 67257,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2020-05-06T14:40:35Z",
+   "pushed_at": "2026-10-18T12:50:03Z",
+   "archived": false,
+   "description": "Curated list of design and UI resources from stock photos, web templates, CSS frameworks, UI libraries, tools and much more"
+  },
+  {
+   "full_name": "ZhuLinsen/daily_stock_analysis",
+   "stargazers_count": 67167,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-01-10T06:43:20Z",
+   "pushed_at": "2026-10-25T13:40:20Z",
+   "archived": false,
+   "description": "LLM 驱动的多市场股票智能分析系统：多源行情、实时新闻、决策看板与自动推送，支持零成本定时运行。  LLM-powered multi-market stock analysis system with multi-source market data, real-time news, decision dashboard, automated notifications, and cost-free scheduled runs."
+  },
+  {
+   "full_name": "xtekky/gpt4free",
+   "stargazers_count": 66948,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2023-03-29T17:00:43Z",
+   "pushed_at": "2026-10-23T10:49:10Z",
+   "archived": false,
+   "description": "The official gpt4free repository | various collection of powerful language models | opus 4.6 gpt 5.3 kimi 2.5 deepseek v3.2 gemini 3"
+  },
+  {
+   "full_name": "prometheus/prometheus",
+   "stargazers_count": 66819,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2012-11-24T11:14:12Z",
+   "pushed_at": "2026-10-27T21:32:10Z",
+   "archived": false,
+   "description": "The Prometheus monitoring system and time series database."
+  },
+  {
+   "full_name": "ai-job-search-dev/ai-job-search",
+   "stargazers_count": 66769,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-03-18T14:33:04Z",
+   "pushed_at": "2026-10-27T15:16:51Z",
+   "archived": false,
+   "description": "The job search that runs on your machine. AI job application framework built on Claude Code: evaluate postings, tailor CVs, write cover letters, prep interviews. Fork it and own it."
+  },
+  {
+   "full_name": "LadybirdBrowser/ladybird",
+   "stargazers_count": 66722,
+   "license": {
+    "spdx_id": "BSD-2-Clause"
+   },
+   "created_at": "2024-05-30T09:18:10Z",
+   "pushed_at": "2026-10-27T22:30:56Z",
+   "archived": false,
+   "description": "Truly independent web browser"
+  },
+  {
+   "full_name": "TheAlgorithms/Java",
+   "stargazers_count": 66599,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2016-07-16T10:21:02Z",
+   "pushed_at": "2026-10-27T08:22:00Z",
+   "archived": false,
+   "description": "All Algorithms implemented in Java"
+  },
+  {
+   "full_name": "facebook/docusaurus",
+   "stargazers_count": 66593,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2017-06-20T16:13:53Z",
+   "pushed_at": "2026-10-23T20:44:37Z",
+   "archived": false,
+   "description": "Easy to maintain open source documentation websites."
+  },
+  {
+   "full_name": "leonardomso/33-js-concepts",
+   "stargazers_count": 66530,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2018-09-04T13:27:04Z",
+   "pushed_at": "2026-10-21T16:03:54Z",
+   "archived": false,
+   "description": "📜 33 JavaScript concepts every developer should know."
+  },
+  {
+   "full_name": "alacritty/alacritty",
+   "stargazers_count": 66067,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2016-02-18T05:02:30Z",
+   "pushed_at": "2026-10-26T22:32:23Z",
+   "archived": false,
+   "description": "A cross-platform, OpenGL terminal emulator."
+  },
+  {
+   "full_name": "webpack/webpack",
+   "stargazers_count": 65971,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2012-03-10T10:08:14Z",
+   "pushed_at": "2026-10-27T22:31:51Z",
+   "archived": false,
+   "description": "A bundler for javascript and friends. Packs many modules into a few bundled assets. Code Splitting allows for loading parts of the application on demand. Through \"loaders\", modules can be CommonJs, AMD, ES6 modules, CSS, Images, JSON, Coffeescript, LESS, ... and your custom stuff."
+  },
+  {
+   "full_name": "kelseyhightower/nocode",
+   "stargazers_count": 65960,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2018-02-06T23:54:00Z",
+   "pushed_at": "2024-08-07T03:19:12Z",
+   "archived": false,
+   "description": "The best way to write secure and reliable applications. Write nothing; deploy nowhere."
+  },
+  {
+   "full_name": "FFmpeg/FFmpeg",
+   "stargazers_count": 65914,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2011-04-14T14:12:38Z",
+   "pushed_at": "2026-10-27T20:52:09Z",
+   "archived": false,
+   "description": "Mirror of https://git.ffmpeg.org/ffmpeg.git"
+  },
+  {
+   "full_name": "warpdotdev/warp",
+   "stargazers_count": 65724,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2021-07-08T18:48:08Z",
+   "pushed_at": "2026-10-27T18:31:34Z",
+   "archived": false,
+   "description": "Warp is an agentic development environment, born out of the terminal."
+  },
+  {
+   "full_name": "mvanhorn/last30days-skill",
+   "stargazers_count": 65686,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-01-23T20:37:37Z",
+   "pushed_at": "2026-10-27T09:23:11Z",
+   "archived": false,
+   "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary"
+  },
+  {
+   "full_name": "kdn251/interviews",
+   "stargazers_count": 65514,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2017-02-14T18:19:25Z",
+   "pushed_at": "2025-05-12T12:56:04Z",
+   "archived": false,
+   "description": "Everything you need to know to get the job."
+  },
+  {
+   "full_name": "traefik/traefik",
+   "stargazers_count": 65394,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2015-09-13T19:04:02Z",
+   "pushed_at": "2026-10-27T15:26:31Z",
+   "archived": false,
+   "description": "The Cloud Native Application Proxy"
+  },
+  {
+   "full_name": "nocodb/nocodb",
+   "stargazers_count": 65368,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2017-10-29T18:51:48Z",
+   "pushed_at": "2026-10-27T13:31:05Z",
+   "archived": false,
+   "description": "🔥 🔥 🔥 A Free & Self-hostable Airtable Alternative"
+  },
+  {
+   "full_name": "lydiahallie/javascript-questions",
+   "stargazers_count": 65268,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2019-06-12T08:26:27Z",
+   "pushed_at": "2024-08-04T16:08:40Z",
+   "archived": false,
+   "description": "A long list of (advanced) JavaScript questions, and their explanations :sparkles:  "
+  },
+  {
+   "full_name": "localstack/localstack",
+   "stargazers_count": 65133,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2016-10-25T23:48:03Z",
+   "pushed_at": "2026-03-23T08:52:01Z",
+   "archived": true,
+   "description": "💻 A fully functional local AWS cloud stack. Develop and test your cloud & Serverless apps offline"
+  },
+  {
+   "full_name": "ChrisTitusTech/winutil",
+   "stargazers_count": 65122,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2022-04-28T02:25:19Z",
+   "pushed_at": "2026-10-26T08:43:24Z",
+   "archived": false,
+   "description": "Chris Titus Tech's Windows Utility - Install Programs, Tweaks, Fixes, and Updates"
+  },
+  {
+   "full_name": "scrapy/scrapy",
+   "stargazers_count": 65075,
+   "license": {
+    "spdx_id": "BSD-3-Clause"
+   },
+   "created_at": "2010-02-22T02:01:14Z",
+   "pushed_at": "2026-10-27T11:39:08Z",
+   "archived": false,
+   "description": "Scrapy, a fast high-level web crawling & scraping framework for Python."
+  },
+  {
+   "full_name": "coollabsio/coolify",
+   "stargazers_count": 65062,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2021-01-25T20:54:01Z",
+   "pushed_at": "2026-10-27T21:58:23Z",
+   "archived": false,
+   "description": "An open-source, self-hostable PaaS alternative to Vercel, Heroku & Netlify that lets you easily deploy static sites, databases, full-stack applications and 360+ one-click services on your own servers."
+  },
+  {
+   "full_name": "ryanoasis/nerd-fonts",
+   "stargazers_count": 65036,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2014-12-05T04:31:17Z",
+   "pushed_at": "2026-10-17T22:06:24Z",
+   "archived": false,
+   "description": "Iconic font aggregator, collection, & patcher. 3,600+ icons, 50+ patched fonts: Hack, Source Code Pro, more. Glyph collections: Font Awesome, Material Design Icons, Octicons, & more"
+  },
+  {
+   "full_name": "2dust/v2rayNG",
+   "stargazers_count": 64815,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2019-05-15T02:15:31Z",
+   "pushed_at": "2026-10-25T10:49:47Z",
+   "archived": false,
+   "description": "A V2Ray client for Android, support Xray core and v2fly core"
+  },
+  {
+   "full_name": "jingyaogong/minimind",
+   "stargazers_count": 64496,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2024-07-27T04:34:12Z",
+   "pushed_at": "2026-10-27T06:57:09Z",
+   "archived": false,
+   "description": "🧠 Train a 64M-parameter LLM from scratch in just 2h!"
+  },
+  {
+   "full_name": "rust-lang/rustlings",
+   "stargazers_count": 64480,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2015-09-15T02:25:18Z",
+   "pushed_at": "2026-10-26T17:14:42Z",
+   "archived": false,
+   "description": ":crab: Small exercises to get you used to reading and writing Rust code!"
+  },
+  {
+   "full_name": "keras-team/keras",
+   "stargazers_count": 64392,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2015-03-28T00:35:42Z",
+   "pushed_at": "2026-10-27T17:38:38Z",
+   "archived": false,
+   "description": "Deep Learning for humans"
+  },
+  {
+   "full_name": "Alishahryar1/free-claude-code",
+   "stargazers_count": 64300,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2026-01-28T19:02:30Z",
+   "pushed_at": "2026-10-27T07:57:20Z",
+   "archived": false,
+   "description": "Use Claude Code, Codex, Antigravity, VSCode, Pi, and OpenCode (and 6 other harnesses) for free (1.3B+ free tokens) from your terminal, app, IDE, or phone, and now from the browser with native browser sessions (multi-harness + multi-model) like OpenClaw (voice supported + ToS friendly)"
+  },
+  {
+   "full_name": "virattt/ai-hedge-fund",
+   "stargazers_count": 64297,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2024-11-29T16:30:01Z",
+   "pushed_at": "2026-10-27T19:40:08Z",
+   "archived": false,
+   "description": "An AI Hedge Fund Team"
+  },
+  {
+   "full_name": "gsd-build/get-shit-done",
+   "stargazers_count": 64205,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-12-14T14:17:12Z",
+   "pushed_at": "2026-05-31T17:46:54Z",
+   "archived": true,
+   "description": "A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code by TÂCHES."
+  },
+  {
+   "full_name": "karpathy/nanoGPT",
+   "stargazers_count": 64153,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2022-12-28T00:51:12Z",
+   "pushed_at": "2025-11-12T19:52:34Z",
+   "archived": false,
+   "description": "The simplest, fastest repository for training/finetuning medium-sized GPTs."
+  },
+  {
+   "full_name": "usememos/memos",
+   "stargazers_count": 64121,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2021-12-08T15:30:18Z",
+   "pushed_at": "2026-10-27T12:22:52Z",
+   "archived": false,
+   "description": "Memos is an open-source, self-hosted note-taking app that brings your everyday thoughts together in a personal timeline. Your data stays yours, and you choose what to keep private or share."
+  },
+  {
+   "full_name": "PlexPt/awesome-chatgpt-prompts-zh",
+   "stargazers_count": 64090,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2022-12-12T01:55:03Z",
+   "pushed_at": "2026-04-28T10:52:14Z",
+   "archived": false,
+   "description": "ChatGPT 中文调教指南。各种场景使用指南。学习怎么让它听你的话。"
+  },
+  {
+   "full_name": "git/git",
+   "stargazers_count": 64055,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2008-07-23T14:21:26Z",
+   "pushed_at": "2026-10-27T22:25:25Z",
+   "archived": false,
+   "description": "Git Source Code Mirror - This is a publish-only repository but pull requests can be turned into patches to the mailing list via GitGitGadget (https://gitgitgadget.github.io/). Please follow Documentation/SubmittingPatches procedure for any of your improvements."
+  },
+  {
+   "full_name": "tldr-pages/tldr",
+   "stargazers_count": 64053,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2013-12-08T07:34:43Z",
+   "pushed_at": "2026-10-27T17:44:52Z",
+   "archived": false,
+   "description": "Collaborative cheatsheets for console commands 📚."
+  },
+  {
+   "full_name": "commaai/openpilot",
+   "stargazers_count": 64001,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2016-11-24T01:33:30Z",
+   "pushed_at": "2026-10-27T21:30:25Z",
+   "archived": false,
+   "description": "openpilot is an operating system for robotics. Currently, it upgrades the driver assistance system on 300+ supported cars."
+  },
+  {
+   "full_name": "RVC-Boss/GPT-SoVITS",
+   "stargazers_count": 63934,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2024-01-14T18:05:21Z",
+   "pushed_at": "2026-10-19T10:05:29Z",
+   "archived": false,
+   "description": "1 min voice data can also be used to train a good TTS model! (few shot voice cloning)"
+  },
+  {
+   "full_name": "upstash/context7",
+   "stargazers_count": 63785,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-03-26T23:40:39Z",
+   "pushed_at": "2026-10-27T14:24:32Z",
+   "archived": false,
+   "description": "Context7 Platform -- Up-to-date docs for AI agents"
+  },
+  {
+   "full_name": "jgraph/drawio-desktop",
+   "stargazers_count": 63681,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2017-05-25T20:58:42Z",
+   "pushed_at": "2026-10-26T18:04:38Z",
+   "archived": false,
+   "description": "Official electron build of draw.io"
+  },
+  {
+   "full_name": "termux/termux-app",
+   "stargazers_count": 63547,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2015-10-23T09:42:46Z",
+   "pushed_at": "2026-09-26T05:11:44Z",
+   "archived": false,
+   "description": "Termux - a terminal emulator application for Android OS extendible by variety of packages."
+  },
+  {
+   "full_name": "topjohnwu/Magisk",
+   "stargazers_count": 63538,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2016-09-08T12:42:53Z",
+   "pushed_at": "2026-10-27T16:23:19Z",
+   "archived": false,
+   "description": "The Magic Mask for Android"
+  },
+  {
+   "full_name": "withastro/astro",
+   "stargazers_count": 63522,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2021-03-15T17:19:47Z",
+   "pushed_at": "2026-10-27T21:13:01Z",
+   "archived": false,
+   "description": "The web framework for content-driven websites."
+  },
+  {
+   "full_name": "sansan0/TrendRadar",
+   "stargazers_count": 63233,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2025-04-28T11:42:16Z",
+   "pushed_at": "2026-10-20T11:24:10Z",
+   "archived": false,
+   "description": "⭐AI-driven public opinion & trend monitor with multi-platform aggregation, RSS, and smart alerts.🎯 告别信息过载，你的 AI 舆情监控助手与热点筛选工具！聚合多平台热点 +  RSS 订阅，支持关键词精准筛选。AI 智能筛选新闻 + AI 翻译 +  AI 分析简报直推手机，也支持接入 MCP 架构，赋能 AI 自然语言对话分析、情感洞察与趋势预测等。支持 Docker ，数据本地/云端自持。集成微信/飞书/钉钉/Telegram/邮件/ntfy/bark/slack 等渠道智能推送。"
+  },
+  {
+   "full_name": "socketio/socket.io",
+   "stargazers_count": 63228,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2010-03-11T18:24:48Z",
+   "pushed_at": "2026-09-29T09:18:54Z",
+   "archived": false,
+   "description": "Bidirectional and low-latency communication for every platform"
+  },
+  {
+   "full_name": "marktext/marktext",
+   "stargazers_count": 63187,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2017-11-12T16:05:25Z",
+   "pushed_at": "2026-10-27T19:42:46Z",
+   "archived": false,
+   "description": "📝A simple and elegant markdown editor, available for Linux, macOS and Windows."
+  },
+  {
+   "full_name": "resume/resume.github.com",
+   "stargazers_count": 62919,
+   "license": null,
+   "created_at": "2011-02-06T13:39:55Z",
+   "pushed_at": "2023-02-15T06:38:51Z",
+   "archived": false,
+   "description": "Resumes generated using the GitHub informations"
+  },
+  {
+   "full_name": "ultralytics/ultralytics",
+   "stargazers_count": 62909,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2022-09-11T16:39:45Z",
+   "pushed_at": "2026-10-27T19:16:39Z",
+   "archived": false,
+   "description": "Ultralytics YOLO27, YOLO26, YOLO11, YOLOv8 — object detection, instance segmentation, semantic segmentation, image classification, pose estimation, object tracking"
+  },
+  {
+   "full_name": "youngyangyang04/leetcode-master",
+   "stargazers_count": 62753,
+   "license": null,
+   "created_at": "2019-12-14T12:05:42Z",
+   "pushed_at": "2026-10-24T02:51:43Z",
+   "archived": false,
+   "description": "《代码随想录》LeetCode 刷题攻略：200道经典题目刷题顺序，共60w字的详细图解，视频难点剖析，50余张思维导图，支持C++，Java，Python，Go，JavaScript等多语言版本，从此算法学习不再迷茫！🔥🔥 来看看，你会发现相见恨晚！🚀 "
+  },
+  {
+   "full_name": "ghostty-org/ghostty",
+   "stargazers_count": 62700,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2022-03-29T17:38:26Z",
+   "pushed_at": "2026-10-27T22:16:02Z",
+   "archived": false,
+   "description": "👻 Ghostty is a fast, feature-rich, and cross-platform terminal emulator that uses platform-native UI and GPU acceleration."
+  },
+  {
+   "full_name": "tw93/Pake",
+   "stargazers_count": 62325,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2022-10-14T09:32:57Z",
+   "pushed_at": "2026-10-27T06:17:14Z",
+   "archived": false,
+   "description": "Turn any website into a lightweight desktop app with one command, on macOS, Windows and Linux."
+  },
+  {
+   "full_name": "BerriAI/litellm",
+   "stargazers_count": 62179,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2023-07-27T00:09:52Z",
+   "pushed_at": "2026-10-27T22:28:17Z",
+   "archived": false,
+   "description": "The fastest, litest AI Gateway. Rust core with Python SDK. Call 100+ LLM APIs in OpenAI (or native) format with cost tracking, guardrails, load balancing, and logging [Bedrock, Azure, OpenAI, Anthropic, OpenAI, VertexAI, vLLM, Nvidia NIM]"
+  },
+  {
+   "full_name": "pathwaycom/pathway",
+   "stargazers_count": 62051,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2022-11-27T13:01:14Z",
+   "pushed_at": "2026-10-27T19:23:58Z",
+   "archived": false,
+   "description": "Python ETL framework for stream processing, real-time analytics, LLM pipelines, and RAG."
+  },
+  {
+   "full_name": "1c7/chinese-independent-developer",
+   "stargazers_count": 61947,
+   "license": null,
+   "created_at": "2017-09-21T11:08:23Z",
+   "pushed_at": "2026-10-27T14:48:01Z",
+   "archived": false,
+   "description": "👩🏿‍💻👨🏾‍💻👩🏼‍💻👨🏽‍💻👩🏻‍💻中国独立开发者项目列表 -- 分享大家都在做什么"
+  },
+  {
+   "full_name": "cathrynlavery/diagram-design",
+   "stargazers_count": 61761,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-04-16T18:01:16Z",
+   "pushed_at": "2026-10-27T20:01:35Z",
+   "archived": false,
+   "description": "Editorial diagram design for Claude Code, Codex, GitHub Copilot, Cursor, Factory Droid, Qoder, and Pi. 45 diagram types. Self-contained HTML + SVG. No shadows. No Mermaid slop."
+  },
+  {
+   "full_name": "penpot/penpot",
+   "stargazers_count": 61753,
+   "license": {
+    "spdx_id": "MPL-2.0"
+   },
+   "created_at": "2015-12-29T22:09:07Z",
+   "pushed_at": "2026-10-27T21:41:07Z",
+   "archived": false,
+   "description": "Penpot: The open-source design platform for Product teams that need scalable collaboration."
+  },
+  {
+   "full_name": "Solido/awesome-flutter",
+   "stargazers_count": 61690,
+   "license": null,
+   "created_at": "2017-05-07T11:45:27Z",
+   "pushed_at": "2026-09-03T04:34:54Z",
+   "archived": false,
+   "description": "An awesome list that curates the best Flutter libraries, tools, tutorials, articles and more."
+  },
+  {
+   "full_name": "pocketbase/pocketbase",
+   "stargazers_count": 61627,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2022-07-05T06:06:21Z",
+   "pushed_at": "2026-10-26T18:07:11Z",
+   "archived": true,
+   "description": "Open Source realtime backend in 1 file"
+  },
+  {
+   "full_name": "microsoft/autogen",
+   "stargazers_count": 61589,
+   "license": {
+    "spdx_id": "CC-BY-4.0"
+   },
+   "created_at": "2023-08-18T11:43:45Z",
+   "pushed_at": "2026-10-16T16:14:37Z",
+   "archived": false,
+   "description": "A programming framework for agentic AI"
+  },
+  {
+   "full_name": "makeplane/plane",
+   "stargazers_count": 61556,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2022-11-19T12:55:01Z",
+   "pushed_at": "2026-10-27T13:22:41Z",
+   "archived": false,
+   "description": "🔥🔥🔥 Open-source Jira, Linear, Monday, and ClickUp alternative. Plane is a modern project management platform to manage tasks, sprints, docs, and triage."
+  },
+  {
+   "full_name": "pi-hole/pi-hole",
+   "stargazers_count": 61513,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2014-06-08T15:02:55Z",
+   "pushed_at": "2026-10-27T19:43:45Z",
+   "archived": false,
+   "description": "A black hole for Internet advertisements"
+  },
+  {
+   "full_name": "blader/humanizer",
+   "stargazers_count": 61477,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-01-18T05:30:15Z",
+   "pushed_at": "2026-10-16T19:12:03Z",
+   "archived": false,
+   "description": "Agent skill that removes signs of AI-generated writing from text"
+  },
+  {
+   "full_name": "reduxjs/redux",
+   "stargazers_count": 61445,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2015-05-29T23:53:15Z",
+   "pushed_at": "2026-10-20T19:04:18Z",
+   "archived": false,
+   "description": "A JS library for predictable global state management"
+  },
+  {
+   "full_name": "FuelLabs/sway",
+   "stargazers_count": 61371,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2021-01-19T20:54:33Z",
+   "pushed_at": "2026-10-26T20:10:38Z",
+   "archived": false,
+   "description": "🌴 Empowering everyone to build reliable and efficient smart contracts."
+  },
+  {
+   "full_name": "minio/minio",
+   "stargazers_count": 61298,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2015-01-14T19:23:58Z",
+   "pushed_at": "2026-04-24T17:54:39Z",
+   "archived": true,
+   "description": "MinIO is a high-performance, S3 compatible object store, open sourced under GNU AGPLv3 license."
+  },
+  {
+   "full_name": "lodash/lodash",
+   "stargazers_count": 61279,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2012-04-07T04:11:46Z",
+   "pushed_at": "2026-10-01T23:04:09Z",
+   "archived": false,
+   "description": "A modern JavaScript utility library delivering modularity, performance, & extras."
+  },
+  {
+   "full_name": "Raphire/Win11Debloat",
+   "stargazers_count": 61036,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2020-10-27T22:26:59Z",
+   "pushed_at": "2026-10-27T22:08:48Z",
+   "archived": false,
+   "description": "A simple, lightweight PowerShell script that allows you to remove pre-installed apps, disable telemetry, as well as perform various other changes to declutter and customize your Windows experience. Win11Debloat works for both Windows 10 and Windows 11."
+  },
+  {
+   "full_name": "nuxt/nuxt",
+   "stargazers_count": 61001,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2016-10-26T11:18:47Z",
+   "pushed_at": "2026-10-27T22:24:19Z",
+   "archived": false,
+   "description": "The full-stack Vue framework."
+  },
+  {
+   "full_name": "sharkdp/bat",
+   "stargazers_count": 60973,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2018-04-21T10:52:23Z",
+   "pushed_at": "2026-10-20T19:18:09Z",
+   "archived": false,
+   "description": "A cat(1) clone with wings."
+  },
+  {
+   "full_name": "h5bp/Front-end-Developer-Interview-Questions",
+   "stargazers_count": 60856,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2012-02-09T23:34:10Z",
+   "pushed_at": "2026-06-16T23:06:47Z",
+   "archived": false,
+   "description": "A list of helpful front-end related questions you can use to interview potential candidates, test yourself or completely ignore."
+  },
+  {
+   "full_name": "xingshaocheng/architect-awesome",
+   "stargazers_count": 60846,
+   "license": null,
+   "created_at": "2018-04-06T13:30:58Z",
+   "pushed_at": "2024-04-11T11:32:12Z",
+   "archived": false,
+   "description": "后端架构师技术图谱"
+  },
+  {
+   "full_name": "atom/atom",
+   "stargazers_count": 60709,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2012-01-20T18:18:21Z",
+   "pushed_at": "2023-01-03T10:49:48Z",
+   "archived": true,
+   "description": ":atom: The hackable text editor"
+  },
+  {
+   "full_name": "bilawalsidhu/gods-eye-view",
+   "stargazers_count": 60680,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2026-06-22T23:37:22Z",
+   "pushed_at": "2026-10-27T19:57:28Z",
+   "archived": false,
+   "description": "A spy satellite simulator in your browser, except the data is real. Live open source spatial intelligence on a photorealistic 3D globe."
+  },
+  {
+   "full_name": "rclone/rclone",
+   "stargazers_count": 60579,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2014-03-16T16:19:57Z",
+   "pushed_at": "2026-10-27T17:56:57Z",
+   "archived": false,
+   "description": "\"rsync for cloud storage\" - Google Drive, S3, Dropbox, Backblaze B2, One Drive, Swift, Hubic, Wasabi, Google Cloud Storage, Azure Blob, Azure Files, Yandex Files"
+  },
+  {
+   "full_name": "starship/starship",
+   "stargazers_count": 60477,
+   "license": {
+    "spdx_id": "ISC"
+   },
+   "created_at": "2019-04-02T03:23:12Z",
+   "pushed_at": "2026-10-27T20:39:24Z",
+   "archived": false,
+   "description": "☄🌌️  The minimal, blazing-fast, and infinitely customizable prompt for any shell!"
+  },
+  {
+   "full_name": "spring-projects/spring-framework",
+   "stargazers_count": 60300,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2010-12-08T04:04:45Z",
+   "pushed_at": "2026-10-26T16:32:09Z",
+   "archived": false,
+   "description": "Spring Framework"
+  },
+  {
+   "full_name": "adam-p/markdown-here",
+   "stargazers_count": 60256,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2012-05-13T03:27:22Z",
+   "pushed_at": "2025-08-22T00:21:50Z",
+   "archived": false,
+   "description": "Google Chrome, Firefox, and Thunderbird extension that lets you write email in Markdown and render it before sending."
+  },
+  {
+   "full_name": "CorentinJ/Real-Time-Voice-Cloning",
+   "stargazers_count": 60212,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2019-05-26T08:56:15Z",
+   "pushed_at": "2026-03-09T10:31:58Z",
+   "archived": false,
+   "description": "Clone a voice in 5 seconds to generate arbitrary speech in real-time"
+  },
+  {
+   "full_name": "crewAIInc/crewAI",
+   "stargazers_count": 60180,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-10-27T03:26:59Z",
+   "pushed_at": "2026-10-27T22:24:24Z",
+   "archived": false,
+   "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks."
+  },
+  {
+   "full_name": "rust-unofficial/awesome-rust",
+   "stargazers_count": 60156,
+   "license": {
+    "spdx_id": "CC0-1.0"
+   },
+   "created_at": "2014-07-17T10:45:10Z",
+   "pushed_at": "2026-10-27T17:39:19Z",
+   "archived": false,
+   "description": "A curated list of Rust code and resources."
+  },
+  {
+   "full_name": "tiimgreen/github-cheat-sheet",
+   "stargazers_count": 59982,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2014-04-12T16:38:42Z",
+   "pushed_at": "2024-04-15T20:15:56Z",
+   "archived": false,
+   "description": "A list of cool features of Git and GitHub."
+  },
+  {
+   "full_name": "twentyhq/twenty",
+   "stargazers_count": 59933,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2022-12-01T13:04:40Z",
+   "pushed_at": "2026-10-27T22:32:30Z",
+   "archived": false,
+   "description": "The open alternative to Salesforce, designed for AI."
+  },
+  {
+   "full_name": "jquery/jquery",
+   "stargazers_count": 59900,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2009-04-03T15:20:14Z",
+   "pushed_at": "2026-10-16T10:14:22Z",
+   "archived": false,
+   "description": "jQuery JavaScript Library"
+  },
+  {
+   "full_name": "FiloSottile/mkcert",
+   "stargazers_count": 59793,
+   "license": {
+    "spdx_id": "BSD-3-Clause"
+   },
+   "created_at": "2018-06-25T05:33:03Z",
+   "pushed_at": "2024-08-13T13:37:46Z",
+   "archived": false,
+   "description": "A simple zero-config tool to make locally trusted development certificates with any names you'd like."
+  },
+  {
+   "full_name": "MemPalace/mempalace",
+   "stargazers_count": 59759,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-04-05T01:12:07Z",
+   "pushed_at": "2026-10-25T04:41:28Z",
+   "archived": false,
+   "description": "The best-benchmarked open-source AI memory system. And it's free."
+  },
+  {
+   "full_name": "meilisearch/meilisearch",
+   "stargazers_count": 59685,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2018-04-23T11:45:28Z",
+   "pushed_at": "2026-10-27T13:54:18Z",
+   "archived": false,
+   "description": "A lightning-fast search engine API bringing AI-powered hybrid search to your sites and applications."
+  },
+  {
+   "full_name": "meta-llama/llama",
+   "stargazers_count": 59628,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2023-02-14T09:29:12Z",
+   "pushed_at": "2025-01-26T21:42:26Z",
+   "archived": false,
+   "description": "Inference code for Llama models"
+  },
+  {
+   "full_name": "shadowsocks/shadowsocks-windows",
+   "stargazers_count": 59518,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2013-01-14T07:54:16Z",
+   "pushed_at": "2025-01-01T08:09:55Z",
+   "archived": false,
+   "description": "A C# port of shadowsocks"
+  },
+  {
+   "full_name": "ayghri/i-have-adhd",
+   "stargazers_count": 59050,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-05-13T20:42:06Z",
+   "pushed_at": "2026-10-19T19:46:23Z",
+   "archived": false,
+   "description": "A skill to stop your coding agent from burying the answer. ADHD-friendly output."
+  },
+  {
+   "full_name": "karpathy/nanochat",
+   "stargazers_count": 59040,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-10-13T13:46:35Z",
+   "pushed_at": "2026-09-07T20:06:43Z",
+   "archived": false,
+   "description": "The best ChatGPT that $100 can buy."
+  }
+ ]
+}

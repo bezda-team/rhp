@@ -1,0 +1,19 @@
+{
+ "full": "react/create-react-app",
+ "stars": 103237,
+ "license": "MIT",
+ "archived": false,
+ "created": "2016-07-17T14:55:11Z",
+ "pushed": "2025-02-15T01:32:11Z",
+ "ref": "main",
+ "homepage": "https://create-react-app.dev/",
+ "description": "Set up a modern web app by running one command.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

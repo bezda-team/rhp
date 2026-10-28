@@ -1,0 +1,23 @@
+{
+ "full": "bitcoin/bitcoin",
+ "stars": 90523,
+ "license": "MIT",
+ "archived": false,
+ "created": "2010-12-19T15:16:43Z",
+ "pushed": "2026-10-27T18:41:06Z",
+ "ref": "master",
+ "homepage": "https://bitcoincore.org/en/download",
+ "description": "Bitcoin Core integration/staging tree",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "If you use AI tools while contributing, please read and follow the [AI\npolicy](/doc/AI_POLICY.md). Contributors are responsible for understanding and\nexplaining their own work in their own words."
+  ]
+ },
+ "agentText": {}
+}

@@ -1,0 +1,1085 @@
+{
+ "total_count": 763,
+ "items": [
+  {
+   "full_name": "codecrafters-io/build-your-own-x",
+   "stargazers_count": 556653,
+   "license": null,
+   "created_at": "2018-05-09T12:03:18Z",
+   "pushed_at": "2026-07-14T19:25:58Z",
+   "archived": false,
+   "description": "Master programming by recreating your favorite technologies from scratch."
+  },
+  {
+   "full_name": "sindresorhus/awesome",
+   "stargazers_count": 525709,
+   "license": {
+    "spdx_id": "CC0-1.0"
+   },
+   "created_at": "2014-07-11T13:42:37Z",
+   "pushed_at": "2026-09-02T02:10:47Z",
+   "archived": false,
+   "description": "😎 Awesome lists about all kinds of interesting topics [NOTE: Pull requests are temporarily disabled until I have a chance to catch up with the existing ones]"
+  },
+  {
+   "full_name": "public-apis/public-apis",
+   "stargazers_count": 492694,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2016-03-20T23:49:42Z",
+   "pushed_at": "2026-10-27T16:15:10Z",
+   "archived": false,
+   "description": "A collective list of free APIs"
+  },
+  {
+   "full_name": "freeCodeCamp/freeCodeCamp",
+   "stargazers_count": 458049,
+   "license": {
+    "spdx_id": "BSD-3-Clause"
+   },
+   "created_at": "2014-12-24T17:49:19Z",
+   "pushed_at": "2026-10-27T21:23:57Z",
+   "archived": false,
+   "description": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free."
+  },
+  {
+   "full_name": "EbookFoundation/free-programming-books",
+   "stargazers_count": 400299,
+   "license": {
+    "spdx_id": "CC-BY-4.0"
+   },
+   "created_at": "2013-10-11T06:50:37Z",
+   "pushed_at": "2026-10-27T20:40:54Z",
+   "archived": false,
+   "description": ":books: Freely available programming books"
+  },
+  {
+   "full_name": "morluto/rea",
+   "stargazers_count": 397063,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-04-14T00:51:32Z",
+   "pushed_at": "2026-10-27T21:19:43Z",
+   "archived": false,
+   "description": "Reverse engineer anything with agents, from app behavior down to native binaries."
+  },
+  {
+   "full_name": "openclaw/openclaw",
+   "stargazers_count": 393216,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-11-24T10:16:47Z",
+   "pushed_at": "2026-10-27T22:32:02Z",
+   "archived": false,
+   "description": "The AI that really does things. Any OS. Any Platform. The lobster way. 🦞 "
+  },
+  {
+   "full_name": "donnemartin/system-design-primer",
+   "stargazers_count": 375843,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2017-02-26T16:15:28Z",
+   "pushed_at": "2026-09-15T01:10:09Z",
+   "archived": false,
+   "description": "Learn how to design large-scale systems. Prep for the system design interview.  Includes Anki flashcards."
+  },
+  {
+   "full_name": "nilbuild/developer-roadmap",
+   "stargazers_count": 370570,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2017-03-15T13:45:52Z",
+   "pushed_at": "2026-10-27T10:49:17Z",
+   "archived": false,
+   "description": "Interactive roadmaps, guides and other educational content to help developers grow in their careers."
+  },
+  {
+   "full_name": "jwasham/coding-interview-university",
+   "stargazers_count": 363463,
+   "license": {
+    "spdx_id": "CC-BY-SA-4.0"
+   },
+   "created_at": "2016-06-06T02:34:12Z",
+   "pushed_at": "2025-08-28T14:42:47Z",
+   "archived": false,
+   "description": "A complete computer science study plan to become a software engineer."
+  },
+  {
+   "full_name": "awesome-selfhosted/awesome-selfhosted",
+   "stargazers_count": 331080,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2015-06-01T02:33:17Z",
+   "pushed_at": "2026-10-22T14:44:35Z",
+   "archived": false,
+   "description": "A list of Free Software network services and web applications which can be hosted on your own servers"
+  },
+  {
+   "full_name": "vinta/awesome-python",
+   "stargazers_count": 330691,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2014-06-27T21:00:06Z",
+   "pushed_at": "2026-10-27T13:08:24Z",
+   "archived": false,
+   "description": "The definitive list that answers \"I want to do X in Python, which tool should I use?\""
+  },
+  {
+   "full_name": "obra/superpowers",
+   "stargazers_count": 306372,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-10-09T19:45:18Z",
+   "pushed_at": "2026-10-23T03:48:57Z",
+   "archived": false,
+   "description": "An agentic skills framework & software development methodology that works."
+  },
+  {
+   "full_name": "mattpocock/skills",
+   "stargazers_count": 304836,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-02-03T11:15:53Z",
+   "pushed_at": "2026-10-27T07:44:25Z",
+   "archived": false,
+   "description": "Skills for Real Engineers. Straight from my .agents directory."
+  },
+  {
+   "full_name": "affaan-m/ECC",
+   "stargazers_count": 290819,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-01-18T00:51:51Z",
+   "pushed_at": "2026-10-26T04:56:56Z",
+   "archived": false,
+   "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond."
+  },
+  {
+   "full_name": "practical-tutorials/project-based-learning",
+   "stargazers_count": 288211,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2017-04-12T05:07:46Z",
+   "pushed_at": "2026-10-26T07:13:08Z",
+   "archived": false,
+   "description": "Curated list of project-based tutorials"
+  },
+  {
+   "full_name": "996icu/996.ICU",
+   "stargazers_count": 277184,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2019-03-26T07:31:14Z",
+   "pushed_at": "2025-08-22T06:01:29Z",
+   "archived": false,
+   "description": "Repo for counting stars and contributing. Press F to pay respect to glorious developers."
+  },
+  {
+   "full_name": "deepseek-ai/deepseek-harness",
+   "stargazers_count": 263636,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-08-13T11:56:32Z",
+   "pushed_at": "2026-10-23T15:25:40Z",
+   "archived": false,
+   "description": "DeepSeek Harness: Everything is a Plugin."
+  },
+  {
+   "full_name": "NousResearch/hermes-agent",
+   "stargazers_count": 257732,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-07-22T22:22:28Z",
+   "pushed_at": "2026-10-27T22:14:50Z",
+   "archived": false,
+   "description": "The agent that grows with you"
+  },
+  {
+   "full_name": "trimstray/the-book-of-secret-knowledge",
+   "stargazers_count": 253756,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2018-06-23T10:43:14Z",
+   "pushed_at": "2024-11-19T14:00:38Z",
+   "archived": false,
+   "description": "A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more."
+  },
+  {
+   "full_name": "torvalds/linux",
+   "stargazers_count": 253703,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2011-09-04T22:48:12Z",
+   "pushed_at": "2026-10-27T22:29:26Z",
+   "archived": false,
+   "description": "Linux kernel source tree"
+  },
+  {
+   "full_name": "react/react",
+   "stargazers_count": 251790,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2013-05-24T16:15:54Z",
+   "pushed_at": "2026-10-27T15:08:39Z",
+   "archived": false,
+   "description": "The library for web and native user interfaces."
+  },
+  {
+   "full_name": "TheAlgorithms/Python",
+   "stargazers_count": 225577,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2016-07-16T09:44:01Z",
+   "pushed_at": "2026-10-20T05:01:26Z",
+   "archived": false,
+   "description": "All Algorithms implemented in Python"
+  },
+  {
+   "full_name": "multica-ai/andrej-karpathy-skills",
+   "stargazers_count": 225451,
+   "license": null,
+   "created_at": "2026-01-27T03:53:13Z",
+   "pushed_at": "2026-04-20T10:05:04Z",
+   "archived": false,
+   "description": "A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls."
+  },
+  {
+   "full_name": "anomalyco/opencode",
+   "stargazers_count": 222352,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-04-30T20:08:00Z",
+   "pushed_at": "2026-10-27T22:31:00Z",
+   "archived": false,
+   "description": "The open source coding agent."
+  },
+  {
+   "full_name": "vuejs/vue",
+   "stargazers_count": 212628,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2013-07-29T03:24:51Z",
+   "pushed_at": "2024-10-10T07:24:15Z",
+   "archived": false,
+   "description": "This is the repo for Vue 2. For Vue 3, go to https://github.com/vuejs/core"
+  },
+  {
+   "full_name": "ossu/computer-science",
+   "stargazers_count": 210430,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2014-05-04T00:18:39Z",
+   "pushed_at": "2026-07-14T05:38:25Z",
+   "archived": false,
+   "description": "🎓 Path to a free self-taught education in Computer Science!"
+  },
+  {
+   "full_name": "n8n-io/n8n",
+   "stargazers_count": 208803,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2019-06-22T09:24:21Z",
+   "pushed_at": "2026-10-27T22:23:38Z",
+   "archived": false,
+   "description": "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations."
+  },
+  {
+   "full_name": "DigitalPlatDev/FreeDomain",
+   "stargazers_count": 206053,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2024-05-30T13:23:00Z",
+   "pushed_at": "2026-08-12T10:36:46Z",
+   "archived": false,
+   "description": "Free domain registration and practical DNS learning resources for everyone."
+  },
+  {
+   "full_name": "yt-dlp/yt-dlp",
+   "stargazers_count": 202989,
+   "license": {
+    "spdx_id": "Unlicense"
+   },
+   "created_at": "2020-10-26T04:22:55Z",
+   "pushed_at": "2026-10-26T22:25:00Z",
+   "archived": false,
+   "description": "A feature-rich command-line audio/video downloader"
+  },
+  {
+   "full_name": "tensorflow/tensorflow",
+   "stargazers_count": 201310,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2015-11-07T01:19:20Z",
+   "pushed_at": "2026-10-27T22:12:23Z",
+   "archived": false,
+   "description": "An Open Source Machine Learning Framework for Everyone"
+  },
+  {
+   "full_name": "trekhleb/javascript-algorithms",
+   "stargazers_count": 196702,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2018-03-24T07:47:04Z",
+   "pushed_at": "2026-07-26T02:43:08Z",
+   "archived": false,
+   "description": "📝 Algorithms and data structures implemented in JavaScript with explanations and links to further readings"
+  },
+  {
+   "full_name": "massgravel/Microsoft-Activation-Scripts",
+   "stargazers_count": 196436,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2020-01-12T23:03:34Z",
+   "pushed_at": "2026-10-17T01:33:16Z",
+   "archived": false,
+   "description": "Open-source Windows and Office activator featuring HWID, Ohook, TSforge, and Online KMS activation methods, along with advanced troubleshooting."
+  },
+  {
+   "full_name": "firecrawl/firecrawl",
+   "stargazers_count": 196053,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2024-04-15T21:02:29Z",
+   "pushed_at": "2026-10-27T21:51:16Z",
+   "archived": false,
+   "description": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥"
+  },
+  {
+   "full_name": "ultraworkers/claw-code",
+   "stargazers_count": 194970,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-03-31T08:58:08Z",
+   "pushed_at": "2026-10-23T14:02:42Z",
+   "archived": false,
+   "description": "An agent-managed museum exhibit, built in Rust with Gajae-Code / LazyCodex — developed and maintained with no human intervention."
+  },
+  {
+   "full_name": "microsoft/vscode",
+   "stargazers_count": 194390,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2015-09-03T20:23:38Z",
+   "pushed_at": "2026-10-27T22:29:20Z",
+   "archived": false,
+   "description": "Visual Studio Code"
+  },
+  {
+   "full_name": "microsoft/markitdown",
+   "stargazers_count": 192562,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2024-11-13T19:56:40Z",
+   "pushed_at": "2026-10-23T17:04:06Z",
+   "archived": false,
+   "description": "Python tool for converting files and office documents to Markdown."
+  },
+  {
+   "full_name": "avelino/awesome-go",
+   "stargazers_count": 190697,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2014-07-06T13:42:15Z",
+   "pushed_at": "2026-10-26T09:02:58Z",
+   "archived": false,
+   "description": "A curated list of awesome Go frameworks, libraries and software"
+  },
+  {
+   "full_name": "ohmyzsh/ohmyzsh",
+   "stargazers_count": 190191,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2009-08-28T18:15:37Z",
+   "pushed_at": "2026-10-27T11:37:50Z",
+   "archived": false,
+   "description": "🙃   A delightful community-driven (with 2,500+ contributors) framework for managing your zsh configuration. Includes 300+ optional plugins (rails, git, macOS, hub, docker, homebrew, node, php, python, etc), 140+ themes to spice up your morning, and an auto-update tool that makes it easy to keep up with the latest updates from the community."
+  },
+  {
+   "full_name": "Significant-Gravitas/AutoGPT",
+   "stargazers_count": 187789,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2023-03-16T09:21:07Z",
+   "pushed_at": "2026-10-27T22:31:10Z",
+   "archived": false,
+   "description": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters."
+  },
+  {
+   "full_name": "jackfrued/Python-100-Days",
+   "stargazers_count": 187501,
+   "license": null,
+   "created_at": "2018-03-01T16:05:52Z",
+   "pushed_at": "2026-07-29T15:18:29Z",
+   "archived": false,
+   "description": "Python - 100天从新手到大师"
+  },
+  {
+   "full_name": "CyC2018/CS-Notes",
+   "stargazers_count": 186355,
+   "license": null,
+   "created_at": "2018-02-13T14:56:24Z",
+   "pushed_at": "2026-10-27T20:58:40Z",
+   "archived": false,
+   "description": ":books: 技术面试必备基础知识、Leetcode、计算机操作系统、计算机网络、系统设计"
+  },
+  {
+   "full_name": "ollama/ollama",
+   "stargazers_count": 185020,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-06-26T19:39:32Z",
+   "pushed_at": "2026-10-27T22:01:52Z",
+   "archived": false,
+   "description": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models."
+  },
+  {
+   "full_name": "521xueweihan/HelloGitHub",
+   "stargazers_count": 185003,
+   "license": null,
+   "created_at": "2016-05-04T06:24:11Z",
+   "pushed_at": "2026-09-28T00:11:38Z",
+   "archived": false,
+   "description": ":octocat: 分享 GitHub 上有趣、入门级的开源项目。Share interesting, entry-level open source projects on GitHub."
+  },
+  {
+   "full_name": "getify/You-Dont-Know-JS",
+   "stargazers_count": 184827,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2013-11-16T02:37:24Z",
+   "pushed_at": "2026-02-15T04:36:44Z",
+   "archived": false,
+   "description": "A book series (2 published editions) on the JS language."
+  },
+  {
+   "full_name": "anthropics/skills",
+   "stargazers_count": 184231,
+   "license": null,
+   "created_at": "2025-09-22T15:53:31Z",
+   "pushed_at": "2026-10-09T18:45:52Z",
+   "archived": false,
+   "description": "Public repository for Agent Skills"
+  },
+  {
+   "full_name": "flutter/flutter",
+   "stargazers_count": 180451,
+   "license": {
+    "spdx_id": "BSD-3-Clause"
+   },
+   "created_at": "2015-03-06T22:54:58Z",
+   "pushed_at": "2026-10-27T22:10:52Z",
+   "archived": false,
+   "description": "Flutter makes it easy and fast to build beautiful apps for mobile and beyond"
+  },
+  {
+   "full_name": "DietrichGebert/ponytail",
+   "stargazers_count": 178119,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-06-12T00:52:37Z",
+   "pushed_at": "2026-10-18T01:55:14Z",
+   "archived": false,
+   "description": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote."
+  },
+  {
+   "full_name": "github/gitignore",
+   "stargazers_count": 176079,
+   "license": {
+    "spdx_id": "CC0-1.0"
+   },
+   "created_at": "2010-11-08T20:17:14Z",
+   "pushed_at": "2026-10-02T20:59:38Z",
+   "archived": false,
+   "description": "A collection of useful .gitignore templates"
+  },
+  {
+   "full_name": "twbs/bootstrap",
+   "stargazers_count": 175022,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2011-07-29T21:19:00Z",
+   "pushed_at": "2026-10-27T20:19:27Z",
+   "archived": false,
+   "description": "The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web."
+  },
+  {
+   "full_name": "f/prompts.chat",
+   "stargazers_count": 174791,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2022-12-05T13:54:13Z",
+   "pushed_at": "2026-10-27T22:23:51Z",
+   "archived": false,
+   "description": "f.k.a. Awesome ChatGPT Prompts. Share, discover, and collect prompts from the community. Free and open source — self-host for your organization with complete privacy."
+  },
+  {
+   "full_name": "huggingface/transformers",
+   "stargazers_count": 168251,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2018-10-29T13:56:00Z",
+   "pushed_at": "2026-10-27T21:50:52Z",
+   "archived": false,
+   "description": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training. "
+  },
+  {
+   "full_name": "AUTOMATIC1111/stable-diffusion-webui",
+   "stargazers_count": 165163,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2022-08-22T14:05:26Z",
+   "pushed_at": "2026-03-02T07:00:53Z",
+   "archived": false,
+   "description": "Stable Diffusion web UI"
+  },
+  {
+   "full_name": "msitarzewski/agency-agents",
+   "stargazers_count": 164515,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-10-13T12:12:29Z",
+   "pushed_at": "2026-10-25T01:43:20Z",
+   "archived": false,
+   "description": "A complete AI agency at your fingertips - From frontend wizards to Reddit community ninjas, from whimsy injectors to reality checkers. Each agent is a specialized expert with personality, processes, and proven deliverables."
+  },
+  {
+   "full_name": "jlevy/the-art-of-command-line",
+   "stargazers_count": 162607,
+   "license": null,
+   "created_at": "2015-05-20T15:11:03Z",
+   "pushed_at": "2024-06-25T18:13:44Z",
+   "archived": false,
+   "description": "Master the command line, in one page"
+  },
+  {
+   "full_name": "langgenius/dify",
+   "stargazers_count": 159725,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2023-04-12T07:40:24Z",
+   "pushed_at": "2026-10-27T21:42:05Z",
+   "archived": false,
+   "description": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack."
+  },
+  {
+   "full_name": "Snailclimb/JavaGuide",
+   "stargazers_count": 159302,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2018-05-07T13:27:00Z",
+   "pushed_at": "2026-10-25T11:47:10Z",
+   "archived": false,
+   "description": "Java 面试 & 后端通用面试指南，覆盖计算机基础、数据库、分布式、高并发、系统设计与 AI 应用开发"
+  },
+  {
+   "full_name": "open-webui/open-webui",
+   "stargazers_count": 156962,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2023-10-06T22:08:27Z",
+   "pushed_at": "2026-10-27T21:27:01Z",
+   "archived": false,
+   "description": "User-friendly AI Interface (Supports Ollama, OpenAI API, ...)"
+  },
+  {
+   "full_name": "langflow-ai/langflow",
+   "stargazers_count": 156069,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-02-08T22:28:03Z",
+   "pushed_at": "2026-10-27T22:00:07Z",
+   "archived": false,
+   "description": "Langflow is a powerful tool for building and deploying AI-powered agents and workflows."
+  },
+  {
+   "full_name": "clash-verge-rev/clash-verge-rev",
+   "stargazers_count": 154362,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2023-11-21T18:24:03Z",
+   "pushed_at": "2026-10-27T17:49:55Z",
+   "archived": false,
+   "description": "A modern GUI client based on Tauri, designed to run in Windows, macOS and Linux for tailored proxy experience"
+  },
+  {
+   "full_name": "anthropics/claude-code",
+   "stargazers_count": 153597,
+   "license": null,
+   "created_at": "2025-02-22T17:41:21Z",
+   "pushed_at": "2026-10-27T22:22:38Z",
+   "archived": false,
+   "description": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands."
+  },
+  {
+   "full_name": "Genymobile/scrcpy",
+   "stargazers_count": 153310,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2017-11-21T18:00:27Z",
+   "pushed_at": "2026-10-26T22:10:06Z",
+   "archived": false,
+   "description": "Display and control your Android device"
+  },
+  {
+   "full_name": "farion1231/cc-switch",
+   "stargazers_count": 149368,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-08-04T14:16:16Z",
+   "pushed_at": "2026-10-27T16:28:11Z",
+   "archived": false,
+   "description": "A cross-platform desktop All-in-One assistant for Claude Code, Codex, OpenCode, OpenClaw, Grok Build & Hermes Agent. Only official website: ccswitch.io"
+  },
+  {
+   "full_name": "langchain-ai/langchain",
+   "stargazers_count": 148566,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2022-10-17T02:58:36Z",
+   "pushed_at": "2026-10-27T22:31:14Z",
+   "archived": false,
+   "description": "The agent engineering platform."
+  },
+  {
+   "full_name": "airbnb/javascript",
+   "stargazers_count": 148040,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2012-11-01T23:13:50Z",
+   "pushed_at": "2026-04-16T19:24:09Z",
+   "archived": false,
+   "description": "JavaScript Style Guide"
+  },
+  {
+   "full_name": "x1xhlol/system-prompts-and-models-of-ai-tools",
+   "stargazers_count": 144292,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2025-03-05T16:38:29Z",
+   "pushed_at": "2026-10-12T15:19:01Z",
+   "archived": false,
+   "description": "FULL Augment Code, Claude Code, Cluely, CodeBuddy, Comet, Cursor, Devin AI, Junie, Kiro, Leap.new, Lovable, Manus, NotionAI, Orchids.app, Perplexity, Poke, Qoder, Replit, Same.dev, Trae, Traycer AI, VSCode Agent, Warp.dev, Windsurf, Xcode, Z.ai Code, Dia & v0. (And other Open Sourced) System Prompts, Internal Tools & AI Models"
+  },
+  {
+   "full_name": "Comfy-Org/ComfyUI",
+   "stargazers_count": 143553,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2023-01-17T03:15:56Z",
+   "pushed_at": "2026-10-27T21:48:37Z",
+   "archived": false,
+   "description": "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface. The fastest local inference engine in the world."
+  },
+  {
+   "full_name": "github/spec-kit",
+   "stargazers_count": 143326,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-08-21T22:54:31Z",
+   "pushed_at": "2026-10-27T20:01:22Z",
+   "archived": false,
+   "description": "💫 Toolkit to help you get started with SDD or any other process!"
+  },
+  {
+   "full_name": "Shubhamsaboo/awesome-llm-apps",
+   "stargazers_count": 143239,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2024-04-29T05:30:25Z",
+   "pushed_at": "2026-10-22T19:10:10Z",
+   "archived": false,
+   "description": "100+ AI Agents, Agent Skills and RAG Apps - Free and Open Source."
+  },
+  {
+   "full_name": "vercel/next.js",
+   "stargazers_count": 143171,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2016-10-05T23:32:51Z",
+   "pushed_at": "2026-10-27T22:27:41Z",
+   "archived": false,
+   "description": "The React Framework"
+  },
+  {
+   "full_name": "yangshun/tech-interview-handbook",
+   "stargazers_count": 143167,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2016-07-05T05:00:48Z",
+   "pushed_at": "2026-08-07T12:06:42Z",
+   "archived": false,
+   "description": "Curated coding interview preparation materials for busy software engineers"
+  },
+  {
+   "full_name": "iptv-org/iptv",
+   "stargazers_count": 142546,
+   "license": {
+    "spdx_id": "Unlicense"
+   },
+   "created_at": "2018-11-14T22:00:57Z",
+   "pushed_at": "2026-10-27T13:57:22Z",
+   "archived": false,
+   "description": "Collection of publicly available IPTV channels from all over the world"
+  },
+  {
+   "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+   "stargazers_count": 141546,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2025-11-30T11:36:31Z",
+   "pushed_at": "2026-10-26T10:07:28Z",
+   "archived": false,
+   "description": "An AI skill that provides design intelligence for building professional UI/UX across multiple platforms."
+  },
+  {
+   "full_name": "ytdl-org/youtube-dl",
+   "stargazers_count": 141406,
+   "license": {
+    "spdx_id": "Unlicense"
+   },
+   "created_at": "2010-10-31T14:35:07Z",
+   "pushed_at": "2026-02-19T16:45:25Z",
+   "archived": false,
+   "description": "Command-line program to download videos from YouTube.com and other video sites"
+  },
+  {
+   "full_name": "ripienaar/free-for-dev",
+   "stargazers_count": 140114,
+   "license": null,
+   "created_at": "2015-03-18T21:06:26Z",
+   "pushed_at": "2026-10-27T16:53:20Z",
+   "archived": false,
+   "description": "A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev"
+  },
+  {
+   "full_name": "microsoft/PowerToys",
+   "stargazers_count": 140063,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2019-05-01T17:44:02Z",
+   "pushed_at": "2026-10-27T22:24:45Z",
+   "archived": false,
+   "description": "Microsoft PowerToys is a collection of utilities that supercharge productivity and customization on Windows"
+  },
+  {
+   "full_name": "golang/go",
+   "stargazers_count": 139511,
+   "license": {
+    "spdx_id": "BSD-3-Clause"
+   },
+   "created_at": "2014-08-19T04:33:40Z",
+   "pushed_at": "2026-10-27T22:02:25Z",
+   "archived": false,
+   "description": "The Go programming language"
+  },
+  {
+   "full_name": "garrytan/gstack",
+   "stargazers_count": 137933,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-03-11T21:22:45Z",
+   "pushed_at": "2026-10-27T22:25:44Z",
+   "archived": false,
+   "description": "Use Garry Tan's exact Claude Code setup: 23 opinionated tools that serve as CEO, Designer, Eng Manager, Release Manager, Doc Engineer, and QA"
+  },
+  {
+   "full_name": "Graphify-Labs/graphify",
+   "stargazers_count": 136931,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2026-04-03T15:49:07Z",
+   "pushed_at": "2026-10-27T18:15:35Z",
+   "archived": false,
+   "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store."
+  },
+  {
+   "full_name": "labuladong/fucking-algorithm",
+   "stargazers_count": 135987,
+   "license": null,
+   "created_at": "2020-02-19T09:01:23Z",
+   "pushed_at": "2026-10-18T11:43:51Z",
+   "archived": false,
+   "description": "Crack LeetCode, not only how, but also why. "
+  },
+  {
+   "full_name": "harry0703/MoneyPrinterTurbo",
+   "stargazers_count": 135822,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2024-03-11T02:57:34Z",
+   "pushed_at": "2026-10-27T10:13:32Z",
+   "archived": false,
+   "description": "利用 AI 大模型和自动化工作流，根据主题或关键词一键生成高清短视频。Generate HD short videos from a topic or keyword with an automated AI workflow."
+  },
+  {
+   "full_name": "excalidraw/excalidraw",
+   "stargazers_count": 134668,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2020-01-02T01:04:43Z",
+   "pushed_at": "2026-10-27T21:24:36Z",
+   "archived": false,
+   "description": "Virtual whiteboard for sketching hand-drawn like diagrams"
+  },
+  {
+   "full_name": "ggml-org/llama.cpp",
+   "stargazers_count": 132559,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-03-10T18:58:00Z",
+   "pushed_at": "2026-10-27T21:39:38Z",
+   "archived": false,
+   "description": "LLM inference in C/C++"
+  },
+  {
+   "full_name": "krahets/hello-algo",
+   "stargazers_count": 131522,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2022-11-04T11:08:34Z",
+   "pushed_at": "2026-10-27T11:16:04Z",
+   "archived": false,
+   "description": "《Hello 算法》：动画图解、一键运行的数据结构与算法教程。支持简中、繁中、English、日本語，提供 Python, Java, C++, C, C#, JS, Go, Swift, Rust, Ruby, Kotlin, TS, Dart 等代码实现"
+  },
+  {
+   "full_name": "openai/codex",
+   "stargazers_count": 131265,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2025-04-13T05:37:54Z",
+   "pushed_at": "2026-10-27T22:26:30Z",
+   "archived": false,
+   "description": "Lightweight coding agent that runs in your terminal"
+  },
+  {
+   "full_name": "Chalarangelo/30-seconds-of-code",
+   "stargazers_count": 129354,
+   "license": {
+    "spdx_id": "CC-BY-4.0"
+   },
+   "created_at": "2017-11-29T17:35:03Z",
+   "pushed_at": "2026-10-26T16:14:24Z",
+   "archived": false,
+   "description": "Coding articles to level up your development skills"
+  },
+  {
+   "full_name": "kubernetes/kubernetes",
+   "stargazers_count": 128610,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2014-06-06T22:56:04Z",
+   "pushed_at": "2026-10-27T21:57:25Z",
+   "archived": false,
+   "description": "Production-Grade Container Scheduling and Management"
+  },
+  {
+   "full_name": "rustdesk/rustdesk",
+   "stargazers_count": 127289,
+   "license": {
+    "spdx_id": "AGPL-3.0"
+   },
+   "created_at": "2020-09-28T15:36:08Z",
+   "pushed_at": "2026-10-27T08:27:53Z",
+   "archived": false,
+   "description": "An open-source remote desktop application designed for self-hosting, as an alternative to TeamViewer."
+  },
+  {
+   "full_name": "react/react-native",
+   "stargazers_count": 126803,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2015-01-09T18:10:16Z",
+   "pushed_at": "2026-10-27T21:45:13Z",
+   "archived": false,
+   "description": "A framework for building native applications using React"
+  },
+  {
+   "full_name": "shadcn-ui/ui",
+   "stargazers_count": 126709,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-01-04T12:43:27Z",
+   "pushed_at": "2026-10-27T12:59:03Z",
+   "archived": false,
+   "description": "Composable, accessible components with thoughtful defaults. Build your own component library with code you can customize, extend, and make your own."
+  },
+  {
+   "full_name": "VoltAgent/awesome-design-md",
+   "stargazers_count": 124003,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2026-03-31T16:37:01Z",
+   "pushed_at": "2026-10-14T05:46:48Z",
+   "archived": false,
+   "description": "A collection of DESIGN.md files analysis by popular brand design systems. Drop one into your project and let coding agents generate a matching UI."
+  },
+  {
+   "full_name": "Hack-with-Github/Awesome-Hacking",
+   "stargazers_count": 123804,
+   "license": {
+    "spdx_id": "CC0-1.0"
+   },
+   "created_at": "2016-03-30T15:47:10Z",
+   "pushed_at": "2026-10-27T01:45:58Z",
+   "archived": false,
+   "description": "A collection of various awesome lists for hackers, pentesters and security researchers"
+  },
+  {
+   "full_name": "electron/electron",
+   "stargazers_count": 123575,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2013-04-12T01:47:36Z",
+   "pushed_at": "2026-10-27T21:28:43Z",
+   "archived": false,
+   "description": ":electron: Build cross-platform desktop apps with JavaScript, HTML, and CSS"
+  },
+  {
+   "full_name": "nodejs/node",
+   "stargazers_count": 123142,
+   "license": {
+    "spdx_id": "NOASSERTION"
+   },
+   "created_at": "2014-11-26T19:57:11Z",
+   "pushed_at": "2026-10-27T22:28:19Z",
+   "archived": false,
+   "description": "Node.js JavaScript runtime ✨🐢🚀✨"
+  },
+  {
+   "full_name": "microsoft/generative-ai-for-beginners",
+   "stargazers_count": 122290,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2023-06-19T16:28:59Z",
+   "pushed_at": "2026-10-24T04:53:49Z",
+   "archived": false,
+   "description": "21 Lessons, Get Started Building with Generative AI "
+  },
+  {
+   "full_name": "rust-lang/rust",
+   "stargazers_count": 120895,
+   "license": {
+    "spdx_id": "Apache-2.0"
+   },
+   "created_at": "2010-06-16T20:39:03Z",
+   "pushed_at": "2026-10-27T21:53:22Z",
+   "archived": false,
+   "description": "Empowering everyone to build reliable and efficient software."
+  },
+  {
+   "full_name": "justjavac/free-programming-books-zh_CN",
+   "stargazers_count": 119380,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2013-11-04T01:59:19Z",
+   "pushed_at": "2026-07-29T00:39:06Z",
+   "archived": false,
+   "description": ":books: 免费的计算机编程类中文书籍，欢迎投稿"
+  },
+  {
+   "full_name": "browser-use/browser-use",
+   "stargazers_count": 119308,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2024-10-31T16:00:56Z",
+   "pushed_at": "2026-10-27T00:02:24Z",
+   "archived": false,
+   "description": "Open-source Python library for AI browser agents, plus Browser Use Cloud: stealth browsers and a hosted agent API."
+  },
+  {
+   "full_name": "2dust/v2rayN",
+   "stargazers_count": 119255,
+   "license": {
+    "spdx_id": "GPL-3.0"
+   },
+   "created_at": "2019-07-30T03:47:24Z",
+   "pushed_at": "2026-10-27T18:48:13Z",
+   "archived": false,
+   "description": "A GUI client for Windows, Linux and macOS, support Xray and sing-box and others"
+  },
+  {
+   "full_name": "godotengine/godot",
+   "stargazers_count": 119170,
+   "license": {
+    "spdx_id": "MIT"
+   },
+   "created_at": "2014-01-04T16:05:36Z",
+   "pushed_at": "2026-10-27T19:39:44Z",
+   "archived": false,
+   "description": "Godot Engine – Multi-platform 2D and 3D game engine"
+  }
+ ]
+}

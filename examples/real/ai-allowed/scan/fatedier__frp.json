@@ -1,0 +1,28 @@
+{
+ "full": "fatedier/frp",
+ "stars": 110210,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2015-12-21T15:24:59Z",
+ "pushed": "2026-10-23T07:52:16Z",
+ "ref": "dev",
+ "homepage": "",
+ "description": "A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet.",
+ "agentFiles": [
+  "AGENTS.md",
+  "CLAUDE.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/pull_request_template.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  "AGENTS.md": {
+   "text": "# AGENTS.md\n\n## Development Commands\n\n### Build\n- `make build` - Build both frps and frpc binaries\n- `make frps` - Build server binary only\n- `make frpc` - Build client binary only\n- `make all` - Build everything with formatting\n\n### Testing\n- `make test` - Run unit tests\n- `make e2e` - Run end-to-end tests\n- `make e2e-trace` - Run e2e tests with trace logging\n- `make alltest` - Run all tests including vet, unit tests, and e2e\n\n### Code Quality\n- `make fmt` - Run go fmt\n- `make fmt-more` - Run gofumpt for more strict formatting\n- `make gci` - Run gci import organizer\n- `make vet` - Run go vet\n- `golangci-lint run` - Run comprehensive linting (configured in .golangci.yml)\n\n### Assets\n- `make web` - Build web dashboards (frps and frpc)\n\n### Cleanup\n- `make clean` - Remove built binaries and temporary files\n\n## Testing\n\n- E2E tests using Ginkgo/Gomega framework\n- Mock servers in `/test/e2e/mock/`\n- Run: `make e2e` or `make alltest`\n\n## Agent Runbooks\n\nOperational procedures for agents are in `doc/agents/`:\n- `doc/agents/release.md` - Release process\n"
+  },
+  "CLAUDE.md": {
+   "text": "# AGENTS.md\n\n## Development Commands\n\n### Build\n- `make build` - Build both frps and frpc binaries\n- `make frps` - Build server binary only\n- `make frpc` - Build client binary only\n- `make all` - Build everything with formatting\n\n### Testing\n- `make test` - Run unit tests\n- `make e2e` - Run end-to-end tests\n- `make e2e-trace` - Run e2e tests with trace logging\n- `make alltest` - Run all tests including vet, unit tests, and e2e\n\n### Code Quality\n- `make fmt` - Run go fmt\n- `make fmt-more` - Run gofumpt for more strict formatting\n- `make gci` - Run gci import organizer\n- `make vet` - Run go vet\n- `golangci-lint run` - Run comprehensive linting (configured in .golangci.yml)\n\n### Assets\n- `make web` - Build web dashboards (frps and frpc)\n\n### Cleanup\n- `make clean` - Remove built binaries and temporary files\n\n## Testing\n\n- E2E tests using Ginkgo/Gomega framework\n- Mock servers in `/test/e2e/mock/`\n- Run: `make e2e` or `make alltest`\n\n## Agent Runbooks\n\nOperational procedures for agents are in `doc/agents/`:\n- `doc/agents/release.md` - Release process\n"
+  }
+ }
+}

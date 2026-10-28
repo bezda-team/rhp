@@ -1,0 +1,46 @@
+REDDIT POSTS
+
+Where: r/dataisbeautiful as an [OC] image post (their rules ask for a top-level comment with the data source and the tools; post it right away).
+For the debate itself: r/TrueOpenSource or r/OpenSourceAIAllowed, the subreddits made in reply to the rule. r/opensource's new rules may remove a post about AI; read its current rules first.
+
+Images (pick one per post):
+- ai-allowed-infographic.png (1500 x 2002, 3:4): the rule, six projects in their own words, all 50 as squares.
+- ai-allowed-chart.png (2160 x 2883, 3:4): the rule under the headline, the 17 most-starred as bars, with Linux's rule in the box beside them.
+Reddit's desktop feed shows either at about 405 x 540; on a phone both fill the screen's width.
+
+Title (infographic, r/dataisbeautiful):
+[OC] 43 of GitHub's 50 biggest open-source projects use AI or are built for it. Of the 29 that aren't AI projects, 22 allow AI-assisted code, Linux included
+
+Title (chart, r/dataisbeautiful):
+[OC] Linux, React and VS Code all allow AI-assisted code: GitHub's most-starred open-source projects, by what their own repos say about AI
+
+Title (debate subreddits):
+I read what GitHub's 50 biggest open-source projects say about AI in their own repos: 22 of the 29 that aren't AI projects allow AI-assisted code
+
+Body (for communities that take text with an image post):
+r/opensource's new rule says "if your project uses AI, is made by AI, or is intended for AI, it's not welcome on r/opensource," and a lot of the replies asked whether that rules out Linux.
+So I checked what the biggest projects actually say.
+I took the 50 most-starred GitHub projects that pass the rule's other requirements (an OSI license, at least a year old, maintained, 3+ contributors; no lists, books or courses) and read each one's AI policy, contributing guide, PR template, instructions for AI agents and merged commits.
+- 21 are AI projects, which the "intended for AI" clause covers anyway; 20 of them allow AI-assisted code.
+- Of the other 29, 22 allow AI-assisted code: 11 in a written policy (Linux, Node.js, Rust, Kubernetes, Flutter, Electron, Next.js and more) and 11 in practice, with no written rule but merged commits that credit an AI tool (React, VS Code, Go, three.js and more).
+- 3 limit or forbid it: yt-dlp forbids AI in any contribution, Godot bans AI-written code beyond small aids such as completion, and Immich asks people not to open LLM-generated PRs.
+- 4 show no sign either way.
+A moderator has since said Linux isn't banned, since its AI use isn't "obvious"; this only shows what each project's own files say.
+Interactive version (tap any project for its exact words and a link to the file): <link to the interactive page>
+
+FIRST TOP-LEVEL COMMENT
+
+Data: GitHub's API, read Oct 27, 2026. Stars from the search of every public repository with over 40,000 stars; each project's stance from its own repository: AI policy files, CONTRIBUTING, PR templates, AGENTS.md / CLAUDE.md / copilot-instructions, and GitHub's commit search for trailers such as "Co-authored-by: Claude" and "Assisted-by:".
+Every quote on the poster was matched word for word against the file at its current commit, and every commit trailer against the merged commit's message (script and results in the source folder).
+Which projects: the 50 most-starred that pass r/opensource's other new requirements. Left out: lists, books, courses and prompt collections; repos under a year old (OpenClaw, mattpocock/skills and most new AI agents); repos without an OSI license (n8n, Dify, Open WebUI, AutoGPT); unmaintained ones (Vue 2, create-react-app). Each one left out is listed with its reason.
+"AI project": built to run, build or use AI models or agents (TensorFlow, Ollama, Transformers, LangChain, Codex...). Judgment calls are noted in the source.
+"Allows": a written rule that accepts AI-assisted contributions (most require a human to review, understand and take responsibility, and many ban autonomous agents), or, with no written rule, merged commits that credit an AI tool. Some allow it only for established contributors (Node.js, Transformers).
+Policies I quote on the posters: Linux (Documentation/process/coding-assistants.rst), Kubernetes (contributors/guide/pull-requests.md), Flutter (CONTRIBUTING.ai.md), VS Code (AGENTS.md); React's and Go's are merged commits co-authored by Claude (Oct 26 and Sep 28, 2026).
+Stars are a measure of attention, not of use; Linux, Go and others are GitHub mirrors of projects hosted elsewhere.
+Tools: JavaScript for the collection and the checks, rhp (@bezda/rhp) for the chart.
+Source and every quote with its link: <link to this folder>
+
+POSTING NOTES
+
+Policies change often (several of these were written this year); rerun verify.mjs and build.mjs before posting if more than a few days pass.
+Reddit blocked direct reads of the r/opensource thread from this machine; its text and 264 of its 2,520 comments were read from the Arctic Shift archive.

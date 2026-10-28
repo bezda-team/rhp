@@ -1,0 +1,30 @@
+{
+ "full": "freeCodeCamp/freeCodeCamp",
+ "stars": 458049,
+ "license": "BSD-3-Clause",
+ "archived": false,
+ "created": "2014-12-24T17:49:19Z",
+ "pushed": "2026-10-27T21:23:57Z",
+ "ref": "main",
+ "homepage": "https://contribute.freecodecamp.org",
+ "description": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free.",
+ "agentFiles": [
+  ".github/copilot-instructions.md",
+  ".github/instructions"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".github/copilot-instructions.md": {
+   "text": "# GitHub Copilot Code Review Instructions\n\n## Core Principles\n\n**BE EXTREMELY MINIMAL.** Only provide actionable feedback.\n\n**Skip all non-essential content:**\n- Do not generate \"Pull request overview\" sections\n- Do not create \"Changes:\" lists describing what was changed  \n- Do not create \"Reviewed changes\" sections or tables\n- Do not list files with change descriptions\n- Do not count how many files were reviewed\n- Do not summarize what the PR does (visible in the diff)\n\n**Focus only on problems:**\n- Comment ONLY on actual issues that need fixing\n- Keep each comment 1-3 sentences\n- If everything is correct, provide no output\n\n**Bad example (from PR 65578):**\n```\n## Pull request overview\nThis PR addresses issue 65331 by replacing em dash characters...\n\n### Reviewed changes\nCopilot reviewed 4 out of 4 changed files...\n\n| File | Description |\n| ---- | ----------- |\n| file1.md | Updated em dash in seed content |\n```\n\n**Good example (actionable feedback only):**\n```\nLine 46: Test will fail - `innerText` returns rendered `—`, not `&mdash;`.\n```\n\n---\n\n## Focus Areas\n\n1. **Test Coverage** - Ensuring adequate testing for code changes\n2. **Pull Request Guidelines** - Compliance with contribution standards\n\n---\n\n## Focus Area 1: Test Coverage\n\nWhen reviewing pull requests, ensure adequate test coverage for code changes in JavaScript, TypeScript, JSX, and TSX files.\n\n> Detailed test coverage rules are in `.github/instructions/testing.instructions.md`\n\n### Quick Reference\n\n| Location | Framework | File Pattern |\n|----------|-----------|--------------|\n| `api/` | Vitest | `*.test.ts` |\n| `client/` | Vitest | `*.test.{ts,tsx}` |\n| `e2e/` | Playwright | `*.spec.ts` |\n\n### When to Comment\n\nOnly leave a comment if:\n\n- The PR modifies JavaScript/TypeScript/JSX/TSX code (bug fixes or new features)\n- AND there are no corresponding test additions or updates\n\n### When NOT to Comment\n\nDo not comment if:\n\n- Changes are only to documentation, configuration, or non-JS/TS files\n- The PR includes appropriate test coverage for the changes\n- Changes are test-only modifications\n\n### Comment Style\n\nIf tests are missing, provide ONE brief comment:\n\n```\nMissing tests for [specific file]. Consider:\n- [specific scenario]\n- [edge case]\n```\n\nIf test coverage is sufficient, **DO NOT COMMENT**. No \"LGTM\" needed.\n\n---\n\n## Focus Area 2: Pull Request Guidelines\n\nWhen reviewing pull requests, verify compliance with [freeCodeCamp's contribution standards](https://contribute.freecodecamp.org/how-to-open-a-pull-request).\n\n### PR Title Format\n\nCheck that the title follows conventional commits format:\n`<type>([optional scope]): <description>`\n\n**Valid types:** `fix`, `feat`, `refactor`, `docs`, `test`\n\n**Common scopes:** `curriculum`, `client`, `api`, `i18n`, `a11y`, `tools`\n\nFlag if:\n\n- Title is vague (e.g., \"Update file\", \"Fix bug\", \"Changes\")\n- Missing type prefix\n- Description exceeds ~50 characters\n- Type doesn't match the actual changes\n\nExample of good title:\n\n```\nfix(client): resolve login button alignment on mobile\n```\n\nExample of bad title:\n\n```\nFixed stuff\n```\n\n### PR Description & Issue Linking\n\nCheck for:\n\n- Meaningful description explaining what changes were made and why\n- Proper issue linking using `Closes #XXXXX` format (not just `#XXXXX`)\n- Screenshots included for UI/visual changes\n\nFlag if:\n\n- Description is empty or only contains template boilerplate\n- Issue reference uses incorrect format (e.g., `fixes XXXXX` without `#`)\n- UI changes lack screenshots\n\n### Checklist Completion\n\nVerify the PR template checklist items are completed:\n\n- Boxes should be checked (`[x]`) not left unchecked (`[ ]`)\n- Placeholder text like `#XXXXX` should be replaced with actual issue numbers\n\nFlag if:\n\n- Checklist boxes are left unchecked\n- Placeholder issue number `#XXXXX` remains unchanged\n\n### Comment Style\n\nKeep feedback minimal (one line when possible):\n\n```\nUpdate PR title to format: `<type>(scope): description`\nSee: https://contribute.freecodecamp.org/how-to-open-a-pull-request\n```\n\n```\nLink issue using: `Closes #XXXXX`\n```\n\nIf PR guidelines are followed, **DO NOT COMMENT**. No \"LGTM\" needed.\n\n---\n\n## General Guidelines\n\n**Focus on Actionable Issues Only**\n\n### Strict Rules\n\n- NO summaries, overviews, or descriptions of changes\n- NO tables or file listings\n- NO \"LGTM\" or affirmative comments when everything is fine\n- Only comment when action is required\n- Keep each comment brief and actionable\n\n### Prioritization\n\nWhen multiple issues exist, address them in order of severity:\n\n1. Security vulnerabilities or critical bugs\n2. Missing test coverage for new functionality\n3. Outdated tests for modified functionality\n4. PR title/description compliance\n\nComment on all legitimate issues, but keep each comment concise.\n"
+  },
+  ".github/instructions": {
+   "files": [
+    ".github/instructions/testing.instructions.md"
+   ]
+  }
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "full": "vuejs/vue",
+ "stars": 212628,
+ "license": "MIT",
+ "archived": false,
+ "created": "2013-07-29T03:24:51Z",
+ "pushed": "2024-10-10T07:24:15Z",
+ "ref": "main",
+ "homepage": "http://v2.vuejs.org",
+ "description": "This is the repo for Vue 2. For Vue 3, go to https://github.com/vuejs/core",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

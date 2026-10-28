@@ -1,0 +1,51 @@
+AUDIENCE INTEREST
+
+On October 24, 2026, r/opensource's moderators posted "Your tokens aren't valuable: No more AI." (https://www.reddit.com/r/opensource/comments/1xelcuf/your_tokens_arent_valuable_no_more_ai/).
+Its first line: "if your project uses AI, is made by AI, or is intended for AI, it's not welcome on r/opensource."
+The post had 2,520 comments and a 32% upvote ratio (Arctic Shift archive, read October 27, 2026); Reddit refused direct reads from this machine, so the post and 264 of its comments were read from the archive.
+The question the comments asked most was whether the rule bans Linux ("Is linux banned from discussion now too then?", "So I guess the Linux kernel is banned here now?"), and several listed big projects they thought it would rule out (Chromium, Firefox, VS Code, Python, Node.js, Rust, Kubernetes, PostgreSQL, curl).
+A moderator replied that Linux is not banned and that reading the rules that way is bad faith.
+Press covered it on October 25 and 26 (Help Net Security, TechRepublic, The Decoder, The Next Web), and two rival subreddits started, r/TrueOpenSource and r/OpenSourceAIAllowed.
+The posters answer the question the thread kept asking with each project's own words: which of the biggest open-source projects take AI-assisted code.
+
+WHICH PROJECTS
+
+GitHub's search for every public repository with over 40,000 stars, read October 27, 2026 (top-1.json to top-4.json, 400 repositories, in order of stars).
+A project is kept when it would pass r/opensource's other new requirements: software (not a list, book, course, guide, template or prompt collection), an OSI-approved license for the whole repository, at least a year old (created before October 27, 2025), maintained (a commit in the past year), and three or more contributors.
+selection.json gives the reason for every repository above the 50th that was left out.
+Projects built for AI are kept and marked, because the rule's "intended for AI" clause rules them out on their own; selection.json lists them with the description that makes each one an AI project, and notes the judgment calls (MarkItDown, Superpowers, The Agency).
+The 50th is D3 (113,810 stars); TypeScript and Tauri come just after it.
+
+WHAT EACH PROJECT SAYS
+
+evidence.json records, for each project, its stance and the evidence:
+- allows, by written policy: a file of the project's own that accepts AI-assisted contributions (an AI policy, the contributing guide, the PR template, or the instructions for AI agents when they state the policy). Most require a human who reviews, understands and answers for the code; many ban autonomous agents; Node.js and Transformers restrict new contributors.
+- allows, in practice: no written rule, but the maintainers keep instructions for AI coding agents in the repository and merge commits that credit an AI tool ("Co-authored-by: Claude", "Generated with Claude Code").
+- limits: allows AI only in narrow cases (Godot: no substantial AI-written code; Immich: no LLM-generated PRs).
+- forbids: yt-dlp ("This project strictly forbids the usage of LLMs, agents, or any other AI tools for any kind of contribution.").
+- none: no policy, no agent instructions and no AI-credited commits found.
+Some policies live in the project's own companion repository: freeCodeCamp/contribute, kubernetes/community, electron/governance, godotengine/godot-contributing-docs.
+Every file that only names AI was read before it counted: Lazygit's AGENTS.md tells agents not to open PRs, Uptime Kuma's warns against "AI slop", Django's Copilot file only refuses code review, and laravel/laravel's is a template for apps built with Laravel.
+
+VERIFICATION
+
+verify.mjs reads every quoted file at the repository's current commit and checks each excerpt word for word (markdown markup aside); the permalink points at the commit and line.
+For commits, it checks that the merged commit's message carries the trailer; GitHub's commit search matches words loosely ("Assisted-by" matched a 2023 Go commit without it), so the posters cite one confirmed commit per project, never a search count.
+It also reads each project's live star count; checked.json holds the results, read October 27, 2026 at 23:06 UTC.
+audit.mjs recomputes every number on the posters and in post.txt from the data the pages carry.
+
+HOW REDDIT SHOWS AN IMAGE
+
+From Reddit's desktop feed markup (an Internet Archive copy of reddit.com/r/dataisbeautiful, October 2, 2026): each image post sits in a box as wide as the feed column (up to 756px, the image about 724px), with the image's aspect ratio, a minimum height of 220px and a maximum height of 540px; a portrait image gets a square box (a 2160 by 2700 poster had aspect-ratio: 1), so a 3:4 or 4:5 poster shows at about 405 or 432 by 540, and a 4:3 one at about 722 by 540.
+On a phone the image spans the screen's width (about 390px), so text there is its size on the poster times 390 divided by the poster's width.
+Reddit makes copies 108, 216, 320, 640, 960 and 1080px wide.
+The 100 highest-scoring image posts in r/dataisbeautiful from April to October 2026: 58 landscape, 31 square to 4:5, 11 taller than 4:5; median 1800px wide, median height 0.8 of the width.
+So both posters are 3:4 with larger type than a usual 1080px poster: the infographic 750 by 1000 CSS pixels, the chart 1080 by 1440 (its original desktop design with type about 20% larger and 20 bars instead of 25), both saved at twice that size.
+
+LIMITATIONS
+
+Stars measure attention, not use; Linux, Go, FFmpeg and others are GitHub mirrors of projects developed elsewhere.
+"In practice" means the maintainers merged at least one commit crediting an AI tool; it says nothing about whether the project accepts AI-assisted PRs from outsiders.
+Policies change fast (most were written in 2026); the reads are from October 27, 2026.
+Which projects are "AI projects" is a judgment; selection.json lists each one with the description it rests on.
+The moderators' reply suggests they would not apply the rule to Linux; the posters show what the projects say, not what the moderators would remove.

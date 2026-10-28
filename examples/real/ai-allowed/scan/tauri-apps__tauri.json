@@ -1,0 +1,26 @@
+{
+ "full": "tauri-apps/tauri",
+ "stars": 112238,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2019-07-13T09:09:37Z",
+ "pushed": "2026-10-27T02:27:15Z",
+ "ref": "dev",
+ "homepage": "https://tauri.app",
+ "description": "Build smaller, faster, and more secure desktop and mobile applications with a web frontend.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  ".github/CONTRIBUTING.md": [
+   "- [Issue Reporting Guidelines](#issue-reporting-guidelines)\n- [Pull Request Guidelines](#pull-request-guidelines)\n- [Development Guide](#development-guide)\n- [AI Tool Policy](#ai-tool-policy)",
+   "## AI Tool Policy",
+   "It takes a lot of time to review a Pull Request while it's very easy to make a nonsensical but plausible looking one using AI tools.\nIt is unfair for other contributors and the reviewers to spend much of the time dealing with this, hence these rules:",
+   "1. Review and test all LLM-generated content before submitting, you're the one responsible for it, not the AI.\n2. Don't use AI to respond to review comments (except for translations)."
+  ]
+ },
+ "agentText": {}
+}

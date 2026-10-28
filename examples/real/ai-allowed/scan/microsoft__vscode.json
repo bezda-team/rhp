@@ -1,0 +1,123 @@
+{
+ "full": "microsoft/vscode",
+ "stars": 194390,
+ "license": "MIT",
+ "archived": false,
+ "created": "2015-09-03T20:23:38Z",
+ "pushed": "2026-10-27T22:29:20Z",
+ "ref": "main",
+ "homepage": "https://code.visualstudio.com",
+ "description": "Visual Studio Code",
+ "agentFiles": [
+  ".agents",
+  "AGENTS.md",
+  ".github/copilot-instructions.md",
+  ".github/instructions",
+  ".github/skills"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/pull_request_template.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".agents": {
+   "files": [
+    ".agents/skills"
+   ]
+  },
+  "AGENTS.md": {
+   "text": "# VS Code Agents Instructions\n\nThis file provides instructions for AI coding agents working with the VS Code codebase.\n\nFor detailed project overview, architecture, coding guidelines, and validation steps, see the [Copilot Instructions](.github/copilot-instructions.md).\n"
+  },
+  ".github/copilot-instructions.md": {
+   "text": "# VS Code Copilot Instructions\n\n## Project Overview\n\nVisual Studio Code is built with a layered architecture using TypeScript, web APIs and Electron, combining web technologies with native app capabilities. The codebase is organized into key architectural layers:\n\n### Root Folders\n- `src/`: Main TypeScript source code with unit tests in `src/vs/*/test/` folders\n- `build/`: Build scripts and CI/CD tools\n- `extensions/`: Built-in extensions that ship with VS Code\n- `test/`: Integration tests and test infrastructure\n- `scripts/`: Development and build scripts\n- `resources/`: Static resources (icons, themes, etc.)\n- `out/`: Compiled JavaScript output (generated during build)\n\n### Core Architecture (`src/` folder)\n- `src/vs/base/` - Foundation utilities and cross-platform abstractions\n- `src/vs/platform/` - Platform services and dependency injection infrastructure\n- `src/vs/editor/` - Text editor implementation with language services, syntax highlighting, and editing features\n- `src/vs/workbench/` - Main application workbench for web and desktop\n  - `workbench/browser/` - Core workbench UI components (parts, layout, actions)\n  - `workbench/services/` - Service implementations\n  - `workbench/contrib/` - Feature contributions (git, debug, search, terminal, etc.)\n  - `workbench/api/` - Extension host and VS Code API implementation\n- `src/vs/code/` - Electron main process specific implementation\n- `src/vs/server/` - Server specific implementation\n- `src/vs/sessions/` - Agent sessions window, a dedicated workbench layer for agentic workflows (sits alongside `vs/workbench`, may import from it but not vice versa)\n\nThe core architecture follows these principles:\n- **Layered architecture** - from `base`, `platform`, `editor`, to `workbench`\n- **Dependency injection** - Services are injected through constructor parameters\n    - If non-service parameters are needed, they need to come before the service parameters\n- **Contribution model** - Features contribute to registries and extension points\n- **Cross-platform compatibility** - Abstractions separate platform-specific code\n\n### Built-in Extensions (`extensions/` folder)\nThe `extensions/` directory contains first-party extensions that ship with VS Code:\n- **Language support** - `typescript-language-features/`, `html-language-features/`, `css-language-features/`, etc.\n- **Core features** - `git/`, `debug-auto-launch/`, `emmet/`, `markdown-language-features/`\n- **Themes** - `theme-*` folders for default color themes\n- **Development tools** - `extension-editing/`, `vscode-api-tests/`\n\nEach extension follows the standard VS Code extension structure with `package.json`, TypeScript sources, and contribution points to extend the workbench through the Extension API.\n\n### Finding Related Code\n1. **Semantic search first**: Use file search for general concepts\n2. **Grep for exact strings**: Use grep for error messages or specific function names\n3. **Follow imports**: Check what files import the problematic module\n4. **Check test files**: Often reveal usage patterns and expected behavior\n\n## Validating TypeScript changes\n\nChoose validation based on the scope and risk of the change. Large-scale builds and typechecking can be slow, and consume significant resources, so minimize their use. Prefer existing editor or watch-task diagnostics and the smallest targeted tests that cover the changed behavior. Do not start build or watch tasks, run broad type checks, or make type checking a prerequisite for targeted tests solely as a completion ritual.\n\nWhen running in a VS Code editor window with a workspace folder, use the VS Code task tools for build and watch workflows: inspect the existing task output first, and run an existing task instead of invoking its equivalent shell command. Do not start a duplicate build or watch process when the workspace task already provides current diagnostics. Agents window chats and isolated worktree sessions may not have access to the editor's workspace tasks; use the repository commands directly in those contexts.\n\nRun a targeted type check or build when you are not fully confident in the change, and the change is broad or cross-cutting, it affects build or type configuration, or another validation step reports a compilation problem. When task tools are unavailable or no suitable task exists, useful commands include:\n\n- `npm run typecheck-client` for the main sources under `src/`\n- `npm run gulp compile-extensions` for built-in extensions\n- `npm run typecheck` from the `build` folder for build tooling\n\nDevelopment compile tasks already type-check their inputs. Do not run `npm run typecheck-client` immediately before `npm run compile` or `npm run compile-client`; choose the command that covers the required validation. When tests only need fresh client output, use `npm run build-fast -- --client-only`. It supports cold builds and file-granular incremental updates without starting a watcher or building extensions. Use `npm run build-fast` when extension and Copilot outputs are also needed. The client and extension JavaScript lanes transpile rather than type-check; extension media retains its existing type checks. Run explicit type checks when the change warrants them. Reserve `npm run transpile-client` for an intentional clean client rebuild.\n\nReuse successful validation while its relevant inputs remain unchanged, including when moving into review, commit, or PR creation. Batch related test selectors in one invocation. Prefer `npm run eslint -- <changed files>` for targeted linting; this wrapper caches results by file content. Install dependencies only when dependency inputs change or validation identifies missing dependencies; use `npm run install-fast` for a needed refresh, which skips up-to-date installations and falls back to `npm install` when required. Never share or symlink `node_modules` between worktrees.\n\nUse `scripts/test.sh` (or `scripts\\test.bat` on Windows) for unit tests and `scripts/test-integration.sh` (or `scripts\\test-integration.bat` on Windows) for integration tests. Add a targeted selector such as `--grep` whenever possible. Run `npm run valid-layers-check` only when a change may affect module layering.\n\n## Coding Guidelines\n\n### Markdown\n\n- Do not hard-wrap Markdown prose to a fixed line width. Keep each paragraph on one source line and let the editor or renderer wrap it naturally. Preserve structural line breaks in lists, tables, code blocks, and intentional Markdown hard breaks.\n\n### Indentation\n\nWe use tabs, not spaces.\n\n### Naming Conventions\n\n- Use PascalCase for `type` names\n- Use PascalCase for `enum` values\n- Use camelCase for `function` and `method` names\n- Use camelCase for `property` names and `local variables`\n- Use whole words in names when possible\n\n### Types\n\n- Do not export `types` or `functions` unless you need to share it across multiple components\n- Do not introduce new `types` or `values` to the global namespace\n\n### Comments\n\n- Use JSDoc style comments for `functions`, `interfaces`, `enums`, and `classes`\n\n### Strings\n\n- Use \"double quotes\" for strings shown to the user that need to be externalized (localized)\n- Use 'single quotes' otherwise\n- All strings visible to the user need to be externalized using the `vs/nls` module\n- Externalized strings must not use string concatenation. Use placeholders instead (`{0}`).\n\n### UI labels\n- Use title-style capitalization for command labels, buttons and menu items (each word is capitalized).\n- Don't capitalize prepositions of four or fewer letters unless it's the first or last word (e.g. \"in\", \"with\", \"for\").\n\n### Designing UI\n- When creating, editing, or reviewing any visual surface, reason in **design terms, not pixels**: name the **feeling** (Calm, Focused, Consistent, Delightful), find the **principle** it breaks, then reach for the **move** (token/tier/ramp) that restores it. Describe a bug by its role/tier/ramp (e.g. \"this overlay is rounded at the control tier\"), not its number.\n- See the [`design-philosophy` skill](skills/design-philosophy/SKILL.md) for the full Values→Principles→Moves vocabulary, worked examples, and feedback guidance, and [design-tokens.instructions.md](instructions/design-tokens.instructions.md) for the token reference.\n\n### Style\n\n- Use arrow functions `=>` over anonymous function expressions\n- Only surround arrow function parameters when necessary. For example, `(x) => x + x` is wrong but the following are correct:\n\n```typescript\nx => x + x\n(x, y) => x + y\n<T>(x: T, y: T) => x === y\n```\n\n- Always surround loop and conditional bodies with curly braces\n- Open curly braces always go on the same line as whatever necessitates them\n- Parenthesized constructs should have no surrounding whitespace. A single space follows commas, colons, and semicolons in those constructs. For example:\n\n```typescript\nfor (let i = 0, n = str.length; i < 10; i++) {\n    if (x < 10) {\n        foo();\n    }\n}\nfunction f(x: number, y: string): void { }\n```\n\n- Whenever possible, in top-level scopes, use `export function x(…) {…}` instead of `export const x = (…) => {…}`. One advantage of using the `function` keyword is that the stack trace shows a good name when debugging.\n\n### Code Quality\n\n- All files must include Microsoft copyright header\n- Prefer `async` and `await` over `Promise` and `then` calls\n- All user facing messages must be localized using the applicable localization framework (for example `nls.localize()` method)\n- Don't add tests to the wrong test suite (e.g., adding to end of file instead of inside relevant suite)\n- Look for existing test patterns before creating new structures\n- Use `describe` and `test` consistently with existing patterns\n- Prefer regex capture groups with names over numbered capture groups.\n- If you create any temporary new files, scripts, or helper files for iteration, clean up these files by removing them at the end of the task\n- Never duplicate imports. Always reuse existing imports if they are present.\n- When removing an import, do not leave behind blank lines where the import was. Ensure the surrounding code remains compact.\n- Do not use `any` or `unknown` as the type for variables, parameters, or return values unless absolutely necessary. If they need type annotations, they should have proper types or interfaces defined.\n- When adding file watching, prefer correlated file watchers (via fileService.createWatcher) to shared ones.\n- When adding tooltips to UI elements, prefer the use of IHoverService service.\n- Do not duplicate code. Always look for existing utility functions, helpers, or patterns in the codebase before implementing new functionality. Reuse and extend existing code whenever possible.\n- You MUST deal with disposables by registering them immediately after creation for later disposal. Use helpers such as `DisposableStore`, `MutableDisposable` or `DisposableMap`. Do NOT register a disposable to the containing class if the object is created within a method that is called repeatedly to avoid leaks. Instead, return an `IDisposable` from such method and let the caller register it.\n- You MUST NOT use storage keys of another component only to make changes to that component. You MUST come up with proper API to change another component.\n- Use `IEditorService` to open editors instead of `IEditorGroupsService.activeGroup.openEditor` to ensure that the editor opening logic is properly followed and to avoid bypassing important features such as `revealIfOpened` or `preserveFocus`.\n- Avoid using `bind()`, `call()` and `apply()` solely to control `this` or partially apply arguments; prefer arrow functions or closures to capture the necessary context, and use these methods only when required by an API or interoperability.\n- Avoid using events to drive control flow between components. Instead, prefer direct method calls or service interactions to ensure clearer dependencies and easier traceability of logic. Events should be reserved for broadcasting state changes or notifications rather than orchestrating behavior across components.\n- Service dependencies MUST be declared in constructors and MUST NOT be accessed through the `IInstantiationService` at any other point in time.\n\n## Learnings\n- Minimize the amount of assertions in tests. Prefer one snapshot-style `assert.deepStrictEqual` over multiple precise assertions, as they are much more difficult to understand and to update.\n- Do not stub a global object (e.g. `(mainWindow as any).ResizeObserver = ...`) or use `any` casts to install fakes in tests. Instead, make the dependency injectable: add an optional constructor parameter on the production class that defaults to the real implementation (e.g. `targetWindow.ResizeObserver`), and have the test pass a fake that implements the real interface.\n"
+  },
+  ".github/instructions": {
+   "files": [
+    ".github/instructions/accessibility.instructions.md",
+    ".github/instructions/agent-host-interoperability.instructions.md",
+    ".github/instructions/agentHostTesting.instructions.md",
+    ".github/instructions/ai-customization.instructions.md",
+    ".github/instructions/automation-dialog.instructions.md",
+    ".github/instructions/best-practices.instructions.md",
+    ".github/instructions/buildNext.instructions.md",
+    ".github/instructions/chat.instructions.md",
+    ".github/instructions/coding-guidelines.instructions.md",
+    ".github/instructions/committing.instructions.md",
+    ".github/instructions/css-best-practices.instructions.md",
+    ".github/instructions/design-philosophy.instructions.md",
+    ".github/instructions/design-tokens.instructions.md",
+    ".github/instructions/disposable.instructions.md",
+    ".github/instructions/interactive.instructions.md",
+    ".github/instructions/kusto.instructions.md",
+    ".github/instructions/language-model-tool-descriptions.instructions.md",
+    ".github/instructions/learnings.instructions.md",
+    ".github/instructions/notebook.instructions.md",
+    ".github/instructions/observables.instructions.md",
+    ".github/instructions/oss-third-party-notices.instructions.md",
+    ".github/instructions/oss.instructions.md",
+    ".github/instructions/resources",
+    ".github/instructions/sessions.instructions.md",
+    ".github/instructions/source-code-organization.instructions.md",
+    ".github/instructions/telemetry.instructions.md",
+    ".github/instructions/tree-widgets.instructions.md",
+    ".github/instructions/writing-tests.instructions.md"
+   ]
+  },
+  ".github/skills": {
+   "files": [
+    ".github/skills/accessibility",
+    ".github/skills/agent-host-chat-contributions",
+    ".github/skills/agent-host-e2e-tests",
+    ".github/skills/agent-host-logs",
+    ".github/skills/author-contributions",
+    ".github/skills/auto-perf-optimize",
+    ".github/skills/azure-pipelines",
+    ".github/skills/build-champ-triage",
+    ".github/skills/chat-customizations-editor",
+    ".github/skills/chat-perf",
+    ".github/skills/chat-pet-sprite-creation",
+    ".github/skills/ci-artifact-testing",
+    ".github/skills/code-oss-logs",
+    ".github/skills/code-review",
+    ".github/skills/codenotify",
+    ".github/skills/component-fixtures",
+    ".github/skills/component",
+    ".github/skills/context-menus",
+    ".github/skills/cpu-profile-analysis",
+    ".github/skills/customizations-in-the-agent-host",
+    ".github/skills/design-philosophy",
+    ".github/skills/doc-comments",
+    ".github/skills/experiments",
+    ".github/skills/feature-tryouts",
+    ".github/skills/feedback-learning",
+    ".github/skills/fix-ci-failures",
+    ".github/skills/fixissueno",
+    ".github/skills/flaky-smoke-tests",
+    ".github/skills/heap-snapshot-analysis",
+    ".github/skills/hover",
+    ".github/skills/integrated-browser",
+    ".github/skills/integration-tests",
+    ".github/skills/issue-grouping",
+    ".github/skills/memory-leak-audit",
+    ".github/skills/migrate-issues",
+    ".github/skills/otel",
+    ".github/skills/policy-and-managed-settings",
+    ".github/skills/sessions",
+    ".github/skills/setup-environment",
+    ".github/skills/smoke-tests",
+    ".github/skills/sweeper-implement",
+    ".github/skills/sweeper-plan",
+    ".github/skills/symbolicate-crash-dump",
+    ".github/skills/unit-tests",
+    ".github/skills/update-instructions",
+    ".github/skills/update-screenshots",
+    ".github/skills/ux-css-layout",
+    ".github/skills/ux-theming",
+    ".github/skills/validate-ui-scenario",
+    ".github/skills/vscode-dev-workbench"
+   ]
+  }
+ }
+}

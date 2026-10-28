@@ -1,0 +1,33 @@
+{
+ "full": "react/react",
+ "stars": 251790,
+ "license": "MIT",
+ "archived": false,
+ "created": "2013-05-24T16:15:54Z",
+ "pushed": "2026-10-27T15:08:39Z",
+ "ref": "main",
+ "homepage": "https://react.dev",
+ "description": "The library for web and native user interfaces.",
+ "agentFiles": [
+  ".claude",
+  "CLAUDE.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".claude": {
+   "files": [
+    ".claude/instructions.md",
+    ".claude/settings.json",
+    ".claude/skills"
+   ]
+  },
+  "CLAUDE.md": {
+   "text": "# React\n\nReact is a JavaScript library for building user interfaces.\n\n## Monorepo Overview\n\n- **React**: All files outside `/compiler/`\n- **React Compiler**: `/compiler/` directory (has its own instructions)\n\n## Current Active Work\n\n- **Rust Compiler Port**: Plans in `compiler/docs/rust-port/`, implementation in `compiler/crates/`\n- Branch: `rust-research`\n"
+  }
+ }
+}

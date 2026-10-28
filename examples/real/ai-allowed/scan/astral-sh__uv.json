@@ -1,0 +1,36 @@
+{
+ "full": "astral-sh/uv",
+ "stars": 91259,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2023-10-02T20:24:11Z",
+ "pushed": "2026-10-27T22:13:14Z",
+ "ref": "main",
+ "homepage": "https://docs.astral.sh/uv",
+ "description": "An extremely fast Python package and project manager, written in Rust.",
+ "agentFiles": [
+  ".codex",
+  "AGENTS.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "## Use of AI",
+   "We **require all use of AI in contributions to follow our\n[AI Policy](https://github.com/astral-sh/.github/blob/main/AI_POLICY.md)**."
+  ]
+ },
+ "agentText": {
+  ".codex": {
+   "files": [
+    ".codex/skills"
+   ]
+  },
+  "AGENTS.md": {
+   "text": "- Read CONTRIBUTING.md for guidelines on how to run tools\n- ALWAYS ensure that new tests use the same style as existing tests for all parts of the test\n- ALWAYS check whether the behavior of a new test is already covered by an existing test\n- DO NOT run integration test scenarios in loops or share their snapshots with\n  `insta::allow_duplicates!`. Write explicit command invocations and snapshots; use separate named\n  tests for independent scenarios\n- DO NOT repeat integration tests for every quiet level, flag alias, boolean spelling, or unrelated\n  option combination. Include a variant only when it exercises behavior specific to the change;\n  shared parsing and rendering belong in tests for their owning layer\n- PREFER explicit fixture setup and command arguments over local helpers that hide the inputs just\n  to reduce repetition. Reuse existing `uv-test` helpers for common setup, file reads, filters, and\n  cleanup\n- PREFER integration tests, e.g., at `it/...` over unit tests\n- PREFER putting integration tests in the relevant existing test module. Keep fixtures focused on\n  the behavior under test. Explain a non-obvious regression scenario in a test doc comment\n- PREFER running specific tests over running the entire test suite\n- PREFER `insta` snapshots following patterns in nearby tests over substring assertions\n- PREFER `uv_snapshot!` for command output over manual output parsing, sorting, or reconstructed\n  snapshots. Use existing context filters for nondeterminism without hiding the behavior under test\n- When making changes for Windows from Unix, use `cargo xwin clippy` to check compilation\n- NEVER perform builds with the release profile, unless asked or reproducing performance issues\n- AVOID using `panic!`, `unreachable!`, `.unwrap()`, unsafe code, and clippy rule ignores\n- PREFER patterns like `if let` to handle fallibility\n- PREFER exhaustive `match` expressions without wildcard (`_`) arms over `matches!`, so new enum\n  variants require explicit handling\n- PREFER `uv_macros::DeserializeUntagged` for untagged enums when each variant accepts a distinct\n  Serde input shape (string, boolean, sequence, or map). Serde's `#[serde(untagged)]` buffers the\n  input to try variants in declaration order\n- ALWAYS write `SAFETY` comments following our usual style when writing `unsafe` code\n- PREFER `#[expect()]` over `[allow()]` if clippy must be disabled\n- PREFER let chains (`if let` combined with `&&`) over nested `if let` statements\n- NEVER update all dependencies in the lockfile and ALWAYS use `cargo update --precise` to make\n  lockfile changes\n- NEVER assume clippy warnings or test failures are pre-existing, it is very rare that `main` has\n  warnings\n- ALWAYS use `.github/automations-dispatch.json` to trigger privileged workflows from GitHub webhook\n  events instead of adding `pull_request_target` workflows\n- NEVER suppress the `dangerous-triggers` security lint; extend the automation dispatcher in a\n  separate pull request if it does not support the required event\n- PREFER top-level imports over local imports or fully qualified names\n- AVOID shortening variable names, e.g., use `version` instead of `ver`, and `requires_python`\n  instead of `rp`\n- PREFER [`TypeName`] references when writing Rust doc comments\n- DO NOT leak our conversation, prompt, or iteration history into code comments, pull request\n  descriptions, or other maintainer-facing prose. Write for readers who have not seen our\n  conversation.\n- PREFER comments that explain the current behavior and rationale. Avoid past-facing wording like\n  \"preserve the existing behavior\"; explain the actual backwards-compatibility constraint instead.\n- ALWAYS check if a new or modified test needs a `#[cfg(feature = \"test-...\")]` gate\n"
+  }
+ }
+}

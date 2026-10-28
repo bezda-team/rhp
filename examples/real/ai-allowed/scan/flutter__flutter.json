@@ -1,0 +1,51 @@
+{
+ "full": "flutter/flutter",
+ "stars": 180451,
+ "license": "BSD-3-Clause",
+ "archived": false,
+ "created": "2015-03-06T22:54:58Z",
+ "pushed": "2026-10-27T22:10:52Z",
+ "ref": "master",
+ "homepage": "https://flutter.dev",
+ "description": "Flutter makes it easy and fast to build beautiful apps for mobile and beyond",
+ "agentFiles": [
+  ".agents",
+  ".claude",
+  ".gemini"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "3. [AI contribution guidelines](CONTRIBUTING.ai.md),\n   which describes our policies on using AI assistants when filing or\n   triaging issues, submitting pull requests, and reviewing code."
+  ],
+  ".github/PULL_REQUEST_TEMPLATE.md": [
+   "- [ ] I read the [Contributor Guide] and followed the process outlined there for submitting PRs.\n- [ ] I read the [AI contribution guidelines] and understand my responsibilities, or I am not using AI tools.\n- [ ] I read the [Tree Hygiene] wiki page, which explains my responsibilities.\n- [ ] I read and followed the [Flutter Style Guide], including [Features we expect every widget to implement].\n- [ ] I signed the [CLA].\n- [ ] I listed at least one issue that this PR fixes in the description above.\n- [ ] I updated/added relevant in-code documentation (doc comments with `///`).\n- [ ] If this PR introduces a new feature or capability, I created and linked a website documentation issue or PR in [flutter/website] (or verified none is needed).\n- [ ] I added new tests to check the change I am making, or this PR is [test-exempt].\n- [ ] I followed the [breaking change policy] and added [Data Driven Fixes] where supported.\n- [ ] All existing and new tests are passing.",
+   "**Note**: The Flutter team is currently trialing the use of [Gemini Code Assist for GitHub](https://developers.google.com/gemini-code-assist/docs/review-github-code). Comments from the `gemini-code-assist` bot should not be taken as authoritative feedback from the Flutter team. If you find its comments useful you can update your code accordingly, but if you are unsure or disagree with the feedback, please feel free to wait for a Flutter team member's review for guidance on which automated comments should be addressed.",
+   "<!-- Links -->\n[Contributor Guide]: https://github.com/flutter/flutter/blob/main/docs/contributing/Tree-hygiene.md#overview\n[AI contribution guidelines]: https://github.com/flutter/flutter/blob/main/CONTRIBUTING.ai.md\n[Tree Hygiene]: https://github.com/flutter/flutter/blob/main/docs/contributing/Tree-hygiene.md\n[test-exempt]: https://github.com/flutter/flutter/blob/main/docs/contributing/Tree-hygiene.md#tests\n[Flutter Style Guide]: https://github.com/flutter/flutter/blob/main/docs/contributing/Style-guide-for-Flutter-repo.md\n[Features we expect every widget to implement]: https://github.com/flutter/flutter/blob/main/docs/contributing/Style-guide-for-Flutter-repo.md#features-we-expect-every-widget-to-implement\n[CLA]: https://cla.developers.google.com/\n[flutter/tests]: https://github.com/flutter/tests\n[flutter/website]: https://github.com/flutter/website\n[breaking change policy]: https://github.com/flutter/flutter/blob/main/docs/contributing/Tree-hygiene.md#handling-breaking-changes\n[Discord]: https://github.com/flutter/flutter/blob/main/docs/contributing/Chat.md\n[Data Driven Fixes]: https://github.com/flutter/flutter/blob/main/docs/contributing/Data-driven-Fixes.md"
+  ]
+ },
+ "agentText": {
+  ".agents": {
+   "files": [
+    ".agents/agents",
+    ".agents/rules",
+    ".agents/skills"
+   ]
+  },
+  ".claude": {
+   "files": [
+    ".claude/skills"
+   ]
+  },
+  ".gemini": {
+   "files": [
+    ".gemini/config.yaml",
+    ".gemini/styleguide.md"
+   ]
+  }
+ }
+}

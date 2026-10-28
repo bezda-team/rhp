@@ -1,0 +1,16 @@
+{
+ "full": "sherlock-project/sherlock",
+ "stars": 95032,
+ "license": "MIT",
+ "archived": false,
+ "created": "2018-12-24T14:30:48Z",
+ "pushed": "2026-10-27T05:18:50Z",
+ "ref": "master",
+ "homepage": "https://sherlockproject.xyz",
+ "description": "Hunt down social media accounts by username across social networks",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

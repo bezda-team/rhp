@@ -1,0 +1,33 @@
+{
+ "full": "ohmyzsh/ohmyzsh",
+ "stars": 190192,
+ "license": "MIT",
+ "archived": false,
+ "created": "2009-08-28T18:15:37Z",
+ "pushed": "2026-10-27T11:37:50Z",
+ "ref": "master",
+ "homepage": "https://ohmyz.sh",
+ "description": "🙃   A delightful community-driven (with 2,500+ contributors) framework for managing your zsh configuration. Includes 300+ optional plugins (rails, git, macOS, hub, docker, homebrew, node, php, python, etc), 140+ themes to spice up your morning, and an auto-update tool that makes it easy to keep up with the latest updates from the community.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "- [Reporting Issues](#reporting-issues)\n  - [You have a problem](#you-have-a-problem)\n  - [You have a suggestion](#you-have-a-suggestion)\n- [Submitting Pull Requests](#submitting-pull-requests)\n  - [Getting started](#getting-started)\n  - [You have a solution](#you-have-a-solution)\n  - [You have an addition](#you-have-an-addition)\n- [A note on AI-assisted contributions](#a-note-on-ai-assisted-contributions)\n- [Use the Search, Luke](#use-the-search-luke)\n- [Commit Guidelines](#commit-guidelines)\n  - [Format](#format)\n  - [Style](#style)\n- [Volunteer](#volunteer)",
+   "## A note on AI-assisted contributions",
+   "We'll admit it: AI tools can be pretty helpful for coding tasks, and we're not here to gatekeep how you get your work done. We use these tools ourselves! 🤖",
+   "If you used AI tools meaningfully in your contribution (code generation, agentic coding assistants, etc.), please mention it in your PR description. Basic autocomplete doesn't count, but if an AI wrote substantial parts of your code, just let us know.",
+   "**Examples of good disclosure:**\n- \"Used ChatGPT to help generate the initial regex pattern for parsing git status output\"\n- \"Claude assisted with writing the unit tests for this feature\"  \n- \"Generated with Gemini and then reviewed/tested manually\"\n- Or simply: \"AI-assisted\" in your PR description",
+   "- **You understand your code**: You should be able to explain what your contribution does and how it works. We want to collaborate with humans who are invested in the project.\n- **Context matters**: Tell us what problem you're solving, how you tested it, and link to relevant docs. Small, incremental changes work better than massive generated overhauls.\n- **Quality over quantity**: We'd rather have one thoughtful, well-tested contribution than ten AI-generated PRs that need extensive review.",
+   "The disclosure helps us know how much guidance to offer. If we're just reviewing AI output that you can't explain or improve, that changes the dynamic—and frankly, it's not a great use of anyone's time.",
+   "As always, we reserve the right to decline any contribution. PRs that appear to be unreviewed AI output, or code the contributor can't explain, may be closed without extensive feedback."
+  ],
+  ".github/PULL_REQUEST_TEMPLATE.md": [
+   "- [ ] The PR title is descriptive.\n- [ ] The PR doesn't replicate another PR which is already open.\n- [ ] I have read the contribution guide and followed all the instructions.\n- [ ] The code follows the code style guide detailed in the wiki.\n- [ ] The code is mine or it's from somewhere with an MIT-compatible license.\n- [ ] If I used AI tools (ChatGPT, Claude, Gemini, etc.) to assist with this contribution, I've disclosed it below.\n- [ ] The code is efficient, to the best of my ability, and does not waste computer resources.\n- [ ] The code is stable and I have tested it myself, to the best of my abilities.\n- [ ] If the code introduces new aliases, I provide a valid use case for all plugin users down below."
+  ]
+ },
+ "agentText": {}
+}

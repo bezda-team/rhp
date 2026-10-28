@@ -1,0 +1,19 @@
+{
+ "full": "golang/go",
+ "stars": 139512,
+ "license": "BSD-3-Clause",
+ "archived": false,
+ "created": "2014-08-19T04:33:40Z",
+ "pushed": "2026-10-27T22:02:25Z",
+ "ref": "master",
+ "homepage": "https://go.dev",
+ "description": "The Go programming language",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

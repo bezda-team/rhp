@@ -1,0 +1,18 @@
+{
+ "full": "redis/redis",
+ "stars": 77137,
+ "license": "NOASSERTION",
+ "archived": false,
+ "created": "2009-03-21T22:32:25Z",
+ "pushed": "2026-10-27T11:48:52Z",
+ "ref": "unstable",
+ "homepage": "http://redis.io",
+ "description": "For developers, who are building real-time data-driven applications, Redis is the preferred, fastest, and most feature-rich cache, data structure server, and document and vector query engine.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

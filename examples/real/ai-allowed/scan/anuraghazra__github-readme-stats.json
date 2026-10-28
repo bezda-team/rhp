@@ -1,0 +1,18 @@
+{
+ "full": "anuraghazra/github-readme-stats",
+ "stars": 79853,
+ "license": "MIT",
+ "archived": false,
+ "created": "2020-07-09T10:34:22Z",
+ "pushed": "2026-10-01T01:02:55Z",
+ "ref": "master",
+ "homepage": "https://github-readme-stats.vercel.app",
+ "description": ":zap: Dynamically generated stats for your github readmes",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

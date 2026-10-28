@@ -1,0 +1,24 @@
+{
+ "full": "syncthing/syncthing",
+ "stars": 89811,
+ "license": "MPL-2.0",
+ "archived": false,
+ "created": "2013-11-26T09:48:21Z",
+ "pushed": "2026-10-27T11:25:15Z",
+ "ref": "main",
+ "homepage": "https://syncthing.net/",
+ "description": "Open Source Continuous File Synchronization",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   ":warning: Do not submit AI generated issues or comments. Report any details\nyou experienced as a human, and let anyone who wants to perform AI analysis\ndo so on their own.",
+   ":warning: We do not accept contributions that are wholly or mostly AI\ngenerated. You may assume that we are fully capable of prompting an AI\nourselves when so inclined."
+  ]
+ },
+ "agentText": {}
+}

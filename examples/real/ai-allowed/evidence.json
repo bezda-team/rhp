@@ -1,0 +1,604 @@
+{
+ "about": "What each project's own files say about AI in contributions. stance: allows, limits (allows only narrow uses), forbids, or none (no position and no sign). basis: policy (a written rule) or practice (no written rule, but instructions for AI coding agents kept in the repo and merged commits that credit an AI tool). Each quote is a list of verbatim excerpts, joined with an ellipsis on the poster; verify.mjs checks every excerpt against the file at the repo's current commit. \"show\" lists the excerpts a poster prints, by their place in the quote, when the whole quote is too long for it; \"card\" and \"box\" give shorter words for the infographic's cards and the chart's box, each of which must be part of an excerpt (build.mjs checks).",
+ "projects": {
+  "freeCodeCamp/freeCodeCamp": {
+   "name": "freeCodeCamp",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "freeCodeCamp/contribute",
+    "path": "src/content/docs/faq.mdx",
+    "quote": [
+     "Can I use AI tools to help with my contributions?",
+     "Yes, but use them productively.",
+     "We use tools like GitHub Copilot and Claude every day."
+    ],
+    "show": [
+     0,
+     1
+    ]
+   },
+   "note": "freeCodeCamp's contributor guide lives in its own repository, freeCodeCamp/contribute."
+  },
+  "torvalds/linux": {
+   "name": "Linux",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "torvalds/linux",
+    "path": "Documentation/process/coding-assistants.rst",
+    "quote": [
+     "This document provides guidance for AI tools and developers using AI assistance when contributing to the Linux kernel."
+    ],
+    "card": [
+     "This document provides guidance for AI tools and developers using AI assistance"
+    ]
+   },
+   "commit": {
+    "repo": "torvalds/linux",
+    "sha": "183895979c441e52dbd651b388553b09eaa35cfa",
+    "trailer": "Assisted-by:"
+   }
+  },
+  "react/react": {
+   "name": "React",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "react/react",
+    "path": "CLAUDE.md"
+   },
+   "commit": {
+    "repo": "react/react",
+    "sha": "9ca7a2713e2602dd5b75bd3f74024d5fc93d2116",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "yt-dlp/yt-dlp": {
+   "name": "yt-dlp",
+   "stance": "forbids",
+   "basis": "policy",
+   "file": {
+    "repo": "yt-dlp/yt-dlp",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "This project strictly forbids the usage of LLMs, agents, or any other AI tools for any kind of contribution."
+    ]
+   }
+  },
+  "massgravel/Microsoft-Activation-Scripts": {
+   "name": "Microsoft Activation Scripts",
+   "short": "MS Activation Scripts",
+   "stance": "none"
+  },
+  "microsoft/vscode": {
+   "name": "VS Code",
+   "stance": "allows",
+   "basis": "practice",
+   "file": {
+    "repo": "microsoft/vscode",
+    "path": "AGENTS.md",
+    "quote": [
+     "This file provides instructions for AI coding agents working with the VS Code codebase."
+    ]
+   },
+   "commit": {
+    "repo": "microsoft/vscode",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "ohmyzsh/ohmyzsh": {
+   "name": "Oh My Zsh",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "ohmyzsh/ohmyzsh",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "AI tools can be pretty helpful for coding tasks, and we're not here to gatekeep how you get your work done.",
+     "We use these tools ourselves!"
+    ],
+    "box": [
+     "AI tools can be pretty helpful for coding tasks, and we're not here to gatekeep how you get your work done."
+    ]
+   }
+  },
+  "flutter/flutter": {
+   "name": "Flutter",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "flutter/flutter",
+    "path": "CONTRIBUTING.ai.md",
+    "quote": [
+     "This does not prohibit the use of coding assistance tools",
+     "You must review all AI-generated code before opening a (non-draft) PR"
+    ],
+    "card": [
+     "You must review all AI-generated code before opening a (non-draft) PR"
+    ],
+    "box": [
+     "You must review all AI-generated code before opening a (non-draft) PR"
+    ]
+   }
+  },
+  "twbs/bootstrap": {
+   "name": "Bootstrap",
+   "stance": "allows",
+   "basis": "practice",
+   "file": {
+    "repo": "twbs/bootstrap",
+    "path": "AGENTS.md",
+    "quote": [
+     "Guidance for AI coding agents working in this repository."
+    ]
+   },
+   "commit": {
+    "repo": "twbs/bootstrap",
+    "sha": "05331e182f29d02a684516bd804b80a53f9fdfc3",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "clash-verge-rev/clash-verge-rev": {
+   "name": "Clash Verge Rev",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "clash-verge-rev/clash-verge-rev",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "We welcome AI-assisted contributions",
+     "AI assistance itself is not a problem."
+    ]
+   }
+  },
+  "Genymobile/scrcpy": {
+   "name": "scrcpy",
+   "stance": "none"
+  },
+  "vercel/next.js": {
+   "name": "Next.js",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "vercel/next.js",
+    "path": ".github/pull_request_template.md",
+    "quote": [
+     "We encourage you to use AI to assist you in researching, creating, and reviewing changes.",
+     "you must review and deeply understand the contributions you are making."
+    ]
+   }
+  },
+  "ytdl-org/youtube-dl": {
+   "name": "youtube-dl",
+   "stance": "none"
+  },
+  "microsoft/PowerToys": {
+   "name": "PowerToys",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "microsoft/PowerToys",
+    "path": "AGENTS.md",
+    "quote": [
+     "This is the top-level guidance for AI contributions to PowerToys."
+    ]
+   }
+  },
+  "golang/go": {
+   "name": "Go",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "golang/go",
+    "sha": "a6964733769a02ae49052bdd8f35b928e19c4aaa",
+    "trailer": "Co-Authored-By: Claude"
+   }
+  },
+  "excalidraw/excalidraw": {
+   "name": "Excalidraw",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "excalidraw/excalidraw",
+    "path": "CLAUDE.md"
+   },
+   "commit": {
+    "repo": "excalidraw/excalidraw",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "kubernetes/kubernetes": {
+   "name": "Kubernetes",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "kubernetes/community",
+    "path": "contributors/guide/pull-requests.md",
+    "quote": [
+     "Using AI tools to help write your PR is acceptable, but as the author, you are responsible for understanding every change."
+    ],
+    "card": [
+     "Using AI tools to help write your PR is acceptable"
+    ]
+   },
+   "note": "Kubernetes keeps its contributor guide in kubernetes/community; its pull request template asks for an AI usage disclosure."
+  },
+  "rustdesk/rustdesk": {
+   "name": "RustDesk",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "rustdesk/rustdesk",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "rustdesk/rustdesk",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "react/react-native": {
+   "name": "React Native",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "react/react-native",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "react/react-native",
+    "trailer": "Generated with Claude Code"
+   }
+  },
+  "shadcn-ui/ui": {
+   "name": "shadcn/ui",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "shadcn-ui/ui",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "electron/electron": {
+   "name": "Electron",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "electron/governance",
+    "path": "policy/ai.md",
+    "quote": [
+     "If you use AI tools to help write code, documentation, comments, or any other contribution, you are still the author and bear full responsibility for the work."
+    ]
+   },
+   "note": "electron/electron's CONTRIBUTING.md links this policy in Electron's governance repository."
+  },
+  "nodejs/node": {
+   "name": "Node.js",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "nodejs/node",
+    "path": "doc/contributing/ai-guidelines.md",
+    "quote": [
+     "The Node.js project does not prohibit the use of AI tools in contributions"
+    ]
+   }
+  },
+  "rust-lang/rust": {
+   "name": "Rust",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "rust-lang/rust",
+    "path": ".github/pull_request_template.md",
+    "quote": [
+     "LLM contributions are not banned, but are held to a higher standard of review and correctness."
+    ]
+   }
+  },
+  "2dust/v2rayN": {
+   "name": "v2rayN",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "2dust/v2rayN",
+    "sha": "4869a6cbba405066f84fbf508daeed98610d8930",
+    "trailer": "Co-Authored-By: Claude"
+   }
+  },
+  "godotengine/godot": {
+   "name": "Godot",
+   "stance": "limits",
+   "basis": "policy",
+   "file": {
+    "repo": "godotengine/godot-contributing-docs",
+    "path": "development/contribution_rules.rst",
+    "quote": [
+     "Do not use AI to generate substantial pieces of code",
+     "For example using AI for code completion is permissible."
+    ]
+   },
+   "note": "Godot's pull request template links these rules in its contributing-docs repository."
+  },
+  "immich-app/immich": {
+   "name": "Immich",
+   "stance": "limits",
+   "basis": "policy",
+   "file": {
+    "repo": "immich-app/immich",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "We ask you not to open PRs generated with an LLM."
+    ]
+   }
+  },
+  "mrdoob/three.js": {
+   "name": "three.js",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "mrdoob/three.js",
+    "sha": "02b15eeaaf4230c2f4fa5b8d61da7716092a37f4",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "supabase/supabase": {
+   "name": "Supabase",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "supabase/supabase",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "supabase/supabase",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "d3/d3": {
+   "name": "D3",
+   "stance": "none"
+  },
+  "obra/superpowers": {
+   "name": "Superpowers",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "obra/superpowers",
+    "path": "AGENTS.md",
+    "quote": [
+     "Disclose your model, harness, harness version, every installed plugin, and what your human partner asked you to do in the PR."
+    ],
+    "box": [
+     "Disclose your model, harness, harness version, every installed plugin"
+    ]
+   }
+  },
+  "NousResearch/hermes-agent": {
+   "name": "Hermes Agent",
+   "stance": "allows",
+   "basis": "practice",
+   "file": {
+    "repo": "NousResearch/hermes-agent",
+    "path": "AGENTS.md",
+    "quote": [
+     "For AI coding assistants and developers working on hermes-agent."
+    ]
+   }
+  },
+  "anomalyco/opencode": {
+   "name": "opencode",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "anomalyco/opencode",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "anomalyco/opencode",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "tensorflow/tensorflow": {
+   "name": "TensorFlow",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "tensorflow/tensorflow",
+    "trailer": "Generated with Claude Code"
+   }
+  },
+  "firecrawl/firecrawl": {
+   "name": "Firecrawl",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "firecrawl/firecrawl",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "firecrawl/firecrawl",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "microsoft/markitdown": {
+   "name": "MarkItDown",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "microsoft/markitdown",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "ollama/ollama": {
+   "name": "Ollama",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "ollama/ollama",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "ollama/ollama",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "huggingface/transformers": {
+   "name": "Transformers",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "huggingface/transformers",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "AI-assisted contributions are welcome."
+    ]
+   }
+  },
+  "AUTOMATIC1111/stable-diffusion-webui": {
+   "name": "Stable Diffusion web UI",
+   "short": "SD web UI",
+   "stance": "none"
+  },
+  "msitarzewski/agency-agents": {
+   "name": "The Agency",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "msitarzewski/agency-agents",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "langflow-ai/langflow": {
+   "name": "Langflow",
+   "stance": "allows",
+   "basis": "practice",
+   "file": {
+    "repo": "langflow-ai/langflow",
+    "path": "AGENTS.md",
+    "quote": [
+     "This file provides guidance to AI coding agents when working with code in this repository."
+    ]
+   }
+  },
+  "farion1231/cc-switch": {
+   "name": "CC Switch",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "farion1231/cc-switch",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "We welcome AI-assisted contributions, but the responsibility stays with you."
+    ]
+   }
+  },
+  "langchain-ai/langchain": {
+   "name": "LangChain",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "langchain-ai/langchain",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "langchain-ai/langchain",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "Comfy-Org/ComfyUI": {
+   "name": "ComfyUI",
+   "stance": "allows",
+   "basis": "practice",
+   "agentFile": {
+    "repo": "Comfy-Org/ComfyUI",
+    "path": "AGENTS.md"
+   },
+   "commit": {
+    "repo": "Comfy-Org/ComfyUI",
+    "trailer": "Co-authored-by: Claude"
+   }
+  },
+  "github/spec-kit": {
+   "name": "Spec Kit",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "github/spec-kit",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "human and AI-assisted contributions are judged identically."
+    ]
+   }
+  },
+  "harry0703/MoneyPrinterTurbo": {
+   "name": "MoneyPrinterTurbo",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "harry0703/MoneyPrinterTurbo",
+    "trailer": "Co-authored-by: Claude"
+   },
+   "short": "MoneyPrinter​Turbo"
+  },
+  "ggml-org/llama.cpp": {
+   "name": "llama.cpp",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "ggml-org/llama.cpp",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "AI-generated code is allowed. You are 100% responsible for every line, however it was produced."
+    ]
+   }
+  },
+  "openai/codex": {
+   "name": "Codex",
+   "stance": "allows",
+   "basis": "practice",
+   "file": {
+    "repo": "openai/codex",
+    "path": "docs/contributing.md",
+    "quote": [
+     "We do not accept external code contributions or pull requests.",
+     "implementation is comparatively straightforward with the help of Codex itself."
+    ]
+   },
+   "note": "Codex takes no outside code at all; its own team writes it with Codex."
+  },
+  "browser-use/browser-use": {
+   "name": "Browser Use",
+   "stance": "allows",
+   "basis": "practice",
+   "file": {
+    "repo": "browser-use/browser-use",
+    "path": "CLAUDE.md",
+    "quote": [
+     "This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository."
+    ]
+   }
+  },
+  "earendil-works/pi": {
+   "name": "Pi",
+   "stance": "allows",
+   "basis": "policy",
+   "file": {
+    "repo": "earendil-works/pi",
+    "path": "CONTRIBUTING.md",
+    "quote": [
+     "Using AI to write code is fine."
+    ]
+   }
+  },
+  "TauricResearch/TradingAgents": {
+   "name": "TradingAgents",
+   "stance": "allows",
+   "basis": "practice",
+   "commit": {
+    "repo": "TauricResearch/TradingAgents",
+    "trailer": "Co-authored-by: Claude"
+   }
+  }
+ }
+}

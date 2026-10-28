@@ -1,0 +1,3949 @@
+{
+ "freeCodeCamp/freeCodeCamp": {
+  "readAt": "2026-10-27T22:45:37Z",
+  "counts": {
+   "claude": {
+    "total": 27,
+    "examples": [
+     {
+      "sha": "3db61929934516afe6c0ade3c51339715fa2cc63",
+      "date": "2026-10-09T10:53:17.000Z",
+      "title": "fix(curriculum): remove hidden test dependencies in Implement a Queue lab (#70492)",
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp/commit/3db61929934516afe6c0ade3c51339715fa2cc63"
+     },
+     {
+      "sha": "bfd9ff8160e59d81f409511fa41dee995569b9a8",
+      "date": "2026-10-07T16:41:57.000+02:00",
+      "title": "fix(curriculum): fix wording and punctuation in Debug an ISBN Validator (#70718)",
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp/commit/bfd9ff8160e59d81f409511fa41dee995569b9a8"
+     },
+     {
+      "sha": "738c847248ce4a9f97145d6396d9b7d8daeb4c66",
+      "date": "2026-09-27T20:20:27.000Z",
+      "title": "fix(curriculum): clarify int() description in Python functions lecture (#70435)",
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp/commit/738c847248ce4a9f97145d6396d9b7d8daeb4c66"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 37,
+    "examples": [
+     {
+      "sha": "6976a4c812a4cae20e8330223cbaf4dac70e9495",
+      "date": "2026-10-23T10:28:05.000+02:00",
+      "title": "fix(curriculum): update selection sort challengeOrder title (#71296)",
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp/commit/6976a4c812a4cae20e8330223cbaf4dac70e9495"
+     },
+     {
+      "sha": "bd145f1d3a3f48d72516da435e4aa90d19975adc",
+      "date": "2026-10-09T19:24:46.000+02:00",
+      "title": "fix(curriculum): add performance API section headers (#70758)",
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp/commit/bd145f1d3a3f48d72516da435e4aa90d19975adc"
+     },
+     {
+      "sha": "7bff7279d11c9ecf3f754cca4f8a5acc9b487404",
+      "date": "2026-10-09T10:05:12.000+02:00",
+      "title": "fix(curriculum): add section headers to React forms lecture (#70757)",
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp/commit/7bff7279d11c9ecf3f754cca4f8a5acc9b487404"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "torvalds/linux": {
+  "readAt": "2026-10-27T22:45:52Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 5833,
+    "examples": [
+     {
+      "sha": "183895979c441e52dbd651b388553b09eaa35cfa",
+      "date": "2026-10-24T01:56:43.000-07:00",
+      "title": "mm: multi-gen LRU: fix NULL lruvec->pgdat deref with memcg disabled on cmdline",
+      "url": "https://github.com/torvalds/linux/commit/183895979c441e52dbd651b388553b09eaa35cfa"
+     },
+     {
+      "sha": "faaf8b406c5178fc54662c91e7ce687c0c4cb4be",
+      "date": "2026-10-24T01:56:41.000-07:00",
+      "title": "mm/shrinker: allocate shrinker_info_unit from a dedicated kmem_cache",
+      "url": "https://github.com/torvalds/linux/commit/faaf8b406c5178fc54662c91e7ce687c0c4cb4be"
+     },
+     {
+      "sha": "4fb975471717c953f912776bb60301add1ffae11",
+      "date": "2026-10-24T01:56:40.000-07:00",
+      "title": "fs/proc/task_mmu: pin mm_users in do_pagemap_scan()",
+      "url": "https://github.com/torvalds/linux/commit/4fb975471717c953f912776bb60301add1ffae11"
+     }
+    ]
+   }
+  }
+ },
+ "react/react": {
+  "readAt": "2026-10-27T22:46:05Z",
+  "counts": {
+   "claude": {
+    "total": 35,
+    "examples": [
+     {
+      "sha": "9ca7a2713e2602dd5b75bd3f74024d5fc93d2116",
+      "date": "2026-10-26T11:33:37.000Z",
+      "title": "[compiler] Type react-native PanResponder.create to fix react-hooks/refs false positive (#37970)",
+      "url": "https://github.com/react/react/commit/9ca7a2713e2602dd5b75bd3f74024d5fc93d2116"
+     },
+     {
+      "sha": "a6b912fbe77f698ad43c922f206db0d4f4ad7485",
+      "date": "2026-10-23T16:00:24.000+01:00",
+      "title": "[compiler] Retain declared Freeze effects on already-frozen values for ref validation (#37975)",
+      "url": "https://github.com/react/react/commit/a6b912fbe77f698ad43c922f206db0d4f4ad7485"
+     },
+     {
+      "sha": "ab0d927f53f6e1b5dcfc2c4e9fc438bdb5ffb678",
+      "date": "2026-10-20T18:46:10.000+02:00",
+      "title": "Ensure unique `useId` values in large trees (#37916)",
+      "url": "https://github.com/react/react/commit/ab0d927f53f6e1b5dcfc2c4e9fc438bdb5ffb678"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "9ca7a2713e2602dd5b75bd3f74024d5fc93d2116",
+      "date": "2026-10-26T11:33:37.000Z",
+      "title": "[compiler] Type react-native PanResponder.create to fix react-hooks/refs false positive (#37970)",
+      "url": "https://github.com/react/react/commit/9ca7a2713e2602dd5b75bd3f74024d5fc93d2116"
+     },
+     {
+      "sha": "a6b912fbe77f698ad43c922f206db0d4f4ad7485",
+      "date": "2026-10-23T16:00:24.000+01:00",
+      "title": "[compiler] Retain declared Freeze effects on already-frozen values for ref validation (#37975)",
+      "url": "https://github.com/react/react/commit/a6b912fbe77f698ad43c922f206db0d4f4ad7485"
+     },
+     {
+      "sha": "ab0d927f53f6e1b5dcfc2c4e9fc438bdb5ffb678",
+      "date": "2026-10-20T18:46:10.000+02:00",
+      "title": "Ensure unique `useId` values in large trees (#37916)",
+      "url": "https://github.com/react/react/commit/ab0d927f53f6e1b5dcfc2c4e9fc438bdb5ffb678"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "vuejs/vue": {
+  "readAt": "2026-10-27T22:46:19Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "yt-dlp/yt-dlp": {
+  "readAt": "2026-10-27T22:46:33Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "massgravel/Microsoft-Activation-Scripts": {
+  "readAt": "2026-10-27T22:46:47Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "microsoft/vscode": {
+  "readAt": "2026-10-27T22:47:01Z",
+  "counts": {
+   "claude": {
+    "total": 72,
+    "examples": [
+     {
+      "sha": "ac717e6cb298133160d287113b2b1c421cb981ab",
+      "date": "2026-09-20T13:58:32.000Z",
+      "title": "github-authentication: skip education.github.com check for EMU accounts (#336608)",
+      "url": "https://github.com/microsoft/vscode/commit/ac717e6cb298133160d287113b2b1c421cb981ab"
+     },
+     {
+      "sha": "f9550496acedcbc2eb5c3208fd943086445322be",
+      "date": "2026-09-14T18:58:16.000Z",
+      "title": "Fix main process OOM from unconsumed buffered pty host service events (#323980)",
+      "url": "https://github.com/microsoft/vscode/commit/f9550496acedcbc2eb5c3208fd943086445322be"
+     },
+     {
+      "sha": "d6055ac6ded8105c1eb3765b615e889c0652230b",
+      "date": "2026-09-14T13:06:17.000-03:00",
+      "title": "Fix opening `file:` links with a drive letter in the Debug Console",
+      "url": "https://github.com/microsoft/vscode/commit/d6055ac6ded8105c1eb3765b615e889c0652230b"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 5628,
+    "examples": [
+     {
+      "sha": "b77069590477083cbef877caf48cd134e544dd80",
+      "date": "2026-09-22T19:04:30.000-07:00",
+      "title": "Fix sandbox toggle for remote Copilot agent host sessions (#337385)",
+      "url": "https://github.com/microsoft/vscode/commit/b77069590477083cbef877caf48cd134e544dd80"
+     },
+     {
+      "sha": "a2e11e2ffcc3a071c0cc32af180ea39d360252d7",
+      "date": "2026-09-23T01:48:58.000Z",
+      "title": "chat: show MCP sign-in progress and preserve live server state (#337381)",
+      "url": "https://github.com/microsoft/vscode/commit/a2e11e2ffcc3a071c0cc32af180ea39d360252d7"
+     },
+     {
+      "sha": "d4412f49d4cfb3e67c36a1c0d80cc4fcd9519fe0",
+      "date": "2026-09-23T01:44:27.000Z",
+      "title": "chat: Discover cloud sandbox sessions in the Editor Window (#337189)",
+      "url": "https://github.com/microsoft/vscode/commit/d4412f49d4cfb3e67c36a1c0d80cc4fcd9519fe0"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "ohmyzsh/ohmyzsh": {
+  "readAt": "2026-10-27T22:47:15Z",
+  "counts": {
+   "claude": {
+    "total": 7,
+    "examples": [
+     {
+      "sha": "535aaaf9246b26b59f8ca554113a4ba217449047",
+      "date": "2026-10-11T15:46:27.000-07:00",
+      "title": "feat(gpg-agent): add `ssh-support` style to skip the gpgconf check (#14171)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/535aaaf9246b26b59f8ca554113a4ba217449047"
+     },
+     {
+      "sha": "8d421b630918e9a37d314b2ba141ed2b6a9ac630",
+      "date": "2026-09-22T17:45:05.000+02:00",
+      "title": "fix(systemadmin): make the netstat fallback reachable (#14119)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/8d421b630918e9a37d314b2ba141ed2b6a9ac630"
+     },
+     {
+      "sha": "c6e66edee824d83e84473ec666917b58323630df",
+      "date": "2026-09-10T07:19:55.000-07:00",
+      "title": "feat(mix): complete only test and script files for `test` and `run` (#11020)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/c6e66edee824d83e84473ec666917b58323630df"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "99aaf58d007f1378d1e0609bcd9baf8abbbaf327",
+      "date": "2026-08-08T20:06:16.000+02:00",
+      "title": "fix(codex): redirect stdin from /dev/null in background completion generation (#13921)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/99aaf58d007f1378d1e0609bcd9baf8abbbaf327"
+     },
+     {
+      "sha": "a4ee4daf3c77376f9efd2e230e0353114b82339b",
+      "date": "2026-04-20T11:00:37.000+02:00",
+      "title": "fix(tmux): treat xterm-direct as 256-color (#13700)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/a4ee4daf3c77376f9efd2e230e0353114b82339b"
+     },
+     {
+      "sha": "b52dd1a425e9ed9f844ba46cd27ff94a3b4949dc",
+      "date": "2025-11-19T17:44:11.000-08:00",
+      "title": "feat: Update OpenSwag domain references to CommitGoods (#13434)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/b52dd1a425e9ed9f844ba46cd27ff94a3b4949dc"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "eb29cdb33aae9edeca5827168ed602b0dcc89c46",
+      "date": "2026-10-11T15:58:22.000-07:00",
+      "title": "fix(globalias): preserve quoted words and assignment values (#14092)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/eb29cdb33aae9edeca5827168ed602b0dcc89c46"
+     },
+     {
+      "sha": "59a9740721b734835812121322d6fe4827b0853a",
+      "date": "2026-07-21T13:25:18.000-07:00",
+      "title": "fix(bundler): restore `bu` and add `bua` alias (#13872)",
+      "url": "https://github.com/ohmyzsh/ohmyzsh/commit/59a9740721b734835812121322d6fe4827b0853a"
+     }
+    ]
+   }
+  }
+ },
+ "flutter/flutter": {
+  "readAt": "2026-10-27T22:47:30Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "15d79e2ce448afc6a62090a65ea47126ba5ced93",
+      "date": "2026-10-02T01:00:00.000Z",
+      "title": "Document that enableSuggestions: false can disable keyboard languages on Android (#192714)",
+      "url": "https://github.com/flutter/flutter/commit/15d79e2ce448afc6a62090a65ea47126ba5ced93"
+     },
+     {
+      "sha": "569d97505b5d83b1fadb6390fcd46f737a7f5360",
+      "date": "2026-10-01T17:50:30.000Z",
+      "title": "Remove remaining `download_jdk` references (#193562)",
+      "url": "https://github.com/flutter/flutter/commit/569d97505b5d83b1fadb6390fcd46f737a7f5360"
+     },
+     {
+      "sha": "b9db4f9161d06a95a6c14e127df665828a91319a",
+      "date": "2026-09-30T17:49:15.000Z",
+      "title": "Fix pointer id/coordinate mismatch in Android platform view multi-touch (#191631)",
+      "url": "https://github.com/flutter/flutter/commit/b9db4f9161d06a95a6c14e127df665828a91319a"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "twbs/bootstrap": {
+  "readAt": "2026-10-27T22:47:43Z",
+  "counts": {
+   "claude": {
+    "total": 51,
+    "examples": [
+     {
+      "sha": "05331e182f29d02a684516bd804b80a53f9fdfc3",
+      "date": "2026-10-27T21:19:24.000+01:00",
+      "title": "Update postcss-selector-parser in the lockfile (#43219)",
+      "url": "https://github.com/twbs/bootstrap/commit/05331e182f29d02a684516bd804b80a53f9fdfc3"
+     },
+     {
+      "sha": "8792aaaf0ae780504cfb465b9bd206dfdcb2ef64",
+      "date": "2026-10-27T21:13:29.000+01:00",
+      "title": "Docs: show the code and StackBlitz button on every Flex & Grid example (#43218)",
+      "url": "https://github.com/twbs/bootstrap/commit/8792aaaf0ae780504cfb465b9bd206dfdcb2ef64"
+     },
+     {
+      "sha": "9bfeda9fe7e695b094f3bb38ca86fd2e506f2823",
+      "date": "2026-10-27T19:41:53.000+01:00",
+      "title": "Docs: start StackBlitz playgrounds from the example's source and its plugins",
+      "url": "https://github.com/twbs/bootstrap/commit/9bfeda9fe7e695b094f3bb38ca86fd2e506f2823"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 6,
+    "examples": [
+     {
+      "sha": "4eb4ec1ffa696e84f8ee74dfd637de271f0231ce",
+      "date": "2026-05-21T17:18:48.000-07:00",
+      "title": "v6: docs - remove unneeded word-break page (Content moved to text-wrapping page) (#42426)",
+      "url": "https://github.com/twbs/bootstrap/commit/4eb4ec1ffa696e84f8ee74dfd637de271f0231ce"
+     },
+     {
+      "sha": "495618b7a7add3fd6cb3343a64eec56a7c1b8eda",
+      "date": "2026-05-02T21:06:45.000-07:00",
+      "title": "v6: minor docs fixes (#42385)",
+      "url": "https://github.com/twbs/bootstrap/commit/495618b7a7add3fd6cb3343a64eec56a7c1b8eda"
+     },
+     {
+      "sha": "a917c1e8c28562ed7f81874c2c6a458ab82435ba",
+      "date": "2026-01-23T08:01:20.000-08:00",
+      "title": "docs: v6 docs fixes (#42030)",
+      "url": "https://github.com/twbs/bootstrap/commit/a917c1e8c28562ed7f81874c2c6a458ab82435ba"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "clash-verge-rev/clash-verge-rev": {
+  "readAt": "2026-10-27T22:47:57Z",
+  "counts": {
+   "claude": {
+    "total": 7,
+    "examples": [
+     {
+      "sha": "84312a5cd171b338663c347d3182bd162306801f",
+      "date": "2026-10-10T16:32:27.000Z",
+      "title": "fix(sysproxy): bypass *.local by default on Windows (#8054)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/84312a5cd171b338663c347d3182bd162306801f"
+     },
+     {
+      "sha": "cb751052a423c017e75cf0379adb12848e3f0fae",
+      "date": "2026-10-09T09:11:07.000+08:00",
+      "title": "feat(tray): add a per-group latency test (#8173)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/cb751052a423c017e75cf0379adb12848e3f0fae"
+     },
+     {
+      "sha": "6b4d4e1551310f811c21766db299b077ceb7a1fe",
+      "date": "2026-10-08T12:48:30.000+08:00",
+      "title": "feat(i18n): add Brazilian Portuguese locale (#8203)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/6b4d4e1551310f811c21766db299b077ceb7a1fe"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 7,
+    "examples": [
+     {
+      "sha": "df66d976a5be61b3850b547e9b0b50e95ba95681",
+      "date": "2026-07-26T02:02:02.000+08:00",
+      "title": "feat(updater): skip installer language prompt during auto-update (#7572)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/df66d976a5be61b3850b547e9b0b50e95ba95681"
+     },
+     {
+      "sha": "a08d625712d915ca42fa20b2d0cb5d949f4f96fd",
+      "date": "2026-05-21T18:35:59.000+08:00",
+      "title": "fix(ci): avoid generated PR checkout in AI slop workflow (#7076)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/a08d625712d915ca42fa20b2d0cb5d949f4f96fd"
+     },
+     {
+      "sha": "f7c9e36891e0d38a12d040e653eefc6074ab3a40",
+      "date": "2026-05-21T09:01:58.000Z",
+      "title": "chore(ci): update gh-aw workflow tooling (#7072)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/f7c9e36891e0d38a12d040e653eefc6074ab3a40"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 12,
+    "examples": [
+     {
+      "sha": "b6d94d45d561f78636fea98d8bc8d6cdd23512df",
+      "date": "2026-10-09T04:11:48.000Z",
+      "title": "chore(deps): update dependency pnpm to v12.10.1 (#8217)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/b6d94d45d561f78636fea98d8bc8d6cdd23512df"
+     },
+     {
+      "sha": "78691ea5c848fff9d150af4bedee4fe0422a4cc1",
+      "date": "2026-10-07T13:16:34.000+08:00",
+      "title": "fix(updater): clear cache when auto-check is disabled (#8091)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/78691ea5c848fff9d150af4bedee4fe0422a4cc1"
+     },
+     {
+      "sha": "afc32f568ac9b3bf7c49d03238249ad4e842923a",
+      "date": "2026-09-23T07:03:15.000Z",
+      "title": "chore(deps): Bump `pnpm` and `cargo` dependencies (#8022)",
+      "url": "https://github.com/clash-verge-rev/clash-verge-rev/commit/afc32f568ac9b3bf7c49d03238249ad4e842923a"
+     }
+    ]
+   }
+  }
+ },
+ "Genymobile/scrcpy": {
+  "readAt": "2026-10-27T22:48:11Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "vercel/next.js": {
+  "readAt": "2026-10-27T22:48:25Z",
+  "counts": {
+   "claude": {
+    "total": 205,
+    "examples": [
+     {
+      "sha": "6f98e9fcedf6420658f0039376ef15d358e4cf1a",
+      "date": "2026-10-26T19:24:44.000+01:00",
+      "title": "[test] Isolate deploy e2e revalidation scope per suite (#100718)",
+      "url": "https://github.com/vercel/next.js/commit/6f98e9fcedf6420658f0039376ef15d358e4cf1a"
+     },
+     {
+      "sha": "2a697ac4a7e1f026fdae4dae8c3c71a2bc2a7299",
+      "date": "2026-10-24T09:15:09.000-07:00",
+      "title": "turbo-tasks-backend: stripe SnapshotCoordinator's operation count and poll for the drain (#100280)",
+      "url": "https://github.com/vercel/next.js/commit/2a697ac4a7e1f026fdae4dae8c3c71a2bc2a7299"
+     },
+     {
+      "sha": "eb5bafb7055f5ed50c7dcf9f61a1ad3cfcdb7b34",
+      "date": "2026-10-23T15:12:32.000+02:00",
+      "title": "[cd] Document that Turbopack team can also approve releases (#100650)",
+      "url": "https://github.com/vercel/next.js/commit/eb5bafb7055f5ed50c7dcf9f61a1ad3cfcdb7b34"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 22,
+    "examples": [
+     {
+      "sha": "3b658c96e3c318ce2708fc9ec31fbfc280e7acbd",
+      "date": "2026-10-23T11:59:08.000+02:00",
+      "title": "End the cache-signal read when `encryptActionBoundArgs` hits the RDC (#100622)",
+      "url": "https://github.com/vercel/next.js/commit/3b658c96e3c318ce2708fc9ec31fbfc280e7acbd"
+     },
+     {
+      "sha": "dd904bb796c97544d45fe68d67133abf75f04f36",
+      "date": "2026-10-20T10:52:54.000+02:00",
+      "title": "[ci] Upload adapter test results via GitHub Actions OIDC (#100400)",
+      "url": "https://github.com/vercel/next.js/commit/dd904bb796c97544d45fe68d67133abf75f04f36"
+     },
+     {
+      "sha": "648110d4389c31b1e6a0ad5d48597a0e329164ad",
+      "date": "2026-10-15T16:36:48.000+02:00",
+      "title": "docs: Add Pages Router upgrade guides for versions 15 and 16 (#100247)",
+      "url": "https://github.com/vercel/next.js/commit/648110d4389c31b1e6a0ad5d48597a0e329164ad"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 7,
+    "examples": [
+     {
+      "sha": "f173bcc884363481c44f6bae75ff87596cb7659c",
+      "date": "2026-10-12T12:29:00.000+02:00",
+      "title": "Add cache-handler-redis-turbo example (Next.js 16 Cache Components + Redis) (#96622)",
+      "url": "https://github.com/vercel/next.js/commit/f173bcc884363481c44f6bae75ff87596cb7659c"
+     },
+     {
+      "sha": "d4b234030d24b8b4f4c29aa3aac27962d42739bc",
+      "date": "2026-06-25T15:29:24.000+02:00",
+      "title": "docs: clarify /_not-found failures and <html> attribute reads under Cache Components (#95163)",
+      "url": "https://github.com/vercel/next.js/commit/d4b234030d24b8b4f4c29aa3aac27962d42739bc"
+     },
+     {
+      "sha": "9e344c9279c398d017a489c7cbabe68600e46685",
+      "date": "2026-06-22T23:27:06.000Z",
+      "title": "skill(next-cache-components-adoption): tune skill to mention app router requirement (#95069)",
+      "url": "https://github.com/vercel/next.js/commit/9e344c9279c398d017a489c7cbabe68600e46685"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "ytdl-org/youtube-dl": {
+  "readAt": "2026-10-27T22:48:38Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "microsoft/PowerToys": {
+  "readAt": "2026-10-27T22:48:52Z",
+  "counts": {
+   "claude": {
+    "total": 67,
+    "examples": [
+     {
+      "sha": "41d25ae4b545b1eb366a9d3de847f8ad9e2b5bd4",
+      "date": "2026-10-14T13:55:57.000+08:00",
+      "title": "Add plain text fallback support to peek (#50020)",
+      "url": "https://github.com/microsoft/PowerToys/commit/41d25ae4b545b1eb366a9d3de847f8ad9e2b5bd4"
+     },
+     {
+      "sha": "84eff86a617f6dba661fb7d6c4e1b8f49857343b",
+      "date": "2026-10-01T13:06:14.000+02:00",
+      "title": "Feature/fancyzones mouse wheel layout switch (#49291)",
+      "url": "https://github.com/microsoft/PowerToys/commit/84eff86a617f6dba661fb7d6c4e1b8f49857343b"
+     },
+     {
+      "sha": "ab799fb086fcd520ccda0807461f46639ca7ecb9",
+      "date": "2026-09-22T03:54:15.000Z",
+      "title": "[Peek] Fix non-deterministic async void Dispose in WebBrowserPreviewer (#50636)",
+      "url": "https://github.com/microsoft/PowerToys/commit/ab799fb086fcd520ccda0807461f46639ca7ecb9"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 7,
+    "examples": [
+     {
+      "sha": "7f5a43c3fc0e1ab52c494e97359746b37d9c978d",
+      "date": "2026-09-02T13:46:36.000+02:00",
+      "title": "[CmdPal][TimeDate] Add optional week number to the Clock dock band (#49093)",
+      "url": "https://github.com/microsoft/PowerToys/commit/7f5a43c3fc0e1ab52c494e97359746b37d9c978d"
+     },
+     {
+      "sha": "69a600e249cf3398571317a792a9fc047efef9a5",
+      "date": "2026-08-13T18:12:04.000+02:00",
+      "title": "feat(File Explorer): Add configurable local image rendering to Markdown previewer (#47857)",
+      "url": "https://github.com/microsoft/PowerToys/commit/69a600e249cf3398571317a792a9fc047efef9a5"
+     },
+     {
+      "sha": "03e5f3e8371ae93690fd2151e392241b8c858c28",
+      "date": "2026-07-03T14:32:37.000Z",
+      "title": "feat(shortcut-guide): add 1Password manifest (#48793)",
+      "url": "https://github.com/microsoft/PowerToys/commit/03e5f3e8371ae93690fd2151e392241b8c858c28"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 399,
+    "examples": [
+     {
+      "sha": "06e6ae43e225cac51c2f282b0eebc42c6f995c97",
+      "date": "2026-10-27T11:29:49.000+08:00",
+      "title": "feat(workspaces): add list and launch CLI (#51114)",
+      "url": "https://github.com/microsoft/PowerToys/commit/06e6ae43e225cac51c2f282b0eebc42c6f995c97"
+     },
+     {
+      "sha": "1c39ab3492e0e90c133500c1cb3848704fe6ce5c",
+      "date": "2026-10-26T07:15:23.000+01:00",
+      "title": "[UI tests] Alt Windows new UI tests (#51552)",
+      "url": "https://github.com/microsoft/PowerToys/commit/1c39ab3492e0e90c133500c1cb3848704fe6ce5c"
+     },
+     {
+      "sha": "007978a311bc6f8dc84ae2a5e0656456526a0b2a",
+      "date": "2026-10-26T13:08:30.000+08:00",
+      "title": "[UI Tests] ShortcutGuide: expand unit test coverage for search, converter, and models (#49953)",
+      "url": "https://github.com/microsoft/PowerToys/commit/007978a311bc6f8dc84ae2a5e0656456526a0b2a"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "golang/go": {
+  "readAt": "2026-10-27T22:49:06Z",
+  "counts": {
+   "claude": {
+    "total": 11,
+    "examples": [
+     {
+      "sha": "a6964733769a02ae49052bdd8f35b928e19c4aaa",
+      "date": "2026-09-28T15:26:55.000-07:00",
+      "title": "compress/flate: combine codes in the writeBlockHuff literal loop",
+      "url": "https://github.com/golang/go/commit/a6964733769a02ae49052bdd8f35b928e19c4aaa"
+     },
+     {
+      "sha": "7f83fbe6a6d0b4f7bc29f0e88ec42562e47e0b6b",
+      "date": "2026-09-25T10:35:36.000-07:00",
+      "title": "compress/flate: use separate tables in histogramSplit",
+      "url": "https://github.com/golang/go/commit/7f83fbe6a6d0b4f7bc29f0e88ec42562e47e0b6b"
+     },
+     {
+      "sha": "521e0d45b100e61ca04dd829bba5911a8a8952f2",
+      "date": "2026-09-23T09:56:40.000-07:00",
+      "title": "compress/flate: speed up writeTokens",
+      "url": "https://github.com/golang/go/commit/521e0d45b100e61ca04dd829bba5911a8a8952f2"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "7f3f9287897ffe1fce5f75101d324bb018cacae3",
+      "date": "2026-10-14T09:26:11.000-07:00",
+      "title": "net/http: remove remaining goroutine leak check",
+      "url": "https://github.com/golang/go/commit/7f3f9287897ffe1fce5f75101d324bb018cacae3"
+     },
+     {
+      "sha": "c456de74b8c9b9b77965d6aea6fe5b618388b927",
+      "date": "2026-09-23T09:27:15.000-07:00",
+      "title": "runtime: use the static type of cleanup arguments",
+      "url": "https://github.com/golang/go/commit/c456de74b8c9b9b77965d6aea6fe5b618388b927"
+     },
+     {
+      "sha": "12c76d447f576e6c14c566c8524c13a0c0d476b9",
+      "date": "2026-09-22T02:16:50.000-07:00",
+      "title": "runtime: synchronize Windows preemption with G status",
+      "url": "https://github.com/golang/go/commit/12c76d447f576e6c14c566c8524c13a0c0d476b9"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "b513bd808f9018da0609cffefaef451ea5c19a74",
+      "date": "2023-03-21T19:27:18.000Z",
+      "title": "runtime: bias the pacer's cons/mark smoothing against noise",
+      "url": "https://github.com/golang/go/commit/b513bd808f9018da0609cffefaef451ea5c19a74"
+     },
+     {
+      "sha": "65aa2da61793846b9929c239dcbdb266490335e5",
+      "date": "2015-10-09T19:39:03.000Z",
+      "title": "runtime: assist before allocating",
+      "url": "https://github.com/golang/go/commit/65aa2da61793846b9929c239dcbdb266490335e5"
+     }
+    ]
+   }
+  }
+ },
+ "excalidraw/excalidraw": {
+  "readAt": "2026-10-27T22:49:20Z",
+  "counts": {
+   "claude": {
+    "total": 11,
+    "examples": [
+     {
+      "sha": "d3a9c2a195182bf65b526ccb7a19de96f4bdfdb3",
+      "date": "2026-10-20T05:53:27.000+02:00",
+      "title": "fix(packages/excalidraw): complete cross-document runtime ownership (#11997)",
+      "url": "https://github.com/excalidraw/excalidraw/commit/d3a9c2a195182bf65b526ccb7a19de96f4bdfdb3"
+     },
+     {
+      "sha": "84e3f5a40c5fac43cb8b28161b9c239d9e857061",
+      "date": "2026-09-27T09:01:38.000Z",
+      "title": "perf(editor): avoid rebuilding id sets on every resize (#12180)",
+      "url": "https://github.com/excalidraw/excalidraw/commit/84e3f5a40c5fac43cb8b28161b9c239d9e857061"
+     },
+     {
+      "sha": "afed9e6e27dd1cd5cc52857a405f7bea5312d813",
+      "date": "2026-09-26T22:38:03.000Z",
+      "title": "fix(editor): handle the save-as shortcut while editing text (#11922)",
+      "url": "https://github.com/excalidraw/excalidraw/commit/afed9e6e27dd1cd5cc52857a405f7bea5312d813"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "974b338b7e5fed5176cfd83b7a120b137751a1db",
+      "date": "2026-05-06T15:27:34.000+02:00",
+      "title": "fix: Group selection (#11234)",
+      "url": "https://github.com/excalidraw/excalidraw/commit/974b338b7e5fed5176cfd83b7a120b137751a1db"
+     },
+     {
+      "sha": "2e1a529c6781b1534d27ca79198dccd40b97ec7b",
+      "date": "2026-04-25T12:03:50.000+02:00",
+      "title": "fix(editor): remove extremely large arrows on restore (#11235)",
+      "url": "https://github.com/excalidraw/excalidraw/commit/2e1a529c6781b1534d27ca79198dccd40b97ec7b"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "kubernetes/kubernetes": {
+  "readAt": "2026-10-27T22:49:33Z",
+  "counts": {
+   "claude": {
+    "total": 6,
+    "examples": [
+     {
+      "sha": "33ebd41b2c1abdc03beabd9ccff3428a8fd46473",
+      "date": "2026-02-12T17:18:14.000-05:00",
+      "title": "client-go: Replace deprecated BackoffManager with DelayFunc in Reflector",
+      "url": "https://github.com/kubernetes/kubernetes/commit/33ebd41b2c1abdc03beabd9ccff3428a8fd46473"
+     },
+     {
+      "sha": "9dda58194a6ab19e0627973c6f8166a0d0f6c32d",
+      "date": "2026-01-18T20:39:57.000-05:00",
+      "title": "Update agnhost to 2.61 and etcd to 3.6.7-0 in test manifests",
+      "url": "https://github.com/kubernetes/kubernetes/commit/9dda58194a6ab19e0627973c6f8166a0d0f6c32d"
+     },
+     {
+      "sha": "050c78601404375e7fc6ee281265687cd752c16e",
+      "date": "2026-01-15T10:26:13.000-05:00",
+      "title": "Update vendored dependencies: cadvisor, containerd, runtime-spec, selinux",
+      "url": "https://github.com/kubernetes/kubernetes/commit/050c78601404375e7fc6ee281265687cd752c16e"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 3,
+    "examples": [
+     {
+      "sha": "0acd0a446885ee30683eadbf9ea6efe7b04e482d",
+      "date": "2026-03-21T16:11:11.000Z",
+      "title": "cri-client: use atomic.Bool for useStreaming to fix data race",
+      "url": "https://github.com/kubernetes/kubernetes/commit/0acd0a446885ee30683eadbf9ea6efe7b04e482d"
+     },
+     {
+      "sha": "3256f5175f96d07d8a14941cb4a281ca48e8116f",
+      "date": "2026-03-18T16:32:49.000Z",
+      "title": "cri-api: Add streaming RPCs for CRI list operations",
+      "url": "https://github.com/kubernetes/kubernetes/commit/3256f5175f96d07d8a14941cb4a281ca48e8116f"
+     },
+     {
+      "sha": "4a597f50b4b30aa847d3954133e9dfd9fb658d11",
+      "date": "2025-08-22T10:37:47.000-04:00",
+      "title": "Fix panic in PodResources API test when FeatureGates is nil",
+      "url": "https://github.com/kubernetes/kubernetes/commit/4a597f50b4b30aa847d3954133e9dfd9fb658d11"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "939de0e5d6596ec3e7dacd62f8a4c5b74c9c798e",
+      "date": "2026-09-02T09:01:58.000Z",
+      "title": "Remove SeparateTaintEvictionController feature gate",
+      "url": "https://github.com/kubernetes/kubernetes/commit/939de0e5d6596ec3e7dacd62f8a4c5b74c9c798e"
+     },
+     {
+      "sha": "4bb25ceabb7a78ac06bd519f9cb7edc71bf08657",
+      "date": "2026-09-01T09:29:22.000Z",
+      "title": "Remove PodSchedulingReadiness feature gate",
+      "url": "https://github.com/kubernetes/kubernetes/commit/4bb25ceabb7a78ac06bd519f9cb7edc71bf08657"
+     },
+     {
+      "sha": "02d456b7513b2bcc1e619a0da60f305643ce4b33",
+      "date": "2026-07-17T16:29:37.000-04:00",
+      "title": "kep-5304: add roundtripping test for metadata API.",
+      "url": "https://github.com/kubernetes/kubernetes/commit/02d456b7513b2bcc1e619a0da60f305643ce4b33"
+     }
+    ]
+   }
+  }
+ },
+ "rustdesk/rustdesk": {
+  "readAt": "2026-10-27T22:49:47Z",
+  "counts": {
+   "claude": {
+    "total": 94,
+    "examples": [
+     {
+      "sha": "ed6a1acce896fb165f2642aa13b609166d57a734",
+      "date": "2026-10-24T10:41:57.000+08:00",
+      "title": "feat(address-book): add a toolbar button to open the web console (#16680)",
+      "url": "https://github.com/rustdesk/rustdesk/commit/ed6a1acce896fb165f2642aa13b609166d57a734"
+     },
+     {
+      "sha": "828d1101afd2e656eb1c1d18511009bdf5336238",
+      "date": "2026-10-22T18:48:28.000+08:00",
+      "title": "chore(deps): pin hwcodec to rustdesk-org/hwcodec#47",
+      "url": "https://github.com/rustdesk/rustdesk/commit/828d1101afd2e656eb1c1d18511009bdf5336238"
+     },
+     {
+      "sha": "3ec041644d6c18a6fbf8b8291bf60ef71614e513",
+      "date": "2026-10-22T18:27:35.000+08:00",
+      "title": "fix(linux): gtk sudo shows no false \"Sorry, try again.\" and retries with sudo-rs (#16652)",
+      "url": "https://github.com/rustdesk/rustdesk/commit/3ec041644d6c18a6fbf8b8291bf60ef71614e513"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 19,
+    "examples": [
+     {
+      "sha": "7cc82c1575f77460168ce467147770b220294c10",
+      "date": "2026-08-25T09:19:37.000+08:00",
+      "title": "Add Urdu language support for UI strings (#15961)",
+      "url": "https://github.com/rustdesk/rustdesk/commit/7cc82c1575f77460168ce467147770b220294c10"
+     },
+     {
+      "sha": "e2149974ccda5a063a2647bdd10d70da850b629b",
+      "date": "2026-07-07T14:54:22.000+08:00",
+      "title": "harden wf_cliprdr.c (#15515)",
+      "url": "https://github.com/rustdesk/rustdesk/commit/e2149974ccda5a063a2647bdd10d70da850b629b"
+     },
+     {
+      "sha": "c9391fb894483bec7e87e37d880a744f10323cbf",
+      "date": "2026-06-18T20:47:24.000+08:00",
+      "title": "fix(arm64-linux): fix CJK font rendering on flutter-elinux (#15324)",
+      "url": "https://github.com/rustdesk/rustdesk/commit/c9391fb894483bec7e87e37d880a744f10323cbf"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "react/react-native": {
+  "readAt": "2026-10-27T22:50:02Z",
+  "counts": {
+   "claude": {
+    "total": 3,
+    "examples": [
+     {
+      "sha": "dd9b6c52ab0158efa2289339aeaca7bcbb25cb00",
+      "date": "2026-10-20T01:24:17.000-07:00",
+      "title": "Don't break a flex line on floating-point rounding noise (#2022)",
+      "url": "https://github.com/react/react-native/commit/dd9b6c52ab0158efa2289339aeaca7bcbb25cb00"
+     },
+     {
+      "sha": "bf8d8c9a7a388264304075a3e184a253de12d09f",
+      "date": "2026-10-19T06:39:46.000-07:00",
+      "title": "Avoid fmod when rounding layout results to the pixel grid (#2041)",
+      "url": "https://github.com/react/react-native/commit/bf8d8c9a7a388264304075a3e184a253de12d09f"
+     },
+     {
+      "sha": "0c86952e40bce9651795feacefe2f772a0c6f21f",
+      "date": "2026-08-19T09:21:09.000-07:00",
+      "title": "docs(ios-prebuild): correct how SwiftPM consumes the prebuilt React headers (#58007)",
+      "url": "https://github.com/react/react-native/commit/0c86952e40bce9651795feacefe2f772a0c6f21f"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 51,
+    "examples": [
+     {
+      "sha": "98291bcb99b49c0d83d67d2fa58f02a12497cddd",
+      "date": "2026-10-27T07:21:41.000-07:00",
+      "title": "Look up Android image resources without throwing an exception (#59456)",
+      "url": "https://github.com/react/react-native/commit/98291bcb99b49c0d83d67d2fa58f02a12497cddd"
+     },
+     {
+      "sha": "ed15270c6c76b5256a258de94bff0e05161b6ddf",
+      "date": "2026-10-27T06:17:52.000-07:00",
+      "title": "Convert JS strings passed to iOS native modules without UTF-8 (#59422)",
+      "url": "https://github.com/react/react-native/commit/ed15270c6c76b5256a258de94bff0e05161b6ddf"
+     },
+     {
+      "sha": "f50b8b1f3dd4b3460e70ed64a2be540739f23c23",
+      "date": "2026-10-27T02:55:33.000-07:00",
+      "title": "Make C++ stable API guards textual in the ReactNativeHeaders module map (#59068)",
+      "url": "https://github.com/react/react-native/commit/f50b8b1f3dd4b3460e70ed64a2be540739f23c23"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "shadcn-ui/ui": {
+  "readAt": "2026-10-27T22:50:16Z",
+  "counts": {
+   "claude": {
+    "total": 35,
+    "examples": [
+     {
+      "sha": "71f0e497e6e2a8e5a6584546c938a2db5329637e",
+      "date": "2026-09-30T12:12:09.000+04:00",
+      "title": "fix(registry): move @sekei to sekei.design (#12044)",
+      "url": "https://github.com/shadcn-ui/ui/commit/71f0e497e6e2a8e5a6584546c938a2db5329637e"
+     },
+     {
+      "sha": "2f3b7a6543983b3b280e204883122fa6b0f1e28b",
+      "date": "2026-08-11T11:24:59.000+04:00",
+      "title": "feat(registry): add @initium to registry directory (#11464)",
+      "url": "https://github.com/shadcn-ui/ui/commit/2f3b7a6543983b3b280e204883122fa6b0f1e28b"
+     },
+     {
+      "sha": "deda4df80fb350230b2fce2b575e769a90cae076",
+      "date": "2026-08-10T15:23:51.000+04:00",
+      "title": "feat(shadcn): add SOCKS proxy support (#10453)",
+      "url": "https://github.com/shadcn-ui/ui/commit/deda4df80fb350230b2fce2b575e769a90cae076"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "2b75a3fa32995058affc3929133abf3fb8fa3bc6",
+      "date": "2026-09-30T12:09:20.000+04:00",
+      "title": "fix(registry): keep @notra logo stroke unfilled (#12054)",
+      "url": "https://github.com/shadcn-ui/ui/commit/2b75a3fa32995058affc3929133abf3fb8fa3bc6"
+     },
+     {
+      "sha": "40c3ff513a88ca8e6f02bf798a7cf73b88401024",
+      "date": "2025-10-14T17:14:05.000+04:00",
+      "title": "fix(registry): handle universal registry items with no files (#8420)",
+      "url": "https://github.com/shadcn-ui/ui/commit/40c3ff513a88ca8e6f02bf798a7cf73b88401024"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 12,
+    "examples": [
+     {
+      "sha": "abbdd32953a3c65d00591b8e0ce2fcc41c66ef79",
+      "date": "2026-04-22T09:50:30.000+04:00",
+      "title": " fix(v4): add missing sera styles to public schema (#10452)",
+      "url": "https://github.com/shadcn-ui/ui/commit/abbdd32953a3c65d00591b8e0ce2fcc41c66ef79"
+     },
+     {
+      "sha": "3a2d812510eaa54558c4e6273da521a42db9290b",
+      "date": "2026-04-07T21:24:14.000+04:00",
+      "title": "fix",
+      "url": "https://github.com/shadcn-ui/ui/commit/3a2d812510eaa54558c4e6273da521a42db9290b"
+     },
+     {
+      "sha": "7811557088b8df3cb83e9f5f85e596e224cc2271",
+      "date": "2026-04-07T21:23:59.000+04:00",
+      "title": "fix",
+      "url": "https://github.com/shadcn-ui/ui/commit/7811557088b8df3cb83e9f5f85e596e224cc2271"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "electron/electron": {
+  "readAt": "2026-10-27T22:50:30Z",
+  "counts": {
+   "claude": {
+    "total": 309,
+    "examples": [
+     {
+      "sha": "708d5fe414675560052e0fe982cf5079d14350d2",
+      "date": "2026-10-27T12:28:28.000-04:00",
+      "title": "chore: bump chromium to 158.0.8127.0 (main) (#55378)",
+      "url": "https://github.com/electron/electron/commit/708d5fe414675560052e0fe982cf5079d14350d2"
+     },
+     {
+      "sha": "27e39e926cdb0492188053e5dfb918ae5c796ea4",
+      "date": "2026-10-26T16:57:02.000-04:00",
+      "title": "fix: use upstream's File System Access path matcher (#55328)",
+      "url": "https://github.com/electron/electron/commit/27e39e926cdb0492188053e5dfb918ae5c796ea4"
+     },
+     {
+      "sha": "ece4214c2239b1c222fd55e89cb02f3b4dd55152",
+      "date": "2026-10-26T12:22:45.000-07:00",
+      "title": "chore: bump chromium to 158.0.8125.0 (main) (#55311)",
+      "url": "https://github.com/electron/electron/commit/ece4214c2239b1c222fd55e89cb02f3b4dd55152"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 12,
+    "examples": [
+     {
+      "sha": "d34d52969b53c14176e0efca22acc6d463cf3357",
+      "date": "2026-10-26T01:26:52.000-07:00",
+      "title": "test: isolate File System API permission state (#54862)",
+      "url": "https://github.com/electron/electron/commit/d34d52969b53c14176e0efca22acc6d463cf3357"
+     },
+     {
+      "sha": "2ff6c14f55cfbd2b542f21ecb43d914c31d3a2cd",
+      "date": "2026-10-13T10:21:21.000-04:00",
+      "title": "chore: bump chromium to 157.0.8100.0 (main) (#54810)",
+      "url": "https://github.com/electron/electron/commit/2ff6c14f55cfbd2b542f21ecb43d914c31d3a2cd"
+     },
+     {
+      "sha": "34a7a93f43bb5b49d0f8eff1ac28b1dc4d6b0ab9",
+      "date": "2026-10-13T10:31:34.000+09:00",
+      "title": "test: use precise GC for utility process observer regression (#54861)",
+      "url": "https://github.com/electron/electron/commit/34a7a93f43bb5b49d0f8eff1ac28b1dc4d6b0ab9"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 71,
+    "examples": [
+     {
+      "sha": "3dfc698827c5e54161dbc025d09635bd521211ef",
+      "date": "2026-10-27T13:27:21.000-04:00",
+      "title": "fix: silently ignore legacy --no-stdio-init switch (#55397)",
+      "url": "https://github.com/electron/electron/commit/3dfc698827c5e54161dbc025d09635bd521211ef"
+     },
+     {
+      "sha": "baf7eaf5b455e2a6fd95b7d6e4515682917158a2",
+      "date": "2026-10-26T11:46:29.000-04:00",
+      "title": "fix: automatically skip stdio initialization when NUL is unavailable (#53459)",
+      "url": "https://github.com/electron/electron/commit/baf7eaf5b455e2a6fd95b7d6e4515682917158a2"
+     },
+     {
+      "sha": "936a82ab0500d09ef00108c0efac5ecb18c4790a",
+      "date": "2026-10-21T12:45:42.000-04:00",
+      "title": "fix: crash when onSendHeaders observes a Blob upload (#55085)",
+      "url": "https://github.com/electron/electron/commit/936a82ab0500d09ef00108c0efac5ecb18c4790a"
+     }
+    ]
+   }
+  }
+ },
+ "nodejs/node": {
+  "readAt": "2026-10-27T22:50:45Z",
+  "counts": {
+   "claude": {
+    "total": 14,
+    "examples": [
+     {
+      "sha": "fd204481115fe32277beb86ccc726976deb61f79",
+      "date": "2026-10-22T04:26:20.000Z",
+      "title": "test: keep objects alive in finalization fixtures",
+      "url": "https://github.com/nodejs/node/commit/fd204481115fe32277beb86ccc726976deb61f79"
+     },
+     {
+      "sha": "9067cc47719232c044bfe22c8f206aa5c0f1a48d",
+      "date": "2026-10-03T11:03:14.000Z",
+      "title": "tools: wait for test processes instead of polling",
+      "url": "https://github.com/nodejs/node/commit/9067cc47719232c044bfe22c8f206aa5c0f1a48d"
+     },
+     {
+      "sha": "a0c366c58c4817ef7666aa6a1a59c05a37b04e26",
+      "date": "2026-08-21T17:05:31.000Z",
+      "title": "doc: document that an empty OPENSSL_CONF skips config loading",
+      "url": "https://github.com/nodejs/node/commit/a0c366c58c4817ef7666aa6a1a59c05a37b04e26"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 627,
+    "examples": [
+     {
+      "sha": "c9b30827e8e7b0713177504579d11f4425be2961",
+      "date": "2026-10-27T22:28:19.000Z",
+      "title": "ffi: free libuv error message on failed dlopen",
+      "url": "https://github.com/nodejs/node/commit/c9b30827e8e7b0713177504579d11f4425be2961"
+     },
+     {
+      "sha": "98dbf6070e8439e530f1678b11962a0f3719e1f6",
+      "date": "2026-10-27T10:58:13.000Z",
+      "title": "events: report original once() listener on removal",
+      "url": "https://github.com/nodejs/node/commit/98dbf6070e8439e530f1678b11962a0f3719e1f6"
+     },
+     {
+      "sha": "a2cd8aa883e374e463ab3f9d34856fc0a128890d",
+      "date": "2026-10-25T22:36:38.000+01:00",
+      "title": "crypto,https,tls: end OpenSSL engine support",
+      "url": "https://github.com/nodejs/node/commit/a2cd8aa883e374e463ab3f9d34856fc0a128890d"
+     }
+    ]
+   }
+  }
+ },
+ "rust-lang/rust": {
+  "readAt": "2026-10-27T22:50:58Z",
+  "counts": {
+   "claude": {
+    "total": 8,
+    "examples": [
+     {
+      "sha": "a8227a058de23c41c566ea47606c955eac913c7b",
+      "date": "2026-10-21T17:45:41.000-04:00",
+      "title": "Use the rustc-src lockfile when fetching metadata for the rustc workspace",
+      "url": "https://github.com/rust-lang/rust/commit/a8227a058de23c41c566ea47606c955eac913c7b"
+     },
+     {
+      "sha": "0b30592405f31dd3cadb55730ccd9631afa4d239",
+      "date": "2026-09-04T17:35:24.000-04:00",
+      "title": "Follow symlinks when discovering prebuilt rustc proc-macro dylibs",
+      "url": "https://github.com/rust-lang/rust/commit/0b30592405f31dd3cadb55730ccd9631afa4d239"
+     },
+     {
+      "sha": "80db819591df7cc1d063686ed8c09fd98dab9ef2",
+      "date": "2026-07-21T21:13:33.000+03:00",
+      "title": "internal: add `Module::path_segments`, dedup the path-to-root name walk",
+      "url": "https://github.com/rust-lang/rust/commit/80db819591df7cc1d063686ed8c09fd98dab9ef2"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "7bd3c42113ad7ead7a00a4e8a2de0e0ad930b7c2",
+      "date": "2026-03-03T11:22:58.000Z",
+      "title": "internal: Define rules for LLMs",
+      "url": "https://github.com/rust-lang/rust/commit/7bd3c42113ad7ead7a00a4e8a2de0e0ad930b7c2"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 3,
+    "examples": [
+     {
+      "sha": "7d6d954c734869a4fee1d00cf8d627cbecbb3802",
+      "date": "2026-08-31T13:34:18.000-05:00",
+      "title": "fix(needless_pass_by_value): respect inline allows",
+      "url": "https://github.com/rust-lang/rust/commit/7d6d954c734869a4fee1d00cf8d627cbecbb3802"
+     },
+     {
+      "sha": "d560d3a480edb3d3f39b7d4a6343c6765b153baa",
+      "date": "2026-05-11T15:37:27.000+03:00",
+      "title": "Add test for async Send inference with PhantomData<*mut ()> + unsafe impl Send + dyn Trait",
+      "url": "https://github.com/rust-lang/rust/commit/d560d3a480edb3d3f39b7d4a6343c6765b153baa"
+     },
+     {
+      "sha": "d42a92b18d07bd39aafd3f281013ee24fabca1ed",
+      "date": "2026-05-08T09:14:09.000Z",
+      "title": "Reject outer attributes on `cfg_select` branches",
+      "url": "https://github.com/rust-lang/rust/commit/d42a92b18d07bd39aafd3f281013ee24fabca1ed"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 19,
+    "examples": [
+     {
+      "sha": "0c0121640358784454cc6b053256b1f05ebb201c",
+      "date": "2026-10-09T03:10:10.000-07:00",
+      "title": "Use indoc for multiline strings in tests",
+      "url": "https://github.com/rust-lang/rust/commit/0c0121640358784454cc6b053256b1f05ebb201c"
+     },
+     {
+      "sha": "3532a4cefbbd4fa1994471794754b3a8c6553c5e",
+      "date": "2026-09-10T22:34:00.000+02:00",
+      "title": "Rollup merge of #162542 - xingxue-ibm:gate-elf-code-for-elf, r=khyperia",
+      "url": "https://github.com/rust-lang/rust/commit/3532a4cefbbd4fa1994471794754b3a8c6553c5e"
+     },
+     {
+      "sha": "f3402e531e1a22a04299e0d6f6c113626803f438",
+      "date": "2026-07-05T10:56:40.000+02:00",
+      "title": "internal: address cache priming review feedback",
+      "url": "https://github.com/rust-lang/rust/commit/f3402e531e1a22a04299e0d6f6c113626803f438"
+     }
+    ]
+   }
+  }
+ },
+ "2dust/v2rayN": {
+  "readAt": "2026-10-27T22:51:12Z",
+  "counts": {
+   "claude": {
+    "total": 9,
+    "examples": [
+     {
+      "sha": "4869a6cbba405066f84fbf508daeed98610d8930",
+      "date": "2026-10-11T10:55:39.000+08:00",
+      "title": "Route IPv6 into the Xray TUN when EnableIPv6Address is on (#10329)",
+      "url": "https://github.com/2dust/v2rayN/commit/4869a6cbba405066f84fbf508daeed98610d8930"
+     },
+     {
+      "sha": "984e685ab313be2cb2814234c4b3e632604ebe34",
+      "date": "2026-09-26T11:11:20.000+08:00",
+      "title": "chore(deps): update Downloader to 5.9.8 (#10222)",
+      "url": "https://github.com/2dust/v2rayN/commit/984e685ab313be2cb2814234c4b3e632604ebe34"
+     },
+     {
+      "sha": "00d1001def2a7e8e7be51e40fd01312ecc970f99",
+      "date": "2026-09-19T10:42:05.000+08:00",
+      "title": "i18n(ru): translate new strings for Mux, request headers and updates (#10160)",
+      "url": "https://github.com/2dust/v2rayN/commit/00d1001def2a7e8e7be51e40fd01312ecc970f99"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "d1c9c0b53648498e47bc858be1a7b990a954c4f9",
+      "date": "2026-05-11T17:56:35.000+08:00",
+      "title": "Update .NET 10 (#9239)",
+      "url": "https://github.com/2dust/v2rayN/commit/d1c9c0b53648498e47bc858be1a7b990a954c4f9"
+     },
+     {
+      "sha": "584e538623984478816248355a2a45e9c8d4c37b",
+      "date": "2026-02-28T16:31:02.000+08:00",
+      "title": "Refactor node pre check (#8848)",
+      "url": "https://github.com/2dust/v2rayN/commit/584e538623984478816248355a2a45e9c8d4c37b"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "godotengine/godot": {
+  "readAt": "2026-10-27T22:51:25Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "immich-app/immich": {
+  "readAt": "2026-10-27T22:51:39Z",
+  "counts": {
+   "claude": {
+    "total": 5,
+    "examples": [
+     {
+      "sha": "56319b76fc60d7e3bd57a2275ac908da42665e5f",
+      "date": "2026-10-08T21:39:38.000+02:00",
+      "title": "fix: run workflow steps in their configured order (#32240)",
+      "url": "https://github.com/immich-app/immich/commit/56319b76fc60d7e3bd57a2275ac908da42665e5f"
+     },
+     {
+      "sha": "1b8cbaab9762dc53fa9b15366f22b65dc91a5e81",
+      "date": "2026-08-11T11:02:14.000-04:00",
+      "title": "refactor(server): migrate e2e auth/validation tests to controller specs (#30715)",
+      "url": "https://github.com/immich-app/immich/commit/1b8cbaab9762dc53fa9b15366f22b65dc91a5e81"
+     },
+     {
+      "sha": "5e89efba646f5a0966679b3d888a3ba0d102ab43",
+      "date": "2026-04-27T11:14:34.000-04:00",
+      "title": "fix(ml): handle empty/corrupt images in face detection (#27391)",
+      "url": "https://github.com/immich-app/immich/commit/5e89efba646f5a0966679b3d888a3ba0d102ab43"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 6,
+    "examples": [
+     {
+      "sha": "9666eadc5bbf81b91d2f5c10fb2630685dea8be7",
+      "date": "2026-10-23T08:27:22.000-04:00",
+      "title": "refactor: apikeys, passkeys, and sessions (#32670)",
+      "url": "https://github.com/immich-app/immich/commit/9666eadc5bbf81b91d2f5c10fb2630685dea8be7"
+     },
+     {
+      "sha": "96970cfba6c74773260ff44a9700fd863bc234df",
+      "date": "2026-10-08T19:05:58.000+02:00",
+      "title": "docs: Add MACHINE_LEARNING_MODEL_REVISION variable to docs (#32221)",
+      "url": "https://github.com/immich-app/immich/commit/96970cfba6c74773260ff44a9700fd863bc234df"
+     },
+     {
+      "sha": "bf328646446dc533e4bc7f99743e4179c4c10e2f",
+      "date": "2026-04-29T15:48:15.000Z",
+      "title": "feat(server): video streaming table definitions (#28147)",
+      "url": "https://github.com/immich-app/immich/commit/bf328646446dc533e4bc7f99743e4179c4c10e2f"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "mrdoob/three.js": {
+  "readAt": "2026-10-27T22:51:53Z",
+  "counts": {
+   "claude": {
+    "total": 212,
+    "examples": [
+     {
+      "sha": "02b15eeaaf4230c2f4fa5b8d61da7716092a37f4",
+      "date": "2026-10-27T13:38:31.000+01:00",
+      "title": "Docs: Fix callback parameters of `Object3D` and `Interpolant`. (#35231)",
+      "url": "https://github.com/mrdoob/three.js/commit/02b15eeaaf4230c2f4fa5b8d61da7716092a37f4"
+     },
+     {
+      "sha": "fa57cf648fc36a9c5999f0076bfeea4960de50f6",
+      "date": "2026-10-26T16:26:18.000+01:00",
+      "title": "GLTFLoader: Parse embedded KTX2 images without a Blob. (#35193)",
+      "url": "https://github.com/mrdoob/three.js/commit/fa57cf648fc36a9c5999f0076bfeea4960de50f6"
+     },
+     {
+      "sha": "e48e033da953877ce4549da4ffae202b75a7abe5",
+      "date": "2026-10-26T19:35:55.000+09:00",
+      "title": "GLSLNodeBuilder: Fix uniform block lookups in shared bind groups. (#35222)",
+      "url": "https://github.com/mrdoob/three.js/commit/e48e033da953877ce4549da4ffae202b75a7abe5"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "4342d10ea73aa3cea3dcddd4973a6521dda8d5e8",
+      "date": "2025-10-29T16:19:12.000+09:00",
+      "title": "WebGPURenderer: Implement GGX VNDF importance sampling for PMREM (#32134)",
+      "url": "https://github.com/mrdoob/three.js/commit/4342d10ea73aa3cea3dcddd4973a6521dda8d5e8"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 13,
+    "examples": [
+     {
+      "sha": "77053e2ba04fbe95b8687f341c91130b4917613b",
+      "date": "2026-07-08T15:28:40.000+09:00",
+      "title": "PMREMGenerator: Replace separable blur with spiral blur on both renderers (#32367)",
+      "url": "https://github.com/mrdoob/three.js/commit/77053e2ba04fbe95b8687f341c91130b4917613b"
+     },
+     {
+      "sha": "0d2986293c1e80afb23cebdc888640c96dc25515",
+      "date": "2026-07-01T19:32:58.000+09:00",
+      "title": "Add `SSAONode` and `depthAwareBlur` (#33921)",
+      "url": "https://github.com/mrdoob/three.js/commit/0d2986293c1e80afb23cebdc888640c96dc25515"
+     },
+     {
+      "sha": "3e3d777642e3aa5c638cb355b03bfa7f8a67a1e5",
+      "date": "2026-04-27T14:03:59.000+02:00",
+      "title": "Material: Fixed setValues() to honor Euler and Vector2 types. (#33476)",
+      "url": "https://github.com/mrdoob/three.js/commit/3e3d777642e3aa5c638cb355b03bfa7f8a67a1e5"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "supabase/supabase": {
+  "readAt": "2026-10-27T22:52:07Z",
+  "counts": {
+   "claude": {
+    "total": 484,
+    "examples": [
+     {
+      "sha": "4b2c09c44ee676c771b722e81c4725b68c7884df",
+      "date": "2026-10-27T14:10:03.000-05:00",
+      "title": "docs: set descriptions for federated wrapper, python, and terraform pages (DEVREL-772) (#52407)",
+      "url": "https://github.com/supabase/supabase/commit/4b2c09c44ee676c771b722e81c4725b68c7884df"
+     },
+     {
+      "sha": "7f7ebf527b1edf5c133ea13ad95d68ecddd01828",
+      "date": "2026-10-27T16:47:51.000+01:00",
+      "title": "feat(studio): use shared logs table for recent function errors (#50958)",
+      "url": "https://github.com/supabase/supabase/commit/7f7ebf527b1edf5c133ea13ad95d68ecddd01828"
+     },
+     {
+      "sha": "14ca6c0455c609e9098d0ccce08c4949eec4160f",
+      "date": "2026-10-27T10:43:07.000-05:00",
+      "title": "feat(docs) - move docs redirects into docs app directly (#52248)",
+      "url": "https://github.com/supabase/supabase/commit/14ca6c0455c609e9098d0ccce08c4949eec4160f"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 151,
+    "examples": [
+     {
+      "sha": "fd058409acb24359714463d7f04f424a3db4fac5",
+      "date": "2026-10-27T05:25:41.000Z",
+      "title": "feat(www): add PG Down Under 2026 contest go page (#52361)",
+      "url": "https://github.com/supabase/supabase/commit/fd058409acb24359714463d7f04f424a3db4fac5"
+     },
+     {
+      "sha": "0cc65f74217413bd6e7aefa0f6c7af0372f2f55f",
+      "date": "2026-10-27T06:56:38.000+11:00",
+      "title": "feat(www): add Personal Access Tokens feature page (#52290)",
+      "url": "https://github.com/supabase/supabase/commit/0cc65f74217413bd6e7aefa0f6c7af0372f2f55f"
+     },
+     {
+      "sha": "b329508c4fb455f2615646b1136a1618d77f4f6e",
+      "date": "2026-10-27T06:56:17.000+11:00",
+      "title": "blog(www): add Scope your Personal Access Tokens blog post (#52289)",
+      "url": "https://github.com/supabase/supabase/commit/b329508c4fb455f2615646b1136a1618d77f4f6e"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 55,
+    "examples": [
+     {
+      "sha": "7642d1c4a46836607cc27b6651d92b2b1389634e",
+      "date": "2026-10-13T15:07:51.000-07:00",
+      "title": "chore(docs): add Gonzalo Servat to humans.txt (#51581)",
+      "url": "https://github.com/supabase/supabase/commit/7642d1c4a46836607cc27b6651d92b2b1389634e"
+     },
+     {
+      "sha": "51b69082365ade2b7deaad26ba0502d2f0f1f80e",
+      "date": "2026-09-17T15:02:21.000-06:00",
+      "title": "tsguide(realtime): add guide to isolate client vs server issues (#49933)",
+      "url": "https://github.com/supabase/supabase/commit/51b69082365ade2b7deaad26ba0502d2f0f1f80e"
+     },
+     {
+      "sha": "b0de9dd7a66dbc86a48309006b724717705bfa39",
+      "date": "2026-09-14T12:15:15.000-04:00",
+      "title": "Create log docs (#47047)",
+      "url": "https://github.com/supabase/supabase/commit/b0de9dd7a66dbc86a48309006b724717705bfa39"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "d3/d3": {
+  "readAt": "2026-10-27T22:52:21Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "tauri-apps/tauri": {
+  "readAt": "2026-10-27T22:52:35Z",
+  "counts": {
+   "claude": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "c48e1ca891a3b82770b6b03f87eba740344cf2f1",
+      "date": "2026-10-10T08:11:04.000-03:00",
+      "title": "fix(ios): make `@_cdecl` entry points public so release builds link on Xcode 27 (#16246)",
+      "url": "https://github.com/tauri-apps/tauri/commit/c48e1ca891a3b82770b6b03f87eba740344cf2f1"
+     },
+     {
+      "sha": "79d3537620ddd136b81896b2048207e7c15e08b9",
+      "date": "2026-10-05T09:28:49.000-03:00",
+      "title": "process: relaunch macOS app via LaunchServices to avoid inheriting dying stdio (#15783)",
+      "url": "https://github.com/tauri-apps/tauri/commit/79d3537620ddd136b81896b2048207e7c15e08b9"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "001c8fe3d288802de9a8c29cfd2f46f9220d97c5",
+      "date": "2026-04-23T14:11:22.000+08:00",
+      "title": "feat(webview2): add option to disable browser-level autofill on Windows (#14722)",
+      "url": "https://github.com/tauri-apps/tauri/commit/001c8fe3d288802de9a8c29cfd2f46f9220d97c5"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "microsoft/TypeScript": {
+  "readAt": "2026-10-27T22:52:48Z",
+  "counts": {
+   "claude": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "655f0268afaa43cde07b65b39782688463a99517",
+      "date": "2026-10-15T16:42:41.000Z",
+      "title": "Avoid weakset for executed generators (#64830)",
+      "url": "https://github.com/microsoft/TypeScript/commit/655f0268afaa43cde07b65b39782688463a99517"
+     },
+     {
+      "sha": "69ac1647b0d2fcb6841e95189df0cc3c01eceecb",
+      "date": "2026-09-29T14:42:33.000Z",
+      "title": "check intersection props for never-reduction in a stable order (#64521)",
+      "url": "https://github.com/microsoft/TypeScript/commit/69ac1647b0d2fcb6841e95189df0cc3c01eceecb"
+     },
+     {
+      "sha": "7118cd528e9d88e76a4b4510e1dedfd672223a47",
+      "date": "2026-07-23T14:02:50.000Z",
+      "title": "Return all files from getFilesAffectedBy when a changed file affects global scope (microsoft/typescript-go#4665)",
+      "url": "https://github.com/microsoft/TypeScript/commit/7118cd528e9d88e76a4b4510e1dedfd672223a47"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 439,
+    "examples": [
+     {
+      "sha": "28534d7609062699a68b1b66e2367f8d95dbf290",
+      "date": "2026-10-19T22:42:39.000Z",
+      "title": "Make LSP server load content mappers only from node_modules inside workspace folders (#64837)",
+      "url": "https://github.com/microsoft/TypeScript/commit/28534d7609062699a68b1b66e2367f8d95dbf290"
+     },
+     {
+      "sha": "6b2907c54b37f867f26346cddfbfc033be537cb0",
+      "date": "2026-10-19T22:34:37.000Z",
+      "title": "[api] Client performance optimizations (#64823)",
+      "url": "https://github.com/microsoft/TypeScript/commit/6b2907c54b37f867f26346cddfbfc033be537cb0"
+     },
+     {
+      "sha": "bf8a7647213be3f77d736ed2929541e00b303641",
+      "date": "2026-10-19T18:00:26.000Z",
+      "title": "Use supported MicroBuild source-analysis pool (#64866)",
+      "url": "https://github.com/microsoft/TypeScript/commit/bf8a7647213be3f77d736ed2929541e00b303641"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "fatedier/frp": {
+  "readAt": "2026-10-27T22:53:02Z",
+  "counts": {
+   "claude": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "f8be1cdfe21f417a7cf80501784a49f9c22b3911",
+      "date": "2026-10-08T22:06:35.000+08:00",
+      "title": "deps: bump golang.org/x/crypto to v0.56.0 and build with Go 1.26 (#5558)",
+      "url": "https://github.com/fatedier/frp/commit/f8be1cdfe21f417a7cf80501784a49f9c22b3911"
+     },
+     {
+      "sha": "774478d0710e2bac7a85128bbdcd334e2d6581be",
+      "date": "2026-03-04T19:27:30.000+08:00",
+      "title": "pkg/config: improve error messages with line number details for config parsing (#5194)",
+      "url": "https://github.com/fatedier/frp/commit/774478d0710e2bac7a85128bbdcd334e2d6581be"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "7cfa546b55ee485240c3a713b01a4923ee6b714c",
+      "date": "2025-09-23T00:18:49.000+08:00",
+      "title": "add proxy name label to the proxy_count prometheus metric (#4985)",
+      "url": "https://github.com/fatedier/frp/commit/7cfa546b55ee485240c3a713b01a4923ee6b714c"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "axios/axios": {
+  "readAt": "2026-10-27T22:53:16Z",
+  "counts": {
+   "claude": {
+    "total": 5,
+    "examples": [
+     {
+      "sha": "326843a3902d73c9f6af9bad7b55e2412566a251",
+      "date": "2026-10-15T18:05:16.000+02:00",
+      "title": "test(no-proxy): cover the request-hostname path with a long dotted host (#11235)",
+      "url": "https://github.com/axios/axios/commit/326843a3902d73c9f6af9bad7b55e2412566a251"
+     },
+     {
+      "sha": "e5195ecf405cf791b7ad2715156d6bc98b5f3928",
+      "date": "2026-10-15T18:04:54.000+02:00",
+      "title": "feat(core): expose request duration on the response (#11214)",
+      "url": "https://github.com/axios/axios/commit/e5195ecf405cf791b7ad2715156d6bc98b5f3928"
+     },
+     {
+      "sha": "2a9489df3eb07e7d2cba2046efd30df8a6d0b954",
+      "date": "2026-10-13T20:41:05.000+02:00",
+      "title": "perf(core): reduce request configuration merge overhead (#11208)",
+      "url": "https://github.com/axios/axios/commit/2a9489df3eb07e7d2cba2046efd30df8a6d0b954"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 15,
+    "examples": [
+     {
+      "sha": "712e02373f1c5ac72fdf5da16f04838338ba817e",
+      "date": "2026-07-29T19:39:19.000+02:00",
+      "title": "fix(interceptors): trim trailing ejected handlers (#11087)",
+      "url": "https://github.com/axios/axios/commit/712e02373f1c5ac72fdf5da16f04838338ba817e"
+     },
+     {
+      "sha": "800504c6283115e38f3e2d2a56dc03e71e9bda9a",
+      "date": "2026-07-27T17:29:32.000+02:00",
+      "title": "docs: apply v1.19.0 release updates (#11101)",
+      "url": "https://github.com/axios/axios/commit/800504c6283115e38f3e2d2a56dc03e71e9bda9a"
+     },
+     {
+      "sha": "e64bcf9c5af231d6f37d8389b1e57ded314fff86",
+      "date": "2026-06-17T14:29:05.000+02:00",
+      "title": "chore(deps): merge branch 'v1.x' into tests/module/cjs (#11014)",
+      "url": "https://github.com/axios/axios/commit/e64bcf9c5af231d6f37d8389b1e57ded314fff86"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "denoland/deno": {
+  "readAt": "2026-10-27T22:53:30Z",
+  "counts": {
+   "claude": {
+    "total": 405,
+    "examples": [
+     {
+      "sha": "5419c0218de9b73941f5db3f26f4da10b20f736a",
+      "date": "2026-07-20T15:07:35.000+02:00",
+      "title": "fix(runtime): bridge console to the inspector regardless of --inspect flag (#35795)",
+      "url": "https://github.com/denoland/deno/commit/5419c0218de9b73941f5db3f26f4da10b20f736a"
+     },
+     {
+      "sha": "70dba84c5f2b6b141ae19df07ff329d8e2ec44ea",
+      "date": "2026-07-15T12:35:34.000+02:00",
+      "title": "fix(canvas): don't hold SurfaceData mut borrow over window resize (#35993)",
+      "url": "https://github.com/denoland/deno/commit/70dba84c5f2b6b141ae19df07ff329d8e2ec44ea"
+     },
+     {
+      "sha": "712895271fa241235f363e5a9ec1a3080bc78a61",
+      "date": "2026-07-07T12:49:49.000Z",
+      "title": "fix(ext/node): don't schedule a pause in inspector.waitForDebugger() (#35796)",
+      "url": "https://github.com/denoland/deno/commit/712895271fa241235f363e5a9ec1a3080bc78a61"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 13,
+    "examples": [
+     {
+      "sha": "d00ecdc4a877ed733faa36e7915746334217c7b2",
+      "date": "2026-05-30T02:42:39.000Z",
+      "title": "chore: jupyter regression test for relative imports (#34494)",
+      "url": "https://github.com/denoland/deno/commit/d00ecdc4a877ed733faa36e7915746334217c7b2"
+     },
+     {
+      "sha": "04cbd8c80e272b0f060b2faf316fde8b7d422c7f",
+      "date": "2026-05-17T20:35:30.000+05:30",
+      "title": "fix(ext/node): polyfill module.enableCompileCache and companions (#34190)",
+      "url": "https://github.com/denoland/deno/commit/04cbd8c80e272b0f060b2faf316fde8b7d422c7f"
+     },
+     {
+      "sha": "a4463e1d5d905650ce6fec50fb378991ec4e9afd",
+      "date": "2026-05-16T16:36:07.000+02:00",
+      "title": "fix(ext/node): expose internal/fs/promises with FileHandle (#34118)",
+      "url": "https://github.com/denoland/deno/commit/a4463e1d5d905650ce6fec50fb378991ec4e9afd"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 17,
+    "examples": [
+     {
+      "sha": "54a12b8aa7278328cb3a872c3b100d191803ea82",
+      "date": "2026-04-29T08:41:22.000+02:00",
+      "title": "fix(ext/node): add `limits` property on `node:sqlite` DatabaseSync (#33106)",
+      "url": "https://github.com/denoland/deno/commit/54a12b8aa7278328cb3a872c3b100d191803ea82"
+     },
+     {
+      "sha": "81790b052e784ceb8e3a9c69623d31b8f3e2fcc9",
+      "date": "2026-04-26T12:05:13.000Z",
+      "title": "perf: optimize worker and MessagePort message passing (#32657)",
+      "url": "https://github.com/denoland/deno/commit/81790b052e784ceb8e3a9c69623d31b8f3e2fcc9"
+     },
+     {
+      "sha": "c09b7f4511abe8b156839ecfc5941178db8aa5a1",
+      "date": "2026-03-24T07:49:59.000Z",
+      "title": "fix(ext/web): handle null options in removeEventListener (#32605)",
+      "url": "https://github.com/denoland/deno/commit/c09b7f4511abe8b156839ecfc5941178db8aa5a1"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "microsoft/terminal": {
+  "readAt": "2026-10-27T22:53:43Z",
+  "counts": {
+   "claude": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "a325a2fa5a1cee7e46c23934fa6f82bc1922af3c",
+      "date": "2026-05-06T02:35:16.000Z",
+      "title": "Fix settings error text legibility in High Contrast mode (#20098)",
+      "url": "https://github.com/microsoft/terminal/commit/a325a2fa5a1cee7e46c23934fa6f82bc1922af3c"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "fastapi/fastapi": {
+  "readAt": "2026-10-27T22:53:57Z",
+  "counts": {
+   "claude": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "31bbb380748ccead62fc0f42dbf4273f11dadccf",
+      "date": "2026-03-16T11:16:48.000+01:00",
+      "title": "📝 Fix duplicated words in docstrings (#15116)",
+      "url": "https://github.com/fastapi/fastapi/commit/31bbb380748ccead62fc0f42dbf4273f11dadccf"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "faee822574d3c202123f48eb09b9bd207385335b",
+      "date": "2026-02-17T09:59:14.000Z",
+      "title": "🎨 Upgrade typing syntax for Python 3.10 (#14932)",
+      "url": "https://github.com/fastapi/fastapi/commit/faee822574d3c202123f48eb09b9bd207385335b"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "react/create-react-app": {
+  "readAt": "2026-10-27T22:54:11Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "neovim/neovim": {
+  "readAt": "2026-10-27T22:54:24Z",
+  "counts": {
+   "claude": {
+    "total": 59,
+    "examples": [
+     {
+      "sha": "70958dae75efc797fe85b29df11fb2ea2ebf9401",
+      "date": "2026-08-24T09:27:46.000+08:00",
+      "title": "vim-patch:9.2.0996: debugger: crash when evaluating a variable in a :def function frame (#41460)",
+      "url": "https://github.com/neovim/neovim/commit/70958dae75efc797fe85b29df11fb2ea2ebf9401"
+     },
+     {
+      "sha": "53211ade2baba5841050daa50b1c38fedaffdda0",
+      "date": "2026-08-19T07:47:24.000+08:00",
+      "title": "vim-patch:9.2.0969: runtime(shaderslang): matchit % breaks on braces (#41371)",
+      "url": "https://github.com/neovim/neovim/commit/53211ade2baba5841050daa50b1c38fedaffdda0"
+     },
+     {
+      "sha": "bce3bf06a30afa309722b7d212b2e100a75b4425",
+      "date": "2026-08-18T09:03:37.000+08:00",
+      "title": "vim-patch:9.2.0963: crash when sound-folding a crafted spell file (#41358)",
+      "url": "https://github.com/neovim/neovim/commit/bce3bf06a30afa309722b7d212b2e100a75b4425"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "898e6f884e1331b92dc9deb5148091b32df017ca",
+      "date": "2026-10-07T08:40:43.000+08:00",
+      "title": "vim-patch:9.2.1169: getfsize() checks file type twice (#42261)",
+      "url": "https://github.com/neovim/neovim/commit/898e6f884e1331b92dc9deb5148091b32df017ca"
+     }
+    ]
+   }
+  }
+ },
+ "angular/angular": {
+  "readAt": "2026-10-27T22:54:39Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "ant-design/ant-design": {
+  "readAt": "2026-10-27T22:54:53Z",
+  "counts": {
+   "claude": {
+    "total": 138,
+    "examples": [
+     {
+      "sha": "6445c38886fe5f6d44b3ecca18028818180f3885",
+      "date": "2026-10-14T18:01:12.000+08:00",
+      "title": "fix(Select): isolate Form.Item status from popupRender content (#59463)",
+      "url": "https://github.com/ant-design/ant-design/commit/6445c38886fe5f6d44b3ecca18028818180f3885"
+     },
+     {
+      "sha": "4f9fe53933922d69f89bcd79de9de87b5124f522",
+      "date": "2026-09-25T12:13:03.000+08:00",
+      "title": "docs: remove stray editor link from visualization page spec (#59388)",
+      "url": "https://github.com/ant-design/ant-design/commit/4f9fe53933922d69f89bcd79de9de87b5124f522"
+     },
+     {
+      "sha": "3bc029ad8f28bc03be737eeb0633b7bccfeb3038",
+      "date": "2026-09-08T17:56:43.000+08:00",
+      "title": "fix(Segmented): avoid selected item text color lagging behind thumb motion (#59046)",
+      "url": "https://github.com/ant-design/ant-design/commit/3bc029ad8f28bc03be737eeb0633b7bccfeb3038"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 5,
+    "examples": [
+     {
+      "sha": "6c9519341f7ed1214a7265203ec62e23ddcf1d11",
+      "date": "2026-04-10T10:46:40.000+08:00",
+      "title": "fix: apply default columnWidth for rowSelection from token (#57621)",
+      "url": "https://github.com/ant-design/ant-design/commit/6c9519341f7ed1214a7265203ec62e23ddcf1d11"
+     },
+     {
+      "sha": "b73b49c02f70e54ffc67c6e7ec895ec8d62378f3",
+      "date": "2026-04-07T21:39:14.000+08:00",
+      "title": "feat(Table): upgrade rc-table to 1.10.0 and add scrollTo align parameter (#57594)",
+      "url": "https://github.com/ant-design/ant-design/commit/b73b49c02f70e54ffc67c6e7ec895ec8d62378f3"
+     },
+     {
+      "sha": "611be598bdba1665aebd09bfedebb7001926a5c1",
+      "date": "2026-04-02T16:24:51.000+08:00",
+      "title": "feat(Anchor): add targetOffset prop for each Anchor.Link (#57521)",
+      "url": "https://github.com/ant-design/ant-design/commit/611be598bdba1665aebd09bfedebb7001926a5c1"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 62,
+    "examples": [
+     {
+      "sha": "3f2b321bac19de096eed5296b6bd0dee9dc5d832",
+      "date": "2026-08-08T10:53:23.000+08:00",
+      "title": "fix(site): exclude bot accounts from contributors (#58915)",
+      "url": "https://github.com/ant-design/ant-design/commit/3f2b321bac19de096eed5296b6bd0dee9dc5d832"
+     },
+     {
+      "sha": "c514396fe9709ac04e26e04238efcfcc421645d3",
+      "date": "2026-08-07T12:45:24.000+08:00",
+      "title": "docs: add changelog 6.5.4 (#58904)",
+      "url": "https://github.com/ant-design/ant-design/commit/c514396fe9709ac04e26e04238efcfcc421645d3"
+     },
+     {
+      "sha": "2f948096bc08504d85903c8ddf03f0565a1f19fd",
+      "date": "2026-07-13T14:34:25.000+08:00",
+      "title": "demo(BorderBeam): add Hover over demo (#58683)",
+      "url": "https://github.com/ant-design/ant-design/commit/2f948096bc08504d85903c8ddf03f0565a1f19fd"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "mui/material-ui": {
+  "readAt": "2026-10-27T22:55:07Z",
+  "counts": {
+   "claude": {
+    "total": 67,
+    "examples": [
+     {
+      "sha": "e2bbb3cc6cb7b0b95b71b9613c8fbfad1508a842",
+      "date": "2026-10-23T00:20:25.000+03:00",
+      "title": "[code-infra] Dry-run the publish with the `next` dist-tag (#49527)",
+      "url": "https://github.com/mui/material-ui/commit/e2bbb3cc6cb7b0b95b71b9613c8fbfad1508a842"
+     },
+     {
+      "sha": "72e6c27509f86a0a148901cb9fb9b97f7e47dbc1",
+      "date": "2026-10-22T10:35:59.000+02:00",
+      "title": "[docs][material-ui] Mark icon names for Algolia indexing in the icons search demo (#49505)",
+      "url": "https://github.com/mui/material-ui/commit/72e6c27509f86a0a148901cb9fb9b97f7e47dbc1"
+     },
+     {
+      "sha": "2a8f217d7919d80d8760a7b63d6d97a70530deaf",
+      "date": "2026-10-22T00:37:40.000+03:00",
+      "title": "[test] Run the visual regression browser in headless mode (#49512)",
+      "url": "https://github.com/mui/material-ui/commit/2a8f217d7919d80d8760a7b63d6d97a70530deaf"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 9,
+    "examples": [
+     {
+      "sha": "45c3ad1027159ec6d8aced04b8c7683716d78fa6",
+      "date": "2026-10-13T11:42:44.000+05:30",
+      "title": "[docs-infra] Migrate demos to docs-infra (#48842)",
+      "url": "https://github.com/mui/material-ui/commit/45c3ad1027159ec6d8aced04b8c7683716d78fa6"
+     },
+     {
+      "sha": "3209ab6c4b80b3622bbee7c769d364e161b721d3",
+      "date": "2026-10-05T11:44:59.000+05:30",
+      "title": "[internal] Remove invalid `number` type from supported `OverridableStringUnion` type arguments (#49278)",
+      "url": "https://github.com/mui/material-ui/commit/3209ab6c4b80b3622bbee7c769d364e161b721d3"
+     },
+     {
+      "sha": "1bae65f3b25f9b827467d454417e4244d32e7e40",
+      "date": "2026-07-24T14:24:49.000+05:30",
+      "title": "[modal][dialog] Fix scrollbar compensation in Shadow DOM (#48826)",
+      "url": "https://github.com/mui/material-ui/commit/1bae65f3b25f9b827467d454417e4244d32e7e40"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "microsoft/playwright": {
+  "readAt": "2026-10-27T22:55:21Z",
+  "counts": {
+   "claude": {
+    "total": 10,
+    "examples": [
+     {
+      "sha": "eecb129caa67c85d3ebe9411161d3d350d75312b",
+      "date": "2026-10-22T16:28:51.000+01:00",
+      "title": "chore: remove onTestPaused from reporters (#43570)",
+      "url": "https://github.com/microsoft/playwright/commit/eecb129caa67c85d3ebe9411161d3d350d75312b"
+     },
+     {
+      "sha": "9e371c00b5b8333296837a8d0cf6eaff413a6be4",
+      "date": "2026-09-10T15:15:19.000-07:00",
+      "title": "feat(mcp): add --timeout-idle to close the browser after inactivity (#42663)",
+      "url": "https://github.com/microsoft/playwright/commit/9e371c00b5b8333296837a8d0cf6eaff413a6be4"
+     },
+     {
+      "sha": "92dcf5d3bbbcf085c6a45124f18ddab8aaca331c",
+      "date": "2026-05-21T08:20:38.000+01:00",
+      "title": "fix(reporter): honor NO_COLOR in list/line/dot reporters (#40903)",
+      "url": "https://github.com/microsoft/playwright/commit/92dcf5d3bbbcf085c6a45124f18ddab8aaca331c"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 57,
+    "examples": [
+     {
+      "sha": "1ea94e9c2c4ce221740b0f63de6955b742765d47",
+      "date": "2026-09-08T17:09:50.000+01:00",
+      "title": "docs(test): document mouse-outside-viewport screenshot helper (#42446)",
+      "url": "https://github.com/microsoft/playwright/commit/1ea94e9c2c4ce221740b0f63de6955b742765d47"
+     },
+     {
+      "sha": "e51e5b5a3d4e0186cf5cce791f0e0187e8d0ac08",
+      "date": "2026-08-12T14:06:49.000+02:00",
+      "title": "test(connect): unblock hung launchServer teardown with SIGKILL fallback (#42148)",
+      "url": "https://github.com/microsoft/playwright/commit/e51e5b5a3d4e0186cf5cce791f0e0187e8d0ac08"
+     },
+     {
+      "sha": "6846dc7d2e23a47ad87b254df0f4ac4338ef1981",
+      "date": "2026-08-11T09:48:13.000+02:00",
+      "title": "test(mcp): de-flake annotate screencast session switch startup (#42195)",
+      "url": "https://github.com/microsoft/playwright/commit/6846dc7d2e23a47ad87b254df0f4ac4338ef1981"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "tailwindlabs/tailwindcss": {
+  "readAt": "2026-10-27T22:55:34Z",
+  "counts": {
+   "claude": {
+    "total": 12,
+    "examples": [
+     {
+      "sha": "fa81d697fe572a10ac150d18964a093a7a874081",
+      "date": "2026-09-25T21:32:41.000+02:00",
+      "title": "Improve style invalidation performance of `group-*` and `peer-*` variants (#20513)",
+      "url": "https://github.com/tailwindlabs/tailwindcss/commit/fa81d697fe572a10ac150d18964a093a7a874081"
+     },
+     {
+      "sha": "b4db3b99d1bc6209a936df34914e0fc34b3e5095",
+      "date": "2026-05-04T17:16:50.000+02:00",
+      "title": "Add scrollbar-width and scrollbar-color utilities (#19981)",
+      "url": "https://github.com/tailwindlabs/tailwindcss/commit/b4db3b99d1bc6209a936df34914e0fc34b3e5095"
+     },
+     {
+      "sha": "6cf1af26b39f6ddf64bbab92812649e971492f55",
+      "date": "2026-04-29T18:48:08.000Z",
+      "title": "Fix TS2742 error when inferring exported Config type (#19707)",
+      "url": "https://github.com/tailwindlabs/tailwindcss/commit/6cf1af26b39f6ddf64bbab92812649e971492f55"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "fa81d697fe572a10ac150d18964a093a7a874081",
+      "date": "2026-09-25T21:32:41.000+02:00",
+      "title": "Improve style invalidation performance of `group-*` and `peer-*` variants (#20513)",
+      "url": "https://github.com/tailwindlabs/tailwindcss/commit/fa81d697fe572a10ac150d18964a093a7a874081"
+     },
+     {
+      "sha": "89cbfc7b2dfaafec38f2123fc9047b0d6a49f1de",
+      "date": "2025-10-17T15:00:25.000Z",
+      "title": "Add `optimize` option to `@tailwindcss/vite` plugin (#19131)",
+      "url": "https://github.com/tailwindlabs/tailwindcss/commit/89cbfc7b2dfaafec38f2123fc9047b0d6a49f1de"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "nvbn/thefuck": {
+  "readAt": "2026-10-27T22:55:48Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "OpenCut-app/OpenCut": {
+  "readAt": "2026-10-27T22:56:02Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "oven-sh/bun": {
+  "readAt": "2026-10-27T22:56:15Z",
+  "counts": {
+   "claude": {
+    "total": 720,
+    "examples": [
+     {
+      "sha": "9b8347a24e2de025d1bcca1f2e2a6b1518af64cb",
+      "date": "2026-10-27T04:25:40.000-07:00",
+      "title": "Upgrade WebKit to 191c6a41380b (#47057)",
+      "url": "https://github.com/oven-sh/bun/commit/9b8347a24e2de025d1bcca1f2e2a6b1518af64cb"
+     },
+     {
+      "sha": "92e819d895c5af63fca3a9ff1884e6e098004da8",
+      "date": "2026-10-27T02:11:48.000-07:00",
+      "title": "Replace bytemuck with an in-tree crate, bun_pod (#47037)",
+      "url": "https://github.com/oven-sh/bun/commit/92e819d895c5af63fca3a9ff1884e6e098004da8"
+     },
+     {
+      "sha": "c643ea8c2a9da88cae7e3508d2dd95c8f5857926",
+      "date": "2026-10-26T22:52:49.000-07:00",
+      "title": "Replace libarchive with a tar reader and writer in safe Rust (#46638)",
+      "url": "https://github.com/oven-sh/bun/commit/c643ea8c2a9da88cae7e3508d2dd95c8f5857926"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 541,
+    "examples": [
+     {
+      "sha": "b2c751d26c72abae44fa0f6e850f17153b4f61a5",
+      "date": "2026-09-21T12:09:17.000-06:00",
+      "title": "paths: drop unnecessary starts_with_windows_drive_letter wrapper - makes mordant checks pass (#43688)",
+      "url": "https://github.com/oven-sh/bun/commit/b2c751d26c72abae44fa0f6e850f17153b4f61a5"
+     },
+     {
+      "sha": "53daca61a49e904f5865e23783987567b204bac9",
+      "date": "2026-09-21T12:06:11.000-06:00",
+      "title": "ci: check the Windows and macOS build targets in the mordant job - fixes incorrect mordant unused pub fn warning (#43700)",
+      "url": "https://github.com/oven-sh/bun/commit/53daca61a49e904f5865e23783987567b204bac9"
+     },
+     {
+      "sha": "08c5bc9e3a54dfefe2bc07c53938d8accf2a9d82",
+      "date": "2026-07-04T20:51:10.000Z",
+      "title": "css: scope animation-name to its @keyframes hash in CSS modules (#18921) (#33322)",
+      "url": "https://github.com/oven-sh/bun/commit/08c5bc9e3a54dfefe2bc07c53938d8accf2a9d82"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "d398bd55fe0bf2669d01450fd6759b8cc3e977af",
+      "date": "2026-04-19T13:53:26.000-07:00",
+      "title": "build: add $BUN_ZIG_PATH to override the vendored zig compiler (#29492)",
+      "url": "https://github.com/oven-sh/bun/commit/d398bd55fe0bf2669d01450fd6759b8cc3e977af"
+     }
+    ]
+   }
+  }
+ },
+ "obra/superpowers": {
+  "readAt": "2026-10-27T22:56:47Z",
+  "counts": {
+   "claude": {
+    "total": 83,
+    "examples": [
+     {
+      "sha": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "date": "2026-10-21T14:00:49.000-07:00",
+      "title": "Release v7.0.1: brainstorming retune, skills that better survive compaction, contribution templates (#2581)",
+      "url": "https://github.com/obra/superpowers/commit/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b"
+     },
+     {
+      "sha": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "date": "2026-10-09T17:28:04.000-07:00",
+      "title": "Release v7.0.0: rebuilt brainstorming, Antigravity Marketplace manifest, Windows hook fixes (#2489)",
+      "url": "https://github.com/obra/superpowers/commit/bb92a77741419a4ab5f06e711a283343f1ada0c3"
+     },
+     {
+      "sha": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "date": "2026-09-25T11:06:27.000-07:00",
+      "title": "Release v6.4.2: leaner plans from writing-plans (#2384)",
+      "url": "https://github.com/obra/superpowers/commit/8ca22dba9a94f28898bbce59f2537ff4d87c747d"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "c037dcbf4ba74a3e7a63f7f2910baf1f13513d05",
+      "date": "2025-12-23T11:26:33.000-08:00",
+      "title": "fix: use git check-ignore for worktree gitignore verification (#160)",
+      "url": "https://github.com/obra/superpowers/commit/c037dcbf4ba74a3e7a63f7f2910baf1f13513d05"
+     },
+     {
+      "sha": "94e9e2596c7b249eac3ada10c5c56366a57da364",
+      "date": "2025-12-01T15:42:12.000-08:00",
+      "title": "Add Windows support for plugin hooks (#134)",
+      "url": "https://github.com/obra/superpowers/commit/94e9e2596c7b249eac3ada10c5c56366a57da364"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "NousResearch/hermes-agent": {
+  "readAt": "2026-10-27T22:57:00Z",
+  "counts": {
+   "claude": {
+    "total": 241,
+    "examples": [
+     {
+      "sha": "0dd2f36ffc9ea736b361ae0a1cfb399d9be3d75a",
+      "date": "2026-10-27T07:26:36.000-07:00",
+      "title": "fix(sessions): rank list pages on ids before projecting, seed chains only from parents",
+      "url": "https://github.com/NousResearch/hermes-agent/commit/0dd2f36ffc9ea736b361ae0a1cfb399d9be3d75a"
+     },
+     {
+      "sha": "f4bcb4df7c58a6033bbab502e914560ab0564244",
+      "date": "2026-10-26T20:15:44.000-07:00",
+      "title": "plugin-catalog: repin kinocut to 31ddab08",
+      "url": "https://github.com/NousResearch/hermes-agent/commit/f4bcb4df7c58a6033bbab502e914560ab0564244"
+     },
+     {
+      "sha": "9212396c4e63a992e8cd256acae809e9a2bfd100",
+      "date": "2026-10-25T22:55:11.000-07:00",
+      "title": "fix(agent): bound prepared-compaction staleness, size band from trigger, discard on rebind",
+      "url": "https://github.com/NousResearch/hermes-agent/commit/9212396c4e63a992e8cd256acae809e9a2bfd100"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 3,
+    "examples": [
+     {
+      "sha": "65a513cac5b8506b592db424fc7d3602a3d245a6",
+      "date": "2026-10-08T09:10:28.000-07:00",
+      "title": "test(gateway): retain coverage for addressed review contracts",
+      "url": "https://github.com/NousResearch/hermes-agent/commit/65a513cac5b8506b592db424fc7d3602a3d245a6"
+     },
+     {
+      "sha": "a0f040601ac0ff512b26fbc95abe85c4eb6ffd23",
+      "date": "2026-10-08T09:10:26.000-07:00",
+      "title": "fix(hosted): decline questions without a reply channel",
+      "url": "https://github.com/NousResearch/hermes-agent/commit/a0f040601ac0ff512b26fbc95abe85c4eb6ffd23"
+     },
+     {
+      "sha": "62761ec9913adf5be0c4607ea38e28107b73095b",
+      "date": "2026-10-02T16:45:39.000-07:00",
+      "title": "pm: keep locked stale previous entries instead of failing install",
+      "url": "https://github.com/NousResearch/hermes-agent/commit/62761ec9913adf5be0c4607ea38e28107b73095b"
+     }
+    ]
+   }
+  }
+ },
+ "anomalyco/opencode": {
+  "readAt": "2026-10-27T22:57:14Z",
+  "counts": {
+   "claude": {
+    "total": 39,
+    "examples": [
+     {
+      "sha": "a5bf171649036d866604eaaefdd0a4be6d29f516",
+      "date": "2026-10-19T14:29:10.000-05:00",
+      "title": "fix(core): keep the instruction baseline on committed revert (#54410)",
+      "url": "https://github.com/anomalyco/opencode/commit/a5bf171649036d866604eaaefdd0a4be6d29f516"
+     },
+     {
+      "sha": "328f74c2131ad700eebfa2f4b5ee64fe2cde78e2",
+      "date": "2026-10-14T18:52:52.000-05:00",
+      "title": "fix(mcp): pass tool input as permission metadata (#51062)",
+      "url": "https://github.com/anomalyco/opencode/commit/328f74c2131ad700eebfa2f4b5ee64fe2cde78e2"
+     },
+     {
+      "sha": "07338c5d48348f7fc3ba97c348f5f74d754e84b1",
+      "date": "2026-09-28T15:09:03.000-05:00",
+      "title": "feat(cli): create the session when --session names one that does not exist (#51405)",
+      "url": "https://github.com/anomalyco/opencode/commit/07338c5d48348f7fc3ba97c348f5f74d754e84b1"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 13,
+    "examples": [
+     {
+      "sha": "7f571d36ea56cc3dd7059cfe82c729fb52b121eb",
+      "date": "2026-05-30T21:08:38.000-04:00",
+      "title": "refactor(core): move database schema ownership (#29068)",
+      "url": "https://github.com/anomalyco/opencode/commit/7f571d36ea56cc3dd7059cfe82c729fb52b121eb"
+     },
+     {
+      "sha": "202ec120565f46712a815cf6479d07c5dcf862f9",
+      "date": "2026-05-28T11:25:34.000-05:00",
+      "title": "docs: fix grammar in config.mdx (#29683)",
+      "url": "https://github.com/anomalyco/opencode/commit/202ec120565f46712a815cf6479d07c5dcf862f9"
+     },
+     {
+      "sha": "9a4292726875e89f3614ba70f27d4cac1c153eed",
+      "date": "2026-03-04T07:35:24.000+10:00",
+      "title": "revert: undo turbo typecheck dependency change from #14828 (#15902)",
+      "url": "https://github.com/anomalyco/opencode/commit/9a4292726875e89f3614ba70f27d4cac1c153eed"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "tensorflow/tensorflow": {
+  "readAt": "2026-10-27T22:57:27Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 10,
+    "examples": [
+     {
+      "sha": "afe922e2008ce705c81b5774295fb47c0c16444f",
+      "date": "2026-10-09T02:21:16.000-07:00",
+      "title": "PR #50178: [XLA:TSL] BFC: grow spatially partitioned pools within a reserved arena",
+      "url": "https://github.com/tensorflow/tensorflow/commit/afe922e2008ce705c81b5774295fb47c0c16444f"
+     },
+     {
+      "sha": "3424b626c42bb575a6a7af530e33a3d5f63a4b06",
+      "date": "2026-10-08T07:30:41.000-07:00",
+      "title": "PR #50177: [XLA:GPU] DeviceMemAllocator: reserved-arena mode that maps physical memory on demand",
+      "url": "https://github.com/tensorflow/tensorflow/commit/3424b626c42bb575a6a7af530e33a3d5f63a4b06"
+     },
+     {
+      "sha": "a18cf31fd1388ec2eb543ce4fe94b39254e4e3ee",
+      "date": "2026-10-08T04:51:45.000-07:00",
+      "title": "PR #50176: [XLA:GPU] StreamExecutor: VA reservation and physical allocation APIs sharing the executor's VMM options",
+      "url": "https://github.com/tensorflow/tensorflow/commit/a18cf31fd1388ec2eb543ce4fe94b39254e4e3ee"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "firecrawl/firecrawl": {
+  "readAt": "2026-10-27T22:57:41Z",
+  "counts": {
+   "claude": {
+    "total": 313,
+    "examples": [
+     {
+      "sha": "67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e",
+      "date": "2026-10-27T14:44:13.000-07:00",
+      "title": "fix(branding): better logo picks, page background, link and accent colors (#5425)",
+      "url": "https://github.com/firecrawl/firecrawl/commit/67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e"
+     },
+     {
+      "sha": "e0b48886c3f334864b00f1fd62c211fd51ac2910",
+      "date": "2026-10-22T14:49:34.000-07:00",
+      "title": "fix(api): Update scrape request logs (#5357)",
+      "url": "https://github.com/firecrawl/firecrawl/commit/e0b48886c3f334864b00f1fd62c211fd51ac2910"
+     },
+     {
+      "sha": "11ef627345eaab1e3efc0f79fba49f6c0d595cd0",
+      "date": "2026-10-22T14:24:05.000-07:00",
+      "title": "feat(branding): show Jev the page's first screen, by request flag or team rollout (#5305)",
+      "url": "https://github.com/firecrawl/firecrawl/commit/11ef627345eaab1e3efc0f79fba49f6c0d595cd0"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "5e57a065ac4d958399b70d11bd5fdf167bc723a3",
+      "date": "2026-09-14T20:39:31.000+10:00",
+      "title": "perf(api): skip the monolith's Autumn provisioning prefix on the firebill route (#4597)",
+      "url": "https://github.com/firecrawl/firecrawl/commit/5e57a065ac4d958399b70d11bd5fdf167bc723a3"
+     },
+     {
+      "sha": "fec7b60dfd8971fd148f7824a17fd8efc9626a93",
+      "date": "2026-09-14T13:41:59.000+10:00",
+      "title": "refactor(api): require the org id on every billing call; AutumnService resolves nothing (#4596)",
+      "url": "https://github.com/firecrawl/firecrawl/commit/fec7b60dfd8971fd148f7824a17fd8efc9626a93"
+     },
+     {
+      "sha": "bfbff8967849b6959f14d315d03977f85f4ddead",
+      "date": "2025-08-07T15:57:44.000+02:00",
+      "title": "fix: prevent PDF scrapes with parsePDF:false from being indexed (#1933)",
+      "url": "https://github.com/firecrawl/firecrawl/commit/bfbff8967849b6959f14d315d03977f85f4ddead"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "3b4ea7bc73d088a8d4c8f61f97879b5049e1c582",
+      "date": "2026-05-28T09:30:17.000-04:00",
+      "title": "Potential fix for pull request finding",
+      "url": "https://github.com/firecrawl/firecrawl/commit/3b4ea7bc73d088a8d4c8f61f97879b5049e1c582"
+     },
+     {
+      "sha": "aac36bc63e478e79e255ba02534328b82f93fc9a",
+      "date": "2026-05-26T22:30:49.000-04:00",
+      "title": "Potential fix for pull request finding",
+      "url": "https://github.com/firecrawl/firecrawl/commit/aac36bc63e478e79e255ba02534328b82f93fc9a"
+     },
+     {
+      "sha": "784d1063d453c51d403305c2ebb22639f2f10af9",
+      "date": "2025-12-01T12:41:33.000-08:00",
+      "title": "Optimize Logs File Size (#2456)",
+      "url": "https://github.com/firecrawl/firecrawl/commit/784d1063d453c51d403305c2ebb22639f2f10af9"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "microsoft/markitdown": {
+  "readAt": "2026-10-27T22:57:54Z",
+  "counts": {
+   "claude": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "a5ddc8efd5572ac52362d4ea1269d1cfb3a5bfd4",
+      "date": "2026-09-03T12:18:46.000-07:00",
+      "title": "fix: handle DOCX files with inconsistent ZIP filename casing (#1812) (#2016)",
+      "url": "https://github.com/microsoft/markitdown/commit/a5ddc8efd5572ac52362d4ea1269d1cfb3a5bfd4"
+     },
+     {
+      "sha": "0b3a45234ef8cc060e9a64e4dbd36d80eaa81ff3",
+      "date": "2026-09-01T21:07:33.000-07:00",
+      "title": "fix: remove extra closing brace from caron and ring-above accents (#2279)",
+      "url": "https://github.com/microsoft/markitdown/commit/0b3a45234ef8cc060e9a64e4dbd36d80eaa81ff3"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "c870d492842ec1d5b23f7b1330ee12ba1dab408e",
+      "date": "2026-09-03T12:41:55.000-07:00",
+      "title": "fix: suppress pydub RuntimeWarning when ffmpeg is missing (fixes #1685) (#1985)",
+      "url": "https://github.com/microsoft/markitdown/commit/c870d492842ec1d5b23f7b1330ee12ba1dab408e"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "ollama/ollama": {
+  "readAt": "2026-10-27T22:58:08Z",
+  "counts": {
+   "claude": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "612f0a17d32cf7fe9bde5f31703a37b49c98ea2f",
+      "date": "2026-04-08T17:41:12.000-07:00",
+      "title": "fix: improve error message for unknown input item type in responses API (#15424)",
+      "url": "https://github.com/ollama/ollama/commit/612f0a17d32cf7fe9bde5f31703a37b49c98ea2f"
+     },
+     {
+      "sha": "810d4f9c22319491cd3ac360afed6d2cae6be99a",
+      "date": "2026-03-16T15:48:45.000-07:00",
+      "title": "runner: fix swallowed error in allocModel graph reservation",
+      "url": "https://github.com/ollama/ollama/commit/810d4f9c22319491cd3ac360afed6d2cae6be99a"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "7d271e6dc9fb114d48b91a1ed2ed3d414178a883",
+      "date": "2026-04-15T17:22:53.000-07:00",
+      "title": "cmd/launch: add Copilot CLI integration (#15583)",
+      "url": "https://github.com/ollama/ollama/commit/7d271e6dc9fb114d48b91a1ed2ed3d414178a883"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "huggingface/transformers": {
+  "readAt": "2026-10-27T22:58:22Z",
+  "counts": {
+   "claude": {
+    "total": 276,
+    "examples": [
+     {
+      "sha": "e5da0ae173d2879e9fc2f5e734bb707147953aa2",
+      "date": "2026-10-27T12:07:01.000Z",
+      "title": "[minimax_m3_vl] Gate the integration tests on total accelerator memory (#50025)",
+      "url": "https://github.com/huggingface/transformers/commit/e5da0ae173d2879e9fc2f5e734bb707147953aa2"
+     },
+     {
+      "sha": "0b6c4d4ca11851f810385960f7f15a25aba4e91b",
+      "date": "2026-10-27T11:58:49.000Z",
+      "title": "Forward code_revision to every pipeline loader (#49832)",
+      "url": "https://github.com/huggingface/transformers/commit/0b6c4d4ca11851f810385960f7f15a25aba4e91b"
+     },
+     {
+      "sha": "bd5411001f80f10b6dfbdbbb987b040383c8cc48",
+      "date": "2026-10-27T11:58:29.000Z",
+      "title": "[moshi] Skip Moshiko integration tests whose checkpoint is gone (#50017)",
+      "url": "https://github.com/huggingface/transformers/commit/bd5411001f80f10b6dfbdbbb987b040383c8cc48"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "3aa21543ddda64d24314f1a17d2e80ad8747a9af",
+      "date": "2026-01-07T16:41:28.000-08:00",
+      "title": "Fix typos: Remove duplicate duplicate words words (#43040)",
+      "url": "https://github.com/huggingface/transformers/commit/3aa21543ddda64d24314f1a17d2e80ad8747a9af"
+     },
+     {
+      "sha": "11e12a715a0e54bb82c5b5775b069e7befc6923c",
+      "date": "2025-08-25T11:56:30.000Z",
+      "title": "Fix typo: 'seperator' to 'separator' in variable names (#40389)",
+      "url": "https://github.com/huggingface/transformers/commit/11e12a715a0e54bb82c5b5775b069e7befc6923c"
+     },
+     {
+      "sha": "00b4dfb7860c13eaf12613b815f3b5ef2d22ce52",
+      "date": "2025-08-18T14:31:40.000Z",
+      "title": "Add `chat_template` (`jinja2`) as an extra dependency (#40128)",
+      "url": "https://github.com/huggingface/transformers/commit/00b4dfb7860c13eaf12613b815f3b5ef2d22ce52"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 9,
+    "examples": [
+     {
+      "sha": "6c5f8f4186c15f4bfbd67941a1736b2b347e0155",
+      "date": "2026-10-26T18:41:00.000+01:00",
+      "title": "[Fix] Fix CSM codebook embedding tying (#49197)",
+      "url": "https://github.com/huggingface/transformers/commit/6c5f8f4186c15f4bfbd67941a1736b2b347e0155"
+     },
+     {
+      "sha": "463f684a80966aec6319571c551062e160c2a9cb",
+      "date": "2026-08-14T14:11:52.000+02:00",
+      "title": "Potential fix for code scanning alert no. 267: Artifact poisoning (#47949)",
+      "url": "https://github.com/huggingface/transformers/commit/463f684a80966aec6319571c551062e160c2a9cb"
+     },
+     {
+      "sha": "eee480d59810135f45280f8db99f14d0136bed82",
+      "date": "2026-07-06T15:16:07.000Z",
+      "title": "docs-fix: IMDb dataset link in sequence classification guide (#47062)",
+      "url": "https://github.com/huggingface/transformers/commit/eee480d59810135f45280f8db99f14d0136bed82"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "618f05fa54d54d661bc7b07da660c66e56ea6bde",
+      "date": "2026-10-13T13:26:21.000Z",
+      "title": "Enable SDPA for Decision Transformer (#49550)",
+      "url": "https://github.com/huggingface/transformers/commit/618f05fa54d54d661bc7b07da660c66e56ea6bde"
+     }
+    ]
+   }
+  }
+ },
+ "AUTOMATIC1111/stable-diffusion-webui": {
+  "readAt": "2026-10-27T22:58:35Z",
+  "counts": {
+   "claude": {
+    "total": 0,
+    "examples": []
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "msitarzewski/agency-agents": {
+  "readAt": "2026-10-27T22:58:49Z",
+  "counts": {
+   "claude": {
+    "total": 139,
+    "examples": [
+     {
+      "sha": "226907db6a3e27fcc512c56e3b827e69654f20ed",
+      "date": "2026-10-23T11:30:33.000+01:00",
+      "title": "fix(electrical-engineer): address review on worked examples and rule guard",
+      "url": "https://github.com/msitarzewski/agency-agents/commit/226907db6a3e27fcc512c56e3b827e69654f20ed"
+     },
+     {
+      "sha": "02928ce65acf7b9bf8b1bdcb6e623a213c5d70db",
+      "date": "2026-10-20T20:09:21.000+01:00",
+      "title": "feat(engineering): add Electrical Engineer agent",
+      "url": "https://github.com/msitarzewski/agency-agents/commit/02928ce65acf7b9bf8b1bdcb6e623a213c5d70db"
+     },
+     {
+      "sha": "06db475e92b34da17ff18a4b63e6cbf7384b2a28",
+      "date": "2026-10-19T11:37:54.000-05:00",
+      "title": "chore(eval): regenerate the convert-outputs manifest for content batch 5",
+      "url": "https://github.com/msitarzewski/agency-agents/commit/06db475e92b34da17ff18a4b63e6cbf7384b2a28"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 3,
+    "examples": [
+     {
+      "sha": "95cd06692c198c8c441f0e13740dbc26d6a20356",
+      "date": "2026-03-08T20:17:46.000-07:00",
+      "title": "Add Data Engineer, Technical Writer, and Developer Advocate agents",
+      "url": "https://github.com/msitarzewski/agency-agents/commit/95cd06692c198c8c441f0e13740dbc26d6a20356"
+     },
+     {
+      "sha": "62a7c42d5da1919106f354364e245ac8ef636157",
+      "date": "2026-03-08T20:38:22.000+05:30",
+      "title": "Update integrations/claude-code/README.md",
+      "url": "https://github.com/msitarzewski/agency-agents/commit/62a7c42d5da1919106f354364e245ac8ef636157"
+     },
+     {
+      "sha": "8657591459883304a034f532038895c1b540fe72",
+      "date": "2026-03-08T20:38:05.000+05:30",
+      "title": "Update integrations/antigravity/agency-senior-project-manager/SKILL.md",
+      "url": "https://github.com/msitarzewski/agency-agents/commit/8657591459883304a034f532038895c1b540fe72"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "langflow-ai/langflow": {
+  "readAt": "2026-10-27T22:59:02Z",
+  "counts": {
+   "claude": {
+    "total": 165,
+    "examples": [
+     {
+      "sha": "a4233e2acc32bd635eaf79d85cec0b8dbfadec2d",
+      "date": "2026-10-21T04:17:15.000Z",
+      "title": "ci(bundles): keep each lfx line in its own bundle minor",
+      "url": "https://github.com/langflow-ai/langflow/commit/a4233e2acc32bd635eaf79d85cec0b8dbfadec2d"
+     },
+     {
+      "sha": "f29cd38e89d31aff27cd888b8e37a4b157eba1c1",
+      "date": "2026-10-21T03:50:52.000Z",
+      "title": "fix(release): move 1.13 bundles past versions taken by 1.14",
+      "url": "https://github.com/langflow-ai/langflow/commit/f29cd38e89d31aff27cd888b8e37a4b157eba1c1"
+     },
+     {
+      "sha": "94005e6c0d5424f8b39d4f124005d9ec2818a52e",
+      "date": "2026-10-19T12:46:51.000-07:00",
+      "title": "test: assert build_public_tmp never forwards request data to the build (#15845)",
+      "url": "https://github.com/langflow-ai/langflow/commit/94005e6c0d5424f8b39d4f124005d9ec2818a52e"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 25,
+    "examples": [
+     {
+      "sha": "7b16c1c5c0748b8384b8b2d23323af049b1ee319",
+      "date": "2026-01-22T22:25:45.000Z",
+      "title": "feat: Transform sticky notes to compact 260x100px rectangles (#10149)",
+      "url": "https://github.com/langflow-ai/langflow/commit/7b16c1c5c0748b8384b8b2d23323af049b1ee319"
+     },
+     {
+      "sha": "17872f672be235202b096c8ea72bf4870098942d",
+      "date": "2026-01-06T23:30:00.000Z",
+      "title": "feat: Add Message support to Smart Transform component (#11160)",
+      "url": "https://github.com/langflow-ai/langflow/commit/17872f672be235202b096c8ea72bf4870098942d"
+     },
+     {
+      "sha": "70432fe2baf6edc09bd22af9bf06315f507d71b5",
+      "date": "2025-12-11T14:11:05.000Z",
+      "title": "fix: prevent UI from getting stuck when switching to cURL mode after parse errors (#10508)",
+      "url": "https://github.com/langflow-ai/langflow/commit/70432fe2baf6edc09bd22af9bf06315f507d71b5"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 35,
+    "examples": [
+     {
+      "sha": "da798a525dd5806d44e7b7a555e549d01e9dd5fa",
+      "date": "2026-05-10T13:54:13.000Z",
+      "title": "feat(components): Add Code Agents (CodeAct agent and OpenDsStar agent) and file ingestion components with supporting fixes (#12713)",
+      "url": "https://github.com/langflow-ai/langflow/commit/da798a525dd5806d44e7b7a555e549d01e9dd5fa"
+     },
+     {
+      "sha": "89d1c60bed5ef78da0b034dcda63d52881c4496e",
+      "date": "2026-04-23T17:49:51.000-07:00",
+      "title": "feat: Enhance config loading by applying GUNICORN_CMD_ARGS before programmatic options (#12313)",
+      "url": "https://github.com/langflow-ai/langflow/commit/89d1c60bed5ef78da0b034dcda63d52881c4496e"
+     },
+     {
+      "sha": "919724523c550b16cb22d01eead873d51d7ccc87",
+      "date": "2026-04-17T16:53:26.000Z",
+      "title": "fix: resolve ghosting issues in preload optimization (#12587)",
+      "url": "https://github.com/langflow-ai/langflow/commit/919724523c550b16cb22d01eead873d51d7ccc87"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "farion1231/cc-switch": {
+  "readAt": "2026-10-27T22:59:16Z",
+  "counts": {
+   "claude": {
+    "total": 57,
+    "examples": [
+     {
+      "sha": "c3ad9bb0bd265d5a0eeb8367e51ea97c1e620ad4",
+      "date": "2026-10-23T17:34:54.000+08:00",
+      "title": "fix(model-fetch): try compatible-mode models endpoint for /apps/anthropic base URLs (#8755)",
+      "url": "https://github.com/farion1231/cc-switch/commit/c3ad9bb0bd265d5a0eeb8367e51ea97c1e620ad4"
+     },
+     {
+      "sha": "3e566a3bfa394412ad94b000d266b5e24d60372b",
+      "date": "2026-10-10T09:30:24.000+08:00",
+      "title": "fix(pi): point Volcengine Agent Plan at its own endpoint and add Coding Plan (#8044)",
+      "url": "https://github.com/farion1231/cc-switch/commit/3e566a3bfa394412ad94b000d266b5e24d60372b"
+     },
+     {
+      "sha": "b109dcd37d67e9896b341012d6228713d95229bc",
+      "date": "2026-08-17T09:53:30.000+08:00",
+      "title": "fix(grokbuild): stop showing Codex-specific copy in the Grok Build form (#6511)",
+      "url": "https://github.com/farion1231/cc-switch/commit/b109dcd37d67e9896b341012d6228713d95229bc"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 13,
+    "examples": [
+     {
+      "sha": "f363bb1dd062cc496b87a609f1ebb88e1a50f8fa",
+      "date": "2026-01-04T09:12:12.000+08:00",
+      "title": "Merge origin/main into main",
+      "url": "https://github.com/farion1231/cc-switch/commit/f363bb1dd062cc496b87a609f1ebb88e1a50f8fa"
+     },
+     {
+      "sha": "a2becf0917e48b4fba387aed2cdfd2adb69adc05",
+      "date": "2025-12-31T09:17:36.000+08:00",
+      "title": "refactor(commands): improve terminal launch code structure and fix env vars",
+      "url": "https://github.com/farion1231/cc-switch/commit/a2becf0917e48b4fba387aed2cdfd2adb69adc05"
+     },
+     {
+      "sha": "49a2e52b20c09943626991551f94a022b5b5e2ad",
+      "date": "2025-12-29T10:05:52.000+08:00",
+      "title": "fix(ui): only show terminal button for Claude Code providers",
+      "url": "https://github.com/farion1231/cc-switch/commit/49a2e52b20c09943626991551f94a022b5b5e2ad"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "f9db9f7056cbe7f972cdc02644722002316866b9",
+      "date": "2026-10-08T00:10:45.000+08:00",
+      "title": "feat(codex): support GitHub Copilot managed accounts with Responses/Chat routing (#7157)",
+      "url": "https://github.com/farion1231/cc-switch/commit/f9db9f7056cbe7f972cdc02644722002316866b9"
+     },
+     {
+      "sha": "7f0c7b11e5e14303a17de238baf51b0cb6724435",
+      "date": "2026-04-30T22:41:54.000+08:00",
+      "title": "feat(tray): add tooltip to tray icon for better user experience (#2417)",
+      "url": "https://github.com/farion1231/cc-switch/commit/7f0c7b11e5e14303a17de238baf51b0cb6724435"
+     },
+     {
+      "sha": "010b163430735aa5d850c8e3f49313798398597d",
+      "date": "2026-04-23T15:36:03.000+08:00",
+      "title": "Fix/一键配置失效 (#2249)",
+      "url": "https://github.com/farion1231/cc-switch/commit/010b163430735aa5d850c8e3f49313798398597d"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "langchain-ai/langchain": {
+  "readAt": "2026-10-27T22:59:30Z",
+  "counts": {
+   "claude": {
+    "total": 15,
+    "examples": [
+     {
+      "sha": "4717cfc83bbed25883ce3e300c1dfe63f35123d3",
+      "date": "2026-07-10T14:11:10.000-04:00",
+      "title": "feat(openai): support explicit prompt caching (#38762)",
+      "url": "https://github.com/langchain-ai/langchain/commit/4717cfc83bbed25883ce3e300c1dfe63f35123d3"
+     },
+     {
+      "sha": "fd822b07c00eefbe395ba3c285a4911f72a463de",
+      "date": "2026-07-05T23:19:16.000-04:00",
+      "title": "fix(text-splitters): restore lazy imports for heavy optional dependencies (#35469)",
+      "url": "https://github.com/langchain-ai/langchain/commit/fd822b07c00eefbe395ba3c285a4911f72a463de"
+     },
+     {
+      "sha": "de9502525ab2a9814551a8a7d8aa6eccc7a33d2e",
+      "date": "2026-06-09T17:14:50.000-04:00",
+      "title": "feat(perplexity): `bind_tools` and Responses-API tool round-trip (#37934)",
+      "url": "https://github.com/langchain-ai/langchain/commit/de9502525ab2a9814551a8a7d8aa6eccc7a33d2e"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 9,
+    "examples": [
+     {
+      "sha": "4b80abeadd6faf7f321ac5d690602812f82a3baf",
+      "date": "2026-10-27T10:37:36.000-04:00",
+      "title": "fix(core): escape node metadata in Mermaid labels (#41512)",
+      "url": "https://github.com/langchain-ai/langchain/commit/4b80abeadd6faf7f321ac5d690602812f82a3baf"
+     },
+     {
+      "sha": "4af7ab8fcb98c2dc211d9e34cddedffa23eba4d9",
+      "date": "2026-09-20T13:52:00.000-05:00",
+      "title": "release(typesafe): 0.0.1a3 (#40693)",
+      "url": "https://github.com/langchain-ai/langchain/commit/4af7ab8fcb98c2dc211d9e34cddedffa23eba4d9"
+     },
+     {
+      "sha": "c253f54b905f9648c50b723f01945f39a256d8aa",
+      "date": "2026-08-27T10:37:42.000-04:00",
+      "title": "fix(openai): correct `reasoning_effort_levels` for gpt-5 and gpt-5.1 profiles (#39936)",
+      "url": "https://github.com/langchain-ai/langchain/commit/c253f54b905f9648c50b723f01945f39a256d8aa"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 27,
+    "examples": [
+     {
+      "sha": "67fa96ffadf6659b25d8d8dc2010875c88a6ac39",
+      "date": "2026-08-27T19:00:42.000-04:00",
+      "title": "docs(groq): remove duplicate `method` block from `with_structured_output` docstring (#39978)",
+      "url": "https://github.com/langchain-ai/langchain/commit/67fa96ffadf6659b25d8d8dc2010875c88a6ac39"
+     },
+     {
+      "sha": "5650448a03d676776b1d05517391e60534aa9f05",
+      "date": "2026-08-17T20:18:26.000Z",
+      "title": "feat(core): incorporate gateway metadata to traces (#39703)",
+      "url": "https://github.com/langchain-ai/langchain/commit/5650448a03d676776b1d05517391e60534aa9f05"
+     },
+     {
+      "sha": "e939c96792f6478bd940794c99d2d819067d0899",
+      "date": "2026-02-27T19:30:37.000Z",
+      "title": "fix: compaction typo (#35467)",
+      "url": "https://github.com/langchain-ai/langchain/commit/e939c96792f6478bd940794c99d2d819067d0899"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "d22cfaf7c6248f890b194b960db878ecc5620852",
+      "date": "2026-01-09T23:07:47.000-05:00",
+      "title": "fix(core): make `yield_keys` prefix keyword-only to match `BaseStore` (#34659)",
+      "url": "https://github.com/langchain-ai/langchain/commit/d22cfaf7c6248f890b194b960db878ecc5620852"
+     }
+    ]
+   }
+  }
+ },
+ "Comfy-Org/ComfyUI": {
+  "readAt": "2026-10-27T22:59:44Z",
+  "counts": {
+   "claude": {
+    "total": 4,
+    "examples": [
+     {
+      "sha": "2bd4d82b4f19c30dc979a3a16ddae97068e1bdc8",
+      "date": "2026-03-16T12:34:04.000-07:00",
+      "title": "feat(assets): align local API with cloud spec (#12863)",
+      "url": "https://github.com/Comfy-Org/ComfyUI/commit/2bd4d82b4f19c30dc979a3a16ddae97068e1bdc8"
+     },
+     {
+      "sha": "af7b4a921d7abab7c852d7b5febb654be6e57eba",
+      "date": "2026-03-12T16:09:07.000-07:00",
+      "title": "feat: Add CacheProvider API for external distributed caching (#12056)",
+      "url": "https://github.com/Comfy-Org/ComfyUI/commit/af7b4a921d7abab7c852d7b5febb654be6e57eba"
+     },
+     {
+      "sha": "e544c65db91df5a070be69a0a9b922201fe79335",
+      "date": "2026-03-05T18:51:28.000-08:00",
+      "title": "feat: add Math Expression node with simpleeval evaluation (#12687)",
+      "url": "https://github.com/Comfy-Org/ComfyUI/commit/e544c65db91df5a070be69a0a9b922201fe79335"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "af7b4a921d7abab7c852d7b5febb654be6e57eba",
+      "date": "2026-03-12T16:09:07.000-07:00",
+      "title": "feat: Add CacheProvider API for external distributed caching (#12056)",
+      "url": "https://github.com/Comfy-Org/ComfyUI/commit/af7b4a921d7abab7c852d7b5febb654be6e57eba"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "4993411fd9a43d642971925272c3748d9e058131",
+      "date": "2026-02-11T11:15:13.000-08:00",
+      "title": "Dispatch desktop auto-bump when a ComfyUI release is published (#12398)",
+      "url": "https://github.com/Comfy-Org/ComfyUI/commit/4993411fd9a43d642971925272c3748d9e058131"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "github/spec-kit": {
+  "readAt": "2026-10-27T22:59:58Z",
+  "counts": {
+   "claude": {
+    "total": 343,
+    "examples": [
+     {
+      "sha": "9783b49ed66c26935cf7ef5ccc6ae5a296316eb7",
+      "date": "2026-10-26T11:26:59.000-05:00",
+      "title": "feat(vibe): add --no-model-invocation integration option (#5119)",
+      "url": "https://github.com/github/spec-kit/commit/9783b49ed66c26935cf7ef5ccc6ae5a296316eb7"
+     },
+     {
+      "sha": "e9ebeeaec6bdae2b7079be4a0c68a9e802a248b2",
+      "date": "2026-10-26T10:17:59.000-05:00",
+      "title": "fix: make bundle step refresh rollback transactional (#4827)",
+      "url": "https://github.com/github/spec-kit/commit/e9ebeeaec6bdae2b7079be4a0c68a9e802a248b2"
+     },
+     {
+      "sha": "fe971dcb454323d3fe23341a243cf080bc40c5f3",
+      "date": "2026-10-23T11:46:44.000-05:00",
+      "title": "fix(integrations): pass the Junie dispatch prompt via --task (#5065)",
+      "url": "https://github.com/github/spec-kit/commit/fe971dcb454323d3fe23341a243cf080bc40c5f3"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 51,
+    "examples": [
+     {
+      "sha": "e4842a03c830155e4c53315e4b8e32ef118d3f6e",
+      "date": "2026-09-10T07:50:37.000-05:00",
+      "title": "docs(core): SPECIFY_FEATURE sets the feature label, not the feature directory (#3786)",
+      "url": "https://github.com/github/spec-kit/commit/e4842a03c830155e4c53315e4b8e32ef118d3f6e"
+     },
+     {
+      "sha": "b485cd8c1f27b75f02bef0337da5cb8a856c9c8a",
+      "date": "2026-08-13T15:02:48.000-05:00",
+      "title": "fix(integrations): dispatch goose commands via `goose run` (#2416) (#3781)",
+      "url": "https://github.com/github/spec-kit/commit/b485cd8c1f27b75f02bef0337da5cb8a856c9c8a"
+     },
+     {
+      "sha": "36a33555bc89968a6ff8963733a10bceaab3c7bf",
+      "date": "2026-08-06T10:21:32.000-05:00",
+      "title": "fix(init): escape user-supplied values in `specify init` output (#3787)",
+      "url": "https://github.com/github/spec-kit/commit/36a33555bc89968a6ff8963733a10bceaab3c7bf"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 668,
+    "examples": [
+     {
+      "sha": "7b616824504bc716e75ecc837e8e3444cb2e58f6",
+      "date": "2026-10-27T13:33:58.000-05:00",
+      "title": "[extension] Add Shared Knowledge extension to community catalog (#5140)",
+      "url": "https://github.com/github/spec-kit/commit/7b616824504bc716e75ecc837e8e3444cb2e58f6"
+     },
+     {
+      "sha": "ce8592390a88c6bbc229e9720ef45cc1f6cff46a",
+      "date": "2026-10-27T12:59:12.000-05:00",
+      "title": "Update Secure Development Assurance Governance preset to v0.1.8 (#5139)",
+      "url": "https://github.com/github/spec-kit/commit/ce8592390a88c6bbc229e9720ef45cc1f6cff46a"
+     },
+     {
+      "sha": "ee94598c3c87ae231027b22fb2be2b5a13e8820f",
+      "date": "2026-10-26T17:23:40.000-05:00",
+      "title": "feat(bundles): allow bundles to reference other bundles (#5067)",
+      "url": "https://github.com/github/spec-kit/commit/ee94598c3c87ae231027b22fb2be2b5a13e8820f"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 535,
+    "examples": [
+     {
+      "sha": "222a973f8b8794366680c043fb935a31f71902af",
+      "date": "2026-10-27T15:01:21.000-05:00",
+      "title": "fix(vibe): keep user comments that follow a managed hook block (#5109)",
+      "url": "https://github.com/github/spec-kit/commit/222a973f8b8794366680c043fb935a31f71902af"
+     },
+     {
+      "sha": "ee94598c3c87ae231027b22fb2be2b5a13e8820f",
+      "date": "2026-10-26T17:23:40.000-05:00",
+      "title": "feat(bundles): allow bundles to reference other bundles (#5067)",
+      "url": "https://github.com/github/spec-kit/commit/ee94598c3c87ae231027b22fb2be2b5a13e8820f"
+     },
+     {
+      "sha": "3b76e6ea2dbe99d7c038077f9417763e27f5d996",
+      "date": "2026-10-26T15:52:34.000-05:00",
+      "title": "fix: report a non-file .extensionignore or .presetignore as a validation error (#5131)",
+      "url": "https://github.com/github/spec-kit/commit/3b76e6ea2dbe99d7c038077f9417763e27f5d996"
+     }
+    ]
+   }
+  }
+ },
+ "harry0703/MoneyPrinterTurbo": {
+  "readAt": "2026-10-27T23:00:12Z",
+  "counts": {
+   "claude": {
+    "total": 34,
+    "examples": [
+     {
+      "sha": "933cb102909e63dfe9873f60c4ac2071f471040f",
+      "date": "2026-10-23T12:33:05.000+08:00",
+      "title": "fix(video): open render output read-write before fsync for Windows",
+      "url": "https://github.com/harry0703/MoneyPrinterTurbo/commit/933cb102909e63dfe9873f60c4ac2071f471040f"
+     },
+     {
+      "sha": "ea3b8eee66fc56d44be4a24f3c127a193fd00f30",
+      "date": "2026-10-19T15:44:24.000+08:00",
+      "title": "feat: add local SDXL image server (#1668)",
+      "url": "https://github.com/harry0703/MoneyPrinterTurbo/commit/ea3b8eee66fc56d44be4a24f3c127a193fd00f30"
+     },
+     {
+      "sha": "bcb0a9c4a91b4ad3be655701784a42437b43b50c",
+      "date": "2026-10-14T11:39:35.000+08:00",
+      "title": "fix(voice): bump edge-tts to 7.3.1 so Edge TTS stops failing with 403",
+      "url": "https://github.com/harry0703/MoneyPrinterTurbo/commit/bcb0a9c4a91b4ad3be655701784a42437b43b50c"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "ggml-org/llama.cpp": {
+  "readAt": "2026-10-27T23:00:26Z",
+  "counts": {
+   "claude": {
+    "total": 26,
+    "examples": [
+     {
+      "sha": "ead9f3205848f81ca079b4e760b76a01a6359f4b",
+      "date": "2026-10-20T19:36:14.000+02:00",
+      "title": "server: Support logprobs with speculative decoding (#27196)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/ead9f3205848f81ca079b4e760b76a01a6359f4b"
+     },
+     {
+      "sha": "70c4e1582e37e4fd94104eb09301711a0f2675bc",
+      "date": "2026-09-24T15:18:47.000+02:00",
+      "title": "vulkan: int8 coopmat1 matmul implementation for AMD RDNA3 and RDNA4 (#27952)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/70c4e1582e37e4fd94104eb09301711a0f2675bc"
+     },
+     {
+      "sha": "b23701f77d47dad9de834d59ebfcbe25c9e8b46f",
+      "date": "2026-09-19T07:32:52.000+02:00",
+      "title": "cuda : fix CUB argsort corruption caused by in-place keys (#28389)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/b23701f77d47dad9de834d59ebfcbe25c9e8b46f"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 0,
+    "examples": []
+   },
+   "copilot": {
+    "total": 7,
+    "examples": [
+     {
+      "sha": "8034c1d1f166ce365b4909f5e27c4b9ac4edc804",
+      "date": "2026-09-21T11:04:51.000+03:00",
+      "title": "ggml-cpu: ARM Repack kernels for Q1_0 (#23492)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/8034c1d1f166ce365b4909f5e27c4b9ac4edc804"
+     },
+     {
+      "sha": "aee56b3abfeb134218fe5c496c329a1faac1ef28",
+      "date": "2026-08-13T20:30:48.000+03:00",
+      "title": "OpenVINO: Qwen3.5, memory optimization, and test-recurrent-state-rollback (#26952)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/aee56b3abfeb134218fe5c496c329a1faac1ef28"
+     },
+     {
+      "sha": "ef9c13d4c27f1ad9804341a0187c33b621609c63",
+      "date": "2026-06-24T10:21:33.000+02:00",
+      "title": "ui: New Logo + Navigation cleanup & Mobile UI/UX improvements (#24897)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/ef9c13d4c27f1ad9804341a0187c33b621609c63"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 346,
+    "examples": [
+     {
+      "sha": "d05706b4f32a545814856e98ca518292585443b9",
+      "date": "2026-10-27T23:36:32.000+01:00",
+      "title": "model : add LiquidAI/d1-2B and LiquidAI/d1-omni-2B (#31275)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/d05706b4f32a545814856e98ca518292585443b9"
+     },
+     {
+      "sha": "19ff817fb25e9a1b838b1d7f9f4325f7bf9779c4",
+      "date": "2026-10-27T18:47:14.000+01:00",
+      "title": "model : add LiquidAI/LFM3-Audio-2B and LiquidAI/LFM3-Omni-2B (#31257)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/19ff817fb25e9a1b838b1d7f9f4325f7bf9779c4"
+     },
+     {
+      "sha": "eb7818c0b85c08ccb39ec2299548b85147c47495",
+      "date": "2026-10-27T18:39:11.000+01:00",
+      "title": "common : support deferred tools and tool_reference content parts (#31256)",
+      "url": "https://github.com/ggml-org/llama.cpp/commit/eb7818c0b85c08ccb39ec2299548b85147c47495"
+     }
+    ]
+   }
+  }
+ },
+ "openai/codex": {
+  "readAt": "2026-10-27T23:00:40Z",
+  "counts": {
+   "claude": {
+    "total": 10,
+    "examples": [
+     {
+      "sha": "ef330eff6d52a037e77a7bde042694b2a54492df",
+      "date": "2026-04-09T18:10:38.000-03:00",
+      "title": "feat(tui): Ctrl+O copy hotkey and harden copy-as-markdown behavior (#16966)",
+      "url": "https://github.com/openai/codex/commit/ef330eff6d52a037e77a7bde042694b2a54492df"
+     },
+     {
+      "sha": "359e17a852b70eec7108ca25669c6141af2c78c2",
+      "date": "2026-04-07T22:16:09.000-03:00",
+      "title": "fix(tui): reduce startup and new-session latency (#17039)",
+      "url": "https://github.com/openai/codex/commit/359e17a852b70eec7108ca25669c6141af2c78c2"
+     },
+     {
+      "sha": "0bd31dc382bd1c33dc2bb6b97069c76aa10ba14b",
+      "date": "2026-04-02T18:07:05.000-03:00",
+      "title": "fix(tui): handle zellij redraw and composer rendering (#16578)",
+      "url": "https://github.com/openai/codex/commit/0bd31dc382bd1c33dc2bb6b97069c76aa10ba14b"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 2,
+    "examples": [
+     {
+      "sha": "ae7d3e1b492c682c76fb96d8ebdf710348db1948",
+      "date": "2026-01-23T12:05:20.000-08:00",
+      "title": "fix(exec): skip git repo check when --yolo flag is used (#9590)",
+      "url": "https://github.com/openai/codex/commit/ae7d3e1b492c682c76fb96d8ebdf710348db1948"
+     },
+     {
+      "sha": "ca23b0da5b75e8f5638a95cfc3f3b6a8d12e9de7",
+      "date": "2026-01-20T14:53:14.000-08:00",
+      "title": "fix(cli): add execute permission to bin/codex.js (#9532)",
+      "url": "https://github.com/openai/codex/commit/ca23b0da5b75e8f5638a95cfc3f3b6a8d12e9de7"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 3,
+    "examples": [
+     {
+      "sha": "f2b740c95dbf7c6e3aa992c40b29e657de8b4506",
+      "date": "2025-12-23T21:18:35.000Z",
+      "title": "fix(codex-cli): improve ripgrep download diagnostics (#8486)",
+      "url": "https://github.com/openai/codex/commit/f2b740c95dbf7c6e3aa992c40b29e657de8b4506"
+     },
+     {
+      "sha": "425c8dc372b09d972df1d416333f02334a61526e",
+      "date": "2025-12-18T17:44:38.000Z",
+      "title": "cloud: default to current branch in cloud exec (#7460)",
+      "url": "https://github.com/openai/codex/commit/425c8dc372b09d972df1d416333f02334a61526e"
+     },
+     {
+      "sha": "e1deeefa0fbc84d6ed4c71f9bc0eb4eaaebafb42",
+      "date": "2025-12-18T08:35:22.000Z",
+      "title": "Change \"Team\" to \"Buisness\" and add Education (#8221)",
+      "url": "https://github.com/openai/codex/commit/e1deeefa0fbc84d6ed4c71f9bc0eb4eaaebafb42"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ },
+ "browser-use/browser-use": {
+  "readAt": "2026-10-27T23:00:53Z",
+  "counts": {
+   "claude": {
+    "total": 147,
+    "examples": [
+     {
+      "sha": "702c737b8cfc74428b464d14192ec2165d267f6d",
+      "date": "2026-10-22T09:51:19.000-07:00",
+      "title": "README replay FAQ: saved runs can still contain secrets in page snapshots; replay needs the same sensitive_data (tested)",
+      "url": "https://github.com/browser-use/browser-use/commit/702c737b8cfc74428b464d14192ec2165d267f6d"
+     },
+     {
+      "sha": "c607f8b575fcd726d260674e4cae52a2febd9780",
+      "date": "2026-10-22T09:43:26.000-07:00",
+      "title": "README: FAQ on replaying a saved run without a model call per step (tested)",
+      "url": "https://github.com/browser-use/browser-use/commit/c607f8b575fcd726d260674e4cae52a2febd9780"
+     },
+     {
+      "sha": "46d8171cbd742190def4b3978fe3a9a945de9ba9",
+      "date": "2026-10-17T11:51:04.000-07:00",
+      "title": "context7.json: Tier 1 unlocks at $100, matching /pricing",
+      "url": "https://github.com/browser-use/browser-use/commit/46d8171cbd742190def4b3978fe3a9a945de9ba9"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 68,
+    "examples": [
+     {
+      "sha": "3df5806a0d097a1546d92c49bcf1b28c9972c3bd",
+      "date": "2026-10-22T09:59:12.000-07:00",
+      "title": "README: rerun a saved task without calling the model on every step (#6183)",
+      "url": "https://github.com/browser-use/browser-use/commit/3df5806a0d097a1546d92c49bcf1b28c9972c3bd"
+     },
+     {
+      "sha": "aa093a843da5edbf323c0b4145c9b6a0db3ecde8",
+      "date": "2026-10-17T11:53:21.000-07:00",
+      "title": "context7.json: Tier 1 unlocks at $100, matching /pricing (#6125)",
+      "url": "https://github.com/browser-use/browser-use/commit/aa093a843da5edbf323c0b4145c9b6a0db3ecde8"
+     },
+     {
+      "sha": "0b22102d1040490d5282f4bceb360f7e3a4c5537",
+      "date": "2026-10-17T11:17:51.000-07:00",
+      "title": "README: one-line switch to a cloud browser in the Python quickstart (#6111)",
+      "url": "https://github.com/browser-use/browser-use/commit/0b22102d1040490d5282f4bceb360f7e3a4c5537"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 3,
+    "examples": [
+     {
+      "sha": "9d71555d98d88c11a74d8a0ad3d452f6e79c5631",
+      "date": "2026-09-01T23:50:40.000+05:30",
+      "title": "Potential fix for pull request finding",
+      "url": "https://github.com/browser-use/browser-use/commit/9d71555d98d88c11a74d8a0ad3d452f6e79c5631"
+     },
+     {
+      "sha": "6f9a4714af59a5ca3d5252157c7a0330c1eb2c47",
+      "date": "2025-07-08T01:48:19.000-04:00",
+      "title": "Potential fix for code scanning alert no. 72: Binding a socket to all network interfaces",
+      "url": "https://github.com/browser-use/browser-use/commit/6f9a4714af59a5ca3d5252157c7a0330c1eb2c47"
+     },
+     {
+      "sha": "3940462d8d5988b37d4fc5ba0ab8e56cdb86ae7d",
+      "date": "2025-05-23T03:50:15.000-04:00",
+      "title": "Potential fix for code scanning alert no. 28: Workflow does not contain permissions",
+      "url": "https://github.com/browser-use/browser-use/commit/3940462d8d5988b37d4fc5ba0ab8e56cdb86ae7d"
+     }
+    ]
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "3648bbad7f2aa9e8447ff796a54ffbde840a789d",
+      "date": "2026-08-19T10:55:52.000+08:00",
+      "title": "fix(filesystem): report missing replacement text",
+      "url": "https://github.com/browser-use/browser-use/commit/3648bbad7f2aa9e8447ff796a54ffbde840a789d"
+     }
+    ]
+   }
+  }
+ },
+ "earendil-works/pi": {
+  "readAt": "2026-10-27T23:01:08Z",
+  "counts": {
+   "claude": {
+    "total": 15,
+    "examples": [
+     {
+      "sha": "fdce48eb404ec014adaf2ac10a3a53bc6b1740c2",
+      "date": "2026-10-20T15:55:48.000+02:00",
+      "title": "fix(ai): drop Codex models rejected for ChatGPT accounts (#11173)",
+      "url": "https://github.com/earendil-works/pi/commit/fdce48eb404ec014adaf2ac10a3a53bc6b1740c2"
+     },
+     {
+      "sha": "0cf65d2bf7cad7a58437a6c8a9172f29dbc43ea7",
+      "date": "2026-10-06T10:01:19.000+02:00",
+      "title": "fix(ai): let caller headers override Codex originator and User-Agent (#10429)",
+      "url": "https://github.com/earendil-works/pi/commit/0cf65d2bf7cad7a58437a6c8a9172f29dbc43ea7"
+     },
+     {
+      "sha": "230029078d99d647ef7f9935c5ef87039d6aa0a4",
+      "date": "2026-08-11T11:09:30.000+02:00",
+      "title": "feat(ai): AI Gateway transport over the Cloudflare AI binding (#7901)",
+      "url": "https://github.com/earendil-works/pi/commit/230029078d99d647ef7f9935c5ef87039d6aa0a4"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "8f67e00160a50564495d3a171eead0215060bc05",
+      "date": "2025-12-08T21:30:43.000+01:00",
+      "title": "fix: include empty tools param when conversation has tool history (#150)",
+      "url": "https://github.com/earendil-works/pi/commit/8f67e00160a50564495d3a171eead0215060bc05"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 1,
+    "examples": [
+     {
+      "sha": "b0e05b442305067b0021238a6e2f217c1bf65416",
+      "date": "2026-08-03T14:02:03.000+02:00",
+      "title": "fix(coding-agent): resize images returned by tools (#7330)",
+      "url": "https://github.com/earendil-works/pi/commit/b0e05b442305067b0021238a6e2f217c1bf65416"
+     }
+    ]
+   }
+  }
+ },
+ "TauricResearch/TradingAgents": {
+  "readAt": "2026-10-27T23:01:21Z",
+  "counts": {
+   "claude": {
+    "total": 8,
+    "examples": [
+     {
+      "sha": "04f434e86db88e7707bf16db8ed7183f9764fe26",
+      "date": "2026-06-01T02:02:47.000Z",
+      "title": "chore: README housekeeping and remove stale TODO",
+      "url": "https://github.com/TauricResearch/TradingAgents/commit/04f434e86db88e7707bf16db8ed7183f9764fe26"
+     },
+     {
+      "sha": "6abc768c1d0d2d65263140ba6d30f086b4ea98f6",
+      "date": "2026-04-19T22:43:14.000-04:00",
+      "title": "feat: replace per-agent BM25 memory with persistent append-only decision log",
+      "url": "https://github.com/TauricResearch/TradingAgents/commit/6abc768c1d0d2d65263140ba6d30f086b4ea98f6"
+     },
+     {
+      "sha": "8536ccacdd1cb05b2e8d2d4aa195d72c5aeb2e0d",
+      "date": "2026-04-17T18:57:31.000-04:00",
+      "title": "chore: ignore CLAUDE.md (local AI assistant context file)",
+      "url": "https://github.com/TauricResearch/TradingAgents/commit/8536ccacdd1cb05b2e8d2d4aa195d72c5aeb2e0d"
+     }
+    ]
+   },
+   "claudeCode": {
+    "total": 5,
+    "examples": [
+     {
+      "sha": "b01051b9f478fb054f4c6e93598322df74bd8a46",
+      "date": "2025-09-30T12:43:27.000+08:00",
+      "title": "Switch default data vendor",
+      "url": "https://github.com/TauricResearch/TradingAgents/commit/b01051b9f478fb054f4c6e93598322df74bd8a46"
+     },
+     {
+      "sha": "7fc9c28a94d177851c205d4958be88014d16eba6",
+      "date": "2025-09-26T23:58:51.000+08:00",
+      "title": "Add environment variable configuration support",
+      "url": "https://github.com/TauricResearch/TradingAgents/commit/7fc9c28a94d177851c205d4958be88014d16eba6"
+     },
+     {
+      "sha": "7bcc2cbd8aa4ccf05e3a86ea7afae74e1aa2b649",
+      "date": "2025-09-26T23:52:26.000+08:00",
+      "title": "Update configuration documentation for Alpha Vantage data vendor",
+      "url": "https://github.com/TauricResearch/TradingAgents/commit/7bcc2cbd8aa4ccf05e3a86ea7afae74e1aa2b649"
+     }
+    ]
+   },
+   "copilot": {
+    "total": 0,
+    "examples": []
+   },
+   "copilotAgent": {
+    "error": true
+   },
+   "assistedBy": {
+    "total": 0,
+    "examples": []
+   }
+  }
+ }
+}

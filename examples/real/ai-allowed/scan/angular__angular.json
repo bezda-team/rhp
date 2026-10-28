@@ -1,0 +1,39 @@
+{
+ "full": "angular/angular",
+ "stars": 101095,
+ "license": "MIT",
+ "archived": false,
+ "created": "2014-09-18T16:12:01Z",
+ "pushed": "2026-10-27T22:35:37Z",
+ "ref": "main",
+ "homepage": "https://angular.dev",
+ "description": "Deliver web apps with confidence 🚀",
+ "agentFiles": [
+  ".gemini",
+  "AGENTS.md",
+  "skills"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".gemini": {
+   "files": [
+    ".gemini/commands",
+    ".gemini/config.yaml",
+    ".gemini/settings.json"
+   ]
+  },
+  "AGENTS.md": {
+   "text": "---\ntrigger: always_on\n---\n\nThis is the source code for the Angular framework. This guide outlines standard practices for AI agents working in this repository.\n\n## Environment\n\n- Use `pnpm` for package management.\n- Use `pnpm bazel test //target` to run tests.\n\n## Key Documentation\n\n- [Building and Testing](contributing-docs/building-and-testing-angular.md): definitive guide for running targets.\n- [Coding Standards](contributing-docs/coding-standards.md): style guide for TypeScript and other files.\n- [Commit Guidelines](contributing-docs/commit-message-guidelines.md): format for commit messages and PR titles.\n\n## Testing\n\n- Create standalone component/directives by default, DO NOT introduce new NgModules/non-standalone components even if sibling tests use them.\n- Prefer current best practices over existing authoring styles in the same file\n- Test components usually do not need selectors unless they are used in templates\n- Components are `OnPush` by default, prefer signals for test component state\n- **Zoneless & Async-First:** Assume a zoneless environment where state changes schedule updates asynchronously.\n  - **Do NOT** use `fixture.detectChanges()` to manually trigger updates.\n  - **ALWAYS** use the \"Act, Wait, Assert\" pattern:\n    1. **Act:** Update state or perform an action.\n    2. **Wait:** `await fixture.whenStable()` to allow the framework to process the scheduled update.\n    3. **Assert:** Verify the output.\n- To keep tests fast, minimize the need for waiting:\n  - Use `useAutoTick()` (from `packages/private/testing/src/utils.ts`) to fast-forward time via the mock clock.\n- When waiting is necessary, use real async tests (`it('...', async () => { ... })`) along with:\n  - `await timeout(ms)` (from `packages/private/testing/src/utils.ts`) to wait a specific number of milliseconds.\n  - `await fixture.whenStable()` to wait for framework stability.\n  - Use the `waitFor` helper function exposed by `@angular/private/testing`\n\n## Pull Requests\n\n- Use the `gh` CLI (GitHub CLI) for creating and managing pull requests.\n"
+  },
+  "skills": {
+   "files": [
+    "skills/dev-skills"
+   ]
+  }
+ }
+}

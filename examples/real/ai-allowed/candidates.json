@@ -1,0 +1,579 @@
+{
+ "candidates": [
+  {
+   "full": "freeCodeCamp/freeCodeCamp",
+   "rank": 4,
+   "ai": false
+  },
+  {
+   "full": "obra/superpowers",
+   "rank": 13,
+   "ai": true
+  },
+  {
+   "full": "NousResearch/hermes-agent",
+   "rank": 19,
+   "ai": true
+  },
+  {
+   "full": "torvalds/linux",
+   "rank": 21,
+   "ai": false
+  },
+  {
+   "full": "react/react",
+   "rank": 22,
+   "ai": false
+  },
+  {
+   "full": "anomalyco/opencode",
+   "rank": 25,
+   "ai": true
+  },
+  {
+   "full": "vuejs/vue",
+   "rank": 26,
+   "ai": false
+  },
+  {
+   "full": "yt-dlp/yt-dlp",
+   "rank": 30,
+   "ai": false
+  },
+  {
+   "full": "tensorflow/tensorflow",
+   "rank": 31,
+   "ai": true
+  },
+  {
+   "full": "massgravel/Microsoft-Activation-Scripts",
+   "rank": 33,
+   "ai": false
+  },
+  {
+   "full": "firecrawl/firecrawl",
+   "rank": 34,
+   "ai": true
+  },
+  {
+   "full": "microsoft/vscode",
+   "rank": 36,
+   "ai": false
+  },
+  {
+   "full": "microsoft/markitdown",
+   "rank": 37,
+   "ai": true
+  },
+  {
+   "full": "ohmyzsh/ohmyzsh",
+   "rank": 39,
+   "ai": false
+  },
+  {
+   "full": "ollama/ollama",
+   "rank": 43,
+   "ai": true
+  },
+  {
+   "full": "flutter/flutter",
+   "rank": 47,
+   "ai": false
+  },
+  {
+   "full": "twbs/bootstrap",
+   "rank": 50,
+   "ai": false
+  },
+  {
+   "full": "huggingface/transformers",
+   "rank": 52,
+   "ai": true
+  },
+  {
+   "full": "AUTOMATIC1111/stable-diffusion-webui",
+   "rank": 53,
+   "ai": true
+  },
+  {
+   "full": "msitarzewski/agency-agents",
+   "rank": 54,
+   "ai": true
+  },
+  {
+   "full": "langflow-ai/langflow",
+   "rank": 59,
+   "ai": true
+  },
+  {
+   "full": "clash-verge-rev/clash-verge-rev",
+   "rank": 60,
+   "ai": false
+  },
+  {
+   "full": "Genymobile/scrcpy",
+   "rank": 62,
+   "ai": false
+  },
+  {
+   "full": "farion1231/cc-switch",
+   "rank": 63,
+   "ai": true
+  },
+  {
+   "full": "langchain-ai/langchain",
+   "rank": 64,
+   "ai": true
+  },
+  {
+   "full": "Comfy-Org/ComfyUI",
+   "rank": 67,
+   "ai": true
+  },
+  {
+   "full": "github/spec-kit",
+   "rank": 68,
+   "ai": true
+  },
+  {
+   "full": "vercel/next.js",
+   "rank": 70,
+   "ai": false
+  },
+  {
+   "full": "ytdl-org/youtube-dl",
+   "rank": 74,
+   "ai": false
+  },
+  {
+   "full": "microsoft/PowerToys",
+   "rank": 76,
+   "ai": false
+  },
+  {
+   "full": "golang/go",
+   "rank": 77,
+   "ai": false
+  },
+  {
+   "full": "harry0703/MoneyPrinterTurbo",
+   "rank": 81,
+   "ai": true
+  },
+  {
+   "full": "excalidraw/excalidraw",
+   "rank": 82,
+   "ai": false
+  },
+  {
+   "full": "ggml-org/llama.cpp",
+   "rank": 83,
+   "ai": true
+  },
+  {
+   "full": "openai/codex",
+   "rank": 85,
+   "ai": true
+  },
+  {
+   "full": "kubernetes/kubernetes",
+   "rank": 87,
+   "ai": false
+  },
+  {
+   "full": "rustdesk/rustdesk",
+   "rank": 88,
+   "ai": false
+  },
+  {
+   "full": "react/react-native",
+   "rank": 89,
+   "ai": false
+  },
+  {
+   "full": "shadcn-ui/ui",
+   "rank": 90,
+   "ai": false
+  },
+  {
+   "full": "electron/electron",
+   "rank": 93,
+   "ai": false
+  },
+  {
+   "full": "nodejs/node",
+   "rank": 94,
+   "ai": false
+  },
+  {
+   "full": "rust-lang/rust",
+   "rank": 96,
+   "ai": false
+  },
+  {
+   "full": "browser-use/browser-use",
+   "rank": 98,
+   "ai": true
+  },
+  {
+   "full": "2dust/v2rayN",
+   "rank": 99,
+   "ai": false
+  },
+  {
+   "full": "godotengine/godot",
+   "rank": 100,
+   "ai": false
+  },
+  {
+   "full": "earendil-works/pi",
+   "rank": 101,
+   "ai": true
+  },
+  {
+   "full": "immich-app/immich",
+   "rank": 102,
+   "ai": false
+  },
+  {
+   "full": "TauricResearch/TradingAgents",
+   "rank": 103,
+   "ai": true
+  },
+  {
+   "full": "mrdoob/three.js",
+   "rank": 105,
+   "ai": false
+  },
+  {
+   "full": "supabase/supabase",
+   "rank": 107,
+   "ai": false
+  },
+  {
+   "full": "d3/d3",
+   "rank": 108,
+   "ai": false
+  },
+  {
+   "full": "tauri-apps/tauri",
+   "rank": 109,
+   "ai": false
+  },
+  {
+   "full": "microsoft/TypeScript",
+   "rank": 110,
+   "ai": false
+  },
+  {
+   "full": "openai/whisper",
+   "rank": 111,
+   "ai": true
+  },
+  {
+   "full": "fatedier/frp",
+   "rank": 114,
+   "ai": false
+  },
+  {
+   "full": "axios/axios",
+   "rank": 115,
+   "ai": false
+  },
+  {
+   "full": "denoland/deno",
+   "rank": 116,
+   "ai": false
+  },
+  {
+   "full": "google-gemini/gemini-cli",
+   "rank": 117,
+   "ai": true
+  },
+  {
+   "full": "microsoft/terminal",
+   "rank": 123,
+   "ai": false
+  },
+  {
+   "full": "pytorch/pytorch",
+   "rank": 124,
+   "ai": true
+  },
+  {
+   "full": "fastapi/fastapi",
+   "rank": 128,
+   "ai": false
+  },
+  {
+   "full": "react/create-react-app",
+   "rank": 132,
+   "ai": false
+  },
+  {
+   "full": "neovim/neovim",
+   "rank": 133,
+   "ai": false
+  },
+  {
+   "full": "angular/angular",
+   "rank": 134,
+   "ai": false
+  },
+  {
+   "full": "ant-design/ant-design",
+   "rank": 137,
+   "ai": false
+  },
+  {
+   "full": "mui/material-ui",
+   "rank": 138,
+   "ai": false
+  },
+  {
+   "full": "microsoft/playwright",
+   "rank": 140,
+   "ai": false
+  },
+  {
+   "full": "tailwindlabs/tailwindcss",
+   "rank": 142,
+   "ai": false
+  },
+  {
+   "full": "nvbn/thefuck",
+   "rank": 143,
+   "ai": false
+  },
+  {
+   "full": "OpenCut-app/OpenCut",
+   "rank": 147,
+   "ai": false
+  },
+  {
+   "full": "oven-sh/bun",
+   "rank": 148,
+   "ai": false
+  },
+  {
+   "full": "localsend/localsend",
+   "rank": 149,
+   "ai": false
+  },
+  {
+   "full": "puppeteer/puppeteer",
+   "rank": 150,
+   "ai": false
+  },
+  {
+   "full": "3b1b/manim",
+   "rank": 151,
+   "ai": false
+  },
+  {
+   "full": "nvm-sh/nvm",
+   "rank": 153,
+   "ai": false
+  },
+  {
+   "full": "Stirling-Tools/Stirling-PDF",
+   "rank": 154,
+   "ai": false
+  },
+  {
+   "full": "NationalSecurityAgency/ghidra",
+   "rank": 155,
+   "ai": false
+  },
+  {
+   "full": "sherlock-project/sherlock",
+   "rank": 156,
+   "ai": false
+  },
+  {
+   "full": "louislam/uptime-kuma",
+   "rank": 160,
+   "ai": false
+  },
+  {
+   "full": "zed-industries/zed",
+   "rank": 162,
+   "ai": false
+  },
+  {
+   "full": "home-assistant/core",
+   "rank": 167,
+   "ai": false
+  },
+  {
+   "full": "django/django",
+   "rank": 169,
+   "ai": false
+  },
+  {
+   "full": "storybookjs/storybook",
+   "rank": 170,
+   "ai": false
+  },
+  {
+   "full": "opencv/opencv",
+   "rank": 171,
+   "ai": false
+  },
+  {
+   "full": "astral-sh/uv",
+   "rank": 172,
+   "ai": false
+  },
+  {
+   "full": "mermaid-js/mermaid",
+   "rank": 174,
+   "ai": false
+  },
+  {
+   "full": "bitcoin/bitcoin",
+   "rank": 177,
+   "ai": false
+  },
+  {
+   "full": "gohugoio/hugo",
+   "rank": 180,
+   "ai": false
+  },
+  {
+   "full": "PanJiaChen/vue-element-admin",
+   "rank": 181,
+   "ai": false
+  },
+  {
+   "full": "D4Vinci/Scrapling",
+   "rank": 182,
+   "ai": false
+  },
+  {
+   "full": "syncthing/syncthing",
+   "rank": 183,
+   "ai": false
+  },
+  {
+   "full": "gin-gonic/gin",
+   "rank": 185,
+   "ai": false
+  },
+  {
+   "full": "sveltejs/svelte",
+   "rank": 188,
+   "ai": false
+  },
+  {
+   "full": "laravel/laravel",
+   "rank": 190,
+   "ai": false
+  },
+  {
+   "full": "macrozheng/mall",
+   "rank": 193,
+   "ai": false
+  },
+  {
+   "full": "junegunn/fzf",
+   "rank": 200,
+   "ai": false
+  },
+  {
+   "full": "vitejs/vite",
+   "rank": 203,
+   "ai": false
+  },
+  {
+   "full": "jesseduffield/lazygit",
+   "rank": 205,
+   "ai": false
+  },
+  {
+   "full": "animate-css/animate.css",
+   "rank": 206,
+   "ai": false
+  },
+  {
+   "full": "spring-projects/spring-boot",
+   "rank": 213,
+   "ai": false
+  },
+  {
+   "full": "netdata/netdata",
+   "rank": 215,
+   "ai": false
+  },
+  {
+   "full": "hoppscotch/hoppscotch",
+   "rank": 217,
+   "ai": false
+  },
+  {
+   "full": "ventoy/Ventoy",
+   "rank": 218,
+   "ai": false
+  },
+  {
+   "full": "anuraghazra/github-readme-stats",
+   "rank": 219,
+   "ai": false
+  },
+  {
+   "full": "coder/code-server",
+   "rank": 222,
+   "ai": false
+  },
+  {
+   "full": "caddyserver/caddy",
+   "rank": 227,
+   "ai": false
+  },
+  {
+   "full": "elastic/elasticsearch",
+   "rank": 228,
+   "ai": false
+  },
+  {
+   "full": "obsproject/obs-studio",
+   "rank": 229,
+   "ai": false
+  },
+  {
+   "full": "AppFlowy-IO/AppFlowy",
+   "rank": 234,
+   "ai": false
+  },
+  {
+   "full": "python/cpython",
+   "rank": 235,
+   "ai": false
+  },
+  {
+   "full": "grafana/grafana",
+   "rank": 237,
+   "ai": false
+  },
+  {
+   "full": "tesseract-ocr/tesseract",
+   "rank": 240,
+   "ai": false
+  },
+  {
+   "full": "redis/redis",
+   "rank": 241,
+   "ai": false
+  },
+  {
+   "full": "nestjs/nest",
+   "rank": 243,
+   "ai": false
+  },
+  {
+   "full": "ocornut/imgui",
+   "rank": 244,
+   "ai": false
+  }
+ ]
+}

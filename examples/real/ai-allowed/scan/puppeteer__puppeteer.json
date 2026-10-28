@@ -1,0 +1,27 @@
+{
+ "full": "puppeteer/puppeteer",
+ "stars": 95752,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2017-05-09T22:16:13Z",
+ "pushed": "2026-10-27T15:36:32Z",
+ "ref": "main",
+ "homepage": "https://pptr.dev",
+ "description": "JavaScript API for Chrome and Firefox",
+ "agentFiles": [
+  ".agents"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/PULL_REQUEST_TEMPLATE.md",
+  "docs/contributing.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".agents": {
+   "files": [
+    ".agents/skills"
+   ]
+  }
+ }
+}

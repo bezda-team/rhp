@@ -1,0 +1,16 @@
+{
+ "full": "massgravel/Microsoft-Activation-Scripts",
+ "stars": 196436,
+ "license": "GPL-3.0",
+ "archived": false,
+ "created": "2020-01-12T23:03:34Z",
+ "pushed": "2026-10-17T01:33:16Z",
+ "ref": "master",
+ "homepage": "https://massgrave.dev",
+ "description": "Open-source Windows and Office activator featuring HWID, Ohook, TSforge, and Online KMS activation methods, along with advanced troubleshooting.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

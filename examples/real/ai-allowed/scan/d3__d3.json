@@ -1,0 +1,16 @@
+{
+ "full": "d3/d3",
+ "stars": 113809,
+ "license": "ISC",
+ "archived": false,
+ "created": "2010-09-27T17:22:42Z",
+ "pushed": "2026-10-21T22:24:11Z",
+ "ref": "main",
+ "homepage": "https://d3js.org",
+ "description": "Bring data to life with SVG, Canvas and HTML. :bar_chart::chart_with_upwards_trend::tada:",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

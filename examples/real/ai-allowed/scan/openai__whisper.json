@@ -1,0 +1,16 @@
+{
+ "full": "openai/whisper",
+ "stars": 111411,
+ "license": "MIT",
+ "archived": false,
+ "created": "2022-09-16T20:02:54Z",
+ "pushed": "2026-08-31T17:19:19Z",
+ "ref": "main",
+ "homepage": "",
+ "description": "Robust Speech Recognition via Large-Scale Weak Supervision",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

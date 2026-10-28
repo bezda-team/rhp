@@ -1,0 +1,23 @@
+{
+ "full": "msitarzewski/agency-agents",
+ "stars": 164520,
+ "license": "MIT",
+ "archived": false,
+ "created": "2025-10-13T12:12:29Z",
+ "pushed": "2026-10-25T01:43:20Z",
+ "ref": "main",
+ "homepage": "",
+ "description": "A complete AI agency at your fingertips - From frontend wizards to Reddit community ninjas, from whimsy injectors to reality checkers. Each agent is a specialized expert with personality, processes, and proven deliverables.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "First off, thank you for considering contributing to The Agency! It's people like you who make this collection of AI agents better for everyone."
+  ]
+ },
+ "agentText": {}
+}

@@ -1,0 +1,19 @@
+{
+ "full": "spring-projects/spring-boot",
+ "stars": 81771,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2012-10-19T15:02:57Z",
+ "pushed": "2026-10-27T19:52:59Z",
+ "ref": "main",
+ "homepage": "https://spring.io/projects/spring-boot",
+ "description": "Spring Boot helps you to create Spring-powered, production-grade applications and services with absolute minimum fuss.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.adoc",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

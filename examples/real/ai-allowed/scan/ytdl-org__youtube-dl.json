@@ -1,0 +1,19 @@
+{
+ "full": "ytdl-org/youtube-dl",
+ "stars": 141406,
+ "license": "Unlicense",
+ "archived": false,
+ "created": "2010-10-31T14:35:07Z",
+ "pushed": "2026-02-19T16:45:25Z",
+ "ref": "master",
+ "homepage": "http://ytdl-org.github.io/youtube-dl/",
+ "description": "Command-line program to download videos from YouTube.com and other video sites",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

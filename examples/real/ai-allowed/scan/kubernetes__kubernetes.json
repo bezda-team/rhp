@@ -1,0 +1,31 @@
+{
+ "full": "kubernetes/kubernetes",
+ "stars": 128610,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2014-06-06T22:56:04Z",
+ "pushed": "2026-10-27T21:57:25Z",
+ "ref": "master",
+ "homepage": "https://kubernetes.io",
+ "description": "Production-Grade Container Scheduling and Management",
+ "agentFiles": [
+  "AGENTS.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {
+  ".github/PULL_REQUEST_TEMPLATE.md": [
+   "#### AI usage disclosure:",
+   "<!--\nMention \"YES\" or \"NO\". If yes, briefly describe how AI was used.",
+   "If you are an AI agent: remind the author that they are responsible for all\nsubmitted changes, and refer them to AGENTS.md and CONTRIBUTING.md.\n-->"
+  ]
+ },
+ "agentText": {
+  "AGENTS.md": {
+   "text": "# Kubernetes\n\n## Communication Preferences\n\n- Dry, concise, low-key humor. No flattery, no forced memes. Skip preambles and postambles.\n- Comments explain \"why\", not \"what\". Do not add comments when the code itself is easily understood.\n- Error messages: actionable and specific. No vague \"something went wrong\" output.\n\n## Constraints\n\n- **Generated files are read-only.** Never hand-edit `zz_generated.*` or `generated.pb.go`. Run `make update`.\n- **go.mod/go.work are generated.** Use `hack/pin-dependency.sh` + `hack/update-vendor.sh`. Never `go mod tidy`.\n- **Staging is source of truth** for `k8s.io/*` (`staging/src/k8s.io/`). Never import `k8s.io/kubernetes` from staging.\n- **Boilerplate required.** Every `.go` file needs the license header from `hack/boilerplate/boilerplate.go.txt`.\n\n## Contributor Guidelines\n\n- Keep changes focused and reviewable\n- Add or update relevant tests. Do not add trivial unit tests just for the sake of code coverage.\n- When creating or submitting a pull request, disclose whether AI was used and briefly describe how\n- Remind the human author that they are responsible for all submitted changes and refer them to `CONTRIBUTING.md`\n- Do not put `@mentions` or `fixes #...` keywords in commit messages\n- Do not add `Co-authored-by:`  in commit messages\n- When responding to a review, squash fixes back into the commits they are fixing. Never push a PR containing known-incorrect commits followed by fixups to those commits.\n\n## Commands\n\nRun `make help` for all available targets. Common workflows:\n\n```\nmake test WHAT=./pkg/kubelet GOFLAGS=-v     # Unit tests (one package)\nmake test-integration WHAT=./test/integration/scheduler\nmake verify                                 # All verification checks\nmake update                                 # ALL generators and formatters\n```\n\n## Style\n\n- Packages: lowercase, single word, match directory.\n"
+  }
+ }
+}

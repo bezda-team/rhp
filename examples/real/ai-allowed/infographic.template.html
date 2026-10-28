@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The rule and the repos</title>
+<meta name="description" content="r/opensource's new rule against AI beside what GitHub's biggest open-source projects say about AI in their own files.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,800;1,400&family=JetBrains+Mono:wght@500;700&family=Schibsted+Grotesk:wght@800;900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.2.0/dist/standalone.js" } }</script>
+<style>
+  /* Sized for a Reddit image: 750 by 1000 (3:4). A phone shows it at its screen's width and the desktop feed at
+     about 405 by 540, so the smallest words are set at 14px and the reading text at 19px and more.
+     The same paper, ink and stance colors as the chart version; here color marks only the stance */
+  :root { --page: #c9dbc8; --paper: #e5efe3; --card: #f3f8f1; --ink: #10241a; --soft: #3f5a47; --rule: #c3d5c1;
+    --allows: #c2361f; --limits: #2b4a9c; --none: #576d5f;
+    --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --text: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Verdana, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px 16px; background: var(--page); color: var(--ink); font-family: var(--text); }
+  .poster { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 750px; margin: 0 auto; padding: 26px 32px 18px; background: var(--paper); color: var(--ink); }
+  .poster figcaption { display: contents; }
+  .poster .kicker { order: 1; margin: 0 0 8px; font: 600 16px/1.2 var(--text); letter-spacing: .12em; text-transform: uppercase; color: var(--allows); }
+  /* The headline runs the poster's full width, in two lines */
+  .poster .headline { order: 2; margin: 0 0 16px; font: 900 37.5px/1.04 var(--display); letter-spacing: -.02em; }
+  .poster .headline .nobreak { white-space: nowrap; }
+  .poster .dek { order: 4; margin: 0 0 12px; font-size: 19px; line-height: 1.32; color: var(--soft); }
+  .poster .dek b { color: var(--ink); }
+  /* The rule, as the subreddit's moderators wrote it */
+  .rule { order: 3; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; margin: 0 0 14px; padding: 12px 18px 11px; background: var(--ink); color: var(--paper); }
+  .rule .mark { grid-row: span 2; font: 900 72px/.8 var(--display); color: #f0785c; }
+  .rule .words { font: italic 400 23px/1.27 var(--text); }
+  .rule cite { margin-top: 5px; font: 500 14px/1.3 var(--mono); font-style: normal; color: color-mix(in oklab, var(--paper) 78%, var(--ink)); }
+  /* The cards: six well-known platforms among the 50, side by side, in order of stars */
+  .cards { order: 5; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .card { display: flex; flex-direction: column; gap: 4px; height: 141px; padding: 10px 14px 8px 16px; background: var(--card); border-left: 6px solid var(--allows); }
+  .card .top { display: flex; align-items: baseline; gap: 10px; }
+  .card h3 { margin: 0; font: 900 24px/1.1 var(--display); letter-spacing: -.01em; }
+  .card .stars { margin-left: auto; font: 700 15px/1 var(--mono); color: var(--soft); }
+  .card blockquote { flex: 1; min-height: 0; margin: 0; overflow: hidden; font-size: 19px; line-height: 1.28; }
+  .card blockquote .q { font-style: italic; }
+  .card code { display: inline-block; margin-top: 3px; padding: 0 5px; background: var(--ink); color: var(--paper); font: 500 14.5px/1.4 var(--mono); }
+  .card .src { font: 500 14px/1.3 var(--mono); color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card .src a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  /* All 50: one square per project in order of stars, and what each kind of square counts */
+  .all { order: 6; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--rule); }
+  .all h2 { margin: 0 0 8px; font: 800 19px/1.2 var(--text); }
+  .squares { grid-column: 1 / -1; min-width: 0; }
+  .keys { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 20px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 16.5px; line-height: 1.28; }
+  .keys li { display: grid; grid-template-columns: 22px minmax(0, 1fr); column-gap: 8px; align-items: start; }
+  .keys i { width: 18px; height: 18px; margin-top: 1px; border-radius: 3px; background: var(--c); }
+  .keys .hollow { background: color-mix(in oklab, var(--c) 16%, var(--paper)); outline: 3px solid var(--c); outline-offset: -3px; }
+  .keys b { font-weight: 800; }
+  .keys span { color: var(--soft); }
+  /* The pick: fixed slots for the name, the AI tag and the stance, so no word slides as the names change */
+  .pick { display: grid; grid-template-columns: 12.5em 5.5em minmax(0, 1fr); align-items: baseline; height: 1.35em; margin: 2px 0 0; font-size: 15px; line-height: 1.35; color: var(--soft); white-space: nowrap; }
+  .pick > * { overflow: hidden; text-overflow: ellipsis; }
+  .pick .rest { grid-column: 1 / -1; }
+  .pick b { color: var(--ink); }
+  .poster .note { order: 7; display: block; margin-top: 12px; padding-top: 8px; border-top: 2px solid var(--rule); font-size: 14px; line-height: 1.35; color: var(--soft); }
+  .poster :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  @media (max-width: 781px) {
+    .all { grid-template-columns: minmax(0, 1fr); }
+    .pick { margin: 0 0 6px; }
+  }
+  @media (max-width: 640px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 22px 16px 16px; }
+    .poster .kicker { font-size: 13px; }
+    .poster .headline { font-size: 30px; }
+    .poster .dek { font-size: 16px; }
+    .rule { padding: 10px 12px; column-gap: 10px; }
+    .rule .mark { font-size: 52px; }
+    .rule .words { font-size: 17px; }
+    .rule cite { font-size: 12px; }
+    .cards { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .card { height: 136px; padding: 8px 12px 8px 14px; border-left-width: 5px; }
+    .card h3 { font-size: 21px; }
+    .card .stars { font-size: 13px; }
+    .card blockquote { font-size: 15.5px; }
+    .card code { font-size: 13px; }
+    .card .src { font-size: 11.5px; white-space: normal; overflow-wrap: anywhere; }
+    .keys { grid-template-columns: minmax(0, 1fr); font-size: 14.5px; gap: 5px; margin-top: 6px; }
+    .keys li { grid-template-columns: 20px minmax(0, 1fr); }
+    .keys i { width: 15px; height: 15px; }
+    .keys .hollow { outline-width: 2px; outline-offset: -2px; }
+    .pick { grid-template-columns: 11em 5.5em minmax(0, 1fr); font-size: 13px; }
+    .poster .note { font-size: 13px; }
+  }
+  @media (max-width: 380px) {
+    .card { height: 150px; }
+    .card blockquote { font-size: 14.5px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Cell, Poster, slat, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data: the 50 most-starred GitHub projects that meet r/opensource's other new rules, with what each one's own
+// repository says about AI (built by build.mjs from checked.json; every quote was matched against its file)
+const DATA = __DATA__;
+const PROJECTS = DATA.projects.map((p, i) => ({ ...p, rank: i + 1 }));
+const RULE = { text: "if your project uses AI, is made by AI, or is intended for AI, it's not welcome on r/opensource.", by: "r/opensource moderators, announcing the rule on Oct 24, 2026" };
+// The cards: six well-known developer platforms among the 50 (an operating system, a UI library, an editor, an app
+// framework, a language and a container orchestrator), in order of stars
+const FEATURED = ["torvalds/linux", "react/react", "microsoft/vscode", "flutter/flutter", "golang/go", "kubernetes/kubernetes"].map((full) => PROJECTS.find((p) => p.full === full));
+const PER_ROW = 25;
+const LINES = Array.from({ length: Math.ceil(PROJECTS.length / PER_ROW) }, (_, k) => PROJECTS.slice(k * PER_ROW, k * PER_ROW + PER_ROW));
+const STANCE = {
+  allows: "allows AI-assisted code",
+  limits: "limits AI-assisted code",
+  forbids: "forbids AI in contributions",
+  none: "shows no sign either way",
+};
+const compact = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 0 });
+const date = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+const list = new Intl.ListFormat("en-US", { style: "short", type: "unit" });
+
+// The counts, from the data
+const ai = PROJECTS.filter((d) => d.ai);
+const others = PROJECTS.filter((d) => !d.ai);
+const allow = others.filter((d) => d.stance === "allows");
+const against = others.filter((d) => d.stance === "limits" || d.stance === "forbids");
+const silent = others.filter((d) => d.stance === "none");
+const aiAllow = ai.filter((d) => d.stance === "allows");
+const nameOf = (d) => (d.short ?? d.name).replace("​", "");
+
+// What a project's own repository says, for a card
+const trailerOf = (commit) => commit.trailer.replace(/\s*<[^>]*>/, "");
+// An excerpt shows where it was cut: an ellipsis before words that start mid-sentence, and after words that stop mid-sentence
+const excerpt = (words) => `${/^[a-z]/.test(words) ? "…" : ""}${words}${/[.!?]$/.test(words) ? "" : "…"}`;
+// A long path keeps its last two parts on the card; the link has all of it
+const shortPath = (path) => (path.split("/").length > 2 ? `…/${path.split("/").slice(-2).join("/")}` : path);
+const sourceOf = (p) => p.file ? { text: shortPath(p.file.path), url: p.file.url } : { text: `commit ${p.commit.sha.slice(0, 7)} · no written rule`, url: p.commit.url };
+const Card = (p) => html`
+  <li class="card">
+    <div class="top"><h3>${nameOf(p)}</h3><span class="stars">${compact.format(p.stars)} ★</span></div>
+    ${p.file
+      ? html`<blockquote><span class="q">“${(p.file.card ?? p.file.quote).map(excerpt).join(" ")}”</span></blockquote>`
+      : html`<blockquote><span>Merged ${date.format(new Date(p.commit.date))}:</span><br><code>${trailerOf(p.commit)}</code></blockquote>`}
+    <a class="src" href=${sourceOf(p).url} target="_blank" rel="noopener">${sourceOf(p).text}</a>
+  </li>`;
+
+// Slat types: a project is a square in its stance's color (hollow when it is an AI project); a line is 25 of them
+const Square = slat({
+  css: `
+    .sq { --rhp-radius: 3px; --rhp-cell-gap: 4px; background: var(--c); cursor: pointer; }
+    .unit { --c: var(--rhp-series-1); }
+    .unit[data-stance="limits"], .unit[data-stance="forbids"] { --c: var(--rhp-series-2); }
+    .unit[data-stance="none"] { --c: var(--rhp-series-3); }
+    .ai .sq { background: color-mix(in oklab, var(--c) 16%, var(--rhp-surface)); outline: 3px solid var(--c); outline-offset: -3px; }
+    .on .sq { box-shadow: 0 0 0 2px var(--rhp-surface), 0 0 0 5px var(--rhp-ink); }
+    .unit:focus-visible { outline: none; }
+    .unit:focus-visible .sq { box-shadow: 0 0 0 2px var(--rhp-surface), 0 0 0 5px var(--rhp-ink); }
+    @container (max-width: 600px) { .sq { --rhp-cell-gap: 2px; --rhp-radius: 2px; } .ai .sq { outline-width: 2px; outline-offset: -2px; } }
+  `,
+}, (t) => html`
+  <div class=${() => `unit${t.ai ? " ai" : ""}${t.on ? " on" : ""}`} data-row=${() => t.rank - 1} data-stance=${() => t.stance}
+    aria-label=${() => `${t.rank}. ${nameOf(t)}${t.ai ? ", an AI project" : ""}: ${compact.format(t.stars)} stars; ${STANCE[t.stance]}`}>
+    <${Cell} class="sq" />
+  </div>`);
+const Line = slat({ room: { start: 0, end: 0 }, inset: 0 }, (r) => html`
+  <div><${Plot} orientation="across" rows=${() => r.units} on=${(t) => t.rank - 1 === r.lit} keyboard=${true}>${Square}<//></div>`);
+
+// Chart component: the cards are fixed; a square the reader points at, taps or reaches with the keyboard names its project
+function TheRuleAndTheRepos() {
+  const [picked, setPicked] = createSignal(null);
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
+  const p = () => (picked() == null ? null : PROJECTS[picked()]);
+  return html`
+    <${Poster}
+      kicker="r/opensource's new rule"
+      title=${html`<span>${ai.length + allow.length} of GitHub's ${PROJECTS.length} biggest <span class="nobreak">open-source</span> projects use AI or are built for it</span>`}
+      dek=${html`<span>Of the ${others.length} that are not AI projects, <b>${allow.length} allow AI-assisted code</b>:</span>`}
+      note=${`Stars, AI policies, contributing guides, agent instructions and commits, read ${date.format(new Date(DATA.readAt))}.`}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <blockquote class="rule"><span class="mark" aria-hidden="true">“</span><span class="words">${RULE.text}</span><cite>${RULE.by}</cite></blockquote>
+      <ul class="cards">${FEATURED.map(Card)}</ul>
+      <section class="all" aria-label="All 50 projects">
+        <h2>All ${PROJECTS.length}, in order of stars</h2>
+        <p class="pick" aria-live="polite">${() => (p() ? html`<b>#${p().rank} ${nameOf(p())}</b><span>${p().ai ? "AI project" : ""}</span><span>${STANCE[p().stance]}</span>` : html`<span class="rest">One square per project · point at or tap one</span>`)}</p>
+        <div class="squares">
+          <${Chart} ticks=${false} scale=${[0, 1]} aspect=${PER_ROW / LINES.length} label=${`The ${PROJECTS.length} most-starred open-source projects that meet r/opensource's other new rules, one square each in order of GitHub stars, colored by stance on AI in contributions`}
+            theme=${{ font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--allows)", "var(--limits)", "var(--none)"] }}>
+            <${Plot} units=${LINES} lit=${() => picked()}>${Line}<//>
+          <//>
+        </div>
+        <ul class="keys">
+          <li><i style="--c: var(--allows)"></i><div><b>${allow.length} allow AI-assisted code</b></div></li>
+          <li><i class="hollow" style="--c: var(--allows)"></i><div><b>${ai.length} AI projects</b>${" "}<span>(hollow), ${aiAllow.length} allow it</span></div></li>
+          <li><i style="--c: var(--limits)"></i><div><b>${against.length} limit or forbid it:</b>${" "}<span>${list.format(against.map(nameOf))}</span></div></li>
+          <li><i style="--c: var(--none)"></i><div><b>${silent.length} show no sign:</b>${" "}<span>${list.format(silent.map(nameOf))}</span></div></li>
+        </ul>
+      </section>
+    <//>`;
+}
+
+render(() => html`<${TheRuleAndTheRepos} />`, document.getElementById("chart"));
+</script>
+__DOWNLOAD__
+</body>
+</html>

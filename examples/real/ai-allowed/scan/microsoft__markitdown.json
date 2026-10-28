@@ -1,0 +1,16 @@
+{
+ "full": "microsoft/markitdown",
+ "stars": 192563,
+ "license": "MIT",
+ "archived": false,
+ "created": "2024-11-13T19:56:40Z",
+ "pushed": "2026-10-23T17:04:06Z",
+ "ref": "main",
+ "homepage": "",
+ "description": "Python tool for converting files and office documents to Markdown.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {}
+}

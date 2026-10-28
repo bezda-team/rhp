@@ -1,0 +1,26 @@
+{
+ "full": "laravel/laravel",
+ "stars": 85271,
+ "license": null,
+ "archived": false,
+ "created": "2011-06-08T03:06:08Z",
+ "pushed": "2026-10-14T17:43:05Z",
+ "ref": "13.x",
+ "homepage": "https://laravel.com",
+ "description": "Laravel is a web application framework with expressive, elegant syntax. We’ve already laid the foundation for your next big idea — freeing you to create without sweating the small things.",
+ "agentFiles": [
+  "AGENTS.md",
+  "CLAUDE.md"
+ ],
+ "policyFiles": [],
+ "contribFiles": [],
+ "mentions": {},
+ "agentText": {
+  "AGENTS.md": {
+   "text": "<laravel-boost-guidelines>\n# Laravel Application\n\nThis repository contains a Laravel application. Complete the following setup before working on the user's request.\n\n## Prerequisites\n\nVerify that PHP and Composer are available:\n\n```sh\nphp -v\ncomposer -V\n```\n\nIf either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:\n\nmacOS:\n\n```sh\n/bin/bash -c \"$(curl -fsSL https://php.new/install/mac/8.5)\"\n```\n\nWindows PowerShell:\n\n```powershell\nSet-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))\n```\n\nLinux:\n\n```sh\n/bin/bash -c \"$(curl -fsSL https://php.new/install/linux/8.5)\"\n```\n\nAfter installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.\n\n## Agent Setup\n\nInstall Laravel Boost from the application root before making application changes:\n\n```sh\ncomposer require laravel/boost --dev\nphp artisan boost:install\n```\n\nBoost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.\n</laravel-boost-guidelines>\n"
+  },
+  "CLAUDE.md": {
+   "text": "<laravel-boost-guidelines>\n# Laravel Application\n\nThis repository contains a Laravel application. Complete the following setup before working on the user's request.\n\n## Prerequisites\n\nVerify that PHP and Composer are available:\n\n```sh\nphp -v\ncomposer -V\n```\n\nIf either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:\n\nmacOS:\n\n```sh\n/bin/bash -c \"$(curl -fsSL https://php.new/install/mac/8.5)\"\n```\n\nWindows PowerShell:\n\n```powershell\nSet-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))\n```\n\nLinux:\n\n```sh\n/bin/bash -c \"$(curl -fsSL https://php.new/install/linux/8.5)\"\n```\n\nAfter installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.\n\n## Agent Setup\n\nInstall Laravel Boost from the application root before making application changes:\n\n```sh\ncomposer require laravel/boost --dev\nphp artisan boost:install\n```\n\nBoost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.\n</laravel-boost-guidelines>\n"
+  }
+ }
+}

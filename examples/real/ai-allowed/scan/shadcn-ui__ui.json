@@ -1,0 +1,34 @@
+{
+ "full": "shadcn-ui/ui",
+ "stars": 126709,
+ "license": "MIT",
+ "archived": false,
+ "created": "2023-01-04T12:43:27Z",
+ "pushed": "2026-10-27T12:59:03Z",
+ "ref": "main",
+ "homepage": "https://ui.shadcn.com",
+ "description": "Composable, accessible components with thoughtful defaults. Build your own component library with code you can customize, extend, and make your own.",
+ "agentFiles": [
+  ".claude",
+  "skills"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".claude": {
+   "files": [
+    ".claude/launch.json",
+    ".claude/settings.local.json"
+   ]
+  },
+  "skills": {
+   "files": [
+    "skills/migrate-radix-to-base",
+    "skills/shadcn"
+   ]
+  }
+ }
+}

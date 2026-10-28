@@ -1,0 +1,19 @@
+{
+ "full": "tailwindlabs/tailwindcss",
+ "stars": 97999,
+ "license": "MIT",
+ "archived": false,
+ "created": "2017-10-06T14:59:14Z",
+ "pushed": "2026-10-19T15:50:56Z",
+ "ref": "main",
+ "homepage": "https://tailwindcss.com/",
+ "description": "A utility-first CSS framework for rapid UI development.",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/CONTRIBUTING.md",
+  ".github/PULL_REQUEST_TEMPLATE.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}

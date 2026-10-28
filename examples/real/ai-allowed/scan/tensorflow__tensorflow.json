@@ -1,0 +1,26 @@
+{
+ "full": "tensorflow/tensorflow",
+ "stars": 201311,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2015-11-07T01:19:20Z",
+ "pushed": "2026-10-27T22:47:42Z",
+ "ref": "master",
+ "homepage": "https://tensorflow.org",
+ "description": "An Open Source Machine Learning Framework for Everyone",
+ "agentFiles": [
+  ".gemini"
+ ],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md"
+ ],
+ "mentions": {},
+ "agentText": {
+  ".gemini": {
+   "files": [
+    ".gemini/styleguide.md"
+   ]
+  }
+ }
+}

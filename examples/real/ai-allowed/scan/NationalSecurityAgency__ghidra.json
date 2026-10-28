@@ -1,0 +1,22 @@
+{
+ "full": "NationalSecurityAgency/ghidra",
+ "stars": 95056,
+ "license": "Apache-2.0",
+ "archived": false,
+ "created": "2019-03-01T03:27:48Z",
+ "pushed": "2026-10-27T09:14:00Z",
+ "ref": "master",
+ "homepage": "",
+ "description": "Ghidra is a software reverse engineering (SRE) framework",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md"
+ ],
+ "mentions": {
+  "CONTRIBUTING.md": [
+   "- If using \"AI\" to assist in development, please apply extra scrutiny to its suggestions, in terms\n  of both correctness and adherence to our [legal](#legal) requirements. Do not include an\n  Architecture Decision Record (ADR) with your pull request. AI-generated unit tests should only\n  be included with your pull request if they add coverage to an existing test file and make\n  architectual sense to be there. When in doubt, do not include unit tests in your pull request\n  unless a Ghidra team member asks you to during the review process."
+  ]
+ },
+ "agentText": {}
+}

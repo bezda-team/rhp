@@ -1,0 +1,23 @@
+{
+ "full": "ocornut/imgui",
+ "stars": 76842,
+ "license": "MIT",
+ "archived": false,
+ "created": "2014-07-21T14:29:47Z",
+ "pushed": "2026-10-27T17:48:06Z",
+ "ref": "master",
+ "homepage": "",
+ "description": "Dear ImGui: Bloat-free Graphical User interface for C++ with minimal dependencies",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  ".github/pull_request_template.md",
+  "docs/CONTRIBUTING.md"
+ ],
+ "mentions": {
+  ".github/pull_request_template.md": [
+   "4. PLEASE DO NOT SUBMIT AI-GENERATED PROSE. ONLY SUBMIT CODE THAT YOU REVIEWED AND UNDERSTAND. Submissions that are lacking proper human review/judgement before being passed to us are not welcome."
+  ]
+ },
+ "agentText": {}
+}

@@ -1,0 +1,19 @@
+{
+ "full": "hoppscotch/hoppscotch",
+ "stars": 80700,
+ "license": "MIT",
+ "archived": false,
+ "created": "2019-08-21T13:15:24Z",
+ "pushed": "2026-10-26T16:44:19Z",
+ "ref": "main",
+ "homepage": "https://hoppscotch.io",
+ "description": "Open-Source API Development Ecosystem • https://hoppscotch.io • Offline, On-Prem & Cloud • Web, Desktop & CLI • Open-Source Alternative to Postman, Insomnia",
+ "agentFiles": [],
+ "policyFiles": [],
+ "contribFiles": [
+  "CONTRIBUTING.md",
+  ".github/pull_request_template.md"
+ ],
+ "mentions": {},
+ "agentText": {}
+}
