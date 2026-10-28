@@ -5,7 +5,7 @@ For the debate itself: r/TrueOpenSource or r/OpenSourceAIAllowed, the subreddits
 
 Images (pick one per post):
 - ai-allowed-infographic.png (1500 x 2002, 3:4): the rule, six projects in their own words, all 50 as squares.
-- ai-allowed-chart.png (2160 x 2883, 3:4): the rule under the headline, the 17 most-starred as bars, with Linux's rule in the box beside them.
+- ai-allowed-chart.png (2160 x 2876, 3:4): the rule above the headline, the 16 most-starred as bars, with Linux's rule in the box beside them.
 Reddit's desktop feed shows either at about 405 x 540; on a phone both fill the screen's width.
 
 Title (infographic, r/dataisbeautiful):

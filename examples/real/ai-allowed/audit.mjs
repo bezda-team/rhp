@@ -32,7 +32,7 @@ check(count(ai, "allows") === 20, "20 of the AI projects allow it");
 
 // The chart's headline and the cards
 for (const n of ["Linux", "React", "VS Code", "Flutter", "Go", "Kubernetes"]) check(named(n).stance === "allows" && !named(n).ai, `${n} allows AI-assisted code and is not an AI project`);
-check(projects.slice(0, 17).some((p) => p.name === "VS Code"), "VS Code is among the chart's 17 bars");
+check(projects.slice(0, 16).some((p) => p.name === "VS Code"), "VS Code is among the chart's 16 bars");
 
 // Every quote printed is part of what verify.mjs matched against the file
 for (const p of projects) {

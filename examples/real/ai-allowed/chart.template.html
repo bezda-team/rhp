@@ -40,7 +40,7 @@
   .stage { order: 6; position: relative; min-width: 0; }
   /* The readout: the picked project's own words, in the room the shorter bars leave (beside the 9th to the 17th,
      clear of their labels; overlap.test.mjs checks) */
-  .readout { position: absolute; right: 0; bottom: 6px; z-index: 2; width: 380px; height: 352px; display: grid; grid-template-rows: minmax(0, 1fr); padding: 18px 22px 16px;
+  .readout { position: absolute; right: 0; bottom: 6px; z-index: 2; width: 378px; height: 352px; display: grid; grid-template-rows: minmax(0, 1fr); padding: 18px 22px 16px;
     background: var(--paper); border: 2px solid var(--ink); box-shadow: 8px 8px 0 color-mix(in oklab, var(--ink) 16%, var(--paper)); }
   /* Every project's words are laid out in the same cell, all but the picked one hidden: where the box takes its
      height from its content (narrower windows), it is as tall as the longest of them, so a pick never changes it */
@@ -111,7 +111,7 @@ import { Chart, Plot, Bar, Label, Poster, slat, nice, html, render, createSignal
 // repository says about AI (built by build.mjs from checked.json; every quote was matched against its file)
 const DATA = __DATA__;
 const RULE = { text: "if your project uses AI, is made by AI, or is intended for AI, it's not welcome on r/opensource.", by: "r/opensource moderators, announcing the rule on Oct 24, 2026" };
-const SHOWN = 17;
+const SHOWN = 16;
 // An excerpt shows where it was cut: an ellipsis before words that start mid-sentence, and after words that stop mid-sentence
 const excerpt = (words) => `${/^[a-z]/.test(words) ? "…" : ""}${words}${/[.!?]$/.test(words) ? "" : "…"}`;
 const ROWS = DATA.projects.slice(0, SHOWN).map((p, i) => ({ ...p, rank: i + 1 }));
@@ -139,7 +139,7 @@ const aiCount = ROWS.length - notAi.length;
 // Slat type: the project's name (with an AI tag when it is built for AI), its stars as a bar in its stance's color
 // (hollow when it is an AI project), and the count
 const Project = slat({
-  thickness: 41.25,
+  thickness: 43.5,
   inset: "6px",
   room: { start: "auto", end: 76 },
   css: `
