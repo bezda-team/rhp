@@ -4,10 +4,10 @@ Two Reddit posters that answer the question r/opensource's new no-AI rule raised
 They cover the 50 most-starred GitHub projects that pass the rule's other requirements, and what each one's repository says about AI in contributions.
 43 of the 50 are AI projects (21) or allow AI-assisted code (22 of the other 29: 11 by written policy, 11 in practice); yt-dlp forbids it, Godot and Immich limit it, and four show no sign either way.
 
-- `ai-allowed-infographic.html` and `.png`: the rule, six projects in their own words (Linux, React, VS Code, Flutter, Go, Kubernetes), and all 50 as squares in order of stars; a square names its project on hover, tap or focus. 750 by 1000 CSS pixels (3:4), saved at 1500 by 2002.
-- `ai-allowed-chart.html`: the rule above the headline, and all 50 projects as bars in their stance's color, AI projects hollow and tagged, in a scroll area as tall as 16 rows (the top 16 at rest; a wheel, a finger or the keyboard moves through the rest), with a box beside the shorter bars giving the picked project's rank, repository, stance, own words and source (Linux's at rest). 1080 by 1440 (3:4). Microsoft Activation Scripts is labeled MAS, and MoneyPrinterTurbo and TradingAgents are set smaller, so the box keeps clear of the bars.
-- `ai-allowed-chart-reddit.html` and `ai-allowed-chart.png`: the chart's Reddit image and the page it is saved from: the same template showing the top 16 only, with no scrolling (2160 by 2876).
-- Both posters end with "Made with rhp" in the note's last line, linking rhp's repository.
+- `ai-allowed-infographic.html` and `.png`: the rule, six projects in their own words (Linux, React, VS Code, Flutter, Go, Kubernetes), and all 50 as squares in order of stars; a square names its project on hover, tap or focus. 750 by 1019 CSS pixels (3:4 before the license line), saved at 1500 by 2037.
+- `ai-allowed-chart.html`: the rule above the headline, and all 50 projects as bars in their stance's color, AI projects hollow and tagged, in a scroll area as tall as 16 rows (the top 16 at rest; a wheel, a finger or the keyboard moves through the rest), with a box beside the shorter bars giving the picked project's rank, repository, stance, own words and source (Linux's at rest). 1080 by 1469 (3:4 before the license line). Microsoft Activation Scripts is labeled MAS, and MoneyPrinterTurbo and TradingAgents are set smaller, so the box keeps clear of the bars.
+- `ai-allowed-chart-reddit.html` and `ai-allowed-chart.png`: the chart's Reddit image and the page it is saved from: the same template showing the top 16 only, with no scrolling (2160 by 2937).
+- Both posters end with a line of their own: the license on the left ("© 2026 Anas Bouzid · CC BY 4.0", linking the license) and "Made with rhp" on the right (linking rhp's repository); on a phone the credit takes the next line.
 - `previews/` (made by `export.mjs`, not committed): each PNG at the size Reddit shows it, 390px wide on a phone and in the desktop feed's box.
 - `chart.template.html`, `infographic.template.html`: the editable pages.
 - `selection.json`: the rule that picks the 50, the AI projects with the description each rests on, and the reason for every repository left out above the 50th.
@@ -34,3 +34,11 @@ node examples/real/ai-allowed/export.mjs          # the Reddit PNGs through the 
 `fit.test.mjs` picks every bar of the chart in turn and checks that its words fit the readout, at 1280 and 390 pixels; `overlap.test.mjs` checks that the box and its hint keep 12 pixels from every bar and label, with the bars scrolled to five places.
 The rhp checker reports no problems for either page at 1280, 1024, 768, 390, 360 and 320 pixels.
 Open the HTML with an internet connection for the pinned rhp module and the PNG exporter.
+
+## License
+
+The two posters, as pages and as images (`ai-allowed-chart.png`, `ai-allowed-infographic.png`), are © 2026 Anas Bouzid and licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Anyone may share and adapt them, commercially too, with credit to Anas Bouzid and a link to the license.
+GitHub's star icon on the infographic's cards is from Octicons (MIT, `assets/OCTICONS-MIT.txt`).
+The quotes are short excerpts from each project's own files and from r/opensource's rule announcement.
+The scripts and data in this folder are under rhp's MIT license.

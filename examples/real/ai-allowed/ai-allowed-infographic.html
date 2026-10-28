@@ -46,8 +46,10 @@
   .card code { display: inline-block; margin-top: 3px; padding: 0 5px; background: var(--ink); color: var(--paper); font: 500 14.5px/1.4 var(--mono); }
   .card .src { font: 500 14px/1.3 var(--mono); color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .card .src a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  /* The credit, in the note's last line on the right */
-  .credit { float: right; margin-left: 24px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+  /* The note's last line: the poster's license on the left, the credit on the right */
+  .foot { display: flex; flex-wrap: wrap; gap: 0 24px; }
+  .license a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .credit { margin-left: auto; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
   .credit a { color: var(--ink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
   /* All 50: one square per project in order of stars, and what each kind of square counts */
   .all { order: 6; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--rule); }
@@ -200,7 +202,7 @@ function TheRuleAndTheRepos() {
       kicker="r/opensource's new rule"
       title=${html`<span>${ai.length + allow.length} of GitHub's ${PROJECTS.length} biggest <span class="nobreak">open-source</span> projects use AI or are built for it</span>`}
       dek=${html`<span>Of the ${others.length} that are not AI projects, <b>${allow.length} allow AI-assisted code</b>:</span>`}
-      note=${html`<span>Stars, AI policies, contributing guides, agent files and commits, read ${date.format(new Date(DATA.readAt))}.</span><span class="credit">Made with${" "}<a href="https://github.com/bezda-team/rhp" target="_blank" rel="noopener">rhp</a></span>`}
+      note=${html`<span>Stars, AI policies, contributing guides, agent files and commits, read ${date.format(new Date(DATA.readAt))}.</span><span class="foot"><span class="license">© 2026 Anas Bouzid ·${" "}<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener license">CC BY 4.0</a></span><span class="credit">Made with${" "}<a href="https://github.com/bezda-team/rhp" target="_blank" rel="noopener">rhp</a></span></span>`}
       onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <blockquote class="rule"><span class="mark" aria-hidden="true">“</span><span class="words">${RULE.text}</span><cite>${RULE.by}</cite></blockquote>
