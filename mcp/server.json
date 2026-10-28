@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.bezda-team/rhp",
+  "title": "rhp charts",
+  "description": "Charts with rhp from any AI agent: guide, recipes, and a checker that renders them in a browser",
+  "websiteUrl": "https://rhp.vercel.app/ai/",
+  "repository": {
+    "url": "https://github.com/bezda-team/rhp",
+    "source": "github",
+    "id": "709770292",
+    "subfolder": "mcp"
+  },
+  "icons": [
+    {
+      "src": "https://rhp.vercel.app/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    }
+  ],
+  "version": "0.1.11",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@bezda/rhp-mcp",
+      "version": "0.1.11",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

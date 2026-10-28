@@ -4,6 +4,7 @@
 //              skill
 //   plugin     the Claude Code marketplace and plugin manifests parse and point at real paths, and the plugin's folder
 //              holds only its manifest and the skill
+//   registry   server.json, the MCP Registry's entry, names this package at its version, under package.json's mcpName
 //   server     an MCP client over stdio starts the packed server, lists its tools and prompt and calls each tool; it
 //              prints how long the server takes to start and a check takes
 //   no browser on macOS, the server in a sandbox that hides every browser still answers rhp_check, with how to get one
@@ -201,6 +202,21 @@ function pluginPart() {
   ok(URL.canParse(plugin.homepage), "its homepage is a URL");
 }
 
+// The registry lists a version only when npm's package at that version carries the entry's name as its mcpName
+function registryPart() {
+
+  console.log("\nregistry: server.json, the MCP Registry's entry");
+  const json = (file) => JSON.parse(fs.readFileSync(file, "utf8"));
+  const pkg = json(path.join(MCP, "package.json"));
+  const entry = json(path.join(MCP, "server.json"));
+  const npm = entry.packages?.find((p) => p.registryType === "npm");
+  ok(entry.name === pkg.mcpName, `its name is package.json's mcpName, ${pkg.mcpName}`);
+  ok(npm?.identifier === pkg.name && npm.transport?.type === "stdio", `it starts ${pkg.name} over stdio`);
+  ok(entry.version === pkg.version && npm?.version === pkg.version, `it and its package are version ${pkg.version}, package.json's`);
+  ok(entry.title?.length <= 100 && entry.description?.length <= 100, `its title and description fit the registry's 100 characters (the description has ${entry.description?.length})`);
+  ok(pkg.repository?.url?.includes(entry.repository?.url?.replace(/^https:\/\//, "")) && entry.repository?.subfolder === pkg.repository?.directory, `its repository is the package's, ${entry.repository?.url} in ${entry.repository?.subfolder}/`);
+}
+
 async function serverPart(pkg) {
 
   console.log("\nserver: an MCP client over stdio, with the packed server");
@@ -359,6 +375,7 @@ async function main() {
   buildPart();
   const pkg = packagePart();
   pluginPart();
+  registryPart();
   await serverPart(pkg);
   await noBrowserPart(pkg);
 

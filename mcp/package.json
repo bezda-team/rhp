@@ -1,6 +1,7 @@
 {
   "name": "@bezda/rhp-mcp",
-  "version": "0.1.10",
+  "version": "0.1.11",
+  "mcpName": "io.github.bezda-team/rhp",
   "description": "Make charts with rhp from any AI agent: an MCP server with rhp's guide, references and recipes, and a checker that renders a chart in a browser and reports what is wrong, with screenshots",
   "keywords": [
     "rhp",

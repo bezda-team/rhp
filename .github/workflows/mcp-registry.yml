@@ -1,0 +1,47 @@
+# Lists the MCP server's current version (mcp/server.json) in the MCP Registry, registry.modelcontextprotocol.io, which
+# the directories and clients that read it pick up from there. Run it after publishing @bezda/rhp-mcp to npm:
+# gh workflow run mcp-registry.yml. It signs in as this repository through GitHub's OIDC, which gives it the
+# io.github.bezda-team namespace with no stored token.
+name: mcp-registry
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: mcp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The registry refuses a version npm doesn't have, or whose package.json lacks the entry's name as mcpName
+      - name: npm has this version, with its mcpName
+        run: |
+          name=$(node -p "require('./server.json').name")
+          version=$(node -p "require('./server.json').version")
+          published=$(npm view "@bezda/rhp-mcp@$version" mcpName)
+          if [ "$published" != "$name" ]; then
+            echo "::error::npm's @bezda/rhp-mcp@$version has mcpName '$published', not '$name': publish it to npm first"
+            exit 1
+          fi
+
+      # mcp-publisher 1.8.1, checked against the SHA-256 in that release's registry_1.8.1_checksums.txt
+      - name: Install mcp-publisher
+        run: |
+          curl -sSfL -o mcp-publisher.tar.gz https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz
+          echo "a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc  mcp-publisher.tar.gz" | sha256sum -c -
+          tar xzf mcp-publisher.tar.gz mcp-publisher
+          rm mcp-publisher.tar.gz
+
+      - run: ./mcp-publisher login github-oidc
+      - run: ./mcp-publisher publish

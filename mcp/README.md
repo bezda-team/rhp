@@ -143,6 +143,10 @@ gemini mcp add --scope user rhp npx -- -y @bezda/rhp-mcp
 
 Without `--scope user` it goes to the project's `.gemini/settings.json`.
 
+### Cline
+
+In Cline, open MCP Servers, then Configure MCP Servers, and add the `mcpServers` entry shown for Claude Desktop to `cline_mcp_settings.json`.
+
 ### The tools
 
 | Tool | What it returns |
@@ -203,6 +207,8 @@ src/skill.js       reads the skill: SKILL.md, the references (whole or by sectio
 src/check/         the checker (its README lists every finding and how each is tested)
 src/guard/         the wrapper around rhp that checks how a chart uses it, in the page
 scripts/build.js   copies ../skills/rhp into skill/ and rhp's LICENSE into this folder (npm pack runs it first)
+server.json        the MCP Registry's entry for this package (registry.modelcontextprotocol.io)
+icon.png           the server's 400x400 icon for directory listings (the site's src/assets/rhp-icon.svg)
 test/mcp.js        the build, the package, the Claude Code plugin's manifests, and the server through the SDK's client
 test/run.js        the checker
 ```
@@ -223,14 +229,17 @@ The report or the screenshots would then never reach the agent, so `rhp_check` r
 Publish this package after every rhp release, with the range set to that release and a new version of its own.
 The checker carries its own copy of rhp, and a page loads the latest rhp 2 from jsDelivr, so this keeps the two the same rhp; a new version also makes `npx` fetch the new pair:
 
+First commit the new version in `package.json`, `package-lock.json` and `server.json` (both of its `version` fields; `npm test` checks that the three agree), then:
+
 ```sh
 npm pkg set dependencies.@bezda/rhp=^2.0.1   # the rhp version just published
-npm version patch --no-git-tag-version
 npm publish
 git checkout package.json
+gh workflow run mcp-registry.yml             # lists the new version in the MCP Registry
 ```
 
 `npm publish` runs the build first, and `publishConfig` makes the package public.
+The registry lists a version only once npm has it, with `mcpName` in its `package.json` naming the entry: the workflow checks npm first, then signs in to the registry as this repository (GitHub's OIDC, so no token is stored) and publishes `server.json`.
 
 **The MCP SDK.**
 The server uses `@modelcontextprotocol/sdk` 1.x (the v1 line), because clients speak v1 today; v1 gets fixes for at least six months after v2's release in July 2026.
