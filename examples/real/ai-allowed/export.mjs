@@ -10,7 +10,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(path.join(here, "../../../package.json"));
 const { chromium } = require("playwright");
-const files = process.argv.slice(2).length ? process.argv.slice(2) : ["ai-allowed-chart.html", "ai-allowed-infographic.html"];
+// The chart's Reddit image comes from its 16-bar variant (the page itself scrolls through all 50)
+const files = process.argv.slice(2).length ? process.argv.slice(2) : ["ai-allowed-chart-reddit.html", "ai-allowed-infographic.html"];
+const nameOf = (file) => file.replace(/-reddit\.html$|\.html$/, "");
 const previews = path.join(here, "previews");
 fs.mkdirSync(previews, { recursive: true });
 
@@ -22,7 +24,7 @@ for (const file of files) {
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(600);
   const [download] = await Promise.all([page.waitForEvent("download", { timeout: 120000 }), page.click(".poster-download")]);
-  const png = path.join(here, file.replace(/\.html$/, ".png"));
+  const png = path.join(here, `${nameOf(file)}.png`);
   await download.saveAs(png);
 
   // Reddit's sizes: the phone's width, and the desktop feed's box (the column's width, about 724px, and 540px tall;
@@ -39,7 +41,7 @@ for (const file of files) {
     await view.setViewportSize({ width: Math.round(bw), height: Math.round(bh) });
     await view.setContent(`<body style="margin:0;width:${bw}px;height:${bh}px;display:grid;place-items:center;background:#1a1a1b"><img src="data:image/png;base64,${data}" style="width:${width}px;height:${height}px"></body>`);
     await view.waitForTimeout(200);
-    await view.screenshot({ path: path.join(previews, `${file.replace(/\.html$/, "")}-${name}.png`) });
+    await view.screenshot({ path: path.join(previews, `${nameOf(file)}-${name}.png`) });
   }
   console.log(`${path.basename(png)}: ${w} x ${h}; desktop feed shows it at ${Math.round(shown[0])} x ${Math.round(shown[1])}, a phone at 390 x ${Math.round(390 / ratio)}`);
   await view.close();

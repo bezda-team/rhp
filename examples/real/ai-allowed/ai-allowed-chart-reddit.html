@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open source that allows AI</title>
+<meta name="description" content="The 20 most-starred open-source projects on GitHub that meet r/opensource's other new rules, colored by what each project's own repository says about AI in contributions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,800;1,400&family=JetBrains+Mono:wght@500;700&family=Schibsted+Grotesk:wght@800;900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2.2.0/dist/standalone.js" } }</script>
+<style>
+  /* Pale open-source green paper, deep green ink; vermilion for the projects that allow AI, indigo for the ones that
+     limit or forbid it, sage for no sign either way. 1080 by 1440 (3:4), with type large enough for a Reddit image */
+  :root { --page: #c9dbc8; --paper: #e5efe3; --ink: #10241a; --soft: #3f5a47; --rule: #c3d5c1;
+    --allows: #c2361f; --limits: #2b4a9c; --none: #576d5f;
+    --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --text: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Verdana, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px 16px; background: var(--page); color: var(--ink); font-family: var(--text); }
+  .poster { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); max-width: 1080px; margin: 0 auto; padding: 40px 56px 26px; background: var(--paper); color: var(--ink); }
+  .poster figcaption { display: contents; }
+  .poster .headline { order: 3; max-width: 17em; margin: 0 0 14px; font: 900 66px/1 var(--display); letter-spacing: -.02em; text-wrap: balance; }
+  .poster .dek { order: 4; max-width: 60ch; margin: 0 0 30px; font-size: 28px; line-height: 1.36; color: var(--soft); }
+  .poster .dek b { color: var(--ink); font-weight: 800; }
+  .poster .note { order: 7; display: block; margin-top: 32px; padding-top: 12px; border-top: 2px solid var(--rule); font-size: 22px; line-height: 1.4; color: var(--soft); }
+  /* The rule, as the subreddit's moderators wrote it, as on the infographic: the first thing on the poster */
+  .rule { order: 1; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; margin: 0 0 30px; padding: 14px 26px 13px; background: var(--ink); color: var(--paper); }
+  .rule .mark { grid-row: span 2; font: 900 104px/.8 var(--display); color: #f0785c; }
+  .rule .words { font: italic 400 31px/1.27 var(--text); }
+  .rule cite { margin-top: 7px; font: 500 20px/1.3 var(--mono); font-style: normal; color: color-mix(in oklab, var(--paper) 78%, var(--ink)); }
+  /* The credit, in the note's last line on the right */
+  .credit { float: right; margin-left: 24px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+  .credit a { color: var(--ink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  /* The key: what each color and each kind of mark means */
+  .keys { order: 5; display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 0 0 12px; padding: 0; list-style: none; font-size: 24px; font-weight: 600; }
+  .keys li { display: flex; align-items: center; gap: 10px; }
+  .keys i { flex: none; width: 32px; height: 21px; border-radius: 3px; background: var(--c); }
+  .keys .hollow { background: color-mix(in oklab, var(--ink) 9%, var(--paper)); outline: 3px solid var(--ink); outline-offset: -3px; }
+  .keys .tag { margin-left: 2px; }
+  .tag { display: inline-block; padding: 1px 5px 0; border: 2px solid currentColor; border-radius: 4px; font: 700 17px/1.2 var(--mono); letter-spacing: .04em; vertical-align: 3px; }
+  .stage { order: 6; position: relative; min-width: 0; }
+  /* The bars scroll inside the chart's height, 16 rows of 43.5px: all 50 projects, the top 16 at rest; the scrollbar is
+     hidden so the poster keeps its look, and a wheel, a finger or the keyboard moves through the rest. At the top or the
+     bottom of the list, scrolling goes on to the page, so no one is stuck in the chart */
+  .bars { height: 700px; overflow-y: auto; scrollbar-width: none; }
+  .bars::-webkit-scrollbar { display: none; }
+  /* The readout: the picked project's own words, in the room the shorter bars leave (beside the 9th to the 17th,
+     clear of their labels; overlap.test.mjs checks) */
+  .readout { position: absolute; right: 0; bottom: 6px; z-index: 2; width: 376px; height: 352px; display: grid; grid-template-rows: minmax(0, 1fr); padding: 18px 22px 16px;
+    background: var(--paper); border: 2px solid var(--ink); box-shadow: 8px 8px 0 color-mix(in oklab, var(--ink) 16%, var(--paper)); }
+  /* Every project's words are laid out in the same cell, all but the picked one hidden: where the box takes its
+     height from its content (narrower windows), it is as tall as the longest of them, so a pick never changes it */
+  .readout .face { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 9px; min-width: 0; min-height: 0; }
+  .readout .sizer { visibility: hidden; }
+  .readout p { margin: 0; }
+  .readout .who { display: flex; align-items: baseline; gap: 10px; height: 41px; min-width: 0; white-space: nowrap; }
+  .readout .who b { overflow: hidden; text-overflow: ellipsis; font: 900 34px/1.2 var(--display); letter-spacing: -.01em; }
+  .readout .who b.long { font-size: 24px; }
+  .readout .who .rank { font: 700 19px/1 var(--mono); color: var(--soft); }
+  .readout .repo { margin-top: -8px; font: 500 14px/1.3 var(--mono); color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .readout .verdict { display: flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 23px; font-weight: 800; color: var(--c); }
+  .readout .verdict i { flex: none; width: 18px; height: 18px; border-radius: 3px; background: var(--c); }
+  .readout .verdict .ai { background: color-mix(in oklab, var(--c) 16%, var(--paper)); outline: 3px solid var(--c); outline-offset: -3px; }
+  .readout .basis { margin-top: -6px; font-size: 19px; color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .readout blockquote { flex: 1; min-height: 0; margin: 0; overflow: hidden; font-size: 21px; line-height: 1.32; }
+  .readout blockquote .q { font-style: italic; }
+  .readout code { font: 500 17px/1.35 var(--mono); overflow-wrap: anywhere; }
+  .readout .src { height: calc(2lh + 10px); padding-top: 10px; border-top: 2px solid var(--rule); font: 500 16px/1.35 var(--mono); color: var(--soft); overflow-wrap: anywhere; }
+  .readout .src a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .hint { position: absolute; right: 0; bottom: 370px; margin: 0; text-align: right; line-height: 1.3; font-size: 21px; font-weight: 600; color: var(--soft); }
+  .poster :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  /* The box stands beside the shorter bars only when the poster has its full width; narrower, it sits above the chart */
+  @media (max-width: 1111px) {
+    .readout { position: static; width: auto; height: auto; grid-template-rows: auto; margin: 0 0 16px; }
+    .readout blockquote { flex: 1 0 auto; }
+    .hint { position: static; margin: 0 0 8px; }
+  }
+  @media (max-width: 640px) {
+    body { padding: 16px 16px 32px; }
+    .poster { padding: 26px 18px 18px; }
+    .poster .headline { font-size: 36px; }
+    .rule { margin-bottom: 20px; padding: 10px 12px; column-gap: 10px; }
+    .rule .mark { font-size: 52px; }
+    .rule .words { font-size: 17px; }
+    .rule cite { font-size: 12px; }
+    .poster .dek { font-size: 16px; margin-bottom: 20px; }
+    .poster .note { margin-top: 22px; font-size: 13px; }
+    .keys { gap: 6px 16px; font-size: 14px; }
+    .keys i { width: 22px; height: 14px; }
+    .keys .hollow { outline-width: 2px; outline-offset: -2px; }
+    .tag { font-size: 11px; padding: 0 3px; border-width: 1.5px; vertical-align: 1px; }
+    .readout { position: sticky; top: 0; padding: 14px 14px 12px; box-shadow: 4px 4px 0 color-mix(in oklab, var(--ink) 16%, var(--paper)); }
+    .readout .face { gap: 7px; }
+    .readout .who { height: 29px; }
+    .readout .who b { font-size: 24px; }
+    .readout .who b.long { font-size: 19px; }
+    .readout .who .rank { font-size: 13px; }
+    .readout .repo { font-size: 12px; margin-top: -4px; }
+    .readout .verdict { font-size: 15px; }
+    .readout .verdict i { width: 13px; height: 13px; }
+    .readout .basis { font-size: 13px; margin-top: -4px; }
+    .readout blockquote { font-size: 15px; }
+    .readout code { font-size: 12.5px; }
+    .readout .src { font-size: 11.5px; padding-top: 6px; height: calc(2lh + 6px); }
+    .hint { font-size: 13px; }
+  }
+  @media (max-width: 360px) {
+    .readout blockquote { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Poster, slat, nice, html, render, createSignal, Show } from "@bezda/rhp/standalone";
+
+// Data: the 50 most-starred GitHub projects that meet r/opensource's other new rules, with what each one's own
+// repository says about AI (built by build.mjs from checked.json; every quote was matched against its file)
+const DATA = {"readAt":"2026-10-27T23:06:24Z","projects":[{"full":"freeCodeCamp/freeCodeCamp","name":"freeCodeCamp","short":null,"stars":458049,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"freeCodeCamp/contribute","path":"src/content/docs/faq.mdx","quote":["Can I use AI tools to help with my contributions?","Yes, but use them productively."],"url":"https://github.com/freeCodeCamp/contribute/blob/457f88965af3e1936b30ea7789351edbe5f38355/src/content/docs/faq.mdx#L20"}},{"full":"obra/superpowers","name":"Superpowers","short":null,"stars":306388,"ai":true,"stance":"allows","basis":"policy","file":{"repo":"obra/superpowers","path":"AGENTS.md","quote":["Disclose your model, harness, harness version, every installed plugin, and what your human partner asked you to do in the PR."],"box":["Disclose your model, harness, harness version, every installed plugin"],"url":"https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/AGENTS.md#L17"}},{"full":"NousResearch/hermes-agent","name":"Hermes Agent","short":null,"stars":257737,"ai":true,"stance":"allows","basis":"practice","file":{"repo":"NousResearch/hermes-agent","path":"AGENTS.md","quote":["For AI coding assistants and developers working on hermes-agent."],"url":"https://github.com/NousResearch/hermes-agent/blob/508d6ec24ed293e46e5d7d1b88a6d67285243d97/AGENTS.md#L3"}},{"full":"torvalds/linux","name":"Linux","short":null,"stars":253710,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"torvalds/linux","path":"Documentation/process/coding-assistants.rst","quote":["This document provides guidance for AI tools and developers using AI assistance when contributing to the Linux kernel."],"card":["This document provides guidance for AI tools and developers using AI assistance"],"url":"https://github.com/torvalds/linux/blob/8a36f53fd5ec3eff01f1b637d42cbdc3821d0493/Documentation/process/coding-assistants.rst#L8"},"commit":{"sha":"183895979c441e52dbd651b388553b09eaa35cfa","date":"2026-10-24T08:56:43Z","trailer":"Assisted-by: LLM","url":"https://github.com/torvalds/linux/commit/183895979c441e52dbd651b388553b09eaa35cfa"}},{"full":"react/react","name":"React","short":null,"stars":251790,"ai":false,"stance":"allows","basis":"practice","agentFile":{"path":"CLAUDE.md","url":"https://github.com/react/react/blob/dc9aed364252a34966f4f2c4a98272317fdddb60/CLAUDE.md"},"commit":{"sha":"9ca7a2713e2602dd5b75bd3f74024d5fc93d2116","date":"2026-10-26T11:33:37Z","trailer":"Co-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>","url":"https://github.com/react/react/commit/9ca7a2713e2602dd5b75bd3f74024d5fc93d2116"}},{"full":"anomalyco/opencode","name":"opencode","short":null,"stars":222362,"ai":true,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/anomalyco/opencode/blob/45b53fe6fee909dbf6a24e6ee067d420c27202ff/AGENTS.md"},"commit":{"sha":"a5bf171649036d866604eaaefdd0a4be6d29f516","date":"2026-10-19T19:29:10Z","trailer":"Co-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>","url":"https://github.com/anomalyco/opencode/commit/a5bf171649036d866604eaaefdd0a4be6d29f516"}},{"full":"yt-dlp/yt-dlp","name":"yt-dlp","short":null,"stars":202990,"ai":false,"stance":"forbids","basis":"policy","file":{"repo":"yt-dlp/yt-dlp","path":"CONTRIBUTING.md","quote":["This project strictly forbids the usage of LLMs, agents, or any other AI tools for any kind of contribution."],"url":"https://github.com/yt-dlp/yt-dlp/blob/f264a6cbd1f630894da0f368df00f8aae50140e0/CONTRIBUTING.md#L35"}},{"full":"tensorflow/tensorflow","name":"TensorFlow","short":null,"stars":201311,"ai":true,"stance":"allows","basis":"practice","commit":{"sha":"afe922e2008ce705c81b5774295fb47c0c16444f","date":"2026-10-09T09:21:16Z","trailer":"🤖 Generated with Claude Code","url":"https://github.com/tensorflow/tensorflow/commit/afe922e2008ce705c81b5774295fb47c0c16444f"}},{"full":"massgravel/Microsoft-Activation-Scripts","name":"Microsoft Activation Scripts","short":"MS Activation Scripts","stars":196436,"ai":false,"stance":"none"},{"full":"firecrawl/firecrawl","name":"Firecrawl","short":null,"stars":196060,"ai":true,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/firecrawl/firecrawl/blob/67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e/AGENTS.md"},"commit":{"sha":"67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e","date":"2026-10-27T21:44:13Z","trailer":"Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>","url":"https://github.com/firecrawl/firecrawl/commit/67c6c2f38ca4d6c83ba07c2f54a5a2012ec51a8e"}},{"full":"microsoft/vscode","name":"VS Code","short":null,"stars":194390,"ai":false,"stance":"allows","basis":"practice","file":{"repo":"microsoft/vscode","path":"AGENTS.md","quote":["This file provides instructions for AI coding agents working with the VS Code codebase."],"url":"https://github.com/microsoft/vscode/blob/20c56d94b9280ba39861b49caec9bcf93d567f3a/AGENTS.md#L3"},"commit":{"sha":"ac717e6cb298133160d287113b2b1c421cb981ab","date":"2026-09-20T13:58:32Z","trailer":"Co-authored-by: Claude Opus 4.8 <noreply@anthropic.com>","url":"https://github.com/microsoft/vscode/commit/ac717e6cb298133160d287113b2b1c421cb981ab"}},{"full":"microsoft/markitdown","name":"MarkItDown","short":null,"stars":192563,"ai":true,"stance":"allows","basis":"practice","commit":{"sha":"a5ddc8efd5572ac52362d4ea1269d1cfb3a5bfd4","date":"2026-09-03T19:18:46Z","trailer":"Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>","url":"https://github.com/microsoft/markitdown/commit/a5ddc8efd5572ac52362d4ea1269d1cfb3a5bfd4"}},{"full":"ohmyzsh/ohmyzsh","name":"Oh My Zsh","short":null,"stars":190192,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"ohmyzsh/ohmyzsh","path":"CONTRIBUTING.md","quote":["AI tools can be pretty helpful for coding tasks, and we're not here to gatekeep how you get your work done.","We use these tools ourselves!"],"box":["AI tools can be pretty helpful for coding tasks, and we're not here to gatekeep how you get your work done."],"url":"https://github.com/ohmyzsh/ohmyzsh/blob/17a2b4c3a5855524ad4772a17ada0dc474e2fdf3/CONTRIBUTING.md#L131"}},{"full":"ollama/ollama","name":"Ollama","short":null,"stars":185022,"ai":true,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/ollama/ollama/blob/f067033f9126993b6172bdfffa71a74ad693fda4/AGENTS.md"},"commit":{"sha":"612f0a17d32cf7fe9bde5f31703a37b49c98ea2f","date":"2026-04-09T00:41:12Z","trailer":"Co-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>","url":"https://github.com/ollama/ollama/commit/612f0a17d32cf7fe9bde5f31703a37b49c98ea2f"}},{"full":"flutter/flutter","name":"Flutter","short":null,"stars":180453,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"flutter/flutter","path":"CONTRIBUTING.ai.md","quote":["This does not prohibit the use of coding assistance tools","You must review all AI-generated code before opening a (non-draft) PR"],"card":["You must review all AI-generated code before opening a (non-draft) PR"],"box":["You must review all AI-generated code before opening a (non-draft) PR"],"url":"https://github.com/flutter/flutter/blob/9ece36552a9ea2f2fe91c00e407d6d530200eea2/CONTRIBUTING.ai.md#L45"}},{"full":"twbs/bootstrap","name":"Bootstrap","short":null,"stars":175022,"ai":false,"stance":"allows","basis":"practice","file":{"repo":"twbs/bootstrap","path":"AGENTS.md","quote":["Guidance for AI coding agents working in this repository."],"url":"https://github.com/twbs/bootstrap/blob/05331e182f29d02a684516bd804b80a53f9fdfc3/AGENTS.md#L3"},"commit":{"sha":"05331e182f29d02a684516bd804b80a53f9fdfc3","date":"2026-10-27T20:19:24Z","trailer":"Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>","url":"https://github.com/twbs/bootstrap/commit/05331e182f29d02a684516bd804b80a53f9fdfc3"}},{"full":"huggingface/transformers","name":"Transformers","short":null,"stars":168254,"ai":true,"stance":"allows","basis":"policy","file":{"repo":"huggingface/transformers","path":"CONTRIBUTING.md","quote":["AI-assisted contributions are welcome."],"url":"https://github.com/huggingface/transformers/blob/494470d677d05d44153d235d795e0d01040307ab/CONTRIBUTING.md#L220"}},{"full":"AUTOMATIC1111/stable-diffusion-webui","name":"Stable Diffusion web UI","short":"SD web UI","stars":165162,"ai":true,"stance":"none"},{"full":"msitarzewski/agency-agents","name":"The Agency","short":null,"stars":164524,"ai":true,"stance":"allows","basis":"practice","commit":{"sha":"226907db6a3e27fcc512c56e3b827e69654f20ed","date":"2026-10-23T10:30:33Z","trailer":"Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>","url":"https://github.com/msitarzewski/agency-agents/commit/226907db6a3e27fcc512c56e3b827e69654f20ed"}},{"full":"langflow-ai/langflow","name":"Langflow","short":null,"stars":156069,"ai":true,"stance":"allows","basis":"practice","file":{"repo":"langflow-ai/langflow","path":"AGENTS.md","quote":["This file provides guidance to AI coding agents when working with code in this repository."],"url":"https://github.com/langflow-ai/langflow/blob/aeb10d96bb2ea797696613af931e91ddf51f3320/AGENTS.md#L3"}},{"full":"clash-verge-rev/clash-verge-rev","name":"Clash Verge Rev","short":null,"stars":154364,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"clash-verge-rev/clash-verge-rev","path":"CONTRIBUTING.md","quote":["We welcome AI-assisted contributions","AI assistance itself is not a problem."],"url":"https://github.com/clash-verge-rev/clash-verge-rev/blob/3953e125b223defcec28a3c822c292c743fc1b1e/CONTRIBUTING.md#L11"}},{"full":"Genymobile/scrcpy","name":"scrcpy","short":null,"stars":153312,"ai":false,"stance":"none"},{"full":"farion1231/cc-switch","name":"CC Switch","short":null,"stars":149371,"ai":true,"stance":"allows","basis":"policy","file":{"repo":"farion1231/cc-switch","path":"CONTRIBUTING.md","quote":["We welcome AI-assisted contributions, but the responsibility stays with you."],"url":"https://github.com/farion1231/cc-switch/blob/983113a132ab1754e6bb1fab3994fb3b23d15f62/CONTRIBUTING.md#L214"}},{"full":"langchain-ai/langchain","name":"LangChain","short":null,"stars":148567,"ai":true,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/langchain-ai/langchain/blob/0808e17e29b59ee1cc45a5ce2aa4cb4006671c1c/AGENTS.md"},"commit":{"sha":"4717cfc83bbed25883ce3e300c1dfe63f35123d3","date":"2026-07-10T18:11:10Z","trailer":"Co-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>","url":"https://github.com/langchain-ai/langchain/commit/4717cfc83bbed25883ce3e300c1dfe63f35123d3"}},{"full":"Comfy-Org/ComfyUI","name":"ComfyUI","short":null,"stars":143554,"ai":true,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/Comfy-Org/ComfyUI/blob/49abb64b25ff72bad792f1cd4bc977e6545cb98c/AGENTS.md"},"commit":{"sha":"2bd4d82b4f19c30dc979a3a16ddae97068e1bdc8","date":"2026-03-16T19:34:04Z","trailer":"Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>","url":"https://github.com/Comfy-Org/ComfyUI/commit/2bd4d82b4f19c30dc979a3a16ddae97068e1bdc8"}},{"full":"github/spec-kit","name":"Spec Kit","short":null,"stars":143331,"ai":true,"stance":"allows","basis":"policy","file":{"repo":"github/spec-kit","path":"CONTRIBUTING.md","quote":["human and AI-assisted contributions are judged identically."],"url":"https://github.com/github/spec-kit/blob/222a973f8b8794366680c043fb935a31f71902af/CONTRIBUTING.md#L83"}},{"full":"vercel/next.js","name":"Next.js","short":null,"stars":143172,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"vercel/next.js","path":".github/pull_request_template.md","quote":["We encourage you to use AI to assist you in researching, creating, and reviewing changes.","you must review and deeply understand the contributions you are making."],"box":["We encourage you to use AI to assist you in researching, creating, and reviewing changes."],"url":"https://github.com/vercel/next.js/blob/4bb4e8f1dd65e8903718c9b0b8b3e6acb215ca7f/.github/pull_request_template.md#L7"}},{"full":"ytdl-org/youtube-dl","name":"youtube-dl","short":null,"stars":141406,"ai":false,"stance":"none"},{"full":"microsoft/PowerToys","name":"PowerToys","short":null,"stars":140064,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"microsoft/PowerToys","path":"AGENTS.md","quote":["This is the top-level guidance for AI contributions to PowerToys."],"url":"https://github.com/microsoft/PowerToys/blob/a9fd27873110a8a535ba607bef6470d643cadbc8/AGENTS.md#L8"}},{"full":"golang/go","name":"Go","short":null,"stars":139513,"ai":false,"stance":"allows","basis":"practice","commit":{"sha":"a6964733769a02ae49052bdd8f35b928e19c4aaa","date":"2026-09-28T22:26:55Z","trailer":"Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>","url":"https://github.com/golang/go/commit/a6964733769a02ae49052bdd8f35b928e19c4aaa"}},{"full":"harry0703/MoneyPrinterTurbo","name":"MoneyPrinterTurbo","short":"MoneyPrinter​Turbo","stars":135829,"ai":true,"stance":"allows","basis":"practice","commit":{"sha":"933cb102909e63dfe9873f60c4ac2071f471040f","date":"2026-10-23T04:33:05Z","trailer":"Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>","url":"https://github.com/harry0703/MoneyPrinterTurbo/commit/933cb102909e63dfe9873f60c4ac2071f471040f"}},{"full":"excalidraw/excalidraw","name":"Excalidraw","short":null,"stars":134668,"ai":false,"stance":"allows","basis":"practice","agentFile":{"path":"CLAUDE.md","url":"https://github.com/excalidraw/excalidraw/blob/14bb42edee3d6fee6be264e3ee78670b3b9cee79/CLAUDE.md"},"commit":{"sha":"d3a9c2a195182bf65b526ccb7a19de96f4bdfdb3","date":"2026-10-20T03:53:27Z","trailer":"Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>","url":"https://github.com/excalidraw/excalidraw/commit/d3a9c2a195182bf65b526ccb7a19de96f4bdfdb3"}},{"full":"ggml-org/llama.cpp","name":"llama.cpp","short":null,"stars":132561,"ai":true,"stance":"allows","basis":"policy","file":{"repo":"ggml-org/llama.cpp","path":"CONTRIBUTING.md","quote":["AI-generated code is allowed. You are 100% responsible for every line, however it was produced."],"url":"https://github.com/ggml-org/llama.cpp/blob/d05706b4f32a545814856e98ca518292585443b9/CONTRIBUTING.md#L13"}},{"full":"openai/codex","name":"Codex","short":null,"stars":131268,"ai":true,"stance":"allows","basis":"practice","file":{"repo":"openai/codex","path":"docs/contributing.md","quote":["We do not accept external code contributions or pull requests.","implementation is comparatively straightforward with the help of Codex itself."],"box":["We do not accept external code contributions or pull requests.","with the help of Codex itself."],"url":"https://github.com/openai/codex/blob/37f199dab1d80dc25d899fa83557de892610bc4b/docs/contributing.md#L5"}},{"full":"kubernetes/kubernetes","name":"Kubernetes","short":null,"stars":128613,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"kubernetes/community","path":"contributors/guide/pull-requests.md","quote":["Using AI tools to help write your PR is acceptable, but as the author, you are responsible for understanding every change."],"card":["Using AI tools to help write your PR is acceptable"],"url":"https://github.com/kubernetes/community/blob/aeee117fa02e25b68298999d699fb45bdc91acb7/contributors/guide/pull-requests.md#L628"}},{"full":"rustdesk/rustdesk","name":"RustDesk","short":null,"stars":127291,"ai":false,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/rustdesk/rustdesk/blob/eb239024503160707cca87ba6cef5fbfb8fa3f0d/AGENTS.md"},"commit":{"sha":"ed6a1acce896fb165f2642aa13b609166d57a734","date":"2026-10-24T02:41:57Z","trailer":"Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>","url":"https://github.com/rustdesk/rustdesk/commit/ed6a1acce896fb165f2642aa13b609166d57a734"}},{"full":"react/react-native","name":"React Native","short":null,"stars":126803,"ai":false,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/react/react-native/blob/eaf4c261101889c46f0efd44931e6738e7d535b8/AGENTS.md"},"commit":{"sha":"98291bcb99b49c0d83d67d2fa58f02a12497cddd","date":"2026-10-27T14:21:41Z","trailer":"🤖 Generated with Claude Code","url":"https://github.com/react/react-native/commit/98291bcb99b49c0d83d67d2fa58f02a12497cddd"}},{"full":"shadcn-ui/ui","name":"shadcn/ui","short":null,"stars":126710,"ai":false,"stance":"allows","basis":"practice","commit":{"sha":"71f0e497e6e2a8e5a6584546c938a2db5329637e","date":"2026-09-30T08:12:09Z","trailer":"Co-authored-by: Claude <noreply@anthropic.com>","url":"https://github.com/shadcn-ui/ui/commit/71f0e497e6e2a8e5a6584546c938a2db5329637e"}},{"full":"electron/electron","name":"Electron","short":null,"stars":123576,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"electron/governance","path":"policy/ai.md","quote":["If you use AI tools to help write code, documentation, comments, or any other contribution, you are still the author and bear full responsibility for the work."],"box":["If you use AI tools to help write code","you are still the author and bear full responsibility for the work."],"url":"https://github.com/electron/governance/blob/2ef8a9e040a8213eb9e2fa5bbd6d7a599cb34efd/policy/ai.md#L9"}},{"full":"nodejs/node","name":"Node.js","short":null,"stars":123143,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"nodejs/node","path":"doc/contributing/ai-guidelines.md","quote":["The Node.js project does not prohibit the use of AI tools in contributions"],"url":"https://github.com/nodejs/node/blob/c9b30827e8e7b0713177504579d11f4425be2961/doc/contributing/ai-guidelines.md#L18"}},{"full":"rust-lang/rust","name":"Rust","short":null,"stars":120898,"ai":false,"stance":"allows","basis":"policy","file":{"repo":"rust-lang/rust","path":".github/pull_request_template.md","quote":["LLM contributions are not banned, but are held to a higher standard of review and correctness."],"url":"https://github.com/rust-lang/rust/blob/41089d07a0a2afc16adfe28a760d94d73d7298a4/.github/pull_request_template.md#L5"}},{"full":"browser-use/browser-use","name":"Browser Use","short":null,"stars":119310,"ai":true,"stance":"allows","basis":"practice","file":{"repo":"browser-use/browser-use","path":"CLAUDE.md","quote":["This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository."],"url":"https://github.com/browser-use/browser-use/blob/2cc71890e65056b67fdb29d98bb407749c15bb08/CLAUDE.md#L3"}},{"full":"2dust/v2rayN","name":"v2rayN","short":null,"stars":119256,"ai":false,"stance":"allows","basis":"practice","commit":{"sha":"4869a6cbba405066f84fbf508daeed98610d8930","date":"2026-10-11T02:55:39Z","trailer":"Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>","url":"https://github.com/2dust/v2rayN/commit/4869a6cbba405066f84fbf508daeed98610d8930"}},{"full":"godotengine/godot","name":"Godot","short":null,"stars":119172,"ai":false,"stance":"limits","basis":"policy","file":{"repo":"godotengine/godot-contributing-docs","path":"development/contribution_rules.rst","quote":["Do not use AI to generate substantial pieces of code","For example using AI for code completion is permissible."],"url":"https://github.com/godotengine/godot-contributing-docs/blob/33fc05323770b57e70b4a7aafc1809fba5d0c079/development/contribution_rules.rst#L142"}},{"full":"earendil-works/pi","name":"Pi","short":null,"stars":118281,"ai":true,"stance":"allows","basis":"policy","file":{"repo":"earendil-works/pi","path":"CONTRIBUTING.md","quote":["Using AI to write code is fine."],"url":"https://github.com/earendil-works/pi/blob/85c2ee3e761e4fc4f901ff0ed584fb2465aa552e/CONTRIBUTING.md#L17"}},{"full":"immich-app/immich","name":"Immich","short":null,"stars":117423,"ai":false,"stance":"limits","basis":"policy","file":{"repo":"immich-app/immich","path":"CONTRIBUTING.md","quote":["We ask you not to open PRs generated with an LLM."],"url":"https://github.com/immich-app/immich/blob/37c34343e1b98edf07dc3ff34c5da461de03c746/CONTRIBUTING.md#L26"}},{"full":"TauricResearch/TradingAgents","name":"TradingAgents","short":null,"stars":117281,"ai":true,"stance":"allows","basis":"practice","commit":{"sha":"04f434e86db88e7707bf16db8ed7183f9764fe26","date":"2026-06-01T02:02:47Z","trailer":"Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>","url":"https://github.com/TauricResearch/TradingAgents/commit/04f434e86db88e7707bf16db8ed7183f9764fe26"}},{"full":"mrdoob/three.js","name":"three.js","short":null,"stars":117072,"ai":false,"stance":"allows","basis":"practice","commit":{"sha":"02b15eeaaf4230c2f4fa5b8d61da7716092a37f4","date":"2026-10-27T12:38:31Z","trailer":"Co-authored-by: Claude Opus 5.5 (1M context) <noreply@anthropic.com>","url":"https://github.com/mrdoob/three.js/commit/02b15eeaaf4230c2f4fa5b8d61da7716092a37f4"}},{"full":"supabase/supabase","name":"Supabase","short":null,"stars":114173,"ai":false,"stance":"allows","basis":"practice","agentFile":{"path":"AGENTS.md","url":"https://github.com/supabase/supabase/blob/845ed5a1e3e8e39f8eef41b2875be4e7a9b8bdfc/AGENTS.md"},"commit":{"sha":"4b2c09c44ee676c771b722e81c4725b68c7884df","date":"2026-10-27T19:10:03Z","trailer":"Co-authored-by: Claude Haiku 5.5 <noreply@anthropic.com>","url":"https://github.com/supabase/supabase/commit/4b2c09c44ee676c771b722e81c4725b68c7884df"}},{"full":"d3/d3","name":"D3","short":null,"stars":113810,"ai":false,"stance":"none"}]};
+const RULE = { text: "if your project uses AI, is made by AI, or is intended for AI, it's not welcome on r/opensource.", by: "r/opensource moderators, announcing the rule on Oct 24, 2026" };
+// Excerpts show where they were cut: an ellipsis before words that start mid-sentence, between excerpts, and after
+// words that stop mid-sentence
+const excerpts = (list) => `${/^[a-z]/.test(list[0]) ? "…" : ""}${list.join(" … ")}${/[.!?]$/.test(list.at(-1)) ? "" : "…"}`;
+const LIMIT = 16; // 0: all 50, scrolling 16 at a time; 16 for the Reddit image
+const ROWS = (LIMIT ? DATA.projects.slice(0, LIMIT) : DATA.projects).map((p, i) => ({ ...p, rank: i + 1 }));
+// A bar's name: the project's own short name where the full one would push the box off the shorter bars
+const LABEL = { "massgravel/Microsoft-Activation-Scripts": "MAS" };
+const STANCE = {
+  allows: { label: "Allows AI-assisted code", color: "var(--allows)" },
+  limits: { label: "Limits AI-assisted code", color: "var(--limits)" },
+  forbids: { label: "Forbids AI in contributions", color: "var(--limits)" },
+  none: { label: "No sign either way", color: "var(--none)" },
+};
+const count = new Intl.NumberFormat("en-US");
+const compact = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 0 });
+const date = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+const scale = nice(0, Math.max(...ROWS.map((d) => d.stars)));
+const LINUX = ROWS.findIndex((d) => d.full === "torvalds/linux");
+const nameOf = (d) => (d.short ?? d.name).replace("​", "");
+const labelOf = (d) => LABEL[d.full] ?? nameOf(d);
+// The two longest names (MoneyPrinterTurbo, TradingAgents) are set smaller, so the names' room, and every bar, stay put
+const longLabel = (d) => labelOf(d).length > (d.ai ? 12 : 15);
+
+// The numbers in the dek, from the rows shown
+const notAi = ROWS.filter((d) => !d.ai);
+const notAiAllow = notAi.filter((d) => d.stance === "allows");
+const aiCount = ROWS.length - notAi.length;
+
+// Slat type: the project's name (with an AI tag when it is built for AI), its stars as a bar in its stance's color
+// (hollow when it is an AI project), and the count
+const Project = slat({
+  thickness: 43.5,
+  inset: "6px",
+  room: { start: "auto", end: 76 },
+  css: `
+    .project { --c: var(--rhp-series-1); }
+    .project[data-stance="limits"], .project[data-stance="forbids"] { --c: var(--rhp-series-2); }
+    .project[data-stance="none"] { --c: var(--rhp-series-3); }
+    .project.on { background: color-mix(in oklab, var(--rhp-ink) 9%, transparent); }
+    .name { font-size: 29px; font-weight: 600; white-space: nowrap; --rhp-label-gap: 12px; }
+    .long .name { font-size: 22px; }
+    .name .tag { display: inline-block; margin-left: 8px; padding: 1px 5px 0; border: 2px solid currentColor; border-radius: 4px; font: 700 17px/1.2 "JetBrains Mono", ui-monospace, Menlo, monospace; letter-spacing: .04em; vertical-align: 4px; }
+    .bar { --rhp-radius: 2px; background: var(--c); }
+    .ai .bar { background: color-mix(in oklab, var(--c) 16%, var(--rhp-surface)); outline: 3px solid var(--c); outline-offset: -3px; }
+    .value { font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--rhp-muted); --rhp-label-gap: 10px; }
+    .on .value { color: var(--rhp-ink); }
+    .project:focus-visible { outline: 3px solid var(--rhp-ink); outline-offset: -3px; }
+    @container (max-width: 560px) {
+      .name { max-width: 7.6em; font-size: 15px; line-height: 1.05; white-space: normal; text-align: right; --rhp-label-gap: 8px; }
+      .name .tag { font-size: 10px; padding: 0 3px; border-width: 1.5px; margin-left: 5px; vertical-align: 1px; }
+      .ai .bar { outline-width: 2px; outline-offset: -2px; }
+      .value { font-size: 13px; --rhp-label-gap: 6px; }
+    }
+  `,
+}, (d) => html`
+  <div class=${() => `project${d.ai ? " ai" : ""}${d.on ? " on" : ""}${longLabel(d) ? " long" : ""}`} data-row=${() => d.index} data-stance=${() => d.stance}
+    aria-label=${() => `${d.rank}. ${nameOf(d)}${d.ai ? ", an AI project" : ""}: ${count.format(d.stars)} stars. ${STANCE[d.stance].label}.`}>
+    <${Label} edge="start" class="name">${() => labelOf(d)}${() => (d.ai ? html`<span class="tag" aria-hidden="true">AI</span>` : "")}<//>
+    <${Bar} to=${() => d.stars} class="bar" />
+    <${Label} at=${() => d.stars} class="value">${() => compact.format(d.stars)}<//>
+  </div>`);
+
+// What a project's own repository says, for the readout
+const trailerOf = (commit) => commit.trailer.replace(/\s*<[^>]*>/, "");
+const basisOf = (p) => (p.ai ? "AI project · " : "") + (p.basis === "policy" ? "By written policy" : p.basis === "practice" ? "In practice" : "Nothing in its repository");
+function Words(props) {
+  const p = () => props.p;
+  return html`
+    <${Show} when=${() => p().file} fallback=${() => html`
+      <${Show} when=${() => p().commit} fallback=${() => html`<blockquote>No AI policy, no instructions for AI agents and no commit crediting an AI tool.</blockquote>`}>
+        <blockquote>Merges commits that credit AI. The latest, ${() => date.format(new Date(p().commit.date))}: <code>${() => trailerOf(p().commit)}</code></blockquote>
+      <//>`}>
+      <blockquote><span class="q">“${() => (p().file.box ? excerpts(p().file.box) : p().file.quote.join(" … "))}”</span></blockquote>
+    <//>`;
+}
+// One project's box: the picked one, or a hidden copy that only holds the box's height
+function Face(props) {
+  const p = () => props.p;
+  return html`
+    <div class=${props.sizer ? "face sizer" : "face"} aria-hidden=${props.sizer ? "true" : undefined}>
+      <p class="who"><span class="rank">#${() => p().rank}</span><b class=${() => (nameOf(p()).length > 16 ? "long" : "")}>${() => nameOf(p())}</b></p>
+      <p class="repo">${() => p().full}</p>
+      <p class="verdict"><i class=${() => (p().ai ? "ai" : "")}></i>${() => STANCE[p().stance].label}</p>
+      <p class="basis">${() => basisOf(p())}</p>
+      <${Words} p=${p} />
+      <p class="src"><a href=${() => sourceOf(p()).url} target="_blank" rel="noopener" tabindex=${props.sizer ? "-1" : undefined}>${() => sourceOf(p()).text}</a></p>
+    </div>`;
+}
+const sourceOf = (p) => p.file ? { text: `${p.file.repo === p.full ? "" : p.file.repo + "/"}${p.file.path}`, url: p.file.url }
+  : p.commit ? { text: `commit ${p.commit.sha.slice(0, 7)}${p.agentFile ? ` · ${p.agentFile.path}` : ""}`, url: p.commit.url }
+  : { text: `github.com/${p.full}`, url: `https://github.com/${p.full}` };
+
+// Chart component: Linux is read out at rest; a project the reader points at, taps or reaches with the keyboard
+// takes its place, and a tap or a click keeps it
+function OpenSourceAi() {
+  const [picked, setPicked] = createSignal(null);
+  const lit = () => picked() ?? LINUX;
+  const p = () => ROWS[lit()];
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+  };
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : e.target.closest(".readout") ? null : leave(e));
+  return html`
+    <${Poster}
+      title="Linux, React and VS Code all allow AI-assisted code"
+      dek=${html`<span>The ${ROWS.length} most-starred open-source projects on GitHub that meet the subreddit's other new rules. <b>${aiCount} are AI projects</b>, and of the other ${notAi.length}, <b>${notAiAllow.length} allow AI-assisted contributions</b>, by written policy or in practice.</span>`}
+      note=${html`<span>GitHub stars and each project's own files (contributing guide, AI policy, instructions for AI agents, merged commits), read ${date.format(new Date(DATA.readAt))}. Projects shown have an OSI license, are a year old and maintained, and have 3+ contributors; no lists, books or courses. "In practice": no written rule, but merged commits credit an AI tool. MAS: Microsoft Activation Scripts.</span><span class="credit">Made with${" "}<a href="https://github.com/bezda-team/rhp" target="_blank" rel="noopener">rhp</a></span>`}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
+      <blockquote class="rule"><span class="mark" aria-hidden="true">“</span><span class="words">${RULE.text}</span><cite>${RULE.by}</cite></blockquote>
+      <ul class="keys">
+        <li><i style="--c: var(--allows)"></i>Allows AI-assisted code</li>
+        <li><i style="--c: var(--limits)"></i>Limits or forbids it</li>
+        <li><i style="--c: var(--none)"></i>No sign</li>
+        <li><i class="hollow"></i>AI project<span class="tag">AI</span></li>
+      </ul>
+      <div class="stage">
+        <p class="hint">${ROWS.length > 16 ? html`<span>Scroll for all ${ROWS.length}</span><br>` : ""}Point at or tap a project</p>
+        <div class="readout" aria-live="polite" style=${() => ({ "--c": STANCE[p().stance].color })}>
+          <${Face} p=${p} />
+          ${ROWS.map((row) => html`<${Face} p=${() => row} sizer=${true} />`)}
+        </div>
+        <div class="bars">
+        <${Chart} scale=${[scale.min, scale.max]} ticks=${false} label=${`The ${ROWS.length} most-starred open-source projects that meet r/opensource's other new rules, by GitHub stars, colored by their stance on AI in contributions`}
+          theme=${{ font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--allows)", "var(--limits)", "var(--none)"] }}>
+          <${Plot} rows=${ROWS} on=${(d) => d.index === lit()} keyboard=${true}>${Project}<//>
+        <//>
+        </div>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${OpenSourceAi} />`, document.getElementById("chart"));
+</script>
+<style id="poster-download-styles">
+  .poster-download-tools { display: flex; justify-content: flex-end; align-items: center; margin: 0 auto 12px; max-width: 100%; }
+  .poster-actions { position: relative; display: flex; align-items: center; margin-left: auto; }
+  .poster-download, .poster-fit-toggle { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
+  .poster-actions svg { display: block; width: 20px; height: 20px; }
+  .poster-actions button:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+  .poster-actions button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .poster-actions button[aria-disabled="true"] { cursor: progress; opacity: .5; }
+  .poster-fit-frame, .poster-fit-content { display: contents; }
+  .poster-fit-frame { max-height: 95svh; }
+  .poster-fit-frame.is-fitted { display: block; margin: 0 auto; overflow: clip; }
+  .poster-fit-frame.is-fitted > .poster-fit-content { display: block; transform-origin: top left; }
+  .poster-download-error { margin: 8px auto; font: 14px/1.4 system-ui, sans-serif; color: inherit; }
+  .poster-download-progress { font: 600 11px/1 system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  .poster-download-menu { position: absolute; top: calc(100% + 4px); right: 0; z-index: 20; display: grid; gap: 2px; min-width: 220px; padding: 6px; border: 1px solid color-mix(in srgb, currentColor 24%, transparent); border-radius: 8px; background: var(--poster-tools-ground, Canvas); box-shadow: 0 8px 24px rgb(0 0 0 / .28); }
+  .poster-download-menu[hidden] { display: none; }
+  .poster-download-menu button { display: grid; gap: 2px; width: 100%; padding: 8px 10px; border: 0; border-radius: 5px; background: none; color: inherit; font: 600 14px/1.3 system-ui, sans-serif; text-align: left; cursor: pointer; }
+  .poster-download-menu button span { font-weight: 400; font-size: 12.5px; opacity: .8; }
+  .poster-download-menu button:hover { background: color-mix(in srgb, currentColor 9%, transparent); }
+  .poster-download-menu button:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+  @media print { .poster-download-tools, .poster-actions, .poster-download-menu, .poster-download-error { display: none !important; } }
+</style>
+<script type="module" id="poster-download-script">
+function addPosterFit(poster, button, changed) {
+  const frame = document.createElement('div'), content = document.createElement('div');
+  frame.className = 'poster-fit-frame'; content.className = 'poster-fit-content';
+  poster.before(frame); frame.append(content); content.append(poster);
+  const properties = ['width', 'max-width', 'margin', 'box-sizing'];
+  const original = properties.map(name => [name, poster.style.getPropertyValue(name), poster.style.getPropertyPriority(name)]);
+  let fitted = false, scale = 1, request = 0, layout = null;
+  const availableHeight = () => parseFloat(getComputedStyle(frame).maxHeight) || innerHeight * .95;
+  const layoutKey = () => {
+    const css = getComputedStyle(poster);
+    return [innerWidth, availableHeight(), css.width, css.height].join('/');
+  };
+  const restore = () => original.forEach(([name, value, priority]) => {
+    if (value) poster.style.setProperty(name, value, priority);
+    else poster.style.removeProperty(name);
+  });
+  function update() {
+    request = 0;
+    if (fitted && layout === layoutKey()) return;
+    frame.classList.remove('is-fitted'); frame.style.width = ''; frame.style.height = '';
+    content.style.width = ''; content.style.transform = ''; restore(); scale = 1;
+    if (fitted) {
+      const box = poster.getBoundingClientRect();
+      scale = Math.min(1, availableHeight() / box.height);
+      poster.style.setProperty('box-sizing', 'border-box');
+      poster.style.setProperty('width', `${box.width}px`);
+      poster.style.setProperty('max-width', 'none');
+      poster.style.setProperty('margin', '0');
+      content.style.width = `${box.width}px`;
+      content.style.transform = `scale(${scale})`;
+      frame.style.width = `${box.width * scale}px`; frame.style.height = `${box.height * scale}px`;
+      frame.classList.add('is-fitted');
+    }
+    layout = layoutKey();
+    const label = fitted ? 'Restore poster size' : 'Fit poster to screen';
+    button.setAttribute('aria-label', label); button.title = label;
+    button.setAttribute('aria-pressed', String(fitted));
+    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${fitted ? 'M15 3h6v6m0-6-7 7M9 21H3v-6m0 6 7-7' : 'M4 4l6 6m0-6v6H4m16 10-6-6m0 6v-6h6'}"/></svg>`;
+    changed();
+    poster.dispatchEvent(new Event('poster-view-change'));
+  }
+  const schedule = () => { if (fitted && !request && layout !== layoutKey()) request = requestAnimationFrame(update); };
+  new ResizeObserver(schedule).observe(poster);
+  addEventListener('resize', schedule);
+  document.fonts.ready.then(schedule);
+  update();
+  return {
+    toggle() { fitted = !fitted; layout = null; cancelAnimationFrame(request); update(); },
+    dimensions() {
+      if (!fitted) { const box = poster.getBoundingClientRect(); return {width:box.width,height:box.height}; }
+      const css = getComputedStyle(poster);
+      return {width:parseFloat(css.width),height:parseFloat(css.height)};
+    },
+  };
+}
+function addPosterDownloads() {
+  document.querySelectorAll('.poster').forEach((poster, index) => {
+    const navigation = index === 0 && document.querySelector('.recipe-navigation');
+    const tools = navigation || document.createElement('div');
+    if (tools.querySelector('.poster-download')) return;
+    const align = () => { if (!navigation) tools.style.width = `${poster.getBoundingClientRect().width}px`; };
+    if (!navigation) {
+      tools.className = 'poster-download-tools';
+      poster.before(tools);
+      new ResizeObserver(align).observe(poster);
+      align();
+      const rgb = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
+      if (rgb) {
+        const light = rgb.slice(0, 3).map(Number).map(v => {
+          v /= 255;
+          return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4;
+        });
+        tools.style.color = light[0] * .2126 + light[1] * .7152 + light[2] * .0722 < .179 ? '#eef2f5' : '#1d1b17';
+      }
+    }
+    const ground = getComputedStyle(document.body).backgroundColor;
+    if (!/^(transparent|rgba\(0, 0, 0, 0\))$/.test(ground)) tools.style.setProperty('--poster-tools-ground', ground);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'poster-download';
+    button.setAttribute('aria-label', 'Download poster as PNG');
+    button.title = 'Download poster as PNG';
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4"/></svg>';
+    const actions = document.createElement('div'), fitButton = document.createElement('button');
+    actions.className = 'poster-actions'; fitButton.className = 'poster-fit-toggle'; fitButton.type = 'button';
+    if (!poster.id) {
+      let id = `rhp-poster-${index + 1}`;
+      while (document.getElementById(id)) id += '-view';
+      poster.id = id;
+    }
+    fitButton.setAttribute('aria-controls', poster.id);
+    fitButton.setAttribute('data-poster-view-toggle', '');
+    const fit = addPosterFit(poster, fitButton, align);
+    fitButton.addEventListener('click', event => { event.stopPropagation(); if (!busy) fit.toggle(); });
+    actions.append(fitButton, button);
+    const error = document.createElement('p');
+    error.className = 'poster-download-error';
+    error.setAttribute('role', 'alert');
+    error.hidden = true;
+    tools.after(error);
+    // Download is part of the poster interaction, even though its control sits outside the image.
+    actions.addEventListener('pointerdown', event => {
+      event.stopPropagation();
+    });
+    actions.addEventListener('mousedown', event => {
+      // Pointer activation downloads without taking focus from the selected chart item.
+      event.preventDefault();
+      event.stopPropagation();
+    });
+    poster.addEventListener('focusout', event => {
+      if (actions.contains(event.relatedTarget) || actions.querySelector(':active')) event.stopImmediatePropagation();
+    }, true);
+    poster.addEventListener('pointerleave', event => {
+      if (actions.contains(event.relatedTarget) || actions.contains(document.activeElement)) event.stopImmediatePropagation();
+    }, true);
+    poster.addEventListener('pointermove', event => {
+      // Safari can move the pointer over the title while a keyboard-triggered download is being prepared.
+      if (actions.contains(document.activeElement) && !event.target.closest('.rhp-chart')) event.stopImmediatePropagation();
+    }, true);
+    for (const type of ['keydown', 'keyup']) actions.addEventListener(type, event => {
+      if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
+    });
+    // A poster that plays through its data gives itself a playback ({ duration, position, seek }): its download then
+    // offers the poster as it is now, a PNG, or the whole playback, an animated GIF
+    let exporter, encoder, retries = 0, busy = false, making = null, cancelled = false;
+    const playable = () => typeof poster.playback?.seek === 'function';
+    const icon = button.innerHTML;
+    const menu = document.createElement('div');
+    menu.className = 'poster-download-menu';
+    menu.setAttribute('role', 'menu');
+    menu.setAttribute('aria-label', 'Download poster');
+    menu.hidden = true;
+    menu.innerHTML = '<button type="button" role="menuitem" data-format="png">PNG image<span>The poster as it is now</span></button>'
+      + '<button type="button" role="menuitem" data-format="gif">Animated GIF<span>The whole playback</span></button>';
+    const items = [...menu.querySelectorAll('[role="menuitem"]')];
+    actions.append(menu);
+    const label = text => { button.setAttribute('aria-label', text); button.title = text; };
+    const rest = () => {
+      label(playable() ? 'Download poster' : 'Download poster as PNG');
+      if (playable()) { button.setAttribute('aria-haspopup', 'menu'); button.setAttribute('aria-expanded', String(!menu.hidden)); }
+    };
+    rest();
+    const closeMenu = focus => {
+      if (menu.hidden) return;
+      menu.hidden = true;
+      rest();
+      if (focus) button.focus();
+    };
+    const openMenu = focus => {
+      menu.hidden = false;
+      rest();
+      if (focus) items[0].focus();
+    };
+    document.addEventListener('pointerdown', event => { if (!actions.contains(event.target)) closeMenu(false); }, true);
+    menu.addEventListener('keydown', event => {
+      const at = items.indexOf(document.activeElement);
+      const to = { ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: items.length - 1 }[event.key];
+      if (to !== undefined) { event.preventDefault(); items[(to + items.length) % items.length].focus(); }
+      else if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeMenu(true); }
+      else if (event.key === 'Tab') closeMenu(false);
+    });
+    menu.addEventListener('focusout', event => { if (!menu.contains(event.relatedTarget) && event.relatedTarget !== button) closeMenu(false); });
+    // The capture options, made once for a download and for every frame of a GIF
+    const loadExporter = () => (exporter ||= import('https://cdn.jsdelivr.net/npm/modern-screenshot@4.7.0/+esm' + (retries ? `?retry=${retries}` : '')));
+    async function captureOptions() {
+      await document.fonts.ready;
+      // Preserve author layout rules where computed styles lose the grid's used geometry.
+      // Safari misreports percentage insets in subgrids, and grid auto margins resolve to zero.
+      const autoMargins = new Set(), positioned = new Set();
+      const isMargin = name => name === 'margin' || name.startsWith('margin-');
+      const isInset = name => name === 'inset' || name.startsWith('inset-') || ['top', 'right', 'bottom', 'left'].includes(name);
+      const layoutRules = rules => [...rules].map(rule => {
+        if (rule.selectorText && rule.style) {
+          const margins = [...rule.style].filter(isMargin);
+          if (margins.some(name => /\bauto\b/.test(rule.style.getPropertyValue(name)))) autoMargins.add(rule.selectorText);
+          const insets = [...rule.style].filter(isInset);
+          if (insets.length) positioned.add(rule.selectorText);
+          const layout = [...margins, ...insets];
+          return layout.length ? `${rule.selectorText} { ${layout.map(name => `${name}: ${rule.style.getPropertyValue(name)}${rule.style.getPropertyPriority(name) ? ' !important' : ''};`).join(' ')} }` : '';
+        }
+        if (!rule.cssRules) return /^@layer\b/.test(rule.cssText) ? rule.cssText : '';
+        if (rule instanceof CSSMediaRule) return matchMedia(rule.conditionText).matches ? layoutRules(rule.cssRules) : '';
+        if (rule instanceof CSSSupportsRule) return CSS.supports(rule.conditionText) ? layoutRules(rule.cssRules) : '';
+        return rule.cssText.slice(0, rule.cssText.indexOf('{') + 1) + layoutRules(rule.cssRules) + '}';
+      }).join('\n');
+      const sheets = [...document.styleSheets, ...document.adoptedStyleSheets];
+      const layout = sheets.map(sheet => {
+        try { return layoutRules(sheet.cssRules); } catch (cause) { return ''; }
+      }).join('\n');
+      // Omit display-none HTML subtrees, such as collapsed chart rows, from the image and its SVG payload.
+      const includeNode = node => !(node instanceof HTMLElement) || getComputedStyle(node).display !== 'none';
+      const restoreLayout = (source, clone) => {
+        if (clone.style && source !== poster) {
+          const margins = [...autoMargins].some(selector => source.matches(selector));
+          const computed = getComputedStyle(source);
+          const insets = computed.position === 'absolute' && [...positioned].some(selector => source.matches(selector));
+          const restore = name => (margins && isMargin(name)) || (insets && isInset(name));
+          [...clone.style].filter(restore).forEach(name => clone.style.removeProperty(name));
+          [...source.style].filter(restore).forEach(name => clone.style.setProperty(name, source.style.getPropertyValue(name), source.style.getPropertyPriority(name)));
+          if (insets) {
+            // Only the scaled axis needs its percentage rule. Freeze the other axis in pixels:
+            // Firefox does not reevaluate container queries reliably inside an SVG foreignObject.
+            const axis = source.getAttribute('data-rhp-o');
+            const fixed = axis === 'h' ? ['top', 'bottom'] : axis === 'v' ? ['left', 'right'] : ['top', 'right', 'bottom', 'left'];
+            fixed.forEach(name => clone.style.setProperty(name, computed.getPropertyValue(name), 'important'));
+          }
+        }
+        const children = [...source.children].filter(node => !['STYLE', 'SCRIPT'].includes(node.tagName) && includeNode(node));
+        [...clone.children].forEach((child, i) => { if (children[i]) restoreLayout(children[i], child); });
+      };
+      // Cross-origin font stylesheets are readable through fetch, but not through cssRules.
+      const fontFiles = new Map();
+      const fontRules = await Promise.all(sheets.map(async sheet => {
+        let css;
+        try { css = [...sheet.cssRules].map(rule => rule.cssText).join('\n'); }
+        catch (cause) {
+          if (!sheet.href) return '';
+          const response = await fetch(sheet.href);
+          if (!response.ok) throw new Error('Font stylesheet could not be loaded');
+          css = await response.text();
+        }
+        const rules = css.match(/@font-face\s*\{[^}]*\}/g) || [];
+        return (await Promise.all(rules.map(async rule => {
+          for (const match of [...rule.matchAll(/url\(["']?([^"')]+)["']?\)/g)]) {
+            const source = new URL(match[1], sheet.href || document.baseURI).href;
+            if (!fontFiles.has(source)) fontFiles.set(source, (async () => {
+              const response = await fetch(source);
+              if (!response.ok) throw new Error('Font could not be loaded');
+              const blob = await response.blob();
+              return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+              });
+            })());
+            rule = rule.replace(match[1], await fontFiles.get(source));
+          }
+          return rule;
+        }))).join('\n');
+      }));
+      // Rasterize SVG paper textures before nesting them inside the exporter's SVG.
+      // This keeps SVG filter fragment references local to their own image.
+      const textures = new Map();
+      const embedTexture = async (node) => {
+        if (!node.style) return;
+        let background = node.style.backgroundImage;
+        for (const [, source] of background.matchAll(/url\("(data:image\/svg\+xml[^"]+)"\)/g)) {
+          if (!textures.has(source)) textures.set(source, (async () => {
+            const image = new Image();
+            image.src = source;
+            await image.decode();
+            const canvas = document.createElement('canvas');
+            canvas.width = image.naturalWidth;
+            canvas.height = image.naturalHeight;
+            canvas.getContext('2d').drawImage(image, 0, 0);
+            return canvas.toDataURL();
+          })());
+          background = background.replace(source, await textures.get(source));
+        }
+        node.style.backgroundImage = background;
+      };
+      return {
+        ...fit.dimensions(), style: { margin: '0' }, filter: includeNode,
+        font: { cssText: fontRules.join('\n') }, onCloneEachNode: embedTexture,
+        onCloneNode: clone => {
+          restoreLayout(poster, clone);
+          const style = document.createElement('style');
+          style.textContent = layout;
+          clone.prepend(style);
+        },
+        // CSS content's alternative text follows a slash and must not be painted.
+        onCreateForeignObjectSvg: svg => svg.querySelectorAll('style').forEach(style => {
+          style.textContent = style.textContent.replace(/(content:\s*')([^']*)(')/g, (_, start, text, end) => start + text.split(' / ')[0] + end);
+        }),
+      };
+    }
+    let url;
+    const save = (blob, extension) => {
+      url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const title = poster.querySelector('.headline')?.textContent || document.title || 'poster';
+      link.download = (title.trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '').slice(0, 100) || 'poster') + '.' + extension;
+      link.href = url;
+      link.addEventListener('click', event => event.stopPropagation(), { once: true });
+      document.body.append(link);
+      link.click();
+      link.remove();
+    };
+    const begin = kind => {
+      busy = true;
+      making = kind;
+      button.setAttribute('aria-busy', 'true');
+      fitButton.setAttribute('aria-disabled', 'true');
+      // A GIF takes a while: the button shows its progress and cancels it
+      if (kind === 'gif') label('Cancel the GIF');
+      else { button.setAttribute('aria-disabled', 'true'); label('Preparing poster PNG'); }
+      error.hidden = true;
+    };
+    const end = () => {
+      if (url) setTimeout(() => URL.revokeObjectURL(url), 60000);
+      url = null;
+      busy = false;
+      making = null;
+      cancelled = false;
+      button.innerHTML = icon;
+      button.removeAttribute('aria-disabled');
+      button.removeAttribute('aria-busy');
+      fitButton.removeAttribute('aria-disabled');
+      rest();
+    };
+    const fail = message => {
+      exporter = null;
+      encoder = null;
+      retries++;
+      error.textContent = message;
+      error.hidden = false;
+    };
+    async function savePng() {
+      begin('png');
+      try {
+        const { domToBlob } = await loadExporter();
+        const blob = await domToBlob(poster, { ...(await captureOptions()), scale: 2 });
+        if (!blob) throw new Error('No PNG was created');
+        save(blob, 'png');
+      } catch (cause) {
+        fail('The PNG could not be saved. Check your connection and try again.');
+      } finally {
+        end();
+      }
+    }
+    // The GIF's clock: while it is made, rhp's motion (performance.now and animation frames) and the page's CSS
+    // animations run on a time of their own, which only moves on when a frame asks it to, so every frame shows the chart
+    // exactly as it is that many milliseconds into playing, its glides and slides included
+    const gifClock = () => {
+      const raf = window.requestAnimationFrame, caf = window.cancelAnimationFrame;
+      const queue = new Map(), started = new Map();
+      let time = performance.now(), id = 0, pump = 0;
+      const flush = () => {
+        const due = [...queue.values()];
+        queue.clear();
+        due.forEach(callback => { try { callback(time); } catch (cause) { reportError(cause); } });
+      };
+      // Callbacks still run every real frame, at the clock's time, so whatever waits for a frame is not held up
+      const loop = () => { flush(); pump = raf.call(window, loop); };
+      window.requestAnimationFrame = callback => { queue.set(++id, callback); return id; };
+      window.cancelAnimationFrame = n => queue.delete(n);
+      performance.now = () => time;
+      pump = raf.call(window, loop);
+      return {
+        // Two of the browser's frames: callbacks that were already waiting for one (rhp's ticker) come over to the clock
+        ready: new Promise(resolve => raf.call(window, () => raf.call(window, resolve))),
+        advance(ms, steps = 1) {
+          for (let i = 0; i < steps; i++) {
+            time += ms / steps;
+            // A frame's motion, then the style writes it schedules
+            flush(); flush(); flush();
+            for (const animation of document.getAnimations()) {
+              if (!started.has(animation)) started.set(animation, time - (animation.currentTime ?? 0));
+              animation.pause();
+              animation.currentTime = time - started.get(animation);
+            }
+          }
+        },
+        stop() {
+          caf.call(window, pump);
+          window.requestAnimationFrame = raf;
+          window.cancelAnimationFrame = caf;
+          delete performance.now;
+          for (const callback of queue.values()) raf.call(window, callback);
+          started.forEach((_, animation) => animation.play());
+        },
+      };
+    };
+    // The GIF: the playback at its own pace, 25 frames a second, at most 1200 pixels wide. One palette from the
+    // first and the last frame serves every frame; its last color is never drawn and marks the pixels a frame leaves as
+    // the frame before had them, so each frame stores only what changed.
+    async function saveGif() {
+      const playback = poster.playback;
+      const from = playback.position();
+      let clock = null;
+      begin('gif');
+      try {
+        encoder ||= import('https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm' + (retries ? `?retry=${retries}` : ''));
+        const [{ domToCanvas }, { GIFEncoder, quantize, applyPalette }] = await Promise.all([loadExporter(), encoder]);
+        const options = await captureOptions();
+        const scale = Math.min(1, 1200 / options.width);
+        // The GIF plays at the chart's own pace: its playback's duration, in frames 40 ms apart
+        const step = 40, count = Math.max(2, Math.round((playback.duration ?? 15000) / step) + 1);
+        const capture = async () => {
+          const canvas = await domToCanvas(poster, { ...options, scale });
+          return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+        };
+        clock = gifClock();
+        await clock.ready;
+        // The end and the start, each given a second to settle, for the palette; the start is also the first frame
+        playback.seek(1);
+        clock.advance(1000, 25);
+        const last = await capture();
+        playback.seek(0);
+        clock.advance(1000, 25);
+        const first = await capture();
+        const both = new Uint8ClampedArray(first.data.length + last.data.length);
+        both.set(first.data);
+        both.set(last.data, first.data.length);
+        const palette = quantize(both, 255), kept = palette.length;
+        // A flat color that fills a part of the poster keeps its exact value: it takes the nearest palette entry
+        const counts = new Map(), taken = new Set();
+        for (let j = 0; j < both.length; j += 4) {
+          const color = (both[j] << 16) | (both[j + 1] << 8) | both[j + 2];
+          counts.set(color, (counts.get(color) ?? 0) + 1);
+        }
+        for (const [color] of [...counts].filter(([, n]) => n > both.length / 8000).sort((a, b) => b[1] - a[1])) {
+          const rgb = [color >> 16, (color >> 8) & 255, color & 255];
+          let nearest = -1, distance = Infinity;
+          palette.forEach((entry, k) => {
+            const d = (entry[0] - rgb[0]) ** 2 + (entry[1] - rgb[1]) ** 2 + (entry[2] - rgb[2]) ** 2;
+            if (!taken.has(k) && d < distance) { nearest = k; distance = d; }
+          });
+          if (nearest >= 0) { palette[nearest] = rgb; taken.add(nearest); }
+        }
+        palette.push([255, 0, 255]);
+        const gif = GIFEncoder();
+        let previous = null;
+        for (let i = 0; i < count; i++) {
+          if (cancelled) return;
+          if (i > 0) {
+            playback.seek(i / (count - 1));
+            clock.advance(step);
+            // The last frame is held: it shows the end settled
+            if (i === count - 1) clock.advance(1000, 25);
+          }
+          const image = i === 0 ? first : await capture();
+          const index = applyPalette(image.data, palette.slice(0, kept));
+          const pixels = previous ? index.map((p, j) => (p === previous[j] ? kept : p)) : index;
+          gif.writeFrame(pixels, image.width, image.height, {
+            palette: i === 0 ? palette : undefined, delay: i === 0 ? 1000 : i === count - 1 ? 3000 : step,
+            transparent: i > 0, transparentIndex: kept, dispose: 1,
+          });
+          previous = index;
+          const done = Math.round(((i + 1) / count) * 100);
+          button.innerHTML = `<span class="poster-download-progress" aria-hidden="true">${done}%</span>`;
+          label(`Cancel the GIF, ${done}% made`);
+        }
+        gif.finish();
+        save(new Blob([gif.bytes()], { type: 'image/gif' }), 'gif');
+      } catch (cause) {
+        fail('The GIF could not be made. Check your connection and try again.');
+      } finally {
+        clock?.stop();
+        playback.seek(from);
+        end();
+      }
+    }
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      if (busy) {
+        if (making === 'gif') cancelled = true;
+        return;
+      }
+      if (!playable()) return savePng();
+      // A key press is a click with no pointer detail: it opens the menu on its first item
+      if (menu.hidden) openMenu(event.detail === 0);
+      else closeMenu(event.detail === 0);
+    });
+    menu.addEventListener('click', event => {
+      const item = event.target.closest('[data-format]');
+      if (!item) return;
+      event.stopPropagation();
+      closeMenu(event.detail === 0);
+      if (item.dataset.format === 'gif') saveGif();
+      else savePng();
+    });
+    tools.append(actions);
+  });
+}
+// A chart module may await fonts or data after DOMContentLoaded has already fired.
+if (document.querySelector('.poster')) addPosterDownloads();
+else {
+  const observer = new MutationObserver(() => {
+    if (!document.querySelector('.poster')) return;
+    observer.disconnect();
+    addPosterDownloads();
+  });
+  observer.observe(document.getElementById('chart') || document.body, { childList: true, subtree: true });
+}
+</script>
+</body>
+</html>

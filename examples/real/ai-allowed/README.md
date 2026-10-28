@@ -6,7 +6,8 @@ They cover the 50 most-starred GitHub projects that pass the rule's other requir
 
 - `ai-allowed-infographic.html` and `.png`: the rule, six projects in their own words (Linux, React, VS Code, Flutter, Go, Kubernetes), and all 50 as squares in order of stars; a square names its project on hover, tap or focus. 750 by 1000 CSS pixels (3:4), saved at 1500 by 2002.
 - `ai-allowed-chart.html`: the rule above the headline, and all 50 projects as bars in their stance's color, AI projects hollow and tagged, in a scroll area as tall as 16 rows (the top 16 at rest; a wheel, a finger or the keyboard moves through the rest), with a box beside the shorter bars giving the picked project's rank, repository, stance, own words and source (Linux's at rest). 1080 by 1440 (3:4). Microsoft Activation Scripts is labeled MAS, and MoneyPrinterTurbo and TradingAgents are set smaller, so the box keeps clear of the bars.
-- `ai-allowed-chart.png`: the Reddit image, the 16-bar version of the chart (2160 by 2876), saved before the bars scrolled; a download from the page now says 50 and "Scroll for all 50".
+- `ai-allowed-chart-reddit.html` and `ai-allowed-chart.png`: the chart's Reddit image and the page it is saved from: the same template showing the top 16 only, with no scrolling (2160 by 2876).
+- Both posters end with "Made with rhp" in the note's last line, linking rhp's repository.
 - `previews/` (made by `export.mjs`, not committed): each PNG at the size Reddit shows it, 390px wide on a phone and in the desktop feed's box.
 - `chart.template.html`, `infographic.template.html`: the editable pages.
 - `selection.json`: the rule that picks the 50, the AI projects with the description each rests on, and the reason for every repository left out above the 50th.
@@ -25,7 +26,7 @@ node examples/real/ai-allowed/ai-commits.mjs      # commits that credit an AI to
 node examples/real/ai-allowed/verify.mjs          # every quote and trailer against its repository, live stars
 node examples/real/ai-allowed/build.mjs
 node examples/real/ai-allowed/audit.mjs           # every number on the posters
-node examples/real/ai-allowed/export.mjs          # PNGs through the download button, and Reddit-size previews
+node examples/real/ai-allowed/export.mjs          # the Reddit PNGs through the download button (the chart's from its 16-bar variant), and Reddit-size previews
 ```
 
 `verify.mjs` checks all 50 projects: every quoted excerpt appears word for word in its file, and every cited commit carries its AI trailer.

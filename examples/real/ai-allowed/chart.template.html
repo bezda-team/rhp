@@ -30,6 +30,9 @@
   .rule .mark { grid-row: span 2; font: 900 104px/.8 var(--display); color: #f0785c; }
   .rule .words { font: italic 400 31px/1.27 var(--text); }
   .rule cite { margin-top: 7px; font: 500 20px/1.3 var(--mono); font-style: normal; color: color-mix(in oklab, var(--paper) 78%, var(--ink)); }
+  /* The credit, in the note's last line on the right */
+  .credit { float: right; margin-left: 24px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+  .credit a { color: var(--ink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
   /* The key: what each color and each kind of mark means */
   .keys { order: 5; display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 0 0 12px; padding: 0; list-style: none; font-size: 24px; font-weight: 600; }
   .keys li { display: flex; align-items: center; gap: 10px; }
@@ -39,8 +42,9 @@
   .tag { display: inline-block; padding: 1px 5px 0; border: 2px solid currentColor; border-radius: 4px; font: 700 17px/1.2 var(--mono); letter-spacing: .04em; vertical-align: 3px; }
   .stage { order: 6; position: relative; min-width: 0; }
   /* The bars scroll inside the chart's height, 16 rows of 43.5px: all 50 projects, the top 16 at rest; the scrollbar is
-     hidden so the poster keeps its look, and a wheel, a finger or the keyboard moves through the rest */
-  .bars { height: 700px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+     hidden so the poster keeps its look, and a wheel, a finger or the keyboard moves through the rest. At the top or the
+     bottom of the list, scrolling goes on to the page, so no one is stuck in the chart */
+  .bars { height: 700px; overflow-y: auto; scrollbar-width: none; }
   .bars::-webkit-scrollbar { display: none; }
   /* The readout: the picked project's own words, in the room the shorter bars leave (beside the 9th to the 17th,
      clear of their labels; overlap.test.mjs checks) */
@@ -119,7 +123,8 @@ const RULE = { text: "if your project uses AI, is made by AI, or is intended for
 // Excerpts show where they were cut: an ellipsis before words that start mid-sentence, between excerpts, and after
 // words that stop mid-sentence
 const excerpts = (list) => `${/^[a-z]/.test(list[0]) ? "…" : ""}${list.join(" … ")}${/[.!?]$/.test(list.at(-1)) ? "" : "…"}`;
-const ROWS = DATA.projects.map((p, i) => ({ ...p, rank: i + 1 })); // all 50; the chart shows 16 at a time and scrolls
+const LIMIT = __LIMIT__; // 0: all 50, scrolling 16 at a time; 16 for the Reddit image
+const ROWS = (LIMIT ? DATA.projects.slice(0, LIMIT) : DATA.projects).map((p, i) => ({ ...p, rank: i + 1 }));
 // A bar's name: the project's own short name where the full one would push the box off the shorter bars
 const LABEL = { "massgravel/Microsoft-Activation-Scripts": "MAS" };
 const STANCE = {
@@ -230,7 +235,7 @@ function OpenSourceAi() {
     <${Poster}
       title="Linux, React and VS Code all allow AI-assisted code"
       dek=${html`<span>The ${ROWS.length} most-starred open-source projects on GitHub that meet the subreddit's other new rules. <b>${aiCount} are AI projects</b>, and of the other ${notAi.length}, <b>${notAiAllow.length} allow AI-assisted contributions</b>, by written policy or in practice.</span>`}
-      note=${`GitHub stars and each project's own files (contributing guide, AI policy, instructions for AI agents, merged commits), read ${date.format(new Date(DATA.readAt))}. Projects shown have an OSI license, are a year old and maintained, and have 3+ contributors; lists, books and courses are left out. "In practice": no written rule, but merged commits credit an AI tool. MAS: Microsoft Activation Scripts.`}
+      note=${html`<span>GitHub stars and each project's own files (contributing guide, AI policy, instructions for AI agents, merged commits), read ${date.format(new Date(DATA.readAt))}. Projects shown have an OSI license, are a year old and maintained, and have 3+ contributors; no lists, books or courses. "In practice": no written rule, but merged commits credit an AI tool. MAS: Microsoft Activation Scripts.</span><span class="credit">Made with${" "}<a href="https://github.com/bezda-team/rhp" target="_blank" rel="noopener">rhp</a></span>`}
       onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <blockquote class="rule"><span class="mark" aria-hidden="true">“</span><span class="words">${RULE.text}</span><cite>${RULE.by}</cite></blockquote>
@@ -241,7 +246,7 @@ function OpenSourceAi() {
         <li><i class="hollow"></i>AI project<span class="tag">AI</span></li>
       </ul>
       <div class="stage">
-        <p class="hint">Scroll for all ${ROWS.length}<br>Point at or tap a project</p>
+        <p class="hint">${ROWS.length > 16 ? html`<span>Scroll for all ${ROWS.length}</span><br>` : ""}Point at or tap a project</p>
         <div class="readout" aria-live="polite" style=${() => ({ "--c": STANCE[p().stance].color })}>
           <${Face} p=${p} />
           ${ROWS.map((row) => html`<${Face} p=${() => row} sizer=${true} />`)}
