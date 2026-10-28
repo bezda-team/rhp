@@ -5,7 +5,8 @@ They cover the 50 most-starred GitHub projects that pass the rule's other requir
 43 of the 50 are AI projects (21) or allow AI-assisted code (22 of the other 29: 11 by written policy, 11 in practice); yt-dlp forbids it, Godot and Immich limit it, and four show no sign either way.
 
 - `ai-allowed-infographic.html` and `.png`: the rule, six projects in their own words (Linux, React, VS Code, Flutter, Go, Kubernetes), and all 50 as squares in order of stars; a square names its project on hover, tap or focus. 750 by 1000 CSS pixels (3:4), saved at 1500 by 2002.
-- `ai-allowed-chart.html` and `.png`: the rule under the headline, as on the infographic, and the 16 most-starred as bars in their stance's color, AI projects hollow and tagged, with a box beside the 9th to the 16th giving the picked project's rank, repository, stance, own words and source (Linux's at rest; a hover, tap or key picks another). 1080 by 1440 (3:4, the infographic's shape), saved at 2160 by 2876; Microsoft Activation Scripts is labeled MAS so the box fits.
+- `ai-allowed-chart.html`: the rule above the headline, and all 50 projects as bars in their stance's color, AI projects hollow and tagged, in a scroll area as tall as 16 rows (the top 16 at rest; a wheel, a finger or the keyboard moves through the rest), with a box beside the shorter bars giving the picked project's rank, repository, stance, own words and source (Linux's at rest). 1080 by 1440 (3:4). Microsoft Activation Scripts is labeled MAS, and MoneyPrinterTurbo and TradingAgents are set smaller, so the box keeps clear of the bars.
+- `ai-allowed-chart.png`: the Reddit image, the 16-bar version of the chart (2160 by 2876), saved before the bars scrolled; a download from the page now says 50 and "Scroll for all 50".
 - `previews/` (made by `export.mjs`, not committed): each PNG at the size Reddit shows it, 390px wide on a phone and in the desktop feed's box.
 - `chart.template.html`, `infographic.template.html`: the editable pages.
 - `selection.json`: the rule that picks the 50, the AI projects with the description each rests on, and the reason for every repository left out above the 50th.
@@ -29,6 +30,6 @@ node examples/real/ai-allowed/export.mjs          # PNGs through the download bu
 
 `verify.mjs` checks all 50 projects: every quoted excerpt appears word for word in its file, and every cited commit carries its AI trailer.
 `audit.mjs` checks the counts, the names in the headlines and keys, and that every printed quote is part of a verified one.
-`fit.test.mjs` picks every bar of the chart in turn and checks that its words fit the readout, at 1280 and 390 pixels; `overlap.test.mjs` checks that the box and its hint keep 12 pixels from every bar and label.
+`fit.test.mjs` picks every bar of the chart in turn and checks that its words fit the readout, at 1280 and 390 pixels; `overlap.test.mjs` checks that the box and its hint keep 12 pixels from every bar and label, with the bars scrolled to five places.
 The rhp checker reports no problems for either page at 1280, 1024, 768, 390, 360 and 320 pixels.
 Open the HTML with an internet connection for the pinned rhp module and the PNG exporter.

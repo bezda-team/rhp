@@ -166,6 +166,9 @@
     "quote": [
      "We encourage you to use AI to assist you in researching, creating, and reviewing changes.",
      "you must review and deeply understand the contributions you are making."
+    ],
+    "box": [
+     "We encourage you to use AI to assist you in researching, creating, and reviewing changes."
     ]
    }
   },
@@ -268,6 +271,10 @@
     "path": "policy/ai.md",
     "quote": [
      "If you use AI tools to help write code, documentation, comments, or any other contribution, you are still the author and bear full responsibility for the work."
+    ],
+    "box": [
+     "If you use AI tools to help write code",
+     "you are still the author and bear full responsibility for the work."
     ]
    },
    "note": "electron/electron's CONTRIBUTING.md links this policy in Electron's governance repository."
@@ -563,6 +570,10 @@
     "quote": [
      "We do not accept external code contributions or pull requests.",
      "implementation is comparatively straightforward with the help of Codex itself."
+    ],
+    "box": [
+     "We do not accept external code contributions or pull requests.",
+     "with the help of Codex itself."
     ]
    },
    "note": "Codex takes no outside code at all; its own team writes it with Codex."
