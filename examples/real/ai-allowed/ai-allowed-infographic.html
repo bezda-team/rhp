@@ -55,10 +55,12 @@
   .keys b { font-weight: 800; }
   .keys span { color: var(--soft); }
   /* The pick: fixed slots for the name, the AI tag and the stance, so no word slides as the names change */
-  .pick { display: grid; grid-template-columns: 12.5em 5.5em minmax(0, 1fr); align-items: baseline; height: 1.35em; margin: 2px 0 0; font-size: 15px; line-height: 1.35; color: var(--soft); white-space: nowrap; }
+  .pick { display: grid; grid-template-columns: 13em 5em minmax(0, 1fr); align-items: baseline; height: 1.35em; margin: 2px 0 0; font-size: 15px; line-height: 1.35; color: var(--soft); white-space: nowrap; }
   .pick > * { overflow: hidden; text-overflow: ellipsis; }
   .pick .rest { grid-column: 1 / -1; }
   .pick b { color: var(--ink); }
+  /* The rank in a chip like the cards' commit trailers, a little apart from the name */
+  .pick .rank { display: inline-block; margin-right: 7px; padding: 0 5px; background: var(--ink); color: var(--paper); font: 500 13.5px/1.4 var(--mono); }
   .poster .note { order: 7; display: block; margin-top: 12px; padding-top: 8px; border-top: 2px solid var(--rule); font-size: 14px; line-height: 1.35; color: var(--soft); }
   .poster :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
   @media (max-width: 781px) {
@@ -86,7 +88,9 @@
     .keys li { grid-template-columns: 20px minmax(0, 1fr); }
     .keys i { width: 15px; height: 15px; }
     .keys .hollow { outline-width: 2px; outline-offset: -2px; }
-    .pick { grid-template-columns: 11em 5.5em minmax(0, 1fr); font-size: 13px; }
+    /* On a phone the stance takes a second line under the name */
+    .pick { grid-template-columns: 13.4em minmax(0, 1fr); height: 2.7em; font-size: 13px; }
+    .pick > :nth-child(3) { grid-column: 1 / -1; }
     .poster .note { font-size: 13px; }
   }
   @media (max-width: 380px) {
@@ -195,7 +199,7 @@ function TheRuleAndTheRepos() {
       <ul class="cards">${FEATURED.map(Card)}</ul>
       <section class="all" aria-label="All 50 projects">
         <h2>All ${PROJECTS.length}, in order of stars</h2>
-        <p class="pick" aria-live="polite">${() => (p() ? html`<b>#${p().rank} ${nameOf(p())}</b><span>${p().ai ? "AI project" : ""}</span><span>${STANCE[p().stance]}</span>` : html`<span class="rest">One square per project · point at or tap one</span>`)}</p>
+        <p class="pick" aria-live="polite">${() => (p() ? html`<b><span class="rank">#${p().rank}</span>${nameOf(p())}</b><span>${p().ai ? "AI project" : ""}</span><span>${STANCE[p().stance]}</span>` : html`<span class="rest">One square per project · point at or tap one</span>`)}</p>
         <div class="squares">
           <${Chart} ticks=${false} scale=${[0, 1]} aspect=${PER_ROW / LINES.length} label=${`The ${PROJECTS.length} most-starred open-source projects that meet r/opensource's other new rules, one square each in order of GitHub stars, colored by stance on AI in contributions`}
             theme=${{ font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--allows)", "var(--limits)", "var(--none)"] }}>
