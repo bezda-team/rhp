@@ -26,7 +26,7 @@ I took the 50 most-starred GitHub projects that pass the rule's other requiremen
 - 3 limit or forbid it: yt-dlp forbids AI in any contribution, Godot bans AI-written code beyond small aids such as completion, and Immich asks people not to open LLM-generated PRs.
 - 4 show no sign either way.
 A moderator has since said Linux isn't banned, since its AI use isn't "obvious"; this only shows what each project's own files say.
-Interactive version (tap any project for its exact words and a link to the file): <link to the interactive page>
+Interactive versions (tap any project for its exact words and a link to the file): https://rhp.vercel.app/gallery/real-posters/ai-allowed-chart/ (chart), https://rhp.vercel.app/gallery/real-posters/ai-allowed-infographic/ (infographic)
 
 FIRST TOP-LEVEL COMMENT
 
@@ -38,7 +38,7 @@ Which projects: the 50 most-starred that pass r/opensource's other new requireme
 Policies I quote on the posters: Linux (Documentation/process/coding-assistants.rst), Kubernetes (contributors/guide/pull-requests.md), Flutter (CONTRIBUTING.ai.md), VS Code (AGENTS.md); React's and Go's are merged commits co-authored by Claude (Oct 26 and Sep 28, 2026).
 Stars are a measure of attention, not of use; Linux, Go and others are GitHub mirrors of projects hosted elsewhere.
 Tools: JavaScript for the collection and the checks, rhp (@bezda/rhp) for the chart.
-Source and every quote with its link: <link to this folder>
+Source and every quote with its link: https://github.com/bezda-team/rhp/tree/master/examples/real/ai-allowed
 
 POSTING NOTES
 
