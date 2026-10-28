@@ -22,11 +22,11 @@
   .poster { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); max-width: 1080px; margin: 0 auto; padding: 40px 56px 26px; background: var(--paper); color: var(--ink); }
   .poster figcaption { display: contents; }
   .poster .headline { order: 3; max-width: 17em; margin: 0 0 14px; font: 900 66px/1 var(--display); letter-spacing: -.02em; text-wrap: balance; }
-  .poster .dek { order: 4; max-width: 60ch; margin: 0 0 18px; font-size: 28px; line-height: 1.36; color: var(--soft); }
+  .poster .dek { order: 4; max-width: 60ch; margin: 0 0 30px; font-size: 28px; line-height: 1.36; color: var(--soft); }
   .poster .dek b { color: var(--ink); font-weight: 800; }
-  .poster .note { order: 7; display: block; margin-top: 18px; padding-top: 12px; border-top: 2px solid var(--rule); font-size: 22px; line-height: 1.4; color: var(--soft); }
+  .poster .note { order: 7; display: block; margin-top: 32px; padding-top: 12px; border-top: 2px solid var(--rule); font-size: 22px; line-height: 1.4; color: var(--soft); }
   /* The rule, as the subreddit's moderators wrote it, as on the infographic: the first thing on the poster */
-  .rule { order: 1; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; margin: 0 0 18px; padding: 14px 26px 13px; background: var(--ink); color: var(--paper); }
+  .rule { order: 1; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; margin: 0 0 30px; padding: 14px 26px 13px; background: var(--ink); color: var(--paper); }
   .rule .mark { grid-row: span 2; font: 900 104px/.8 var(--display); color: #f0785c; }
   .rule .words { font: italic 400 31px/1.27 var(--text); }
   .rule cite { margin-top: 7px; font: 500 20px/1.3 var(--mono); font-style: normal; color: color-mix(in oklab, var(--paper) 78%, var(--ink)); }
@@ -73,12 +73,12 @@
     body { padding: 16px 16px 32px; }
     .poster { padding: 26px 18px 18px; }
     .poster .headline { font-size: 36px; }
-    .rule { margin-bottom: 14px; padding: 10px 12px; column-gap: 10px; }
+    .rule { margin-bottom: 20px; padding: 10px 12px; column-gap: 10px; }
     .rule .mark { font-size: 52px; }
     .rule .words { font-size: 17px; }
     .rule cite { font-size: 12px; }
-    .poster .dek { font-size: 16px; margin-bottom: 14px; }
-    .poster .note { font-size: 13px; }
+    .poster .dek { font-size: 16px; margin-bottom: 20px; }
+    .poster .note { margin-top: 22px; font-size: 13px; }
     .keys { gap: 6px 16px; font-size: 14px; }
     .keys i { width: 22px; height: 14px; }
     .keys .hollow { outline-width: 2px; outline-offset: -2px; }
@@ -139,7 +139,7 @@ const aiCount = ROWS.length - notAi.length;
 // Slat type: the project's name (with an AI tag when it is built for AI), its stars as a bar in its stance's color
 // (hollow when it is an AI project), and the count
 const Project = slat({
-  thickness: 43.5,
+  thickness: 41.25,
   inset: "6px",
   room: { start: "auto", end: 76 },
   css: `
