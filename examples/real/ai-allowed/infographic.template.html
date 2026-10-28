@@ -38,7 +38,9 @@
   .card { display: flex; flex-direction: column; gap: 4px; height: 141px; padding: 10px 14px 8px 16px; background: var(--card); border-left: 6px solid var(--allows); }
   .card .top { display: flex; align-items: baseline; gap: 10px; }
   .card h3 { margin: 0; font: 900 24px/1.1 var(--display); letter-spacing: -.01em; }
-  .card .stars { margin-left: auto; font: 700 15px/1 var(--mono); color: var(--soft); }
+  /* GitHub's star: the starred icon's gold, and GitHub's darker gold for the count, which reads on the card */
+  .card .stars { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font: 700 16px/1 var(--mono); color: #9a6700; }
+  .card .stars svg { flex: none; width: 19px; height: 19px; fill: #e3b341; }
   .card blockquote { flex: 1; min-height: 0; margin: 0; overflow: hidden; font-size: 19px; line-height: 1.28; }
   .card blockquote .q { font-style: italic; }
   .card code { display: inline-block; margin-top: 3px; padding: 0 5px; background: var(--ink); color: var(--paper); font: 500 14.5px/1.4 var(--mono); }
@@ -80,7 +82,8 @@
     .cards { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .card { height: 136px; padding: 8px 12px 8px 14px; border-left-width: 5px; }
     .card h3 { font-size: 21px; }
-    .card .stars { font-size: 13px; }
+    .card .stars { gap: 4px; font-size: 13px; }
+    .card .stars svg { width: 15px; height: 15px; }
     .card blockquote { font-size: 15.5px; }
     .card code { font-size: 13px; }
     .card .src { font-size: 11.5px; white-space: normal; overflow-wrap: anywhere; }
@@ -121,6 +124,8 @@ const STANCE = {
   none: "shows no sign either way",
 };
 const compact = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 0 });
+// GitHub's star (Octicons star-fill-16, MIT; assets/OCTICONS-MIT.txt)
+const STAR = "M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z";
 const date = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 const list = new Intl.ListFormat("en-US", { style: "short", type: "unit" });
 
@@ -142,7 +147,7 @@ const shortPath = (path) => (path.split("/").length > 2 ? `…/${path.split("/")
 const sourceOf = (p) => p.file ? { text: shortPath(p.file.path), url: p.file.url } : { text: `commit ${p.commit.sha.slice(0, 7)} · no written rule`, url: p.commit.url };
 const Card = (p) => html`
   <li class="card">
-    <div class="top"><h3>${nameOf(p)}</h3><span class="stars">${compact.format(p.stars)} ★</span></div>
+    <div class="top"><h3>${nameOf(p)}</h3><span class="stars" aria-label=${`${compact.format(p.stars)} GitHub stars`}><svg viewBox="0 0 16 16" aria-hidden="true"><path d=${STAR} /></svg>${compact.format(p.stars)}</span></div>
     ${p.file
       ? html`<blockquote><span class="q">“${(p.file.card ?? p.file.quote).map(excerpt).join(" ")}”</span></blockquote>`
       : html`<blockquote><span>Merged ${date.format(new Date(p.commit.date))}:</span><br><code>${trailerOf(p.commit)}</code></blockquote>`}

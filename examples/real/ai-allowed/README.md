@@ -12,6 +12,7 @@ They cover the 50 most-starred GitHub projects that pass the rule's other requir
 - `evidence.json`: each project's stance, the file and the words that show it, or the commit trailer.
 - `checked.json`: the same, verified against each repository at its current commit, with permalinks and live star counts.
 - `candidates.json`, `scan/`, `ai-commits.json`, `contributors*.txt`, `top-*.json` (the search's fields that `build.mjs` reads), `sources/`: the raw reads.
+- `assets/OCTICONS-MIT.txt`: the license of GitHub's star icon on the infographic's cards (Octicons, MIT).
 - `post.txt`: Reddit titles, body and first comment; `research.txt`: interest, sources, method, how Reddit shows images, limitations.
 
 To read the repositories again and rebuild (needs an authenticated `gh`; the commit search allows 30 requests a minute):
