@@ -10,8 +10,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(path.join(here, "../../../package.json"));
 const { chromium } = require("playwright");
-// The chart's Reddit image comes from its 16-bar variant (the page itself scrolls through all 50)
-const files = process.argv.slice(2).length ? process.argv.slice(2) : ["ai-allowed-chart-reddit.html", "ai-allowed-infographic.html"];
+// The Reddit images come from each poster's variant that fits an image: the chart's 16 bars and the infographic's six cards
+// (the pages themselves scroll through all 50)
+const files = process.argv.slice(2).length ? process.argv.slice(2) : ["ai-allowed-chart-reddit.html", "ai-allowed-infographic-reddit.html"];
 const nameOf = (file) => file.replace(/-reddit\.html$|\.html$/, "");
 const previews = path.join(here, "previews");
 fs.mkdirSync(previews, { recursive: true });

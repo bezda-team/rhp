@@ -46,8 +46,9 @@ const projects = kept.map((full) => {
 
 const page = JSON.stringify({ readAt: checked.readAt, projects });
 const download = fs.readFileSync(path.join(root, "skills/rhp/references/download.md"), "utf8").match(/```html\n([\s\S]*?)\n```/)[1];
-// The chart's page scrolls through all 50; its Reddit variant shows the top 16 only, for the Reddit image
-for (const [template, out, limit = 0] of [["chart.template.html", "ai-allowed-chart.html"], ["chart.template.html", "ai-allowed-chart-reddit.html", 16], ["infographic.template.html", "ai-allowed-infographic.html"]]) {
+// Each poster's page scrolls through all 50; its Reddit variant shows what fits the image: the chart's top 16 bars, the
+// infographic's six featured cards
+for (const [template, out, limit = 0] of [["chart.template.html", "ai-allowed-chart.html"], ["chart.template.html", "ai-allowed-chart-reddit.html", 16], ["infographic.template.html", "ai-allowed-infographic.html"], ["infographic.template.html", "ai-allowed-infographic-reddit.html", 6]]) {
   if (!fs.existsSync(path.join(here, template))) continue;
   const html = fs.readFileSync(path.join(here, template), "utf8").replace("__DATA__", () => page).replace("__LIMIT__", () => limit).replace("__DOWNLOAD__", () => download);
   fs.writeFileSync(path.join(here, out), html);

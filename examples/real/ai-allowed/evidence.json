@@ -63,6 +63,9 @@
     "path": "CONTRIBUTING.md",
     "quote": [
      "This project strictly forbids the usage of LLMs, agents, or any other AI tools for any kind of contribution."
+    ],
+    "card": [
+     "This project strictly forbids the usage of LLMs, agents, or any other AI tools"
     ]
    }
   },
@@ -96,6 +99,10 @@
     "path": "CONTRIBUTING.md",
     "quote": [
      "AI tools can be pretty helpful for coding tasks, and we're not here to gatekeep how you get your work done.",
+     "We use these tools ourselves!"
+    ],
+    "card": [
+     "AI tools can be pretty helpful for coding tasks",
      "We use these tools ourselves!"
     ],
     "box": [
@@ -166,6 +173,9 @@
     "quote": [
      "We encourage you to use AI to assist you in researching, creating, and reviewing changes.",
      "you must review and deeply understand the contributions you are making."
+    ],
+    "card": [
+     "We encourage you to use AI to assist you in researching, creating, and reviewing changes."
     ],
     "box": [
      "We encourage you to use AI to assist you in researching, creating, and reviewing changes."
@@ -272,6 +282,10 @@
     "quote": [
      "If you use AI tools to help write code, documentation, comments, or any other contribution, you are still the author and bear full responsibility for the work."
     ],
+    "card": [
+     "If you use AI tools to help write code",
+     "you are still the author"
+    ],
     "box": [
      "If you use AI tools to help write code",
      "you are still the author and bear full responsibility for the work."
@@ -300,6 +314,9 @@
     "path": ".github/pull_request_template.md",
     "quote": [
      "LLM contributions are not banned, but are held to a higher standard of review and correctness."
+    ],
+    "card": [
+     "LLM contributions are not banned, but are held to a higher standard"
     ]
    }
   },
@@ -323,6 +340,9 @@
     "quote": [
      "Do not use AI to generate substantial pieces of code",
      "For example using AI for code completion is permissible."
+    ],
+    "card": [
+     "Do not use AI to generate substantial pieces of code"
     ]
    },
    "note": "Godot's pull request template links these rules in its contributing-docs repository."
@@ -375,6 +395,9 @@
     "path": "AGENTS.md",
     "quote": [
      "Disclose your model, harness, harness version, every installed plugin, and what your human partner asked you to do in the PR."
+    ],
+    "card": [
+     "Disclose your model, harness, harness version, every installed plugin"
     ],
     "box": [
      "Disclose your model, harness, harness version, every installed plugin"
@@ -571,6 +594,10 @@
      "We do not accept external code contributions or pull requests.",
      "implementation is comparatively straightforward with the help of Codex itself."
     ],
+    "card": [
+     "We do not accept external code contributions or pull requests.",
+     "with the help of Codex itself."
+    ],
     "box": [
      "We do not accept external code contributions or pull requests.",
      "with the help of Codex itself."
@@ -587,6 +614,9 @@
     "path": "CLAUDE.md",
     "quote": [
      "This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository."
+    ],
+    "card": [
+     "This file provides guidance to Claude Code (claude.ai/code)"
     ]
    }
   },

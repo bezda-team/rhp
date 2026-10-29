@@ -4,7 +4,11 @@ Two Reddit posters that answer the question r/opensource's new no-AI rule raised
 They cover the 50 most-starred GitHub projects that pass the rule's other requirements, and what each one's repository says about AI in contributions.
 43 of the 50 are AI projects (21) or allow AI-assisted code (22 of the other 29: 11 by written policy, 11 in practice); yt-dlp forbids it, Godot and Immich limit it, and four show no sign either way.
 
-- `ai-allowed-infographic.html` and `.png`: the rule, six projects in their own words (Linux, React, VS Code, Flutter, Go, Kubernetes), and all 50 as squares in order of stars; a square names its project on hover, tap or focus. 750 by 1019 CSS pixels (3:4 before the license line), saved at 1500 by 2037.
+- `ai-allowed-infographic.html`: the rule, all 50 projects in their own words on cards, and all 50 as squares in order of stars. 750 by 1019 CSS pixels (3:4 before the license line).
+  The cards scroll inside the height of three rows (one card a row on a phone), with the scrollbar hidden as on the chart: Linux, React, VS Code, Flutter, Go and Kubernetes at rest, then the other 44 in order of stars.
+  A card's left edge has its stance's color, and an AI project's name its AI tag.
+  A square names its project on hover, tap or focus; a tap, a click or the keyboard also brings its card to the middle row and tints it in the stance's color.
+- `ai-allowed-infographic-reddit.html` and `ai-allowed-infographic.png`: the infographic's Reddit image and the page it is saved from: the same template with the six cards only, which do not scroll (1500 by 2037).
 - `ai-allowed-chart.html`: the rule above the headline, and all 50 projects as bars in their stance's color, AI projects hollow and tagged, in a scroll area as tall as 16 rows (the top 16 at rest; a wheel, a finger or the keyboard moves through the rest), with a box beside the shorter bars giving the picked project's rank, repository, stance, own words and source (Linux's at rest). 1080 by 1469 (3:4 before the license line). Microsoft Activation Scripts is labeled MAS, and MoneyPrinterTurbo and TradingAgents are set smaller, so the box keeps clear of the bars.
 - `ai-allowed-chart-reddit.html` and `ai-allowed-chart.png`: the chart's Reddit image and the page it is saved from: the same template showing the top 16 only, with no scrolling (2160 by 2937).
 - Both posters end with a line of their own: the license on the left ("© 2026 Anas Bouzid · CC BY 4.0", linking the license) and "Made with rhp" on the right (linking rhp's repository); on a phone the credit takes the next line.
@@ -26,13 +30,15 @@ node examples/real/ai-allowed/ai-commits.mjs      # commits that credit an AI to
 node examples/real/ai-allowed/verify.mjs          # every quote and trailer against its repository, live stars
 node examples/real/ai-allowed/build.mjs
 node examples/real/ai-allowed/audit.mjs           # every number on the posters
-node examples/real/ai-allowed/export.mjs          # the Reddit PNGs through the download button (the chart's from its 16-bar variant), and Reddit-size previews
+node examples/real/ai-allowed/export.mjs          # the Reddit PNGs through the download button (from each poster's Reddit variant), and Reddit-size previews
 ```
 
 `verify.mjs` checks all 50 projects: every quoted excerpt appears word for word in its file, and every cited commit carries its AI trailer.
 `audit.mjs` checks the counts, the names in the headlines and keys, and that every printed quote is part of a verified one.
 `fit.test.mjs` picks every bar of the chart in turn and checks that its words fit the readout, at 1280 and 390 pixels; `overlap.test.mjs` checks that the box and its hint keep 12 pixels from every bar and label, with the bars scrolled to five places.
-The rhp checker reports no problems for either page at 1280, 1024, 768, 390, 360 and 320 pixels.
+`cards.test.mjs` checks that every one of the infographic's 50 cards shows all of its words at 1280, 1024, 768, 390, 360 and 320 pixels, and that clicking a square brings its card to the middle row, tinted, in Chromium, WebKit and Firefox, at 1280 and 390 pixels.
+The rhp checker reports no problems for the chart's pages and the infographic's Reddit variant at 1280, 1024, 768, 390, 360 and 320 pixels.
+On the infographic's page it warns that text moves when a square is tapped or Tab moves through the cards' links: that is the cards scrolling to the project or the link.
 Open the HTML with an internet connection for the pinned rhp module and the PNG exporter.
 
 ## License

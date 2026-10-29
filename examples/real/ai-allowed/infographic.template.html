@@ -33,11 +33,30 @@
   .rule .mark { grid-row: span 2; font: 900 72px/.8 var(--display); color: #f0785c; }
   .rule .words { font: italic 400 23px/1.27 var(--text); }
   .rule cite { margin-top: 5px; font: 500 14px/1.3 var(--mono); font-style: normal; color: color-mix(in oklab, var(--paper) 78%, var(--ink)); }
-  /* The cards: six well-known platforms among the 50, side by side, in order of stars */
-  .cards { order: 5; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
-  .card { display: flex; flex-direction: column; gap: 4px; height: 141px; padding: 10px 14px 8px 16px; background: var(--card); border-left: 6px solid var(--allows); }
+  /* The cards: all 50 projects in their own words, side by side, the six well-known platforms first (in view at
+     rest), then the rest in order of stars. Like the chart version's bars, they scroll inside the height of three rows
+     with the scrollbar hidden, and at the top or the bottom of the list scrolling goes on to the page. The Reddit
+     image's six do not scroll (a scroll area would set them on whole pixels, a fraction of a pixel from where they were) */
+  .cards { --card-h: 141px; --gap: 12px; order: 5; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); margin: 0; padding: 0; list-style: none; }
+  .cards.scroll { height: calc(3 * var(--card-h) + 2 * var(--gap)); overflow-y: auto; scrollbar-width: none; }
+  .cards.scroll::-webkit-scrollbar { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .cards { scroll-behavior: smooth; }
+  }
+  .card { --c: var(--allows); display: flex; flex-direction: column; gap: 4px; height: var(--card-h); padding: 10px 14px 8px 16px; background: var(--card); border-left: 6px solid var(--c); }
+  .card[data-stance="limits"], .card[data-stance="forbids"] { --c: var(--limits); }
+  .card[data-stance="none"] { --c: var(--none); }
+  /* The project picked on the squares: its card tinted in its stance's color, and the star count a darker gold, so it
+     keeps 4.5:1 on the tint */
+  .card.on { background: color-mix(in oklab, var(--c) 20%, var(--card)); }
+  .card.on .stars { color: color-mix(in oklab, #9a6700 70%, var(--ink)); }
   .card .top { display: flex; align-items: baseline; gap: 10px; }
+  /* A name too long for the row breaks onto a second line, between words */
   .card h3 { margin: 0; font: 900 24px/1.1 var(--display); letter-spacing: -.01em; }
+  .card h3.long { font-size: 18px; }
+  .card .tag, .card .stars { flex: none; }
+  /* An AI project's tag, as on the chart version */
+  .card .tag { padding: 1px 4px 0; border: 2px solid currentColor; border-radius: 4px; font: 700 13px/1.2 var(--mono); letter-spacing: .04em; }
   /* GitHub's star: the starred icon's gold, and GitHub's darker gold for the count, which reads on the card */
   .card .stars { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font: 700 16px/1 var(--mono); color: #9a6700; }
   .card .stars svg { flex: none; width: 19px; height: 19px; fill: #e3b341; }
@@ -84,9 +103,10 @@
     .rule .mark { font-size: 52px; }
     .rule .words { font-size: 17px; }
     .rule cite { font-size: 12px; }
-    .cards { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-    .card { height: 136px; padding: 8px 12px 8px 14px; border-left-width: 5px; }
+    .cards { --card-h: 136px; --gap: 8px; grid-template-columns: minmax(0, 1fr); }
+    .card { padding: 8px 12px 8px 14px; border-left-width: 5px; }
     .card h3 { font-size: 21px; }
+    .card .tag { padding: 0 3px; border-width: 1.5px; font-size: 11px; }
     .card .stars { gap: 4px; font-size: 13px; }
     .card .stars svg { width: 15px; height: 15px; }
     .card blockquote { font-size: 15.5px; }
@@ -99,10 +119,14 @@
     /* On a phone the stance takes a second line under the name */
     .pick { grid-template-columns: 13.4em minmax(0, 1fr); height: 2.7em; font-size: 13px; }
     .pick > :nth-child(3) { grid-column: 1 / -1; }
+    .pick .rest { white-space: normal; }
     .poster .note { font-size: 13px; }
   }
   @media (max-width: 380px) {
-    .card { height: 150px; }
+    .cards { --card-h: 150px; }
+    .card .top { gap: 6px; }
+    .card h3 { font-size: 19px; }
+    .card h3.long { font-size: 17px; }
     .card blockquote { font-size: 14.5px; }
   }
 </style>
@@ -120,6 +144,9 @@ const RULE = { text: "if your project uses AI, is made by AI, or is intended for
 // The cards: six well-known developer platforms among the 50 (an operating system, a UI library, an editor, an app
 // framework, a language and a container orchestrator), in order of stars
 const FEATURED = ["torvalds/linux", "react/react", "microsoft/vscode", "flutter/flutter", "golang/go", "kubernetes/kubernetes"].map((full) => PROJECTS.find((p) => p.full === full));
+// They come first, then the other 44 in order of stars: the page scrolls through all 50, the Reddit image shows the six
+const LIMIT = __LIMIT__; // 0: all 50; 6 for the Reddit image
+const CARDS = [...FEATURED, ...PROJECTS.filter((p) => !FEATURED.includes(p))].slice(0, LIMIT || undefined);
 const PER_ROW = 25;
 const LINES = Array.from({ length: Math.ceil(PROJECTS.length / PER_ROW) }, (_, k) => PROJECTS.slice(k * PER_ROW, k * PER_ROW + PER_ROW));
 const STANCE = {
@@ -149,13 +176,22 @@ const trailerOf = (commit) => commit.trailer.replace(/\s*<[^>]*>/, "");
 const excerpt = (words) => `${/^[a-z]/.test(words) ? "…" : ""}${words}${/[.!?]$/.test(words) ? "" : "…"}`;
 // A long path keeps its last two parts on the card; the link has all of it
 const shortPath = (path) => (path.split("/").length > 2 ? `…/${path.split("/").slice(-2).join("/")}` : path);
-const sourceOf = (p) => p.file ? { text: shortPath(p.file.path), url: p.file.url } : { text: `commit ${p.commit.sha.slice(0, 7)} · no written rule`, url: p.commit.url };
-const Card = (p) => html`
-  <li class="card">
-    <div class="top"><h3>${nameOf(p)}</h3><span class="stars" aria-label=${`${compact.format(p.stars)} GitHub stars`}><svg viewBox="0 0 16 16" aria-hidden="true"><path d=${STAR} /></svg>${compact.format(p.stars)}</span></div>
+const sourceOf = (p) => p.file ? { text: shortPath(p.file.path), url: p.file.url }
+  : p.commit ? { text: `commit ${p.commit.sha.slice(0, 7)} · no written rule`, url: p.commit.url }
+  : { text: p.full.length > 30 ? `…/${p.full.split("/")[1]}` : p.full, url: `https://github.com/${p.full}` };
+// The longest names are set smaller, so they fit beside the stars
+const longName = (p) => nameOf(p).length > (p.ai ? 12 : 15);
+// A card's name keeps the zero-width space that lets MoneyPrinterTurbo break where a phone needs it
+const cardName = (p) => p.short ?? p.name;
+// A card, tinted while its project is the one picked on the squares
+const Card = (p, chosen) => html`
+  <li class=${() => `card${p.rank - 1 === chosen() ? " on" : ""}`} data-stance=${p.stance}>
+    <div class="top"><h3 class=${longName(p) ? "long" : undefined}>${cardName(p)}</h3>${p.ai ? html`<span class="tag">AI</span>` : ""}<span class="stars" aria-label=${`${compact.format(p.stars)} GitHub stars`}><svg viewBox="0 0 16 16" aria-hidden="true"><path d=${STAR} /></svg>${compact.format(p.stars)}</span></div>
     ${p.file
       ? html`<blockquote><span class="q">“${(p.file.card ?? p.file.quote).map(excerpt).join(" ")}”</span></blockquote>`
-      : html`<blockquote><span>Merged ${date.format(new Date(p.commit.date))}:</span><br><code>${trailerOf(p.commit)}</code></blockquote>`}
+      : p.commit
+        ? html`<blockquote><span>Merged ${date.format(new Date(p.commit.date))}:</span><br><code>${trailerOf(p.commit)}</code></blockquote>`
+        : html`<blockquote>No AI policy, no instructions for AI agents and no commit crediting an AI tool.</blockquote>`}
     <a class="src" href=${sourceOf(p).url} target="_blank" rel="noopener">${sourceOf(p).text}</a>
   </li>`;
 
@@ -180,9 +216,12 @@ const Square = slat({
 const Line = slat({ room: { start: 0, end: 0 }, inset: 0 }, (r) => html`
   <div><${Plot} orientation="across" rows=${() => r.units} on=${(t) => t.rank - 1 === r.lit} keyboard=${true}>${Square}<//></div>`);
 
-// Chart component: the cards are fixed; a square the reader points at, taps or reaches with the keyboard names its project
+// Chart component: a square the reader points at, taps or reaches with the keyboard names its project; one they tap,
+// click or reach with the keyboard brings its card to the middle row of the cards and tints it
 function TheRuleAndTheRepos() {
   const [picked, setPicked] = createSignal(null);
+  const [chosen, setChosen] = createSignal(null);
+  let cards;
   const rowOf = (el) => {
     const root = el.closest("[data-row]");
     return root ? +root.dataset.row : null;
@@ -196,6 +235,17 @@ function TheRuleAndTheRepos() {
     setPicked(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
   };
   const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
+  const choose = (e) => {
+    const row = rowOf(e.target);
+    if (row == null) return;
+    setPicked(row);
+    setChosen(row);
+    // The card's row in the middle of the three in view, or as near as the ends of the list allow
+    const card = cards.children[CARDS.indexOf(PROJECTS[row])];
+    if (!card) return; // the Reddit image has the six cards only
+    const top = card.getBoundingClientRect().top - cards.getBoundingClientRect().top + cards.scrollTop;
+    cards.scrollTo({ top: top - (cards.clientHeight - card.offsetHeight) / 2 });
+  };
   const p = () => (picked() == null ? null : PROJECTS[picked()]);
   return html`
     <${Poster}
@@ -203,13 +253,13 @@ function TheRuleAndTheRepos() {
       title=${html`<span>${ai.length + allow.length} of GitHub's ${PROJECTS.length} biggest <span class="nobreak">open-source</span> projects use AI or are built for it</span>`}
       dek=${html`<span>Of the ${others.length} that are not AI projects, <b>${allow.length} allow AI-assisted code</b>:</span>`}
       note=${html`<span>Stars, AI policies, contributing guides, agent files and commits, read ${date.format(new Date(DATA.readAt))}.</span><span class="foot"><span class="license">© 2026 Anas Bouzid ·${" "}<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener license">CC BY 4.0</a></span><span class="credit">Made with${" "}<a href="https://github.com/bezda-team/rhp" target="_blank" rel="noopener">rhp</a></span></span>`}
-      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
+      onPointerMove=${move} onClick=${choose} onFocusIn=${choose}
       onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setPicked(null)}>
       <blockquote class="rule"><span class="mark" aria-hidden="true">“</span><span class="words">${RULE.text}</span><cite>${RULE.by}</cite></blockquote>
-      <ul class="cards">${FEATURED.map(Card)}</ul>
+      <ul class=${CARDS.length > FEATURED.length ? "cards scroll" : "cards"} ref=${(el) => (cards = el)}>${CARDS.map((p) => Card(p, chosen))}</ul>
       <section class="all" aria-label="All 50 projects">
         <h2>All ${PROJECTS.length}, in order of stars</h2>
-        <p class="pick" aria-live="polite">${() => (p() ? html`<b><span class="rank">#${p().rank}</span>${nameOf(p())}</b><span>${p().ai ? "AI project" : ""}</span><span>${STANCE[p().stance]}</span>` : html`<span class="rest">One square per project · point at or tap one</span>`)}</p>
+        <p class="pick" aria-live="polite">${() => (p() ? html`<b><span class="rank">#${p().rank}</span>${nameOf(p())}</b><span>${p().ai ? "AI project" : ""}</span><span>${STANCE[p().stance]}</span>` : html`<span class="rest">${CARDS.length > FEATURED.length ? "Tap a square for its card · scroll the cards for all 50" : "One square per project · point at or tap one"}</span>`)}</p>
         <div class="squares">
           <${Chart} ticks=${false} scale=${[0, 1]} aspect=${PER_ROW / LINES.length} label=${`The ${PROJECTS.length} most-starred open-source projects that meet r/opensource's other new rules, one square each in order of GitHub stars, colored by stance on AI in contributions`}
             theme=${{ font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--allows)", "var(--limits)", "var(--none)"] }}>
