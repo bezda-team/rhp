@@ -1,0 +1,360 @@
+{
+ "retrieved": "2026-10-29",
+ "game": "Super Mario Bros. (NES, 1985)",
+ "category": "Any%, NTSC",
+ "board": "https://www.speedrun.com/smb1",
+ "perfect": 294.265,
+ "fps": 60.0988,
+ "runs": [
+  {
+   "place": 1,
+   "runner": "Niftski",
+   "seconds": 294.332,
+   "frames": 4,
+   "date": "2026-08-14",
+   "run": "https://www.speedrun.com/smb1/runs/z142re9z",
+   "video": "https://youtu.be/jeyjmJkhLb0"
+  },
+  {
+   "place": 2,
+   "runner": "LeKukie",
+   "seconds": 294.365,
+   "frames": 6,
+   "date": "2026-06-03",
+   "run": "https://www.speedrun.com/smb1/runs/medd9o9y",
+   "video": "https://youtu.be/c8mZMi1FyU0"
+  },
+  {
+   "place": 3,
+   "runner": "averge11",
+   "seconds": 294.415,
+   "frames": 9,
+   "date": "2025-12-18",
+   "run": "https://www.speedrun.com/smb1/runs/y40o5j2z",
+   "video": "https://youtu.be/R1Tlqfl3CxM"
+  },
+  {
+   "place": 4,
+   "runner": "KingOfJonnyBoy",
+   "seconds": 294.498,
+   "frames": 14,
+   "date": "2026-09-25",
+   "run": "https://www.speedrun.com/smb1/runs/ydxlndqz",
+   "video": "https://youtu.be/_FcFIUdXF6w"
+  },
+  {
+   "place": 5,
+   "runner": "Tree_05",
+   "seconds": 294.864,
+   "frames": 36,
+   "date": "2023-04-13",
+   "run": "https://www.speedrun.com/smb1/runs/meeql89m",
+   "video": "https://youtu.be/ae0D-SilhqE"
+  },
+  {
+   "place": 6,
+   "runner": "Miniland",
+   "seconds": 294.914,
+   "frames": 39,
+   "date": "2021-11-05",
+   "run": "https://www.speedrun.com/smb1/runs/y93wwkey",
+   "video": "https://youtu.be/fyovThWjNYI"
+  },
+  {
+   "place": 7,
+   "runner": "Nebula_Composer",
+   "seconds": 294.948,
+   "frames": 41,
+   "date": "2022-07-07",
+   "run": "https://www.speedrun.com/smb1/runs/y88glvny",
+   "video": "https://www.youtube.com/watch?v=VCwjtSwb6tc"
+  },
+  {
+   "place": 8,
+   "runner": "jscarbo",
+   "seconds": 294.964,
+   "frames": 42,
+   "date": "2023-04-13",
+   "run": "https://www.speedrun.com/smb1/runs/zqel81xz",
+   "video": "https://youtu.be/NhFD9lmKYOc"
+  },
+  {
+   "place": 8,
+   "runner": "MW_65536",
+   "seconds": 294.964,
+   "frames": 42,
+   "date": "2025-10-28",
+   "run": "https://www.speedrun.com/smb1/runs/zn53ve9z",
+   "video": "https://youtu.be/jAkWQE0NUXM"
+  },
+  {
+   "place": 10,
+   "runner": "eddiecatgaming",
+   "seconds": 295.33,
+   "frames": 64,
+   "date": "2022-05-21",
+   "run": "https://www.speedrun.com/smb1/runs/y9v386vm",
+   "video": "https://www.youtube.com/watch?v=VngLOPzDX0o"
+  }
+ ],
+ "previous": {
+  "runner": "LeKukie",
+  "seconds": 294.365,
+  "frames": 6,
+  "date": "June 2, 2026"
+ },
+ "records": [
+  {
+   "date": "May 2005",
+   "time": "5:05.846",
+   "runner": "andrewg",
+   "seconds": 305.846
+  },
+  {
+   "date": "October 2006",
+   "time": "5:05.397",
+   "runner": "Scott Kessler",
+   "seconds": 305.397
+  },
+  {
+   "date": "April 10, 2007",
+   "time": "5:00.355",
+   "runner": "andrewg",
+   "seconds": 300.355
+  },
+  {
+   "date": "December 24, 2010",
+   "time": "4:59.690",
+   "runner": "andrewg",
+   "seconds": 299.69
+  },
+  {
+   "date": "December 15, 2011",
+   "time": "4:58.874",
+   "runner": "andrewg",
+   "seconds": 298.874
+  },
+  {
+   "date": "January 15, 2013",
+   "time": "4:58.791",
+   "runner": "andrewg",
+   "seconds": 298.791
+  },
+  {
+   "date": "January 19, 2013",
+   "time": "4:58.575",
+   "runner": "andrewg",
+   "seconds": 298.575
+  },
+  {
+   "date": "March 21, 2013",
+   "time": "4:58.525",
+   "runner": "andrewg",
+   "seconds": 298.525
+  },
+  {
+   "date": "May 19, 2013",
+   "time": "4:58.359",
+   "runner": "andrewg",
+   "seconds": 298.359
+  },
+  {
+   "date": "July 1, 2013",
+   "time": "4:58.159",
+   "runner": "andrewg",
+   "seconds": 298.159
+  },
+  {
+   "date": "October 7, 2013",
+   "time": "4:58.142",
+   "runner": "andrewg",
+   "seconds": 298.142
+  },
+  {
+   "date": "March 25, 2014",
+   "time": "4:58.092",
+   "runner": "andrewg",
+   "seconds": 298.092
+  },
+  {
+   "date": "June 25, 2014",
+   "time": "4:57.693",
+   "runner": "Blubbler",
+   "seconds": 297.693
+  },
+  {
+   "date": "October 18, 2015",
+   "time": "4:57.627",
+   "runner": "darbian",
+   "seconds": 297.627
+  },
+  {
+   "date": "January 14, 2016",
+   "time": "4:57.427",
+   "runner": "darbian",
+   "seconds": 297.427
+  },
+  {
+   "date": "April 14, 2016",
+   "time": "4:57.260",
+   "runner": "darbian",
+   "seconds": 297.26
+  },
+  {
+   "date": "August 11, 2016",
+   "time": "4:57.244",
+   "runner": "darbian",
+   "seconds": 297.244
+  },
+  {
+   "date": "October 4, 2016",
+   "time": "4:57.194",
+   "runner": "Kosmic",
+   "seconds": 297.194
+  },
+  {
+   "date": "October 6, 2016",
+   "time": "4:56.878",
+   "runner": "darbian",
+   "seconds": 296.878
+  },
+  {
+   "date": "October 20, 2017",
+   "time": "4:56.528",
+   "runner": "darbian",
+   "seconds": 296.528
+  },
+  {
+   "date": "February 16, 2018",
+   "time": "4:56.462",
+   "runner": "Kosmic",
+   "seconds": 296.462
+  },
+  {
+   "date": "May 25, 2018",
+   "time": "4:56.245",
+   "runner": "somewes",
+   "seconds": 296.245
+  },
+  {
+   "date": "September 25, 2018",
+   "time": "4:55.913",
+   "runner": "Kosmic",
+   "seconds": 295.913
+  },
+  {
+   "date": "October 22, 2018",
+   "time": "4:55.796",
+   "runner": "somewes",
+   "seconds": 295.796
+  },
+  {
+   "date": "August 2, 2019",
+   "time": "4:55.746",
+   "runner": "tavenwebb2002",
+   "seconds": 295.746
+  },
+  {
+   "date": "January 17, 2020",
+   "time": "4:55.646",
+   "runner": "Kosmic",
+   "seconds": 295.646
+  },
+  {
+   "date": "November 13, 2020",
+   "time": "4:55.430",
+   "runner": "Niftski",
+   "seconds": 295.43
+  },
+  {
+   "date": "January 2, 2021",
+   "time": "4:55.314",
+   "runner": "Miniland",
+   "seconds": 295.314
+  },
+  {
+   "date": "February 4, 2021",
+   "time": "4:55.230",
+   "runner": "Miniland",
+   "seconds": 295.23
+  },
+  {
+   "date": "April 7, 2021",
+   "time": "4:54.948",
+   "runner": "Niftski",
+   "seconds": 294.948
+  },
+  {
+   "date": "November 5, 2021",
+   "time": "4:54.914",
+   "runner": "Miniland",
+   "seconds": 294.914
+  },
+  {
+   "date": "December 2, 2021",
+   "time": "4:54.881",
+   "runner": "Niftski",
+   "seconds": 294.881
+  },
+  {
+   "date": "August 7, 2022",
+   "time": "4:54.798",
+   "runner": "Niftski",
+   "seconds": 294.798
+  },
+  {
+   "date": "September 6, 2023",
+   "time": "4:54.631",
+   "runner": "Niftski",
+   "seconds": 294.631
+  },
+  {
+   "date": "January 9, 2025",
+   "time": "4:54.565",
+   "runner": "Niftski",
+   "seconds": 294.565
+  },
+  {
+   "date": "August 28, 2025",
+   "time": "4:54.515",
+   "runner": "averge11",
+   "seconds": 294.515
+  },
+  {
+   "date": "October 9, 2025",
+   "time": "4:54.482",
+   "runner": "Niftski",
+   "seconds": 294.48199999999997
+  },
+  {
+   "date": "October 23, 2025",
+   "time": "4:54.448",
+   "runner": "Niftski",
+   "seconds": 294.448
+  },
+  {
+   "date": "December 18, 2025",
+   "time": "4:54.415",
+   "runner": "averge11",
+   "seconds": 294.415
+  },
+  {
+   "date": "June 2, 2026",
+   "time": "4:54.365",
+   "runner": "LeKukie",
+   "seconds": 294.365
+  },
+  {
+   "date": "August 13, 2026",
+   "time": "4:54.332",
+   "runner": "Niftski",
+   "seconds": 294.332
+  }
+ ],
+ "sources": {
+  "leaderboard": "https://www.speedrun.com/api/v1/leaderboards/om1m3625/category/w20p0zkn?var-onvvdymn=013zwgxq",
+  "history": "https://en.wikipedia.org/wiki/Super_Mario_Bros._speedrunning#Any%_world_record_progression",
+  "perfect": "https://kotaku.com/speedrunner-smashes-a-computer-assisted-super-mario-bro-1834457319",
+  "record": "https://www.polygon.com/super-mario-bros-niftski-speedrun-world-record/"
+ }
+}

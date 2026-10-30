@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Super Mario Bros. speedrun</title>
+<meta name="description" content="The ten fastest Super Mario Bros. Any% speedruns, each counted in frames off a perfect run: Niftski's 4:54.332 world record is four frames away.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Press+Start+2P&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+  :root {
+    --ground: #15110e; --deep: #0d0a08; --glow: #2f1e16;
+    --cream: #f3e9dc; --sand: #cdbfb0; --stone: #b9ab9c; --muted: #8c7f72;
+    --line: #3a302a; --rule: #2c2420;
+    --gold: #ffc94a; --gold-soft: #d9b56a; --gold-pale: #e8d6ae;
+    --orange: #e07b4f; --brick: #5a2d1c; --red: #e5483a;
+    --pixel: "Press Start 2P", ui-monospace, monospace;
+    --text: Inter, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px 16px; background: #0a0807; color: var(--cream); font-family: var(--text); }
+  /* The poster: a dark CRT screen, warm in the middle, with scanlines over everything */
+  .poster { container-type: inline-size; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; max-width: 1080px; margin: 0 auto; padding: 50px 60px 44px; overflow: hidden;
+    background: radial-gradient(ellipse 75% 55% at 50% 0%, var(--glow), transparent 100%), radial-gradient(ellipse 120% 90% at 50% 45%, #1d1510, var(--ground) 70%, #100c0a); }
+  .poster::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: repeating-linear-gradient(transparent 0 2px, rgb(0 0 0 / .2) 2px 4px); }
+  .poster > * { grid-column: 1 / -1; min-width: 0; }
+  .poster figcaption { display: grid; margin-bottom: 24px; }
+  .kicker { display: flex; justify-content: space-between; align-items: baseline; font: 16px/1 var(--pixel); letter-spacing: .06em; color: var(--orange); }
+  .kicker .play { font-family: var(--text); font-size: 1.5em; line-height: 0; vertical-align: -.1em; margin-right: .2em; }
+  .kicker .rec { color: #ea4f41; } /* a touch brighter than the DNF red: the glow behind it is lighter */
+  .kicker .rec::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 10px; vertical-align: 1px; background: currentColor; border-radius: 50%; animation: rec 1.2s steps(1) infinite; }
+  @keyframes rec { 50% { opacity: 0; } }
+  .headline { display: grid; margin-top: 32px; font-family: var(--pixel); text-transform: uppercase; }
+  .headline .game { font-size: min(50px, 5.2cqw); line-height: 1; color: var(--cream); }
+  .headline .run { margin-top: min(26px, 2.7cqw); font-size: min(103px, 10.7cqw); line-height: 1; color: #ffce5a; /* 3:1 against its orange edge */
+    text-shadow: 2px 2px 0 var(--orange), 4px 4px 0 var(--orange), 6px 6px 0 var(--orange), 8px 8px 0 var(--brick), 10px 10px 0 var(--brick), 12px 12px 0 var(--brick); }
+  .dek { margin-top: min(44px, 4.6cqw); max-width: 46em; font-size: clamp(17px, 2.8cqw, 27px); line-height: 1.3; color: var(--sand); text-wrap: pretty; }
+  .dek b { font-weight: 700; color: var(--cream); }
+
+  /* The leaderboard: a frame with its name on the top edge, the picked row lit inside, the frame counts below */
+  .board { --pad: 21px; --axis: 24px; --pitch: 56px; --bar: 9px; position: relative; isolation: isolate; padding: 15px var(--pad) 0; }
+  .board::before { content: ""; position: absolute; z-index: -1; inset: 0 0 var(--axis); border: 3px solid var(--line); background: rgb(0 0 0 / .35); }
+  .board .tab { position: absolute; top: -8px; left: 60px; z-index: 1; padding: 0 12px; background: var(--ground); font: 12px/1 var(--pixel); letter-spacing: .06em; color: var(--muted); }
+  .board .tab.hint { left: auto; right: 60px; }
+
+  .split { display: flex; align-items: center; gap: 0 28px; flex-wrap: wrap; margin: 28px 0 0; font: 15px/1.6 var(--pixel); letter-spacing: .05em; color: var(--cream); }
+  .split b { padding: 8px 12px 6px; background: var(--orange); font-weight: 400; color: #0a0807; }
+  .split em { font-style: normal; white-space: nowrap; color: var(--gold); }
+
+  .note { grid-column: 1; grid-row: 4; margin-top: 40px; max-width: 54em; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .note b { font-weight: 600; color: var(--stone); }
+  .note a { color: inherit; }
+  .credit { grid-column: 2; grid-row: 4; align-self: end; margin: 40px 0 0 40px; color: inherit; text-decoration: none; text-align: right; }
+  .credit b { display: block; font-size: 22px; font-weight: 700; color: var(--cream); }
+  .credit span { font-size: 14px; color: var(--muted); }
+
+  .below { max-width: 1080px; margin: 14px auto 0; font-size: 13px; color: var(--muted); }
+  .below a { color: inherit; }
+
+  @media (prefers-reduced-motion: reduce) { .kicker .rec::before { animation: none; } }
+
+  /* Narrower than the reference: each runner's name goes above its track, so the tracks keep their length */
+  @media (max-width: 900px) {
+    .poster { padding-inline: 40px; }
+    .board { --pad: 14px; --pitch: 68px; --bar: 9px; }
+    .board .tab { left: 32px; }
+    .board .tab.hint { right: 32px; }
+    .board .long { display: none; }
+  }
+  /* A phone: the same parts in one column, smaller type */
+  @media (max-width: 640px) {
+    body { padding: 16px 0 24px; }
+    .below { padding-inline: 16px; }
+    .poster { padding: 26px 16px 24px; }
+    .headline .run { text-shadow: 1px 1px 0 var(--orange), 2px 2px 0 var(--orange), 3px 3px 0 var(--orange), 4px 4px 0 var(--brick), 5px 5px 0 var(--brick), 6px 6px 0 var(--brick); }
+    .poster figcaption { margin-bottom: 22px; }
+    .kicker { font-size: 9px; letter-spacing: .02em; }
+    .kicker .rec::before { width: 4px; height: 4px; margin-right: 6px; }
+    .headline { margin-top: 22px; }
+    .dek { font-size: 16px; }
+    .board { --pad: 10px; --axis: 22px; --pitch: 60px; --bar: 7px; padding-top: 14px; }
+    .board::before { border-width: 2px; }
+    .board .tab { top: -5px; left: 16px; padding: 0 6px; font-size: 9px; }
+    .board .tab.hint { right: 16px; }
+    .split { gap: 8px 12px; margin-top: 18px; font-size: 9px; }
+    .split b { padding: 6px 8px 5px; }
+    .note { grid-column: 1 / -1; grid-row: 4; margin-top: 22px; font-size: 11.5px; }
+    .credit { grid-column: 1 / -1; grid-row: 5; margin: 16px 0 0; }
+    .credit b { font-size: 16px; }
+    .credit span { font-size: 12px; }
+  }
+  @media (max-width: 420px) { .kicker .runners { display: none; } }
+  @media (max-width: 359px) { .board .tab .board-name { display: none; } }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<p class="below">The data: <a href="data.json">data.json</a>, read from speedrun.com and Wikipedia by <a href="fetch-data.mjs">fetch-data.mjs</a>.</p>
+<script type="module">
+import { Chart, Plot, Scale, Bar, Label, Poster, slat, html, render, createSignal, onMount } from "@bezda/rhp/standalone";
+
+// Data: the Super Mario Bros. Any% (NTSC) leaderboard on speedrun.com, each runner's best verified run, and the
+// perfect run it is measured against (fetch-data.mjs writes it)
+const DATA = __DATA__;
+const RECORD = DATA.runs[0];
+const PERFECT = { place: "DNF", runner: "Perfect run", seconds: DATA.perfect, frames: 0, date: null, perfect: true };
+const ROWS = [...DATA.runs.map((r) => ({ ...r, perfect: false })), PERFECT];
+const MAX = 66; // frames: a little past the slowest of the ten
+const TICKS = [0, 15, 30, 45, 60]; // a quarter of a second each
+const GROW = 0.625; // the picked row is this much of a row taller (91px against 56px on a desktop)
+const saved = DATA.previous.frames - RECORD.frames; // frames the record took off the one before it
+const GOLD = "#ffc94a", ORANGE = "#e07b4f", RED = "#e5483a";
+const LONGEST = Math.max(...ROWS.map((r) => r.frames));
+const PACE = 1; // the bars grow at the NES's own pace (1) or slower (0.5 is half speed)
+
+const month = (date) => new Date(date + "T12:00:00Z").toLocaleString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+const two = (n) => String(n).padStart(2, "0");
+const clockText = (s) => `${Math.floor(s / 60)}:${(s % 60).toFixed(3).padStart(6, "0")}`;
+// 4:54.332, its separators set small and dim
+const clock = (s) => {
+  const [whole, ms] = (s % 60).toFixed(3).split(".");
+  return html`<b>${Math.floor(s / 60)}</b><i>:</i><b>${two(whole)}</b><i>.</i><b>${ms}</b>`;
+};
+const say = (r) => r.perfect
+  ? `Perfect run: ${clockText(r.seconds)}, not yet run by a human`
+  : `${r.place === 1 ? `World record, ${saved} frames faster than the record before it` : `Place ${r.place}`}: ${r.runner}, ${clockText(r.seconds)}, ${r.frames} frames off perfect, ${month(r.date)}`;
+
+// The runner, in pixels of the runner's own (10 by 12), mid-stride; it stands at the end of its run's blocks
+const RUNNER = ["5,0,3,3", "4,3,3,1", "2,4,7,1", "1,5,1,1", "9,5,1,1", "4,5,3,3", "3,8,2,1", "6,8,2,1", "2,9,2,1", "7,9,2,1", "1,10,2,1", "8,10,2,1", "1,11,1,1", "9,11,1,1"]
+  .map((r) => r.split(",")).map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`).join("");
+const runner = () => html`<svg class="runner" viewBox="0 0 10 12" aria-hidden="true" shape-rendering="crispEdges" innerHTML=${RUNNER}></svg>`;
+
+// A row: its place, its runner and month, the blocks of its frames, the dotted track to the end, and its time.
+// The picked row (the record's at first) is lit in gold, and its box is GROW of a row taller: it grows up into the
+// room the rows above it leave, so the chart keeps its height whichever row is picked. The edge Labels set the rooms
+// (their widths change on narrower screens).
+const Run = slat({
+  thickness: "var(--pitch)",
+  inset: "calc((var(--pitch) - var(--bar)) / 2)",
+  room: { start: "auto", end: "auto" },
+  css: `
+    .row { --extra: calc(var(--pitch) * ${GROW}); --top: calc(-1 * var(--extra)); --lift: calc(var(--top) + 36.5px - var(--pitch) / 2); --tag-lift: var(--lift);
+      --start: 274px; --end: 172px; --name-x: 63px; --sprite: 3px; --place-size: 16px; --name-size: 22px; --date-size: 13.5px; --time-size: 19px;
+      color: var(--cream); border-bottom: 1px solid var(--rule); }
+    .row.dnf { border-bottom: 0; }
+    .row::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--pad)); border: 2px solid transparent; transition: top .3s ease-in-out, background-color .15s; }
+    .row:not(.on):hover::before { background: color-mix(in srgb, var(--rhp-color) 8%, transparent); }
+    .row:focus-visible { outline: none; }
+    .row:focus-visible::before { outline: 2px solid var(--cream); outline-offset: -7px; }
+    .place { width: var(--start); --rhp-label-gap: 0px; overflow: visible; text-align: left; font: var(--place-size)/1 var(--pixel); color: var(--muted); }
+    .dnf .place { color: var(--red); }
+    .who { position: absolute; left: var(--name-x); top: 50%; translate: 0 -50%; display: grid; gap: 4px; max-width: calc(var(--start) - var(--name-x) - 10px); }
+    .who b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 var(--name-size)/1.1 var(--text); letter-spacing: -.01em; }
+    .who small { font: 400 var(--date-size)/1.2 var(--text); color: var(--muted); }
+    .dnf .who b { color: var(--red); }
+    .time { width: var(--end); --rhp-label-gap: 0px; justify-content: flex-end; text-align: right; font: var(--time-size)/1 var(--pixel); color: var(--cream); }
+    .time i { font-style: normal; font-size: max(9px, .62em); color: var(--muted); }
+    .dnf .time { color: var(--red); }
+    .dnf .time i { color: inherit; }
+    .blocks, .track { --rhp-length-time: 0s; } /* they follow the clock below, frame by frame */
+    .blocks { --rhp-radius: 0px; background: linear-gradient(90deg, var(--rhp-color) 72%, transparent 0) 0 0 / calc(100% / var(--n)) 100% repeat-x; }
+    .track { --rhp-radius: 0px; background: linear-gradient(90deg, var(--line) 50%, transparent 0) right 0 top 0 / 4px 100% repeat-x; } /* dots from the fixed end, so they hold still while the track shortens */
+    .runner { position: absolute; left: calc(100% - var(--sprite) * 1.5); top: 50%; translate: 0 -50%; width: calc(var(--sprite) * 10); height: calc(var(--sprite) * 12); fill: var(--rhp-color); }
+    .still { position: absolute; left: calc(100% + var(--sprite) * 12); top: 50%; translate: 0 -50%; white-space: nowrap; font: 11px/1 var(--pixel); letter-spacing: .04em; color: var(--rhp-color); }
+    .cursor { display: inline-block; width: .6em; height: 1em; margin-left: .4em; vertical-align: -2px; background: currentColor; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+    /* The picked row: the gold box, a bigger name and time, and the bar line high in the box, as the reference lights its record */
+    .row.on { border-bottom-color: transparent; }
+    .on::before { top: var(--top); border-color: var(--gold); background: color-mix(in srgb, var(--gold) 13%, transparent); box-shadow: 0 0 28px rgb(255 201 74 / .12); }
+    .on .place { transform: translateY(var(--tag-lift)); }
+    .on .place span { display: inline-block; padding: 9px 10px 8px; background: var(--gold); font-size: 15px; line-height: 1; color: var(--ground); }
+    .on .who { top: calc(var(--top) + 14px); translate: none; gap: 6px; }
+    .on .who b { font-size: 30px; color: var(--gold); }
+    .on .who small { font-size: 14px; color: var(--gold-soft); }
+    .on .blocks, .on .track, .on .time { transform: translateY(var(--lift)); }
+    .on .blocks { box-shadow: -6px 0 16px rgb(255 201 74 / .55); }
+    .on .time { --time-size: 22px; color: var(--gold); }
+    .on .time i { color: var(--gold-soft); }
+    .badge { position: absolute; left: calc(100% + var(--sprite) * 10 + 34px); top: 50%; translate: 0 -50%; display: grid; gap: 12px; white-space: nowrap; }
+    .badge b { position: relative; padding: 9px 14px 8px; background: var(--gold); font: 13.5px/1 var(--pixel); letter-spacing: .05em; color: var(--ground); }
+    .badge i { font: 19px/0 var(--text); font-style: normal; vertical-align: -.05em; margin-right: .35em; }
+    .badge b::before { content: ""; position: absolute; right: 100%; top: 50%; translate: 0 -50%; border: 7px solid transparent; border-right-color: var(--gold); border-left-width: 0; }
+    .badge small { position: absolute; top: calc(100% + 12px); left: 0; font: 600 16px/1 var(--text); color: var(--gold-pale); }
+
+    /* Narrower than 900px: each runner's name goes above its track, so the tracks keep their length */
+    @media (max-width: 900px) {
+      .row { --start: 40px; --end: 124px; --name-x: 40px; --sprite: 2.5px; --place-size: 13px; --name-size: 19px; --date-size: 13px; --time-size: 14px;
+        --lift: calc(var(--top) + 68px - var(--pitch) / 2); --tag-lift: var(--top); }
+      .who { top: 9px; translate: none; display: flex; align-items: baseline; gap: 10px; max-width: calc(100% - var(--name-x)); }
+      .place { align-self: start; padding-top: 13px; }
+      .blocks, .track, .time { transform: translateY(12px); }
+      .still { font-size: 9px; }
+      .on .who { top: calc(var(--top) + 10px); gap: 10px; }
+      .on .who b { font-size: 24px; }
+      .on .who small { font-size: 13px; }
+      .on .place span { padding: 6px 6px 5px; font-size: 11px; }
+      .on .time { --time-size: 16px; }
+      .badge { left: calc(100% + var(--sprite) * 10 + 20px); gap: 8px; }
+      .badge b { padding: 7px 10px 6px; font-size: 10px; }
+      .badge i { font-size: 14px; }
+      .badge b::before { border-width: 6px; border-left-width: 0; }
+      .badge small { top: calc(100% + 8px); font-size: 13px; }
+    }
+    @media (max-width: 640px) {
+      .row { --start: 30px; --end: 100px; --name-x: 30px; --sprite: 2px; --place-size: 10px; --name-size: 15px; --date-size: 11px; --time-size: 11px;
+        --lift: calc(var(--top) + 60px - var(--pitch) / 2); }
+      .who { top: 7px; gap: 8px; }
+      .place { padding-top: 10px; }
+      .blocks, .track, .time { transform: translateY(9px); }
+      .cursor { margin-left: .3em; }
+      .still .long { display: none; }
+      .on .who { top: calc(var(--top) + 8px); gap: 8px; }
+      .on .who b { font-size: 19px; }
+      .on .who small { font-size: 11px; }
+      .on .place span { padding: 5px 5px 4px; font-size: 9px; }
+      .on .time { --time-size: 11.5px; }
+      .badge { left: calc(100% + var(--sprite) * 10 + 12px); gap: 6px; }
+      .badge b { padding: 5px 6px 4px; font-size: 9px; letter-spacing: 0; }
+      .badge i { font-size: 11px; }
+      .badge b::before { border-width: 5px; border-left-width: 0; }
+      .badge small { top: calc(100% + 7px); font-size: 11px; }
+    }
+    @media (max-width: 420px) { .badge { left: calc(100% + var(--sprite) * 10 + 9px); } .badge .world { display: none; } }
+    @media (max-width: 359px) { .badge i, .cursor { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .row::before { transition: none; } .cursor { animation: none; } }
+  `,
+}, (d) => html`
+  <div class=${() => `row${d.perfect ? " dnf" : ""}${d.on ? " on" : ""}`} data-row=${() => d.index}
+    style=${() => ({ "--rhp-color": d.on ? GOLD : d.perfect ? RED : ORANGE })}>
+    <${Label} edge="start" class="place" aria-hidden="true"><span>${() => (d.perfect ? "DNF" : d.place === 1 ? "WR" : two(d.place))}</span><//>
+    <span class="who" aria-hidden="true"><b>${() => d.runner}</b><small>${() => (d.perfect ? "TAS 2019 → ?" : month(d.date))}${() => (d.on && !d.perfect ? ` · ${d.frames} frames off` : "")}</small></span>
+    <${Bar} from=${() => d.shown} to=${MAX} class="track" thick="2px" />
+    <${Bar} to=${() => d.shown} class="blocks" style=${() => ({ "--n": d.shown })}>
+      ${runner()}
+      ${() => (d.perfect ? html`<span class="still">NO HUMAN YET<span class="long"> · ${RECORD.frames} FRAMES TO GO</span><span class="cursor"></span></span>` : "")}
+      ${() => (d.place === 1 && d.on ? html`<span class="badge" aria-hidden="true"><b><i>★</i> NEW <span class="world">WORLD </span>RECORD</b><small>${saved} frames faster than the old record</small></span>` : "")}
+    <//>
+    <${Label} edge="end" class="time" aria-hidden="true">${() => clock(d.seconds)}<//>
+    <span class="say">${() => say(d)}</span>
+  </div>`);
+
+// The frame counts under the frame (on a narrow phone every other one)
+const Count = slat({
+  room: { after: 40 },
+  css: `.count { top: calc(100% + 28px); translate: -50% 0; --rhp-label-gap: 0px; font: 11px/1 var(--pixel); color: var(--muted); }
+    .count small { font-size: 9px; }
+    @media (max-width: 900px) { .count { font-size: 9px; } }
+    @media (max-width: 640px) { .count { top: calc(100% + 27px); } }
+    @media (max-width: 420px) { .count.between { display: none; } }`,
+}, (t) => html`<div><${Label} class=${() => (t.at % 30 ? "count between" : "count")} at=${() => t.at}>${() => t.at}<small>f</small><//></div>`);
+
+// Chart component: a click, a tap or the keyboard picks a run, which is lit and grows; it stays picked until another is,
+// or a click beside the chart
+function Speedrun() {
+  const [picked, setPicked] = createSignal(0); // the record's row at first
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  // A click beside the chart (on the headline, the note) goes back to the record
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setPicked(row);
+    else if (e.type === "click" && !e.target.closest(".rhp-chart, a")) setPicked(0);
+  };
+  // On load every bar grows from zero at the same pace, one block per frame at the NES's 60.0988 frames a second, so
+  // each takes as long as its run lost to a perfect one (with reduced motion they are drawn at their length)
+  const [ran, setRan] = createSignal(matchMedia("(prefers-reduced-motion: reduce)").matches ? LONGEST : 0);
+  onMount(() => document.fonts.ready.then(() => {
+    if (ran() >= LONGEST) return;
+    let start = null;
+    const tick = (now) => {
+      start ??= now;
+      setRan(Math.min(LONGEST, ((now - start) / 1000) * DATA.fps * PACE));
+      if (ran() < LONGEST) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }));
+  const shown = () => ROWS.map((r) => Math.min(r.frames, ran()));
+  // Each row's place: the rows from the picked one down make room for its taller box
+  const places = () => ROWS.map((r, i) => i + (i >= picked() ? GROW : 0));
+  const theme = { font: "Inter, sans-serif", ink: "#f3e9dc", muted: "#8c7f72", grid: "#2c2420" };
+  return html`
+    <${Poster}
+      kicker=${html`<span><span class="play">▶</span> PLAYER SELECT: TOP 10<span class="runners"> RUNNERS</span></span><span class="rec">REC</span>`}
+      title=${html`<span class="game">${DATA.game.split(" (")[0]}</span>${" "}<span class="run">Speedrun</span>`}
+      dek=${html`<span>Time from <b>taking control of Mario</b> to <b>Bowser's axe</b>, in frames off a perfect run. ${DATA.previous.runner} held the record at ${DATA.previous.frames} frames. <b>${RECORD.runner} just cut it to ${RECORD.frames}.</b></span>`}
+      note=${html`<span><b>Any% (NTSC), each runner's best verified run on speedrun.com</b>, as of ${new Date(DATA.retrieved + "T12:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}. Timing starts when the player takes control of Mario and stops when he touches the axe in World 8-4; a frame is 1/60.0988 s. Perfect run: ${clockText(DATA.perfect)}, the fastest tool-assisted run within the real-time rules (2019), thought to be the best possible. Since 2023 the best runs match it up to World 8-4. Sources: <a href=${DATA.board}>speedrun.com</a>, <a href=${DATA.sources.history}>Wikipedia</a> (record history), Kotaku, Polygon.</span>`}
+      onClick=${pick} onFocusIn=${pick}>
+      <section class="board">
+        <span class="tab" aria-hidden="true"><span class="board-name">LEADERBOARD · </span>ANY%</span>
+        <span class="tab hint" aria-hidden="true"><span class="long">1 BLOCK = 1 FRAME · </span>PICK A RUN</span>
+        <${Chart} scale=${[0, MAX]} theme=${theme} label="The ten fastest runs and the perfect run, in frames off perfect">
+          <${Scale} ticks=${TICKS}>${Count}<//>
+          <${Plot} keyboard=${true} rows=${ROWS} shown=${shown} order=${places} on=${(d) => picked() === d.index}>${Run}<//>
+        <//>
+      </section>
+      <p class="split"><b>NEXT SPLIT</b><span>WORLD 8-4 · THE LAST LEVEL · <em>${RECORD.frames} FRAMES TO GO</em></span></p>
+      <a class="credit" href="https://github.com/bezda-team/rhp" target="_blank" rel="noopener"><b>Made with rhp</b><span>github.com/bezda-team/rhp</span></a>
+    <//>`;
+}
+
+render(() => html`<${Speedrun} />`, document.getElementById("chart"));
+</script>
+__DOWNLOAD__
+</body>
+</html>
