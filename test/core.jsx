@@ -20,6 +20,9 @@ const Named = slat({ room: { start: "auto", end: 30 } }, (d) => <div><Label edge
 // A slat that comes in while the scale grows to hold it, with its value written at its end
 const [grown, setGrown] = createSignal(false);
 const Grown = slat({ room: { start: "auto", end: 30 } }, (d) => <div><Label edge="start">{d.n}</Label><Bar to={d.v} /><Label at={d.v} class="gv">{d.v}</Label></div>);
+// A Place beside names in an "auto" room, in a row and as an overlap Plot's own root: at its value, where a Bar to it ends
+const AtPlace = slat({ room: { start: "auto", end: 30 } }, (d) => <div><Label edge="start">{d.n}</Label><Bar to={d.v} /><Place at={d.v} class="pp" /></div>);
+const AtPlaceRoot = slat({ room: {} }, (d) => <Place at={d.v} class="pr" />);
 // A Scale
 const [top, setTop] = createSignal(27);
 const Tk = (t) => <div class="tk" data-at={t.at} data-next={t.next} data-end={t.first ? "first" : t.last ? "last" : ""} />;
@@ -135,6 +138,10 @@ render(() => (
     </Chart>
     <Chart class="grown" scale={grown() ? [0, 50] : [0, 10]} ticks={false} style={{ "--rhp-length-time": "0.4s" }}>
       <Plot n={grown() ? ["Alpha", "Beta", "Gamma"] : ["Alpha", "Beta"]} v={grown() ? [3, 7, 40] : [3, 7]}>{Grown}</Plot>
+    </Chart>
+    <Chart class="placed" scale={[0, 10]} ticks={false}>
+      <Plot n={["Alpha", "Beta"]} v={[3, 7]}>{AtPlace}</Plot>
+      <Plot overlap v={[3, 7]}>{AtPlaceRoot}</Plot>
     </Chart>
     <Chart class="rs"><Plot slats={1}>{Red}</Plot></Chart>
     <Chart class="rs"><Plot slats={1}>{Twin}</Plot></Chart>

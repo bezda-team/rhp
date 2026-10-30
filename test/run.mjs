@@ -430,6 +430,11 @@ const open = async (url, opts = {}) => {
     };
     requestAnimationFrame(frame);
   })), [true, true, true, true]);
+  check("a Place beside names in an auto room sits at its value, in a row and as an overlap Plot's root", await p.evaluate(() => {
+    const ends = [...document.querySelectorAll(".placed .rhp-bar")].map((b) => b.getBoundingClientRect().right);
+    const at = (sel) => [...document.querySelectorAll(sel)].map((el, i) => Math.round(el.getBoundingClientRect().left - ends[i]));
+    return [at(".placed .pp"), at(".placed .pr")];
+  }), [[0, 0], [0, 0]]);
   // A slat that comes in with a new scale is drawn on that scale from its first frame: its value never flies in from
   // where the old scale would put it
   check("a slat that comes in while the scale grows draws its value inside its chart from the first frame", await p.evaluate(() => new Promise((done) => {
