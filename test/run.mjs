@@ -1282,6 +1282,17 @@ const dom = (p, charts) => p.evaluate((charts) => {
   await fresh.goto(url + "#fresh"); await fresh.waitForTimeout(500);
   const want = await shots(fresh);
   const differ = (a) => Object.keys(want).filter((k) => !a[k] || Buffer.compare(a[k], want[k]) !== 0);
+  // A plot that differs is pictured both ways in RHP_TEST_ARTIFACTS, which CI uploads: this check has failed now and
+  // then on CI (the Waterfall, horizontal) and never here, so the pictures are the way to see what changed
+  for (const [way, got] of [["server", fromServer], ["taken-over", taken]]) {
+    const dir = process.env.RHP_TEST_ARTIFACTS;
+    if (!dir) continue;
+    for (const k of differ(got)) {
+      fs.mkdirSync(dir, { recursive: true });
+      if (got[k]) fs.writeFileSync(path.join(dir, `server-gallery-${k}-${way}.png`), got[k]);
+      fs.writeFileSync(path.join(dir, `server-gallery-${k}-browser.png`), want[k]);
+    }
+  }
   check("server gallery: every plot, three ways, is drawn", Object.keys(want).length, SSRG.plots());
   check("server gallery: the server's HTML alone looks like the browser's drawing, plot by plot", differ(fromServer), []);
   check("server gallery: taken over, every plot looks the same", differ(taken), []);

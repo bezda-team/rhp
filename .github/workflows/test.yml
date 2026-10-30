@@ -32,6 +32,13 @@ jobs:
       - run: npm test
         env:
           BROWSER: ${{ matrix.browser }}
+          RHP_TEST_ARTIFACTS: ${{ runner.temp }}/rhp-test-artifacts
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-diagnostics-${{ matrix.browser }}
+          path: ${{ runner.temp }}/rhp-test-artifacts
+          if-no-files-found: ignore
 
   # The checker's and the MCP server's tests (npm test in mcp/) on rhp built from this commit: the broken charts, the
   # skill's recipes, the guard, the skill's example and the server's tools. The site's gallery needs the documentation
