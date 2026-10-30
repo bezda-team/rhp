@@ -254,8 +254,10 @@ export async function interact(page, { events, capture, shoot, taps = false }) {
         },
         lit: true,
       });
-      const moved = next?.slat && next.index !== at.index;
-      arrow.how = moved ? `focus moved to slat ${next.index}${next.name ? ` (${next.name})` : ""}${arrow.how !== "nothing changed" ? `, ${arrow.how}` : ""}` : "focus did not move";
+      // slat 1 of the next Plot (a leader in a chart of its own above the rest) is a move too
+      const across = next?.slat && next.plot !== at.plot;
+      const moved = next?.slat && (across || next.index !== at.index);
+      arrow.how = moved ? `focus moved to slat ${next.index}${next.name ? ` (${next.name})` : ""}${across ? " of another Plot" : ""}${arrow.how !== "nothing changed" ? `, ${arrow.how}` : ""}` : "focus did not move";
       arrow.changed = !!moved;
     }
   }

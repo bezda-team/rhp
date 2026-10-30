@@ -1431,7 +1431,7 @@ export function install() {
     return name ? `${role} "${snippet(name)}"` : describe(el);
   };
 
-  // Where the focus is: which slat of which Plot, if it is on one
+  // Where the focus is: which slat of which Plot (its place among the page's Plots), if it is on one
   function focused() {
 
     const el = document.activeElement;
@@ -1439,7 +1439,7 @@ export function install() {
     const plot = el.parentElement?.classList.contains("rhp-plot") ? el.parentElement : null;
     if (!plot) return { slat: false };
 
-    return { slat: true, index: [...plot.children].indexOf(el) + 1, name: snippet([...el.querySelectorAll(".rhp-label")].map(seenText).find((x) => x) ?? "") };
+    return { slat: true, plot: [...document.querySelectorAll(".rhp-plot")].indexOf(plot), index: [...plot.children].indexOf(el) + 1, name: snippet([...el.querySelectorAll(".rhp-label")].map(seenText).find((x) => x) ?? "") };
   }
 
   // A stop of Tab through the page, for the focus check: the focused element's name, and its box in the window with
