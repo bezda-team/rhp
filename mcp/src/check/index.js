@@ -245,6 +245,13 @@ export async function check(options = {}) {
   const pkgs = packages(path.dirname(file));
   const base = { file, format, rhpVersion: pkgs.rhp?.version ?? null };
 
+  // The checker draws a chart with the project's rhp, or its own; an install of the checker that could not resolve its
+  // own (0.1.11 was published so) has nothing to draw with
+  if (!pkgs.rhp) {
+    findings.push({ level: "error", code: "no-rhp", message: "There is no @bezda/rhp to draw the chart with: the chart's project has none, and neither does the checker.", fix: "Install the checker again (npx -y @bezda/rhp-mcp@latest check <file>), or add @bezda/rhp to the chart's project (npm install @bezda/rhp)." });
+    return finish({ ...base, findings, timings, started });
+  }
+
   // What needs no browser: the page's scripts parse, or the file bundles
   let t = performance.now();
   let built = null;
@@ -264,14 +271,6 @@ export async function check(options = {}) {
   findings.splice(0, findings.length, ...findings.filter((f) => !replaced(f)), ...statics.map(({ name, ...f }) => f));
 
   if (built && !built.ok) return finish({ ...base, findings, timings, started });
-
-  t = performance.now();
-  const launched = options.browser ? { browser: options.browser, name: `${options.browser.browserType().name()} ${options.browser.version()}` } : await launch();
-  lap("launch", t);
-  if (launched.error) {
-    findings.push({ level: "error", code: "no-browser", message: `No browser to render the chart in (tried: ${launched.error.join("; ")}).`, fix: NO_BROWSER_FIX });
-    return finish({ ...base, findings, timings, started });
-  }
 
   t = performance.now();
   const standalone = format === "html" && guard ? fs.readFileSync(await guardedStandalone(pkgs)) : null;
@@ -359,11 +358,9 @@ export async function check(options = {}) {
     return r.fulfill({ status: got.status, headers: got.headers, body: got.body }).catch(() => {});
   };
 
-  const browser = launched.browser;
   const results = [];
   const screenshots = [];
   const fenced = new Set();
-  const fence = await denyBrowserNetwork((url) => fenced.add(url));
   const isLocal = (u) => u.startsWith("file:") || u.startsWith(ORIGIN);
 
   // A page with the chart, the probe installed and at rest (in a window of another size when asked); what the page
@@ -429,9 +426,22 @@ export async function check(options = {}) {
     screenshots.push({ width, dark, hover: suffix === "hover", path: png });
   };
 
+  // The browser comes last, right before the try that closes it: a step that throws after the launch would otherwise
+  // leave it running, and the process with it
+  t = performance.now();
+  const launched = options.browser ? { browser: options.browser, name: `${options.browser.browserType().name()} ${options.browser.version()}` } : await launch();
+  lap("launch", t);
+  if (launched.error) {
+    findings.push({ level: "error", code: "no-browser", message: `No browser to render the chart in (tried: ${launched.error.join("; ")}).`, fix: NO_BROWSER_FIX });
+    return finish({ ...base, findings, timings, started });
+  }
+  const browser = launched.browser;
+  let fence = null;
+
   t = performance.now();
 
   try {
+    fence = await denyBrowserNetwork((url) => fenced.add(url));
     await Promise.all(widths.map(async (width, i) => {
       const phone = width <= PHONE;
       // No service workers (they would answer requests outside the check's router) and no downloads
@@ -545,7 +555,7 @@ export async function check(options = {}) {
     try {
       if (!options.browser) await browser.close();
     } finally {
-      await fence.close();
+      await fence?.close();
     }
   }
   for (const url of fenced) findings.push({ level: "info", code: "remote-failed", message: `The check blocked an unrouted browser connection to ${url}; no connection was forwarded.`, fix: "Use public HTTP assets or data requests; worker sockets and other direct browser connections are blocked." });

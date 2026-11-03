@@ -238,7 +238,8 @@ git checkout package.json
 gh workflow run mcp-registry.yml             # lists the new version in the MCP Registry
 ```
 
-`npm publish` runs the build first, and `publishConfig` makes the package public.
+`npm publish` first runs `scripts/check-publish.js`, which stops it until the range is `^` and the version in the repository's `package.json`: 0.1.11 was published with `file:..`, so every install got an empty link for rhp, and a check of any chart failed.
+It then runs the build, and `publishConfig` makes the package public.
 The registry lists a version only once npm has it, with `mcpName` in its `package.json` naming the entry: the workflow checks npm first, then signs in to the registry as this repository (GitHub's OIDC, so no token is stored) and publishes `server.json`.
 
 **The MCP SDK.**

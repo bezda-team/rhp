@@ -11,10 +11,11 @@
 import fs from "fs";
 import os from "os";
 import path from "path";
-import { execFileSync } from "child_process";
+import { execFileSync, spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { publishProblem } from "../scripts/check-publish.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const MCP = path.join(here, "..");
@@ -166,6 +167,25 @@ function packagePart() {
   fs.symlinkSync(path.join(MCP, "node_modules"), path.join(pkg, "node_modules"), "dir");
   const guide = execFileSync(process.execPath, [path.join(pkg, "bin/rhp-mcp.js"), "guide"], { encoding: "utf8" });
   ok(guide === `The references/ and recipes/ this guide links are in ${path.join(pkg, "skill")}\n\n${body(path.join(SKILL, "SKILL.md"))}`, "the packed `rhp-mcp guide` prints SKILL.md from the packed skill/");
+
+  // Published, @bezda/rhp must be the rhp release's range: `file:..` installs as an empty link (0.1.11 went out so)
+  const rhpVersion = JSON.parse(fs.readFileSync(path.join(REPO, "package.json"), "utf8")).version;
+  const packed = JSON.parse(fs.readFileSync(path.join(pkg, "package.json"), "utf8"));
+  ok(publishProblem(packed, rhpVersion) !== null, `npm publish stops while @bezda/rhp is "${packed.dependencies["@bezda/rhp"]}"`);
+  ok(publishProblem({ dependencies: { "@bezda/rhp": `^${rhpVersion}` } }, rhpVersion) === null && publishProblem({ dependencies: { "@bezda/rhp": "^2.0.1" } }, rhpVersion) !== null, `and goes ahead with ^${rhpVersion}, this repository's rhp, and no other range`);
+
+  // A checker installed without its rhp (as from 0.1.11) says so and exits, rather than crash and leave its browser open
+  const bare = path.join(WORK, "no-rhp");
+  fs.mkdirSync(bare);
+  execFileSync("tar", ["xzf", path.join(WORK, info.filename), "-C", bare]);
+  const modules = path.join(bare, "package/node_modules");
+  fs.mkdirSync(modules);
+  for (const entry of fs.readdirSync(path.join(MCP, "node_modules")).filter((e) => e !== "@bezda")) fs.symlinkSync(path.join(MCP, "node_modules", entry), path.join(modules, entry));
+  const chart = path.join(bare, "bar.html");
+  fs.copyFileSync(BAR, chart);
+  const started = performance.now();
+  const run = spawnSync(process.execPath, [path.join(bare, "package/bin/rhp-mcp.js"), "check", chart, "--widths", "390"], { encoding: "utf8", timeout: 60000 });
+  ok(run.signal === null && run.status === 1 && /\[no-rhp\]/.test(run.stdout), `the packed checker without @bezda/rhp reports no-rhp and exits (${run.signal ? `killed after ${since(started)} ms` : `exit ${run.status} in ${since(started)} ms`})${run.stderr ? `; stderr: ${run.stderr.split("\n")[0]}` : ""}`);
 
   return pkg;
 }
