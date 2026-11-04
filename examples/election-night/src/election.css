@@ -1223,13 +1223,23 @@ button {
     gap: 8px;
   }
 
+  /* The label on its line, then the time with the countdown beside it, the countdown wrapping under it when it must */
   .next-time {
-    grid-template-columns: auto auto 1fr;
+    display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    gap: 10px;
-    padding: 0 0 8px;
+    gap: 2px 12px;
+    padding: 0 0 10px;
     border-right: 0;
     border-bottom: 1px solid var(--rule);
+  }
+
+  .next-time .kicker {
+    flex-basis: 100%;
+  }
+
+  .next-time b {
+    white-space: nowrap;
   }
 
   .swings {
