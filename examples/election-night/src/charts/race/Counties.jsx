@@ -60,8 +60,8 @@ const Zero = slat({ room: {}, css: `.zero { --rhp-tick-width: 1px; opacity: .6; 
 const Point = slat({
   room: {},
   css: `
-    .pt { opacity: .78; box-shadow: 0 0 0 1px var(--rhp-surface); cursor: default; }
-    .pt.hot { opacity: 1; box-shadow: 0 0 0 2px var(--rhp-surface), 0 0 0 4px var(--rhp-ink); z-index: 2; }
+    .pt { opacity: .82; box-shadow: 0 0 0 1px var(--paper); cursor: default; }
+    .pt.hot { opacity: 1; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--rhp-ink); z-index: 2; }
   `,
 }, (p) => <Dot class={p.hot ? "pt hot" : "pt"} at={p.pres24} cross={p.now} size={p.size} color={p.color} data-county={p.id} />);
 
@@ -137,7 +137,7 @@ export function Counties(props) {
     const max = Math.max(1, ...list().map((c) => c.total));
     return list()
       .filter((c) => c.total > 0 && value(c) != null && c.pres24 != null)
-      .map((c) => ({ id: c.id, pres24: c.pres24, now: value(c), size: `${(5 + 22 * Math.sqrt(c.total / max)).toFixed(1)}px`, color: tone(c.leader, false), hot: focusCounty() === c.id }));
+      .map((c) => ({ id: c.id, pres24: c.pres24, now: value(c), size: `${(5 + 22 * Math.sqrt(c.total / max)).toFixed(1)}px`, color: tone(c.leader, true), hot: focusCounty() === c.id }));
   });
   const focused = () => list().find((c) => c.id === focusCounty());
   // "Ossoff leads in 48 counties, Collins in 111; 23 have counted nearly all their votes"
