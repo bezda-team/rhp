@@ -1384,6 +1384,21 @@ button {
   white-space: nowrap;
 }
 
+/* On one row, the site's back link sits at the bar's own left edge; where the margin beside the content is too narrow
+   for it, the content starts after it */
+@media (min-width: 961px) {
+  .back {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .top-in:has(.back) {
+    padding-left: max(24px, calc(104px - max(0px, (100vw - 1180px) / 2)));
+  }
+}
+
 .back:hover {
   color: var(--ink);
 }

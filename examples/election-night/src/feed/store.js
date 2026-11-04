@@ -174,7 +174,9 @@ function merge(found) {
   // In development, ?demo replays the latest calls as notifications, to see them without waiting for one
   if (import.meta.env.DEV && location.search.includes("demo") && !demoed && list.length) {
     demoed = true;
-    notify(list.filter((e) => e.kind === "call" || e.kind === "flip").slice(0, 3).reverse());
+    // The latest first call of a Senate or governor's race, as it would arrive live
+    const call = list.find((e) => (e.kind === "call" || e.kind === "flip") && e.first && raceById(e.race)?.office !== "H");
+    if (call) setTimeout(() => notify([{ ...call, live: true }], describeEvent), +(new URLSearchParams(location.search).get("demo") || 0));
   }
 
   // Notifications for what just happened, not for what the first update rebuilt
