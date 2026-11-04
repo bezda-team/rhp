@@ -111,7 +111,8 @@ const callers = (by, narrow) => (by.length > 1 && by.length === liveDesks().leng
 
 const SORTS = {
   close: { label: "Closest", key: (r) => [r.status === "called" ? 2 : r.total > 0 ? 0 : 1, r.total > 0 ? r.margin : r.closeness] },
-  counted: { label: "Most counted", key: (r) => [r.status === "called" ? 1 : 0, -r.eevp] },
+  // By the share of the expected vote counted, called or not; races with no votes yet last, by name
+  counted: { label: "Most counted", key: (r) => [r.total > 0 ? -r.eevp : 1, r.label] },
   state: { label: "A to Z", key: (r) => [r.label] },
   closing: { label: "Poll closing", key: (r) => [r.closesAt || "", r.label] },
 };
