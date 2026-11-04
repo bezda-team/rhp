@@ -1,6 +1,7 @@
 // How the lead moved through the night: the left candidate's margin over the right one, in points, at every update.
 // Above the middle the left candidate leads, below it the right one, and the line takes the color of whoever leads:
-// where the lead changes hands the line changes color at the even line. The pointer reads any update; a click keeps it.
+// where the lead changes hands the line changes color at the even line. Across a gap in the record of updates the
+// line is dotted gray: when the lead changed in between is not known. The pointer reads any update; a click keeps it.
 
 import { Show, createMemo, createSignal, onMount, onCleanup } from "solid-js";
 import { Chart, Plot, Line, Dot, Tick, Place, slat, nice } from "@bezda/rhp";
@@ -14,8 +15,14 @@ const tick = (ms) => {
   return s.endsWith(":00 p.m.") || s.endsWith(":00 a.m.") ? s.replace(":00", "") : s.replace(/ [ap]\.m\./, "");
 };
 
-// A run of the line on one side of even, in that side's color
-const Run = slat({ room: {}, css: `.run path.rhp-stroke { stroke-width: 2.5px; }` }, (d) => <Line class="run" points={d.points} color={d.color} />);
+// A run of the line on one side of even, in that side's color, or across a gap in the record, dotted in gray
+const Run = slat({
+  room: {},
+  css: `
+    .run path.rhp-stroke { stroke-width: 2.5px; }
+    .run.gap { stroke-dasharray: 1px 6px; opacity: .5; }
+  `,
+}, (d) => <Line class={`run${d.gap ? " gap" : ""}`} points={d.points} color={d.color} />);
 
 // An update: a dot ringed in the paper's color so it stands off the line; the latest larger, the one being read ringed in ink
 const Step = slat({
@@ -54,7 +61,7 @@ export function LeadLine(props) {
     if (!a || !b) return [];
     return props.timeline
       .filter((s) => s.total > 0)
-      .map((s) => ({ t: Date.parse(s.t), total: s.total, m: (((s.votes[a.id] || 0) - (s.votes[b.id] || 0)) / s.total) * 100 }));
+      .map((s) => ({ t: Date.parse(s.t), total: s.total, gap: !!s.gap, m: (((s.votes[a.id] || 0) - (s.votes[b.id] || 0)) / s.total) * 100 }));
   });
   const [hover, setHover] = createSignal(null);
   const [pinned, setPinned] = createSignal(null);
@@ -64,15 +71,25 @@ export function LeadLine(props) {
     const m = Math.max(4, ...steps().map((s) => Math.abs(s.m)));
     return nice(-m * 1.08, m * 1.08).max;
   });
+  const [plotWidth, setPlotWidth] = createSignal(900);
+  // The shortest step that keeps the times SPACE px apart, on Eastern time's hours (UTC-5 since daylight time ended
+  // November 1): the count runs on past the night, and a day of hourly times would crowd the axis
+  const SPACE = 64;
+  const ET = 5 * 3600e3;
   const timeTicks = createMemo(() => {
     const span = t1() - t0();
-    const step = span > 4 * 3600e3 ? 3600e3 : span > 90 * 60e3 ? 1800e3 : 900e3;
+    const step = [900e3, 1800e3, 3600e3, 2 * 3600e3, 3 * 3600e3, 6 * 3600e3].find((s) => (plotWidth() * s) / span >= SPACE) ?? 12 * 3600e3;
     const out = [];
-    for (let t = Math.ceil(t0() / step) * step; t <= t1(); t += step) {
+    for (let t = Math.ceil((t0() - ET) / step) * step + ET; t <= t1(); t += step) {
       out.push(t);
     }
-    return narrow() ? out.filter((_, i) => i % 2 === 0) : out;
+    return out;
   });
+  // Where the record stops, when the latest update follows a gap
+  const gap = () => {
+    const all = steps();
+    return all.at(-1)?.gap ? all.at(-2) : null;
+  };
   const shown = () => {
     const i = hover() ?? pinned() ?? steps().length - 1;
     return steps()[i];
@@ -80,17 +97,22 @@ export function LeadLine(props) {
   // The color of whoever leads at a margin: the left candidate's party above even, the right one's below
   const key = (party) => (party === "R" ? "series-2" : party === "I" ? "series-3" : "series-1");
   const color = (m) => key(m >= 0 ? pair()[0].party : pair()[1].party);
-  // The line in runs of one color, each update's segment cut at even where the lead changed hands
+  // The line in runs of one color, each update's segment cut at even where the lead changed hands; a segment across a
+  // gap is a run of its own that takes no side
   const runs = createMemo(() => {
     const out = [];
     const all = steps();
     const add = (point, c) => {
       const run = out.at(-1);
-      if (run && run.color === c) run.points.push(point);
+      if (run && run.color === c && !run.gap) run.points.push(point);
       else out.push({ color: c, points: run ? [run.points.at(-1), point] : [point] });
     };
     all.forEach((s, i) => {
       const prev = all[i - 1];
+      if (s.gap) {
+        out.push({ color: "ink", gap: true, points: [[prev.t, prev.m], [s.t, s.m]] });
+        return;
+      }
       if (prev && prev.m * s.m < 0) {
         const cross = [prev.t + (s.t - prev.t) * (prev.m / (prev.m - s.m)), 0];
         add(cross, color(prev.m));
@@ -103,7 +125,6 @@ export function LeadLine(props) {
   // A dot at most every GAP px of the plot, and always the first and last update, each lead change and the one being
   // read: a night of a hundred updates keeps dots large enough to see, and pointing still reads every update
   const GAP = 14;
-  const [plotWidth, setPlotWidth] = createSignal(900);
   const pips = createMemo(() => {
     const on = hover() ?? pinned();
     const all = steps();
@@ -180,6 +201,9 @@ export function LeadLine(props) {
               up={pair()[0].last} down={pair()[1].last} upParty={pair()[0].party} downParty={pair()[1].party} style={{ "pointer-events": "none" }}>{Cursor}</Plot>
           </Chart>
         </div>
+        <Show when={gap()}>
+          {(g) => <p class="hint">Dotted gray: the results file stopped recording updates at {et(new Date(g().t).toISOString())} ET; the line joins its last one to the latest count, and what came between is not known.</p>}
+        </Show>
       </div>
     </Show>
   );

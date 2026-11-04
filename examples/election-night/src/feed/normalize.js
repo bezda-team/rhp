@@ -278,17 +278,33 @@ export function counties(r) {
   return out;
 }
 
-// How the count grew through the night: the total and each candidate's votes at every update
-export function timeline(file, id) {
+// How the count grew through the night: the total and each candidate's votes at every update, oldest first. A file's
+// history can come newest first, and it can stop before the count does (the NYT stopped adding to it at 3 a.m. ET on
+// the night), so the race's current count ends it whenever the history is behind; that update is marked gap, since
+// the updates before it are missing.
+export function timeline(file, r) {
 
-  const steps = file.timeseries?.[id] || [];
-  return steps
+  const step = (t, total, candidates) => ({
+    t,
+    total,
+    votes: Object.fromEntries(candidates.filter((c) => !c.nyt_id.includes("writein")).map((c) => [c.nyt_id, (c.votes?.total ?? 0)])),
+  });
+  const out = (file.timeseries?.[r.nyt_id] || [])
     .filter((s) => s.total_votes > 0)
-    .map((s) => ({
-      t: s.greatest_updated_at,
-      total: s.total_votes,
-      votes: Object.fromEntries(s.candidates.filter((c) => !c.nyt_id.includes("writein")).map((c) => [c.nyt_id, (c.votes?.total ?? 0)])),
-    }));
+    .map((s) => step(s.greatest_updated_at, s.total_votes, s.candidates))
+    .sort((a, b) => Date.parse(a.t) - Date.parse(b.t));
+
+  const u = r.top_reporting_unit;
+  if (!(u.total_votes > 0)) return out;
+  const now = step(null, u.total_votes, u.candidates);
+  const last = out.at(-1);
+  const same = last && last.total === now.total && Object.entries(now.votes).every(([id, v]) => last.votes[id] === v);
+  if (same) return out;
+  const at = Math.max(Date.parse(u.provider_updated_at || r.updated_at) || 0, last ? Date.parse(last.t) : 0);
+  if (!at) return out;
+  out.push({ ...now, t: new Date(at).toISOString(), gap: !!last });
+
+  return out;
 }
 
 // Each main candidate's votes by how they were cast

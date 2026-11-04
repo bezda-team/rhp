@@ -260,7 +260,7 @@ export function Race(props) {
 
         <Show when={live() && live().timeline.length >= 2 && main().length === 2}>
           <section class="section">
-            <div class="kicker">The night so far</div>
+            <div class="kicker">The count so far</div>
             <h2>How the lead moved</h2>
             <p class="lede">The margin between {main()[0].last} and {main()[1].last} after each batch of votes. Point at the chart to read any update; click to keep it.</p>
             <LeadLine race={r()} timeline={live().timeline} />

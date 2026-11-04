@@ -122,7 +122,7 @@ async function refreshRace() {
     id,
     race: applyCalls(x, deskCalls[keyOf(x)] || {}, desk),
     counties: counties(r),
-    timeline: timeline(file, r.nyt_id),
+    timeline: timeline(file, r),
     voteTypes: voteTypes(r),
   });
 }
