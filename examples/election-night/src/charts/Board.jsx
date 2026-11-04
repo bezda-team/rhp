@@ -130,10 +130,13 @@ export function Board(props) {
   const [held, setHeld] = createSignal(false);
   const rows = createMemo(() => props.races.map((race) => ({ race, id: race.id })));
   let last = [];
-  // Each row's place on screen. While the reader points at the board, it keeps its order.
+  let lastSort = null;
+  // Each row's place on screen. While the reader points at the races, a live update does not move them; a sort the
+  // reader chooses always applies.
   const order = createMemo(() => {
     const list = rows();
-    if (held() && last.length === list.length) return last;
+    if (held() && last.length === list.length && sort() === lastSort) return last;
+    lastSort = sort();
     const key = SORTS[sort()].key;
     const ranked = list.map((r, i) => [key(r.race), i]).sort((a, b) => compare(a[0], b[0]) || a[1] - b[1]);
     const pos = new Array(list.length);
@@ -147,7 +150,7 @@ export function Board(props) {
 
   return (
     <div class="board"
-      onPointerMove={(e) => { if (e.pointerType !== "touch") { setHeld(true); setHot(idOf(e.target)); } }}
+      onPointerMove={(e) => { if (e.pointerType !== "touch") { setHeld(!!e.target.closest?.(".rhp-chart")); setHot(idOf(e.target)); } }}
       onPointerLeave={() => { setHeld(false); setHot(null); }}
       onClick={(e) => { const id = idOf(e.target); if (id) go(raceLink(id)); }}
       onKeyDown={(e) => { if (e.key === "Enter") { const id = idOf(e.target); if (id) go(raceLink(id)); } }}
