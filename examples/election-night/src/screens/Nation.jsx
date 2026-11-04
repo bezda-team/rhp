@@ -1,14 +1,13 @@
 // The nation: who is winning each chamber, what just happened, and the races that decide it
 
 import { Show, For, createMemo, createSignal } from "solid-js";
-import { feed, ready } from "../feed/store.js";
+import { feed, ready, liveDesks } from "../feed/store.js";
 import { Control, seats } from "../charts/Control.jsx";
 import { Board } from "../charts/Board.jsx";
 import { TileMap } from "../charts/TileMap.jsx";
 import { Wire, now } from "../Live.jsx";
 import { Shift } from "../charts/Shift.jsx";
 import { Calls } from "../charts/Calls.jsx";
-import { DESKS } from "../feed/desks.js";
 import { Engagement } from "../Engagement.jsx";
 import { etHour } from "../format.js";
 import { nationHeadline, nationDek, popular } from "../story.js";
@@ -60,7 +59,7 @@ export function Nation() {
           <Show when={ready()}>
             <p class="dek">{nationDek(feed.control)}</p>
           </Show>
-          <p class="byline">Vote counts from The Associated Press, race calls from {DESKS.length} news organizations, updated every 20 seconds. All times Eastern.</p>
+          <p class="byline">Vote counts from The Associated Press, race calls from {liveDesks().length} news organizations, updated every 20 seconds. All times Eastern.</p>
           <Engagement />
           <Next />
           <div class="powers">
@@ -92,7 +91,7 @@ export function Nation() {
       <section class="section" id="calls">
         <div class="kicker">The decision desks</div>
         <h2>Who has called what</h2>
-        <p class="lede">News organizations call races on their own, each from its own analysis of the count, and not always at the same time. These are the calls of {DESKS.map((d) => (d.id === "AP" ? "the AP" : d.name)).join(", ").replace(/, ([^,]*)$/, " and $1")} for the Senate and governor's races. The switch at the top of the page chooses whose calls the whole page counts.</p>
+        <p class="lede">News organizations call races on their own, each from its own analysis of the count, and not always at the same time. These are the calls of {liveDesks().map((d) => (d.id === "AP" ? "the AP" : d.name)).join(", ").replace(/, ([^,]*)$/, " and $1")} for the Senate and governor's races. The switch at the top of the page chooses whose calls the whole page counts.</p>
         <Calls />
       </section>
 
@@ -174,7 +173,7 @@ export function Sources() {
 
   return (
     <footer class="note">
-      <p>Vote counts: The Associated Press, from the results files The New York Times publishes for its live pages. Race calls: each news organization's own decision desk, from the files its live results pages read ({DESKS.map((d) => d.name).join(", ")}). A desk's call is timed when this page first sees it, except the AP's, which carry their time; "by" marks a call made before the page was opened. Ratings are the race ratings in the AP data. "Counted" is the share of the expected vote counted so far, as the AP estimates it.</p>
+      <p>Vote counts: The Associated Press, from the results files The New York Times publishes for its live pages. Race calls: each news organization's own decision desk, from the files its live results pages read ({liveDesks().map((d) => d.name).join(", ")}). NBC News and CBS News let no other site read theirs from a browser, so the article's server reads them and passes on their calls only. A desk's call is timed when this page first sees it, except the AP's, which carry their time; "by" marks a call made before the page was opened. Ratings are the race ratings in the AP data. "Counted" is the share of the expected vote counted so far, as the AP estimates it.</p>
       <p>Built with rhp, charts drawn from HTML elements. The page checks for new results every 20 seconds (the House every 45). Lead changes are noticed by this page as they happen, so the wire lists only those it saw while open.</p>
     </footer>
   );

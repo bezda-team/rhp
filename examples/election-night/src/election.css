@@ -965,6 +965,13 @@ button {
     margin-top: 8px;
   }
 
+  /* As tall as a section link, so the two share a center line */
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+  }
+
   .back {
     order: 5;
   }

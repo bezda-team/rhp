@@ -31,11 +31,12 @@ Race calls come from several news organizations' decision desks, each from the f
 | The Associated Press | the Times's results files | any page |
 | CNN | `politics.api.cnn.io/results/national-races/` | any page |
 | Fox News | `feeds-elections.foxnews.com/.../2026_Generals/` | any page |
-| NBC News | `nbcnews.com/firecracker/api/v2/national-results/` | the dev server's relay only |
-| CBS News | `cbsnews.com/election-api/2026/general-races.json` | the dev server's relay only |
+| NBC News | `nbcnews.com/firecracker/api/v2/national-results/` | the article's server |
+| CBS News | `cbsnews.com/election-api/2026/general-races.json` | the article's server |
 
-NBC News and CBS News let no other site read their files, so only `site.mjs` relays them, for the page on this computer.
-A built copy reads the other three.
+NBC News and CBS News let no other site read their files from a browser, so the article's server reads them: `server/election-calls.js` passes on their calls only, at `/api/election-night-calls`.
+The CDN keeps its answer 20 seconds, so their files are read about three times a minute however many people read the article.
+The dev server (`site.mjs`) and the rhp site both serve it; a copy without it leaves those two desks out, as it leaves out any desk whose file stops answering.
 A desk's call counts only once the desk has released it (CNN's file can hold a call under embargo until the polls close), and only when it names one of the AP's candidates.
 The reader chooses whose calls the page counts, at the top of every screen: the first desk to call a race, or one desk.
 
@@ -61,6 +62,7 @@ Each candidate's introduction is the opening of their English Wikipedia article 
 
 The site's gallery serves the built page at `/gallery/articles/election-night/` (rhp-documentation: `npm run sync-articles` copies `dist/election-night.html` and `dist/portraits/`, and `npm run article-thumbnails election-night` takes the card's pictures).
 There it shows a view count and a like button, as the site's other article does: `src/Engagement.jsx` draws them, and `server/article-stats.js` is the API the sync copies to `/api/election-night-stats`, with its own keys in the site's Redis database.
+The sync also copies `server/election-calls.js` to `/api/election-night-calls`.
 
 ## Development
 

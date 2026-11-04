@@ -15,14 +15,24 @@ const link = path.join(root, "node_modules/@bezda/rhp");
 fs.mkdirSync(path.dirname(link), { recursive: true });
 if (!fs.existsSync(link)) fs.symlinkSync(path.relative(path.dirname(link), path.join(root, "../..")), link, "dir");
 
-// NBC News and CBS News send no CORS header, so the dev server relays their results files to the page
-const UA = { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36" };
-const relay = {
-  "/relay/nbc": { target: "https://www.nbcnews.com", changeOrigin: true, headers: UA, rewrite: (p) => p.replace(/^\/relay\/nbc/, "/firecracker/api/v2/national-results/2026-elections") },
-  "/relay/cbs": { target: "https://www.cbsnews.com", changeOrigin: true, headers: UA, rewrite: (p) => p.replace(/^\/relay\/cbs/, "/election-api/2026") },
-};
+// The relay of the desks whose files no other site may read from a browser (server/election-calls.js), served as the
+// site serves it, at /api/election-night-calls
+function relay() {
 
-const config = { root, configFile: false, base: "./", plugins: [solid()], server: { port: 5175, host: true, proxy: relay }, preview: { port: 5176, proxy: relay } };
+  return {
+    name: "election-calls",
+    configureServer(server) {
+      server.middlewares.use("/api/election-night-calls", async (req, res) => {
+        const { handle } = await server.ssrLoadModule("/server/election-calls.js");
+        const result = await handle(new Request(`http://localhost${req.originalUrl}`, { method: req.method }));
+        res.writeHead(result.status, Object.fromEntries(result.headers));
+        res.end(await result.text());
+      });
+    },
+  };
+}
+
+const config = { root, configFile: false, base: "./", plugins: [solid(), relay()], server: { port: 5175, host: true } };
 
 if (process.argv[2] === "build") {
   const out = path.join(root, "dist");

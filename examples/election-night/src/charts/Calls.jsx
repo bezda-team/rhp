@@ -4,8 +4,7 @@
 import { Show, For, createMemo } from "solid-js";
 import { Chart, Plot, Cell, Label, slat } from "@bezda/rhp";
 import { THEME } from "../theme.js";
-import { feed } from "../feed/store.js";
-import { DESKS } from "../feed/desks.js";
+import { feed, liveDesks } from "../feed/store.js";
 import { tone, et, officeName, counted, etHour } from "../format.js";
 import { go, raceLink, hot, setHot } from "../route.js";
 import { narrow } from "../narrow.js";
@@ -47,7 +46,7 @@ export function Calls() {
       // Under "Not yet": how much of the vote is in, or why none is
       counted: r.total > 0 ? `${counted(r)} in` : r.status === "upcoming" ? `Polls close ${etHour(r.closesAt).replace(" p.m.", "pm").replace(" a.m.", "am")}` : "No votes yet",
       brief: r.total > 0 ? counted(r) : r.status === "upcoming" ? etHour(r.closesAt).replace(" p.m.", "pm").replace(" a.m.", "am") : "0%",
-      calls: DESKS.map((d) => {
+      calls: liveDesks().map((d) => {
         const c = r.calls.find((x) => x.org === d.id);
         const cand = c && r.cands.find((x) => x.id === c.cand);
         return c ? { party: c.party, last: cand?.last || "", at: c.at, before: c.before } : null;
@@ -66,24 +65,24 @@ export function Calls() {
   }, (d) => (
     <div class={hot() === d.id ? "slat hot" : "slat"} data-id={d.id}>
       <Label edge="start" class="name">{d.label}</Label>
-      <Plot orientation="across" call={d.calls} desk={DESKS.map((x) => x.id)} counted={d.counted} brief={d.brief} compact={narrow()}>{Desk}</Plot>
+      <Plot orientation="across" call={d.calls} desk={liveDesks().map((x) => x.id)} counted={d.counted} brief={d.brief} compact={narrow()}>{Desk}</Plot>
     </div>
   )));
   const idOf = (el) => el?.closest?.("[data-id]")?.dataset.id || null;
 
   return (
-    <div class="calls" style={{ "max-width": `${(narrow() ? 84 : 210) + DESKS.length * 150}px` }}
+    <div class="calls" style={{ "max-width": `${(narrow() ? 84 : 210) + liveDesks().length * 150}px` }}
       onPointerMove={(e) => e.pointerType !== "touch" && setHot(idOf(e.target))}
       onPointerLeave={() => setHot(null)}
       onClick={(e) => { const id = idOf(e.target); if (id) go(raceLink(id)); }}
       onKeyDown={(e) => { if (e.key === "Enter") { const id = idOf(e.target); if (id) go(raceLink(id)); } }}>
       <div class="calls-head" style={{ "padding-left": `${narrow() ? 84 : 210}px` }}>
-        <For each={DESKS}>{(d) => <span>{d.id === "AP" || narrow() ? d.id : d.name}</span>}</For>
+        <For each={liveDesks()}>{(d) => <span>{d.id === "AP" || narrow() ? d.id : d.name}</span>}</For>
       </div>
       <Show when={rows().length} fallback={<p class="empty">No Senate or governor's race has been called yet.</p>}>
         <Show when={Race()} keyed>
           {(S) => (
-            <Chart scale={[0, DESKS.length]} ticks={false} theme={THEME} label="Race calls by news organization">
+            <Chart scale={[0, liveDesks().length]} ticks={false} theme={THEME} label="Race calls by news organization">
               <Plot rows={rows()} key="id" keyboard={true}>{S}</Plot>
             </Chart>
           )}

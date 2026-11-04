@@ -3,6 +3,7 @@
 import { createSignal, createMemo, createRoot, batch } from "solid-js";
 import { createStore, reconcile } from "solid-js/store";
 import FeedWorker from "./worker.js?worker&inline";
+import { DESKS } from "./desks.js";
 
 export const [feed, setFeed] = createStore({
   races: [],
@@ -12,6 +13,7 @@ export const [feed, setFeed] = createStore({
   popular: null,
   updatedAt: null,
   fetchedAt: null,
+  desks: ["AP"],
 });
 
 export const [detail, setDetail] = createStore({ id: null, race: null, counties: [], timeline: [], voteTypes: {} });
@@ -19,6 +21,8 @@ export const [status, setStatus] = createSignal({ ok: true, at: null, next: null
 export const [events, setEvents] = createSignal([]);
 export const [toasts, setToasts] = createSignal([]);
 export const ready = () => feed.races.length > 0;
+// The desks whose calls the page reads, in DESKS's order: those whose files answered
+export const liveDesks = () => DESKS.filter((d) => feed.desks.includes(d.id));
 // When each race's count last changed, for the flash that shows where new votes just came in
 export const [changed, setChanged] = createStore({});
 
@@ -241,6 +245,7 @@ worker.onmessage = (e) => {
       setFeed("popular", m.popular);
       setFeed("updatedAt", m.updatedAt);
       setFeed("fetchedAt", m.fetchedAt);
+      setFeed("desks", reconcile(m.desks));
     });
     merge(found);
   }

@@ -1,12 +1,11 @@
 // One race: its candidates, the count against the expected vote, how the lead moved, and its counties
 
 import { Show, For, createEffect, createMemo, createSignal, onCleanup } from "solid-js";
-import { feed, raceById, watch, detail, ready } from "../feed/store.js";
+import { feed, raceById, watch, detail, ready, liveDesks } from "../feed/store.js";
 import { officeLong, statusText, votes, pct, pts, short, et, etHour, sides, PARTY, PARTIES } from "../format.js";
 import { officePage } from "../route.js";
 import { Sources } from "./Nation.jsx";
 import { Wire } from "../Live.jsx";
-import { DESKS } from "../feed/desks.js";
 import { Board } from "../charts/Board.jsx";
 import { Count, catchUp } from "../charts/race/Count.jsx";
 import { LeadLine } from "../charts/race/LeadLine.jsx";
@@ -198,7 +197,7 @@ export function Race(props) {
             <p class="byline status-line">{statusLine(r())}</p>
             <Show when={r().status !== "upcoming"}>
               <ul class="desks" aria-label="Calls by news organization">
-                <For each={DESKS}>
+                <For each={liveDesks()}>
                   {(d) => {
                     const call = () => r().calls.find((c) => c.org === d.id);
                     const cand = () => call() && r().cands.find((c) => c.id === call().cand);

@@ -24,6 +24,8 @@ let seen = {};
 let deskDue = 0;
 let desk = "any";
 let firstDeskRead = true;
+// Which desks' files answered at the last read: the page shows only those
+const deskOk = { AP: true };
 
 async function get(url) {
 
@@ -61,6 +63,7 @@ function overview() {
     closings,
     shifts: files.H ? countyShifts(files.H) : [],
     seen,
+    desks: Object.keys(deskOk).filter((org) => deskOk[org]),
     popular,
     updatedAt: updated,
     fetchedAt: new Date().toISOString(),
@@ -80,6 +83,7 @@ async function refreshDesks() {
 
   for (const [org, src] of Object.entries(SOURCES)) {
     if (!src.read) continue;
+    deskOk[org] = true;
     for (const url of src.files) {
       try {
         const calls = src.read(await get(url));
@@ -89,7 +93,8 @@ async function refreshDesks() {
           ((fresh[key] ||= {})[org] = { ...call, at: seen[id].at, before: seen[id].before });
         }
       } catch {
-        // A desk that fails keeps its last calls; the AP's results go on
+        // A desk that fails keeps its last calls, and leaves the page if it never answered; the AP's results go on
+        deskOk[org] = Object.values(deskCalls).some((calls) => calls[org]);
         for (const [key, calls] of Object.entries(deskCalls)) {
           if (calls[org]) (fresh[key] ||= {})[org] = calls[org];
         }

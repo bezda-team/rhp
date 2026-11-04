@@ -1,8 +1,8 @@
 // The live bug, the wire and the notifications
 
 import { For, Show, createSignal, onCleanup, createMemo } from "solid-js";
-import { status, events, toasts, dismiss, raceById, feed, setDescribe, alerts, askAlerts, desk, setDesk } from "./feed/store.js";
-import { DESKS, deskOf } from "./feed/desks.js";
+import { status, events, toasts, dismiss, raceById, feed, setDescribe, alerts, askAlerts, desk, setDesk, liveDesks } from "./feed/store.js";
+import { deskOf } from "./feed/desks.js";
 import { et, etSec, etHour, PARTY, PARTIES, officeName } from "./format.js";
 import { STATES } from "./feed/normalize.js";
 import { portrait } from "./people.js";
@@ -213,7 +213,7 @@ export function DeskSwitch() {
       <span>Calls</span>
       <select value={desk()} onChange={(e) => setDesk(e.currentTarget.value)} aria-label="Whose race calls to count">
         <option value="any">First to call</option>
-        <For each={DESKS}>{(d) => <option value={d.id}>{d.id === "AP" ? "AP only" : `${d.name} only`}</option>}</For>
+        <For each={liveDesks()}>{(d) => <option value={d.id}>{d.id === "AP" ? "AP only" : `${d.name} only`}</option>}</For>
       </select>
     </label>
   );
