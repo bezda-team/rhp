@@ -33,7 +33,9 @@ const Mean = slat({
 export function Shift() {
 
   const [width, setWidth] = createSignal(800);
+  // The dot under a mouse, and the dot a click or a tap pinned: leaving the chart goes back to the pinned one
   const [pick, setPick] = createSignal(null);
+  const [pinned, setPinned] = createSignal(null);
   let box;
   onMount(() => {
     const ro = new ResizeObserver(([e]) => setWidth(e.contentRect.width));
@@ -98,7 +100,7 @@ export function Shift() {
     const list = [...feed.shifts].filter((c) => c.votes >= 2000).sort((a, b) => b.shift - a.shift);
     return { d: list.filter((c) => c.shift > 0).slice(0, 3), r: list.filter((c) => c.shift < 0).slice(-3).reverse() };
   });
-  const shown = () => pick() ?? null;
+  const shown = () => pick() ?? pinned();
   const at = (e) => {
     const p = e.target.closest?.(".rhp-manydot");
     return p ? placed().rows[+p.dataset.rhpIndex] : null;
@@ -121,7 +123,8 @@ export function Shift() {
             )}
           </Show>
         </p>
-        <div onPointerMove={(e) => e.pointerType !== "touch" && setPick(at(e))} onPointerLeave={() => setPick(null)} onClick={(e) => setPick(at(e))}>
+        <div onPointerMove={(e) => e.pointerType !== "touch" && setPick(at(e))} onPointerLeave={() => setPick(null)}
+          onClick={(e) => { const c = at(e); setPinned(c && pinned() && c.race === pinned().race && c.county === pinned().county ? null : c); setPick(null); }}>
           <Chart scale={placed().scale} cross={[0, placed().levels]} crossTicks={false} height={placed().height}
             ticks={ticks()} format={(v) => (v === 0 ? "0" : v > 0 ? `D+${v}` : `R+${-v}`)}
             theme={THEME} label="How far each fully counted county moved from the 2024 presidential margin">

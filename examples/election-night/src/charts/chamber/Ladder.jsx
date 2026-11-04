@@ -30,6 +30,9 @@ const Block = slat({
     .pc { position: absolute; top: 4px; translate: -50% 0; font-size: 9px; font-weight: 750; color: var(--rhp-muted); white-space: nowrap; }
     .w.tip .pc, .w.hot .pc { color: var(--rhp-ink); }
     .w.tip .blk { outline: 2px solid var(--rhp-ink); outline-offset: 1px; }
+    /* A ring drawn outside its block would sit under the next slat: the slat with a ring comes to the front */
+    .w.tip, .w.hot, .w:focus-visible { z-index: 2; }
+    .w.tip.hot { z-index: 3; }
     @media (prefers-reduced-motion: reduce) { .blk { --rhp-length-time: 0s; } }
   `,
 }, (d) => {

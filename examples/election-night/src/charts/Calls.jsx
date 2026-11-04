@@ -60,7 +60,7 @@ export function Calls() {
     css: `
       .slat { cursor: pointer; border-radius: 8px; }
       .slat.hot, .slat:hover { background: color-mix(in srgb, var(--rhp-ink) 6%, transparent); }
-      .slat:focus-visible { outline: 2px solid var(--rhp-ink); }
+      .slat:focus-visible { outline: 2px solid var(--rhp-ink); z-index: 2; }
       .name { font-size: 14px; font-weight: 650; }
     `,
   }, (d) => (

@@ -922,23 +922,26 @@ button {
   }
 }
 
-@media (max-width: 640px) {
+/* The top bar holds one row only on a wide screen: first the date and "Results as of" go, then it takes two rows */
+@media (max-width: 1180px) {
+  .brand span,
+  .live .as {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
   .top-in {
     gap: 10px;
     height: auto;
-    padding: 8px 16px;
+    padding: 8px 24px;
     flex-wrap: wrap;
   }
 
-  /* Two rows: the name, the desk switch and the live dot; then the sections */
+  /* Two rows: the name, the desk switch and the live bug; then the sections, after the site's back link if any */
   .desk {
     order: 2;
     margin-left: auto;
-  }
-
-  .desk span,
-  .live .num {
-    display: none;
   }
 
   .live {
@@ -946,19 +949,50 @@ button {
     margin-left: 0;
   }
 
-  .nav {
+  /* A row break; the rows are spaced by the sections' own margin, since a break adds a row of its own */
+  .top-in {
+    row-gap: 0;
+  }
+
+  .top-in::after {
+    content: "";
     order: 4;
-    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .back,
+  .nav {
+    margin-top: 8px;
+  }
+
+  .back {
+    order: 5;
+  }
+
+  .nav {
+    order: 6;
+    flex: 1;
+    min-width: 0;
     margin: 0 -4px;
+  }
+}
+
+@media (max-width: 640px) {
+  .top-in {
+    padding: 8px 16px;
+  }
+
+  .back b {
+    display: none;
+  }
+
+  .desk span,
+  .live .num {
+    display: none;
   }
 
   .nav a {
     padding: 6px 10px;
-  }
-
-  .brand span,
-  .live .as {
-    display: none;
   }
 
   .hero-main {
@@ -1001,6 +1035,10 @@ button {
 
   .desk select {
     max-width: 116px;
+  }
+
+  .nav a {
+    padding: 6px 8px;
   }
 }
 
@@ -1128,6 +1166,7 @@ button {
 }
 
 .swing-dot.on {
+  z-index: 2;
   opacity: 1;
   outline: 2px solid var(--ink);
   outline-offset: 1px;

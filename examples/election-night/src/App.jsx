@@ -31,7 +31,7 @@ export function App() {
     <>
       <header class="top">
         <div class="top-in">
-          {back ? <a class="back" href={back.content}>← {back.dataset.label}</a> : null}
+          {back ? <a class="back" href={back.content} aria-label={`Back to the ${back.dataset.label.toLowerCase()}`}>←<b> {back.dataset.label}</b></a> : null}
           <a class="brand" href="#/"><b>Election Night</b><span>Nov. 3, 2026</span></a>
           <nav class="nav" aria-label="Sections">
             <For each={SECTIONS}>
