@@ -2,7 +2,7 @@
 
 import { Show, For, createEffect, createMemo, createSignal, onCleanup } from "solid-js";
 import { feed, raceById, watch, detail, ready, liveDesks } from "../feed/store.js";
-import { officeLong, statusText, votes, pct, pts, short, et, etHour, sides, PARTY, PARTIES } from "../format.js";
+import { officeLong, statusText, votes, pct, pts, short, et, etHour, here, sides, PARTY, PARTIES } from "../format.js";
 import { officePage } from "../route.js";
 import { Sources } from "./Nation.jsx";
 import { Wire } from "../Live.jsx";
@@ -44,17 +44,17 @@ export function raceHeadline(r) {
     return `${lead.last} leads ${next.last} with ${pct(r.eevp)} counted`;
   }
   if (r.status === "closed") return `Polls have closed in ${r.stateName}. The count is about to begin.`;
-  return r.closesAt ? `Polls in ${r.stateName} close at ${etHour(r.closesAt)}` : `${seat[0].toUpperCase()}${seat.slice(1)}`;
+  return r.closesAt ? `Polls in ${r.stateName} close at ${etHour(r.closesAt)} ET` : `${seat[0].toUpperCase()}${seat.slice(1)}`;
 }
 
 function statusLine(r) {
 
   const parts = [];
   const list = (a) => (a.length < 2 ? a.join("") : `${a.slice(0, -1).join(", ")} and ${a.at(-1)}`);
-  if (r.status === "called") parts.push(`Called by ${list(r.calledBy)}${r.calledAt ? `${r.calledBy.length > 1 ? "; first" : ""} at ${et(r.calledAt)}` : ""}`);
+  if (r.status === "called") parts.push(`Called by ${list(r.calledBy)}${r.calledAt ? `${r.calledBy.length > 1 ? "; first" : ""} at ${et(r.calledAt)} ET` : ""}`);
   if (r.total > 0) parts.push(`${pct(r.eevp)} of the expected vote counted`, `${votes(r.total)} votes`);
-  else if (r.status === "upcoming" && r.closesAt) parts.push(`Polls close at ${etHour(r.closesAt)} Eastern`);
-  if (r.updatedAt && r.total > 0) parts.push(`updated ${et(r.updatedAt)}`);
+  else if (r.status === "upcoming" && r.closesAt) parts.push(`Polls close at ${etHour(r.closesAt)} ET${here(r.closesAt) ? ` (${here(r.closesAt)} for you)` : ""}`);
+  if (r.updatedAt && r.total > 0) parts.push(`updated ${et(r.updatedAt)} ET`);
   return parts.join(" · ");
 }
 
@@ -134,7 +134,7 @@ function Glance(props) {
         <div><dt>{props.unit[0].toUpperCase() + props.unit.slice(1)} done</dt><dd>{done()} of {props.units.length}<small>95% or more counted</small></dd></div>
       </Show>
       <div><dt>Seat held by</dt><dd>{holder() ? holder().last : "Open seat"}<small>{holder() ? `${PARTY[holder().party]}, running again` : "No incumbent on the ballot"}</small></dd></div>
-      <div><dt>Rated before tonight</dt><dd>{r().ratingLabel}<small>{r().closesAt ? `Polls closed at ${etHour(r().closesAt)}` : ""}</small></dd></div>
+      <div><dt>Rated before tonight</dt><dd>{r().ratingLabel}<small>{r().closesAt ? `Polls ${Date.parse(r().closesAt) <= Date.now() ? "closed" : "close"} at ${etHour(r().closesAt)} ET` : ""}</small></dd></div>
     </dl>
   );
 }

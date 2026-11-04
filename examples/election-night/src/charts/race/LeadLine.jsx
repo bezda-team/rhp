@@ -149,7 +149,7 @@ export function LeadLine(props) {
           <Show when={shown()}>
             {(s) => (
               <>
-                <b>{et(new Date(s().t).toISOString())}</b>
+                <b>{et(new Date(s().t).toISOString())} ET</b>
                 {": "}
                 {Math.abs(s().m) < 0.05 ? "tied" : `${(s().m >= 0 ? pair()[0] : pair()[1]).last} +${pts(s().m)}`}
                 {` · ${votes(s().total)} votes counted`}

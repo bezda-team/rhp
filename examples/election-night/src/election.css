@@ -1159,6 +1159,13 @@ button {
   letter-spacing: -.01em;
 }
 
+.next-time .zone {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+
 .next-what a {
   font-weight: 650;
   text-decoration-color: var(--rule);

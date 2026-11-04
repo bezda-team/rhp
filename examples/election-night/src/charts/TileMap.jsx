@@ -128,7 +128,7 @@ export function TileMap(props) {
         <span><i class="sw" style={{ background: "var(--dem)" }} /><i class="sw" style={{ background: "var(--rep)" }} />Called</span>
         <span><i class="sw" style={{ background: "var(--dem-soft)" }} /><i class="sw" style={{ background: "var(--rep-soft)" }} />Leading</span>
         <span><i class="sw hatch" />Polls closed, no votes</span>
-        <span><i class="sw" style={{ background: "var(--grid)" }} />Polls open</span>
+        <span><i class="sw" style={{ background: "var(--grid)" }} />Polls open, closing time ET</span>
       </div>
     </div>
   );

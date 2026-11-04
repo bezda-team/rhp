@@ -27,7 +27,7 @@ const Desk = slat({
         {/* On a phone a box is a few letters wide: a check and the time, or a dash and the share counted */}
         <Show when={c.call} fallback={c.compact ? <><span>–</span><small>{c.brief}</small></> : <><span>Not yet</span><small>{c.counted}</small></>}>
           <span>✓{c.compact ? "" : ` ${c.call.last}`}</span>
-          <small>{c.compact ? et(c.call.at).replace(/ [ap]\.m\./, "") : `${c.call.before ? "by " : ""}${et(c.call.at)}`}</small>
+          <small>{c.compact ? et(c.call.at).replace(/ [ap]\.m\./, "") : `${c.call.before ? "by " : ""}${et(c.call.at)} ET`}</small>
         </Show>
       </span>
     </Cell>
@@ -44,7 +44,7 @@ export function Calls() {
       id: r.id,
       label: narrow() ? r.short : `${r.label} ${r.office === "S" ? "Senate" : "governor"}`,
       // Under "Not yet": how much of the vote is in, or why none is
-      counted: r.total > 0 ? `${counted(r)} in` : r.status === "upcoming" ? `Polls close ${etHour(r.closesAt).replace(" p.m.", "pm").replace(" a.m.", "am")}` : "No votes yet",
+      counted: r.total > 0 ? `${counted(r)} in` : r.status === "upcoming" ? `Polls close ${etHour(r.closesAt).replace(" p.m.", "pm").replace(" a.m.", "am")} ET` : "No votes yet",
       brief: r.total > 0 ? counted(r) : r.status === "upcoming" ? etHour(r.closesAt).replace(" p.m.", "pm").replace(" a.m.", "am") : "0%",
       calls: liveDesks().map((d) => {
         const c = r.calls.find((x) => x.org === d.id);

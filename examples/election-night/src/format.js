@@ -22,6 +22,17 @@ export const counted = (r) => (r.total > 0 && r.eevp < 0.05 ? "<1%" : pct(r.eevp
 const ampm = (s) => s.replace(" AM", " a.m.").replace(" PM", " p.m.");
 export const et = (iso) => (iso ? ampm(clock.format(new Date(iso))) : "");
 export const etSec = (iso) => (iso ? ampm(clockSec.format(new Date(iso))) : "");
+// The viewer's own time for a moment, with their zone ("8 p.m. CST"), or null when they keep Eastern time
+const localClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" });
+const localZone = new Intl.DateTimeFormat("en-US", { timeZoneName: "short" });
+export const here = (iso) => {
+  if (!iso) return null;
+  const d = new Date(iso);
+  const local = ampm(localClock.format(d));
+  if (local === et(iso)) return null;
+  const zone = localZone.formatToParts(d).find((p) => p.type === "timeZoneName")?.value || "";
+  return `${d.getMinutes() ? local : local.replace(":00", "")} ${zone}`.trim();
+};
 export const etHour = (iso) => {
   if (!iso) return "";
   const d = new Date(iso);
@@ -58,9 +69,9 @@ export function sides(r) {
 // What a race's status line says
 export function statusText(r) {
 
-  if (r.status === "called") return `Called${r.calledAt ? ` at ${et(r.calledAt)}` : ""}`;
+  if (r.status === "called") return `Called${r.calledAt ? ` at ${et(r.calledAt)} ET` : ""}`;
   if (r.status === "runoff") return "Heads to a runoff";
   if (r.status === "counting") return `${counted(r)} counted`;
   if (r.status === "closed") return "Polls closed, no votes yet";
-  return r.closesAt ? `Polls close at ${etHour(r.closesAt)}` : "Waiting";
+  return r.closesAt ? `Polls close at ${etHour(r.closesAt)} ET` : "Waiting";
 }

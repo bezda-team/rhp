@@ -24,7 +24,7 @@ export function LiveBug() {
       <span class="dot" />
       <b>{status().ok ? "LIVE" : "RECONNECTING"}</b>
       <span class="num">
-        <Show when={feed.updatedAt} fallback="Loading results"><span class="as">Results as of </span>{etSec(feed.updatedAt)}</Show>
+        <Show when={feed.updatedAt} fallback="Loading results"><span class="as">Results as of </span>{etSec(feed.updatedAt)}<span class="as"> ET</span></Show>
       </span>
       <span class="ring" style={{ "--left": left() }} title="Next update" />
     </div>
@@ -130,7 +130,7 @@ export function Wire(props) {
               );
               return (
                 <li class={`${e.live && Date.parse(e.at) >= first ? "new" : ""} ${d.big ? "big" : ""}`}>
-                  <time datetime={e.at} title={e.before ? "Called before this page first saw it" : undefined}>{e.before ? "By " : ""}{et(e.at)}</time>
+                  <time datetime={e.at} title={e.before ? "Called before this page first saw it" : undefined}>{e.before ? "By " : ""}{et(e.at)} ET</time>
                   <div>
                     {e.race ? <a href={raceLink(e.race)}>{body}</a> : body}
                     <Show when={d.sources?.length} fallback={
@@ -184,7 +184,7 @@ export function Toasts() {
                 <div class="meta">
                   <span class="pill">{desk}</span>
                   <span>{r ? (r.office === "H" ? r.short : `${r.stateName} ${officeName(r.office).toLowerCase()}`) : ""}</span>
-                  <span class="when">{t.before ? `by ${et(t.at)}` : ago(t.at, now())}</span>
+                  <span class="when">{t.before ? `by ${et(t.at)} ET` : ago(t.at, now())}</span>
                 </div>
                 <div class="title">{d.text}</div>
                 <div class="sub">

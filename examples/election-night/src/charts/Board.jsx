@@ -8,7 +8,7 @@ import { THEME } from "../theme.js";
 import { tone, sides, pct, pts, statusText, LETTER, officeName, etHour, counted } from "../format.js";
 import { go, raceLink, hot, setHot } from "../route.js";
 import { narrow } from "../narrow.js";
-import { changed } from "../feed/store.js";
+import { changed, liveDesks } from "../feed/store.js";
 import { now } from "../Live.jsx";
 
 const css = `
@@ -41,7 +41,7 @@ const css = `
 function Match(props) {
 
   // On a phone the counted share goes under the state's name, so the bars get the end column too
-  const room = props.narrow ? { start: 96, end: 6 } : { start: props.start || 190, end: 84 };
+  const room = props.narrow ? { start: 104, end: 6 } : { start: props.start || 190, end: 84 };
   return slat({
     thickness: props.narrow ? 70 : 62,
     room,
@@ -49,7 +49,7 @@ function Match(props) {
     css: [
       `.slat { --start: ${room.start}px; --end: ${room.end}px; }`,
       css,
-      props.narrow ? `.nm { font-size: 12.5px; gap: 4px; } .nm .inc { display: none; } .where b { font-size: 13.5px; } .where { padding-left: 2px; } .where small { font-size: 11px; }` : "",
+      props.narrow ? `.nm { font-size: 12.5px; gap: 4px; } .nm .inc { display: none; } .where b { font-size: 13.5px; } .where { padding-left: 2px; } .where small { font-size: 10.5px; }` : "",
     ],
   }, (d) => {
     const pair = () => sides(d.race);
@@ -66,7 +66,7 @@ function Match(props) {
           <b>{props.narrow ? d.race.short.replace(" Sen", " Sen.").replace(" Gov", " Gov.") : d.race.label}</b>
           <small>
             <Show when={!props.narrow && props.office !== d.race.office}>{officeName(d.race.office)} · </Show>
-            <span class={`st ${d.race.status}`}>{d.race.status === "called" ? `✓ ${d.race.calledBy.join(", ")}` : d.race.status === "counting" ? (props.narrow ? `${counted(d.race)} in` : d.race.ratingLabel) : d.race.status === "closed" ? "Polls closed" : props.narrow ? `Closes ${etHour(d.race.closesAt).replace(" p.m.", "pm").replace(" a.m.", "am")}` : `Closes ${etHour(d.race.closesAt)}`}</span>
+            <span class={`st ${d.race.status}`}>{d.race.status === "called" ? `✓ ${callers(d.race.calledBy, props.narrow)}` : d.race.status === "counting" ? (props.narrow ? `${counted(d.race)} in` : d.race.ratingLabel) : d.race.status === "closed" ? "Polls closed" : props.narrow ? `Closes ${etHour(d.race.closesAt).replace(" p.m.", "pm").replace(" a.m.", "am")} ET` : `Closes ${etHour(d.race.closesAt)} ET`}</span>
           </small>
         </Label>
         <Bar class="bar" from={0} to={left() ? left().pct : 0} color={color(left())} />
@@ -105,6 +105,9 @@ function Match(props) {
     );
   });
 }
+
+// Who called a race, short enough for the slat: every desk, two by name, or the first and how many more
+const callers = (by, narrow) => (by.length > 1 && by.length === liveDesks().length ? "All desks" : by.length <= 2 ? by.join(", ") : `${by[0]} + ${by.length - 1}${narrow ? "" : " more"}`);
 
 const SORTS = {
   close: { label: "Closest", key: (r) => [r.status === "called" ? 2 : r.total > 0 ? 0 : 1, r.total > 0 ? r.margin : r.closeness] },
