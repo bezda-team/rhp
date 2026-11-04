@@ -96,7 +96,8 @@ export function Chamber(props) {
 
 const DEFAULT_VIEW = { S: "line", H: "grid", G: "grid" };
 
-// The seats in a line (the path to a majority) or in a grid (a square each): the same seats, two ways
+// The seats in a line (the path to a majority), in a grid (a square each) or in a half circle (a dot each, as a
+// legislature's chamber seats them): the same seats, three ways
 function Balance(props) {
 
   const key = `election-night-seats-${props.office}`;
@@ -107,7 +108,7 @@ function Balance(props) {
       return null;
     }
   })();
-  const [view, setView] = createSignal(saved === "line" || saved === "grid" ? saved : DEFAULT_VIEW[props.office]);
+  const [view, setView] = createSignal(["line", "grid", "arc"].includes(saved) ? saved : DEFAULT_VIEW[props.office]);
   const pick = (v) => {
     setView(v);
     try {
@@ -123,14 +124,17 @@ function Balance(props) {
         <div class="seg" role="group" aria-label="Show the seats as">
           <button aria-pressed={view() === "line"} onClick={() => pick("line")}>Line</button>
           <button aria-pressed={view() === "grid"} onClick={() => pick("grid")}>Grid</button>
+          <button aria-pressed={view() === "arc"} onClick={() => pick("arc")}>Semicircle</button>
         </div>
       </div>
       <p class="hint balance-say">
         {view() === "line"
           ? `From the safest Democratic ${SEAT[props.office]} to the safest Republican one: called races at their winner's end, the rest by their margin in the count, leaning on the pre-election rating while little is counted.${notUp()} ${props.office === "H" ? `Each row continues the one above, numbered by its first seat. The ringed block is the ${majority()}` : `The flag marks the ${majority()}`}: the race there decides the majority if every other race goes the way it leans.`
-          : `A square for each ${SEAT[props.office]}, grouped from the Democrats' side to the Republicans': ${props.office === "H" ? "" : "not up tonight, "}called, leading the count, no result, leading, called. The ringed square is the ${majority()}; when a race is called, its square moves to its winner's side.`}
+          : view() === "arc"
+            ? `A dot for each ${SEAT[props.office]}, seated as in a legislature's chamber: Democrats from the left, Republicans from the right, each group a wedge (${props.office === "H" ? "" : "not up tonight, "}called, leading the count, no result). The ringed dot is the ${majority()}; when a race is called, its dot moves into its winner's wedge.`
+            : `A square for each ${SEAT[props.office]}, grouped from the Democrats' side to the Republicans': ${props.office === "H" ? "" : "not up tonight, "}called, leading the count, no result, leading, called. The ringed square is the ${majority()}; when a race is called, its square moves to its winner's side.`}
       </p>
-      <Show when={view() === "line"} fallback={<Seats office={props.office} />}>
+      <Show when={view() === "line"} fallback={<Show when={view()} keyed>{(v) => <Seats office={props.office} arc={v === "arc"} />}</Show>}>
         <Ladder office={props.office} />
       </Show>
     </div>

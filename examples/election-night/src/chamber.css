@@ -93,6 +93,10 @@
   border: 2px solid var(--ink);
 }
 
+.ring-key.round {
+  border-radius: 50%;
+}
+
 .sw.notup-key {
   box-shadow: inset 0 0 0 2px var(--dem);
 }
