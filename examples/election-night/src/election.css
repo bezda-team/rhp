@@ -681,7 +681,7 @@ button {
   padding: 12px 14px 12px 12px;
   border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
   border-radius: 18px;
-  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
   backdrop-filter: blur(22px) saturate(1.8);
   -webkit-backdrop-filter: blur(22px) saturate(1.8);
   box-shadow: 0 1px 1px rgb(0 0 0 / .04), 0 10px 30px -8px rgb(0 0 0 / .28);
