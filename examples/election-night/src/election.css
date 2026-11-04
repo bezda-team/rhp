@@ -1415,6 +1415,11 @@ button {
   text-decoration: underline;
 }
 
+/* Beside a title with no line under it, the link keeps a little more room */
+.wire li a:not(:has(.hint)) + .src {
+  margin-left: 4px;
+}
+
 .desks li b {
   color: var(--ink);
 }

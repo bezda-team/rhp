@@ -36,12 +36,13 @@ export function LiveBug() {
 export function describe(e) {
 
   const r = e.race && raceById(e.race);
-  const where = r ? (r.office === "H" ? `${r.label}` : `the ${r.label} ${officeName(r.office).toLowerCase()} race`) : "";
+  // "the Alaska Senate race", "the Georgia governor's race", "Georgia 7"
+  const where = r ? (r.office === "H" ? `${r.label}` : `the ${r.label} ${r.office === "S" ? "Senate" : "governor's"} race`) : "";
   if (e.kind === "polls") {
     return { what: "Polls close", text: `Polls have closed in ${e.states.length === 1 ? feedState(e.states[0]) : `${e.states.length} states`}`, small: e.states.join(", ") };
   }
   if (!r) return null;
-  const seat = r.office === "H" ? `${r.label}` : `${r.label} ${officeName(r.office).toLowerCase()}`;
+  const seat = r.office === "H" ? `${r.label}` : `${r.label} ${r.office === "S" ? "Senate" : "governor"}`;
   if (e.kind === "call" || e.kind === "flip") {
     const verb = r.office === "G" ? "wins the governorship" : r.office === "S" ? "wins the Senate seat" : "wins the House seat";
     const cand = r.calls.find((c) => c.org === e.by)?.cand;
@@ -136,7 +137,8 @@ export function Wire(props) {
                     {e.race ? <a href={raceLink(e.race)}>{body}</a> : body}
                     <Show when={d.sources?.length} fallback={
                       <Show when={d.source?.href}>
-                        <a class="src" href={d.source.href} target="_blank" rel="noopener">{d.source.label} ↗</a>
+                        {/* A space before it: kept when the link follows the title on its line, dropped when it starts one */}
+                        {" "}<a class="src" href={d.source.href} target="_blank" rel="noopener">{d.source.label} ↗</a>
                       </Show>
                     }>
                       <div class="srcs">
@@ -184,7 +186,7 @@ export function Toasts() {
               <div class="body">
                 <div class="meta">
                   <span class="pill">{desk}</span>
-                  <span>{r ? (r.office === "H" ? r.short : `${r.stateName} ${officeName(r.office).toLowerCase()}`) : ""}</span>
+                  <span>{r ? (r.office === "H" ? r.short : `${r.stateName} ${r.office === "S" ? "Senate" : "governor"}`) : ""}</span>
                   <span class="when">{t.before ? `by ${et(t.at)} ET` : ago(t.at, now())}</span>
                 </div>
                 <div class="title">{d.text}</div>
