@@ -249,6 +249,21 @@ button {
   background: none;
 }
 
+.live .short {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .live .long,
+  .live.off .ring {
+    display: none;
+  }
+
+  .live .short {
+    display: inline;
+  }
+}
+
 .live.off .dot::after {
   display: none;
 }
@@ -976,9 +991,10 @@ button {
     order: 5;
   }
 
+  /* Sized from its links, never from nothing: a row of no width would fit beside the row break and vanish */
   .nav {
     order: 6;
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
     margin: 0 -4px;
   }
@@ -989,8 +1005,9 @@ button {
     padding: 8px 16px;
   }
 
-  .back b {
-    display: none;
+  /* The gallery's back link takes room a phone's bar does not have; the site's own menu leads back there */
+  .back {
+    display: none !important;
   }
 
   .desk span,
@@ -1031,6 +1048,24 @@ button {
     top: 104px;
     bottom: auto;
     right: 16px;
+  }
+}
+
+/* A narrow phone: a little less name and gap, so the name, the desk switch and the live bug keep one row */
+@media (max-width: 420px) {
+  .top-in {
+    column-gap: 8px;
+  }
+
+  .brand b {
+    font-size: 17.5px;
+  }
+}
+
+/* Narrower still: the countdown ring gives way, so the live bug keeps room to spare */
+@media (max-width: 400px) {
+  .live .ring {
+    display: none;
   }
 }
 

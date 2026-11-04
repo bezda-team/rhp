@@ -22,7 +22,8 @@ export function LiveBug() {
   return (
     <div class={status().ok ? "live" : "live off"} role="status" aria-live="off">
       <span class="dot" />
-      <b>{status().ok ? "LIVE" : "RECONNECTING"}</b>
+      {/* While a refresh fails: a short word on a narrow bar, so the bug keeps its width and its row */}
+      <b>{status().ok ? "LIVE" : <><span class="long">RECONNECTING</span><span class="short">RETRY</span></>}</b>
       <span class="num">
         <Show when={feed.updatedAt} fallback="Loading results"><span class="as">Results as of </span>{etSec(feed.updatedAt)}<span class="as"> ET</span></Show>
       </span>

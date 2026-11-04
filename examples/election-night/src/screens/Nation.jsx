@@ -9,7 +9,7 @@ import { Wire, now } from "../Live.jsx";
 import { Shift } from "../charts/Shift.jsx";
 import { Calls } from "../charts/Calls.jsx";
 import { Engagement } from "../Engagement.jsx";
-import { etHour, here } from "../format.js";
+import { etHour } from "../format.js";
 import { nationHeadline, nationDek, popular } from "../story.js";
 import { pts, votes } from "../format.js";
 
@@ -158,7 +158,7 @@ function Next() {
           <div class="next-time">
             <span class="kicker">Next poll closing</span>
             <b class="num">{etHour(n().at)} <span class="zone">ET</span></b>
-            <span class="num hint">in {clock(n().left)}<Show when={here(n().at)}>{(h) => ` · ${h()} for you`}</Show></span>
+            <span class="num hint">in {clock(n().left)}</span>
           </div>
           <div class="next-what">
             Polls close in <b>{n().states.length} {n().states.length === 1 ? "state" : "states"}</b>{n().races.length ? ", opening " : "."}
