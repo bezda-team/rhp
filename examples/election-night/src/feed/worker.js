@@ -153,9 +153,10 @@ async function tick() {
       changed = true;
     }
     if (changed) overview();
+    // A race page's own file failing leaves the national results and the live bug as they are
     if (watched && raceDue <= now) {
       raceDue = now + RACE_EVERY;
-      await refreshRace();
+      await refreshRace().catch(() => {});
     }
     failures = 0;
     postMessage({ type: "status", ok: true, at: new Date().toISOString(), next: Math.min(due.S, due.G) });

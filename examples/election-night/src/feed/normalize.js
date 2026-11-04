@@ -227,8 +227,8 @@ export function countyShifts(file) {
 
       for (const c of u.candidates) {
         const p = meta[c.nyt_id] ? partyOf(c.nyt_id) : null;
-        if (p === "D") d = Math.max(d, c.votes.total);
-        if (p === "R") rep = Math.max(rep, c.votes.total);
+        if (p === "D") d = Math.max(d, (c.votes?.total ?? 0));
+        if (p === "R") rep = Math.max(rep, (c.votes?.total ?? 0));
       }
 
       if (!d || !rep) continue;
@@ -250,7 +250,7 @@ export function counties(r) {
     if (u.level === "state" || u.level === "national") continue;
     const votes = {};
     for (const c of u.candidates) {
-      if (isCandidate(meta, c.nyt_id)) votes[c.nyt_id] = c.votes.total;
+      if (isCandidate(meta, c.nyt_id)) votes[c.nyt_id] = (c.votes?.total ?? 0);
     }
     const total = u.total_votes || 0;
     const ranked = Object.entries(votes).sort((a, b) => b[1] - a[1]);
@@ -287,7 +287,7 @@ export function timeline(file, id) {
     .map((s) => ({
       t: s.greatest_updated_at,
       total: s.total_votes,
-      votes: Object.fromEntries(s.candidates.filter((c) => !c.nyt_id.includes("writein")).map((c) => [c.nyt_id, c.votes.total])),
+      votes: Object.fromEntries(s.candidates.filter((c) => !c.nyt_id.includes("writein")).map((c) => [c.nyt_id, (c.votes?.total ?? 0)])),
     }));
 }
 

@@ -1,7 +1,8 @@
 // How the lead moved through the night: the left candidate's margin over the right one, in points, at every update.
-// Above the middle the left candidate leads, below it the right one. The pointer reads any update; a click keeps it.
+// Above the middle the left candidate leads, below it the right one, and the line takes the color of whoever leads:
+// where the lead changes hands the line changes color at the even line. The pointer reads any update; a click keeps it.
 
-import { Show, createMemo, createSignal } from "solid-js";
+import { Show, createMemo, createSignal, onMount, onCleanup } from "solid-js";
 import { Chart, Plot, Line, Dot, Tick, Place, slat, nice } from "@bezda/rhp";
 import { THEME } from "../../theme.js";
 import { sides, pts, votes, et } from "../../format.js";
@@ -13,15 +14,18 @@ const tick = (ms) => {
   return s.endsWith(":00 p.m.") || s.endsWith(":00 a.m.") ? s.replace(":00", "") : s.replace(/ [ap]\.m\./, "");
 };
 
-const Trace = slat({ room: {}, css: `.trace { --rhp-color: var(--rhp-ink); }` }, (d) => <Line class="trace" points={d.points} />);
+// A run of the line on one side of even, in that side's color
+const Run = slat({ room: {}, css: `.run path.rhp-stroke { stroke-width: 2.5px; }` }, (d) => <Line class="run" points={d.points} color={d.color} />);
 
+// An update: a dot ringed in the paper's color so it stands off the line; the latest larger, the one being read ringed in ink
 const Step = slat({
   room: {},
   css: `
-    .pip { opacity: .8; }
-    .pip.last { box-shadow: 0 0 0 3px var(--rhp-surface), 0 0 0 5px currentColor; }
+    .pip { box-shadow: 0 0 0 2px var(--paper); }
+    .pip.last { box-shadow: 0 0 0 2.5px var(--paper), 0 0 0 4.5px currentColor; }
+    .pip.on { box-shadow: 0 0 0 2.5px var(--paper), 0 0 0 4.5px var(--rhp-ink); z-index: 2; }
   `,
-}, (p) => <Dot class={p.last ? "pip last" : "pip"} at={p.t} cross={p.m} size={p.last ? "9px" : "5px"} color={p.color} />);
+}, (p) => <Dot class={`pip${p.last ? " last" : ""}${p.on ? " on" : ""}`} at={p.t} cross={p.m} size={p.size} color={p.color} />);
 
 const Cursor = slat({
   room: {},
@@ -73,10 +77,56 @@ export function LeadLine(props) {
     const i = hover() ?? pinned() ?? steps().length - 1;
     return steps()[i];
   };
-  const color = (m) => (m >= 0 ? (pair()[0].party === "R" ? "series-2" : pair()[0].party === "I" ? "series-3" : "series-1") : "series-2");
-  const pips = createMemo(() => steps().map((s, i, all) => ({ t: s.t, m: s.m, color: color(s.m), last: i === all.length - 1 })));
+  // The color of whoever leads at a margin: the left candidate's party above even, the right one's below
+  const key = (party) => (party === "R" ? "series-2" : party === "I" ? "series-3" : "series-1");
+  const color = (m) => key(m >= 0 ? pair()[0].party : pair()[1].party);
+  // The line in runs of one color, each update's segment cut at even where the lead changed hands
+  const runs = createMemo(() => {
+    const out = [];
+    const all = steps();
+    const add = (point, c) => {
+      const run = out.at(-1);
+      if (run && run.color === c) run.points.push(point);
+      else out.push({ color: c, points: run ? [run.points.at(-1), point] : [point] });
+    };
+    all.forEach((s, i) => {
+      const prev = all[i - 1];
+      if (prev && prev.m * s.m < 0) {
+        const cross = [prev.t + (s.t - prev.t) * (prev.m / (prev.m - s.m)), 0];
+        add(cross, color(prev.m));
+        out.push({ color: color(s.m), points: [cross] });
+      }
+      add([s.t, s.m], color(s.m));
+    });
+    return out.filter((r) => r.points.length > 1);
+  });
+  // A dot at most every GAP px of the plot, and always the first and last update, each lead change and the one being
+  // read: a night of a hundred updates keeps dots large enough to see, and pointing still reads every update
+  const GAP = 14;
+  const [plotWidth, setPlotWidth] = createSignal(900);
+  const pips = createMemo(() => {
+    const on = hover() ?? pinned();
+    const all = steps();
+    const n = all.length - 1;
+    const x = (t) => ((t - t0()) / (t1() - t0())) * plotWidth();
+    let lastX = -Infinity;
+    const out = [];
+    all.forEach((s, i) => {
+      const turn = i > 0 && all[i - 1].m * s.m < 0;
+      const keep = i === 0 || i === n || i === on || turn || x(s.t) - lastX >= GAP;
+      if (!keep) return;
+      lastX = x(s.t);
+      out.push({ t: s.t, m: s.m, color: color(s.m), last: i === n, on: i === on, size: i === n || i === on ? "12px" : "8px" });
+    });
+    return out;
+  });
 
   let wrap;
+  onMount(() => {
+    const ro = new ResizeObserver(([e]) => setPlotWidth(Math.max(200, e.contentRect.width - 60)));
+    ro.observe(wrap);
+    onCleanup(() => ro.disconnect());
+  });
   // The update nearest the pointer, by time
   const nearest = (e) => {
     const chart = wrap.querySelector(".rhp-chart");
@@ -124,8 +174,8 @@ export function LeadLine(props) {
             crossTicks={[-top(), -top() / 2, 0, top() / 2, top()]} crossFormat={(v) => (v === 0 ? "even" : `${v > 0 ? pair()[0].party : pair()[1].party}+${pts(v)}`)}
             height={narrow() ? 200 : 240} theme={THEME} label="The margin between the two leading candidates at each update"
             style={{ background: "linear-gradient(to bottom, color-mix(in srgb, var(--dem) 7%, transparent) 50%, color-mix(in srgb, var(--rep) 7%, transparent) 50%) content-box" }}>
-            <Plot overlap={true} slats={1} points={[steps().map((s) => [s.t, s.m])]}>{Trace}</Plot>
-            <Plot overlap={true} rows={pips()} style={{ "pointer-events": "none" }}>{Step}</Plot>
+            <Plot overlap={true} rows={runs()}>{Run}</Plot>
+            <Plot overlap={true} rows={pips()} key="t" style={{ "pointer-events": "none" }}>{Step}</Plot>
             <Plot overlap={true} slats={1} at={shown() && (hover() != null || pinned() != null) ? shown().t : null} t0={t0()} top={top() * 0.98}
               up={pair()[0].last} down={pair()[1].last} upParty={pair()[0].party} downParty={pair()[1].party} style={{ "pointer-events": "none" }}>{Cursor}</Plot>
           </Chart>
