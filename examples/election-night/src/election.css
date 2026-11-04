@@ -996,7 +996,7 @@ button {
     order: 6;
     flex: 1 1 auto;
     min-width: 0;
-    margin: 0 -4px;
+    margin: 8px -4px 0;
   }
 }
 
@@ -1008,6 +1008,10 @@ button {
   /* The gallery's back link takes room a phone's bar does not have; the site's own menu leads back there */
   .back {
     display: none !important;
+  }
+
+  .nav {
+    margin-top: 12px;
   }
 
   .desk span,

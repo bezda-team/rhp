@@ -1,7 +1,7 @@
 // The balance of power in one chamber: seats each party has (won tonight or not up), seats it leads in the count,
 // and the seats still open, on one bar from the Democrats' end to the Republicans', with the majority marked.
 
-import { Show, createMemo, createSignal } from "solid-js";
+import { Show, createMemo, createSignal, onCleanup } from "solid-js";
 import { Chart, Plot, Bar, Tick, Place, slat } from "@bezda/rhp";
 import { THEME } from "../theme.js";
 import { tone } from "../format.js";
@@ -95,21 +95,37 @@ export function Control(props) {
     return list.map((p) => ({ ...p, side: sideOf(p), from: at, to: (at += p.n) }));
   });
   const mid = () => c().total / 2;
-  // The pointer's place on the bar, in seats, written once a frame (Safari stalls a transition retargeted on every event)
+  // The pointer's place on the bar, in seats, written once a frame (Safari stalls a transition retargeted on every event).
+  // A mouse or a pen moves the line by pointing; a finger by touching the bar or dragging along it, and the line stays
+  // until the next touch anywhere else. A touch on the bar reads it rather than following the block's link.
   const [value, setValue] = createSignal(null);
-  let chart, frame = 0, next = null;
+  let chart, box, frame = 0, next = null, touched = false;
   const point = (e) => {
-    if (e.pointerType === "touch") return;
     const box = chart.getBoundingClientRect(), css = getComputedStyle(chart);
     const left = box.left + parseFloat(css.paddingLeft), width = box.width - parseFloat(css.paddingLeft) - parseFloat(css.paddingRight);
     next = { v: Math.max(0, Math.min(1, (e.clientX - left) / width)) * c().total, perSeat: width / c().total };
     if (!frame) frame = requestAnimationFrame(() => { frame = 0; setValue(next); });
   };
-  const leave = () => {
+  const leave = (e) => {
+    if (e?.pointerType === "touch") return;
     cancelAnimationFrame(frame);
     frame = 0;
     setValue(null);
   };
+  const down = (e) => {
+    touched = e.pointerType === "touch";
+    if (touched) point(e);
+  };
+  // A finger's tap on the bar is a reading, not the block's link
+  const click = (e) => {
+    if (touched) e.preventDefault();
+  };
+  // Another touch outside the bar puts the line away
+  const away = (e) => {
+    if (e.pointerType === "touch" && value() && !box?.contains(e.target)) leave();
+  };
+  document.addEventListener("pointerdown", away, true);
+  onCleanup(() => document.removeEventListener("pointerdown", away, true));
   // Where the line goes, whether it snapped to an edge, and the counts it shows
   const pointer = createMemo(() => {
     const p = value();
@@ -138,7 +154,8 @@ export function Control(props) {
   });
   return (
     <Show when={c()}>
-      <div class="control" style={{ "--thick": props.thick || "26px" }} onPointerMove={point} onPointerLeave={leave}>
+      <div class="control" ref={(el) => (box = el)} style={{ "--thick": props.thick || "26px", "touch-action": "pan-y" }}
+        onPointerDown={down} onPointerMove={point} onPointerLeave={leave} onClick={click}>
         <Chart ref={(el) => (chart = el)} scale={[0, c().total]} ticks={false} theme={THEME} height={props.height || 26} label={props.label}>
           <Plot overlap={true} rows={parts()}>{Segment}</Plot>
           <Plot overlap={true} slats={1} at={mid()} text={props.flag || ""} style={{ "pointer-events": "none" }}>{Majority}</Plot>
