@@ -28,9 +28,9 @@ export function Power(props) {
           <span>{props.need}</span>
         </div>
         <div class="power-nums">
-          <span class="d"><b class="num">{s().D}</b> Dem.<Show when={s().leadD}><small class="num"> · leading {s().leadD}</small></Show></span>
-          <Show when={s().I || s().leadI}><span class="i"><b class="num">{s().I}</b> Ind.<Show when={s().leadI}><small class="num"> · leading {s().leadI}</small></Show></span></Show>
-          <span class="r"><Show when={s().leadR}><small class="num">leading {s().leadR} · </small></Show>Rep. <b class="num">{s().R}</b></span>
+          <span class="d"><span class="big"><b class="num">{s().D}</b> Dem.</span><Show when={s().leadD}><small class="num lead">leading {s().leadD}</small></Show></span>
+          <Show when={s().I || s().leadI}><span class="i"><span class="big"><b class="num">{s().I}</b> Ind.</span><Show when={s().leadI}><small class="num lead">leading {s().leadI}</small></Show></span></Show>
+          <span class="r"><span class="big">Rep. <b class="num">{s().R}</b></span><Show when={s().leadR}><small class="num lead">leading {s().leadR}</small></Show></span>
         </div>
         <Control c={c()} flag={flag()} label={`${props.title}: Democrats ${s().D}, Republicans ${s().R}`} />
         <div class="power-foot hint">{props.foot(c())}</div>

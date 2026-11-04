@@ -1123,9 +1123,10 @@ button {
 
 .power-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: 2px 12px;
 }
 
 .power-head h3 {
@@ -1138,14 +1139,73 @@ button {
   color: var(--muted);
 }
 
+/* Each party's seats at its own edge, independents (when any hold or lead a seat) in the middle; on a phone each side
+   stacks its leads under its seats, so the big numbers always share one line */
 .power-nums {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: baseline;
-  justify-content: space-between;
   gap: 12px;
   margin: 6px 0 22px;
   font-size: 13px;
   font-weight: 650;
+}
+
+.power-nums > span {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.power-nums .d {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.power-nums .i {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.power-nums .r {
+  grid-column: 3;
+  justify-self: end;
+  flex-direction: row-reverse;
+}
+
+.power-nums .d .lead::before,
+.power-nums .i .lead::before {
+  content: "· ";
+}
+
+.power-nums .r .lead::after {
+  content: " ·";
+}
+
+@media (max-width: 640px) {
+  .power-nums > span {
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .power-nums .d {
+    align-items: flex-start;
+  }
+
+  .power-nums .i {
+    align-items: center;
+  }
+
+  .power-nums .r {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .power-nums .lead::before,
+  .power-nums .lead::after {
+    content: none !important;
+  }
 }
 
 .power-nums b {
