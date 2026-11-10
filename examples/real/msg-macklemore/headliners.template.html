@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Most of MSG's recent headliners have fewer listeners than Macklemore</title>
+<meta name="description" content="Spotify monthly listeners of the 15 music acts that headlined Madison Square Garden's arena from July 30 to October 31, 2026, against Macklemore's.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=Doto:wght@900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+__SHARED_CSS__
+  .earlier { margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--rule); }
+  .earlier h3 { margin: 0 0 10px; font-size: 19px; font-weight: 700; }
+  .earlier ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .earlier strong { display: block; font-size: 22px; font-weight: 750; font-stretch: 88%; line-height: 1.12; }
+  .earlier b { display: block; font: 800 24px/1.2 var(--text); font-stretch: 88%; color: var(--accent); }
+  .earlier span { display: block; font-size: 16px; line-height: 1.25; color: var(--soft); }
+  @media (max-width: 640px) {
+    .earlier h3 { font-size: 16px; }
+    .earlier ul { gap: 10px; }
+    .earlier strong { font-size: 16px; }
+    .earlier b { font-size: 18px; }
+    .earlier span { font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Tick, Poster, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data, and what depends on it
+const D = __DATA__;
+const him = D.macklemore.listeners;
+const ROWS = [...D.acts.map((a) => ({ ...a, kind: a.listeners < him ? "below" : "above" })), { name: "Macklemore", listeners: him, kind: "him" }]
+  .sort((a, b) => b.listeners - a.listeners);
+const scale = nice(0, Math.max(...ROWS.map((r) => r.listeners)) / 1e6);
+const millions = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const short = (n) => (n < 1e6 ? `${Math.round(n / 1e3)}K` : `${millions.format(n / 1e6)}M`);
+const percent = new Intl.NumberFormat("en-US", { style: "percent" });
+const day = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+const theme = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--pale)", "var(--quiet)"] };
+const COLOR = { him: "series-1", below: "series-2", above: "series-3" };
+
+// Slat types
+// One act: its name, a strip of bulbs (two rows, a bulb to the million) and the number
+const Act = slat({
+  thickness: 27,
+  room: { start: "auto", end: 26 },
+  css: `
+    .slat { cursor: pointer; }
+    .slat.on { background: rgb(255 255 255 / .08); }
+    .slat:focus-visible { outline: 2px solid var(--rhp-ink); outline-offset: -2px; }
+    .name { font-size: 20px; font-weight: 600; font-stretch: 88%; }
+    .value { font-size: 17px; font-weight: 600; font-stretch: 88%; font-variant-numeric: tabular-nums; }
+    .led { --rhp-start-radius: 0px; --rhp-end-radius: 0px; mask: radial-gradient(circle closest-side, #000 74%, #0000 100%) 0 0 / calc(100% / var(--n)) 50%; }
+    .him .name, .him .value { color: var(--rhp-series-1); font-weight: 800; }
+    @container (max-width: 420px) {
+      .name { font-size: 12px; font-stretch: 75%; }
+      .value { font-size: 12px; }
+    }
+  `,
+}, (d) => html`
+  <div class=${() => `slat ${d.kind}${d.on ? " on" : ""}`} data-row=${() => d.index}>
+    <${Label} edge="start" class="name">${() => d.name}<//>
+    <${Bar} to=${() => d.listeners / 1e6} thick="14px" class="led" color=${() => COLOR[d.kind]} style=${() => ({ "--n": Math.max(1, Math.round(d.listeners / 1e6)) })} />
+    <${Label} at=${() => d.listeners / 1e6} class="value">${() => short(d.listeners)}<//>
+  </div>`);
+
+// His line, down through every act
+const Line = slat({
+  room: {},
+  css: `.rule { --rhp-tick-width: 2px; background: repeating-linear-gradient(0deg, var(--rhp-series-1) 0 6px, transparent 6px 10px); }`,
+}, (r) => html`<div><${Tick} at=${() => r.at} thick=${1} class="rule" /></div>`);
+
+const line = (d) => {
+  if (d.kind === "him") return html`<span><b>Macklemore: ${short(him)}</b>, 4 Grammys, 2 No. 1 singles.<span class="hint"> Tap or point at an act.</span></span>`;
+  const when = d.nights > 1 ? `${d.nights} nights, ${day(d.first)} to ${day(d.last)}` : `1 night, ${day(d.first)}`;
+  return html`<span><b>${d.name}: ${short(d.listeners)}</b>, ${percent.format(d.listeners / him)} of Macklemore's. ${when}.</span>`;
+};
+
+// Chart component: the app holds which act the reader picked
+function Headliners() {
+  const [on, setOn] = createSignal(null);
+  const rest = ROWS.findIndex((r) => r.kind === "him");
+  const rowOf = (el) => {
+    const root = el.closest("[data-row]");
+    return root ? +root.dataset.row : null;
+  };
+  const pick = (e) => {
+    const row = rowOf(e.target);
+    if (row != null) setOn(row);
+  };
+  const leave = (e) => {
+    if (e.pointerType === "touch") return;
+    setOn(e.currentTarget.contains(document.activeElement) ? rowOf(document.activeElement) : null);
+  };
+  const move = (e) => e.pointerType !== "touch" && (e.target.closest(".rhp-chart") ? pick(e) : leave(e));
+  return html`
+    <${Poster}
+      kicker=${html`<span class="sign">“He's not an arena level act”</span><span class="said">Madison Square Garden's spokesperson on Macklemore, Nov. 2026</span>`}
+      title=${`Yet ${D.fewer} of its last ${D.acts.length} music headliners have fewer Spotify listeners than Macklemore`}
+      dek=${html`<span>Monthly listeners today, a bulb to the million. The middle act has <b>${short(D.median)}</b>.</span>`}
+      note=${`Headliners of concerts in the arena, Jul. 30 to Oct. 31, 2026, from setlist.fm; openers, comedy and one benefit left out. Listeners on Nov. 8, 2026 (kworb, Spotify), not on the night. Listeners are not ticket sales.`}
+      onPointerMove=${move} onClick=${pick} onFocusIn=${pick}
+      onPointerLeave=${leave} onFocusOut=${(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <div class="stage">
+        <${Chart} scale=${[scale.min, scale.max]} ticks=${false} theme=${theme} label="Spotify monthly listeners of the music headliners at Madison Square Garden's arena, in millions, against Macklemore's">
+          <${Plot} overlap=${true} slats=${1} at=${him / 1e6} style=${{ "pointer-events": "none" }}>${Line}<//>
+          <${Plot} keyboard=${true} rows=${ROWS} on=${(d) => (on() ?? rest) === d.index}>${Act}<//>
+        <//>
+        <p class="readout" aria-live="polite">${() => line(ROWS[on() ?? rest])}</p>
+      </div>
+      <div class="earlier">
+        <h3>Earlier MSG sellouts, by acts with far fewer listeners today</h3>
+        <ul>${D.earlier.map((e) => html`<li><strong>${e.name}</strong><b>${short(e.listeners)}</b><span>${e.what}, ${e.when}</span></li>`)}</ul>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${Headliners} />`, document.getElementById("chart"));
+</script>
+__DOWNLOAD__
+</body>
+</html>

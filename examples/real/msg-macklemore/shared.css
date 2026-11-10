@@ -1,0 +1,34 @@
+:root { color-scheme: dark; --page: #273b76; --paper: #12224f; --sign: #0a1534; --ink: #f7f4ea; --soft: #c6cfe6; --rule: #33477c; --accent: #ffb02e; --pale: #cfd8f0; --quiet: #7f91c6; --display: Doto, "Courier New", monospace; --text: Archivo, "Helvetica Neue", Arial, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px 16px; background: var(--page); }
+.poster { max-width: 800px; margin: 0 auto; padding: 0 40px 24px; background: var(--paper); color: var(--ink); font: 19px/1.4 var(--text); display: grid; grid-template-columns: minmax(0, 1fr); overflow: clip; }
+.poster figcaption { display: contents; }
+
+/* The marquee: the sign across the top, a row of bulbs along each edge */
+.poster .kicker { display: grid; gap: 8px; margin: 0 -40px 20px; padding: 30px 40px 26px; background-color: var(--sign);
+  background-image: radial-gradient(circle closest-side, var(--accent) 62%, transparent 100%), radial-gradient(circle closest-side, var(--accent) 62%, transparent 100%);
+  background-size: 16px 10px; background-repeat: repeat-x; background-position: left 8px top 9px, left 8px bottom 9px; }
+.sign { font: 900 clamp(30px, 7.75vw, 62px)/1 var(--display); letter-spacing: -.01em; text-transform: uppercase; color: var(--accent); }
+.said { font: 500 18px/1.3 var(--text); color: var(--soft); }
+.poster .headline { font: 760 36px/1.1 var(--text); font-stretch: 86%; letter-spacing: -.01em; text-wrap: balance; }
+.poster .dek { margin-top: 10px; font-size: 19px; line-height: 1.38; color: var(--soft); }
+.poster .dek b { color: var(--ink); font-weight: 650; }
+.stage { margin-top: 18px; min-width: 0; }
+.readout { min-height: 1.4em; margin: 12px 0 0; font-size: 18px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+.for-image .hint { display: none; }
+.readout b { color: var(--accent); font-weight: 700; }
+.poster .note { display: block; margin-top: 16px; padding-top: 11px; border-top: 1px solid var(--rule); font-size: 14px; line-height: 1.36; color: var(--soft); }
+.poster :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+@media (max-width: 800px) { .readout { min-height: 2.8em; } }
+@media (max-width: 640px) {
+  body { padding: 16px 16px 32px; }
+  .poster { padding: 0 18px 18px; font-size: 16px; }
+  .poster .kicker { margin: 0 -18px 18px; padding: 26px 18px 24px; }
+  .said { font-size: 14px; }
+  .poster .headline { font-size: 27px; }
+  .poster .dek { font-size: 16px; }
+  .stage { display: flex; flex-direction: column; }
+  .readout { order: -1; position: sticky; top: 0; z-index: 2; min-height: 5em; margin: 0 0 6px; padding: 6px 0; background: var(--paper); font-size: 15px; }
+  .poster .note { font-size: 12px; }
+}

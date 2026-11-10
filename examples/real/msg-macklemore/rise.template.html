@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Macklemore's new high and three European arenas</title>
+<meta name="description" content="Macklemore's Spotify monthly listeners from 2022 to November 2026, and the three European arenas reported sold out in October 2026, against the size of Madison Square Garden.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=Doto:wght@900&display=swap">
+<script type="importmap">{ "imports": { "@bezda/rhp/standalone": "https://cdn.jsdelivr.net/npm/@bezda/rhp@2/dist/standalone.js" } }</script>
+<style>
+__SHARED_CSS__
+  .plot { touch-action: pan-y; cursor: crosshair; }
+  .tick { font-size: 15px; }
+  @media (max-width: 640px) { .tick { font-size: 11px; } }
+  .parts { display: flex; flex-wrap: wrap; gap: 0 12px; }
+  .parts .v { width: 3.6em; }
+  .parts .d { width: 6.6em; }
+  .parts .r { width: 9.6em; }
+  .parts .h { color: var(--soft); }
+  .arenas { margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--rule); }
+  .arenas h3 { margin: 0 0 6px; font-size: 19px; font-weight: 700; }
+  .chart-note { margin: 10px 0 0; font-size: 17px; line-height: 1.32; color: var(--soft); }
+  .chart-note b { color: var(--ink); font-weight: 650; }
+  @media (max-width: 640px) {
+    .arenas h3 { font-size: 16px; }
+    .chart-note { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="module">
+import { Chart, Plot, Bar, Label, Line, Dot, Tick, Place, Poster, slat, nice, html, render, createSignal } from "@bezda/rhp/standalone";
+
+// Data, and what depends on it
+const D = __DATA__;
+const time = (iso) => Date.parse(`${iso}T12:00:00Z`);
+const POINTS = D.history.map((h) => ({ ...h, t: time(h.date), m: h.listeners / 1e6 }));
+const MONTHLY = POINTS.filter((p, i) => i === 0 || p.date.slice(0, 7) !== POINTS[i - 1].date.slice(0, 7));
+const first = POINTS[0].t;
+const last = POINTS.at(-1).t;
+const pad = (last - first) * 0.012;
+const YEARS = [2023, 2024, 2025, 2026].map((y) => Date.UTC(y, 0, 1));
+const high = POINTS.find((p) => p.date === D.high.date);
+const low = POINTS.find((p) => p.date === D.low.date);
+const today = POINTS.at(-1);
+const mid = POINTS.filter((p) => p.date < "2025-01-01").reduce((a, b) => (b.m > a.m ? b : a));
+const millions = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const seats = new Intl.NumberFormat("en-US");
+const longDay = (p) => new Date(p.t).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+const month = (p) => new Date(p.t).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+const theme = { font: "var(--text)", ink: "var(--ink)", muted: "var(--soft)", grid: "var(--rule)", surface: "var(--paper)", series: ["var(--accent)", "var(--pale)", "var(--quiet)"] };
+const TAGS = [
+  { p: high, text: `New high: ${millions.format(high.m)}M`, place: "left-up" },
+  { p: today, text: `Today: ${millions.format(today.m)}M`, place: "left-below" },
+  { p: low, text: `${month(low)}: ${millions.format(low.m)}M`, place: "left-under" },
+  { p: mid, text: `${month(mid)}: ${millions.format(mid.m)}M`, place: "up" },
+];
+
+// Slat types
+const Under = slat({ css: `.under { stroke-width: 0; }` }, (d) => html`<${Line} points=${() => d.points} fill=${true} color="series-3" class="under" />`);
+const Curve = slat({ css: `.curve { stroke-width: 3px; }` }, (d) => html`<${Line} points=${() => d.points} class="curve" />`);
+// The bulbs: a dot at each month's reading
+const Bulb = slat({ css: `.bulb { background: var(--rhp-series-1); }` }, (d) => html`<${Dot} at=${() => d.t} cross=${() => d.m} size="7px" class="bulb" />`);
+const Tag = slat({
+  css: `
+    .tag { position: absolute; left: 0; bottom: 0; white-space: nowrap; font-size: 18px; font-weight: 650; color: var(--rhp-ink); }
+    .left-up { translate: -100% -8px; }
+    .left-below { translate: -100% calc(100% + 62px); }
+    .left-under { translate: -100% calc(100% + 10px); }
+    .up { translate: -50% -10px; }
+    @container (max-width: 420px) {
+      .tag { font-size: 12px; }
+      .up { translate: -88% -10px; }
+    }
+  `,
+}, (d) => html`<${Place} at=${() => d.t} cross=${() => d.m}><div class=${() => `tag ${d.place}`}>${() => d.text}</div><//>`);
+const Hit = slat({ css: `.hit { --rhp-radius: 0px; }` }, () => html`<${Bar} from=${first - pad} to=${last + pad} thick=${1} color="transparent" class="hit" data-hit="1" />`);
+const Reading = slat({
+  css: `
+    .hair { --rhp-tick-width: 1px; background: var(--rhp-ink); }
+    .dot { background: var(--rhp-ink); box-shadow: 0 0 0 3px var(--rhp-surface); }
+  `,
+}, (d) => html`<div><${Tick} at=${() => d.t} thick=${1} class="hair" /><${Dot} at=${() => d.t} cross=${() => d.m} size="11px" class="dot" /></div>`);
+
+// A venue: its name, a strip of bulbs (a bulb to the thousand seats), its size
+const scale = nice(0, D.msgCapacity);
+const ARENAS = [...D.arenas.map((a) => ({ ...a, label: `${a.city}, ${a.name.replace(" Arena Wembley", " Wembley")}`, tag: "sold out", kind: "his" })), { label: "New York, MSG", capacity: D.msgCapacity, tag: "for scale", kind: "msg" }]
+  .sort((a, b) => (a.kind === "msg") - (b.kind === "msg") || b.capacity - a.capacity);
+const Arena = slat({
+  thickness: 29,
+  room: { start: "auto", end: 92 },
+  css: `
+    .row { --rhp-gutter-max: 52cqw; }
+    .name { font-size: 19px; font-weight: 600; font-stretch: 88%; }
+    .value { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .tag { font-weight: 500; color: var(--rhp-muted); }
+    .led { --rhp-start-radius: 0px; --rhp-end-radius: 0px; mask: radial-gradient(circle closest-side, #000 74%, #0000 100%) 0 0 / calc(100% / var(--n)) 100%; }
+    @container (max-width: 420px) {
+      .name { font-size: 12px; font-stretch: 75%; }
+      .value { font-size: 12px; }
+    }
+  `,
+}, (d) => html`
+  <div class="row">
+    <${Label} edge="start" class="name">${() => d.label}<//>
+    <${Bar} to=${() => d.capacity} thick="15px" class="led" color=${() => (d.kind === "msg" ? "series-3" : "series-1")} style=${() => ({ "--n": Math.round(d.capacity / 1000) })} />
+    <${Label} at=${() => d.capacity} class="value">${() => seats.format(d.capacity)}${" "}<span class="tag">${() => d.tag}</span><//>
+  </div>`);
+
+function Rise() {
+  const [hover, setHover] = createSignal(null);
+  const [pinned, setPinned] = createSignal(null);
+  const current = () => hover() ?? pinned();
+  let stage;
+  // The reading nearest the pointer, measured against the plot's own box so a fitted poster reads the same
+  const nearest = (e) => {
+    const box = stage.querySelector("[data-hit]").getBoundingClientRect();
+    const t = first - pad + ((e.clientX - box.left) / box.width) * (last - first + 2 * pad);
+    return POINTS.reduce((best, p, i) => (Math.abs(p.t - t) < Math.abs(POINTS[best].t - t) ? i : best), 0);
+  };
+  let start = [0, 0];
+  const sideways = (e) => Math.abs(e.clientX - start[0]) > Math.abs(e.clientY - start[1]);
+  const key = (e) => {
+    const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+    if (!step) return;
+    e.preventDefault();
+    setPinned(Math.min(POINTS.length - 1, Math.max(0, (pinned() ?? POINTS.length - 1) + step)));
+  };
+  const said = () => {
+    const p = POINTS[current() ?? POINTS.indexOf(high)];
+    return html`<span class="parts"><b class="v">${millions.format(p.m)}M</b><span class="d">${longDay(p)}</span><span class="r">no. ${p.rank} in the world</span><span class="h hint">Tap or point at the line.</span></span>`;
+  };
+  return html`
+    <${Poster}
+      kicker=${html`<span class="sign">Sold out<br>Dublin Paris London</span><span class="said">Macklemore's “Free Palestine” benefit shows, Oct. 2026</span>`}
+      title=${`Macklemore hit a new high of ${millions.format(high.m)} million listeners and sold out three European arenas`}
+      dek=${html`<span>Spotify monthly listeners. <b>Above 25M since April 2023.</b> They rose after he was dropped from Ed Sheeran's tour in September, and have eased to ${millions.format(today.m)}M, level with April 2025.</span>`}
+      note=${`Listeners from kworb's daily table in Internet Archive copies, ${POINTS.length} readings since Sep. 2022, monthly until Aug. 2026. Capacity is each venue's stated maximum, not attendance; sellouts as announced by Macklemore and reported by the Press Association. Chart positions: Billboard, via The Express Tribune.`}>
+      <div class="stage">
+        <div class="plot" ref=${(el) => (stage = el)} tabindex="0" role="group" aria-label="Read the listener history with the left and right arrow keys" onKeyDown=${key}
+          onPointerDown=${(e) => (start = [e.clientX, e.clientY])}
+          onPointerMove=${(e) => (e.pointerType !== "touch" || sideways(e)) && setHover(nearest(e))}
+          onClick=${(e) => { const i = nearest(e); setPinned(i); setHover(i); }}
+          onPointerLeave=${() => setHover(null)}>
+          <${Chart} scale=${[first - pad, last + pad]} ticks=${YEARS} format=${(t) => html`<span class="tick">${new Date(t).getUTCFullYear()}</span>`} cross=${[0, 45]} crossTicks=${[0, 15, 30, 45]} crossFormat=${(m) => html`<span class="tick">${m ? `${m}M` : "0"}</span>`} height=${236} theme=${theme}
+            label="Macklemore's Spotify monthly listeners, September 2022 to November 2026, in millions">
+            <${Plot} overlap=${true} slats=${1}>${Hit}<//>
+            <${Plot} overlap=${true} points=${[POINTS.map((p) => [p.t, p.m])]}>${Under}<//>
+            <${Plot} overlap=${true} points=${[POINTS.map((p) => [p.t, p.m])]}>${Curve}<//>
+            <${Plot} overlap=${true} t=${MONTHLY.map((p) => p.t)} m=${MONTHLY.map((p) => p.m)} style=${{ "pointer-events": "none" }}>${Bulb}<//>
+            <${Plot} overlap=${true} rows=${TAGS.map((a) => ({ t: a.p.t, m: a.p.m, text: a.text, place: a.place }))} style=${{ "pointer-events": "none" }}>${Tag}<//>
+            <${Plot} overlap=${true} slats=${() => (current() == null ? 0 : 1)} t=${() => POINTS[current() ?? 0].t} m=${() => POINTS[current() ?? 0].m} style=${{ "pointer-events": "none" }}>${Reading}<//>
+          <//>
+        </div>
+        <p class="readout" aria-live="polite">${said}</p>
+      </div>
+      <div class="arenas">
+        <h3>The three arenas, against MSG (a bulb to 1,000 seats)</h3>
+        <${Chart} scale=${[scale.min, scale.max]} ticks=${false} static=${true} theme=${theme} label="Capacity of the three European arenas and of Madison Square Garden">
+          <${Plot} rows=${ARENAS}>${Arena}<//>
+        <//>
+        <p class="chart-note"><b>Outside the U.S.:</b> “Can't Hold Us” rose from No. 121 to No. 80 on Billboard's Global Excl. U.S. chart in September.</p>
+      </div>
+    <//>`;
+}
+
+render(() => html`<${Rise} />`, document.getElementById("chart"));
+</script>
+__DOWNLOAD__
+</body>
+</html>

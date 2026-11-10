@@ -1,0 +1,41 @@
+SUBREDDITS TO CONSIDER
+r/dataisbeautiful needs [OC] in the title and may treat this as political; check its current rules first.
+r/Music, r/hiphopheads and r/popculturechat are where the story itself is being discussed.
+This draft has not been posted.
+
+POST 1: msg-headliners.png
+
+TITLE
+[OC] MSG said Macklemore is "not an arena level act". 11 of its last 15 music headliners have fewer Spotify listeners than he does
+
+FIRST COMMENT
+Madison Square Garden's spokesperson told TMZ on Nov. 6 that "he's not an arena level act".
+I took every music headliner in the arena from Jul. 30 to Oct. 31, 2026, and compared their Spotify monthly listeners on Nov. 8 with his 32.3M.
+11 of the 15 have fewer, including Mumford & Sons, the Jonas Brothers, Kacey Musgraves and Rush.
+
+What this does not show: monthly listeners are not ticket sales.
+Touring bands like Rush and Goose can sell more tickets than their streams suggest, so this tests "not big enough" only on reach.
+The numbers are today's listeners, not each act's on the night.
+The window is 14 weeks, because that is how far back I could read setlist.fm's listing.
+MSG also said its venues have "extremely limited availability", and this does not test that.
+Macklemore says the real reason was the shows' purpose; I can't test that either.
+
+Sources: setlist.fm (shows), kworb.net and Spotify artist pages (listeners), TMZ (statement).
+Tools: rhp.
+
+POST 2: macklemore-rise.png
+
+TITLE
+[OC] Macklemore's Spotify listeners, 2022 to today: a new high of 37.4M in October, and three sold-out European arenas
+
+FIRST COMMENT
+Listeners come from kworb's daily table, read from Internet Archive copies, monthly since Sep. 2022 and more often since Aug. 2026.
+He has been above 25M since April 2023.
+The new high came on Oct. 9, after he was dropped from Ed Sheeran's tour, and it has since eased to 32.3M, about where he was in April 2025.
+So this is staying power with a recent spike, not a sudden breakout; he also reached 35.7M in July 2024.
+
+The arenas are Accor Arena (20,300), 3Arena (about 13,000) and OVO Arena Wembley (12,500), against 22,000 at MSG.
+Those are venue capacities, not attendance.
+The sellouts were announced by Macklemore and carried by the Press Association; I found no box-office report.
+
+Tools: rhp.

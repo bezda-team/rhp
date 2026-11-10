@@ -1,0 +1,763 @@
+{
+ "today": "2026-11-08",
+ "macklemore": {
+  "listeners": 32290710,
+  "rank": 183
+ },
+ "acts": [
+  {
+   "name": "Harry Styles",
+   "listeners": 64305186,
+   "tour": "Together, Together",
+   "nights": 30,
+   "first": "2026-08-26",
+   "last": "2026-10-31"
+  },
+  {
+   "name": "Olivia Dean",
+   "listeners": 51557331,
+   "tour": "The Art of Loving Tour",
+   "nights": 4,
+   "first": "2026-08-14",
+   "last": "2026-08-18"
+  },
+  {
+   "name": "J. Cole",
+   "listeners": 38309366,
+   "tour": "The Fall-Off Tour",
+   "nights": 2,
+   "first": "2026-08-02",
+   "last": "2026-08-04"
+  },
+  {
+   "name": "Gorillaz",
+   "listeners": 37186939,
+   "tour": "The Mountain Tour",
+   "nights": 1,
+   "first": "2026-09-29",
+   "last": "2026-09-29"
+  },
+  {
+   "name": "beabadoobee",
+   "listeners": 22550890,
+   "tour": "Powerlines",
+   "nights": 1,
+   "first": "2026-10-05",
+   "last": "2026-10-05"
+  },
+  {
+   "name": "Bryson Tiller",
+   "listeners": 22439345,
+   "tour": "Neo Trapsoul",
+   "nights": 1,
+   "first": "2026-09-13",
+   "last": "2026-09-13"
+  },
+  {
+   "name": "Kacey Musgraves",
+   "listeners": 17340795,
+   "tour": "Middle of Nowhere",
+   "nights": 2,
+   "first": "2026-08-31",
+   "last": "2026-09-01"
+  },
+  {
+   "name": "Jonas Brothers",
+   "listeners": 16856096,
+   "tour": "The Burning Up Tour",
+   "nights": 3,
+   "first": "2026-08-20",
+   "last": "2026-08-22"
+  },
+  {
+   "name": "Mumford & Sons",
+   "listeners": 13233184,
+   "tour": "Prizefighter",
+   "nights": 3,
+   "first": "2026-08-11",
+   "last": "2026-08-13"
+  },
+  {
+   "name": "Lily Allen",
+   "listeners": 11248001,
+   "tour": "West End Girl",
+   "nights": 1,
+   "first": "2026-09-03",
+   "last": "2026-09-03"
+  },
+  {
+   "name": "The Red Clay Strays",
+   "listeners": 8968602,
+   "tour": "Grateful",
+   "nights": 1,
+   "first": "2026-08-09",
+   "last": "2026-08-09"
+  },
+  {
+   "name": "Two Door Cinema Club",
+   "listeners": 8931503,
+   "tour": "Tourist History 15th Anniversary",
+   "nights": 1,
+   "first": "2026-09-27",
+   "last": "2026-09-27"
+  },
+  {
+   "name": "Mt. Joy",
+   "listeners": 5700000.0,
+   "tour": "World Tour 2026",
+   "nights": 1,
+   "first": "2026-09-17",
+   "last": "2026-09-17"
+  },
+  {
+   "name": "Rush",
+   "listeners": 3900000.0,
+   "tour": "Fifty Something Tour",
+   "nights": 3,
+   "first": "2026-07-30",
+   "last": "2026-08-03"
+  },
+  {
+   "name": "Hilary Duff",
+   "listeners": 2900000.0,
+   "tour": "The Lucky Me Tour",
+   "nights": 2,
+   "first": "2026-08-05",
+   "last": "2026-08-06"
+  }
+ ],
+ "earlier": [
+  {
+   "name": "Goose",
+   "when": "2025",
+   "what": "sold out",
+   "listeners": 477800.0
+  },
+  {
+   "name": "Dispatch",
+   "when": "2007",
+   "what": "3 sold-out benefit nights",
+   "listeners": 727800.0
+  },
+  {
+   "name": "Vulfpeck",
+   "when": "2019",
+   "what": "sold out, no major label",
+   "listeners": 1200000.0
+  }
+ ],
+ "fewer": 11,
+ "median": 16856096,
+ "history": [
+  {
+   "date": "2022-08-29",
+   "listeners": 23643461,
+   "rank": 137
+  },
+  {
+   "date": "2022-09-03",
+   "listeners": 23653819,
+   "rank": 138
+  },
+  {
+   "date": "2022-10-01",
+   "listeners": 22711826,
+   "rank": 142
+  },
+  {
+   "date": "2022-11-01",
+   "listeners": 23446508,
+   "rank": 137
+  },
+  {
+   "date": "2022-12-01",
+   "listeners": 24224316,
+   "rank": 132
+  },
+  {
+   "date": "2023-01-01",
+   "listeners": 24186454,
+   "rank": 163
+  },
+  {
+   "date": "2023-02-01",
+   "listeners": 24747886,
+   "rank": 145
+  },
+  {
+   "date": "2023-03-01",
+   "listeners": 24694296,
+   "rank": 152
+  },
+  {
+   "date": "2023-04-01",
+   "listeners": 27962580,
+   "rank": 127
+  },
+  {
+   "date": "2023-05-01",
+   "listeners": 28577079,
+   "rank": 132
+  },
+  {
+   "date": "2023-06-01",
+   "listeners": 29624336,
+   "rank": 133
+  },
+  {
+   "date": "2023-07-01",
+   "listeners": 30626076,
+   "rank": 126
+  },
+  {
+   "date": "2023-08-01",
+   "listeners": 29489715,
+   "rank": 139
+  },
+  {
+   "date": "2023-09-01",
+   "listeners": 30166431,
+   "rank": 126
+  },
+  {
+   "date": "2023-10-01",
+   "listeners": 31410595,
+   "rank": 116
+  },
+  {
+   "date": "2023-11-01",
+   "listeners": 31845072,
+   "rank": 109
+  },
+  {
+   "date": "2023-12-01",
+   "listeners": 31569959,
+   "rank": 116
+  },
+  {
+   "date": "2024-01-01",
+   "listeners": 31313373,
+   "rank": 143
+  },
+  {
+   "date": "2024-02-01",
+   "listeners": 31391229,
+   "rank": 126
+  },
+  {
+   "date": "2024-03-01",
+   "listeners": 27033628,
+   "rank": 183
+  },
+  {
+   "date": "2024-04-01",
+   "listeners": 31595871,
+   "rank": 135
+  },
+  {
+   "date": "2024-05-01",
+   "listeners": 32482558,
+   "rank": 129
+  },
+  {
+   "date": "2024-06-01",
+   "listeners": 35541804,
+   "rank": 112
+  },
+  {
+   "date": "2024-07-01",
+   "listeners": 35713969,
+   "rank": 110
+  },
+  {
+   "date": "2024-09-01",
+   "listeners": 34776144,
+   "rank": 117
+  },
+  {
+   "date": "2024-10-01",
+   "listeners": 30002841,
+   "rank": 156
+  },
+  {
+   "date": "2024-11-04",
+   "listeners": 30119578,
+   "rank": 150
+  },
+  {
+   "date": "2024-12-01",
+   "listeners": 28942787,
+   "rank": 172
+  },
+  {
+   "date": "2025-01-01",
+   "listeners": 28893863,
+   "rank": 200
+  },
+  {
+   "date": "2025-02-01",
+   "listeners": 30063316,
+   "rank": 152
+  },
+  {
+   "date": "2025-03-02",
+   "listeners": 30642051,
+   "rank": 148
+  },
+  {
+   "date": "2025-04-01",
+   "listeners": 32434085,
+   "rank": 128
+  },
+  {
+   "date": "2025-05-01",
+   "listeners": 31819500,
+   "rank": 154
+  },
+  {
+   "date": "2025-06-01",
+   "listeners": 32101848,
+   "rank": 156
+  },
+  {
+   "date": "2025-07-01",
+   "listeners": 31111036,
+   "rank": 162
+  },
+  {
+   "date": "2025-08-01",
+   "listeners": 31958308,
+   "rank": 165
+  },
+  {
+   "date": "2025-09-01",
+   "listeners": 29260435,
+   "rank": 198
+  },
+  {
+   "date": "2025-10-01",
+   "listeners": 27850210,
+   "rank": 204
+  },
+  {
+   "date": "2025-11-02",
+   "listeners": 25780716,
+   "rank": 243
+  },
+  {
+   "date": "2025-12-02",
+   "listeners": 26255174,
+   "rank": 243
+  },
+  {
+   "date": "2026-01-01",
+   "listeners": 25853253,
+   "rank": 287
+  },
+  {
+   "date": "2026-02-01",
+   "listeners": 28469474,
+   "rank": 220
+  },
+  {
+   "date": "2026-03-02",
+   "listeners": 28380391,
+   "rank": 229
+  },
+  {
+   "date": "2026-04-02",
+   "listeners": 30214858,
+   "rank": 202
+  },
+  {
+   "date": "2026-05-01",
+   "listeners": 31403374,
+   "rank": 195
+  },
+  {
+   "date": "2026-06-01",
+   "listeners": 36353441,
+   "rank": 147
+  },
+  {
+   "date": "2026-07-02",
+   "listeners": 34271930,
+   "rank": 164
+  },
+  {
+   "date": "2026-08-02",
+   "listeners": 34260408,
+   "rank": 165
+  },
+  {
+   "date": "2026-08-03",
+   "listeners": 34444619,
+   "rank": 165
+  },
+  {
+   "date": "2026-08-04",
+   "listeners": 34531767,
+   "rank": 165
+  },
+  {
+   "date": "2026-08-05",
+   "listeners": 34621992,
+   "rank": 164
+  },
+  {
+   "date": "2026-08-08",
+   "listeners": 34627460,
+   "rank": 161
+  },
+  {
+   "date": "2026-08-10",
+   "listeners": 34425593,
+   "rank": 164
+  },
+  {
+   "date": "2026-08-13",
+   "listeners": 34108732,
+   "rank": 167
+  },
+  {
+   "date": "2026-08-14",
+   "listeners": 34097467,
+   "rank": 167
+  },
+  {
+   "date": "2026-08-16",
+   "listeners": 33984968,
+   "rank": 168
+  },
+  {
+   "date": "2026-08-18",
+   "listeners": 33950037,
+   "rank": 170
+  },
+  {
+   "date": "2026-08-19",
+   "listeners": 33921821,
+   "rank": 170
+  },
+  {
+   "date": "2026-08-21",
+   "listeners": 33948668,
+   "rank": 169
+  },
+  {
+   "date": "2026-08-22",
+   "listeners": 33912176,
+   "rank": 170
+  },
+  {
+   "date": "2026-08-24",
+   "listeners": 33943442,
+   "rank": 169
+  },
+  {
+   "date": "2026-08-26",
+   "listeners": 33890225,
+   "rank": 171
+  },
+  {
+   "date": "2026-08-27",
+   "listeners": 33828899,
+   "rank": 172
+  },
+  {
+   "date": "2026-08-28",
+   "listeners": 33813143,
+   "rank": 172
+  },
+  {
+   "date": "2026-08-29",
+   "listeners": 33799831,
+   "rank": 172
+  },
+  {
+   "date": "2026-08-30",
+   "listeners": 33723155,
+   "rank": 172
+  },
+  {
+   "date": "2026-08-31",
+   "listeners": 33669057,
+   "rank": 173
+  },
+  {
+   "date": "2026-09-01",
+   "listeners": 33643581,
+   "rank": 174
+  },
+  {
+   "date": "2026-09-02",
+   "listeners": 33618494,
+   "rank": 174
+  },
+  {
+   "date": "2026-09-04",
+   "listeners": 33522770,
+   "rank": 175
+  },
+  {
+   "date": "2026-09-05",
+   "listeners": 33501210,
+   "rank": 177
+  },
+  {
+   "date": "2026-09-06",
+   "listeners": 33467792,
+   "rank": 179
+  },
+  {
+   "date": "2026-09-07",
+   "listeners": 33484191,
+   "rank": 178
+  },
+  {
+   "date": "2026-09-08",
+   "listeners": 33494708,
+   "rank": 177
+  },
+  {
+   "date": "2026-09-09",
+   "listeners": 33556417,
+   "rank": 177
+  },
+  {
+   "date": "2026-09-10",
+   "listeners": 33580850,
+   "rank": 176
+  },
+  {
+   "date": "2026-09-12",
+   "listeners": 33744407,
+   "rank": 174
+  },
+  {
+   "date": "2026-09-14",
+   "listeners": 33923855,
+   "rank": 172
+  },
+  {
+   "date": "2026-09-15",
+   "listeners": 33987427,
+   "rank": 172
+  },
+  {
+   "date": "2026-09-16",
+   "listeners": 34082731,
+   "rank": 171
+  },
+  {
+   "date": "2026-09-20",
+   "listeners": 35274108,
+   "rank": 160
+  },
+  {
+   "date": "2026-09-21",
+   "listeners": 35485147,
+   "rank": 157
+  },
+  {
+   "date": "2026-09-22",
+   "listeners": 35659596,
+   "rank": 157
+  },
+  {
+   "date": "2026-09-23",
+   "listeners": 35758774,
+   "rank": 156
+  },
+  {
+   "date": "2026-09-24",
+   "listeners": 35877962,
+   "rank": 156
+  },
+  {
+   "date": "2026-09-25",
+   "listeners": 35975386,
+   "rank": 153
+  },
+  {
+   "date": "2026-09-27",
+   "listeners": 36199898,
+   "rank": 151
+  },
+  {
+   "date": "2026-09-29",
+   "listeners": 36480435,
+   "rank": 150
+  },
+  {
+   "date": "2026-09-30",
+   "listeners": 36494520,
+   "rank": 150
+  },
+  {
+   "date": "2026-10-01",
+   "listeners": 36509951,
+   "rank": 150
+  },
+  {
+   "date": "2026-10-02",
+   "listeners": 36509951,
+   "rank": 150
+  },
+  {
+   "date": "2026-10-03",
+   "listeners": 36853350,
+   "rank": 149
+  },
+  {
+   "date": "2026-10-04",
+   "listeners": 36995848,
+   "rank": 149
+  },
+  {
+   "date": "2026-10-05",
+   "listeners": 37185801,
+   "rank": 148
+  },
+  {
+   "date": "2026-10-06",
+   "listeners": 37233053,
+   "rank": 145
+  },
+  {
+   "date": "2026-10-07",
+   "listeners": 37277390,
+   "rank": 144
+  },
+  {
+   "date": "2026-10-08",
+   "listeners": 37277390,
+   "rank": 144
+  },
+  {
+   "date": "2026-10-09",
+   "listeners": 37420151,
+   "rank": 144
+  },
+  {
+   "date": "2026-10-11",
+   "listeners": 37412103,
+   "rank": 143
+  },
+  {
+   "date": "2026-10-13",
+   "listeners": 37388338,
+   "rank": 144
+  },
+  {
+   "date": "2026-10-14",
+   "listeners": 37390017,
+   "rank": 144
+  },
+  {
+   "date": "2026-10-18",
+   "listeners": 36632942,
+   "rank": 153
+  },
+  {
+   "date": "2026-10-23",
+   "listeners": 35706040,
+   "rank": 162
+  },
+  {
+   "date": "2026-10-24",
+   "listeners": 35572500,
+   "rank": 163
+  },
+  {
+   "date": "2026-10-25",
+   "listeners": 35391396,
+   "rank": 165
+  },
+  {
+   "date": "2026-10-28",
+   "listeners": 34968544,
+   "rank": 165
+  },
+  {
+   "date": "2026-10-29",
+   "listeners": 34899627,
+   "rank": 165
+  },
+  {
+   "date": "2026-10-31",
+   "listeners": 34596128,
+   "rank": 165
+  },
+  {
+   "date": "2026-11-01",
+   "listeners": 34430635,
+   "rank": 165
+  },
+  {
+   "date": "2026-11-02",
+   "listeners": 34337534,
+   "rank": 166
+  },
+  {
+   "date": "2026-11-03",
+   "listeners": 34046428,
+   "rank": 168
+  },
+  {
+   "date": "2026-11-04",
+   "listeners": 33702557,
+   "rank": 171
+  },
+  {
+   "date": "2026-11-05",
+   "listeners": 33386771,
+   "rank": 175
+  },
+  {
+   "date": "2026-11-06",
+   "listeners": 33089905,
+   "rank": 179
+  },
+  {
+   "date": "2026-11-08",
+   "listeners": 32290710,
+   "rank": 183
+  }
+ ],
+ "high": {
+  "date": "2026-10-09",
+  "listeners": 37420151,
+  "rank": 144
+ },
+ "low": {
+  "date": "2025-11-02",
+  "listeners": 25780716,
+  "rank": 243
+ },
+ "window": [
+  "2026-07-30",
+  "2026-10-31"
+ ],
+ "arenas": [
+  {
+   "name": "Accor Arena",
+   "city": "Paris",
+   "date": "Oct 29",
+   "capacity": 20300
+  },
+  {
+   "name": "3Arena",
+   "city": "Dublin",
+   "date": "Oct 26",
+   "capacity": 13000
+  },
+  {
+   "name": "OVO Arena Wembley",
+   "city": "London",
+   "date": "Oct 30",
+   "capacity": 12500
+  }
+ ],
+ "msgCapacity": 22000
+}
