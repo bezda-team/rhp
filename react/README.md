@@ -86,6 +86,8 @@ function Sales({ names, values }) {
 
 - **Handlers go on blocks and slat roots** like on any element: `onClick`, `onPointerEnter`, `onKeyDown`.
   With many slats, one handler around the chart with `data-row={d.index}` and `closest("[data-row]")` is simpler than one per slat.
+- **A slat's root can be a component of your own.**
+  rhp places the element it draws, as a slat root is placed; on a server, have it pass the props it is given to its root element (`<div {...props}>`), so the server's HTML places it too.
 - **A slat can use hooks.** It is called while React draws its row, so a slat written as a component, `function Row(d) { const [open, setOpen] = useState(false); … }`, keeps its state while its row is there.
 - **`d.index` and `d.position` are always the row's latest**, also when read later in a handler.
 - **`keyboard`** on a Plot gives its slats one tab stop, with the arrow keys, Home and End in the order shown.

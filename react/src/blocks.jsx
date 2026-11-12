@@ -4,11 +4,11 @@
 // NOTE: React draws a block with its first values, so a server's HTML and the browser's first drawing are the same.
 // After that the block writes only the variables that changed, itself and in the next frame (frame.js), and its style
 // prop keeps the first ones, so React never writes them again. A block in a static Plot leaves them all to React.
-import { useContext, useLayoutEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import { Fragment, cloneElement, isValidElement, useContext, useLayoutEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import { jsx } from "react/jsx-runtime";
 import { Around, isServer } from "./context.js";
 import { ticker, transition } from "./clock.js";
-import { write } from "../../src/frame.js";
+import { write as queue } from "../../src/frame.js";
 import { missing } from "../../src/data.js";
 import { short } from "../../src/layout.js";
 import { cls, tok, safeCssValue, cssTransition, there, areaSpan, areaPoints, areaPath, lineBox, linePoints, linePaths, BAR, DOT, PLACE, TICK, CELL, LABEL } from "../../src/marks.js";
@@ -49,37 +49,47 @@ const refTo = (s, user) => {
   return s.ref;
 };
 
-// An element's CSS variables v, and the attribute that hides a block with a missing value (miss), as React draws them
-// and as the block writes them after that: the element's style prop, its ref and that attribute.
+// A block's writer: the element it writes to (current, so it is also a ref object), what it was first drawn with, and
+// what it wrote last. write(s, v, miss) writes the CSS variables v and the attribute that hides a block with a missing
+// value (miss) where they changed, in the next frame.
 // NOTE: The missing attribute is written in the same frame as the variables, so a style read in between never draws
 // the block with the variables it had before (a bar coming back would grow from 0).
-function useWriter(v, miss, still, style, ref) {
+const writer = (v, miss) => ({ current: null, v, miss, first: firstStyle(v), firstMiss: miss, user: undefined, ref: null, drawn: false });
 
-  // A static Plot keeps no state per block: React draws every value
-  if (still) return { style: withStyle(style, firstStyle(v)), ref, missing: miss };
+function write(s, v, miss) {
+
+  const prev = s.v;
+  const el = s.current;
+  if ((prev === v && s.miss === miss) || !el) return; // as first drawn (or not in the page)
+
+  if (prev !== v) {
+    for (const key in v) {
+      if (v[key] !== prev[key]) queue(el, key, v[key]);
+    }
+  }
+  if (miss !== s.miss) queue(el, "data-rhp-missing", miss);
+
+  s.v = v;
+  s.miss = miss;
+}
+
+// An element's CSS variables v and missing attribute (miss) as React draws them: React draws the first ones, and the
+// block writes the rest (s is its writer). A static Plot keeps no state per block (s is null), and React draws every
+// value. styled() gives the element's style prop, refOf() its ref and missingOf() that attribute.
+const styled = (s, v, style) => withStyle(style, s === null ? firstStyle(v) : s.first);
+const refOf = (s, ref) => (s === null || !ref ? ref ?? s : refTo(s, ref));
+const missingOf = (s, miss) => (s === null ? miss : s.firstMiss);
+
+// An Area's or a Line's writer, in one: { style, ref }
+function useWriter(v, still, style, ref) {
+
+  if (still) return { style: styled(null, v, style), ref };
 
   const own = useRef(null);
-  let s = own.current;
-  if (s === null) s = own.current = { current: null, v, miss, first: firstStyle(v), firstMiss: miss, user: undefined, ref: null };
+  const s = own.current ?? (own.current = writer(v, undefined));
+  useLayoutEffect(() => write(s, v, undefined));
 
-  useLayoutEffect(() => {
-    const prev = s.v;
-    if (prev === v && s.miss === miss) return; // as first drawn
-
-    const el = s.current;
-    if (prev !== v) {
-      for (const key in v) {
-        if (v[key] !== prev[key]) write(el, key, v[key]);
-      }
-    }
-    if (miss !== s.miss) write(el, "data-rhp-missing", miss);
-
-    s.v = v;
-    s.miss = miss;
-  });
-
-  // `s` is also the ref object that holds the element, when the app gives no ref of its own
-  return { style: withStyle(style, s.first), ref: ref ? refTo(s, ref) : s, missing: s.firstMiss };
+  return { style: styled(s, v, style), ref: refOf(s, ref) };
 }
 
 const MINE = ["className", "style", "ref", "children"];
@@ -88,9 +98,11 @@ const MINE = ["className", "style", "ref", "children"];
 const GONE = { "data-rhp-missing": "" };
 const HERE = { "data-rhp-missing": undefined };
 
-// placed(key) reads a value that places the block, and notes whether it is missing (the block being drawn is `reading`)
+// placed(key) reads a value that places the block, and notes whether it is missing (the block being drawn is `reading`,
+// and its own attributes are `attrs` once values() has read it)
 let reading = null;
 let gone = false;
+let attrs = null;
 const placed = (key) => {
 
   const v = reading[key];
@@ -99,45 +111,70 @@ const placed = (key) => {
   return v;
 };
 
-// A block type from its definition in marks.js: vars(p, vertical, placed) gives its CSS variables, reading each value
-// that places it with placed(key), and attrs(p, gone) its own attributes, data-rhp-missing among them.
+// A block's CSS variables and its own attributes, from its definition in marks.js: vars(p, vertical, placed) gives its
+// CSS variables, reading each value that places it with placed(key), and attrs(p, gone) its own attributes,
+// data-rhp-missing among them.
 // placed() keeps whether a value the block was given is missing (null, undefined, NaN or infinite): such a block draws
 // nothing, rather than sit at the start of the scale as if the value were 0. A value not given at all keeps its
 // default (a Bar's from is 0).
-function block({ base, own, vars, back, attrs }, name) {
+function values(def, props, vertical) {
 
-  const mine = new Set([...MINE, ...own]);
+  reading = props;
+  gone = false;
+  const v = def.vars(props, vertical, placed);
+  attrs = def.attrs ? def.attrs(props, gone) : gone ? GONE : HERE;
+
+  return v;
+}
+
+// A block's element (s is its writer, or null in a static Plot): any prop of its own that isn't the block's goes on it,
+// as on a plain element
+function element(def, props, dir, v, a, s, children, key) {
+
+  const el = {};
+  for (const key in props) {
+    if (!def.mine.has(key)) el[key] = props[key];
+  }
+  el.className = cls(def.base, props.className);
+  el["data-rhp-o"] = dir;
+  for (const key in a) {
+    el[key] = a[key];
+  }
+  el["data-rhp-missing"] = missingOf(s, a["data-rhp-missing"]);
+  if (def.back) el["data-rhp-back"] = def.back(v) ? "" : undefined;
+  el.style = styled(s, v, props.style);
+  el.ref = refOf(s, props.ref);
+  el.children = children;
+
+  return jsx("div", el, key);
+}
+
+const KINDS = new Map(); // a block's component -> its definition
+
+function block(def, name) {
+
+  def.mine = new Set([...MINE, ...def.own]);
 
   function Block(props) {
 
     const { orientation, still } = useContext(Around);
+    const v = values(def, props, orientation === "vertical");
+    const a = attrs;
+    const miss = a["data-rhp-missing"];
 
-    reading = props;
-    gone = false;
-    const v = vars(props, orientation === "vertical", placed);
-    const a = attrs ? attrs(props, gone) : gone ? GONE : HERE;
-    const w = useWriter(v, a["data-rhp-missing"], still, props.style, props.ref);
-
-    // Any other prop goes on the element, as on a plain one
-    const el = {};
-    for (const key in props) {
-      if (!mine.has(key)) el[key] = props[key];
+    // The block's writer (none in a static Plot, whose blocks React draws in full)
+    let s = null;
+    if (!still) {
+      const own = useRef(null);
+      s = own.current ?? (own.current = writer(v, miss));
+      useLayoutEffect(() => write(s, v, miss));
     }
-    el.className = cls(base, props.className);
-    el["data-rhp-o"] = short(orientation);
-    for (const key in a) {
-      el[key] = a[key];
-    }
-    el["data-rhp-missing"] = w.missing;
-    if (back) el["data-rhp-back"] = back(v) ? "" : undefined;
-    el.style = w.style;
-    el.ref = w.ref;
-    el.children = props.children;
 
-    return jsx("div", el);
+    return element(def, props, short(orientation), v, a, s, props.children);
   }
 
   Block.displayName = name;
+  KINDS.set(Block, def);
 
   return Block;
 }
@@ -148,6 +185,78 @@ export const Place = block(PLACE, "Place");
 export const Tick = block(TICK, "Tick");
 export const Cell = block(CELL, "Cell");
 export const Label = block(LABEL, "Label");
+
+// The blocks a slat returns, folded into its own drawing: in the slat's elements, each Bar, Dot, Place, Tick, Cell and
+// Label becomes the element it draws, and the slat writes their variables, in one effect for the row. The page is the
+// same, and React draws a row with a component less for each block. (A block inside a component of the app's own is
+// drawn by itself.) f is the slat's: { states (the blocks' writers by where they are), next, dir, vertical, still, list
+// (each writer drawn now, with its values) }.
+// NOTE: A folded block's key is where it is in the slat and its kind, so a block that becomes another kind in the same
+// place is a new element, as a component would be.
+export function fold(node, f, path) {
+
+  if (Array.isArray(node)) {
+    let out = node;
+    for (let k = 0; k < node.length; k++) {
+      const child = node[k];
+      const folded = fold(child, f, path + "." + (child?.key ?? k));
+      if (folded !== child) {
+        if (out === node) out = node.slice();
+        out[k] = folded;
+      }
+    }
+    return out;
+  }
+
+  if (!isValidElement(node)) return node;
+
+  // A component draws what it is given itself (once, twice or not at all), so a block inside is left to draw itself
+  const def = KINDS.get(node.type);
+  if (!def && typeof node.type !== "string" && node.type !== Fragment) return node;
+
+  const props = node.props;
+  const kids = props.children;
+  const children = kids != null && typeof kids === "object" ? fold(kids, f, path + "/") : kids;
+
+  if (def) {
+    const v = values(def, props, f.vertical);
+    const a = attrs;
+    const miss = a["data-rhp-missing"];
+    const at = path + def.base;
+    let s = null;
+    if (!f.still) {
+      s = f.states?.get(at);
+      // A writer from a drawing that never reached the page is made anew
+      if (s === undefined || !s.drawn) s = writer(v, miss);
+      f.next.set(at, s);
+      f.list.push(s, v, miss);
+    }
+    return element(def, props, f.dir, v, a, s, children, at);
+  }
+
+  return children === kids ? node : cloneElement(node, { children });
+}
+
+// A slat's folded blocks: what the slat keeps of them, and the effect that writes them
+export function useFolded(still, dir) {
+
+  if (still) return { states: null, next: null, dir, vertical: dir === "v", still, list: null };
+
+  const own = useRef(null);
+  const states = own.current;
+  const f = { states, next: new Map(), dir, vertical: dir === "v", still, list: [] };
+  useLayoutEffect(() => {
+    own.current = f.next;
+    const list = f.list;
+    for (let k = 0; k < list.length; k += 3) {
+      const s = list[k];
+      s.drawn = true;
+      write(s, list[k + 1], list[k + 2]);
+    }
+  });
+
+  return f;
+}
 
 // The outline of an Area or a Line moves with a CSS transition of d (rhp.css), but Safari has no d property, so there
 // the block runs the transition that the path's CSS asks for itself, on rhp's clock and by CSS's rules: it is drawn
@@ -197,7 +306,7 @@ export function Area(props) {
     "--rhp-to": span[1],
     "--rhp-color": tok(color),
     "--rhp-d": d ? `path("${d}")` : undefined,
-  }, undefined, still, style, ref);
+  }, still, style, ref);
 
   return (
     <svg {...rest} ref={w.ref} className={cls("rhp-area", className)} data-rhp-o={short(orientation)} viewBox="0 0 1000 1000"
@@ -237,7 +346,7 @@ export function Line(props) {
     "--rhp-color": tok(color),
     "--rhp-d": line ? `path("${line}")` : undefined,
     "--rhp-d-under": under ? `path("${under}")` : undefined,
-  }, undefined, still, style, ref);
+  }, still, style, ref);
 
   return (
     <svg {...rest} ref={w.ref} className={cls("rhp-line", className)} data-rhp-o={short(orientation)} viewBox="0 0 1000 1000"

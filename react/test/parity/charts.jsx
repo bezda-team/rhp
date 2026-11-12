@@ -291,3 +291,24 @@ chart("strip", { v: values(20) }, [() => ({ v: values(20, 6) })],
 // A chart that turns, with an axis whose ticks change with the scale
 chart("turned", { o: "horizontal", top: 80 }, [() => ({ o: "vertical", top: 80 }), () => ({ o: "vertical", top: 1200 })],
   (data) => <Chart orientation={data.o} scale={[0, data.top]} height={180}><Plot name={names(4)} v={values(4).map((v) => (v * data.top) / 100)}>{Ranked}</Plot></Chart>);
+
+// Blocks inside components of the app's own (React draws them as components; blocks a slat returns are folded into it),
+// a block as a slat's root inside one, and blocks inside a block
+const Value = (p) => <Label at={p.v} data-k="val">{p.v}</Label>;
+const Track = (p) => <Bar to={p.v} color={p.c}><Value v={p.v} /></Bar>;
+const Nested = slat({ thickness: 30, room: { start: 60, end: 40 }, css: `[data-k=val] { color: var(--rhp-muted); }` }, (d) => (
+  <div>
+    <Label edge="start">{d.name}</Label>
+    <Track v={d.v} c={d.v > 40 ? "positive" : "series-1"} />
+    <Tick at={d.v / 2}><Dot at={d.v / 2} size="6px" /></Tick>
+    {d.v > 40 ? <Label edge="end">high</Label> : <Dot at={d.v} across={0.9} size="5px" />}
+  </div>
+));
+const Pin2 = (p) => <Dot at={p.at} size="7px" color={p.color} />;
+chart("components", { v: values(4) }, [() => ({ v: values(4, 3) }), () => ({ v: [70, 10, 45, 20] })],
+  (data) => (
+    <div>
+      <Chart><Plot name={names(4)} v={data.v}>{Nested}</Plot></Chart>
+      <Chart><Plot overlap v={data.v}>{(d) => <Pin2 at={d.v} color={d.index % 2 ? "series-3" : "series-4"} />}</Plot></Chart>
+    </div>
+  ));

@@ -5,6 +5,7 @@ import { jsx } from "react/jsx-runtime";
 import { Around, isServer } from "./context.js";
 import { mover, ticker, curveOf } from "./clock.js";
 import { ServerSheet, dropServerSheet } from "./sheets.jsx";
+import { fold, useFolded } from "./blocks.jsx";
 import { useSlatCss, slatSheet } from "../../src/style.js";
 import { isList, at, short, STEPS, pick, px, share, same, range, byPosition, BLOCK, warnBare, autoRoom, warnWrapped, DEFAULT_ROOM, tickValues } from "../../src/layout.js";
 import { cssCurve, MOVE_MS } from "../../src/motion.js";
@@ -101,8 +102,11 @@ const keyOf = (id) => {
 // writes them after that, so a row that only moves (or is sorted for the first time) is not drawn again.
 function Slat({ d, root, first }) {
 
-  const el = root.fn(d);
-  if (!isValidElement(el) || el.type === Fragment) throw new Error("rhp: a slat must return one element");
+  // The blocks the slat returns are drawn with it, and written by it (fold in blocks.jsx)
+  const f = useFolded(root.still, root.dir);
+  const given = root.fn(d);
+  if (!isValidElement(given) || given.type === Fragment) throw new Error("rhp: a slat must return one element");
+  const el = fold(given, f, "");
 
   const props = el.props;
   first.own = !!props.id; // a root with an id of its own keeps it
@@ -136,7 +140,7 @@ export function usePlot(props, role) {
 
   const around = useContext(Around);
   const { nested, frame } = around;
-  const layout = fn.layout ?? {};
+  const layout = fn.layout ?? NO_LAYOUT;
   const scale = role === "Scale";
   const orientation = props.orientation === "across" ? other(around.orientation) : props.orientation ?? around.orientation;
 
@@ -159,7 +163,8 @@ export function usePlot(props, role) {
   // numbers, animate={["value"]} only for those groups, and animate={{ groups, duration, ease, slide }} adds timing.
   // A Plot without `animate` takes its Chart's.
   const a = props.animate ?? around.motion;
-  const anim = !a ? null : a === true ? ALL : Array.isArray(a) ? { groups: a } : a;
+  const anim = !a ? null : a === true ? ALL : Array.isArray(a) ? (s.groupsOf === a ? s.anim : { groups: a }) : a;
+  s.groupsOf = a;
   const js = anim != null;
   s.anim = anim;
   useSyncExternalStore(s.ticker.subscribe, s.ticker.read, s.ticker.read);
@@ -281,8 +286,8 @@ export function usePlot(props, role) {
   const scope = fn.scope;
   const dir = short(orientation);
   let root = s.root;
-  if (!root || root.fn !== fn || root.dir !== dir || root.scope !== scope || root.list !== list || root.keyboard !== keyboard) {
-    root = s.root = { fn, dir, scope, list, keyboard };
+  if (!root || root.fn !== fn || root.dir !== dir || root.scope !== scope || root.list !== list || root.keyboard !== keyboard || root.still !== still) {
+    root = s.root = { fn, dir, scope, list, keyboard, still };
   }
 
   // The slats. Slide: the slats never move in the page, --rhp-position moves them on screen. Move: the slat elements
@@ -306,9 +311,8 @@ export function usePlot(props, role) {
     // A static row that changed is drawn anew, under a new key
     const base = action === "refill" ? k : keyOf(id);
     const reactKey = still ? base + "~" + keyOf(id) + "~" + e.ver : base;
-    const rid = reordered ? `rhp-${uid}-${i}` : undefined;
     let first = s.firsts?.get(reactKey);
-    if (first === undefined) first = { p: posOf(i), rid, tab: keyboard ? (id === stop ? 0 : -1) : undefined, own: false, style: undefined, base: undefined };
+    if (first === undefined) first = { p: posOf(i), row: reordered ? i : -1, rid: reordered ? `rhp-${uid}-${i}` : undefined, tab: keyboard ? (id === stop ? 0 : -1) : undefined, own: false, style: undefined, base: undefined };
     let el = s.els?.get(reactKey);
     if (el === undefined || el.props.d !== e.d || el.props.root !== root || el.props.first !== first) {
       el = jsx(Slat, { d: e.d, root, first }, reactKey);
@@ -324,7 +328,7 @@ export function usePlot(props, role) {
 
   // What the handlers and the writes below need of this drawing
   const childOf = drawn ? new Map(drawn.map((r, k) => [r, k])) : null;
-  const now = { n, shown: shown ?? range(n), idOf, rowOfId, posOf, stop, rowOfChild: drawn ? (k) => drawn[k] : (k) => k, childOf: drawn ? (r) => childOf.get(r) : (r) => r };
+  const now = { n, shown, idOf, rowOfId, posOf, stop, rowOfChild: drawn ? (k) => drawn[k] : (k) => k, childOf: drawn ? (r) => childOf.get(r) : (r) => r };
 
   // Gutters: what the Plot asks of its Chart (plotEntry)
   const register = frame && (layout.room || !nested);
@@ -351,15 +355,29 @@ export function usePlot(props, role) {
       if (first && !nested && layout.room != null && autoRoom(pick(layout.room, orientation))) warnWrapped(first);
     }
 
+    let owned = false;
     for (let k = 0; k < count; k++) {
       const node = kids[k];
       const r = now.rowOfChild(k);
       const q = posOf(r);
       const tab = keyboard ? (idOf(r) === stop ? 0 : -1) : undefined;
-      // A root new to the page has the place and tab stop its slat was first drawn with
+      // A root new to the page has the place and tab stop its slat was first drawn with. A component that is the slat's
+      // root and draws its element without the props it was given has none of it, so the Plot writes it all there.
       const first = slats[k].props.first;
       let w = node[WROTE];
-      if (w === undefined) w = node[WROTE] = { p: first.p, rid: first.rid, tab: first.tab };
+      if (w === undefined) {
+        const placed = first.p == null ? node.hidden : node.style.getPropertyValue("--rhp-position") !== "";
+        w = placed
+          ? { p: first.p, row: first.row, tab: first.tab, own: first.own, dir: null }
+          : { p: NaN, row: NaN, tab: NaN, own: node.id !== "", dir: "" };
+        node[WROTE] = w;
+      }
+      if (w.dir !== null && w.dir !== dir) {
+        node.setAttribute("data-rhp-o", dir);
+        if (scope) node.setAttribute("data-rhp-slat", scope);
+        if (list && !node.hasAttribute("role")) node.setAttribute("role", "listitem");
+        w.dir = dir;
+      }
       if (w.p !== q) {
         node.hidden = q == null;
         if (q != null) node.style.setProperty("--rhp-position", q);
@@ -369,23 +387,19 @@ export function usePlot(props, role) {
         node.tabIndex = tab;
         w.tab = tab;
       }
-      // The id aria-owns lists the row by, unless the root has one of its own
-      const rid = reordered ? `rhp-${uid}-${r}` : undefined;
-      if (w.rid !== rid && !first.own) {
-        if (rid) node.id = rid;
+      // The id aria-owns lists the row by (rhp-<Plot>-<row>), unless the root has one of its own
+      const own = w.dir === null ? first.own : w.own;
+      const row = reordered ? r : -1;
+      if (w.row !== row && !own) {
+        if (row >= 0) node.id = `rhp-${uid}-${row}`;
         else node.removeAttribute("id");
-        w.rid = rid;
+        w.row = row;
       }
+      if (own) owned = true;
     }
 
     // A slat root with an id of its own is listed in aria-owns by that id
-    if (owns !== undefined) {
-      let ownIds = false;
-      for (let k = 0; k < count; k++) {
-        if (kids[k].id !== `rhp-${uid}-${now.rowOfChild(k)}`) ownIds = true;
-      }
-      if (ownIds) el.setAttribute("aria-owns", now.shown.map((r) => kids[now.childOf(r)].id).join(" "));
-    }
+    if (owns !== undefined && owned) el.setAttribute("aria-owns", shown.map((r) => kids[now.childOf(r)].id).join(" "));
 
     if (keyboard && s.had) {
       s.had = false;
@@ -449,6 +463,7 @@ export function usePlot(props, role) {
 }
 
 const ALL = { all: true };
+const NO_LAYOUT = {};
 
 // A style without its undefined values, which React would write as "" (a call for nothing)
 export const defined = (st) => {
@@ -499,7 +514,7 @@ function state() {
       e.preventDefault();
 
       const now = s.now;
-      const list = now.shown;
+      const list = now.shown ?? range(now.n);
       const k = list.indexOf(now.rowOfChild(Array.prototype.indexOf.call(el.children, e.target)));
       const r = list[Math.min(Math.max(k + step, 0), list.length - 1)];
 
