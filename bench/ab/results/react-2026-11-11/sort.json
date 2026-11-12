@@ -1,0 +1,631 @@
+{
+  "engine": "chromium",
+  "browser": "153.0.8010.12",
+  "protocol": "update:sort",
+  "rounds": 8,
+  "target": null,
+  "maxRounds": 8,
+  "warm": 4,
+  "dpr": 1,
+  "clock": "thread",
+  "query": "",
+  "variants": [
+    "base",
+    "base~aa",
+    "react"
+  ],
+  "scenarios": [
+    "bars1000"
+  ],
+  "bundles": {
+    "base": {
+      "variant": "base",
+      "about": "rhp as it is",
+      "src": "/Users/anasb/repositories/rhp/src",
+      "sha256": "dd767809c8de39f4",
+      "bytes": 105558
+    },
+    "base~aa": {
+      "variant": "base",
+      "about": "rhp as it is",
+      "src": "/Users/anasb/repositories/rhp/src",
+      "sha256": "dd767809c8de39f4",
+      "bytes": 105558
+    },
+    "react": {
+      "variant": "react",
+      "about": "rhp-react, the React version, drawing the same charts on rhp's shared core",
+      "src": "/Users/anasb/repositories/rhp/src",
+      "sha256": "7fd53388245fc7a2",
+      "bytes": 310500
+    }
+  },
+  "reduce": "min",
+  "quietShare": 0,
+  "start": {
+    "at": "2026-11-12T06:56:34.145Z",
+    "load": [
+      3.08,
+      2.49,
+      2.7
+    ],
+    "idleSinceLast": 66.1,
+    "cpuSpeedLimit": 100,
+    "thermalWarning": null,
+    "power": "battery",
+    "lowPower": false
+  },
+  "machine": [
+    {
+      "scenario": "bars1000",
+      "round": 0,
+      "at": "2026-11-12T06:56:34.165Z",
+      "load": [
+        3.08,
+        2.49,
+        2.7
+      ],
+      "idleSinceLast": 43.5,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 19.574999809265137
+    },
+    {
+      "scenario": "bars1000",
+      "round": 1,
+      "at": "2026-11-12T06:56:49.742Z",
+      "load": [
+        2.71,
+        2.44,
+        2.68
+      ],
+      "idleSinceLast": 68,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 21.950000762939453
+    },
+    {
+      "scenario": "bars1000",
+      "round": 2,
+      "at": "2026-11-12T06:57:05.364Z",
+      "load": [
+        2.54,
+        2.42,
+        2.66
+      ],
+      "idleSinceLast": 61.9,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 18.050000190734863
+    },
+    {
+      "scenario": "bars1000",
+      "round": 3,
+      "at": "2026-11-12T06:57:20.838Z",
+      "load": [
+        2.41,
+        2.39,
+        2.65
+      ],
+      "idleSinceLast": 71.4,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 23.994999885559082
+    },
+    {
+      "scenario": "bars1000",
+      "round": 4,
+      "at": "2026-11-12T06:57:36.421Z",
+      "load": [
+        3.69,
+        2.7,
+        2.76
+      ],
+      "idleSinceLast": 47.8,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 22.510000228881836
+    },
+    {
+      "scenario": "bars1000",
+      "round": 5,
+      "at": "2026-11-12T06:57:51.982Z",
+      "load": [
+        3.32,
+        2.67,
+        2.74
+      ],
+      "idleSinceLast": 51.7,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 19.539999961853027
+    },
+    {
+      "scenario": "bars1000",
+      "round": 6,
+      "at": "2026-11-12T06:58:07.546Z",
+      "load": [
+        3.12,
+        2.65,
+        2.74
+      ],
+      "idleSinceLast": 56,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 24.890000343322754
+    },
+    {
+      "scenario": "bars1000",
+      "round": 7,
+      "at": "2026-11-12T06:58:23.343Z",
+      "load": [
+        2.71,
+        2.59,
+        2.71
+      ],
+      "idleSinceLast": 55.6,
+      "cpuSpeedLimit": 100,
+      "thermalWarning": null,
+      "power": "battery",
+      "lowPower": false,
+      "quiet": {
+        "waited": 0,
+        "met": null
+      },
+      "canary": 25.80500030517578
+    }
+  ],
+  "canary": [],
+  "samples": {
+    "bars1000": {
+      "base": [
+        {
+          "first": 24.210000038146973,
+          "second": 9.412499904632568,
+          "frames": 157.61500120162964,
+          "peak": 24.210000038146973,
+          "busy": 20,
+          "task": 168.54500000000007,
+          "script": 3.035499999999998,
+          "style": 40.2135,
+          "layout": 7.441,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.0184999999998936,
+          "idle": 87,
+          "load": 2.84
+        },
+        {
+          "first": 21.260000228881836,
+          "second": 8.930000305175781,
+          "frames": 155.81249856948853,
+          "peak": 21.260000228881836,
+          "busy": 20,
+          "task": 167.5475,
+          "script": 2.9034999999999997,
+          "style": 38.968,
+          "layout": 7.73,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.08050000000001112,
+          "idle": 82.9,
+          "load": 2.54
+        },
+        {
+          "first": 22.87249994277954,
+          "second": 9.269999980926514,
+          "frames": 154.01749849319458,
+          "peak": 22.87249994277954,
+          "busy": 20,
+          "task": 165.17100000000002,
+          "script": 3.2159999999999984,
+          "style": 38.689,
+          "layout": 7.7935,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.054999999999999494,
+          "idle": 85.8,
+          "load": 2.45
+        },
+        {
+          "first": 23.052500247955322,
+          "second": 9.542500019073486,
+          "frames": 158.92500066757202,
+          "peak": 23.052500247955322,
+          "busy": 20,
+          "task": 170.87600000000003,
+          "script": 3.4190000000000005,
+          "style": 41.3275,
+          "layout": 8.323499999999997,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.04499999999994786,
+          "idle": 73.4,
+          "load": 3.75
+        },
+        {
+          "first": 16.77500009536743,
+          "second": 8.942500114440918,
+          "frames": 166.85749864578247,
+          "peak": 16.77500009536743,
+          "busy": 20,
+          "task": 179.514,
+          "script": 2.789999999999999,
+          "style": 40.0355,
+          "layout": 9.32,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.15599999999998948,
+          "idle": 71.2,
+          "load": 3.69
+        },
+        {
+          "first": 25.052499771118164,
+          "second": 9.672500610351562,
+          "frames": 160.37999868392944,
+          "peak": 25.052499771118164,
+          "busy": 20,
+          "task": 172.25249999999997,
+          "script": 3.259999999999999,
+          "style": 41.8895,
+          "layout": 7.846000000000002,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.03700000000000925,
+          "idle": 84.7,
+          "load": 3.13
+        },
+        {
+          "first": 27.46500015258789,
+          "second": 9.487499713897705,
+          "frames": 161.8300004005432,
+          "peak": 27.46500015258789,
+          "busy": 20,
+          "task": 172.363,
+          "script": 4.251000000000001,
+          "style": 43.2615,
+          "layout": 8.039,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.03349999999997799,
+          "idle": 82.8,
+          "load": 3.12
+        },
+        {
+          "first": 27.737499713897705,
+          "second": 9.107499599456787,
+          "frames": 158.49000024795532,
+          "peak": 27.737499713897705,
+          "busy": 20,
+          "task": 169.03500000000003,
+          "script": 4.363499999999999,
+          "style": 42.71199999999999,
+          "layout": 7.25,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.026500000000012625,
+          "idle": 87.8,
+          "load": 2.76
+        }
+      ],
+      "base~aa": [
+        {
+          "first": 22.732500076293945,
+          "second": 8.970000267028809,
+          "frames": 156.8874979019165,
+          "peak": 22.732500076293945,
+          "busy": 20,
+          "task": 168.07550000000003,
+          "script": 3.171500000000001,
+          "style": 40.17699999999999,
+          "layout": 7.4265,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.04400000000001625,
+          "idle": 87,
+          "load": 2.77
+        },
+        {
+          "first": 23.817500114440918,
+          "second": 9.052500247955322,
+          "frames": 163.16250038146973,
+          "peak": 23.817500114440918,
+          "busy": 20,
+          "task": 175.488,
+          "script": 3.3474999999999997,
+          "style": 43.158,
+          "layout": 8.887,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.0734999999999486,
+          "idle": 79.3,
+          "load": 2.65
+        },
+        {
+          "first": 21.512500286102295,
+          "second": 8.494999885559082,
+          "frames": 151.3325023651123,
+          "peak": 21.512500286102295,
+          "busy": 20,
+          "task": 162.8365,
+          "script": 2.8719999999999994,
+          "style": 38.910999999999994,
+          "layout": 7.499999999999998,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.05250000000006638,
+          "idle": 86.8,
+          "load": 2.41
+        },
+        {
+          "first": 16.56749963760376,
+          "second": 8.107499599456787,
+          "frames": 146.39999914169312,
+          "peak": 16.56749963760376,
+          "busy": 20,
+          "task": 158.68750000000006,
+          "script": 2.2944999999999993,
+          "style": 34.17100000000001,
+          "layout": 7.549999999999999,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.07799999999996698,
+          "idle": 83.2,
+          "load": 3.9
+        },
+        {
+          "first": 22.407500743865967,
+          "second": 8.955000400543213,
+          "frames": 158.4625015258789,
+          "peak": 22.407500743865967,
+          "busy": 20,
+          "task": 170.051,
+          "script": 2.8150000000000013,
+          "style": 40.31999999999999,
+          "layout": 7.940999999999999,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.06449999999996736,
+          "idle": 84.2,
+          "load": 3.44
+        },
+        {
+          "first": 26.829999446868896,
+          "second": 9.257499694824219,
+          "frames": 160.17000007629395,
+          "peak": 26.829999446868896,
+          "busy": 20,
+          "task": 171.01999999999995,
+          "script": 3.9270000000000036,
+          "style": 42.5515,
+          "layout": 7.555,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.03549999999999387,
+          "idle": 86.2,
+          "load": 3.32
+        },
+        {
+          "first": 23.43000030517578,
+          "second": 8.985000133514404,
+          "frames": 159.0199990272522,
+          "peak": 23.43000030517578,
+          "busy": 20,
+          "task": 170.3745,
+          "script": 3.0090000000000012,
+          "style": 39.8645,
+          "layout": 7.964500000000001,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.10700000000002374,
+          "idle": 79.1,
+          "load": 3.03
+        },
+        {
+          "first": 25.15999984741211,
+          "second": 9.384999752044678,
+          "frames": 158.73250007629395,
+          "peak": 25.15999984741211,
+          "busy": 20,
+          "task": 169.69449999999995,
+          "script": 3.636499999999999,
+          "style": 42.16049999999997,
+          "layout": 7.670999999999999,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.09350000000002412,
+          "idle": 82.3,
+          "load": 2.65
+        }
+      ],
+      "react": [
+        {
+          "first": 21.602499961853027,
+          "second": 8.712500095367432,
+          "frames": 151.7549991607666,
+          "peak": 21.602499961853027,
+          "busy": 20,
+          "task": 171.11399999999998,
+          "script": 7.7795000000000005,
+          "style": 38.833,
+          "layout": 7.631,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.0980000000000425,
+          "idle": 82.2,
+          "load": 2.77
+        },
+        {
+          "first": 20.605000019073486,
+          "second": 9.332499980926514,
+          "frames": 153.66250085830688,
+          "peak": 20.605000019073486,
+          "busy": 20,
+          "task": 173.9074999999999,
+          "script": 7.306,
+          "style": 39.26050000000001,
+          "layout": 8.6375,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.16400000000013626,
+          "idle": 81,
+          "load": 2.68
+        },
+        {
+          "first": 23.382500171661377,
+          "second": 9.097500324249268,
+          "frames": 162.32000303268433,
+          "peak": 23.382500171661377,
+          "busy": 20,
+          "task": 184.3594999999999,
+          "script": 7.7524999999999995,
+          "style": 43.64999999999999,
+          "layout": 8.359999999999998,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.023500000000009624,
+          "idle": 85.8,
+          "load": 2.66
+        },
+        {
+          "first": 21.477499961853027,
+          "second": 9.522500038146973,
+          "frames": 155.21999979019165,
+          "peak": 21.477499961853027,
+          "busy": 20,
+          "task": 175.85750000000002,
+          "script": 7.300500000000001,
+          "style": 39.672000000000004,
+          "layout": 8.231,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.11299999999997423,
+          "idle": 74.3,
+          "load": 2.94
+        },
+        {
+          "first": 19.69749927520752,
+          "second": 8.947499752044678,
+          "frames": 156.9125018119812,
+          "peak": 19.69749927520752,
+          "busy": 20,
+          "task": 177.54600000000005,
+          "script": 7.041999999999996,
+          "style": 38.471000000000004,
+          "layout": 8.02,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.065000000000065,
+          "idle": 79.6,
+          "load": 3.47
+        },
+        {
+          "first": 26.56999969482422,
+          "second": 9.045000076293945,
+          "frames": 156.14999961853027,
+          "peak": 26.56999969482422,
+          "busy": 20,
+          "task": 176.2535,
+          "script": 8.763,
+          "style": 41.655,
+          "layout": 7.474500000000001,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.019000000000019,
+          "idle": 82.8,
+          "load": 3.04
+        },
+        {
+          "first": 25.322500228881836,
+          "second": 10.797499656677246,
+          "frames": 174.7849998474121,
+          "peak": 25.322500228881836,
+          "busy": 19,
+          "task": 199.23199999999997,
+          "script": 8.189000000000002,
+          "style": 46.623999999999995,
+          "layout": 9.374000000000002,
+          "styleCount": 19,
+          "layoutCount": 18,
+          "wait": 0.12449999999997186,
+          "idle": 69.6,
+          "load": 2.95
+        },
+        {
+          "first": 27.07499933242798,
+          "second": 9.019999980926514,
+          "frames": 157.52999830245972,
+          "peak": 27.07499933242798,
+          "busy": 20,
+          "task": 177.76199999999997,
+          "script": 8.618500000000004,
+          "style": 42.214999999999996,
+          "layout": 7.344499999999998,
+          "styleCount": 20,
+          "layoutCount": 19,
+          "wait": 0.045499999999920604,
+          "idle": 83.5,
+          "load": 2.65
+        }
+      ]
+    }
+  },
+  "census": {},
+  "errors": [],
+  "isolated": true,
+  "end": {
+    "at": "2026-11-12T06:58:38.859Z",
+    "load": [
+      2.78,
+      2.61,
+      2.71
+    ],
+    "idleSinceLast": 56.3,
+    "cpuSpeedLimit": 100,
+    "thermalWarning": null,
+    "power": "battery",
+    "lowPower": false
+  }
+}
