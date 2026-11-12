@@ -5,6 +5,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
+import { execFileSync } from "child_process";
 import { build } from "esbuild";
 import { chromium, webkit, firefox } from "playwright";
 import { cssText } from "../../build.mjs";
@@ -13,9 +14,26 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const RHP = path.resolve(here, "../../..");
 const out = path.join(here, "out");
 fs.mkdirSync(out, { recursive: true });
-const common = { bundle: true, jsx: "automatic", plugins: [cssText], logLevel: "warning", nodePaths: [path.join(RHP, "node_modules")] };
-await build({ ...common, entryPoints: [path.join(here, "server.jsx")], outfile: path.join(out, "server.mjs"), format: "esm", platform: "node", external: ["react", "react-dom"] });
-await build({ ...common, entryPoints: [path.join(here, "client.jsx")], outfile: path.join(out, "client.js"), format: "iife", platform: "browser", define: { "process.env.NODE_ENV": '"development"' } });
+// PACKAGE=1 draws the app with the package as an app installs it (@bezda/rhp-react, its exports: react/dist), instead of
+// rhp-react's source: Node loads it on the server, and the browser's bundle takes it in
+const PACKAGE = process.env.PACKAGE === "1";
+if (PACKAGE) {
+  execFileSync("node", [path.join(RHP, "react/build.mjs")], { stdio: "ignore" });
+  fs.mkdirSync(path.join(out, "node_modules/@bezda"), { recursive: true });
+  fs.rmSync(path.join(out, "node_modules/@bezda/rhp-react"), { force: true });
+  fs.symlinkSync(path.join(RHP, "react"), path.join(out, "node_modules/@bezda/rhp-react"), "dir");
+}
+const usePackage = (side) => ({
+  name: "package",
+  setup(b) {
+    if (!PACKAGE) return;
+    b.onResolve({ filter: /\/src\/index\.js$/ }, (a) => (side === "server" ? { path: "@bezda/rhp-react", external: true } : b.resolve("@bezda/rhp-react", { kind: a.kind, resolveDir: out })));
+  },
+});
+const common = { bundle: true, jsx: "automatic", logLevel: "warning", nodePaths: [path.join(RHP, "node_modules")] };
+await build({ ...common, plugins: [usePackage("server"), cssText], entryPoints: [path.join(here, "server.jsx")], outfile: path.join(out, "server.mjs"), format: "esm", platform: "node", external: ["react", "react-dom"] });
+await build({ ...common, plugins: [usePackage("browser"), cssText], entryPoints: [path.join(here, "client.jsx")], outfile: path.join(out, "client.js"), format: "iife", platform: "browser", define: { "process.env.NODE_ENV": '"development"' } });
+if (PACKAGE) console.log("with the package (@bezda/rhp-react, react/dist)");
 
 const { html } = await import(pathToFileURL(path.join(out, "server.mjs")) + "?" + Date.now());
 const body = html();
