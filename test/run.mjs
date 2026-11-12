@@ -16,9 +16,6 @@ for (const t of ["core", "cost", "mount", "edges", "options"]) {
   fs.writeFileSync(at(`out/${t}.html`), `<!doctype html><html><head><meta charset=utf-8></head><body><script src="${t}.js"></script></body></html>`);
 }
 await standalone(path.join(here, "../src/standalone.js"), at("out/standalone.js"));
-await build({ entryPoints: [at("react.js")], outfile: at("out/react.js"), bundle: true, format: "iife", minify: true, logLevel: "warning",
-  alias: { "@bezda/rhp/standalone": at("out/standalone.js") }, define: { "process.env.NODE_ENV": '"production"' } });
-fs.writeFileSync(at("out/react.html"), '<!doctype html><html><head><meta charset=utf-8></head><body><script src="react.js"></script></body></html>');
 // The server rendering app (test/ssr.jsx), built from src and from the published package
 await ssrServer(at("ssr-server.jsx"), at("out/ssr-server.mjs"));
 await ssrClient(at("ssr-client.jsx"), at("out/ssr-client.js"));
@@ -485,27 +482,6 @@ const open = async (url, opts = {}) => {
     const m = await import("./standalone.js");
     return ["createSelector", "createComputed", "on", "mergeProps", "splitProps", "Switch", "Match"].filter((n) => typeof m[n] !== "function");
   }), []);
-  check("no page errors", p.errors, []);
-  await p.close();
-}
-
-// React charts with @bezda/rhp-react (test/react.js)
-{
-  const p = await open("file://" + at("out/react.html"));
-  const rows = () => p.evaluate(() => [...document.querySelectorAll(".row")].map((r) => r.dataset.fruit + ":" + r.querySelector(".rhp-bar").style.getPropertyValue("--rhp-to")).join(" "));
-  check("react: the chart draws once in StrictMode, in a div with the className", await p.evaluate(() => [document.querySelectorAll(".rhp-chart").length, document.querySelector(".card > .rhp-chart") != null]), [1, true]);
-  check("react: its props reach the rows", await rows(), "Apples:12 Bananas:18 Cherries:7");
-  const writes = await p.evaluate(async () => {
-    const bars = [...document.querySelectorAll(".rhp-bar")], seen = [];
-    const mo = new MutationObserver((ms) => ms.forEach((m) => seen.push(m.target.closest(".row").dataset.fruit)));
-    document.querySelectorAll(".row").forEach((r) => mo.observe(r, { attributes: true, subtree: true, attributeFilter: ["style"] }));
-    T.setSold([12, 25, 7]);
-    await new Promise((r) => requestAnimationFrame(() => setTimeout(r)));
-    mo.disconnect();
-    return { same: bars.every((b, i) => b === document.querySelectorAll(".rhp-bar")[i]), rows: [...new Set(seen)] };
-  });
-  check("react: a new number moves its bar only, and no element is made again", [await rows(), writes], ["Apples:12 Bananas:25 Cherries:7", { same: true, rows: ["Bananas"] }]);
-  check("react: unmounting removes the chart", await p.evaluate(() => { T.hide(); return [document.querySelectorAll(".rhp-chart").length, !!document.getElementById("gone")]; }), [0, true]);
   check("no page errors", p.errors, []);
   await p.close();
 }

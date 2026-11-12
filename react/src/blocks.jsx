@@ -13,8 +13,9 @@ import { missing } from "../../src/data.js";
 import { short } from "../../src/layout.js";
 import { cls, tok, safeCssValue, cssTransition, there, areaSpan, areaPoints, areaPath, lineBox, linePoints, linePaths, BAR, DOT, PLACE, TICK, CELL, LABEL } from "../../src/marks.js";
 
-// The CSS variables an element is first drawn with: those with a value (a value a browser would reject is left out, so
-// a server leaves it out too), over its style prop
+// The CSS variables an element is first drawn with: those with a value. (React writes "" for a variable whose value is
+// undefined, a call for nothing on each element, and a value a browser would reject is left out, so a server leaves it
+// out too.)
 const firstStyle = (v) => {
 
   let out = null;
@@ -87,6 +88,17 @@ const MINE = ["className", "style", "ref", "children"];
 const GONE = { "data-rhp-missing": "" };
 const HERE = { "data-rhp-missing": undefined };
 
+// placed(key) reads a value that places the block, and notes whether it is missing (the block being drawn is `reading`)
+let reading = null;
+let gone = false;
+const placed = (key) => {
+
+  const v = reading[key];
+  if (missing(v) && key in reading) gone = true;
+
+  return v;
+};
+
 // A block type from its definition in marks.js: vars(p, vertical, placed) gives its CSS variables, reading each value
 // that places it with placed(key), and attrs(p, gone) its own attributes, data-rhp-missing among them.
 // placed() keeps whether a value the block was given is missing (null, undefined, NaN or infinite): such a block draws
@@ -100,12 +112,8 @@ function block({ base, own, vars, back, attrs }, name) {
 
     const { orientation, still } = useContext(Around);
 
-    let gone = false;
-    const placed = (key) => {
-      const v = props[key];
-      if (missing(v) && key in props) gone = true;
-      return v;
-    };
+    reading = props;
+    gone = false;
     const v = vars(props, orientation === "vertical", placed);
     const a = attrs ? attrs(props, gone) : gone ? GONE : HERE;
     const w = useWriter(v, a["data-rhp-missing"], still, props.style, props.ref);

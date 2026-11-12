@@ -7,12 +7,7 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "skipLibCheck": true,
-    "types": [],
-    "paths": {
-      "@bezda/rhp/standalone": [
-        "../../src/standalone.d.ts"
-      ]
-    }
+    "types": []
   },
   "files": [
     "react.tsx"

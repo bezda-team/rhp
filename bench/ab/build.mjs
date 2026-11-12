@@ -34,7 +34,9 @@ for (const name of names) {
   const plugin = {
     name: "variant",
     setup(b) {
-      b.onResolve({ filter: /^rhp$/ }, () => ({ path: path.join(src, "index.js") }));
+      // The React version (a variant with react: true) is rhp-react on this src's shared core, with the same charts
+      b.onResolve({ filter: /^rhp$/ }, () => ({ path: variant.react ? path.join(src, "../react/src/index.js") : path.join(src, "index.js") }));
+      b.onResolve({ filter: /^\.\/scenarios\.jsx$/ }, (a) => (variant.react ? { path: path.join(a.resolveDir, "scenarios-react.jsx") } : undefined));
       b.onLoad({ filter: /\.(jsx?|css)$/ }, async (a) => {
         const inRhp = a.path.startsWith(src + path.sep);
         if (!inRhp && !a.path.startsWith(here + path.sep)) return undefined;
@@ -45,6 +47,7 @@ for (const name of names) {
           text = applyEdits(variant, file, text);
         }
         if (file.endsWith(".css")) return { contents: (await transform(text, { loader: "css", minify: true })).code.trim(), loader: "text" };
+        if (file.endsWith(".jsx") && variant.react) return { contents: text, loader: "jsx" };
         if (file.endsWith(".jsx")) {
           const r = await transformAsync(text, { presets: [[solidPreset, {}]], filename: a.path, babelrc: false, configFile: false });
           return { contents: r.code, loader: "js" };
@@ -63,6 +66,9 @@ for (const name of names) {
     platform: "browser",
     target: "es2022",
     plugins: [plugin],
+    jsx: "automatic",
+    // One React for the React version (bench/ has a React of its own for the other libraries)
+    alias: { react: `${RHP}/node_modules/react`, "react-dom": `${RHP}/node_modules/react-dom` },
     define: { "process.env.NODE_ENV": '"production"' },
     nodePaths: [`${RHP}/node_modules`],
     logLevel: "error",

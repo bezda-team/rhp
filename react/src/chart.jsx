@@ -8,7 +8,7 @@
 import { Fragment, isValidElement, useContext, useEffect, useInsertionEffect, useLayoutEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore } from "react";
 import { jsx } from "react/jsx-runtime";
 import { Around, ThemeContext, isServer } from "./context.js";
-import { Plot, Scale, plotEntry } from "./plot.jsx";
+import { Plot, Scale, plotEntry, defined } from "./plot.jsx";
 import { mover, drawEachFrame, curveOf } from "./clock.js";
 import { ServerSheet, dropServerSheet } from "./sheets.jsx";
 import { useCore, useGutters, useCross, useRoot, watchRoot, checkLinked, useChartGuard, pageGuarded, sheetsFor } from "../../src/style.js";
@@ -154,9 +154,10 @@ export function Chart(props) {
   }
 
   // rhp's core CSS (and the guard, and the gutters' and the cross scale's rules when a chart first needs them) comes
-  // with the first chart in the page
+  // with the first chart in the page, before its elements are: rhp declares its layers before the page's first sheet,
+  // which must not be one of the chart's own (ManyDots has one)
+  if (!isServer) useCore();
   useInsertionEffect(() => {
-    useCore();
     dropServerSheet("rhp-core");
     dropServerSheet("rhp-guard");
     dropServerSheet("rhp-position");
@@ -185,7 +186,7 @@ export function Chart(props) {
     const el = s.el;
     useRoot(el);
     const unwatch = watchRoot(el);
-    const body = el.querySelector(".rhp-body");
+    const body = el.firstElementChild;
     if (body) checkLinked(body);
 
     let ro;
@@ -238,14 +239,19 @@ export function Chart(props) {
   const name = props.label ?? props["aria-label"];
   const figure = name != null || props["aria-labelledby"] != null ? props.role ?? "figure" : props.role;
 
-  s.first ??= s.scaleVars();
+  // The scale as first drawn, which the chart's element keeps in its style prop (and which it has written)
+  if (s.first === null) {
+    s.first = s.wrote = s.scaleVars();
+    s.notified = domain;
+    s.notifiedCross = cross;
+  }
   if (s.styleOf !== theme || s.styleVars !== arranged.vars || s.styleProp !== props.style || s.styleHeight !== props.height || s.styleAspect !== aspect) {
     s.styleOf = theme;
     s.styleVars = arranged.vars;
     s.styleProp = props.style;
     s.styleHeight = props.height;
     s.styleAspect = aspect;
-    s.rootStyle = { ...KNOBS, ...theme, ...arranged.vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-aspect": aspect, ...s.first };
+    s.rootStyle = defined({ ...KNOBS, ...theme, ...arranged.vars, ...props.style, "--rhp-height": px(props.height ?? 240), "--rhp-aspect": aspect, ...s.first });
   }
 
   const el = {
@@ -270,6 +276,8 @@ export function Chart(props) {
   el["data-rhp-cross"] = crossed ? "" : undefined;
   el.style = s.rootStyle;
   el.children = [
+    // On a server, the CSS the chart needs, before its Plots' (each slat type's sheet comes with its Plot)
+    isServer ? sheetsFor(NONE, arranged.gutters, crossed).map(([key, css]) => jsx(ServerSheet, { name: "rhp-" + key, css }, key)) : null,
     jsx("div", {
       className: "rhp-body",
       children: [
@@ -279,8 +287,6 @@ export function Chart(props) {
         arranged.crossAxis ? jsx(ChartAxis, { frame, cross: true, ticks: props.crossTicks, format: props.crossFormat, grid: props.crossGrid }, "cross") : null,
       ],
     }, "body"),
-    // On a server, the CSS the chart needs (each slat type's sheet comes with its Plot)
-    isServer ? sheetsFor(NONE, arranged.gutters, crossed).map(([key, css]) => jsx(ServerSheet, { name: "rhp-" + key, css }, key)) : null,
   ];
 
   return jsx(Around.Provider, { value: around, children: jsx("div", el) });

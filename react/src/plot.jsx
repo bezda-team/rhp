@@ -44,6 +44,17 @@ const VIEW = {
 
 const view = (p, i, ahead) => new Proxy({ p, i, ahead }, VIEW);
 
+// The same, noting each value read (in t.reads), so a function group's value is kept until one of them changes
+const NOTED = {
+  ...VIEW,
+  get: (t, key) => {
+    if (typeof key !== "string") return undefined;
+    const v = t.p.read(t.i, key, t.ahead);
+    t.reads.push(key, v);
+    return v;
+  },
+};
+
 // What a slat sees as d: its row's values as plain properties, with its row number (index) and its place (position)
 // read when they are read. A row whose values are all as they were keeps its d, so React doesn't draw its slat again,
 // and a row whose slat never read its index or position keeps it when only those change (when rows are sorted).
@@ -85,32 +96,29 @@ const keyOf = (id) => {
 };
 
 // A slat's root element, with what the Plot sets on it: its slat type's scope, its orientation, its place
-// (--rhp-position, or hidden), its role in the list, an id for aria-owns and its tab stop. React draws the place and
-// the tab stop as they are first, and the Plot writes them after that, so a row that only moves is not drawn again.
-function Slat({ d, root, rid, p, tab }) {
+// (--rhp-position, or hidden), its role in the list, an id for aria-owns and its tab stop. React draws the place, the id
+// and the tab stop as they were when the slat was first drawn (first, which the Plot keeps for each slat), and the Plot
+// writes them after that, so a row that only moves (or is sorted for the first time) is not drawn again.
+function Slat({ d, root, first }) {
 
-  const own = useRef(null);
   const el = root.fn(d);
   if (!isValidElement(el) || el.type === Fragment) throw new Error("rhp: a slat must return one element");
 
-  let s = own.current;
-  // A slat whose root became another element is drawn with its place as it is now
-  if (s === null || s.type !== el.type) s = own.current = { type: el.type, p, tab, style: undefined, base: undefined };
-
   const props = el.props;
-  if (s.base !== props.style || s.style === undefined) {
-    s.base = props.style;
-    s.style = s.p == null ? props.style ?? null : { ...props.style, "--rhp-position": s.p };
+  first.own = !!props.id; // a root with an id of its own keeps it
+  if (first.base !== props.style || first.style === undefined) {
+    first.base = props.style;
+    first.style = first.p == null ? props.style ?? null : { ...props.style, "--rhp-position": first.p };
   }
 
   return cloneElement(el, {
     "data-rhp-slat": root.scope,
     "data-rhp-o": root.dir,
-    hidden: s.p == null,
+    hidden: first.p == null ? true : undefined,
     role: props.role ?? (root.list ? "listitem" : undefined),
-    id: props.id || rid,
-    tabIndex: root.keyboard ? s.tab : props.tabIndex,
-    style: s.style ?? undefined,
+    id: props.id || first.rid,
+    tabIndex: root.keyboard ? first.tab : props.tabIndex,
+    style: first.style ?? undefined,
   });
 }
 
@@ -195,7 +203,7 @@ export function usePlot(props, role) {
   const idOf = ids ? (i) => ids[i] : (i) => i;
   const rowOfId = ids ? (id) => rowOf.get(id) : (id) => id;
   p.idOf = idOf;
-  if (js && (ids !== s.ids || n !== s.n || anim !== s.wasAnim)) prune(s, ids, n, anim);
+  if (ids !== s.ids || n !== s.n || anim !== s.wasAnim) prune(s, ids, n, anim);
   if (!js) s.movers = {};
   s.wasAnim = anim;
   s.ids = ids;
@@ -216,7 +224,9 @@ export function usePlot(props, role) {
     for (let i = 0; i < n; i++) {
       views[i] = view(p, i, lead);
     }
+    p.done = new Map();
     positions = order(views, current);
+    p.done = new Map();
   } else if (order != null) {
     positions = new Array(n);
     for (let i = 0; i < n; i++) {
@@ -281,6 +291,7 @@ export function usePlot(props, role) {
   const count = drawn ? drawn.length : n;
   const entries = new Map();
   const els = new Map();
+  const firsts = new Map(); // React key -> the place and tab stop its slat was first drawn with
   const slats = new Array(count);
   const sig = p.sig();
 
@@ -296,17 +307,20 @@ export function usePlot(props, role) {
     const base = action === "refill" ? k : keyOf(id);
     const reactKey = still ? base + "~" + keyOf(id) + "~" + e.ver : base;
     const rid = reordered ? `rhp-${uid}-${i}` : undefined;
-    const tab = keyboard ? (id === stop ? 0 : -1) : undefined;
+    let first = s.firsts?.get(reactKey);
+    if (first === undefined) first = { p: posOf(i), rid, tab: keyboard ? (id === stop ? 0 : -1) : undefined, own: false, style: undefined, base: undefined };
     let el = s.els?.get(reactKey);
-    if (el === undefined || el.props.d !== e.d || el.props.root !== root || el.props.rid !== rid) {
-      el = jsx(Slat, { d: e.d, root, rid, p: posOf(i), tab }, reactKey);
+    if (el === undefined || el.props.d !== e.d || el.props.root !== root || el.props.first !== first) {
+      el = jsx(Slat, { d: e.d, root, first }, reactKey);
     }
+    firsts.set(reactKey, first);
     els.set(reactKey, el);
     slats[k] = el;
   }
 
   s.entries = entries;
   s.els = els;
+  s.firsts = firsts;
 
   // What the handlers and the writes below need of this drawing
   const childOf = drawn ? new Map(drawn.map((r, k) => [r, k])) : null;
@@ -342,11 +356,10 @@ export function usePlot(props, role) {
       const r = now.rowOfChild(k);
       const q = posOf(r);
       const tab = keyboard ? (idOf(r) === stop ? 0 : -1) : undefined;
-      const w = node[WROTE];
-      if (w === undefined) {
-        node[WROTE] = { p: q, tab };
-        continue;
-      }
+      // A root new to the page has the place and tab stop its slat was first drawn with
+      const first = slats[k].props.first;
+      let w = node[WROTE];
+      if (w === undefined) w = node[WROTE] = { p: first.p, rid: first.rid, tab: first.tab };
       if (w.p !== q) {
         node.hidden = q == null;
         if (q != null) node.style.setProperty("--rhp-position", q);
@@ -355,6 +368,13 @@ export function usePlot(props, role) {
       if (tab !== undefined && w.tab !== tab) {
         node.tabIndex = tab;
         w.tab = tab;
+      }
+      // The id aria-owns lists the row by, unless the root has one of its own
+      const rid = reordered ? `rhp-${uid}-${r}` : undefined;
+      if (w.rid !== rid && !first.own) {
+        if (rid) node.id = rid;
+        else node.removeAttribute("id");
+        w.rid = rid;
       }
     }
 
@@ -408,7 +428,7 @@ export function usePlot(props, role) {
       "data-rhp-reorder": action,
       "data-rhp-overlap": props.overlap ? "" : undefined,
       "data-rhp-animate": js ? "js" : undefined,
-      style: {
+      style: defined({
         ...props.style,
         "--rhp-n": extent,
         "--rhp-pitch": nested ? undefined : px(pick(layout.thickness, orientation)),
@@ -417,7 +437,7 @@ export function usePlot(props, role) {
         "--rhp-slide-time": slideMs == null ? undefined : slideMs + "ms",
         "--rhp-length-time": anim?.duration == null ? undefined : anim.duration + "ms",
         "--rhp-length-ease": cssCurve(anim?.ease),
-      },
+      }),
       onKeyDown: keyboard ? s.onKey : undefined,
       onFocus: keyboard ? s.onFocus : undefined,
       children: [
@@ -430,6 +450,16 @@ export function usePlot(props, role) {
 
 const ALL = { all: true };
 
+// A style without its undefined values, which React would write as "" (a call for nothing)
+export const defined = (st) => {
+
+  for (const key in st) {
+    if (st[key] == null) delete st[key];
+  }
+
+  return st;
+};
+
 // Whether a group moves in the JS version: every group, or those listed (animate={["value"]} or { groups })
 const movesAll = (anim) => anim.all || anim.groups == null;
 
@@ -440,9 +470,11 @@ function state() {
     ticker: ticker(),
     anim: null,
     movers: {}, // JS version: group -> id -> its mover
+    worked: new Map(), // group -> id -> a function group's value for that row, and what it read
     wasAnim: null,
     entries: new Map(), // id -> what its slat was drawn from
     els: null,
+    firsts: null,
     positions: null,
     ids: null,
     rowOf: null,
@@ -492,10 +524,20 @@ function state() {
   return s;
 }
 
-// JS version: forget the movers of ids that are gone and of groups that stopped animating
+// Forget what was kept for ids that are gone: function groups' values, and in the JS version the movers of those ids
+// and of groups that stopped animating
 function prune(s, ids, n, anim) {
 
   const live = ids ? new Set(ids) : null;
+
+  for (const [key, forGroup] of s.worked) {
+    for (const id of forGroup.keys()) {
+      if (live ? !live.has(id) : id >= n) forGroup.delete(id);
+    }
+    if (!forGroup.size) s.worked.delete(key);
+  }
+
+  if (!anim) return;
 
   for (const key in s.movers) {
     if (!(movesAll(anim) || anim.groups.includes(key))) {
@@ -516,11 +558,11 @@ function pass(s, props, groups, rows, n, anim) {
 
   const isGroup = new Set(groups);
   const moving = anim == null ? null : movesAll(anim) ? () => true : (key) => anim.groups.includes(key);
-  const done = new Map(); // ahead -> group -> each row's value of a function group
-
   const p = {
     idOf: null,
     positions: null,
+    // ahead -> group -> each row's value of a function group in this drawing (an order is worked out with its own)
+    done: new Map(),
 
     raw(key, i) {
       if (isGroup.has(key)) return at(props[key], i);
@@ -539,15 +581,39 @@ function pass(s, props, groups, rows, n, anim) {
       return m(v, ahead);
     },
 
-    // A function group's value for row i, worked out once per drawing
+    // A function group's value for row i, worked out once per drawing. The value a slat sees is also kept from one
+    // drawing to the next with what the function read, and the function runs again only when it is another function or
+    // one of those values changed: only the rows whose values it reads changed work it out again.
     fn(key, i, ahead) {
-      let forAhead = done.get(ahead);
-      if (!forAhead) done.set(ahead, (forAhead = new Map()));
+      let forAhead = p.done.get(ahead);
+      if (!forAhead) p.done.set(ahead, (forAhead = new Map()));
       let values = forAhead.get(key);
       if (!values) forAhead.set(key, (values = new Array(n)));
-      if (!(i in values)) values[i] = props[key](view(p, i, ahead));
+      if (i in values) return values[i];
 
-      return values[i];
+      const f = props[key];
+      if (ahead !== 0) return (values[i] = f(view(p, i, ahead)));
+
+      const id = p.idOf(i);
+      let forGroup = s.worked.get(key);
+      const kept = forGroup?.get(id);
+      if (kept && kept.f === f && p.still(i, kept.reads)) return (values[i] = kept.value);
+
+      const t = { p, i, ahead, reads: [] };
+      const value = f(new Proxy(t, NOTED));
+      if (!forGroup) s.worked.set(key, (forGroup = new Map()));
+      forGroup.set(id, { f, reads: t.reads, value });
+
+      return (values[i] = value);
+    },
+
+    // Whether the values a function read for row i (key, value, key, value...) are all as they were
+    still(i, reads) {
+      for (let k = 0; k < reads.length; k += 2) {
+        if (!Object.is(p.read(i, reads[k], 0), reads[k + 1])) return false;
+      }
+
+      return true;
     },
 
     read(i, key, ahead) {

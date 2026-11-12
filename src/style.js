@@ -9,7 +9,7 @@ import MANYDOTS from "./manydots.css";
 import GUTTERS from "./gutters.css";
 import CROSS from "./cross.css";
 
-const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";
+export const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";
 
 // @keyframes and descriptor at-rules (@font-face, @property...) can't take !important (it makes them invalid)
 const DESCRIPTORS = /^@(-webkit-)?keyframes\b|^@(font-face|property|counter-style|font-palette-values|font-feature-values|view-transition|position-try)\b/i;
