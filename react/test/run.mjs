@@ -335,6 +335,34 @@ const moving = await p.evaluate(async () => {
 check("useAnimated: an app's own value moves to its new value over its duration, frame by frame, and ends on it",
   [moving.some((v) => v > 0 && v < 100), moving.every((v, i) => i === 0 || v >= moving[i - 1]), moving.at(-1)], [true, true, 100]);
 
+// The JS version frame by frame: a race where c passes a and b, and e passes d, while b's value and the others' stay
+const race = await p.evaluate(async () => {
+  const read = () => [...document.querySelectorAll(".race .rhp-plot > *")].map((e) => ({
+    n: e.dataset.n,
+    p: +e.style.getPropertyValue("--rhp-position"),
+    bar: +e.querySelector(".rhp-bar").style.getPropertyValue("--rhp-to"),
+    label: +e.querySelector(".rv").textContent,
+  }));
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const before = { ...T.renders };
+  T.setRace([50, 40, 90, 5, 25]);
+  const frames = [];
+  for (let i = 0; i < 40; i++) {
+    await new Promise((r) => requestAnimationFrame(r));
+    frames.push(read());
+  }
+  const drawn = Object.fromEntries(["a", "b", "c", "d", "e"].map((k) => [k, (T.renders["race-" + k] ?? 0) - (before["race-" + k] ?? 0)]));
+  return { frames, drawn };
+});
+const last = race.frames.at(-1);
+check("JS version: in every frame a slat's label shows the value its bar is at (both read the same in-between value)",
+  race.frames.every((f) => f.every((r) => Math.abs(r.label - r.bar) <= 0.5)), true);
+check("JS version: in every frame the rows are in one place each", race.frames.every((f) => f.map((r) => r.p).sort().join() === "0,1,2,3,4"), true);
+check("JS version: values move between frames, and the race ends on the new values in their new order",
+  [race.frames.some((f) => f.find((r) => r.n === "c").bar > 30 && f.find((r) => r.n === "c").bar < 90), last.map((r) => r.n + r.bar + "@" + r.p).join(" ")],
+  [true, "a50@1 b40@2 c90@0 d5@4 e25@3"]);
+check("JS version: only the slats whose values move are drawn in its frames", [race.drawn.a, race.drawn.b, race.drawn.c > 5, race.drawn.d > 5, race.drawn.e > 5], [0, 0, true, true, true]);
+
 // What a screen reader gets, from Chromium's accessibility tree
 if (ENGINE === "chromium") {
   const cdp = await p.context().newCDPSession(p);

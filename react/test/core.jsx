@@ -102,6 +102,9 @@ function Toggle(d) {
   return <div data-n={d.name} data-on={on ? "" : undefined} onClick={() => setOn((x) => !x)}><Bar to={d.v} /></div>;
 }
 const Clicked = (d) => <div data-n={d.name} onClick={() => (T.clicked = d.index + ":" + d.position)}><Bar to={d.v} /></div>;
+// A race in the JS version: values move frame by frame, rows pass each other, and a slat reads its moving value
+const Runner = (d) => (count("race-" + d.name), <div data-n={d.name}><Bar to={d.v} /><Label at={d.v} className="rv">{Math.round(d.v)}</Label></div>);
+
 // What a screen reader gets
 const Sold = (d) => <div><Label edge="start">{d.name}</Label><Bar to={d.sold} /><Label at={d.sold}>{d.sold}</Label></div>;
 const Owned = (d) => <div role="group" id={"own-" + d.index}><Bar to={d.v} /></div>;
@@ -144,6 +147,7 @@ function App() {
   const people = useT("People", [{ name: "A", v: 1 }, { name: "B", v: 2 }, { name: "C", v: 3 }]);
   const unrelated = useT("Unrelated", 0);
   const a11ySold = useT("A11ySold", [12, 18, 7, 22]);
+  const race = useT("Race", [50, 40, 30, 20, 10]);
 
   return (
     <div>
@@ -232,6 +236,7 @@ function App() {
       <Chart className="hooked" scale={[0, 40]}><Plot name={["a", "b"]} v={[10, 20]}>{Toggle}</Plot></Chart>
       <Chart className="clicked" scale={[0, 40]}><Plot rowKey="name" rows={people} order={sortBy("v", "desc")}>{Clicked}</Plot></Chart>
       <Moving />
+      <Chart className="race" scale={[0, 100]} animate={{ duration: 400 }}><Plot name={["a", "b", "c", "d", "e"]} v={race} order={sortBy("v", "desc")}>{Runner}</Plot></Chart>
       <Chart className="a11y-fruit" label="Fruit sold this week" scale={[0, 30]}><Plot name={["Apples", "Bananas", "Cherries", "Kiwis"]} sold={a11ySold} order={sortBy("sold", "desc")}>{Sold}</Plot></Chart>
       <Chart className="a11y-keyed" orientation="vertical" scale={[0, 30]}><Plot rowKey="name" rows={[{ name: "Apples", sold: 20 }, { name: "Bananas", sold: 5 }, { name: "Cherries", sold: 10 }]} order={sortBy("sold", "desc")}>{Sold}</Plot></Chart>
       <Chart className="a11y-own"><Plot v={[3, 6]}>{Owned}</Plot><Plot overlap v={[2, 4]}>{(d) => <div><Dot at={d.v} /></div>}</Plot></Chart>

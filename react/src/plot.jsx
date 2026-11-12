@@ -239,6 +239,7 @@ export function usePlot(props, role) {
     }
   }
   if (positions && s.positions && same(positions, s.positions)) positions = s.positions;
+  const moved = positions !== s.positions;
   s.positions = positions;
   p.positions = positions;
 
@@ -294,20 +295,10 @@ export function usePlot(props, role) {
   // move in the page with their rows. Refill: slot k shows whichever row is k-th.
   const drawn = action === "slide" || !shown ? null : shown; // the row each slat root shows, when not row k at k
   const count = drawn ? drawn.length : n;
-  const entries = new Map();
-  const els = new Map();
-  const firsts = new Map(); // React key -> the place and tab stop its slat was first drawn with
-  const slats = new Array(count);
   const sig = p.sig();
 
-  for (let k = 0; k < count; k++) {
-    const i = drawn ? drawn[k] : k;
-    const id = idOf(i);
-    let e = entries.get(id);
-    if (e === undefined) {
-      e = entry(s, p, sig, i, id, posOf(i), still);
-      entries.set(id, e);
-    }
+  // A slat of row i, made again only when it shows something new
+  const slatOf = (k, i, id, e, entries, els, firsts) => {
     // A static row that changed is drawn anew, under a new key
     const base = action === "refill" ? k : keyOf(id);
     const reactKey = still ? base + "~" + keyOf(id) + "~" + e.ver : base;
@@ -319,9 +310,55 @@ export function usePlot(props, role) {
     }
     firsts.set(reactKey, first);
     els.set(reactKey, el);
-    slats[k] = el;
+    return el;
+  };
+
+  // JS version: in a frame where only the clock moved (the Plot is drawn again with the props it had), only the rows
+  // whose values move are worked out again, and those whose slat reads a position that changed
+  const fast = js && !still && action === "slide" && props === s.drawnWith && around === s.around && root === s.drawnRoot && sig === s.sig && s.slats !== null;
+  let entries, els, firsts, slats;
+
+  if (fast) {
+    entries = s.entries;
+    els = s.els;
+    firsts = s.firsts;
+    slats = s.slats.slice();
+    const again = s.live;
+    if (moved) {
+      for (const [id, e] of entries) {
+        if (e.reads & 2 && e.p !== posOf(e.i)) again.add(id);
+      }
+    }
+    for (const id of again) {
+      const i = rowOfId(id);
+      if (i == null || i >= n) continue;
+      const e = entry(s, p, sig, i, id, posOf(i), still);
+      entries.set(id, e);
+      slats[i] = slatOf(i, i, id, e, entries, els, firsts);
+    }
+  } else {
+    entries = new Map();
+    els = new Map();
+    firsts = new Map(); // React key -> the place and tab stop its slat was first drawn with
+    slats = new Array(count);
+    for (let k = 0; k < count; k++) {
+      const i = drawn ? drawn[k] : k;
+      const id = idOf(i);
+      let e = entries.get(id);
+      if (e === undefined) {
+        e = entry(s, p, sig, i, id, posOf(i), still);
+        entries.set(id, e);
+      }
+      slats[k] = slatOf(k, i, id, e, entries, els, firsts);
+    }
   }
 
+  s.live = p.live;
+  s.slats = slats;
+  s.drawnWith = props;
+  s.around = around;
+  s.drawnRoot = root;
+  s.sig = sig;
   s.entries = entries;
   s.els = els;
   s.firsts = firsts;
@@ -490,6 +527,12 @@ function state() {
     entries: new Map(), // id -> what its slat was drawn from
     els: null,
     firsts: null,
+    slats: null,
+    live: new Set(),
+    drawnWith: null,
+    around: null,
+    drawnRoot: null,
+    sig: null,
     positions: null,
     ids: null,
     rowOf: null,
@@ -576,6 +619,7 @@ function pass(s, props, groups, rows, n, anim) {
   const p = {
     idOf: null,
     positions: null,
+    live: new Set(), // JS version: the rows with a value that moves (drawn again in the next frame)
     // ahead -> group -> each row's value of a function group in this drawing (an order is worked out with its own)
     done: new Map(),
 
@@ -592,8 +636,10 @@ function pass(s, props, groups, rows, n, anim) {
       const forGroup = (s.movers[key] ??= new Map());
       let m = forGroup.get(id);
       if (!m) forGroup.set(id, (m = mover(s.timing, s.ticker.moving)));
+      const x = m(v, ahead);
+      if (ahead === 0 && m.active) p.live.add(id);
 
-      return m(v, ahead);
+      return x;
     },
 
     // A function group's value for row i, worked out once per drawing. The value a slat sees is also kept from one

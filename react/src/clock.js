@@ -113,7 +113,9 @@ export function mover(settings, moving) {
   let shown;
   let seenAt = -1;
 
-  return (v, ahead = 0) => {
+  // move.active: whether the value drawn now is between two values (it moves in the next frames)
+  const move = (v, ahead = 0) => {
+    if (!ahead) move.active = false;
     if (!movable(v) || reduce.matches) {
       // The next value jumps, so a value that was missing comes back where it is, not from where it was before
       to = undefined;
@@ -148,7 +150,10 @@ export function mover(settings, moving) {
     }
 
     const c = frameAt;
-    if (!ahead && seenAt === c) return shown; // already worked out for this frame
+    if (!ahead && seenAt === c) {
+      move.active = true;
+      return shown; // already worked out for this frame
+    }
 
     let x = to;
     for (const m of moves) {
@@ -160,10 +165,15 @@ export function mover(settings, moving) {
       seenAt = c;
       shown = x;
       moves = moves.filter((m) => c < m.start + m.dur);
+      move.active = true;
     }
 
     return x;
   };
+
+  move.active = false;
+
+  return move;
 }
 
 // A CSS transition run on rhp's clock, for a value the browser can't transition itself (Safari has no CSS d). It follows
