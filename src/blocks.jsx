@@ -8,119 +8,15 @@ import { insert, style } from "solid-js/web";
 import { isServer } from "./env.js";
 import { useOrientation, useCrossed, short } from "./plot.jsx";
 import { write } from "./frame.js";
-import { transitioned, cssEase } from "./animate.js";
+import { transitioned } from "./animate.js";
 import { missing } from "./data.js";
+import { cls, tok, safeCssValue, withVars, cssTransition, there, areaSpan, areaPoints, areaPath, lineBox, linePoints, linePaths, BAR, DOT, PLACE, TICK, CELL, LABEL } from "./marks.js";
 
-const cls = (base, c) => (c ? base + " " + c : base);
-
-// The smallest and largest of a list, in a loop: spreading 150,000 numbers into Math.min overflows V8's stack
-const extentOf = (list) => {
-
-  let lo = Infinity;
-  let hi = -Infinity;
-
-  for (const v of list) {
-    if (v < lo) lo = v;
-    if (v > hi) hi = v;
-  }
-
-  return [lo, hi];
-};
-
-const warnedColors = new Set(); // each page-variable color is warned about once
-
-// A color is a theme key ("series-2", "positive", "muted"...) or a CSS color.
-// A slat that reads a page's CSS variable would look different in every app, so that gets a warning.
-const KEY = /^(series-\d+|positive|negative|ink|muted|grid|surface|low|high)$/;
-export const tok = (c) => {
-
-  if (typeof c !== "string") return c;
-  if (KEY.test(c)) return "var(--rhp-" + c + ")";
-  if (/var\(--(?!rhp-)/.test(c) && !warnedColors.has(c)) {
-    warnedColors.add(c);
-    console.warn("rhp: " + c + " reads a page variable; use a theme key");
-  }
-
-  return c;
-};
-
-// 0.6 -> "60%", and "2px" stays "2px"
-const length = (v) => (typeof v === "number" ? v * 100 + "%" : v);
-
-// A point of a path, and the run of points between two of them. With `smooth`, each pair is joined by a curve that
-// leans on its neighbours (a Catmull-Rom spline as cubics), so a shape drawn from data can be round without anyone
-// writing a path. Without it they are joined by straight lines, as before.
-const fmt = ([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`;
-const trace = (pts, smooth) => {
-
-  if (!smooth || pts.length < 3) return pts.map(fmt).join("L");
-
-  let d = fmt(pts[0]);
-
-  for (let i = 0; i < pts.length - 1; i++) {
-    const a = pts[i], b = pts[i + 1];
-    const before = pts[i - 1] ?? a, after = pts[i + 2] ?? b;
-    d += "C" + fmt([a[0] + (b[0] - before[0]) / 6, a[1] + (b[1] - before[1]) / 6]) + " "
-      + fmt([b[0] - (after[0] - a[0]) / 6, b[1] - (after[1] - a[1]) / 6]) + " " + fmt(b);
-  }
-
-  return d;
-};
-
-// A point of an Area or a Line that is there with both numbers, and the runs of two points or more between missing
-// ones (null in the list): a missing point breaks the outline into pieces instead of drawing it at 0. With no missing
-// point there is one run, and the outline is the same as it always was.
-const present = (q) => q != null && !missing(q[0]) && !missing(q[1]);
-const runs = (pts) => {
-
-  if (!pts.includes(null)) return pts.length > 1 ? [pts] : [];
-
-  const out = [[]];
-
-  for (const q of pts) {
-    if (q) out[out.length - 1].push(q);
-    else if (out[out.length - 1].length) out.push([]);
-  }
-
-  return out.filter((run) => run.length > 1);
-};
-
-// The points that are there: the list itself when every point is two finite numbers (most lines), so a long line costs
-// no copy and only this quick look (0.3 ms for 100,000 points)
-const there = (pts) => {
-
-  for (let i = 0; i < pts.length; i++) {
-    const q = pts[i];
-    if (q == null || !Number.isFinite(q[0]) || !Number.isFinite(q[1])) return pts.filter(present);
-  }
-
-  return pts;
-};
+export { tok, safeCssValue, withVars };
 
 // The outline of an Area or a Line moves with a CSS transition of d (rhp.css), but Safari has no d property, so there
 // the block runs the transition that the path's CSS asks for itself, on rhp's clock and by CSS's rules.
 const noCssD = !isServer && typeof CSS !== "undefined" && !CSS.supports("d", "path('M0,0')");
-
-// The transition of d that a path's CSS asks for, as transitioned() settings. In the JS version (where rhp counts the
-// outline) and while the chart turns there is none, and those are found without reading the style, because there the
-// outline changes every frame.
-function cssTransition(path) {
-
-  if (!path || path.closest("[data-rhp-animate='js'], [data-rhp-turning]")) return { duration: 0 };
-
-  const c = getComputedStyle(path);
-  const i = c.transitionProperty.split(/\s*,\s*/).findIndex((name) => name === "d" || name === "all");
-  if (i < 0) return { duration: 0 };
-
-  // The lists repeat to the length of transition-property, and a curve's own commas are inside its brackets
-  const nth = (list) => {
-    const parts = list.split(/\s*,\s*(?![^(]*\))/);
-    return parts[i % parts.length];
-  };
-  const ms = (time) => parseFloat(time) * (time.endsWith("ms") ? 1 : 1000);
-
-  return { duration: ms(nth(c.transitionDuration)), delay: ms(nth(c.transitionDelay)), ease: cssEase(nth(c.transitionTimingFunction)) };
-}
 
 // An outline's points as they should be drawn now: in Safari moving to each new outline, elsewhere as they are
 const drawn = (read, path) => (noCssD ? transitioned(read, () => cssTransition(path())) : read);
@@ -186,53 +82,6 @@ export function writeVars(el, vars, back, st, attrs) {
 
     return { v, s, css, a };
   });
-}
-
-// Whether a CSS value has a ; or ! outside its strings and brackets, or brackets that don't close: in a style attribute
-// that would start a declaration of its own. A browser setting the same value with setProperty rejects it, so a server
-// leaves it out too. (Balanced braces are kept, as a browser keeps them in a custom property.)
-const loose = (v) => {
-
-  let quote = null;
-  let depth = 0;
-
-  for (let i = 0; i < v.length; i++) {
-    const ch = v[i];
-    if (ch === "\\") {
-      i++;
-      continue;
-    }
-    if (quote) {
-      if (ch === quote) quote = null;
-      continue;
-    }
-    if (ch === '"' || ch === "'") quote = ch;
-    else if (ch === "(" || ch === "[" || ch === "{") depth++;
-    else if (ch === ")" || ch === "]" || ch === "}") {
-      if (--depth < 0) return true;
-    } else if (depth === 0 && (ch === ";" || ch === "!")) return true;
-  }
-
-  return quote !== null || depth !== 0;
-};
-export const safeCssValue = (v) => v != null && !(typeof v === "string" && /[;!{}]/.test(v) && loose(v));
-
-// On a server, the style attribute of an element: its style prop (an object or a string) and its CSS variables
-export function withVars(st, vars) {
-
-  let css = typeof st === "string" ? st : "";
-
-  if (st && typeof st === "object") {
-    for (const key in st) {
-      if (safeCssValue(st[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + st[key];
-    }
-  }
-
-  for (const key in vars) {
-    if (safeCssValue(vars[key])) css += (css && !css.endsWith(";") ? ";" : "") + key + ":" + vars[key];
-  }
-
-  return css || undefined;
 }
 
 // Whether a block got props other than its own (onClick, title, data-*...)
@@ -339,7 +188,7 @@ const HERE = { "data-rhp-missing": undefined };
 // placed() keeps whether a value the block was given is missing (null, undefined, NaN or infinite): such a block draws
 // nothing, rather than sit at the start of the scale as if the value were 0. A value not given at all keeps its
 // default (a Bar's from is 0).
-function block(base, own, vars, back, attrs) {
+function block({ base, own, vars, back, attrs }) {
 
   const mine = new Set([...MINE, ...own]);
 
@@ -358,67 +207,13 @@ function block(base, own, vars, back, attrs) {
   };
 }
 
-// A span along the value axis from `from` (0 by default) to `to`: bars, boxes, whiskers, stems, Gantt tasks.
-// `thick` is its size across the band, a CSS length ("2px") or a share of the band (0.6).
-export const Bar = block("rhp-bar", ["from", "to", "thick", "color", "shape"], (p, vertical, placed) => ({
-  "--rhp-from": placed("from") ?? 0,
-  "--rhp-to": placed("to") ?? 0,
-  "--rhp-thick": length(p.thick),
-  "--rhp-color": tok(p.color),
-  "--rhp-clip": p.shape?.clip(vertical, (p.to ?? 0) < (p.from ?? 0)),
-}), (v) => v["--rhp-to"] < v["--rhp-from"]);
-
-// A round point at value `at`. `size` is its diameter (10px by default) and `across` places it across the band (0..1).
-// In a Chart with a cross scale, `cross` places it on that scale instead (a scatter plot's y).
-export const Dot = block("rhp-dot", ["at", "size", "across", "cross", "color", "shape"], (p, vertical, placed) => ({
-  "--rhp-at": placed("at"),
-  "--rhp-size": length(p.size),
-  "--rhp-across": p.across,
-  "--rhp-cross": placed("cross"),
-  "--rhp-color": tok(p.color),
-  "--rhp-clip": p.shape?.clip(vertical, false),
-}));
-
-// A place on the chart and nothing else: no size, no color, nothing drawn. Whatever a slat puts inside it sits at
-// value `at`, so a bubble, a badge or a needle of your own needs no CSS to find its value. `across` (0 to 1) places
-// it across the band, and in a Chart with a cross scale `cross` places it on that scale.
-export const Place = block("rhp-place", ["at", "across", "cross"], (p, vertical, placed) => ({
-  "--rhp-at": placed("at"),
-  "--rhp-across": p.across,
-  "--rhp-cross": placed("cross"),
-}));
-
-// A short line across the band at value `at` (medians, targets). `thick` is its length across the band.
-export const Tick = block("rhp-tick", ["at", "thick", "color", "shape"], (p, vertical, placed) => ({
-  "--rhp-at": placed("at"),
-  "--rhp-thick": length(p.thick),
-  "--rhp-color": tok(p.color),
-  "--rhp-clip": p.shape?.clip(vertical, false),
-}));
-
-// A cell that fills its slat, colored by `value` on the scale (from --rhp-low to --rhp-high), for heatmaps
-export const Cell = block("rhp-cell", ["value", "color", "shape"], (p, vertical, placed) => ({
-  "--rhp-value": placed("value"),
-  "--rhp-color": tok(p.color),
-  "--rhp-clip": p.shape?.clip(vertical, false),
-}));
-
-// Text on the value axis. at={v} puts it just after the value v (side="before" puts it just before), and
-// edge="start" or "end" puts it outside the track, in the chart's gutter (names, totals). In a Chart with a cross scale,
-// `cross` places it on that scale too (a point's label). A Label at an edge isn't placed by its values.
-export const Label = block("rhp-label", ["at", "side", "edge", "cross", "shape"], (p, vertical, placed) => {
-  const edge = p.edge != null;
-  return {
-    "--rhp-at": edge ? p.at : placed("at"),
-    "--rhp-cross": edge ? p.cross : placed("cross"),
-    "--rhp-clip": p.shape?.clip(vertical, false),
-  };
-}, null, (p, gone) => ({
-  "data-rhp-edge": p.edge,
-  "data-rhp-side": p.side,
-  "data-rhp-at": p.edge == null ? "" : undefined,
-  "data-rhp-missing": gone ? "" : undefined,
-}));
+// The blocks themselves (their CSS variables and attributes) are in marks.js
+export const Bar = block(BAR);
+export const Dot = block(DOT);
+export const Place = block(PLACE);
+export const Tick = block(TICK);
+export const Cell = block(CELL);
+export const Label = block(LABEL);
 
 // A filled shape over the value axis from `points`, a list of [x, y] sorted by x (y >= 0).
 // y is drawn across the band, scaled so that `peak` (the largest y by default) fills it. With `mirror` it is drawn both
@@ -432,24 +227,14 @@ export function Area(props) {
   const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "mirror", "color", "smooth"]);
 
   const kept = createMemo(() => there(p.points ?? []));
-  const span = createMemo(() => {
-    const pts = kept();
-    if (!pts.length) return [0, 0];
-    return [pts[0][0], pts[pts.length - 1][0]];
-  });
+  const span = createMemo(() => areaSpan(kept()));
 
-  // The outline's points in the shape's box: along the value axis from 0 to 1000, and across as a share of the peak
-  // (null for a missing point)
+  // The outline's points in the shape's box (areaPoints)
   const points = () => {
     const pts = p.points ?? [];
     if (kept().length < 2) return null;
 
-    const [x0, x1] = span();
-    const w = x1 - x0 || 1;
-    const peak = p.peak ?? extentOf(kept().map((q) => q[1]))[1];
-    const at = ([x, y]) => [((x - x0) / w) * 1000, Math.min(1, y / (peak || 1))];
-
-    return kept() === pts ? pts.map(at) : pts.map((q) => (present(q) ? at(q) : null));
+    return areaPoints(pts, kept(), span(), p.peak);
   };
   let pathEl;
   const shown = drawn(points, () => pathEl);
@@ -458,19 +243,7 @@ export function Area(props) {
     const ut = shown();
     if (!ut) return "";
 
-    const vertical = orientation() === "vertical";
-    // u runs along the value axis and t across the band, both from 0 to 1000 in the shape's box
-    const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
-    // Each run's outline: the top edge (both edges when mirrored), and the base under it, which is never curved
-    return runs(ut).map((run) => {
-      if (p.mirror) {
-        return "M" + trace(run.map(([u, y]) => xy(u, 500 - y * 500)), p.smooth)
-          + "L" + trace(run.slice().reverse().map(([u, y]) => xy(u, 500 + y * 500)), p.smooth) + "Z";
-      }
-
-      return "M" + fmt(xy(run[0][0], 1000)) + "L" + trace(run.map(([u, y]) => xy(u, 1000 - y * 1000)), p.smooth)
-        + "L" + fmt(xy(run[run.length - 1][0], 1000)) + "Z";
-    }).join("");
+    return areaPath(ut, orientation() === "vertical", p.mirror, p.smooth);
   });
 
   // The path is also given in CSS (d: var(--rhp-d)) so a page's "all: revert" can't remove the shape
@@ -506,41 +279,21 @@ export function Line(props) {
   const crossed = useCrossed();
   const [p, rest] = splitProps(props, ["class", "style", "ref", "points", "peak", "fill", "base", "color", "smooth"]);
 
-  // [smallest x, largest x, smallest y, largest y], y on the cross scale (a flat line still gets a box to be drawn in)
+  // [smallest x, largest x, smallest y, largest y], y on the cross scale (lineBox)
   const kept = createMemo(() => there(p.points ?? []));
   const box = createMemo(() => {
     const pts = kept();
     if (!pts.length) return [0, 0, 0, 1];
 
-    const xs = pts.map((q) => q[0]);
-    const ys = pts.map((q) => q[1]);
-    if (p.fill) ys.push(p.base ?? 0);
-    let [y0, y1] = extentOf(ys);
-    if (y0 === y1) {
-      y0 -= 0.5;
-      y1 += 0.5;
-    }
-
-    return [...extentOf(xs), y0, y1];
+    return lineBox(pts, p.fill, p.base);
   });
 
-  // The line's points in its box, u along the value axis and t across (from the top when horizontal), both from 0 to
-  // 1000 (null for a missing point), and the t where the fill under it ends
+  // The line's points in its box, and the t where the fill under it ends (linePoints)
   const points = () => {
     const pts = p.points ?? [];
     if (kept().length < 2) return null;
 
-    const [x0, x1, y0, y1] = box();
-    const w = x1 - x0 || 1;
-    const peak = p.peak ?? extentOf(kept().map((q) => q[1]))[1];
-    // up is y's place across, 0 to 1: on the cross scale within the box, or in the band
-    const up = crossed() ? (y) => (y - y0) / (y1 - y0) : (y) => Math.min(1, y / (peak || 1));
-    const at = ([x, y]) => [((x - x0) / w) * 1000, 1000 - up(y) * 1000];
-
-    return {
-      ut: kept() === pts ? pts.map(at) : pts.map((q) => (present(q) ? at(q) : null)),
-      floor: !p.fill ? 1000 : crossed() ? 1000 - up(p.base ?? 0) * 1000 : 1000,
-    };
+    return linePoints(pts, kept(), box(), p.peak, crossed(), p.fill, p.base);
   };
   let pathEl;
   const shown = drawn(points, () => pathEl);
@@ -550,18 +303,7 @@ export function Line(props) {
     const pts = shown();
     if (!pts) return ["", ""];
 
-    const { ut, floor } = pts;
-    const vertical = orientation() === "vertical";
-    const xy = (u, t) => (vertical ? [1000 - t, 1000 - u] : [u, t]);
-    const parts = runs(ut);
-    const pieces = parts.map((run) => "M" + trace(run.map(([u, t]) => xy(u, t)), p.smooth));
-    const line = pieces.join("");
-    if (!p.fill) return [line, ""];
-
-    // Under each piece, down to the floor
-    const under = parts.map((run, i) => pieces[i] + "L" + fmt(xy(run[run.length - 1][0], floor)) + "L" + fmt(xy(run[0][0], floor)) + "Z").join("");
-
-    return [line, under];
+    return linePaths(pts, orientation() === "vertical", p.fill, p.smooth);
   });
 
   // The paths are also given in CSS (d: var(--rhp-d)) so a page's "all: revert" can't remove them
