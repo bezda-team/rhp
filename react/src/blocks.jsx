@@ -199,7 +199,8 @@ export function fold(node, f, path) {
     let out = node;
     for (let k = 0; k < node.length; k++) {
       const child = node[k];
-      const folded = fold(child, f, path + "." + (child?.key ?? k));
+      // React matches a keyed child by its key and any other by its place
+      const folded = fold(child, f, isValidElement(child) && child.key != null ? path : path + "." + k);
       if (folded !== child) {
         if (out === node) out = node.slice();
         out[k] = folded;
@@ -214,15 +215,17 @@ export function fold(node, f, path) {
   const def = KINDS.get(node.type);
   if (!def && typeof node.type !== "string" && node.type !== Fragment) return node;
 
+  // Where the element is: every element on the way to it, by its type and its key, so an element React makes anew
+  // (another type, another key) gets a writer of its own
+  const at = path + "/" + (def ? def.base : typeof node.type === "string" ? node.type : "") + (node.key == null ? "" : "~" + node.key);
   const props = node.props;
   const kids = props.children;
-  const children = kids != null && typeof kids === "object" ? fold(kids, f, path + "/") : kids;
+  const children = kids != null && typeof kids === "object" ? fold(kids, f, at) : kids;
 
   if (def) {
     const v = values(def, props, f.vertical);
     const a = attrs;
     const miss = a["data-rhp-missing"];
-    const at = path + def.base;
     let s = null;
     if (!f.still) {
       s = f.states?.get(at);
@@ -274,6 +277,7 @@ function useOutline(target, path) {
     own.current = { t, run: transition(() => cssTransition(path.current), t.moving) };
   }
   useSyncExternalStore(own.current.t.subscribe, own.current.t.read, own.current.t.read);
+  useLayoutEffect(() => own.current.run.commit(target));
 
   return own.current.run(target);
 }

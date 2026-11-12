@@ -11,8 +11,10 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const RHP = path.resolve(here, "../..");
 const at = (f) => path.join(here, f);
 fs.mkdirSync(at("out"), { recursive: true });
-await build({ ...options, banner: {}, external: [], platform: "browser", format: "iife", minify: true, entryPoints: [at("core.jsx")], outfile: at("out/core.js"),
-  define: { "process.env.NODE_ENV": '"production"' }, nodePaths: [path.join(RHP, "node_modules")] });
+// React's development build, which says what is wrong in the console (each message is a failed check) and draws each
+// component in StrictMode twice
+await build({ ...options, banner: {}, external: [], platform: "browser", format: "iife", entryPoints: [at("core.jsx")], outfile: at("out/core.js"),
+  define: { "process.env.NODE_ENV": '"development"' }, nodePaths: [path.join(RHP, "node_modules")] });
 fs.writeFileSync(at("out/core.html"), `<!doctype html><html><head><meta charset=utf-8></head><body><script src="core.js"></script></body></html>`);
 
 let failed = 0;
@@ -30,7 +32,7 @@ const p = await browser.newPage({ viewport: { width: 900, height: 900 } });
 p.setDefaultTimeout(30000);
 const errors = [];
 p.on("pageerror", (e) => errors.push(e.message));
-p.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+p.on("console", (m) => (m.type() === "error" || (m.type() === "warning" && !m.text().startsWith("rhp:"))) && errors.push(m.text()));
 await p.goto("file://" + at("out/core.html"));
 await p.waitForTimeout(400);
 
@@ -362,6 +364,41 @@ check("JS version: values move between frames, and the race ends on the new valu
   [race.frames.some((f) => f.find((r) => r.n === "c").bar > 30 && f.find((r) => r.n === "c").bar < 90), last.map((r) => r.n + r.bar + "@" + r.p).join(" ")],
   [true, "a50@1 b40@2 c90@0 d5@4 e25@3"]);
 check("JS version: only the slats whose values move are drawn in its frames", [race.drawn.a, race.drawn.b, race.drawn.c > 5, race.drawn.d > 5, race.drawn.e > 5], [0, 0, true, true, true]);
+
+// What the review found
+const transit = await p.evaluate(async () => {
+  const bar = () => +document.querySelector(".transit .rhp-bar").style.getPropertyValue("--rhp-to");
+  const t0 = performance.now();
+  T.setLateInTransition(90);
+  let committed = null;
+  for (let i = 0; i < 120 && bar() !== 90; i++) {
+    await new Promise((r) => requestAnimationFrame(r));
+    if (committed === null && document.querySelector(".slow").textContent === "90") committed = performance.now() - t0;
+  }
+  return [committed !== null && committed < 1000, bar()];
+});
+check("JS version: an update in a transition (React may draw it and throw it away) commits, and the bar moves to it", transit, [true, 90]);
+await p.evaluate(() => T.setKeyed2({ k: "a", v: 80 }));
+await p.waitForTimeout(100);
+await p.evaluate(() => T.setKeyed2({ k: "b", v: 80 }));
+await p.waitForTimeout(100);
+check("a block React makes anew (its parent got another key) is drawn at its value now, not at its first one",
+  await p.evaluate(() => document.querySelector(".keyed2 .kl").style.getPropertyValue("--rhp-at")), "80");
+await p.evaluate(() => T.setTopped([50, 60, 10]));
+await p.waitForTimeout(1500);
+check("JS version: a function group that reads its row's position follows it while rows move (one that doesn't move included)",
+  await p.evaluate(() => [...document.querySelectorAll(".topped .rhp-plot > *")].map((e) => e.dataset.n + e.hasAttribute("data-top") + "@" + e.style.getPropertyValue("--rhp-position")).join(" ")),
+  "Afalse@1 Btrue@0 Cfalse@2");
+check("rows with the same id each keep their own values", await p.evaluate(() => [...document.querySelectorAll(".twice .tw")].map((e) => e.textContent).join(",")), "1,2,3");
+const still0 = await p.evaluate(() => ({ ...T.renders }));
+await p.evaluate(() => T.setStilled([10, 80]));
+await p.waitForTimeout(600);
+check("static with animate: a changed row is drawn anew once, at its new value (static rows don't move)",
+  [await p.evaluate((r) => (T.renders["still-s2"] ?? 0) - (r["still-s2"] ?? 0), still0), await p.evaluate(() => document.querySelector('.stilled [data-n="s2"] .rhp-bar').style.getPropertyValue("--rhp-to"))], [1, "80"]);
+const pointed = await p.evaluate(() => T.pointed);
+await p.evaluate(() => T.setDotsParent(1));
+check("ManyDots in an animated chart works its points out again only when they change, not when its parent is drawn again",
+  (await p.evaluate(() => T.pointed)) - pointed, 0);
 
 // What a screen reader gets, from Chromium's accessibility tree
 if (ENGINE === "chromium") {

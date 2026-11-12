@@ -214,6 +214,7 @@ export function Chart(props) {
   // The scale is written like a block's numbers: as first drawn, then in the next frame (or, in the JS version, in
   // each frame it moves), and the parts of the page that follow it hear of a new one
   useLayoutEffect(() => {
+    s.commit();
     const v = s.scaleVars();
     let changed = false;
     for (const key in v) {
@@ -315,6 +316,8 @@ function chartState() {
     hi: null,
     crossLo: null,
     crossHi: null,
+    shownNow: null,
+    crossNow: null,
     until: 0,
     undraw: null,
     notified: null,
@@ -349,19 +352,36 @@ function chartState() {
       }
     },
 
-    // The scale on screen: where the JS version has moved it to, or the scale itself
+    // The scale on screen: where the JS version has moved it to, or the scale itself (the same list while it is the same)
     shown() {
       if (!s.anim) return s.domain;
       s.lo ??= mover(s.timing, s.moving);
       s.hi ??= mover(s.timing, s.moving);
-      return [s.lo(s.domain[0]), s.hi(s.domain[1])];
+      const lo = s.lo(s.domain[0]);
+      const hi = s.hi(s.domain[1]);
+      if (s.shownNow?.[0] !== lo || s.shownNow[1] !== hi) s.shownNow = [lo, hi];
+      return s.shownNow;
     },
     crossShown() {
       if (!s.crossed) return null;
       if (!s.anim) return s.cross;
       s.crossLo ??= mover(s.timing, s.moving);
       s.crossHi ??= mover(s.timing, s.moving);
-      return [s.crossLo(s.cross[0]), s.crossHi(s.cross[1])];
+      const lo = s.crossLo(s.cross[0]);
+      const hi = s.crossHi(s.cross[1]);
+      if (s.crossNow?.[0] !== lo || s.crossNow[1] !== hi) s.crossNow = [lo, hi];
+      return s.crossNow;
+    },
+    // In the page: the JS version starts moving the scale to the one this drawing has
+    commit() {
+      if (!s.anim) return;
+      s.shown();
+      s.lo.commit(s.domain[0]);
+      s.hi.commit(s.domain[1]);
+      if (!s.crossed) return;
+      s.crossShown();
+      s.crossLo.commit(s.cross[0]);
+      s.crossHi.commit(s.cross[1]);
     },
     scaleVars() {
       const [min, max] = s.shown();

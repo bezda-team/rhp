@@ -191,7 +191,8 @@ export function usePlot(props, role) {
     }
   }
 
-  const p = pass(s, props, groups, rows, n, anim);
+  // A static Plot keeps nothing per row, so its values jump (it still marks the JS version for the CSS)
+  const p = pass(s, props, groups, rows, n, still ? null : anim);
 
   // Row identity. Without rowKey, a slat is its row number. With rowKey={name} or rowKey={(d) => id}, a slat follows its
   // id, so removing a row removes that row's slat and the rows after it keep theirs.
@@ -202,6 +203,15 @@ export function usePlot(props, role) {
     for (let i = 0; i < n; i++) {
       ids[i] = typeof key === "function" ? key(view(p, i, null)) : p.raw(key, i);
     }
+    // Rows with the same id (or none) each keep a slat of their own: a later one is that id and its count
+    if (new Set(ids).size !== n) {
+      const counts = new Map();
+      for (let i = 0; i < n; i++) {
+        const c = counts.get(ids[i]) ?? 0;
+        counts.set(ids[i], c + 1);
+        if (c) ids[i] = "\0" + keyOf(ids[i]) + "#" + c;
+      }
+    }
     if (s.ids && same(s.ids, ids)) ids = s.ids;
   }
   const rowOf = ids && (ids === s.ids && s.rowOf ? s.rowOf : new Map(ids.map((id, i) => [id, i])));
@@ -209,7 +219,7 @@ export function usePlot(props, role) {
   const rowOfId = ids ? (id) => rowOf.get(id) : (id) => id;
   p.idOf = idOf;
   if (ids !== s.ids || n !== s.n || anim !== s.wasAnim) prune(s, ids, n, anim);
-  if (!js) s.movers = {};
+  if (!js || still) s.movers = {};
   s.wasAnim = anim;
   s.ids = ids;
   s.rowOf = rowOf;
@@ -326,7 +336,7 @@ export function usePlot(props, role) {
     const again = s.live;
     if (moved) {
       for (const [id, e] of entries) {
-        if (e.reads & 2 && e.p !== posOf(e.i)) again.add(id);
+        if ((e.reads & 2 || e.posFn) && e.p !== posOf(e.i)) again.add(id);
       }
     }
     for (const id of again) {
@@ -375,8 +385,13 @@ export function usePlot(props, role) {
     return () => frame.unset(s);
   }, [frame, register, role, nested, layout, props.overlap, orientation]);
 
-  // Each slat root's place and tab stop, written where they changed
+  // Each slat root's place and tab stop, written where they changed (and in the JS version, the values this drawing
+  // moves to start moving)
+  const commits = p.commits;
   useLayoutEffect(() => {
+    for (let k = 0; k < commits.length; k += 2) {
+      commits[k].commit(commits[k + 1]);
+    }
     s.now = now;
     const el = s.el;
     if (!el) return;
@@ -620,6 +635,8 @@ function pass(s, props, groups, rows, n, anim) {
     idOf: null,
     positions: null,
     live: new Set(), // JS version: the rows with a value that moves (drawn again in the next frame)
+    commits: [], // JS version: each mover read, and the value the page will have once this drawing is committed
+    posRows: new Set(), // the rows whose function groups read their position
     // ahead -> group -> each row's value of a function group in this drawing (an order is worked out with its own)
     done: new Map(),
 
@@ -637,7 +654,10 @@ function pass(s, props, groups, rows, n, anim) {
       let m = forGroup.get(id);
       if (!m) forGroup.set(id, (m = mover(s.timing, s.ticker.moving)));
       const x = m(v, ahead);
-      if (ahead === 0 && m.active) p.live.add(id);
+      if (ahead === 0) {
+        p.commits.push(m, v);
+        if (m.active) p.live.add(id);
+      }
 
       return x;
     },
@@ -658,12 +678,16 @@ function pass(s, props, groups, rows, n, anim) {
       const id = p.idOf(i);
       let forGroup = s.worked.get(key);
       const kept = forGroup?.get(id);
-      if (kept && kept.f === f && p.still(i, kept.reads)) return (values[i] = kept.value);
+      if (kept && kept.f === f && p.still(i, kept.reads)) {
+        if (readsPosition(kept.reads)) p.posRows.add(i);
+        return (values[i] = kept.value);
+      }
 
       const t = { p, i, ahead, reads: [] };
       const value = f(new Proxy(t, NOTED));
       if (!forGroup) s.worked.set(key, (forGroup = new Map()));
       forGroup.set(id, { f, reads: t.reads, value });
+      if (readsPosition(t.reads)) p.posRows.add(i);
 
       return (values[i] = value);
     },
@@ -699,6 +723,16 @@ function pass(s, props, groups, rows, n, anim) {
   return p;
 }
 
+// Whether a function read d.position (reads: key, value, key, value...)
+const readsPosition = (reads) => {
+
+  for (let k = 0; k < reads.length; k += 2) {
+    if (reads[k] === "position") return true;
+  }
+
+  return false;
+};
+
 const scratch = [];
 
 // What the slat of row i is drawn from: its d, kept from the drawing before when nothing it shows changed
@@ -733,10 +767,11 @@ function entry(s, p, sig, i, id, q, still) {
   if (!changed) {
     before.i = i;
     before.p = q;
+    before.posFn = p.posRows.has(i);
     return before;
   }
 
-  const e = { s, id, sig, i, p: q, reads: 0, vals: scratch.slice(0, k), d: null, ver: before ? before.ver + 1 : 0 };
+  const e = { s, id, sig, i, p: q, reads: 0, posFn: p.posRows.has(i), vals: scratch.slice(0, k), d: null, ver: before ? before.ver + 1 : 0 };
   const d = new Row(e);
   let j = 0;
 

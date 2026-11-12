@@ -66,24 +66,30 @@ The state is your app's, and it goes back into the Plot as data.
 For a highlight, a function of the row is cheaper than a list: only the two slats that change are drawn again.
 
 ```jsx
+const Sale = slat({ thickness: 28, room: { start: 80, end: 40 } }, (d) => (
+  <div data-row={d.index}>
+    <Label edge="start">{d.name}</Label>
+    <Bar to={d.v} color={d.on ? "series-2" : "series-1"} />
+    {d.on && <Label at={d.v}>{d.v}</Label>}
+  </div>
+));
+
+const rowAt = (e) => e.target.closest("[data-row]")?.dataset.row ?? null;
+
 function Sales({ names, values }) {
   const [on, setOn] = useState(null);
   return (
-    <Chart>
-      <Plot name={names} v={values} on={(d) => d.index === on}>
-        {(d) => (
-          <div onPointerEnter={() => setOn(d.index)} onPointerLeave={() => setOn(null)}>
-            <Label edge="start">{d.name}</Label>
-            <Bar to={d.v} color={d.on ? "series-2" : "series-1"} />
-            {d.on && <Label at={d.v}>{d.v}</Label>}
-          </div>
-        )}
-      </Plot>
-    </Chart>
+    <div onPointerMove={(e) => setOn(rowAt(e))} onPointerLeave={() => setOn(null)}>
+      <Chart>
+        <Plot name={names} v={values} on={(d) => String(d.index) === on}>{Sale}</Plot>
+      </Chart>
+    </div>
   );
 }
 ```
 
+- **Keep the slat type outside the component** (or in `useCallback`), as above.
+  A slat written inline is a new function in every drawing, and every slat is drawn again with it, since it may show something new.
 - **Handlers go on blocks and slat roots** like on any element: `onClick`, `onPointerEnter`, `onKeyDown`.
   With many slats, one handler around the chart with `data-row={d.index}` and `closest("[data-row]")` is simpler than one per slat.
 - **A slat's root can be a component of your own.**

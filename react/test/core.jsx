@@ -1,10 +1,10 @@
 // What rhp-react does, checked by run.mjs: the checks of rhp's test/core.jsx that are about behavior, drawn with React,
 // and checks of what is React's own (which slats React draws again, hooks in a slat, StrictMode). Each piece of state is
 // set at once (flushSync), as a Solid signal would be.
-import { StrictMode, useState } from "react";
+import { StrictMode, useState, startTransition } from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
-import { Plot, Scale, Chart, Bar, Dot, Label, Line, Place, Area, Cell, Poster, shape, sortBy, every, slat, restyle, useAnimated, drawing } from "../src/index.js";
+import { Plot, Scale, Chart, Bar, Dot, Label, Line, Place, Area, Cell, Poster, ManyDots, shape, sortBy, every, slat, restyle, useAnimated, drawing } from "../src/index.js";
 import { framesDrawn, whenStill } from "../src/clock.js";
 
 const T = (window.T = { seen: { keyed: [], plain: [] }, computed: 0, drawn: 0, renders: {}, hooks: 0 });
@@ -18,7 +18,7 @@ function useT(name, init) {
 }
 
 // Keyed and unkeyed removal, in the JS version for v
-const Row = (tag) => (d) => <div data-name={d.name}><Bar to={d.v} /><Label at={d.v}>{(T.seen[tag].push(d.name + ":" + Math.round(d.v)), Math.round(d.v))}</Label></div>;
+const Row = (tag) => (d) => <div data-name={d.name}><Bar to={d.v} /><Label at={d.v}>{(T.seen[tag].push(d.name + ":" + Math.round(d.v)), String(Math.round(d.v)))}</Label></div>;
 const KeyedRow = Row("keyed");
 const PlainRow = Row("plain");
 // An axis that switches unit, beside names in an "auto" room
@@ -105,6 +105,25 @@ const Clicked = (d) => <div data-n={d.name} onClick={() => (T.clicked = d.index 
 // A race in the JS version: values move frame by frame, rows pass each other, and a slat reads its moving value
 const Runner = (d) => (count("race-" + d.name), <div data-n={d.name}><Bar to={d.v} /><Label at={d.v} className="rv">{Math.round(d.v)}</Label></div>);
 
+// What the review found (2026-11-11): an update in a transition in the JS version, a block whose element React makes
+// anew, a function group that reads its row's position while rows move, static with animate, rows with the same id,
+// and ManyDots in an animated chart while its parent is drawn again
+function Slow({ v }) {
+  const end = performance.now() + 40;
+  while (performance.now() < end);
+  return <span className="slow">{v}</span>;
+}
+const Keyed = (d) => <div><span key={d.k}><Label at={d.v} className="kl">{d.v}</Label></span></div>;
+const isTop = (d) => d.position === 0;
+const Topped = (d) => <div data-n={d.name} data-top={d.top ? "" : undefined}><Bar to={d.v} /></div>;
+const Twice = (d) => <div className="tw" data-n={d.name}><Label at={d.v}>{d.v}</Label></div>;
+const STILL = ["s1", "s2"];
+const Stilled = (d) => (count("still-" + d.name), <div data-n={d.name}><Bar to={d.v} /></div>);
+const CLOUD = [{ x: 10, y: 20 }, { x: 50, y: 60 }, { x: 80, y: 30 }];
+const classed = (r) => ((T.pointed = (T.pointed ?? 0) + 1), r.x > 40 ? "far" : "near");
+const atX = (r) => r.x;
+const atY = (r) => r.y;
+
 // What a screen reader gets
 const Sold = (d) => <div><Label edge="start">{d.name}</Label><Bar to={d.sold} /><Label at={d.sold}>{d.sold}</Label></div>;
 const Owned = (d) => <div role="group" id={"own-" + d.index}><Bar to={d.v} /></div>;
@@ -148,6 +167,12 @@ function App() {
   const unrelated = useT("Unrelated", 0);
   const a11ySold = useT("A11ySold", [12, 18, 7, 22]);
   const race = useT("Race", [50, 40, 30, 20, 10]);
+  const [late2, setLate2] = useState(10);
+  T.setLateInTransition = (v) => startTransition(() => setLate2(v));
+  const keyed2 = useT("Keyed2", { k: "a", v: 50 });
+  const twice = useT("Twice", [1, 2, 3]);
+  const stilled = useT("Stilled", [10, 20]);
+  const dotsParent = useT("DotsParent", 0);
 
   return (
     <div>
@@ -236,6 +261,12 @@ function App() {
       <Chart className="hooked" scale={[0, 40]}><Plot name={["a", "b"]} v={[10, 20]}>{Toggle}</Plot></Chart>
       <Chart className="clicked" scale={[0, 40]}><Plot rowKey="name" rows={people} order={sortBy("v", "desc")}>{Clicked}</Plot></Chart>
       <Moving />
+      <Chart className="transit" scale={[0, 100]} animate><Plot v={[late2]}>{(d) => <div><Bar to={d.v} /></div>}</Plot></Chart>
+      <Slow v={late2} />
+      <Chart className="keyed2" scale={[0, 100]}><Plot k={[keyed2.k]} v={[keyed2.v]}>{Keyed}</Plot></Chart>
+      <Chart className="twice" scale={[0, 10]}><Plot rowKey="name" name={["x", "x", "y"]} v={twice}>{Twice}</Plot></Chart>
+      <Chart className="stilled" static animate scale={[0, 100]}><Plot name={STILL} v={stilled}>{Stilled}</Plot></Chart>
+      <Chart className="many-anim" scale={[0, 100]} cross={[0, 100]} height={80} animate><ManyDots rows={CLOUD} at={atX} cross={atY} pointClass={classed} data-parent={dotsParent} /></Chart>
       <Chart className="race" scale={[0, 100]} animate={{ duration: 400 }}><Plot name={["a", "b", "c", "d", "e"]} v={race} order={sortBy("v", "desc")}>{Runner}</Plot></Chart>
       <Chart className="a11y-fruit" label="Fruit sold this week" scale={[0, 30]}><Plot name={["Apples", "Bananas", "Cherries", "Kiwis"]} sold={a11ySold} order={sortBy("sold", "desc")}>{Sold}</Plot></Chart>
       <Chart className="a11y-keyed" orientation="vertical" scale={[0, 30]}><Plot rowKey="name" rows={[{ name: "Apples", sold: 20 }, { name: "Bananas", sold: 5 }, { name: "Cherries", sold: 10 }]} order={sortBy("sold", "desc")}>{Sold}</Plot></Chart>
@@ -249,6 +280,15 @@ function App() {
 const root = document.body.appendChild(document.createElement("div"));
 flushSync(() => createRoot(root).render(<App />));
 Object.assign(T, { framesDrawn, whenStill, restyle, Red, slat, drawing });
+
+// A chart in a root of its own, so nothing but the clock draws it again while its rows move
+const ABC = ["A", "B", "C"];
+const ROW_ORDER = sortBy("v", "desc");
+function ToppedChart() {
+  const topped = useT("Topped", [50, 40, 10]);
+  return <Chart className="topped" scale={[0, 100]} animate={{ duration: 1000 }}><Plot name={ABC} v={topped} top={isTop} order={ROW_ORDER}>{Topped}</Plot></Chart>;
+}
+flushSync(() => createRoot(document.body.appendChild(document.createElement("div"))).render(<ToppedChart />));
 
 // The same chart in StrictMode, which draws each component twice and runs each effect twice when it mounts
 const strict = document.body.appendChild(document.createElement("div"));
