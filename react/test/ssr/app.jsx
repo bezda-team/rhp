@@ -16,6 +16,10 @@ const Auto = slat({ thickness: 24, room: { start: "auto", end: "auto" } }, (d) =
 const Tk = slat({ css: `.tk { position: absolute; inset: 0; border-left: 1px dashed var(--rhp-grid); }` }, (t) => <div><span className="tk" /></div>);
 const Point = (d) => <div><Dot at={d.x} cross={d.y} size="7px" /><Label at={d.x} cross={d.y}>{d.k}</Label></div>;
 const Trend = (d) => <div><Line points={d.pts} /></div>;
+// A slat whose root is a component of the app's own, which puts the props it is given on its element
+function Forward({ v, ...props }) {
+  return <div {...props}><Bar to={v} /><Label at={v}>{v}</Label></div>;
+}
 const cloud = Array.from({ length: 200 }, (_, i) => ({ x: ((i * 0.618) % 1) * 100, y: ((i * 0.7548) % 1) * 100 }));
 
 export function App({ T }) {
@@ -34,6 +38,7 @@ export function App({ T }) {
           <Plot overlap pts={[[[0, 10], [5, 60], [10, 40]]]}>{Trend}</Plot>
           <Plot overlap x={[0, 5, 10]} y={[10, 60, 40]} k={["a", "b", "c"]}>{Point}</Plot>
         </Chart>
+        <Chart className="fwd" scale={[0, 10]}><Plot v={[3, 8, 5]} order={sortBy("v", "desc")}>{(d) => <Forward v={d.v} data-n={"f" + d.index} />}</Plot></Chart>
         <Chart className="many" scale={[0, 100]} cross={[0, 100]} height={160}>
           <ManyDots rows={cloud} at={(r) => r.x} cross={(r) => r.y} size={4} color="series-1" />
         </Chart>

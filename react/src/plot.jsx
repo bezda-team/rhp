@@ -96,34 +96,15 @@ const keyOf = (id) => {
   return k;
 };
 
-// A slat's root element, with what the Plot sets on it: its slat type's scope, its orientation, its place
-// (--rhp-position, or hidden), its role in the list, an id for aria-owns and its tab stop. React draws the place, the id
-// and the tab stop as they were when the slat was first drawn (first, which the Plot keeps for each slat), and the Plot
-// writes them after that, so a row that only moves (or is sorted for the first time) is not drawn again.
+// A slat: the slat function's element, its blocks drawn with it and written by it (fold in blocks.jsx), and its root
+// with what the Plot sets on it (slatRoot in blocks.jsx)
 function Slat({ d, root, first }) {
 
-  // The blocks the slat returns are drawn with it, and written by it (fold in blocks.jsx)
   const f = useFolded(root.still, root.dir);
   const given = root.fn(d);
   if (!isValidElement(given) || given.type === Fragment) throw new Error("rhp: a slat must return one element");
-  const el = fold(given, f, "");
 
-  const props = el.props;
-  first.own = !!props.id; // a root with an id of its own keeps it
-  if (first.base !== props.style || first.style === undefined) {
-    first.base = props.style;
-    first.style = first.p == null ? props.style ?? null : { ...props.style, "--rhp-position": first.p };
-  }
-
-  return cloneElement(el, {
-    "data-rhp-slat": root.scope,
-    "data-rhp-o": root.dir,
-    hidden: first.p == null ? true : undefined,
-    role: props.role ?? (root.list ? "listitem" : undefined),
-    id: props.id || first.rid,
-    tabIndex: root.keyboard ? first.tab : props.tabIndex,
-    style: first.style ?? undefined,
-  });
+  return fold(given, f, "", { root, first });
 }
 
 const WROTE = Symbol("rhp"); // on a slat root: the place and tab stop the Plot last wrote there
@@ -311,9 +292,9 @@ export function usePlot(props, role) {
   const slatOf = (k, i, id, e, entries, els, firsts) => {
     // A static row that changed is drawn anew, under a new key
     const base = action === "refill" ? k : keyOf(id);
-    const reactKey = still ? base + "~" + keyOf(id) + "~" + e.ver : base;
+    const reactKey = !still ? base : action === "refill" ? base + "\0" + keyOf(id) + "\0" + e.ver : e.ver ? base + "\0" + e.ver : base;
     let first = s.firsts?.get(reactKey);
-    if (first === undefined) first = { p: posOf(i), row: reordered ? i : -1, rid: reordered ? `rhp-${uid}-${i}` : undefined, tab: keyboard ? (id === stop ? 0 : -1) : undefined, own: false, style: undefined, base: undefined };
+    if (first === undefined) first = { p: posOf(i), row: reordered ? i : -1, rid: reordered ? `rhp-${uid}-${i}` : undefined, tab: keyboard ? (id === stop ? 0 : -1) : undefined, own: false, sure: false, style: undefined, base: undefined };
     let el = s.els?.get(reactKey);
     if (el === undefined || el.props.d !== e.d || el.props.root !== root || el.props.first !== first) {
       el = jsx(Slat, { d: e.d, root, first }, reactKey);
@@ -418,7 +399,7 @@ export function usePlot(props, role) {
       const first = slats[k].props.first;
       let w = node[WROTE];
       if (w === undefined) {
-        const placed = first.p == null ? node.hidden : node.style.getPropertyValue("--rhp-position") !== "";
+        const placed = first.sure || (first.p == null ? node.hidden : node.style.getPropertyValue("--rhp-position") !== "");
         w = placed
           ? { p: first.p, row: first.row, tab: first.tab, own: first.own, dir: null }
           : { p: NaN, row: NaN, tab: NaN, own: node.id !== "", dir: "" };

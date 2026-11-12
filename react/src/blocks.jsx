@@ -129,7 +129,7 @@ function values(def, props, vertical) {
 
 // A block's element (s is its writer, or null in a static Plot): any prop of its own that isn't the block's goes on it,
 // as on a plain element
-function element(def, props, dir, v, a, s, children, key) {
+function element(def, props, dir, v, a, s, children, key, root) {
 
   const el = {};
   for (const key in props) {
@@ -145,8 +145,34 @@ function element(def, props, dir, v, a, s, children, key) {
   el.style = styled(s, v, props.style);
   el.ref = refOf(s, props.ref);
   el.children = children;
+  if (root) slatRoot(el, props, el.style, root);
 
   return jsx("div", el, key);
+}
+
+// What a Plot sets on a slat's root (r: { root, first }, from the Plot): its slat type's scope, its orientation, its
+// place (--rhp-position, or hidden), its role in the list, an id for aria-owns and its tab stop. React draws the place,
+// the id and the tab stop as they were when the slat was first drawn (first), and the Plot writes them after that, so a
+// row that only moves is not drawn again. out is the root's props as they are being made, own its own props, and style
+// its style before its place.
+export function slatRoot(out, own, style, r) {
+
+  const { root, first } = r;
+  first.own = !!own.id; // a root with an id of its own keeps it
+  if (first.base !== style || first.style === undefined) {
+    first.base = style;
+    first.style = first.p == null ? style ?? null : { ...style, "--rhp-position": first.p };
+  }
+
+  out["data-rhp-slat"] = root.scope;
+  out["data-rhp-o"] = root.dir;
+  out.hidden = first.p == null ? true : undefined;
+  out.role = own.role ?? (root.list ? "listitem" : undefined);
+  out.id = own.id || first.rid;
+  out.tabIndex = root.keyboard ? first.tab : own.tabIndex;
+  out.style = first.style ?? undefined;
+
+  return out;
 }
 
 const KINDS = new Map(); // a block's component -> its definition
@@ -193,7 +219,7 @@ export const Label = block(LABEL, "Label");
 // (each writer drawn now, with its values) }.
 // NOTE: A folded block's key is where it is in the slat and its kind, so a block that becomes another kind in the same
 // place is a new element, as a component would be.
-export function fold(node, f, path) {
+export function fold(node, f, path, root) {
 
   if (Array.isArray(node)) {
     let out = node;
@@ -211,9 +237,16 @@ export function fold(node, f, path) {
 
   if (!isValidElement(node)) return node;
 
-  // A component draws what it is given itself (once, twice or not at all), so a block inside is left to draw itself
+  // A component draws what it is given itself (once, twice or not at all), so a block inside is left to draw itself. A
+  // component that is the slat's root is given the root's props, to put on the element it draws (the Plot writes them
+  // there itself when it doesn't).
   const def = KINDS.get(node.type);
-  if (!def && typeof node.type !== "string" && node.type !== Fragment) return node;
+  if (!def && typeof node.type !== "string" && node.type !== Fragment) {
+    if (!root) return node;
+    root.first.sure = false;
+    return cloneElement(node, slatRoot({}, node.props, node.props.style, root));
+  }
+  if (root) root.first.sure = true; // the root is drawn here, so it has what the Plot sets on it
 
   // Where the element is: every element on the way to it, by its type and its key, so an element React makes anew
   // (another type, another key) gets a writer of its own
@@ -231,11 +264,13 @@ export function fold(node, f, path) {
       s = f.states?.get(at);
       // A writer from a drawing that never reached the page is made anew
       if (s === undefined || !s.drawn) s = writer(v, miss);
-      f.next.set(at, s);
-      f.list.push(s, v, miss);
+      (f.next ??= new Map()).set(at, s);
+      (f.list ??= []).push(s, v, miss);
     }
-    return element(def, props, f.dir, v, a, s, children, at);
+    return element(def, props, f.dir, v, a, s, children, at, root);
   }
+
+  if (root) return cloneElement(node, slatRoot(children === kids ? {} : { children }, props, props.style, root));
 
   return children === kids ? node : cloneElement(node, { children });
 }
@@ -247,10 +282,11 @@ export function useFolded(still, dir) {
 
   const own = useRef(null);
   const states = own.current;
-  const f = { states, next: new Map(), dir, vertical: dir === "v", still, list: [] };
+  const f = { states, next: null, dir, vertical: dir === "v", still, list: null };
   useLayoutEffect(() => {
     own.current = f.next;
     const list = f.list;
+    if (!list) return;
     for (let k = 0; k < list.length; k += 3) {
       const s = list[k];
       s.drawn = true;
