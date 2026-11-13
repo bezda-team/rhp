@@ -12,7 +12,7 @@ import { Plot, Scale, plotEntry, defined } from "./plot.jsx";
 import { mover, drawEachFrame, curveOf } from "./clock.js";
 import { ServerSheet, dropServerSheet } from "./sheets.jsx";
 import { useCore, useGutters, useCross, useRoot, watchRoot, checkLinked, useChartGuard, pageGuarded, sheetsFor } from "../../src/style.js";
-import { short, px, same, tickValues, THEME, themeVars, KNOBS, padding, warnAspect, startOnShownScale } from "../../src/layout.js";
+import { short, px, same, tickValues, THEME, themeVars, KNOBS, padding, warnAspect, watchCollapsed, startOnShownScale } from "../../src/layout.js";
 import { MOVE_MS } from "../../src/motion.js";
 import { write } from "../../src/frame.js";
 
@@ -193,6 +193,7 @@ export function Chart(props) {
     if (body && typeof ResizeObserver !== "undefined") {
       ro = new ResizeObserver(([e]) => {
         const { width: w, height: h } = e.contentRect;
+        watchCollapsed(body, w, h);
         if (w === s.size.w && h === s.size.h) return;
         s.size = { w, h };
         frame.notify(true);

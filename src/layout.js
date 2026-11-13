@@ -69,6 +69,22 @@ export const warnAspect = (bad, height, thick) => {
   }
 };
 
+// A chart takes the width of its box and has none of its own, so in a box that sizes to its content its plot is 0px
+// wide and shows nothing. We warn about it once per page, when the plot (body, measured w by h) has a height and is
+// still 0px wide a moment later: a panel that opens from 0px wide, or a chart in a hidden tab, is left alone.
+let warnedCollapsed = false;
+export const watchCollapsed = (body, w, h) => {
+
+  if (warnedCollapsed || w > 0 || h === 0) return;
+
+  setTimeout(() => {
+    const r = body.getBoundingClientRect();
+    if (warnedCollapsed || !body.isConnected || r.width > 0 || r.height === 0) return;
+    warnedCollapsed = true;
+    console.warn("rhp: a chart's plot is 0px wide here, so nothing in it shows. A chart takes the width of its box, and this box sizes to its content (a flex item with margin: auto, an inline-block, a float or width: fit-content). Give the box a width (width: 100%), or in a flex row flex: 1 and min-width: 0.", body.parentElement);
+  }, 500);
+};
+
 let warnedWrapped = false;
 export const warnWrapped = (el) => {
 

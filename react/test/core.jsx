@@ -160,6 +160,8 @@ function App() {
   const blockStyle = useT("BlockStyle", { "--n": 1 });
   const styledV = useT("StyledV", 6);
   const asked = useT("Asked", false);
+  // A chart in a hidden box, and one in a box that sizes to its content (a flex item with margin: auto), drawn when asked
+  const squeezed = useT("Squeezed", null);
   const onRow = useT("OnRow", null);
   const counted = useT("Counted", [10, 20, 30]);
   const sorted = useT("Sorted", false);
@@ -247,6 +249,9 @@ function App() {
           </>
         )}
       </div>
+      {squeezed && (
+        <div className="squeeze" style={{ display: squeezed === "hidden" ? "none" : "flex" }}><div style={{ margin: "0 auto" }}><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></div></div>
+      )}
       <Poster className="pst" look="test" kicker="K" title="T" dek="D" note="N" data-x="y"><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></Poster>
       <Poster className="pst-bare" title="Only a title"><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></Poster>
       <div className="one-around" onPointerMove={(e) => T.setOnRow(rowAt(e))} onPointerDown={(e) => T.setOnRow(rowAt(e))}

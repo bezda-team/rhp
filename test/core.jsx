@@ -59,6 +59,8 @@ const Inner = slat({ room: "auto" }, (d) => <div><Label edge="start">{d.n}</Labe
 // A second axis: Dots at (x, y), a Label at a point and a Line on a cross scale, each way; and a Line in a plain row
 // aspect: what doesn't go with it is drawn when the test asks, so it can listen for the warnings first
 const [asked, setAsked] = createSignal(false);
+// A chart in a hidden box, and one in a box that sizes to its content (a flex item with margin: auto), drawn when asked
+const [squeezed, setSqueezed] = createSignal(null);
 const Point = (d) => <div><Dot at={d.x} cross={d.y} size="6px" class="pt" /><Label at={d.x} cross={d.y} class="pl">{d.y}</Label></div>;
 const Trend = (d) => <div><Line points={d.pts} class="tl" /></div>;
 const Spark = (d) => <div class="sp"><Line points={d.pts} class="sl" /></div>;
@@ -197,6 +199,9 @@ render(() => (
         <Chart class="asp-bad" aspect={"16 / 9"} ticks={false}><Plot v={[5]}>{Fit}</Plot></Chart>
       </Show>
     </div>
+    <Show when={squeezed()}>
+      <div class="squeeze" style={{ display: squeezed() === "hidden" ? "none" : "flex" }}><div style={{ margin: "0 auto" }}><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></div></div>
+    </Show>
     <Poster class="pst" look="test" kicker="K" title="T" dek="D" note="N" data-x="y"><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></Poster>
     <Poster class="pst-bare" title="Only a title"><Chart scale={[0, 10]}><Plot v={[3]}>{Fit}</Plot></Chart></Poster>
     <div class="one-around" onPointerMove={(e) => setOnRow(rowAt(e))} onPointerDown={(e) => setOnRow(rowAt(e))}
@@ -207,4 +212,4 @@ render(() => (
   </div>
 ), document.body);
 T.styleAndMove = (st, v) => batch(() => { setBlockStyle(st); setStyledV(v); });
-Object.assign(T, { setBlockStyle, setUnitB, setGrown, setAsked, setOutline,setOutlineO, setRetarget, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });
+Object.assign(T, { setBlockStyle, setUnitB, setGrown, setAsked, setSqueezed, setOutline,setOutlineO, setRetarget, setKbSlide, setKbMove, setKbRefill, setKbStill, setLit, slat, setStill, setPaced, setRows, setLate, setPos, setVals, setTop, framesDrawn, whenStill, restyle, Red, edges, Direct, Wrapped, Inner });

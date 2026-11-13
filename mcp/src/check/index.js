@@ -584,6 +584,8 @@ export async function check(options = {}) {
       } else if (e.kind === "console-error" && !(staticSyntax && /Failed to resolve module specifier|Unexpected token/.test(e.text))) {
         findings.push({ level: "error", code: e.during ? "interaction-error" : "console-error", message: `${e.during ? `${e.during} logged: ` : "Console error: "}${e.text}${at ? ` (at ${at})` : ""}`, fix: fixForError(e.text, format), width: r.width });
       } else if (e.kind === "rhp-warning") {
+        // collapsed-chart says it, with the box that shrinks the chart
+        if (/^rhp: a chart's plot is 0px wide/.test(e.text)) continue;
         findings.push({ level: "error", code: "rhp-warning", message: e.text, fix: "Do what the warning says: rhp prints it when a chart is set up in a way that doesn't work as written.", width: r.width });
       } else if (e.kind === "request-failed") {
         findings.push({ level: "error", code: "request-failed", message: `${e.text.replace(ORIGIN, "").replace(/^file:\/\//, "")} failed to load (${e.error}).`, fix: "Fix the path, or add the file next to the chart.", width: r.width });

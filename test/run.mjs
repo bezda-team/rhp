@@ -217,6 +217,17 @@ const open = async (url, opts = {}) => {
   await p.evaluate(() => { document.querySelector(".asp").style.width = "260px"; });
   await p.waitForTimeout(100);
   check("aspect: and keeps it at another width", await ratios(), [2, 2, 1, 2]);
+  check("a chart with a 0px plot gets one warning, and one in a hidden box none", await p.evaluate(async () => {
+    const seen = []; const warn = console.warn; console.warn = (m) => seen.push(m);
+    const wait = () => new Promise((r) => setTimeout(r, 700));
+    T.setSqueezed("hidden"); await wait();
+    const hidden = seen.length;
+    T.setSqueezed(null); await new Promise((r) => requestAnimationFrame(r));
+    T.setSqueezed("flex"); await wait();
+    const width = document.querySelector(".squeeze .rhp-plot").getBoundingClientRect().width;
+    T.setSqueezed(null);
+    console.warn = warn; return [hidden, seen.filter((m) => /plot is 0px wide/.test(m)).length, width];
+  }), [0, 1, 0]);
   check("aspect: what doesn't go with it gets one warning each", await p.evaluate(async () => {
     const seen = []; const warn = console.warn; console.warn = (m) => seen.push(m);
     T.setAsked(true); await new Promise((r) => setTimeout(r, 50));

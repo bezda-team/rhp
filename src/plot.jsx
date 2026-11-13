@@ -9,7 +9,7 @@ import { delegateEvents } from "solid-js/web";
 import { isServer } from "./env.js";
 import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
-import { isList, at, short, STEPS, pick, px, share, same, sameSet, range, byPosition, BLOCK, warnBare, autoRoom, warnAspect, warnWrapped, tickValues, THEME, themeVars, DEFAULT_ROOM, KNOBS, padding, startOnShownScale } from "./layout.js";
+import { isList, at, short, STEPS, pick, px, share, same, sameSet, range, byPosition, BLOCK, warnBare, autoRoom, warnAspect, warnWrapped, watchCollapsed, tickValues, THEME, themeVars, DEFAULT_ROOM, KNOBS, padding, startOnShownScale } from "./layout.js";
 import { writeVars, withVars } from "./blocks.jsx";
 
 export { at, short, THEME, series } from "./layout.js";
@@ -816,7 +816,11 @@ export function Chart(props) {
     if (body) checkLinked(body);
     if (!body || typeof ResizeObserver === "undefined") return;
 
-    const ro = new ResizeObserver(([e]) => setSize({ w: e.contentRect.width, h: e.contentRect.height }));
+    const ro = new ResizeObserver(([e]) => {
+      const { width: w, height: h } = e.contentRect;
+      watchCollapsed(body, w, h);
+      setSize({ w, h });
+    });
     ro.observe(body);
     onCleanup(() => ro.disconnect());
   });
