@@ -25,10 +25,10 @@ rhp is not configured with an options object, and none of these exist: `<BarChar
 A chart is a `Chart` holding `Plot`s, each Plot draws one slat per row of data, and the slat is a function you write from blocks.
 Start from a recipe, never from what another library does.
 
-- **rhp 1 code** (`react-html-plots`, Legend-State observables, `@bezda/rhp-core`, `BarPlot`, `useObservable`): a different, retired library. Use rhp 2 only, from `@bezda/rhp@2`.
-- **React JSX around rhp components** (`<Bar to={d.sold} />` inside a React component): React does not render Solid components. In React, write the chart with the `html` template from `@bezda/rhp/standalone` and mount it into an element (environments.md, React).
-- **`solid-js` imported in a React, Vue or plain page** next to `@bezda/rhp/standalone`: two copies of Solid, and reactivity silently stops between them. Import everything from the standalone module.
-- **`useState` or `useEffect` inside an rhp chart component**: use `createSignal`, `createMemo`, `createEffect` and `onCleanup` from the same module as rhp.
+- **rhp 1 code** (`react-html-plots`, Legend-State observables, `@bezda/rhp-core`, `BarPlot`, `useObservable`): a different, retired library. Use rhp 2 only, from `@bezda/rhp@2` (or `@bezda/rhp-react` in a React app, which is rhp 2 too).
+- **rhp for Solid in a React app** (`<Bar to={d.sold} />` from `@bezda/rhp` inside a React component): React does not render Solid components. In React, import everything from `@bezda/rhp-react`, which is rhp written with React (environments.md, React).
+- **`solid-js` imported in a Vue or plain page** next to `@bezda/rhp/standalone`: two copies of Solid, and reactivity silently stops between them. Import everything from the standalone module.
+- **`useState` or `useEffect` inside a Solid or html-template chart**: use `createSignal`, `createMemo`, `createEffect` and `onCleanup` from the same module as rhp. With `@bezda/rhp-react` it is the other way round: React's hooks, and no Solid.
 - **A tooltip library or an SVG overlay**: rhp charts are HTML. Show a readout with a signal and `Show` inside the slat, or in the poster's dek (interaction.md).
 
 ## Nothing draws, or the chart is empty

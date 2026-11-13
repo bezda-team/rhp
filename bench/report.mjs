@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url)), at = (f) => path.join(here, f);
 const NAMES = {
-  rhp: "rhp (static)", "rhp-css": "rhp (CSS)", "rhp-js": "rhp (JS)", "rhp-static": "rhp (static)", vanilla: "Plain DOM", chartscss: "Charts.css", d3: "D3", plot: "Observable Plot",
+  rhp: "rhp (static)", "rhp-css": "rhp (CSS)", "rhp-js": "rhp (JS)", "rhp-react": "rhp-react (CSS)", "rhp-react-js": "rhp-react (JS)", "rhp-static": "rhp (static)", vanilla: "Plain DOM", chartscss: "Charts.css", d3: "D3", plot: "Observable Plot",
   chartjs: "Chart.js", echarts: "ECharts", apex: "ApexCharts", recharts: "Recharts", nivo: "Nivo", victory: "Victory",
   highcharts: "Highcharts", g2: "AntV G2", vegalite: "Vega-Lite",
 };

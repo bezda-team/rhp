@@ -19,7 +19,7 @@ A Solid app's build (Vite, SolidStart, Astro) compiles rhp's source with the app
 Anywhere else the package picks a ready build: one for browsers, and one for Node, Deno and workers that draws charts on a server.
 
 - **No build step:** import `@bezda/rhp/standalone` from a CDN, one module with Solid included (36 kB gzipped); [Install](https://rhp.vercel.app/start/install/#in-a-plain-html-page) shows a whole page.
-- **React:** `@bezda/rhp-react`, in [`react/`](react/), turns an rhp chart into a React component.
+- **React:** `@bezda/rhp-react`, in [`react/`](react/), is rhp written for React: the same Chart, Plot, slats and blocks as React components, drawing the same charts (React 19).
 
 ## Example
 
@@ -114,6 +114,8 @@ The code:
 | `src/data.js`, `src/shape.js` | the data helpers and `shape()` |
 | `src/poster.jsx`, `src/posters.css` | Poster and its looks |
 | `test/run.mjs` | every check, including an app drawn on a server and taken over in the browser, and a Vite app built from rhp's source |
+| `src/layout.js`, `src/marks.js`, `src/motion.js`, `src/points.js` | what isn't Solid's, shared with the React version: ticks, the theme and gutters; each block's variables and the outlines; the JS version's math; ManyDots' points |
+| `react/` | rhp for React (`@bezda/rhp-react`): its source in `react/src/`, and its checks in `react/test/` (what it does, drawn on a server and taken over, and the same charts drawn by rhp and by rhp-react, compared element by element and pixel by pixel) |
 
 The AI kit has its own checks: `npm install` and `npm test` in `mcp/` run the checker against a set of broken charts, the gallery's examples and every recipe in `skills/rhp/recipes/`.
 

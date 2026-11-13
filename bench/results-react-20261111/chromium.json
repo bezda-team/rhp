@@ -1,0 +1,1122 @@
+{
+  "engine": "chromium",
+  "browser": "153.0.8010.12",
+  "date": "2026-11-12T07:06:33.548Z",
+  "loadStart": [
+    2.12451171875,
+    2.21484375,
+    2.474609375
+  ],
+  "libs": {
+    "nivo": {
+      "idleGate": null,
+      "mount": {
+        "frame": 25.4,
+        "total": 77.3,
+        "samples": [
+          {
+            "frame": 29.09999942779541,
+            "total": 62.4
+          },
+          {
+            "frame": 19.800000190734863,
+            "total": 78.1
+          },
+          {
+            "frame": 26.300000190734863,
+            "total": 85.2
+          },
+          {
+            "frame": 19.100000381469727,
+            "total": 55.2
+          },
+          {
+            "frame": 24.300000190734863,
+            "total": 89.2
+          },
+          {
+            "frame": 25.399999618530273,
+            "total": 77.3
+          },
+          {
+            "frame": 25.699999809265137,
+            "total": 51.5
+          },
+          {
+            "frame": 26.399999618530273,
+            "total": 90.6
+          },
+          {
+            "frame": 18.300000190734863,
+            "total": 54
+          },
+          {
+            "frame": 18.800000190734863,
+            "total": 58.7
+          }
+        ]
+      },
+      "large": {
+        "frame": 248.8,
+        "total": 750.2,
+        "samples": [
+          {
+            "frame": 256.19999980926514,
+            "total": 750.2
+          },
+          {
+            "frame": 240.69999980926514,
+            "total": 733.7
+          },
+          {
+            "frame": 240.10000038146973,
+            "total": 721.4
+          },
+          {
+            "frame": 248.79999923706055,
+            "total": 768.1
+          },
+          {
+            "frame": 257.30000019073486,
+            "total": 785.3
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 116.1,
+        "total": 333.6,
+        "samples": [
+          {
+            "frame": 119.39999961853027,
+            "total": 361.6
+          },
+          {
+            "frame": 106.39999961853027,
+            "total": 324.8
+          },
+          {
+            "frame": 114.5,
+            "total": 333.6
+          },
+          {
+            "frame": 116.10000038146973,
+            "total": 325
+          },
+          {
+            "frame": 127.10000038146973,
+            "total": 344.8
+          }
+        ]
+      },
+      "update": {
+        "latency": 9.1,
+        "perChange": {
+          "Task": 30.01,
+          "Script": 3.88,
+          "RecalcStyle": 1.24,
+          "Layout": 2.01
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 3.79,
+          "Script": 3.04,
+          "RecalcStyle": 0.03,
+          "Layout": 0.04
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 6.39,
+          "Script": 5.07,
+          "RecalcStyle": 0.05,
+          "Layout": 0.12
+        }
+      },
+      "memory": {
+        "heapMB": 21.76,
+        "nodes": 5900
+      }
+    },
+    "recharts": {
+      "idleGate": null,
+      "mount": {
+        "frame": 25.6,
+        "total": 49.2,
+        "samples": [
+          {
+            "frame": 26.90000057220459,
+            "total": 50.7
+          },
+          {
+            "frame": 26.899999618530273,
+            "total": 50.4
+          },
+          {
+            "frame": 21.90000057220459,
+            "total": 45.9
+          },
+          {
+            "frame": 29.59999942779541,
+            "total": 52.9
+          },
+          {
+            "frame": 23.899999618530273,
+            "total": 48.5
+          },
+          {
+            "frame": 25.600000381469727,
+            "total": 49.6
+          },
+          {
+            "frame": 22.5,
+            "total": 46.7
+          },
+          {
+            "frame": 22.199999809265137,
+            "total": 46.9
+          },
+          {
+            "frame": 24.300000190734863,
+            "total": 47.5
+          },
+          {
+            "frame": 25.59999942779541,
+            "total": 49.2
+          }
+        ]
+      },
+      "large": {
+        "frame": 113.9,
+        "total": 556.4,
+        "samples": [
+          {
+            "frame": 105.30000019073486,
+            "total": 553.6
+          },
+          {
+            "frame": 113.89999961853027,
+            "total": 556.4
+          },
+          {
+            "frame": 117.69999980926514,
+            "total": 551.6
+          },
+          {
+            "frame": 116,
+            "total": 563.4
+          },
+          {
+            "frame": 112.60000038146973,
+            "total": 561.4
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 144.6,
+        "total": 379.6,
+        "samples": [
+          {
+            "frame": 147.5,
+            "total": 384.7
+          },
+          {
+            "frame": 146.19999980926514,
+            "total": 380.7
+          },
+          {
+            "frame": 144.5999994277954,
+            "total": 379.6
+          },
+          {
+            "frame": 135.80000019073486,
+            "total": 361.8
+          },
+          {
+            "frame": 137.89999961853027,
+            "total": 371.5
+          }
+        ]
+      },
+      "update": {
+        "latency": 10.4,
+        "perChange": {
+          "Task": 56.31,
+          "Script": 37.11,
+          "RecalcStyle": 1.2,
+          "Layout": 0.93
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 4.02,
+          "Script": 3.58,
+          "RecalcStyle": 0.06,
+          "Layout": 0.02
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": {
+          "Task": 7.17,
+          "Script": 6.49,
+          "RecalcStyle": 0.1,
+          "Layout": 0.02
+        }
+      },
+      "memory": {
+        "heapMB": 28.94,
+        "nodes": 6552
+      }
+    },
+    "rhp-css": {
+      "idleGate": null,
+      "mount": {
+        "frame": 15.2,
+        "total": 16.9,
+        "samples": [
+          {
+            "frame": 12.600000381469727,
+            "total": 14.3
+          },
+          {
+            "frame": 14.899999618530273,
+            "total": 16.8
+          },
+          {
+            "frame": 15.300000190734863,
+            "total": 17.3
+          },
+          {
+            "frame": 13.200000762939453,
+            "total": 14.7
+          },
+          {
+            "frame": 15.5,
+            "total": 16.9
+          },
+          {
+            "frame": 15.40000057220459,
+            "total": 17.2
+          },
+          {
+            "frame": 15.200000762939453,
+            "total": 17
+          },
+          {
+            "frame": 14.5,
+            "total": 16.4
+          },
+          {
+            "frame": 15.600000381469727,
+            "total": 17.6
+          },
+          {
+            "frame": 15,
+            "total": 16.9
+          }
+        ]
+      },
+      "large": {
+        "frame": 52.8,
+        "total": 54.6,
+        "samples": [
+          {
+            "frame": 49.29999923706055,
+            "total": 50.9
+          },
+          {
+            "frame": 53.90000057220459,
+            "total": 55.4
+          },
+          {
+            "frame": 51.5,
+            "total": 53.7
+          },
+          {
+            "frame": 52.80000019073486,
+            "total": 54.6
+          },
+          {
+            "frame": 53.89999961853027,
+            "total": 55.7
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 36.6,
+        "total": 38.8,
+        "samples": [
+          {
+            "frame": 37,
+            "total": 39.3
+          },
+          {
+            "frame": 37.19999980926514,
+            "total": 39.5
+          },
+          {
+            "frame": 36.60000038146973,
+            "total": 38.8
+          },
+          {
+            "frame": 34.10000038146973,
+            "total": 36.3
+          },
+          {
+            "frame": 32.30000019073486,
+            "total": 34.8
+          }
+        ]
+      },
+      "update": {
+        "latency": 2.3,
+        "perChange": {
+          "Task": 8.17,
+          "Script": 0.21,
+          "RecalcStyle": 1.42,
+          "Layout": 1.27
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 1.36,
+          "Script": 0.22,
+          "RecalcStyle": 0.44,
+          "Layout": 0.15
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.88,
+          "Script": 0.12,
+          "RecalcStyle": 0.25,
+          "Layout": 0.11
+        }
+      },
+      "memory": {
+        "heapMB": 2.95,
+        "nodes": 3373
+      }
+    },
+    "rhp-js": {
+      "idleGate": null,
+      "mount": {
+        "frame": 14.9,
+        "total": 16.8,
+        "samples": [
+          {
+            "frame": 12.199999809265137,
+            "total": 13.7
+          },
+          {
+            "frame": 9.399999618530273,
+            "total": 10.8
+          },
+          {
+            "frame": 14.899999618530273,
+            "total": 16.8
+          },
+          {
+            "frame": 16.5,
+            "total": 18.4
+          },
+          {
+            "frame": 15.399999618530273,
+            "total": 17.2
+          },
+          {
+            "frame": 13.800000190734863,
+            "total": 15.3
+          },
+          {
+            "frame": 9.100000381469727,
+            "total": 10.4
+          },
+          {
+            "frame": 15.300000190734863,
+            "total": 17
+          },
+          {
+            "frame": 14.799999237060547,
+            "total": 16.6
+          },
+          {
+            "frame": 15,
+            "total": 16.8
+          }
+        ]
+      },
+      "large": {
+        "frame": 52.6,
+        "total": 54.1,
+        "samples": [
+          {
+            "frame": 54,
+            "total": 55.6
+          },
+          {
+            "frame": 53.69999980926514,
+            "total": 55.3
+          },
+          {
+            "frame": 47.69999980926514,
+            "total": 48.9
+          },
+          {
+            "frame": 45.30000019073486,
+            "total": 46.6
+          },
+          {
+            "frame": 52.59999942779541,
+            "total": 54.1
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 29.3,
+        "total": 30.8,
+        "samples": [
+          {
+            "frame": 37.5,
+            "total": 39.2
+          },
+          {
+            "frame": 26.399999618530273,
+            "total": 27.9
+          },
+          {
+            "frame": 29.59999942779541,
+            "total": 30.8
+          },
+          {
+            "frame": 26.199999809265137,
+            "total": 27.5
+          },
+          {
+            "frame": 29.300000190734863,
+            "total": 30.8
+          }
+        ]
+      },
+      "update": {
+        "latency": 0.3,
+        "perChange": {
+          "Task": 3.92,
+          "Script": 0.47,
+          "RecalcStyle": 1.02,
+          "Layout": 0.58
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.73,
+          "Script": 0.19,
+          "RecalcStyle": 0.17,
+          "Layout": 0.1
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.63,
+          "Script": 0.15,
+          "RecalcStyle": 0.13,
+          "Layout": 0.08
+        }
+      },
+      "memory": {
+        "heapMB": 3.13,
+        "nodes": 3373
+      }
+    },
+    "rhp-react-js": {
+      "idleGate": null,
+      "mount": {
+        "frame": 16.4,
+        "total": 17.7,
+        "samples": [
+          {
+            "frame": 10.40000057220459,
+            "total": 11.9
+          },
+          {
+            "frame": 16.5,
+            "total": 17.7
+          },
+          {
+            "frame": 15,
+            "total": 16.6
+          },
+          {
+            "frame": 16.5,
+            "total": 18
+          },
+          {
+            "frame": 12.100000381469727,
+            "total": 13.5
+          },
+          {
+            "frame": 16.899999618530273,
+            "total": 18.2
+          },
+          {
+            "frame": 16.59999942779541,
+            "total": 17.7
+          },
+          {
+            "frame": 15.700000762939453,
+            "total": 16.9
+          },
+          {
+            "frame": 16.40000057220459,
+            "total": 18
+          },
+          {
+            "frame": 15.5,
+            "total": 17.1
+          }
+        ]
+      },
+      "large": {
+        "frame": 55.4,
+        "total": 57.1,
+        "samples": [
+          {
+            "frame": 55.40000057220459,
+            "total": 57.1
+          },
+          {
+            "frame": 55.70000076293945,
+            "total": 57.1
+          },
+          {
+            "frame": 42.89999961853027,
+            "total": 44.4
+          },
+          {
+            "frame": 44.69999980926514,
+            "total": 46
+          },
+          {
+            "frame": 56,
+            "total": 57.5
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 40,
+        "total": 41.3,
+        "samples": [
+          {
+            "frame": 31.800000190734863,
+            "total": 33.6
+          },
+          {
+            "frame": 40,
+            "total": 41.3
+          },
+          {
+            "frame": 34,
+            "total": 35.5
+          },
+          {
+            "frame": 40.5,
+            "total": 41.9
+          },
+          {
+            "frame": 40.60000038146973,
+            "total": 41.8
+          }
+        ]
+      },
+      "update": {
+        "latency": 1.5,
+        "perChange": {
+          "Task": 13.43,
+          "Script": 3.49,
+          "RecalcStyle": 2.72,
+          "Layout": 1.56
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 1.28,
+          "Script": 0.5,
+          "RecalcStyle": 0.23,
+          "Layout": 0.14
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 1.25,
+          "Script": 0.43,
+          "RecalcStyle": 0.24,
+          "Layout": 0.15
+        }
+      },
+      "memory": {
+        "heapMB": 3,
+        "nodes": 3302
+      }
+    },
+    "rhp-react": {
+      "idleGate": null,
+      "mount": {
+        "frame": 15.9,
+        "total": 17.3,
+        "samples": [
+          {
+            "frame": 13,
+            "total": 14.3
+          },
+          {
+            "frame": 15.90000057220459,
+            "total": 17.3
+          },
+          {
+            "frame": 16.5,
+            "total": 18.1
+          },
+          {
+            "frame": 15.899999618530273,
+            "total": 17
+          },
+          {
+            "frame": 15.40000057220459,
+            "total": 17
+          },
+          {
+            "frame": 15.899999618530273,
+            "total": 17.3
+          },
+          {
+            "frame": 12.300000190734863,
+            "total": 13.6
+          },
+          {
+            "frame": 16.699999809265137,
+            "total": 18.5
+          },
+          {
+            "frame": 14.800000190734863,
+            "total": 16.2
+          },
+          {
+            "frame": 16.199999809265137,
+            "total": 17.8
+          }
+        ]
+      },
+      "large": {
+        "frame": 54.8,
+        "total": 56.2,
+        "samples": [
+          {
+            "frame": 55.89999961853027,
+            "total": 57.5
+          },
+          {
+            "frame": 54.5,
+            "total": 56.2
+          },
+          {
+            "frame": 55,
+            "total": 56.6
+          },
+          {
+            "frame": 54.80000019073486,
+            "total": 56
+          },
+          {
+            "frame": 49.5,
+            "total": 51
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 40,
+        "total": 41.2,
+        "samples": [
+          {
+            "frame": 34.59999942779541,
+            "total": 36
+          },
+          {
+            "frame": 40.70000076293945,
+            "total": 42.3
+          },
+          {
+            "frame": 38.90000057220459,
+            "total": 40.4
+          },
+          {
+            "frame": 40,
+            "total": 41.2
+          },
+          {
+            "frame": 40,
+            "total": 41.8
+          }
+        ]
+      },
+      "update": {
+        "latency": 2.4,
+        "perChange": {
+          "Task": 7.22,
+          "Script": 0.3,
+          "RecalcStyle": 1.1,
+          "Layout": 0.93
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 1.16,
+          "Script": 0.36,
+          "RecalcStyle": 0.29,
+          "Layout": 0.1
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.94,
+          "Script": 0.29,
+          "RecalcStyle": 0.23,
+          "Layout": 0.07
+        }
+      },
+      "memory": {
+        "heapMB": 2.82,
+        "nodes": 3302
+      }
+    },
+    "vanilla": {
+      "idleGate": null,
+      "mount": {
+        "frame": 4.4,
+        "total": 5.9,
+        "samples": [
+          {
+            "frame": 3.3999996185302734,
+            "total": 4.9
+          },
+          {
+            "frame": 4.399999618530273,
+            "total": 5.9
+          },
+          {
+            "frame": 4.399999618530273,
+            "total": 5.7
+          },
+          {
+            "frame": 4.5,
+            "total": 6.2
+          },
+          {
+            "frame": 4,
+            "total": 5.7
+          },
+          {
+            "frame": 3.40000057220459,
+            "total": 5
+          },
+          {
+            "frame": 4.300000190734863,
+            "total": 5.9
+          },
+          {
+            "frame": 5,
+            "total": 6.7
+          },
+          {
+            "frame": 5.100000381469727,
+            "total": 6.6
+          },
+          {
+            "frame": 5.300000190734863,
+            "total": 7.1
+          }
+        ]
+      },
+      "large": {
+        "frame": 20.9,
+        "total": 25.5,
+        "samples": [
+          {
+            "frame": 17.899999618530273,
+            "total": 23.6
+          },
+          {
+            "frame": 22.90000057220459,
+            "total": 28.6
+          },
+          {
+            "frame": 20.90000057220459,
+            "total": 31.2
+          },
+          {
+            "frame": 21.399999618530273,
+            "total": 25.5
+          },
+          {
+            "frame": 13,
+            "total": 19.9
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 6.9,
+        "total": 8.6,
+        "samples": [
+          {
+            "frame": 6.90000057220459,
+            "total": 8.6
+          },
+          {
+            "frame": 6.699999809265137,
+            "total": 8.1
+          },
+          {
+            "frame": 11.100000381469727,
+            "total": 12.6
+          },
+          {
+            "frame": 5.5,
+            "total": 6.8
+          },
+          {
+            "frame": 8.5,
+            "total": 10.1
+          }
+        ]
+      },
+      "update": {
+        "latency": 1.3,
+        "perChange": {
+          "Task": 1.36,
+          "Script": 0.09,
+          "RecalcStyle": 0.07,
+          "Layout": 0.15
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.51,
+          "Script": 0.07,
+          "RecalcStyle": 0.03,
+          "Layout": 0.09
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 0.27,
+          "Script": 0.03,
+          "RecalcStyle": 0.01,
+          "Layout": 0.05
+        }
+      },
+      "memory": {
+        "heapMB": 0.13,
+        "nodes": 2150
+      }
+    },
+    "victory": {
+      "idleGate": null,
+      "mount": {
+        "frame": 19.8,
+        "total": 21.5,
+        "samples": [
+          {
+            "frame": 24.59999942779541,
+            "total": 25.9
+          },
+          {
+            "frame": 16.100000381469727,
+            "total": 17.5
+          },
+          {
+            "frame": 16.800000190734863,
+            "total": 17.9
+          },
+          {
+            "frame": 19.800000190734863,
+            "total": 21.5
+          },
+          {
+            "frame": 22.5,
+            "total": 23.8
+          },
+          {
+            "frame": 18.100000381469727,
+            "total": 19.4
+          },
+          {
+            "frame": 23.09999942779541,
+            "total": 24.2
+          },
+          {
+            "frame": 18.90000057220459,
+            "total": 20.3
+          },
+          {
+            "frame": 16.90000057220459,
+            "total": 18.2
+          },
+          {
+            "frame": 21.59999942779541,
+            "total": 22.8
+          }
+        ]
+      },
+      "large": {
+        "frame": 104,
+        "total": 105.3,
+        "samples": [
+          {
+            "frame": 104.39999961853027,
+            "total": 105.8
+          },
+          {
+            "frame": 103,
+            "total": 104.2
+          },
+          {
+            "frame": 104.69999980926514,
+            "total": 106
+          },
+          {
+            "frame": 104,
+            "total": 105.3
+          },
+          {
+            "frame": 96.80000019073486,
+            "total": 98.4
+          }
+        ]
+      },
+      "dashboard": {
+        "frame": 63.3,
+        "total": 64.7,
+        "samples": [
+          {
+            "frame": 61.80000019073486,
+            "total": 63.3
+          },
+          {
+            "frame": 70.19999980926514,
+            "total": 71.7
+          },
+          {
+            "frame": 60.40000057220459,
+            "total": 61.5
+          },
+          {
+            "frame": 63.30000019073486,
+            "total": 64.7
+          },
+          {
+            "frame": 68.19999980926514,
+            "total": 69.7
+          }
+        ]
+      },
+      "update": {
+        "latency": 6.5,
+        "perChange": {
+          "Task": 6.17,
+          "Script": 0.07,
+          "RecalcStyle": 0.07,
+          "Layout": 0.11
+        }
+      },
+      "drag": {
+        "p50": 16.7,
+        "p95": 16.7,
+        "long": 0,
+        "fps": 60,
+        "perFrame": {
+          "Task": 3.06,
+          "Script": 2.65,
+          "RecalcStyle": 0.04,
+          "Layout": 0.06
+        }
+      },
+      "drag4x": {
+        "p50": 16.7,
+        "p95": 16.8,
+        "long": 1,
+        "fps": 59.8,
+        "perFrame": {
+          "Task": 4.71,
+          "Script": 4.12,
+          "RecalcStyle": 0.05,
+          "Layout": 0.08
+        }
+      },
+      "memory": {
+        "heapMB": 5.36,
+        "nodes": 4352
+      }
+    }
+  },
+  "completed": "2026-11-12T07:13:56.177Z",
+  "loadEnd": [
+    4.79052734375,
+    2.7353515625,
+    2.5078125
+  ]
+}

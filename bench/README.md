@@ -8,6 +8,8 @@ Each one is written the way its own docs suggest, with its default settings, inc
 | rhp, CSS version | HTML and CSS | CSS transitions, 150 ms |
 | rhp, JS version | HTML and CSS | JS, 150 ms |
 | rhp, static | HTML and CSS, rows drawn once | none: a change draws the rows again |
+| rhp-react, CSS version | HTML and CSS, with React | CSS transitions, 150 ms |
+| rhp-react, JS version | HTML and CSS, with React | JS, 150 ms |
 | Plain DOM | divs, widths set by hand | none (the floor) |
 | Charts.css | an HTML table and CSS | none |
 | D3, by hand | SVG | a 150 ms transition, as rhp |
@@ -24,6 +26,7 @@ Each one is written the way its own docs suggest, with its default settings, inc
 
 The adapters are in `libs/`, one file each.
 The React libraries render with `flushSync`, so an update is drawn in the frame it is made, like the others.
+rhp-react is written as a React app would write it, with the rows as objects (`rows={rows}`).
 
 ## What is measured
 

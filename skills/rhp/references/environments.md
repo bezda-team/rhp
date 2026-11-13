@@ -7,8 +7,8 @@
 3. [Plain HTML page](#3-plain-html-page)
 4. [Solid](#4-solid): Vite, TypeScript, SolidStart
 5. [Solid JSX and the html template](#5-solid-jsx-and-the-html-template): the conversion rules
-6. [The chart module and the mount helper](#6-the-chart-module-and-the-mount-helper): for every app that is not a Solid app
-7. [React](#7-react): the wrapper, Vite, TypeScript
+6. [The chart module and the mount helper](#6-the-chart-module-and-the-mount-helper): for every app that is not a Solid or React app
+7. [React](#7-react): rhp-react, Vite, TypeScript, from a recipe
 8. [Next.js](#8-nextjs): App Router, Pages Router
 9. [Vue and Nuxt](#9-vue-and-nuxt)
 10. [Svelte and SvelteKit](#10-svelte-and-sveltekit)
@@ -19,7 +19,7 @@
 15. [What was verified, and the versions](#15-what-was-verified-and-the-versions)
 
 Where an rhp chart goes in a plain HTML page and in Solid, React, Next.js, Vue, Nuxt, Svelte, SvelteKit, Angular and Astro apps.
-Every section builds the same small poster chart, with its data passed in by the app, and every one was built and checked in a browser on 2026-10-03 with `@bezda/rhp` 2.0.1 (section 15).
+Every section builds the same small poster chart, with its data passed in by the app, and every one was built and checked in a browser on 2026-10-03 with `@bezda/rhp` 2.0.1, React and Next.js again on 2026-11-12 with `@bezda/rhp-react` 2.3.0 (section 15).
 
 ## 1. Find the environment
 
@@ -31,14 +31,14 @@ Go down the table and take the first row that matches: Next.js apps also have `r
 | no package.json; a chatbot answer; "an HTML file" | | plain page | one `.html` file, rhp from jsDelivr | 3 |
 | `astro.config.*` | `astro` and `@astrojs/solid-js` | Astro with Solid | a Solid island (JSX) | 12 |
 | `astro.config.*` | `astro` | Astro | a custom element drawing an html-template chart | 12 |
-| `next.config.*`, `app/` or `src/app/` | `next` | Next.js App Router | a React component the server never renders | 8 |
-| `next.config.*`, `pages/` or `src/pages/` | `next` | Next.js Pages Router | a React component loaded with `ssr: false` | 8 |
+| `next.config.*`, `app/` or `src/app/` | `next` | Next.js App Router | a client component with `@bezda/rhp-react`, which the server draws too | 8 |
+| `next.config.*`, `pages/` or `src/pages/` | `next` | Next.js Pages Router | a React component with `@bezda/rhp-react` | 8 |
 | `nuxt.config.*` | `nuxt` | Nuxt | a Vue component | 9 |
 | `src/routes/`, `sveltekit()` in `vite.config.*` or a `svelte.config.*` | `@sveltejs/kit` | SvelteKit | a Svelte component | 10 |
 | `src/entry-server.*`, `src/routes/` | `@solidjs/start` | SolidStart | a JSX component | 4 |
 | `angular.json` | `@angular/core` | Angular | a standalone component | 11 |
 | `vite.config.*` with `solid()` | `solid-js`, `vite-plugin-solid` | Solid | a JSX component | 4 |
-| `vite.config.*` with `react()` | `react`, `react-dom` | React | a React component around an html-template chart | 7 |
+| `vite.config.*` with `react()` | `react`, `react-dom` | React | a React component with `@bezda/rhp-react` | 7 |
 | `vite.config.*` with `vue()` | `vue` | Vue | a Vue component | 9 |
 | `vite.config.*` with `svelte()` | `svelte` | Svelte | a Svelte component | 10 |
 | a bundler and none of the above | | modules | the chart module and `mountChart`, from the app's own script | 6 |
@@ -47,10 +47,10 @@ Go down the table and take the first row that matches: Next.js apps also have `r
 - A `tsconfig.json` and `.ts` or `.tsx` sources mean TypeScript: each section has the typed files.
 - `solid-js` in `node_modules` or in the lock file does not make a Solid app: npm installs it with `@bezda/rhp` in every app, as a peer dependency, and it is not added to package.json.
   Only `solid-js` in package.json, together with `vite-plugin-solid`, `@solidjs/start` or `@astrojs/solid-js`, makes a Solid app.
-- Install in every app with the project's package manager: `npm install @bezda/rhp`.
+- Install in every app with the project's package manager: `npm install @bezda/rhp`, or `npm install @bezda/rhp-react` in React and Next.js apps.
   Only npm was tested; pnpm, yarn and bun were not.
 - Not tested: React apps that render on a server outside Next.js (React Router in framework mode, Remix, Gatsby), Preact, Qwik, Lit, Ember, Nuxt 3, SvelteKit 2.
-  For those, use section 6: draw the chart in the browser in the component's mount hook, dispose it in its unmount hook, and check the page in a browser.
+  React apps use section 7 (rhp-react draws on any React 19 server, but only Next.js was tested); for the others, use section 6: draw the chart in the browser in the component's mount hook, dispose it in its unmount hook, and check the page in a browser.
 
 ## 2. The example chart
 
@@ -106,8 +106,8 @@ Each section says where these tags go:
 | Solid | `TowersChart.jsx` | imported by `TowersChart.jsx` | `index.html` | no server |
 | SolidStart | `TowersChart.jsx` | imported by `TowersChart.jsx` | `src/entry-server.jsx` | drawn, then hydrated |
 | React | `Towers.jsx` | imported by `Towers.jsx` | `index.html` | no server |
-| Next.js App Router | `Towers.tsx`, loaded by `ClientOnlyTowers.tsx` | imported by `ClientOnlyTowers.tsx` | `next/font` in `app/layout.tsx` | not drawn; rhp not loaded |
-| Next.js Pages Router | `Towers.jsx`, loaded with `ssr: false` | imported by `pages/_app.js` | `pages/_document.js` | not drawn; rhp not loaded |
+| Next.js App Router | `Towers.tsx`, a client component | imported by `Towers.tsx` | `next/font` in `app/layout.tsx` | drawn, then hydrated |
+| Next.js Pages Router | `Towers.jsx` | imported by `pages/_app.js` | `pages/_document.js` | drawn, then hydrated |
 | Vue | `towers-chart.js`, `Towers.vue` | imported by `Towers.vue` | `index.html` | no server |
 | Nuxt | `towers-chart.js`, `Towers.vue` | imported by `Towers.vue` | `nuxt.config.ts` | an empty box |
 | Svelte | `towers-chart.js`, `Towers.svelte` | imported by `Towers.svelte` | `index.html` | no server |
@@ -402,7 +402,7 @@ The fonts go in the document's head in `src/entry-server.jsx`:
 
 ## 5. Solid JSX and the html template
 
-Recipes, plain pages and every app that is not a Solid app write charts with the html template; a Solid app writes JSX.
+Recipes, plain pages and every app that is neither a Solid nor a React app write charts with the html template; a Solid app writes Solid JSX, and a React app writes React JSX with rhp-react (section 7).
 Section 3's script and section 4's component are the same chart, line for line.
 
 | | html template (`@bezda/rhp/standalone`) | Solid JSX (`@bezda/rhp` and `solid-js`) |
@@ -471,13 +471,13 @@ Each of these was checked in both formats:
 
 ## 6. The chart module and the mount helper
 
-In every app that is not a Solid app, the chart is an ES module written with the html template, and a small helper draws it into an element and hands it new data.
-Vue, Nuxt, Svelte, SvelteKit, Angular and Astro use the module as it is; React and Next.js put the same code in their component's file (section 7).
+In every app that is neither a Solid app nor a React app, the chart is an ES module written with the html template, and a small helper draws it into an element and hands it new data.
+Vue, Nuxt, Svelte, SvelteKit, Angular and Astro use the module as it is; React and Next.js use rhp-react instead (section 7).
 
 The chart module, `towers-chart.js`: section 3's script without the data and the `render` call, with the chart exported.
 
 ```js
-// The towers poster, written with rhp's html template: the same file in every app that is not a Solid app
+// The towers poster, written with rhp's html template: the same file in every app that is not a Solid or React app
 import { Chart, Plot, Bar, Label, Poster, slat, sortBy, html, createSignal, createMemo, Show } from "@bezda/rhp/standalone";
 
 // Slat types: one tower, with its name, its bar (one line per floor) and its height; the tower the reader is on turns red
@@ -548,7 +548,7 @@ export function TowersChart(props) {
 The mount helper, `rhp-mount.js`; copy it as it is:
 
 ```js
-// Draws an rhp chart into an element of an app that is not a Solid app (React, Vue, Svelte, Angular, a plain script),
+// Draws an rhp chart into an element of an app that is not a Solid app (Vue, Svelte, Angular, a plain script),
 // and hands it new props later. Copy this file as it is.
 import { render, createStore, reconcile, unwrap } from "@bezda/rhp/standalone";
 
@@ -585,7 +585,7 @@ export function mountChart(chart, element, props = {}) {
 **TypeScript**: `towers-chart.ts` and `rhp-mount.ts`.
 
 ```ts
-// The towers poster, written with rhp's html template: the same file in every app that is not a Solid app
+// The towers poster, written with rhp's html template: the same file in every app that is not a Solid or React app
 import { Chart, Plot, Bar, Label, Poster, slat, sortBy, html, createSignal, createMemo, Show } from "@bezda/rhp/standalone";
 
 // One row of the data
@@ -655,7 +655,7 @@ export function TowersChart(props: { rows: TowerRow[] }) {
 ```
 
 ```ts
-// Draws an rhp chart into an element of an app that is not a Solid app (React, Vue, Svelte, Angular, a plain script),
+// Draws an rhp chart into an element of an app that is not a Solid app (Vue, Svelte, Angular, a plain script),
 // and hands it new props later. Copy this file as it is.
 import { render, createStore, reconcile, unwrap } from "@bezda/rhp/standalone";
 import type { JSX } from "solid-js";
@@ -696,85 +696,91 @@ export function mountChart<P extends object>(chart: (props: P) => JSX.Element, e
 ## 7. React
 
 Detect: `react` and `react-dom` in package.json (Vite has `@vitejs/plugin-react`); Next.js is section 8.
-Install: `npm install @bezda/rhp`.
-`@bezda/rhp-react` is not on npm: use the wrapper below.
+Install: `npm install @bezda/rhp-react`; it needs React 19 or later and nothing else (no Solid, no stylesheet to import).
+Import everything from `@bezda/rhp-react`, never from `@bezda/rhp` or `@bezda/rhp/standalone`, which are rhp for Solid.
+
+rhp-react is rhp written with React: the same Chart, Plot, slats and blocks as React components, the same CSS, and the same chart on screen.
+A slat is a function of the row that returns React JSX, and the chart's state is React state.
 
 ```
 index.html                    the fonts (section 2)
-src/rhp/rhp-mount.js          the mount helper (section 6), as it is
-src/rhp/RhpChart.jsx          the React wrapper, as it is
-src/charts/Towers.jsx         the chart and the React component that draws it
+src/charts/Towers.jsx         the chart, a React component
 src/charts/towers-chart.css   the poster's CSS (section 2)
 src/data/towers.js            the data (section 2)
 src/App.jsx                   the app passes its data
 ```
 
-The wrapper, `src/rhp/RhpChart.jsx`:
+`src/charts/Towers.jsx` is section 4's Solid component written for React (the rules are below):
 
 ```jsx
-"use client";
-// <RhpChart chart={TowersChart} rows={towers} />: an rhp chart in a React app. Copy this file as it is.
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { mountChart } from "./rhp-mount.js";
-
-// The chart is drawn before the browser paints, so there is no empty frame (a server render runs neither hook)
-const useBeforePaint = typeof window === "undefined" ? useEffect : useLayoutEffect;
-
-// chart is a function of props that returns an html template, defined at the top level of a module (never inside a
-// component). Every other prop goes to it, except className and style, which go on the <div> it draws into.
-export function RhpChart({ chart, className, style, ...props }) {
-  const box = useRef(null);
-  const drawn = useRef(null);
-
-  // After each render: draw the chart the first time, or again when `chart` is a new function (its module was edited
-  // during development); otherwise hand it the props that are no longer the same value.
-  useBeforePaint(() => {
-    const now = drawn.current;
-    if (now?.chart !== chart) {
-      now?.mounted.dispose();
-      drawn.current = { chart, props, mounted: mountChart(chart, box.current, props) };
-      return;
-    }
-    const changed = {};
-    for (const key of new Set([...Object.keys(now.props), ...Object.keys(props)])) {
-      if (now.props[key] !== props[key]) changed[key] = props[key];
-    }
-    now.props = props;
-    if (Object.keys(changed).length) now.mounted.set(changed);
-  });
-
-  // Remove the chart when the component goes away (StrictMode's trial unmount included: the effect above redraws it)
-  useBeforePaint(() => () => {
-    drawn.current?.mounted.dispose();
-    drawn.current = null;
-  }, []);
-
-  return <div ref={box} className={className} style={style} />;
-}
-```
-
-- `<RhpChart chart={TowersChart} rows={rows} />`: every prop except `chart`, `className` and `style` goes to the chart; `className` and `style` go on the `<div>` it draws into.
-- After each render it hands the chart only the props that are a different value, and `reconcile` then passes on only what differs inside them.
-  Give it a new array when the data changes (React's own rule): a list changed in place keeps the same value, and the chart does not see the change.
-- `chart` must be a function defined at the top level of a module: a new function (an arrow written inside a component) draws a new chart on every render.
-- StrictMode mounts, unmounts and mounts again in development: the wrapper removes the first chart, and the page has one (checked).
-- When the component unmounts, the chart is disposed (checked: nothing left).
-- The `"use client"` line is for Next.js; Vite's build ignored it without a warning.
-
-The chart and its component, `src/charts/Towers.jsx`: section 6's `towers-chart.js` with three changes.
-Its first lines import the wrapper and the CSS, `TowersChart` is no longer exported, and the component comes last:
-
-```jsx
-// The towers poster: an rhp chart written with the html template, and the React component that draws it
-import { Chart, Plot, Bar, Label, Poster, slat, sortBy, html, createSignal, createMemo, Show } from "@bezda/rhp/standalone";
-import { RhpChart } from "../rhp/RhpChart.jsx";
+// The towers poster in a React app: rhp-react
+import { useState } from "react";
+import { Chart, Plot, Bar, Label, Poster, slat, sortBy } from "@bezda/rhp-react";
 import "./towers-chart.css";
 
-// ... the slat type and the chart function of section 6, unchanged, but with no "export" before "function TowersChart" ...
+// Slat types: one tower, with its name, its bar (one line per floor) and its height; the tower the reader is on turns red
+const Tower = slat({
+  thickness: 44,
+  room: { start: "auto", end: 60 },
+  css: `
+    .tower { cursor: default; outline: none; }
+    .tower:focus-visible { background: rgb(23 25 28 / .06); }
+    .name { max-width: 10em; font-size: 14px; font-weight: 600; line-height: 1.15; white-space: normal; text-align: end; }
+    .bar { --rhp-radius: 0px; background: repeating-linear-gradient(var(--rhp-toward-end), #2a2e34 0 6px, #464b53 6px 7px); }
+    .on .bar { background: repeating-linear-gradient(var(--rhp-toward-end), #c2381b 0 6px, #d9614a 6px 7px); }
+    .height { font-size: 13px; font-weight: 700; color: var(--rhp-muted); }
+    .on .height { color: #c2381b; }
+  `,
+}, (d) => (
+  <div className={d.on ? "tower on" : "tower"} data-name={d.name}>
+    <Label edge="start" className="name">{d.name}</Label>
+    <Bar to={d.height} className="bar" />
+    <Label at={d.height} className="height">{d.height} m</Label>
+  </div>
+));
 
-// The React component: <Towers rows={towers} />
-export function Towers(props) {
-  return <RhpChart chart={TowersChart} {...props} />;
+const BY_HEIGHT = sortBy("height", "desc");
+const LOOK = { font: '"Archivo", system-ui, sans-serif', ink: "#17191c", muted: "#5d6168" };
+
+// The name of the tower an element is in, or null (between towers, on the text)
+const nameOf = (el) => el?.closest("[data-name]")?.dataset.name ?? null;
+
+// The chart: a poster with a one-line readout over the towers, ranked by height.
+// Its data comes in as rows, a list of { name, city, year, height }.
+export function Towers({ rows }) {
+  const [on, setOn] = useState(null); // the name of the tower the reader picked
+  const current = rows.find((t) => t.name === on);
+  const tallest = Math.max(...rows.map((t) => t.height));
+  // A mouse or a pen picks as it moves, a tap or a click picks, the keyboard picks; on no tower the pick stays
+  const pick = (e) => {
+    const name = nameOf(e.target);
+    if (name != null) setOn(name);
+  };
+  // Leaving the poster: back to the tower that has focus (a keyboard's or a click's pick), or none
+  const leave = (e) => {
+    if (e.pointerType === "touch") return; // a finger sends pointerleave as it lifts after a tap
+    setOn(e.currentTarget.contains(document.activeElement) ? nameOf(document.activeElement) : null);
+  };
+
+  return (
+    <Poster className="towers"
+      kicker="Skyscrapers, 2025"
+      title={"Burj Khalifa still towers 149 m over the rest"}
+      dek="The seven tallest finished buildings in the world, by height to their architectural top."
+      note="Source: Council on Tall Buildings and Urban Habitat (CTBUH), 2025."
+      onPointerMove={(e) => e.pointerType !== "touch" && pick(e)}
+      onClick={pick}
+      onFocus={pick}
+      onPointerLeave={leave}
+      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOn(null)}>
+      <p className="readout">
+        {current ? <><b>{current.name}</b> in {current.city}, finished {current.year}</> : "Point at a tower, tap it, or Tab to it."}
+      </p>
+      <Chart scale={[0, tallest]} ticks={false} label="The seven tallest buildings, by height" theme={LOOK}>
+        <Plot rows={rows} rowKey="name" order={BY_HEIGHT} on={(d) => on === d.name} keyboard>{Tower}</Plot>
+      </Chart>
+    </Poster>
+  );
 }
 ```
 
@@ -793,134 +799,97 @@ export default function App() {
 }
 ```
 
-- Why the chart sits in the component's file: Next.js's Fast Refresh treats a module whose exports are all capitalized functions as React components, so an edit to a separate chart module that exports only `TowersChart` never reached the page: the chart stayed as it was until a reload (checked).
-  In one file, an edit re-renders `Towers`, which draws the new chart.
-  The Vite dev server passed the separate module's edits on, but one file works in both.
-- Fast Refresh: an edit to `Towers.jsx`, the data, `RhpChart.jsx`, `rhp-mount.js` or `App.jsx` updated the page without a reload, with one chart (checked).
+- `rows` is the app's data, from props or state. Give the chart a new array when it changes (React's own rule): only the slats whose values changed are drawn again.
+  With `rowKey="name"` on the Plot, each tower keeps its slat when towers are added or removed: the element stays and its bar moves (checked: one height changes and a tower is added, then back).
+- Keep slat types, `sortBy(...)` and objects like the theme at the top level of the module, as above.
+  A slat written inside the component is a new function in every render, so every slat is drawn again.
+- A data group can be a function of the row, worked out per row: `on={(d) => on === d.name}` tells each slat whether it is the picked one, and only the two slats that change are drawn again.
+- A slat can use hooks: it is called while React draws its row (`function Row(d) { const [open, setOpen] = useState(false); … }`).
+- StrictMode (in Vite's starter) leaves one chart, and the JS version (`animate`) moves in it (checked).
+- When the component unmounts, nothing of the chart is left (checked).
+- Fast Refresh: an edit to `Towers.jsx` or the data updated the page without a reload, with one chart (checked).
 
-**TypeScript**: `src/rhp/rhp-mount.ts` (section 6), `src/rhp/RhpChart.tsx`, and `src/charts/Towers.tsx`, which is section 6's `towers-chart.ts` with the same three changes.
-Checked with `tsc -b` (TypeScript 6.0, strict by default) and `vite build`.
+**From a recipe or a Solid example**: recipes are written with the html template, and sections 3 to 5 with Solid.
+The chart is the same in React; only the way it is written changes:
 
-```tsx
-"use client";
-// <RhpChart chart={TowersChart} rows={towers} />: an rhp chart in a React app. Copy this file as it is.
-import { useEffect, useLayoutEffect, useRef, type CSSProperties } from "react";
-import type { JSX } from "solid-js";
-import { mountChart, type MountedChart } from "./rhp-mount";
+| html template or Solid | rhp-react |
+|---|---|
+| `import { … } from "@bezda/rhp/standalone"` or `"@bezda/rhp"` | `import { … } from "@bezda/rhp-react"` |
+| `` html`<${Label} edge="start">${() => d.name}<//>` `` | `<Label edge="start">{d.name}</Label>` |
+| a reactive read, `${() => d.sold}` or `{d.sold}` in Solid JSX | `{d.sold}`: `d` holds the row's values, and a slat whose values change is drawn again |
+| `class="tower"` | `className="tower"` |
+| `key="name"` on a Plot (or ManyDots) | `rowKey="name"` (React keeps `key` for itself) |
+| `style="--rhp-radius: 0px"` | `style={{ "--rhp-radius": "0px" }}` |
+| `const [on, setOn] = createSignal(null)`, read as `on()` | `const [on, setOn] = useState(null)`, read as `on` |
+| `createMemo(() => …)` | a value worked out in the component (`const tallest = Math.max(…)`), or `useMemo` for heavy work |
+| `` <${Show} when=${current} fallback="…">${(t) => …}<//> `` | `{current ? … : "…"}` |
+| `` <${For} each=${list}>${(item) => …}<//> `` | `{list.map((item) => <… key={item.id} />)}` |
+| `onFocusIn`, `onFocusOut` | `onFocus`, `onBlur` (React's bubble) |
+| `onMount`, `createEffect`, `onCleanup` | `useEffect` |
+| `animated(read, settings)` | `useAnimated(value, timing)` |
+| `useOrientation()()` (a signal) | `useOrientation()` (the orientation) |
+| data groups as functions of the props, `rows=${() => props.rows}` | the values, `rows={rows}` |
 
-// The chart is drawn before the browser paints, so there is no empty frame (a server render runs neither hook)
-const useBeforePaint = typeof window === "undefined" ? useEffect : useLayoutEffect;
+Everything else (the slat type's settings and `css`, the Chart's and the Plot's props, the blocks, `theme`, `animate`, `keyboard`, the helpers) is the same.
 
-type Chart<P> = (props: P) => JSX.Element;
-type Drawn<P> = { chart: Chart<P>; props: P; mounted: MountedChart<P> };
-
-// chart is a function of props that returns an html template, defined at the top level of a module (never inside a
-// component). Every other prop goes to it, except className and style, which go on the <div> it draws into.
-export function RhpChart<P extends object>({ chart, className, style, ...rest }: { chart: Chart<P>; className?: string; style?: CSSProperties } & P) {
-  const props = rest as unknown as P;
-  const box = useRef<HTMLDivElement>(null);
-  const drawn = useRef<Drawn<P> | null>(null);
-
-  // After each render: draw the chart the first time, or again when `chart` is a new function (its module was edited
-  // during development); otherwise hand it the props that are no longer the same value.
-  useBeforePaint(() => {
-    const now = drawn.current;
-    if (now?.chart !== chart) {
-      now?.mounted.dispose();
-      drawn.current = { chart, props, mounted: mountChart(chart, box.current!, props) };
-      return;
-    }
-    const before = now.props as Record<string, unknown>;
-    const after = props as Record<string, unknown>;
-    const changed: Record<string, unknown> = {};
-    for (const key of new Set([...Object.keys(before), ...Object.keys(after)])) {
-      if (before[key] !== after[key]) changed[key] = after[key];
-    }
-    now.props = props;
-    if (Object.keys(changed).length) now.mounted.set(changed as Partial<P>);
-  });
-
-  // Remove the chart when the component goes away (StrictMode's trial unmount included: the effect above redraws it)
-  useBeforePaint(() => () => {
-    drawn.current?.mounted.dispose();
-    drawn.current = null;
-  }, []);
-
-  return <div ref={box} className={className} style={style} />;
-}
-```
+**TypeScript** (`Towers.tsx`): the same file with these lines changed, checked with `tsc -b` under TypeScript 7.0's defaults, which are strict:
 
 ```tsx
-// The towers poster: an rhp chart written with the html template, and the React component that draws it
-import { Chart, Plot, Bar, Label, Poster, slat, sortBy, html, createSignal, createMemo, Show } from "@bezda/rhp/standalone";
-import { RhpChart } from "../rhp/RhpChart";
-import "./towers-chart.css";
-
-// ... the type, the slat type and the chart function of section 6's towers-chart.ts, unchanged, but with no "export" before "function TowersChart" ...
-
-// The React component: <Towers rows={towers} />
-export function Towers(props: { rows: TowerRow[] }) {
-  return <RhpChart chart={TowersChart} {...props} />;
-}
+import { useState, type PointerEvent, type SyntheticEvent } from "react";
+export type TowerRow = { name: string; city: string; year: number; height: number };
+const Tower = slat<TowerRow & { on: boolean }>({
+const nameOf = (el: Element | null) => el?.closest("[data-name]")?.getAttribute("data-name") ?? null;
+export function Towers({ rows }: { rows: TowerRow[] }) {
+  const [on, setOn] = useState<string | null>(null); // the name of the tower the reader picked
+  const pick = (e: SyntheticEvent) => {
+    const name = nameOf(e.target as Element);
+  const leave = (e: PointerEvent<HTMLElement>) => {
 ```
 
-The data file imports the type: `import type { TowerRow } from "../charts/Towers";`.
+- A function data group needs no type: in `on={(d) => on === d.name}`, `d` is the slat's row (`TowerRow & { on: boolean }`), and a field it doesn't have is an error.
+- The data file imports the type: `import type { TowerRow } from "../charts/Towers";`.
 
 ## 8. Next.js
 
-**App Router** (`app/`): the chart is a client component that the server never renders.
-The page imports a small client file that loads the chart with `next/dynamic` and `ssr: false`, so the server neither draws the chart nor loads rhp.
-Checked: `next build` passes (Next.js 16.3 with Turbopack, TypeScript), the prerendered page has no chart in it, and no server file contains rhp.
+**App Router** (`app/`): the chart is a client component, and the server draws it too.
+The page's HTML has the chart, and the browser takes it over.
+Checked: `next build` passes (Next.js 16.4 with Turbopack, TypeScript), the prerendered page has the 7 slats in their places, and `next dev` logs no hydration warning.
 
 ```
-app/layout.tsx                          the fonts, with next/font
-app/page.tsx                            a server component: it has the data and renders <ClientOnlyTowers rows={...} />
-components/towers/ClientOnlyTowers.tsx  loads Towers.tsx in the browser only, and imports the poster's CSS
-components/towers/Towers.tsx            the chart and the React component (section 7), with "use client"
-components/towers/towers-chart.css      the poster's CSS, with the font variables
-lib/rhp/RhpChart.tsx                    the React wrapper (section 7), as it is
-lib/rhp/rhp-mount.ts                    the mount helper (section 6), as it is
-data/towers.ts                          the data
+app/layout.tsx                      the fonts, with next/font
+app/page.tsx                        a server component: it has the data and renders <Towers rows={...} />
+components/towers/Towers.tsx        the chart (section 7), with "use client"
+components/towers/towers-chart.css  the poster's CSS, with the font variables
+data/towers.ts                      the data
 ```
 
-`components/towers/ClientOnlyTowers.tsx`:
+`components/towers/Towers.tsx` is section 7's `Towers.tsx` with `"use client"` first and the next/font variable in the theme:
 
 ```tsx
 "use client";
-import dynamic from "next/dynamic";
+// The towers poster in a React app: rhp-react
+import { useState, type PointerEvent, type SyntheticEvent } from "react";
+import { Chart, Plot, Bar, Label, Poster, slat, sortBy } from "@bezda/rhp-react";
 import "./towers-chart.css";
 
-// What pages render: <ClientOnlyTowers rows={towers} />. The chart is drawn in the browser only: the server sends an
-// empty box and never loads rhp. The CSS is imported here so that it comes with the page.
-export const ClientOnlyTowers = dynamic(() => import("./Towers").then((m) => m.Towers), { ssr: false });
+// ... and the theme:
+const LOOK = { font: "var(--font-archivo), system-ui, sans-serif", ink: "#17191c", muted: "#5d6168" };
 ```
 
 `app/page.tsx`:
 
 ```tsx
-import { ClientOnlyTowers } from "@/components/towers/ClientOnlyTowers";
+import { Towers } from "@/components/towers/Towers";
 import { TOWERS } from "@/data/towers";
 
-// A server component: it holds (or fetches) the data and passes it to the chart
+// A server component: it holds (or fetches) the data and passes it to the chart, which the server draws too
 export default function Home() {
   return (
-    <main className="px-4 py-8">
-      <ClientOnlyTowers rows={TOWERS} />
+    <main style={{ padding: "32px 16px" }}>
+      <Towers rows={TOWERS} />
     </main>
   );
 }
-```
-
-`components/towers/Towers.tsx` is section 7's `Towers.tsx` with `"use client"` first, the wrapper imported from `@/lib/rhp/RhpChart`, no CSS import, and the next/font variable in the theme:
-
-```tsx
-"use client";
-// The towers poster: an rhp chart written with the html template, and the React component that draws it
-import { Chart, Plot, Bar, Label, Poster, slat, sortBy, html, createSignal, createMemo, Show } from "@bezda/rhp/standalone";
-import { RhpChart } from "@/lib/rhp/RhpChart";
-
-// ... and in the Chart:
-theme=${{ font: "var(--font-archivo), system-ui, sans-serif", ink: "#17191c", muted: "#5d6168" }}>
 ```
 
 `app/layout.tsx`: next/font serves the fonts from the app under generated names, so the CSS and the theme name them by their variables:
@@ -951,11 +920,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${antonio.variable} ${archivo.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${antonio.variable} ${archivo.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
@@ -963,27 +929,24 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
 In `towers-chart.css`, the two font stacks become `var(--font-archivo), system-ui, sans-serif` (on `.towers`) and `var(--font-antonio), "Arial Narrow", sans-serif` (on `.headline`).
 
-- `ssr: false` is allowed only in a client component: with `dynamic(..., { ssr: false })` in `app/page.tsx`, `next build` failed ("`ssr: false` is not allowed with `next/dynamic` in Server Components").
-  That is why the page imports `ClientOnlyTowers.tsx`.
+- `"use client"` goes on the chart's file because a slat type is a function, and a server component cannot pass a function to a client component.
+  rhp-react's own components are client components, so a server component can also render `<Chart>` and `<Plot>` itself, with a slat type it imports from a `"use client"` module (checked).
 - The rows pass from the server component to the client as props, so they must be data React can send: plain objects, arrays, strings and numbers (checked with those).
-- The server's HTML has no chart, so the content below it moves down once the chart is drawn; give the parent a `min-height` if that matters.
-- Development: StrictMode (on by default in the App Router) leaves one chart, and Fast Refresh updated the page after an edit to every file, without a reload (checked).
-- Keep the data out of `components/towers/`: a `towers.ts` beside `Towers.tsx` broke the build, because macOS and Windows ignore case in file names and `import("./Towers")` found the data file (TS1149, checked).
+- rhp's CSS goes into the page's head with the chart, once however many charts the page has: nothing to import or link.
+- Development: StrictMode (on by default in the App Router) leaves one chart, and Fast Refresh updated the page after an edit to `Towers.tsx` and to the data, without a reload (checked).
+- Keep the data out of `components/towers/`: macOS and Windows ignore case in file names, so with a `towers.ts` beside `Towers.tsx` an import of `./Towers` can find the data file (it broke the build, TS1149, checked).
 - create-next-app's own page pads its `main` with `px-16` at every width, which leaves the chart 262px of a 390px phone and 192px of a 320px one.
   When you add the chart to that page, let its box break out of the padding on phones: `<div className="-mx-12 self-stretch sm:mx-0">` around it (the `main` is a flex column, so the stretched box takes the margins back).
   Measured in Next.js 16's starter: 358px at 390, 288px at 320, no sideways scroll, and the same box as before from 640px.
 
-**Pages Router** (`pages/`): a page may call `dynamic` with `ssr: false` itself.
-`Towers.jsx` is section 7's file with the wrapper imported from `@/lib/rhp/RhpChart.jsx` and no CSS import.
+**Pages Router** (`pages/`): the page imports the chart like any component, and the server draws it.
+`Towers.jsx` is section 7's file with no CSS import.
 
 `pages/index.js`:
 
 ```jsx
-import dynamic from "next/dynamic";
+import { Towers } from "@/components/towers/Towers.jsx";
 import { TOWERS } from "@/data/towers.js";
-
-// The chart is drawn in the browser only: the server sends an empty box and never loads rhp
-const Towers = dynamic(() => import("@/components/towers/Towers.jsx").then((m) => m.Towers), { ssr: false });
 
 // The data comes from the server, at build time here (getServerSideProps works the same way)
 export function getStaticProps() {
@@ -1031,7 +994,7 @@ export default function Document() {
 ```
 
 - The Pages Router allows global CSS only in `pages/_app.js`: importing `towers-chart.css` in `Towers.jsx` failed `next build` ("Global CSS cannot be imported from files other than your Custom <App>", checked).
-- Checked: `next build`, `next start`, no rhp in the server output.
+- Checked: `next build`, `next start` (the page's HTML has the 7 slats), and Fast Refresh in `next dev`.
 
 ## 9. Vue and Nuxt
 
@@ -1525,8 +1488,10 @@ document.head.insertAdjacentHTML("beforeend", `
 ```
 
 - TypeScript apps take `.ts` and `.tsx` entries, and their build type-checks them like any other file.
+- A React chart is drawn with the app's own `@bezda/rhp-react`, and gets every check but one: how rhp's components are used is checked for `@bezda/rhp` only, so the report says nothing about it.
 - Angular: name the entry `.js`, so that the app's TypeScript build (which includes every `src/**/*.ts`) skips it; a `.ts` entry with a CSS import failed `ng build` (TS2882).
-- The checker found no problems in each of the eleven entries tested: React, React with TypeScript, Next.js, Solid, Solid with TypeScript, Vue, Nuxt, Svelte, SvelteKit, Astro and Angular.
+- The checker found no problems in each of the eleven entries tested on 2026-10-03: React, React with TypeScript, Next.js, Solid, Solid with TypeScript, Vue, Nuxt, Svelte, SvelteKit, Astro and Angular.
+  On 2026-11-12 the React and Next.js entries with rhp-react, and section 3's page, each got one warning from a check added since (`selection-hover-stays`): after a click picks a tower, hovering another and moving onto the poster's text keeps the hovered one.
 
 ## 14. Caveats for every app
 
@@ -1538,14 +1503,18 @@ document.head.insertAdjacentHTML("beforeend", `
 3. Style regular slat blocks with the slat type's `css` and the Chart's `theme`: page CSS cannot change their protected appearance (api.md, section 11).
    The experimental [ManyDots collection](api.md#manydots-experimental-point-collection) instead accepts application classes and `pointStyle` for point appearance while retaining its geometry guard.
    In frameworks with scoped component CSS, put those application classes in the plain CSS file too.
-4. Only Solid draws the chart on the server (SolidStart, Astro islands).
+4. Solid (SolidStart, Astro islands) and rhp-react (Next.js) draw the chart on the server.
    Everywhere else the server sends an empty box and the browser draws the chart, so the content below moves down once; give the box a `min-height` if that matters.
 5. Data the app loads (a fetch, a Refresh button, a feed) has three more states than the chart: loading, failed and empty.
    Draw each in the chart's place, at the chart's height: a quiet "Loading…", a line that says what failed with a way to try again, and a sentence for no data ("No activity yet"), never an empty plot, an axis of 0.2, 0.4…, or a headline computed from nothing.
 6. macOS and Windows ignore case in file names: `towers.ts` beside `Towers.tsx` made `./Towers` load the data file (checked in Next.js).
    Give such files different names or folders.
-7. In an app that is not a Solid app, import everything from `@bezda/rhp/standalone` and nothing from `solid-js` (api.md, section 2).
-8. Solid's html template compiles each template with `new Function`, so a page whose Content-Security-Policy forbids `unsafe-eval` cannot draw html-template charts: allow it for that page, or use a Solid app with JSX, which needs no eval.
+7. In a React or Next.js app, import everything from `@bezda/rhp-react`.
+   In any other app that is not a Solid app, import everything from `@bezda/rhp/standalone` and nothing from `solid-js` (api.md, section 2).
+8. Solid's html template compiles each template with `new Function`, so a page whose Content-Security-Policy forbids `unsafe-eval` cannot draw html-template charts: allow it for that page, or use JSX (a Solid app, or rhp-react), which needs no eval.
+9. A chart takes the width of its box and has none of its own, so a box that sizes to its content shrinks it to the content beside it, or to nothing: a flex item with `margin: auto`, an inline-block, a float, `width: fit-content`.
+   Both starters have a flex column (Next.js's `body`, Vite's `#root`): there a `<main style={{ maxWidth: 640, margin: "40px auto" }}>` left the plot 0px wide in Next.js and as wide as the buttons above it in Vite (checked).
+   Give that box a width (`width: 100%`, as the poster's CSS does), or in a flex row `flex: 1` and `min-width: 0`; rhp warns in the console when a chart's plot stays 0px wide.
 
 ## 15. What was verified, and the versions
 
@@ -1559,16 +1528,20 @@ On 2026-10-03, on macOS 26.5 with Node 24.15.0 and npm 11.12.1, with `@bezda/rhp
 On 2026-10-04 the chart's pointer handlers changed (a tap or a click picks on `click`, a scroll never picks, a pick stays between towers and on the focused tower).
 The plain page and the Solid component were checked again in Playwright's Chromium (mouse, keyboard, a tap and a scroll at 390px, and the kit's checker), and the TypeScript files with `tsc` in the Solid and Angular projects; every other environment draws the same chart module.
 
+On 2026-11-12, on macOS 26.5.2 with Node 24.15.0 and npm 11.12.1, React and Next.js were built again with rhp-react (`@bezda/rhp-react` 2.3.0, packed from the repository before its release), in new apps from Vite's and create-next-app's starters.
+Each passed the checks above (without a row changed in place: a React app gives the chart new data) in Playwright 1.63's Chromium, WebKit and Firefox.
+Next.js also passed `next dev` with no hydration warning, and its server's HTML had the 7 slats in their places.
+
 | Environment | Versions | Also checked |
 |---|---|---|
 | plain page | Chrome 154, Safari 26.5.2 and Firefox 155 (Playwright's build) from `file://`; Playwright's Chromium | |
 | Solid | solid-js 1.9.15, vite 8.3.2, vite-plugin-solid 2.11.14 | dev server updates |
 | Solid with TypeScript | the same, typescript 6.0.3 | `tsc -b` |
 | SolidStart | @solidjs/start 2.0.5, @solidjs/router 1.0.0, nitro 3.0.260610-beta, solid-js 1.9.15, vite 8.3.2 | the server's HTML has the chart |
-| React | react 19.3.0, react-dom 19.3.0, vite 8.3.2, @vitejs/plugin-react 6.1.1 | StrictMode, Fast Refresh |
-| React with TypeScript | the same, typescript 6.0.3 | `tsc -b` |
-| Next.js App Router | next 16.3.8 (Turbopack), react 19.2.8, typescript 5.9.3, tailwindcss 4.3.3 | no rhp on the server, StrictMode, Fast Refresh |
-| Next.js Pages Router | next 16.3.8, react 19.2.8 | no rhp on the server |
+| React | react 19.3.1, react-dom 19.3.1, vite 8.3.8, @vitejs/plugin-react 6.3.0 | StrictMode, Fast Refresh |
+| React with TypeScript | the same, typescript 7.0.2 | `tsc -b` |
+| Next.js App Router | next 16.4.6 (Turbopack), react 19.3.0, typescript 5.9.3 | the server's HTML, no hydration warning, StrictMode, Fast Refresh |
+| Next.js Pages Router | next 16.4.6, react 19.3.0 | the server's HTML, Fast Refresh |
 | Vue | vue 3.5.43, vite 8.3.2, @vitejs/plugin-vue 6.0.9 | dev server updates |
 | Nuxt | nuxt 4.5.2, vue 3.5.43, vite 8.3.2, nitropack 2.13.4 | |
 | Svelte | svelte 5.57.1, vite 8.3.2, @sveltejs/vite-plugin-svelte 7.3.1 | dev server updates |

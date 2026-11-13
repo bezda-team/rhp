@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp-mcp",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "mcpName": "io.github.bezda-team/rhp",
   "description": "Make charts with rhp from any AI agent: an MCP server with rhp's guide, references and recipes, and a checker that renders a chart in a browser and reports what is wrong, with screenshots",
   "keywords": [
@@ -49,7 +49,7 @@
     "build": "node scripts/build.js",
     "prepack": "npm run build",
     "prepublishOnly": "node scripts/check-publish.js",
-    "test": "node test/colors.js && node test/html-imports.js && node test/hit-targets.js && node test/view-layout.js && node test/network.js && node test/settle-regression.js && node test/isolation.js && node test/selection-regression.js && node test/mcp.js && node test/run.js"
+    "test": "node test/colors.js && node test/html-imports.js && node test/hit-targets.js && node test/view-layout.js && node test/network.js && node test/settle-regression.js && node test/isolation.js && node test/react.js && node test/selection-regression.js && node test/mcp.js && node test/run.js"
   },
   "dependencies": {
     "@babel/core": "^7.29.7",

@@ -9,7 +9,7 @@ import MANYDOTS from "./manydots.css";
 import GUTTERS from "./gutters.css";
 import CROSS from "./cross.css";
 
-const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";
+export const LAYERS = "@layer rhp.place, rhp.slat, rhp.core;";
 
 // @keyframes and descriptor at-rules (@font-face, @property...) can't take !important (it makes them invalid)
 const DESCRIPTORS = /^@(-webkit-)?keyframes\b|^@(font-face|property|counter-style|font-palette-values|font-feature-values|view-transition|position-try)\b/i;
@@ -542,42 +542,39 @@ export function serverSheets(slats, render, gutters, crossed) {
   const seen = render ? written.get(render) ?? written.set(render, new Set()).get(render) : new Set();
   let out = "";
 
-  if (!linked && !seen.has("core")) {
-    seen.add("core");
-    out += coreSheet();
-  }
-
-  // The guard a server writes applies only inside charts that keep it (data-rhp-guard), so it is right whichever charts
-  // come later in the page. (The browser starts from the plain guard and checks charts once one says noCssGuard.)
-  if (!linked && guarded && !seen.has("guard")) {
-    seen.add("guard");
-    out += "\n" + guardSheet(true);
-  }
-
-  // A page that links rhp.css has --rhp-position not passed down: inheritPosition() writes the rule again after it
-  if (linked && positionInherits && !seen.has("position")) {
-    seen.add("position");
-    out += "\n" + position(true);
-  }
-
-  if (!linked && gutters && !seen.has("gutters")) {
-    seen.add("gutters");
-    out += "\n" + gutterSheet();
-  }
-
-  if (!linked && crossed && !seen.has("cross")) {
-    seen.add("cross");
-    out += "\n" + crossSheet();
-  }
-
-  for (const fn of slats) {
-    if (seen.has(fn.scope)) continue;
-    seen.add(fn.scope);
-    out += "\n" + slatSheet(fn);
+  for (const [name, css] of sheetsFor(slats, gutters, crossed)) {
+    if (seen.has(name)) continue;
+    seen.add(name);
+    out += (name === "core" ? "" : "\n") + css();
   }
 
   // The CSS goes into a <style>, which a "</style" anywhere in it (even in a string) would end: "\/" is "/" to CSS
   return out.replace(/<\/(style)/gi, "<\\/$1");
+}
+
+// The sheets a chart needs on a server, in the order they go into the page, each as [name, css()]: the names are
+// "core", "guard", "position", "gutters", "cross" and each slat type's scope.
+export function sheetsFor(slats, gutters, crossed) {
+
+  const out = [];
+
+  if (!linked) out.push(["core", coreSheet]);
+
+  // The guard a server writes applies only inside charts that keep it (data-rhp-guard), so it is right whichever charts
+  // come later in the page. (The browser starts from the plain guard and checks charts once one says noCssGuard.)
+  if (!linked && guarded) out.push(["guard", () => guardSheet(true)]);
+
+  // A page that links rhp.css has --rhp-position not passed down: inheritPosition() writes the rule again after it
+  if (linked && positionInherits) out.push(["position", () => position(true)]);
+
+  if (!linked && gutters) out.push(["gutters", gutterSheet]);
+  if (!linked && crossed) out.push(["cross", crossSheet]);
+
+  for (const fn of slats) {
+    out.push([fn.scope, () => slatSheet(fn)]);
+  }
+
+  return out;
 }
 
 let gutters = false;
@@ -719,7 +716,7 @@ const manyRadii = (css) => [...css.matchAll(/--rhp-radius\s*:([^;{}]*)/g)].some(
 
 const checkRadii = (css) => manyRadii(css) && console.warn("rhp: --rhp-radius takes one length. For different corners, use --rhp-start-radius and --rhp-end-radius, or border-radius.");
 
-function slatSheet(fn) {
+export function slatSheet(fn) {
 
   // The core hides the ::before and ::after of plots and slat roots. A slat whose CSS draws them gets them back.
   const S = `[data-rhp-slat="${fn.scope}"]`;

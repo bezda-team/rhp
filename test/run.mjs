@@ -16,9 +16,6 @@ for (const t of ["core", "cost", "mount", "edges", "options"]) {
   fs.writeFileSync(at(`out/${t}.html`), `<!doctype html><html><head><meta charset=utf-8></head><body><script src="${t}.js"></script></body></html>`);
 }
 await standalone(path.join(here, "../src/standalone.js"), at("out/standalone.js"));
-await build({ entryPoints: [at("react.js")], outfile: at("out/react.js"), bundle: true, format: "iife", minify: true, logLevel: "warning",
-  alias: { "@bezda/rhp/standalone": at("out/standalone.js") }, define: { "process.env.NODE_ENV": '"production"' } });
-fs.writeFileSync(at("out/react.html"), '<!doctype html><html><head><meta charset=utf-8></head><body><script src="react.js"></script></body></html>');
 // The server rendering app (test/ssr.jsx), built from src and from the published package
 await ssrServer(at("ssr-server.jsx"), at("out/ssr-server.mjs"));
 await ssrClient(at("ssr-client.jsx"), at("out/ssr-client.js"));
@@ -220,6 +217,17 @@ const open = async (url, opts = {}) => {
   await p.evaluate(() => { document.querySelector(".asp").style.width = "260px"; });
   await p.waitForTimeout(100);
   check("aspect: and keeps it at another width", await ratios(), [2, 2, 1, 2]);
+  check("a chart with a 0px plot gets one warning, and one in a hidden box none", await p.evaluate(async () => {
+    const seen = []; const warn = console.warn; console.warn = (m) => seen.push(m);
+    const wait = () => new Promise((r) => setTimeout(r, 700));
+    T.setSqueezed("hidden"); await wait();
+    const hidden = seen.length;
+    T.setSqueezed(null); await new Promise((r) => requestAnimationFrame(r));
+    T.setSqueezed("flex"); await wait();
+    const width = document.querySelector(".squeeze .rhp-plot").getBoundingClientRect().width;
+    T.setSqueezed(null);
+    console.warn = warn; return [hidden, seen.filter((m) => /plot is 0px wide/.test(m)).length, width];
+  }), [0, 1, 0]);
   check("aspect: what doesn't go with it gets one warning each", await p.evaluate(async () => {
     const seen = []; const warn = console.warn; console.warn = (m) => seen.push(m);
     T.setAsked(true); await new Promise((r) => setTimeout(r, 50));
@@ -485,27 +493,6 @@ const open = async (url, opts = {}) => {
     const m = await import("./standalone.js");
     return ["createSelector", "createComputed", "on", "mergeProps", "splitProps", "Switch", "Match"].filter((n) => typeof m[n] !== "function");
   }), []);
-  check("no page errors", p.errors, []);
-  await p.close();
-}
-
-// React charts with @bezda/rhp-react (test/react.js)
-{
-  const p = await open("file://" + at("out/react.html"));
-  const rows = () => p.evaluate(() => [...document.querySelectorAll(".row")].map((r) => r.dataset.fruit + ":" + r.querySelector(".rhp-bar").style.getPropertyValue("--rhp-to")).join(" "));
-  check("react: the chart draws once in StrictMode, in a div with the className", await p.evaluate(() => [document.querySelectorAll(".rhp-chart").length, document.querySelector(".card > .rhp-chart") != null]), [1, true]);
-  check("react: its props reach the rows", await rows(), "Apples:12 Bananas:18 Cherries:7");
-  const writes = await p.evaluate(async () => {
-    const bars = [...document.querySelectorAll(".rhp-bar")], seen = [];
-    const mo = new MutationObserver((ms) => ms.forEach((m) => seen.push(m.target.closest(".row").dataset.fruit)));
-    document.querySelectorAll(".row").forEach((r) => mo.observe(r, { attributes: true, subtree: true, attributeFilter: ["style"] }));
-    T.setSold([12, 25, 7]);
-    await new Promise((r) => requestAnimationFrame(() => setTimeout(r)));
-    mo.disconnect();
-    return { same: bars.every((b, i) => b === document.querySelectorAll(".rhp-bar")[i]), rows: [...new Set(seen)] };
-  });
-  check("react: a new number moves its bar only, and no element is made again", [await rows(), writes], ["Apples:12 Bananas:25 Cherries:7", { same: true, rows: ["Bananas"] }]);
-  check("react: unmounting removes the chart", await p.evaluate(() => { T.hide(); return [document.querySelectorAll(".rhp-chart").length, !!document.getElementById("gone")]; }), [0, true]);
   check("no page errors", p.errors, []);
   await p.close();
 }

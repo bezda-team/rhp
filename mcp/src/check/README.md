@@ -9,6 +9,7 @@ The CLI (`rhp-mcp check`) and the MCP tool (`rhp_check`) print the same report.
    A `.jsx` or `.tsx` file is React or Solid as the nearest package.json that names `react`, `solid-js` or `vite-plugin-solid` says (react without solid-js is React; solid-js or its Vite plugin without react is Solid), then as its own imports say: a React file with the automatic JSX runtime imports nothing from react.
 2. **Read the code** (source.js): the module code is parsed with Babel, and its html templates and imports are checked for what fails with no error.
 3. **Guard** (../guard/): `@bezda/rhp` and `@bezda/rhp/standalone` resolve to a wrapper that checks how each component is used, and records what slats read on `d`.
+   A chart drawn with `@bezda/rhp-react` is drawn with the project's own copy and gets every other step, but not the guard: the report names rhp-react's version and leaves "rhp used as documented" out.
    It never throws and never changes what is drawn (the `guard` test compares screenshots with and without it, pixel for pixel).
 4. **Render** at each width (1280 and 390 by default; 600px or less is a phone, drawn as a touch screen) with reduced motion asked for, and wait for fonts and for the page to come to rest.
    With reduced motion rhp's moves end at once, and a page that moves on its own waits (an autoplay that honors the setting) or changes in steps (a live feed), so the screenshots show what was measured.

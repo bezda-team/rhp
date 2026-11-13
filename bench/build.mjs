@@ -12,6 +12,8 @@ fs.mkdirSync(at("out"), { recursive: true });
 // rhp's slats are Solid JSX, and the React libraries use React JSX
 const solid = { name: "solid", setup(b) {
   b.onLoad({ filter: /\.solid\.jsx$|[\\/]src[\\/].*\.jsx$/ }, async (a) => {
+    // rhp-react's source (react/src) is React JSX
+    if (a.path.includes(`${path.sep}react${path.sep}src${path.sep}`)) return undefined;
     const r = await transformAsync(await fs.promises.readFile(a.path, "utf8"), { presets: [["babel-preset-solid", {}]], filename: a.path, babelrc: false, configFile: false });
     return { contents: r.code, loader: "js" };
   });
@@ -26,7 +28,9 @@ const css = { name: "css", setup(b) {
 }};
 const LIBS = (process.env.BENCH_ONLY?.split(",")) ?? fs.readdirSync(at("libs")).filter((f) => /\.(js|jsx)$/.test(f) && f !== "react.js").map((f) => f.replace(/(\.solid)?\.jsx?$/, ""));
 const file = (name) => fs.readdirSync(at("libs")).find((f) => f.replace(/(\.solid)?\.jsx?$/, "") === name);
+// One React for every React library here, rhp-react included (rhp's own folder has a React of its own)
 const common = { bundle: true, minify: process.env.BENCH_MINIFY !== "0", platform: "browser", target: "es2020", jsx: "automatic", plugins: [solid, css],
+  alias: { react: at("node_modules/react"), "react-dom": at("node_modules/react-dom") },
   define: { "process.env.NODE_ENV": '"production"' }, logLevel: "error", nodePaths: [at("node_modules"), at("../node_modules")] };
 
 const sizes = {};
@@ -37,7 +41,7 @@ for (const name of LIBS) {
   fs.writeFileSync(at(`out/${name}.html`), `<!doctype html><html><head><meta charset="utf-8"><title>${name}</title></head><body style="margin:0"><script src="${name}.js"></script></body></html>`);
   // The size of the adapter alone (the chart code an app ships), with and without its framework
   const gz = async (external) => {
-    const r = await build({ ...common, entryPoints: [at(`libs/${file(name)}`)], write: false, format: "esm", external });
+    const r = await build({ ...common, alias: {}, entryPoints: [at(`libs/${file(name)}`)], write: false, format: "esm", external });
     return zlib.gzipSync(r.outputFiles[0].contents, { level: 9 }).length;
   };
   sizes[name] = { total: await gz([]), withoutFramework: await gz(["react", "react-dom", "react-dom/*", "react/*", "solid-js", "solid-js/*"]) };

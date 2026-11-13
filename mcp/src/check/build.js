@@ -44,7 +44,11 @@ export function packages(dir) {
     return found && { ...found, version: versionOf(found.root), user: !!user };
   };
 
-  return { rhp: pick("@bezda/rhp"), solid: pick("solid-js"), react: pick("react"), reactDom: pick("react-dom") };
+  // rhp-react only as the project has it (the checker draws with the project's own copy)
+  const own = findPackage("@bezda/rhp-react", dir);
+  const rhpReact = own && { ...own, version: versionOf(own.root), user: true };
+
+  return { rhp: pick("@bezda/rhp"), solid: pick("solid-js"), react: pick("react"), reactDom: pick("react-dom"), rhpReact };
 }
 
 // The JSX of a file's project, from the nearest package.json that names react, solid-js or vite-plugin-solid: "react"
@@ -280,6 +284,7 @@ export async function bundle({ file, format, guard = true }) {
     jsx: "automatic",
     jsxImportSource: "react",
     logLevel: "silent",
+    metafile: true,
   };
 
   try {
@@ -306,7 +311,11 @@ ${css}</head>
 </html>
 `;
 
-    return { ok: true, files, html, problems: [] };
+    // A chart drawn with the project's rhp-react, which the guard doesn't wrap (its folder as found, links followed)
+    const own = pkgs.rhpReact && pkgs.rhpReact.root + path.sep;
+    const rhpReact = !!own && Object.keys(result.metafile.inputs).some((f) => path.resolve(f).startsWith(own));
+
+    return { ok: true, files, html, problems: [], rhpReact };
   } catch (e) {
     return { ok: false, files: new Map(), html: "", problems: buildProblems(e, dir) };
   }

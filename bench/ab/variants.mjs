@@ -33,6 +33,8 @@ export const VARIANTS = {
   base: { about: "rhp as it is", edits: [] },
   "base-b": { about: "rhp as it is, a second bundle (A/A control)", edits: [] },
 
+  react: { about: "rhp-react, the React version, drawing the same charts on rhp's shared core", edits: [], react: true },
+
   noguard: {
     about: "the guard's 42 resets gone (box-sizing kept, so a clean page draws the same)",
     edits: [css("guard.css", noResets, 1)],

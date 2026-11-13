@@ -1,0 +1,34 @@
+{
+  "rhp-css": {
+    "total": 29084,
+    "withoutFramework": 19720
+  },
+  "rhp-js": {
+    "total": 29081,
+    "withoutFramework": 19721
+  },
+  "rhp-react": {
+    "total": 92606,
+    "withoutFramework": 22385
+  },
+  "rhp-react-js": {
+    "total": 92613,
+    "withoutFramework": 22391
+  },
+  "recharts": {
+    "total": 164184,
+    "withoutFramework": 95880
+  },
+  "nivo": {
+    "total": 159826,
+    "withoutFramework": 90744
+  },
+  "victory": {
+    "total": 147977,
+    "withoutFramework": 78720
+  },
+  "vanilla": {
+    "total": 440,
+    "withoutFramework": 440
+  }
+}

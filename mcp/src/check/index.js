@@ -21,7 +21,7 @@
 //   browser   a Playwright Browser to use instead of launching one (it is left open)
 //   debug     also save the screenshots the color probes read (as drawn, with the text hidden, with the marks hidden)
 //
-// Result: { ok, file, format, rhpVersion, browser, findings, charts, interactions, interactedAt, swept, screenshots, timings,
+// Result: { ok, file, format, rhpVersion, rhpReactVersion, guarded, browser, findings, charts, interactions, interactedAt, swept, screenshots, timings,
 // text }
 //   ok            no finding is an error
 //   findings      [{ level: "error" | "warning" | "info", code, message, fix, width, widths }], errors first
@@ -260,6 +260,8 @@ export async function check(options = {}) {
   } else {
     built = await bundle({ file, format, guard });
     findings.push(...built.problems);
+    // rhp-react is checked as it draws, but the guard (how the components are used) wraps @bezda/rhp only
+    if (built.rhpReact) Object.assign(base, { rhpReactVersion: pkgs.rhpReact?.version ?? null, guarded: false });
   }
   lap("build", t);
 
@@ -584,6 +586,8 @@ export async function check(options = {}) {
       } else if (e.kind === "console-error" && !(staticSyntax && /Failed to resolve module specifier|Unexpected token/.test(e.text))) {
         findings.push({ level: "error", code: e.during ? "interaction-error" : "console-error", message: `${e.during ? `${e.during} logged: ` : "Console error: "}${e.text}${at ? ` (at ${at})` : ""}`, fix: fixForError(e.text, format), width: r.width });
       } else if (e.kind === "rhp-warning") {
+        // collapsed-chart says it, with the box that shrinks the chart
+        if (/^rhp: a chart's plot is 0px wide/.test(e.text)) continue;
         findings.push({ level: "error", code: "rhp-warning", message: e.text, fix: "Do what the warning says: rhp prints it when a chart is set up in a way that doesn't work as written.", width: r.width });
       } else if (e.kind === "request-failed") {
         findings.push({ level: "error", code: "request-failed", message: `${e.text.replace(ORIGIN, "").replace(/^file:\/\//, "")} failed to load (${e.error}).`, fix: "Fix the path, or add the file next to the chart.", width: r.width });
@@ -705,6 +709,8 @@ function finish({ findings, started, timings, ...rest }) {
     file: rest.file ?? null,
     format: rest.format ?? null,
     rhpVersion: rest.rhpVersion ?? null,
+    rhpReactVersion: rest.rhpReactVersion ?? null,
+    guarded: rest.guarded ?? true,
     browser: rest.browser ?? null,
     findings: list,
     charts: rest.charts ?? [],

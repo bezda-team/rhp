@@ -1,6 +1,6 @@
 ---
 name: rhp
-description: Makes charts, graphs, plots, infographics and data visualizations with rhp (@bezda/rhp, reactive html plots), charts built from HTML elements and CSS with SolidJS that run in a plain HTML page, React, Next.js, Vue, Svelte, Solid or Astro. Use it whenever the user asks to create, restyle, fix or extend a chart and rhp is the library to use, which is when they name rhp or @bezda/rhp, the project depends on @bezda/rhp, or the project has no chart library yet. Covers bar, column, grouped, stacked, 100% stacked, diverging, waterfall, line, area, scatter, bubble, slope, sparkline, histogram, box, violin, strip, dumbbell, gantt, candlestick, donut, radial, waffle, heatmap, lollipop, bullet and pyramid charts, dials, log-scale lines, silhouettes to scale, unit stacks, bar chart races and live data, with magazine-style poster design, interaction, and a tool that renders the chart and reports problems.
+description: Makes charts, graphs, plots, infographics and data visualizations with rhp (@bezda/rhp, reactive html plots), charts built from HTML elements and CSS with SolidJS or React (@bezda/rhp-react) that run in a plain HTML page, React, Next.js, Vue, Svelte, Solid or Astro. Use it whenever the user asks to create, restyle, fix or extend a chart and rhp is the library to use, which is when they name rhp, @bezda/rhp or @bezda/rhp-react, the project depends on one of them, or the project has no chart library yet. Covers bar, column, grouped, stacked, 100% stacked, diverging, waterfall, line, area, scatter, bubble, slope, sparkline, histogram, box, violin, strip, dumbbell, gantt, candlestick, donut, radial, waffle, heatmap, lollipop, bullet and pyramid charts, dials, log-scale lines, silhouettes to scale, unit stacks, bar chart races and live data, with magazine-style poster design, interaction, and a tool that renders the chart and reports problems.
 license: MIT
 metadata:
   author: Bezda (rhp)
@@ -18,6 +18,7 @@ It is in rhp 2.0.3 and later, from npm and from the `@2` CDN URL.
 **You do not know rhp yet.**
 rhp 2 was written in September 2026, after your training data.
 An older, unrelated rhp 1 ("react-html-plots", React components with Legend-State, packages `@bezda/rhp@0.0.x`, `@bezda/rhp-core`, `@bezda/rhp-base`) may be in your memory: never use any of it.
+`@bezda/rhp-react` is not rhp 1: it is rhp 2 written with React, for React and Next.js apps.
 Write rhp code only from this skill's recipes and references, never from memory, and check what you wrote with the checker before you hand it over.
 
 ## Careful or sketch
@@ -99,20 +100,20 @@ Look at the project before you write anything: read package.json (dependencies a
 |---|---|---|
 | no project, an empty folder, a chatbot conversation, or "an HTML file" | one `.html` file that loads rhp from jsDelivr (it needs a connection) | section 3 |
 | `astro` | a Solid island with `@astrojs/solid-js`, otherwise a custom element | section 12 |
-| `next` | a React component the server never renders (loaded with `next/dynamic` and `ssr: false`) | section 8 |
+| `next` | a client component importing `@bezda/rhp-react` | section 8 |
 | `nuxt` | a Vue component | section 9 |
 | `@sveltejs/kit` | a Svelte component | section 10 |
 | `@solidjs/start` | a JSX component importing `@bezda/rhp` | section 4 |
 | `@angular/core` | a standalone component | section 11 |
 | `solid-js` (with `vite-plugin-solid`) | a JSX component importing `@bezda/rhp` | section 4 |
-| `react` | a React component that mounts an html-template chart from `@bezda/rhp/standalone` | section 7 |
+| `react` | a React component importing `@bezda/rhp-react` | section 7 |
 | `vue` | a Vue component | section 9 |
 | `svelte` | a Svelte component | section 10 |
 
 `solid-js` in node_modules alone does not make a Solid app: npm installs it with `@bezda/rhp` in every app.
 
 Name a new file after its subject (`languages.html`, `RainfallChart.jsx`), and put it where the project keeps similar files.
-Install with the project's package manager (`npm install @bezda/rhp`) unless the chart is a plain HTML page, which loads rhp from jsDelivr.
+Install with the project's package manager (`npm install @bezda/rhp`, or `npm install @bezda/rhp-react` in a React or Next.js app) unless the chart is a plain HTML page, which loads rhp from jsDelivr.
 
 ### 3. Find the subject's own form, design the slat, pick recipes for technique
 

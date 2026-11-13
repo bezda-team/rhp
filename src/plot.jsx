@@ -9,21 +9,10 @@ import { delegateEvents } from "solid-js/web";
 import { isServer } from "./env.js";
 import { createStore } from "solid-js/store";
 import { animated, curve, cssCurve, MOVE_MS } from "./animate.js";
-import { nice } from "./data.js";
+import { isList, at, short, STEPS, pick, px, share, same, sameSet, range, byPosition, BLOCK, warnBare, autoRoom, warnAspect, warnWrapped, watchCollapsed, tickValues, THEME, themeVars, DEFAULT_ROOM, KNOBS, padding, startOnShownScale } from "./layout.js";
 import { writeVars, withVars } from "./blocks.jsx";
 
-const isList = (g) => Array.isArray(g) || (ArrayBuffer.isView(g) && !(g instanceof DataView));
-
-// Slat i gets item i of every data group. A value that is not a list is shared by every slat, and a shorter list wraps around.
-export const at = (group, i) => {
-
-  if (!isList(group)) return group;
-
-  const v = group[i];
-  if (v !== undefined || !group.length) return v;
-
-  return group[i % group.length];
-};
+export { at, short, THEME, series } from "./layout.js";
 
 // Orientation is the direction bars run. "horizontal": bars run left to right and slats stack top to bottom.
 // "vertical": bars run bottom to top and slats stack left to right. A Plot takes it from the Chart or Plot around it
@@ -46,28 +35,9 @@ export const usePointFrame = () => {
   if (!frame) throw new Error("rhp: ManyDots must be inside a Chart with a cross scale.");
   return { orientation: around.orientation, scale: frame.shown, cross: frame.crossShown, theme: frame.theme, static: around.still };
 };
-export const short = (o) => (o === "vertical" ? "v" : "h");
 
 // Plot settings. Every other prop of a Plot is a data group.
 const SETTINGS = new Set(["children", "order", "reorder", "orientation", "overlap", "slats", "key", "rows", "animate", "thick", "class", "style", "ref", "onLoop", "static", "keyboard"]);
-
-// The keys that move focus between the rows of a Plot with `keyboard`, and how many rows they move it
-const STEPS = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1, Home: -Infinity, End: Infinity };
-
-// A slat's layout setting for an orientation: a plain value, or { horizontal, vertical }
-const pick = (v, o) => {
-
-  if (v != null && typeof v === "object" && ("horizontal" in v || "vertical" in v)) return v[o];
-
-  return v;
-};
-
-const px = (v) => (typeof v === "number" ? v + "px" : v);
-const share = (v) => (typeof v === "number" ? v * 100 + "%" : v); // 0.18 -> "18%", and "4px" stays "4px"
-const same = (a, b) => a.length === b.length && a.every((v, k) => v === b[k]);
-const sameSet = (a, b) => a.size === b.size && [...a].every((v) => b.has(v));
-const range = (n) => Array.from({ length: n }, (_, i) => i);
-const byPosition = (positions) => range(positions.length).filter((i) => positions[i] != null).sort((a, b) => positions[a] - positions[b]);
 
 // The proxy handler of every row's d. Its target holds the row, and P, the Plot's readers (see makePlot).
 const ROW = {
@@ -75,54 +45,6 @@ const ROW = {
   has: (t, key) => t.P.has(t, key),
   ownKeys: (t) => t.P.keys(t),
   getOwnPropertyDescriptor: (t, key) => (t.P.has(t, key) ? { configurable: true, enumerable: true, get: () => t.P.read(t, key) } : undefined),
-};
-
-// A block returned as a slat (in a Plot without overlap) gets placed as the row, which overrides part of its own
-// placing (a Bar starts at 0 and fills the band). We warn about it once per page.
-const BLOCK = /(^|\s)rhp-(bar|dot|tick|label|cell|place|area)(\s|$)/;
-let warned = false;
-const warnBare = (el) => {
-
-  if (warned) return;
-
-  warned = true;
-  const name = el.getAttribute("class").match(BLOCK)[2];
-  const Name = name[0].toUpperCase() + name.slice(1);
-  console.warn(`rhp: a ${Name} is a slat's root here, so the Plot places it as the row and it ignores part of its own placing. Put it in an element: (d) => <div><${Name} … /></div>. (Only a Plot with overlap takes a block as its slat.)`);
-};
-
-// Room "auto" only measures an edge label that is a child of the slat's root. One inside another element gets no room,
-// so we warn about it once per page. The labels of a Plot inside the row belong to that Plot and are left alone.
-const autoRoom = (r) => r === "auto" || r?.start === "auto" || r?.end === "auto";
-// aspect fixes a chart's shape: a height beside it does nothing, and a flat chart's rows with a thickness keep it
-let warnedAspect = false, warnedHeight = false, warnedThick = false;
-const warnAspect = (bad, height, thick) => {
-  if (bad && !warnedAspect) {
-    warnedAspect = true;
-    console.warn("rhp: aspect takes a number above 0, the chart's width over its height (aspect={16 / 9}), so this one is ignored.");
-  }
-  if (height && !warnedHeight) {
-    warnedHeight = true;
-    console.warn("rhp: a Chart with an aspect takes its height from its width, so its height is ignored.");
-  }
-  if (thick && !warnedThick) {
-    warnedThick = true;
-    console.warn("rhp: a flat Chart with an aspect has rows with a thickness here, and they keep it rather than share the chart's height. Leave their thickness out to let them fill it.");
-  }
-};
-
-let warnedWrapped = false;
-const warnWrapped = (el) => {
-
-  if (warnedWrapped) return;
-
-  for (const label of el.querySelectorAll(".rhp-label[data-rhp-edge]")) {
-    const inner = label.closest(".rhp-plot");
-    if (label.parentElement === el || (inner && el.contains(inner))) continue;
-    warnedWrapped = true;
-    console.warn(`rhp: an edge Label is inside another element here, so room "auto" doesn't measure it and it gets no room. Make it a child of the slat's root element: (d) => <div><Label edge="start">…</Label> … </div>. (Room in px has no such limit.)`);
-    return;
-  }
 };
 
 // On a server, a slat is HTML text ({ t }) instead of an element. So what the browser sets on a slat's root (its scope,
@@ -767,45 +689,6 @@ export function Scale(props) {
   }), "Scale");
 }
 
-// The ticks for the part [a, b] of the scale on screen, where [a0, b0] is where the scale is going. A count of round
-// values takes its step from where the scale is going, so it holds still while the JS version moves the scale.
-function tickValues(t, [a, b], [a0, b0] = [a, b]) {
-
-  if (t === false) return [];
-
-  const eps = (b - a) * 1e-9;
-  if (isList(t)) return Array.from(t).filter((v) => v >= a - eps && v <= b + eps);
-  if (typeof t === "function") return t([a, b]);
-
-  const { step } = nice(a0, b0, t ?? 5);
-  const out = [];
-  const first = Math.ceil(a / step - 1e-9);
-
-  // Each tick from its index, so the ticks can't stall where a number is too big for the step to change it
-  for (let k = 0; k <= 1000; k++) {
-    const v = (first + k) * step;
-    if (!(v <= b + 1e-9 * step) || (k > 0 && v === (first + k - 1) * step)) break;
-    out.push(+v.toFixed(10));
-  }
-
-  return out;
-}
-
-// The theme is the only way a page styles a chart. It is written on the chart root, so a page's own CSS variables never
-// reach a chart, and a theme change (dark mode) is one write per key per chart.
-export const THEME = {
-  series: ["#2a78d6", "#eb6834", "#1baf7a", "#c2419a", "#7b5cd6", "#d39a12"],
-  positive: "#13894f",
-  negative: "#c62828",
-  ink: "#1d232b",
-  muted: "#6b7280",
-  grid: "rgba(128, 128, 128, .22)",
-  surface: "#ffffff",
-  low: "#e8eef8",
-  high: "#1f4fa8",
-  font: "system-ui, sans-serif",
-};
-
 const ThemeContext = createContext(null);
 
 // Gives every Chart inside it this theme (a Chart's own `theme` still wins, key by key)
@@ -815,32 +698,6 @@ export function Theme(props) {
 
   return <ThemeContext.Provider value={() => ({ ...outer?.(), ...props.value })}>{props.children}</ThemeContext.Provider>;
 }
-
-function themeVars(theme) {
-
-  const vars = {};
-  theme.series.forEach((color, i) => (vars["--rhp-series-" + (i + 1)] = color));
-
-  for (const key in theme) {
-    if (key !== "series") vars["--rhp-" + key] = theme[key];
-  }
-
-  return vars;
-}
-
-// A data group of theme colors that goes through the series: "series-1", "series-2", ...
-export const series = (n = THEME.series.length) => (d) => "series-" + ((d.index % n) + 1);
-
-// Room is px outside the plot on each side, named along the value axis (start is before the scale's start, where the
-// names go, and end is past its end) and along the stack (before the first slat and after the last)
-const DEFAULT_ROOM = { horizontal: { start: 104, end: 44 }, vertical: { start: 28, end: 20 } };
-const SIDES = {
-  horizontal: { start: "left", end: "right", before: "top", after: "bottom" },
-  vertical: { start: "bottom", end: "top", before: "left", after: "right" },
-};
-const AXIS = { horizontal: ["bottom", 24], vertical: ["left", 42] }; // where the axis numbers go, and their room
-const AXIS_END = { horizontal: ["right", 14], vertical: ["top", 8] }; // half of the last number, centered on the far end
-const AXIS_START = { horizontal: ["left", 14], vertical: ["bottom", 8] }; // and half of the first one
 
 // A Chart is the frame around one or more Plots. It sets the scale (--rhp-min, --rhp-max) once for everything inside it,
 // gives them its orientation and theme, makes room for what they draw outside the plot and draws the value axis.
@@ -916,55 +773,9 @@ export function Chart(props) {
   // worked out when the chart's element is written, after the Plots have drawn.
   const arrange = () => {
     const o = orientation();
-    const side = SIDES[o];
-    const out = { top: 2, right: 2, bottom: 2, left: 2 };
-    const room = { start: 0, end: 0 };
-    const auto = {};
-
-    for (const want of wants()) {
-      const r = want() === "auto" ? { start: "auto", end: "auto" } : want();
-      if (!r) continue;
-      for (const k in side) {
-        if (r[k] === "auto") {
-          if (k in room) auto[k] = true;
-        } else if (r[k] != null) {
-          out[side[k]] = Math.max(out[side[k]], r[k]);
-          if (k in room) room[k] = Math.max(room[k], r[k]);
-        }
-      }
-    }
-
-    if (axis()) {
-      for (const [s, n] of [AXIS[o], AXIS_END[o], AXIS_START[o]]) {
-        out[s] = Math.max(out[s], n);
-      }
-    }
-
-    // The cross axis' numbers go where the other orientation's value axis would put them
-    if (crossAxis()) {
-      const other = o === "vertical" ? "horizontal" : "vertical";
-      for (const [s, n] of [AXIS[other], AXIS_END[other], AXIS_START[other]]) {
-        out[s] = Math.max(out[s], n);
-      }
-    }
-
-    const vars = { "--rhp-room-start": room.start + "px", "--rhp-room-end": room.end + "px" };
-    const gutters = !!(auto.start || auto.end);
+    const { vars, gutters } = padding(o, wants().map((want) => want()), axis(), crossAxis());
     if (gutters && !isServer) useGutters(); // their rules come with the first chart that uses them
     if (crossed() && !isServer) useCross(); // and so do the cross scale's
-
-    if (gutters) {
-      // Both ends of the value axis move from the padding into the grid (at least as wide as the padding would be)
-      for (const k of ["start", "end"]) {
-        const n = out[side[k]];
-        out[side[k]] = 0;
-        vars["--rhp-gutter-" + k] = auto[k] ? `minmax(${n}px, max-content)` : n + "px";
-      }
-    }
-
-    for (const s in out) {
-      vars["--rhp-pad-" + s] = out[s] + "px";
-    }
 
     return { vars, gutters, sized: (props.height != null || aspect() != null) && o === "horizontal" && fitters().some((f) => f()) };
   };
@@ -1005,7 +816,11 @@ export function Chart(props) {
     if (body) checkLinked(body);
     if (!body || typeof ResizeObserver === "undefined") return;
 
-    const ro = new ResizeObserver(([e]) => setSize({ w: e.contentRect.width, h: e.contentRect.height }));
+    const ro = new ResizeObserver(([e]) => {
+      const { width: w, height: h } = e.contentRect;
+      watchCollapsed(body, w, h);
+      setSize({ w, h });
+    });
     ro.observe(body);
     onCleanup(() => ro.disconnect());
   });
@@ -1076,38 +891,6 @@ export function Chart(props) {
 }
 
 const OWN_ARIA = new Set(["aria-label", "aria-labelledby", "aria-describedby"]); // the Chart sets these itself
-
-// The variables that blocks inherit start from rhp's defaults on the chart root, so a page's --rhp-* variables can't
-// reach inside. A Plot, a block or a slat's CSS still sets them below.
-const KNOBS = { "--rhp-inset": "18%" };
-
-for (const name of ["color", "thick", "size", "across", "radius", "start-radius", "end-radius", "label-gap", "gap", "tick-width", "label-size",
-  "cell-gap", "pitch", "plot-thick", "length-time", "length-ease", "slide-time", "slide-ease", "at", "from", "to", "value", "d", "position"]) {
-  KNOBS["--rhp-" + name] = "initial";
-}
-
-// A line made while its chart's new scale waits for the next frame starts on the scale the chart shows (@starting-style
-// in rhp.css), so it slides in with the lines already there. Without that, a browser that first styles the line after
-// the new scale is written (Chrome, Firefox) draws it in place at once, and one that styles it before (Safari) slides
-// it. The start is cleared once the line is drawn, so a line shown again later (after display: none) starts where it is.
-function startOnShownScale(el, chart, cross) {
-
-  if (!chart?.scaleNow) return; // the chart is being made: it shows no scale yet
-
-  const [lo, hi] = cross ? ["--rhp-cross-min", "--rhp-cross-max"] : ["--rhp-min", "--rhp-max"];
-  const shown = chart.root().style;
-  const a = shown.getPropertyValue(lo);
-  const b = shown.getPropertyValue(hi);
-  const now = chart.scaleNow();
-  if (a === "" || (a === String(now[lo]) && b === String(now[hi]))) return; // the chart shows its scale already
-
-  el.style.setProperty("--rhp-start-min", a);
-  el.style.setProperty("--rhp-start-max", b);
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    el.style.removeProperty("--rhp-start-min");
-    el.style.removeProperty("--rhp-start-max");
-  }));
-}
 
 // The value axis: one grid line per tick (keyed by value), and the numbers in the axis gutter. The cross axis (cross)
 // draws its lines as the other orientation's value axis would, on the cross scale.
