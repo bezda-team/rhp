@@ -33,10 +33,10 @@ Contents: [1 The model](#1-the-model) · [2 Imports and the html template](#2-im
 | Import | What it is | Where |
 |---|---|---|
 | `@bezda/rhp` | rhp for Solid apps (peer dependency `solid-js` ^1.9) | Solid (Vite, SolidStart), Astro islands: JSX |
-| `@bezda/rhp/standalone` | rhp and Solid in one ES module | plain HTML (CDN and import map), React, Next.js, Vue, Svelte, Angular: html template |
+| `@bezda/rhp/standalone` | rhp and Solid in one ES module | plain HTML (CDN and import map), Vue, Svelte, Angular: html template |
 | `@bezda/rhp/rhp.css` | rhp's core CSS as a file | only with `linkedCss()` (server rendering, many islands) |
 | `@bezda/rhp/posters.css` | the gallery's Poster looks | optional; the kit's recipes write their own |
-| `@bezda/rhp-react` | `toReact()` and everything in standalone | not on npm yet: in React apps, use `@bezda/rhp/standalone` with the small wrapper in environments.md |
+| `@bezda/rhp-react` | rhp written with React (peer dependency `react` 19 or later): the same API as React components and hooks | React and Next.js: React JSX (environments.md, section 7, has what differs) |
 
 Both `@bezda/rhp` and `@bezda/rhp/standalone` export rhp's whole API:
 
