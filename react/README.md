@@ -38,8 +38,11 @@ Each prop of the Plot is a column of data (a **data group**), and each slat read
 A value that is not a list is every row's, and a shorter list wraps around.
 **Blocks** (Bar, Dot, Tick, Label, Cell, Place, Area and Line) write their numbers as CSS variables, and rhp's CSS turns them into places on the Chart's scale.
 
+A chart takes the width of its box and has none of its own: in a box that sizes to its content (a flex item with `margin: auto`, as in Vite's and Next.js's starter pages, an inline-block, a float) give the box a width (`width: 100%`).
+rhp warns in the console when a chart's plot stays 0px wide.
+
 Everything on [rhp's website](https://rhp.vercel.app) applies: the guides, the blocks, slat CSS, themes, gutters, the cross scale, keyboard, accessibility and the gallery.
-Where the React version differs, it says so below.
+The website's React page, and the table below, say what is written differently.
 
 ## What React draws again
 
@@ -105,6 +108,17 @@ With `animate` on a Chart or a Plot, the numbers themselves move on one page clo
 Only the slats whose values move are drawn in those frames.
 `useAnimated(value, { duration, ease })` gives a value of your own app the same motion.
 
+## TypeScript
+
+`slat<Row>(…)` types `d` in the slat, and a function data group's `d` is the same type with no annotation:
+
+```tsx
+type Sale = { name: string; v: number; on: boolean };
+const Sale = slat<Sale>((d) => <div><Bar to={d.v} color={d.on ? "series-2" : "series-1"} /></div>);
+
+<Plot name={names} v={values} on={(d) => d.name === picked}>{Sale}</Plot>; // d.nope is an error
+```
+
 ## On a server
 
 Charts draw on a server with `react-dom/server` and are taken over by `hydrateRoot` with nothing drawn twice.
@@ -112,6 +126,8 @@ The CSS a chart needs goes into the page as React 19 stylesheets: each sheet is 
 In the browser rhp adopts its own sheets and turns the server's copies off.
 
 - The package's module says `"use client"`, so in a Next.js app the charts are client components that the server still draws.
+  Write a chart in a file that starts with `"use client"` too: a slat type is a function, and a server component cannot pass a function to a client component.
+  A server component can still render `<Chart>` and `<Plot>` with a slat type it imports from such a file.
 - A Chart works out its gutters from the Plots it is given as children.
   A Plot drawn by a component of your own inside the Chart is told to it once the page runs in the browser, so on a server give the Chart its Plots directly for the right room in the server's HTML.
 - `linkedCss()` and `noCssGuard()` work as in rhp, with `@bezda/rhp-react/rhp.css` and `rhp-no-css-guard.css` to link.

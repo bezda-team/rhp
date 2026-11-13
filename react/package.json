@@ -39,6 +39,9 @@
     "dist",
     "index.d.ts"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "node build.mjs",
     "prepublishOnly": "npm run build"
