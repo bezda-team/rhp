@@ -69,3 +69,8 @@ export const BadBar = () => <Bar to="ten" />;
 export const NoSlat = () => <Plot v={[1]} />;
 // @ts-expect-error: rowKey is a group's name or a function of the row
 export const BadKey = () => <Plot v={[1]} rowKey={3}>{(d) => <div />}</Plot>;
+
+// A function data group's row is the slat's row, with no annotation
+export const Picked = ({ picked }: { picked: string }) => <Chart><Plot fruit={["a"]} sold={[3]} on={(d) => d.fruit === picked && d.sold > 0}>{Fruit}</Plot></Chart>;
+// @ts-expect-error: and a field the slat's row doesn't have is an error
+export const BadGroup = () => <Chart><Plot fruit={["a"]} sold={[3]} on={(d) => d.price > 0}>{Fruit}</Plot></Chart>;

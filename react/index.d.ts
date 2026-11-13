@@ -184,7 +184,10 @@ export interface PlotSettings<T extends object = Record<string, any>> {
 
 /** Every prop of a Plot other than its settings is a data group: a list (one item per row), one value for every row, or a
  * function of the row, worked out per row (and again only for the rows whose values it reads changed). */
-export type PlotProps<T extends object = Record<string, any>> = PlotSettings<T> & { [group: string]: unknown };
+export type PlotProps<T extends object = Record<string, any>> = PlotSettings<T> & { [group: string]: DataGroup<T> };
+
+/** A data group: a list, one value for every row, or a function of the row (d is typed as the slat's row). */
+export type DataGroup<T extends object = Record<string, any>> = ((d: Row<T>) => unknown) | {} | null | undefined;
 
 /** What each tick's slat sees in a Scale. */
 export interface ScaleTick {
