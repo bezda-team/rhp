@@ -305,8 +305,11 @@ export function usePlot(props, role) {
   };
 
   // JS version: in a frame where only the clock moved (the Plot is drawn again with the props it had), only the rows
-  // whose values move are worked out again, and those whose slat reads a position that changed
-  const fast = js && !still && action === "slide" && props === s.drawnWith && around === s.around && root === s.drawnRoot && sig === s.sig && s.slats !== null;
+  // whose values move are worked out again, and those whose slat reads a position that changed.
+  // NOTE: Only on a drawing that is in the page. React may draw with the same props again after a drawing it threw away
+  // (StrictMode draws every component twice), and that drawing must read every row, or the moves its values start are
+  // never committed.
+  const fast = js && !still && action === "slide" && props === s.drawnWith && around === s.around && root === s.drawnRoot && sig === s.sig && s.slats !== null && s.slats === s.committed;
   let entries, els, firsts, slats;
 
   if (fast) {
@@ -373,6 +376,7 @@ export function usePlot(props, role) {
     for (let k = 0; k < commits.length; k += 2) {
       commits[k].commit(commits[k + 1]);
     }
+    s.committed = slats;
     s.now = now;
     const el = s.el;
     if (!el) return;
@@ -524,6 +528,7 @@ function state() {
     els: null,
     firsts: null,
     slats: null,
+    committed: null, // the slats of the drawing in the page
     live: new Set(),
     drawnWith: null,
     around: null,

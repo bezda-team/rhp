@@ -298,3 +298,16 @@ function Strict() {
   return <Chart scale={[0, 10]}><Plot keyboard name={["a", "b"]} v={v} order={sortBy("v", "desc")}>{(d) => <div data-n={d.name}><Bar to={d.v} /><Label at={d.v}>{d.v}</Label></div>}</Plot></Chart>;
 }
 flushSync(() => createRoot(strict).render(<StrictMode><Strict /></StrictMode>));
+
+// The JS version in StrictMode: values, a sort and the scale move frame by frame
+const strictJs = document.body.appendChild(document.createElement("div"));
+strictJs.className = "strict-js";
+function StrictJs() {
+  const v = useT("StrictJs", { v: [20, 60], max: 100 });
+  return (
+    <Chart scale={[0, v.max]} animate={{ duration: 400 }}>
+      <Plot name={["a", "b"]} v={v.v} order={sortBy("v", "desc")}>{(d) => <div data-n={d.name}><Bar to={d.v} /><Label at={d.v}>{d.v.toFixed(1)}</Label></div>}</Plot>
+    </Chart>
+  );
+}
+flushSync(() => createRoot(strictJs).render(<StrictMode><StrictJs /></StrictMode>));

@@ -324,6 +324,26 @@ await p.evaluate(() => T.setStrictV([9, 2]));
 check("React: and it follows its data", await p.evaluate(() => [...document.querySelectorAll(".strict .rhp-plot > *")].map((e) => e.dataset.n + "@" + e.style.getPropertyValue("--rhp-position") + ":" + e.tabIndex).join(" ")),
   "a@0:0 b@1:-1");
 
+// The JS version in StrictMode, where React draws each component twice: the second drawing has the props of the first
+// (a passes b where their values cross, and slides up)
+check("React: in StrictMode the JS version moves values (a label counting along), a sort and the scale frame by frame", await p.evaluate(async () => {
+  await new Promise((r) => T.whenStill(r));
+  const [a, b] = [...document.querySelectorAll(".strict-js .rhp-plot > *")];
+  const top = (e) => e.getBoundingClientRect().top;
+  const from = top(a), to = top(b);
+  const seen = { label: [], position: [], top: [], max: [] };
+  T.setStrictJs({ v: [80, 40], max: 200 });
+  for (let i = 0; i < 40; i++) {
+    await new Promise((r) => requestAnimationFrame(r));
+    seen.label.push(+a.querySelector(".rhp-label").textContent);
+    seen.position.push(+a.style.getPropertyValue("--rhp-position"));
+    seen.top.push(top(a));
+    seen.max.push(+getComputedStyle(document.querySelector(".strict-js .rhp-chart")).getPropertyValue("--rhp-max"));
+  }
+  const between = (list, lo, hi) => list.some((x) => x > Math.min(lo, hi) && x < Math.max(lo, hi));
+  return [between(seen.label, 20, 80), seen.position[0], between(seen.top, from, to), between(seen.max, 100, 200), seen.label.at(-1), seen.position.at(-1), seen.top.at(-1) === to, seen.max.at(-1)];
+}), [true, 1, true, true, 80, 0, true, 200]);
+
 // useAnimated
 const moving = await p.evaluate(async () => {
   T.setMoving(100);
