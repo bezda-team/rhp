@@ -1,6 +1,6 @@
 {
   "name": "@bezda/rhp-react",
-  "version": "3.0.0",
+  "version": "2.3.0",
   "description": "rhp (reactive html plots) for React: plots as stacks of slats, built with React out of HTML elements and CSS",
   "keywords": [
     "react",
