@@ -33,7 +33,7 @@ export function report(r) {
   const warnings = count("warning");
   const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
   const name = r.file ? r.file.split(/[\\/]/).pop() : "chart";
-  const about = [r.format, r.rhpVersion && `rhp ${r.rhpVersion}`, r.browser].filter(Boolean).join(", ");
+  const about = [r.format, r.rhpReactVersion ? `rhp-react ${r.rhpReactVersion}` : r.rhpVersion && `rhp ${r.rhpVersion}`, r.browser].filter(Boolean).join(", ");
 
   lines.push(`rhp check of ${name}${about ? ` (${about})` : ""}: ${errors || warnings ? [errors && plural(errors, "error"), warnings && plural(warnings, "warning")].filter(Boolean).join(", ") : "no problems found"}.`);
 
@@ -57,6 +57,8 @@ export function report(r) {
     const passed = [];
     for (const [fail, text] of PASSES) {
       if (fail.some((c) => codes.has(c))) continue;
+      // Without the guard (rhp-react), how rhp is used was not checked
+      if (r.guarded === false && text === "rhp used as documented") continue;
       if (text) {
         passed.push(text);
       } else if (r.charts.length) {

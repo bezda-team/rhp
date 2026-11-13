@@ -21,7 +21,7 @@
 //   browser   a Playwright Browser to use instead of launching one (it is left open)
 //   debug     also save the screenshots the color probes read (as drawn, with the text hidden, with the marks hidden)
 //
-// Result: { ok, file, format, rhpVersion, browser, findings, charts, interactions, interactedAt, swept, screenshots, timings,
+// Result: { ok, file, format, rhpVersion, rhpReactVersion, guarded, browser, findings, charts, interactions, interactedAt, swept, screenshots, timings,
 // text }
 //   ok            no finding is an error
 //   findings      [{ level: "error" | "warning" | "info", code, message, fix, width, widths }], errors first
@@ -260,6 +260,8 @@ export async function check(options = {}) {
   } else {
     built = await bundle({ file, format, guard });
     findings.push(...built.problems);
+    // rhp-react is checked as it draws, but the guard (how the components are used) wraps @bezda/rhp only
+    if (built.rhpReact) Object.assign(base, { rhpReactVersion: pkgs.rhpReact?.version ?? null, guarded: false });
   }
   lap("build", t);
 
@@ -707,6 +709,8 @@ function finish({ findings, started, timings, ...rest }) {
     file: rest.file ?? null,
     format: rest.format ?? null,
     rhpVersion: rest.rhpVersion ?? null,
+    rhpReactVersion: rest.rhpReactVersion ?? null,
+    guarded: rest.guarded ?? true,
     browser: rest.browser ?? null,
     findings: list,
     charts: rest.charts ?? [],
